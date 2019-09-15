@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators'
+import { environment } from '@environment/environment';
 
 
 const routes = {
-  techRecords: (searchIdentifier: string) => `/api/vehicles/${searchIdentifier}/tech-records`
+  techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/api/vehicles/${searchIdentifier}/tech-records`
 };
 
 const httpOptions = {
@@ -41,5 +42,5 @@ export class TechnicalRecordService {
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }  
+  }
 }
