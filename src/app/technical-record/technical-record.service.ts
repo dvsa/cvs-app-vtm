@@ -6,7 +6,7 @@ import { environment } from '@environment/environment';
 
 
 const routes = {
-  techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/api/vehicles/${searchIdentifier}/tech-records`
+  techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`
 };
 
 const httpOptions = {

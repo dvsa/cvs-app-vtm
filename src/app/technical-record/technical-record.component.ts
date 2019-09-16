@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TechnicalRecordService } from './technical-record.service';
 import { finalize } from 'rxjs/operators';
+import { environment } from '@environment/environment';
 
 @Component({
   selector: 'app-technical-record',
@@ -10,7 +11,7 @@ import { finalize } from 'rxjs/operators';
 export class TechnicalRecordComponent implements OnInit {
   techRecords: any;
   isLoading: boolean;
-  searchIdentifier: string = '<search identifier>';
+  searchIdentifier: string = 'XMGDE02FS0H012345';
 
   constructor(private techRecordService: TechnicalRecordService) { }
 
