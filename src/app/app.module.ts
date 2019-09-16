@@ -14,8 +14,8 @@ import {TechnicalRecordModule} from './technical-record/technical-record.module'
     TechnicalRecordModule,
     AppRoutingModule,
     MsAdalAngular6Module.forRoot({
-      tenant: '<tenant_id>',
-      clientId: '<client_id>',
+      tenant: '<tenant-id>',
+      clientId: '<client-id>',
       redirectUri: window.location.origin,
       endpoints: {
         "https://localhost/Api/": "xxx-bae6-4760-b434-xxx"

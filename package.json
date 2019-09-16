@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "tslint": "tslint src/**/*.ts -q",
-    "test:deploy": "npm run build && npx http-server ./dist/cvs-app-vtm -p 4200"
+    "test:deploy": "npm run build && npx http-server ./dist/cvs-app-vtm -p 4200 -c-1"
   },
   "private": true,
   "dependencies": {

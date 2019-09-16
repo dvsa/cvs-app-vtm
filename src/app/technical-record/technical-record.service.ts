@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators'
 import { environment } from '@environment/environment';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 
 
 const routes = {
@@ -17,11 +18,24 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TechnicalRecordService {
+  private jwttoken:string;
+  private readonly tokenSubscription: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private adalSvc: MsAdalAngular6Service) { 
+    console.log(this.adalSvc.userInfo);
+    this.tokenSubscription = this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe((token: string) => {
+      console.log(token);
+      this.jwttoken = token;
+    });    
+
+  }
 
   getTechnicalRecords(searchIdentifier: string): Observable<any[]> {
-    return this.httpClient.get<any[]>(routes.techRecords(searchIdentifier)).pipe(
+    return this.httpClient.get<any[]>(routes.techRecords(searchIdentifier),{
+      headers: new HttpHeaders({
+        'Content-Type' : 'application/json; charset=utf-8',
+        'Authorization': `Bearer ${this.jwttoken}`,
+      })}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
       catchError(this.handleError('getTechnicalRecords', []))
     );
