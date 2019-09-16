@@ -1,61 +1,30 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {RouterModule, RouteReuseStrategy, Routes} from '@angular/router';
-import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {WebComponentsModule} from './web-components/web-components.module';
-import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app-routing.module';
-import {AuthenticationGuard, MsAdalAngular6Module} from 'microsoft-adal-angular6';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {MaterialModule} from "./material.module";
-import {CreateVehicleComponent} from './create-vehicle/create-vehicle.component';
-import {VehicleDetailsComponent} from './vehicle-details/vehicle-details.component';
-import {MatDialogModule} from '@angular/material/dialog';
-import {VehicleExistsDialogComponent} from './vehicle-exists-dialog/vehicle-exists-dialog.component';
-import {HttpClientModule} from "@angular/common/http";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthenticationGuard, MsAdalAngular6Module } from 'microsoft-adal-angular6';
+import {TechnicalRecordModule} from './technical-record/technical-record.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CreateVehicleComponent,
-    VehicleDetailsComponent,
-    VehicleExistsDialogComponent
-
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    MaterialModule,
-    IonicModule.forRoot(),
-    WebComponentsModule.forRoot(),
+    TechnicalRecordModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    HttpClientModule,
     MsAdalAngular6Module.forRoot({
-      tenant: '',
-      clientId: '',
+      tenant: '<tenant_id>',
+      clientId: '<client_id>',
       redirectUri: window.location.origin,
       endpoints: {
         "https://localhost/Api/": "xxx-bae6-4760-b434-xxx"
       },
       navigateToLoginRequestUrl: true,
       cacheLocation: 'localStorage',
-    }),
-    BrowserAnimationsModule
+    })
   ],
-  providers: [
-    AuthenticationGuard,
-    StatusBar,
-    SplashScreen,
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
-  ],
-  bootstrap: [AppComponent],
-  entryComponents: [VehicleExistsDialogComponent]
+  providers: [AuthenticationGuard],
+  bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
