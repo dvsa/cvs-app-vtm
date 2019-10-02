@@ -1,6 +1,0 @@
-{
-    "/vehicles": {
-      "target": "http://localhost:3005",
-      "secure": false
-    }
-  }
