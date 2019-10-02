@@ -1,0 +1,52 @@
+.records-container {
+    width:100%;
+    overflow-x: scroll;
+    border: 1px solid rgba(0,0,0,.03);
+    box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+    margin: 4px;
+
+    & .records-container-title {
+        align-content: center;
+        align-items: center;
+        display: block;
+        justify-content: center;
+        padding: 8px 20px;
+        color: rgba(0,0,0,.54);
+        background: rgba(0,0,0,.03);
+
+        & .records-container-title-spacer {
+            display: flex;
+            flex-wrap: wrap;
+            color: rgba(0,0,0,.54);
+
+            >div {
+                flex: 0 50%;
+            }
+
+            & .record-search-title-text {
+                padding-top: 1%;
+            }
+
+        }
+    }
+
+    & .records-container-body {
+        padding: 30px;
+        display: flex;
+
+        & ngx-data-table {
+            min-width: 130%;
+            table {
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            th, td {
+                overflow: hidden;
+                width: 200px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+  }
