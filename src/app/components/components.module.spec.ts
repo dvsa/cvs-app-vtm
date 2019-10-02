@@ -1,5 +1,4 @@
 import { ComponentsModule } from './components.module';
-import {TestBed} from "@angular/core/testing";
 
 describe('TechnicalRecordModule', () => {
   let componentsModule: ComponentsModule;
@@ -11,9 +10,4 @@ describe('TechnicalRecordModule', () => {
   it('should create an instance', () => {
     expect(componentsModule).toBeTruthy();
   });
-
-  afterAll(() => {
-    TestBed.resetTestingModule();
-  });
-
 });

@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {map, tap, catchError} from 'rxjs/operators'
-import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
-import {environment} from '@environment/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, tap, catchError } from 'rxjs/operators'
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import { environment } from '@environment/environment';
 
 
 const routes = {
@@ -13,41 +13,42 @@ const routes = {
 };
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TechnicalRecordService {
-  private jwttoken: string;
+  private jwttoken:string;
   private readonly tokenSubscription: any;
 
-  constructor(private httpClient: HttpClient, private adalSvc: MsAdalAngular6Service) {
+  constructor(private httpClient: HttpClient,private adalSvc: MsAdalAngular6Service) { 
     console.log(this.adalSvc.userInfo);
     this.tokenSubscription = this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe((token: string) => {
       console.log(token);
       this.jwttoken = token;
-    });
+    });    
 
   }
 
   getTechnicalRecords(searchIdentifier: string): Observable<any> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
-
-    return this.httpClient.get<any[]>(routes.techRecords(searchIdentifier), {headers}).pipe(
+    return this.httpClient.get<any[]>(routes.techRecords(searchIdentifier),{
+      headers: new HttpHeaders({
+        'Content-Type' : 'application/json; charset=utf-8',
+        'Authorization': `Bearer ${this.jwttoken}`,
+      })}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
       catchError(this.handleError('getTechnicalRecords', []))
     );
   }
 
   getTechnicalRecordsAllStatuses(searchIdentifier: string): Observable<any> {
-    return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), {
+    return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier),{
       headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Type' : 'application/json; charset=utf-8',
         'Authorization': `Bearer ${this.jwttoken}`,
-      })
-    }).pipe(
+      })}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
       catchError(this.handleError('getTechnicalRecords', []))
     );
@@ -56,7 +57,7 @@ export class TechnicalRecordService {
   private log(message: string) {
     console.log(`TechnicalRecordService: ${message}`);
   }
-
+  // tslint:disable-next-line:typedef
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure

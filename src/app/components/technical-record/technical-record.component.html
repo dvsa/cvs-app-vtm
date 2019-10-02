@@ -3,7 +3,7 @@
     <div class="records-container-title-spacer">
       <div class="record-search-title-text">Technical records from searched (vin/vrm) {{searchIdentifier}}</div>
       <div>
-        <ion-searchbar #q placeholder="Search (vin/vrm)"  (keyup.enter)="searchTechRecords(q.value)">
+        <ion-searchbar #q placeholder="Search (vin/vrm)" [showCancelButton]="true" (keyup.enter)="searchTechRecords(q.value)">
         </ion-searchbar>
       </div>
     </div>
