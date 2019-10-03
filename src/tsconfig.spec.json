@@ -3,7 +3,15 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
-    "module": "commonjs",
+    "module": "es2015",
+    "paths": {
+      "@app/*": [
+        "./app/*"
+      ],
+      "@environment/*": [
+        "./environments/*"
+      ]
+    },
     "types": [
       "jasmine",
       "node"
