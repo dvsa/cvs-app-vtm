@@ -5,7 +5,7 @@ import { ShellPage } from './shell.page';
 
 describe('ShellPage', () => {
   let component: ShellPage;
-  let fixture: ComponentFixture<HomePage>;
+  let fixture: ComponentFixture<ShellPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
