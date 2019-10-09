@@ -1,0 +1,29 @@
+<div class="main-div">
+<mat-card class="form-card">
+  <mat-card-title>
+    Vehicle Details
+  </mat-card-title>
+  <form class="form-container" [formGroup]="vehicleDetailsForm" (ngSubmit)="onSubmit(vehicleDetailsForm.value)">
+  <mat-form-field>
+    <input matInput #input maxlength="20" placeholder="Full VIN" id="vin" formControlName="vin">
+    <span *ngIf="!vehicleDetailsForm.get('vin').valid && vehicleDetailsForm.get('vin').touched" class="error">Please enter a valid vin!</span>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput #input maxlength="20" placeholder="Primary VRM" id="vrm" formControlName="vrm">
+    <span *ngIf="!vehicleDetailsForm.get('vrm').valid && vehicleDetailsForm.get('vrm').touched" class="error">Please enter a valid vrm!</span>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Vehicle type" id="vehicleType" formControlName="vehicleType">
+      <mat-option value="{{ vehicleTypes.PSV }}">{{ vehicleTypes.PSV | uppercase }}</mat-option>
+      <mat-option value="{{ vehicleTypes.PSV }}">{{ vehicleTypes.HGV | uppercase }}</mat-option>
+      <mat-option value="{{ vehicleTypes.TRL }}">{{ vehicleTypes.TRL | uppercase }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <span *ngIf="!vehicleDetailsForm.valid && vehicleDetailsForm.touched" class="error">Please enter valid data!</span><br>
+  <button mat-button type="submit" class="btn btn-primary">Submit<i class="material-icons">keyboard_arrow_right</i></button>
+  </form>
+</mat-card>
+</div>
