@@ -10,6 +10,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TechnicalRecordService} from "@app/components/technical-record/technical-record.service";
 import {TechnicalRecordServiceMock} from "../../../test-config/services-mocks/technical-record-service.mock";
+import {LandingPageComponent} from "@app/landing-page/landing-page.component";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 
 describe('CreateVehicleComponent', () => {
@@ -20,7 +22,8 @@ describe('CreateVehicleComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateVehicleComponent, VehicleDetailsComponent],
+      declarations: [CreateVehicleComponent, VehicleDetailsComponent, LandingPageComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         AppRoutingModule,
         MaterialModule,

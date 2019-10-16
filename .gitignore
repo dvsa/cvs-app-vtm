@@ -7,7 +7,7 @@
 
 # dependencies
 /node_modules
-
+/www
 # IDEs and editors
 /.idea
 .project

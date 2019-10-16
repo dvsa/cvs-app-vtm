@@ -16,18 +16,23 @@ import {VehicleDetailsComponent} from './vehicle-details/vehicle-details.compone
 import {MatDialogModule} from '@angular/material/dialog';
 import {VehicleExistsDialogComponent} from './vehicle-exists-dialog/vehicle-exists-dialog.component';
 import {HttpClientModule} from "@angular/common/http";
+import {ComponentsModule} from "@app/components/components.module";
+import {ShellPageModule} from "@app/shell/shell.page.module";
+import {VehicleNotFoundDialogComponent} from "@app/vehicle-not-found-dialog/vehicle-not-found-dialog.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     CreateVehicleComponent,
     VehicleDetailsComponent,
-    VehicleExistsDialogComponent
-
+    VehicleExistsDialogComponent,
+    VehicleNotFoundDialogComponent
   ],
   imports: [
     BrowserModule,
     MaterialModule,
+    ComponentsModule,
+    ShellPageModule,
     IonicModule.forRoot(),
     WebComponentsModule.forRoot(),
     AppRoutingModule,
@@ -37,8 +42,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatDialogModule,
     HttpClientModule,
     MsAdalAngular6Module.forRoot({
-      tenant: '',
-      clientId: '',
+      tenant: '6c448d90-4ca1-4caf-ab59-0a2aa67d7801',
+      clientId: '54d151b6-2ca8-4018-8c70-f9ee600d91c7',
       redirectUri: window.location.origin,
       endpoints: {
         "https://localhost/Api/": "xxx-bae6-4760-b434-xxx"
@@ -55,7 +60,8 @@ import {HttpClientModule} from "@angular/common/http";
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [VehicleExistsDialogComponent]
+  exports: [ ],
+  entryComponents: [VehicleExistsDialogComponent, VehicleNotFoundDialogComponent]
 })
 export class AppModule {
 }
