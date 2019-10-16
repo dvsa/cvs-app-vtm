@@ -5,11 +5,9 @@ import {map, tap, catchError} from 'rxjs/operators'
 import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {environment} from '@environment/environment';
 
-
 const routes = {
   techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`,
   techRecordsAllStatuses: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all`
-
 };
 
 const httpOptions = {
@@ -19,6 +17,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
+
 export class TechnicalRecordService {
   private jwttoken: string;
   private readonly tokenSubscription: any;
@@ -29,7 +28,6 @@ export class TechnicalRecordService {
       console.log(token);
       this.jwttoken = token;
     });
-
   }
 
   getTechnicalRecords(searchIdentifier: string): Observable<any> {
@@ -42,12 +40,9 @@ export class TechnicalRecordService {
   }
 
   getTechnicalRecordsAllStatuses(searchIdentifier: string): Observable<any> {
-    return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': `Bearer ${this.jwttoken}`,
-      })
-    }).pipe(
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
+
+    return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), { headers }).pipe(
       tap(_ => console.log('fetched techRecords', _)),
       catchError(this.handleError('getTechnicalRecords', []))
     );

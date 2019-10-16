@@ -4,7 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
-  APIServerUri: ''
+  // APIServerUri: 'https://api.devops.cvs.dvsacloud.uk/devops'
+  APIServerUri: 'http://localhost:3005'
+  //APIServerUri: 'https://api.nonprod.cvs.dvsacloud.uk/cvsb-7743'
 };
 
 /*

@@ -11,14 +11,14 @@
         <span>{{element[cols]}}</span>
       </mat-cell>
     </ng-container>
-  
+
     <!-- Expanded Content Column - The detail row is made up of this one column -->
     <ng-container matColumnDef="expandedDetail">
       <mat-cell *matCellDef="let detail">
         <ngx-data-table [data]="detail.element.details" class="detail-table"></ngx-data-table>
       </mat-cell>
     </ng-container>
-  
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"
               [class.expanded]="expandedElement == row"
@@ -27,9 +27,9 @@
     [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
     style="overflow: hidden"></mat-row>
   </mat-table>
-  
+
   <mat-paginator #paginator
-  
+
     [length]="dataSource?.data?.length"
     [pageIndex]="0"
     [pageSize]="25"

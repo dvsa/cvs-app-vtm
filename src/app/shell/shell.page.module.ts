@@ -8,6 +8,7 @@ import { ComponentsModule } from '../components/components.module';
 import { WebComponentsModule } from '../web-components/web-components.module';
 
 import { ShellPage } from './shell.page';
+import {AuthenticationGuard} from "microsoft-adal-angular6";
 
 @NgModule({
   imports: [
@@ -15,10 +16,7 @@ import { ShellPage } from './shell.page';
     FormsModule,
     IonicModule,
     RouterModule.forChild([
-      {
-        path: '',
-        component: ShellPage
-      }
+      { path: 'home', component: ShellPage, canActivate: [AuthenticationGuard] }
     ]),
     ComponentsModule,
     WebComponentsModule
