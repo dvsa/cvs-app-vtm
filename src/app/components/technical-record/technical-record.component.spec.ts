@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {TechnicalRecordComponent} from './technical-record.component';
 import {TechnicalRecordService} from './technical-record.service';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
@@ -60,11 +60,17 @@ describe('TechnicalRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should test on search tech records logic', () => {
-    spyOn(service, "getTechnicalRecordsAllStatuses");
-    component.searchTechRecords(qString);
-    expect(service.getTechnicalRecordsAllStatuses).toHaveBeenCalled();
-  });
+  it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
+    inject([TechnicalRecordService], (injectService: TechnicalRecordService) => {
+      expect(injectService).toBe(service);
+    })
+  );
+
+  // it('should test on search tech records logic', () => {
+  //   spyOn(service, "getTechnicalRecordsAllStatuses");
+  //   component.searchTechRecords(qString);
+  //   expect(service.getTechnicalRecordsAllStatuses).toHaveBeenCalled();
+  // });
 
   afterAll(() => {
     TestBed.resetTestingModule();
