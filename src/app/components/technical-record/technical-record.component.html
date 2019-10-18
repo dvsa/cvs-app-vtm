@@ -1,0 +1,15 @@
+<div class="records-container mat-elevation-z8">
+  <div class="records-container-title">
+    <div class="records-container-title-spacer">
+      <div class="record-search-title-text">Technical records from searched (vin/vrm) {{searchIdentifier}}</div>
+      <div>
+        <ion-searchbar #q placeholder="Search (vin/vrm)"  (keyup.enter)="searchTechRecords(q.value)">
+        </ion-searchbar>
+      </div>
+    </div>
+  </div>
+  <div class="records-container-body">
+    <ngx-data-table [data]="techRecords"></ngx-data-table>
+  </div>
+</div>
+<!-- <pre>{{techRecordsJson | json }}</pre> -->
