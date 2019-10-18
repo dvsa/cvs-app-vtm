@@ -27,7 +27,6 @@ import {
     ]),
   ],
 })
-
 export class NgxDataTableComponent {
   @Input()
   set data(_data: any[]) {

@@ -30,6 +30,7 @@ import {VehicleNotFoundDialogComponent} from "@app/vehicle-not-found-dialog/vehi
   ],
   imports: [
     BrowserModule,
+    TechnicalRecordModule,
     MaterialModule,
     ComponentsModule,
     ShellPageModule,
