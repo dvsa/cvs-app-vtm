@@ -71,7 +71,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "cvs-app-vtm:build"
+            "browserTarget": "app:build"
           },
           "configurations": {
             "production": {
