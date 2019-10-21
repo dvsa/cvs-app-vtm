@@ -8,6 +8,8 @@ import {MsAdalAngular6Module} from "microsoft-adal-angular6";
 import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {TechnicalRecordServiceMock} from "../../../../test-config/services-mocks/technical-record-service.mock";
 import { MaterialModule } from 'src/app/material.module';
+import { IsPrimaryVrmPipe } from 'src/app/pipes/IsPrimaryVrmPipe';
+import { ComponentsModule } from '../components.module';
 
 
 describe('TechnicalRecordComponent', () => {
@@ -23,6 +25,7 @@ describe('TechnicalRecordComponent', () => {
         HttpClientTestingModule,
         MatDialogModule,
         MaterialModule,
+        ComponentsModule,
         MsAdalAngular6Module.forRoot({
           tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
           clientId: '11x111x1-1xx1-1111-1x11-x1xx111x11x1',
