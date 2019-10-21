@@ -6,8 +6,8 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {APP_BASE_HREF} from "@angular/common";
 import {MsAdalAngular6Module} from "microsoft-adal-angular6";
 import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {MaterialModule} from "@app/material.module";
 import {TechnicalRecordServiceMock} from "../../../../test-config/services-mocks/technical-record-service.mock";
+import { MaterialModule } from 'src/app/material.module';
 
 
 describe('TechnicalRecordComponent', () => {

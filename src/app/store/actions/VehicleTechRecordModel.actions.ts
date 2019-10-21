@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {VehicleTechRecordModel} from '@app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';
 
 export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
