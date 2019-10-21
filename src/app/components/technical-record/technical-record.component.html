@@ -9,6 +9,7 @@
     </div>
   </div>
 </div>
+
 <div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
   <div class="govuk-width-container left-pad">
     <main class="govuk-main-wrapper">
@@ -24,7 +25,6 @@
             </div>
             <div class="grid-item-technical-record-status"></div>
           </div>
-
         </div>
       </div>
     </main>
@@ -62,6 +62,7 @@
       </div>
     </dl>
   </div>
+
   <div class="auto-pad">
     <mat-accordion>
       <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #example>
@@ -129,9 +130,11 @@
             </dd>
           </div>
         </dl>
-
-
       </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="auto-pad">
+    <mat-accordion>
       <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -146,7 +149,199 @@
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <p>I'm visible because I am open</p>
+        <dl class="technical-record-sub-details govuk-summary-list ">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Make
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].bodyMake}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Model
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].bodyModel}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Body type
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].bodyType.description | titlecase}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+            <dt class="govuk-summary-list__key">
+              Function
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].functionCode}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Conversion reference number
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].conversionRefNo}}
+            </dd>
+          </div>
+        </dl>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="auto-pad">
+    <mat-accordion>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
+              Weights
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="expansion-icon">
+              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <dl class="technical-record-sub-details govuk-summary-list ">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            </dt>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              GB weight (kg)
+            </dd>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Design weight (kg)
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Gross
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].grossGbWeight==null ? "-" : techRecordsJson.techRecord[0].grossGbWeight }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].grossDesignWeight==null ? "-" : techRecordsJson.techRecord[0].grossDesignWeight }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+            <dt class="govuk-summary-list__key">
+              Train
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].trainGbWeight}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].trainDesignWeight}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+            <dt class="govuk-summary-list__key">
+              Max train
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].maxTrainGbWeight}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].maxTrainDesignWeight}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngFor="let axelNo of techRecordsJson.techRecord[0].axles">
+            <dt class="govuk-summary-list__key">
+              Axle {{axelNo.axleNumber}}
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.weights.gbWeight}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.weights.designWeight}}
+            </dd>
+          </div>
+        </dl>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="auto-pad">
+    <mat-accordion>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
+              Tyres
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="expansion-icon">
+              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <dl class="technical-record-sub-details govuk-summary-list ">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Tyre use code
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].tyreUseCode }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+            </dd>
+            <dt class="govuk-summary-list__key">
+            </dt>
+            <dt class="govuk-summary-list__key">
+            </dt>
+            <dt class="govuk-summary-list__key">
+            </dt>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            </dt>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Tyre code
+            </dd>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Tyre size
+            </dd>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Ply rating
+            </dd>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Fitment code
+            </dd>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Load index
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngFor="let axelNo of techRecordsJson.techRecord[0].axles">
+            <dt class="govuk-summary-list__key">
+              Axle {{axelNo.axleNumber}}
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.tyres.tyreCode}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.tyres.tyreSize}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.tyres.plyRating}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.tyres.fitmentCode}}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{axelNo.tyres.dataTrAxles}}
+            </dd>
+          </div>
+        </dl>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
