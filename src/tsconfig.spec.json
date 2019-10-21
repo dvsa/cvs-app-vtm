@@ -13,13 +13,10 @@
       ]
     },
     "types": [
-      "jasmine",
+      "jest",
       "node"
     ]
   },
-  "files": [
-    "test.ts"
-  ],
   "include": [
     "polyfills.ts",
     "**/*.spec.ts",

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {VEHICLE_TYPES} from "@app/app.enums";
 import {FormGroup} from "@angular/forms";
 import {FormControl, Validators} from '@angular/forms';
 import {Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import { map } from 'rxjs/operators';
-import { CreateVehicleService } from '@app/create-vehicle/create-vehicle.service';
+import { VEHICLE_TYPES } from '../app.enums';
+import { CreateVehicleService } from '../create-vehicle/create-vehicle.service';
 
 
 @Component({

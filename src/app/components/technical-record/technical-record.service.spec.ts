@@ -3,7 +3,6 @@ import {HttpClientModule, HttpClient, HttpHeaders} from '@angular/common/http';
 import {TechnicalRecordService} from './technical-record.service';
 import {MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {catchError, tap} from "rxjs/operators";
-import {environment} from "@environment/environment";
 
 export const adalConfig = {
   cacheLocation: 'localStorage',
