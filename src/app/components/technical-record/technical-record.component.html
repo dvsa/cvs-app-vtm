@@ -3,13 +3,156 @@
     <div class="records-container-title-spacer">
       <div class="record-search-title-text">Technical records from searched (vin/vrm) {{searchIdentifier}}</div>
       <div>
-        <ion-searchbar #q placeholder="Search (vin/vrm)"  (keyup.enter)="searchTechRecords(q.value)">
+        <ion-searchbar #q placeholder="Search (vin/vrm)" (keyup.enter)="searchTechRecords(q.value)">
         </ion-searchbar>
       </div>
     </div>
   </div>
-  <div class="records-container-body">
-    <ngx-data-table [data]="techRecords"></ngx-data-table>
+</div>
+<div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
+  <div class="govuk-width-container left-pad">
+    <main class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-thirds float-left">
+          <h1 class="govuk-heading-xl title">Technical record</h1>
+          <div class="grid-container-technical-record-status">
+            <div class="grid-item-technical-record-status rectangle"></div>
+            <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status</div>
+            <div
+              class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
+              {{techRecordsJson.techRecord[0].statusCode}}
+            </div>
+            <div class="grid-item-technical-record-status"></div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="auto-pad">
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Vehicle identification number (VIN)
+        </dt>
+        <dd class="govuk-summary-list__value">
+          {{techRecordsJson.vin}}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Vehicle registration mark (VRM)
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
+            {{vrmItem.vrm}}
+          </ul>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Previous VRM
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false  ">
+            {{vrmItem.vrm}}
+          </ul>
+        </dd>
+      </div>
+    </dl>
+  </div>
+  <div class="auto-pad">
+    <mat-accordion>
+      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #example>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19 ">
+              Vehicle summary
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="expansion-icon">
+              <fa-icon *ngIf="!example.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+              <fa-icon *ngIf="example.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <dl class="technical-record-sub-details govuk-summary-list ">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Vehicle type
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].vehicleType}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              National type approval number
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].ntaNumber}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Date of first registration
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].regnDate | date:'shortDate'}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Year of manufacture
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].manufactureYear}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Number of axles
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].noOfAxles}}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              DTp number
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{techRecordsJson.techRecord[0].manufactureYear}}
+            </dd>
+          </div>
+        </dl>
+
+
+      </mat-expansion-panel>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
+              Body
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="expansion-icon">
+              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>I'm visible because I am open</p>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>
-<!-- <pre>{{techRecordsJson | json }}</pre> -->
+<ng-template #loading>
+  Loading stuff...
+</ng-template>
+<br>
+<pre>{{techRecordsJson$ | async | json }}</pre>

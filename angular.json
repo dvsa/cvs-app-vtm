@@ -33,6 +33,11 @@
                 "glob": "**/*.svg",
                 "input": "node_modules/@ionic/angular/dist/ionic/svg",
                 "output": "./svg"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/govuk-frontend/govuk/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -46,7 +51,11 @@
                 "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
               }
             ],
-            "scripts": []
+            "scripts": [
+              { "input": "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-module" },
+              {"input":  "node_modules/govuk-frontend/govuk/all.js",
+              "bundleName": "govuk-js-module"}
+            ]
           },
           "configurations": {
             "production": {

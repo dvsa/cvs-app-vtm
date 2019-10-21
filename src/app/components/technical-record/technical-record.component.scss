@@ -1,52 +1,215 @@
+@import "node_modules/govuk-frontend/govuk/all";
+
+dd {
+  & ul {
+    padding-left: 0%;
+  }
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+.custom-header .mat-expansion-panel-header-title,
+.custom-header .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.custom-header .mat-expansion-panel-header {
+  padding: 0;
+}
+
+.custom-header {
+  border-bottom-color: darkgray;
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+}
+
+.custom-header .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: end;
+  flex-direction: row-reverse;
+  margin-right: 0%;
+}
+
+.rotate_90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+::ng-deep .custom-header > .mat-expansion-indicator:after {
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.expansion-icon {
+  color: #0B0C0C;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: -0.21px;
+  line-height: 55px;
+  width: 20.8px;
+  text-align: center;
+}
+
+.item-technical-record {
+  color: #1D70B8;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.11px;
+  line-height: 43px;
+  width: 284.96px;
+  text-align: left;
+  margin-top: 5%;
+}
+
+.accordion {
+  background-color: #eee;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  border-bottom-color: #a5acbd;
+  border-top-color: #a5acbd;
+  border-top-width: thin;
+}
+
+.active, .accordion:hover {
+  background-color: #fafafa;
+}
+
+.accordion:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+  border-bottom-color: #a5acbd;
+  border-top-color: #a5acbd;
+  border-top-width: thin;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+.title {
+  color: #0B0C0C;
+  font-family: GDSTransportWebsite;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.09px;
+  line-height: 58px;
+  width: 379px;
+  text-align: left;
+}
+
+.left-pad {
+  margin-left: 5%;
+
+  .rectangle {
+    background-color: #B1B4B6;
+    width: 10px;
+    height: 60px;
+  }
+
+  .grid-container-technical-record-status {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: 10px 80px 100px auto;
+    width: 50%;
+  }
+
+  .grid-item-technical-record-status {
+    text-align: left;
+    padding-top: 25%;
+  }
+
+  .grid-item-technical-record-status-value {
+    text-align: left;
+    padding-top: 20%;
+    margin-left: -25%;
+  }
+}
+
+.auto-pad {
+  margin-left: 5%;
+  margin-right: 5%;
+
+  &.technical-record-details {
+    margin-top: 5%;
+  }
+}
+
 .records-container {
-    width:100%;
-    overflow-x: scroll;
-    border: 1px solid rgba(0,0,0,.03);
-    box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
-    margin: 4px;
+  width: 100%;
+  overflow-x: scroll;
+  border: 1px solid rgba(0, 0, 0, .03);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
+  margin: 4px;
 
-    & .records-container-title {
-        align-content: center;
-        align-items: center;
-        display: block;
-        justify-content: center;
-        padding: 8px 20px;
-        color: rgba(0,0,0,.54);
-        background: rgba(0,0,0,.03);
+  & .records-container-title {
+    align-content: center;
+    align-items: center;
+    display: block;
+    justify-content: center;
+    padding: 8px 20px;
+    color: rgba(0, 0, 0, .54);
+    background: rgba(0, 0, 0, .03);
 
-        & .records-container-title-spacer {
-            display: flex;
-            flex-wrap: wrap;
-            color: rgba(0,0,0,.54);
+    & .records-container-title-spacer {
+      display: flex;
+      flex-wrap: wrap;
+      color: rgba(0, 0, 0, .54);
 
-            >div {
-                flex: 0 50%;
-            }
+      > div {
+        flex: 0 50%;
+      }
 
-            & .record-search-title-text {
-                padding-top: 1%;
-            }
+      & .record-search-title-text {
+        padding-top: 1%;
+      }
 
-        }
-    }
-
-    & .records-container-body {
-        padding: 30px;
-        display: flex;
-
-        & ngx-data-table {
-            min-width: 130%;
-            table {
-                width: 100%;
-                table-layout: fixed;
-            }
-
-            th, td {
-                overflow: hidden;
-                width: 200px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
     }
   }
+
+  & .records-container-body {
+    padding: 30px;
+    display: flex;
+
+    & ngx-data-table {
+      min-width: 130%;
+
+      table {
+        width: 100%;
+        table-layout: fixed;
+      }
+
+      th, td {
+        overflow: hidden;
+        width: 200px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
