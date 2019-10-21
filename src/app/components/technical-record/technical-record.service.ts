@@ -31,6 +31,7 @@ export class TechnicalRecordService {
   }
 
   getTechnicalRecords(searchIdentifier: string): Observable<any> {
+    // tslint:disable-next-line:max-line-length
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
 
     return this.httpClient.get<any[]>(routes.techRecords(searchIdentifier), {headers}).pipe(
@@ -40,6 +41,7 @@ export class TechnicalRecordService {
   }
 
   getTechnicalRecordsAllStatuses(searchIdentifier: string): Observable<any> {
+    // tslint:disable-next-line:max-line-length
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
 
     return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), { headers }).pipe(
