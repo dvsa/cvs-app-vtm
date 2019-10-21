@@ -2,8 +2,8 @@ import {initialVehicleTechRecordModelState, IVehicleTechRecordModelState} from '
 import {EVehicleTechRecordModelActions, VehicleTechRecordModelActions} from '@app/store/actions/VehicleTechRecordModel.actions';
 import {IAppState} from '@app/store/state/app.state';
 
-export const VehicleTechRecordModelReducers = (state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions):
-  IVehicleTechRecordModelState => {
+export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions):
+  IVehicleTechRecordModelState {
   switch (action.type) {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
       return {

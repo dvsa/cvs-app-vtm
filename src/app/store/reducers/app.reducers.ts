@@ -6,4 +6,4 @@ import {VehicleTechRecordModelReducers} from '@app/store/reducers/VehicleTechRec
 export const appReducers: ActionReducerMap<IAppState, any> = {
   router: routerReducer,
   vehicleTechRecordModel: VehicleTechRecordModelReducers
-}
+};
