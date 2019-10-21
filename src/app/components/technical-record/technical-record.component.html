@@ -345,6 +345,148 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
+  <div class="auto-pad">
+    <mat-accordion>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
+              Dimensions
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="expansion-icon">
+              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <dl class="technical-record-sub-details govuk-summary-list ">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Length (mm)
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].dimensions.length }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Width (mm)
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].dimensions.width }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+            <dt class="govuk-summary-list__key">
+              Front axle to rear axle
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].frontAxleToRearAxle==null ? "-" : techRecordsJson.techRecord[0].frontAxleToRearAxle }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+            <dt class="govuk-summary-list__key">
+              Rear axle to rear trailer
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].rearAxleToRearTrl==null ? "-" : techRecordsJson.techRecord[0].rearAxleToRearTrl }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            </dt>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Minimum (mm)
+            </dd>
+            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+              Maximum (mm)
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+            <dt class="govuk-summary-list__key">
+              Front of vehicle to 5th wheel coupling
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin==null ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax==null ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+            <dt class="govuk-summary-list__key">
+              Front axle to 5th wheel
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].frontAxleTo5thWheelMin==null ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMin }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].frontAxleTo5thWheelMax==null ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMax }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+            <dt class="govuk-summary-list__key">
+              Coupling center to rear axle
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].couplingCenterToRearAxleMin }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].couplingCenterToRearAxleMax }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+            <dt class="govuk-summary-list__key">
+              Coupling center to rear trailer
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].couplingCenterToRearTrlMin }}
+            </dd>
+            <dd class="govuk-summary-list__value">
+              {{ techRecordsJson.techRecord[0].couplingCenterToRearTrlMax }}
+            </dd>
+          </div>
+        </dl>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="auto-pad">
+    <mat-accordion>
+      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #example>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19 ">
+              Notes
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="expansion-icon">
+              <fa-icon *ngIf="!example.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+              <fa-icon *ngIf="example.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <dl class="technical-record-sub-details govuk-summary-list ">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              {{techRecordsJson.techRecord[0].notes}}
+            </dt>
+          </div>
+        </dl>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </div>
 <ng-template #loading>
   Loading stuff...
