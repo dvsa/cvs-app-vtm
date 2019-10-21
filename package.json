@@ -85,6 +85,9 @@
       "<rootDir>/dist/",
       "<rootDir>/src/test.ts"
     ],
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
     "globals": {
       "ts-jest": {
         "stringifyContentPathRegex": "\\.html$",
