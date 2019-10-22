@@ -6,6 +6,7 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppComponent} from './app.component';
+import { Store } from '@ngrx/store';
 
 const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
   let obj: any = {};
@@ -19,13 +20,14 @@ const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
 
 describe('AppComponent', () => {
 
-  let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy;
+  let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy, storeSpy;
 
   beforeEach(async(() => {
     statusBarSpy =  createSpyObj('StatusBar', ['styleDefault']);
     splashScreenSpy = createSpyObj('SplashScreen', ['hide']);
     platformReadySpy = Promise.resolve();
     platformSpy = createSpyObj('Platform', {ready: platformReadySpy});
+    storeSpy = createSpyObj('Store', ['dispatch']);
 
     TestBed.configureTestingModule({
       declarations: [AppComponent],
@@ -34,6 +36,7 @@ describe('AppComponent', () => {
         {provide: StatusBar, useValue: statusBarSpy},
         {provide: SplashScreen, useValue: splashScreenSpy},
         {provide: Platform, useValue: platformSpy},
+        {provide: Store, useValue: storeSpy}
       ],
     }).compileComponents();
   }));
