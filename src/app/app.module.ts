@@ -25,7 +25,6 @@ import { StoreModule } from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import { IsPrimaryVrmPipe } from './pipes/IsPrimaryVrmPipe';
 import { VehicleNotFoundDialogComponent } from './vehicle-not-found-dialog/vehicle-not-found-dialog.component';
 import { ComponentsModule } from './components/components.module';
 import { ShellPageModule } from './shell/shell.page.module';
@@ -53,7 +52,6 @@ import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResul
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    IsPrimaryVrmPipe,
     MatDialogModule,
     HttpClientModule,
     StoreModule.forRoot(appReducers),
