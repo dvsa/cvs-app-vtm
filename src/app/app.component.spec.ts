@@ -6,13 +6,13 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppComponent} from './app.component';
-import { Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 
 const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
-  let obj: any = {};
+  const obj: any = {};
 
   for (let i = 0; i < methodNames.length; i++) {
-      obj[methodNames[i]] = jest.fn();
+    obj[methodNames[i]] = jest.fn();
   }
 
   return obj;
@@ -20,13 +20,14 @@ const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
 
 describe('AppComponent', () => {
 
-  let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy, storeSpy;
+  let statusBarSpy, splashScreenSpy, platformReadySpy, platform, platformSpy, storeSpy;
 
   beforeEach(async(() => {
-    statusBarSpy =  createSpyObj('StatusBar', ['styleDefault']);
+    statusBarSpy = createSpyObj('StatusBar', ['styleDefault']);
     splashScreenSpy = createSpyObj('SplashScreen', ['hide']);
     platformReadySpy = Promise.resolve();
-    platformSpy = createSpyObj('Platform', {ready: platformReadySpy});
+    platform = {ready: () => platformReadySpy};
+    platformSpy = jest.spyOn(platform, 'ready');
     storeSpy = createSpyObj('Store', ['dispatch']);
 
     TestBed.configureTestingModule({
@@ -35,7 +36,7 @@ describe('AppComponent', () => {
       providers: [
         {provide: StatusBar, useValue: statusBarSpy},
         {provide: SplashScreen, useValue: splashScreenSpy},
-        {provide: Platform, useValue: platformSpy},
+        {provide: Platform, useValue: platform},
         {provide: Store, useValue: storeSpy}
       ],
     }).compileComponents();
@@ -49,7 +50,7 @@ describe('AppComponent', () => {
 
   it('should initialize the app', async () => {
     TestBed.createComponent(AppComponent);
-    expect(platformSpy.ready).toHaveBeenCalled();
+    expect(platform.ready).toHaveBeenCalled();
     await platformReadySpy;
     expect(statusBarSpy.styleDefault).toHaveBeenCalled();
     expect(splashScreenSpy.hide).toHaveBeenCalled();
