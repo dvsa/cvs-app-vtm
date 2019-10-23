@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {map, tap, catchError} from 'rxjs/operators'
 import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
-import {environment} from '@environment/environment';
+import { environment } from '../../../environments/environment';
 
 const routes = {
   techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`,

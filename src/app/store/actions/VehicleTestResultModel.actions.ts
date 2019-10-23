@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {TestResultModel} from '@app/models/test-result.model';
+import {TestResultModel} from '../../models/test-result.model';
 
 export enum EVehicleTestResultModelActions {
   GetVehicleTestResultModel = '[TestResultModel] Get TestResultModel',

@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {VEHICLE_TYPES} from "@app/app.enums";
 import {forkJoin, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CreateVehicleService} from '@app/create-vehicle/create-vehicle.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {VehicleExistsDialogComponent} from "@app/vehicle-exists-dialog/vehicle-exists-dialog.component";
-import {TechnicalRecordService} from "@app/components/technical-record/technical-record.service";
+import { VEHICLE_TYPES } from '../app.enums';
+import { TechnicalRecordService } from '../components/technical-record/technical-record.service';
+import { CreateVehicleService } from './create-vehicle.service';
+import { VehicleExistsDialogComponent } from '../vehicle-exists-dialog/vehicle-exists-dialog.component';
 
 
 @Component({

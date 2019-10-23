@@ -1,7 +1,7 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { TechnicalRecordComponent } from "@app/components/technical-record/technical-record.component";
+import { TechnicalRecordComponent } from "../components/technical-record/technical-record.component";
 
 const secondaryRoutes: Routes = [
   { path: 'technical-record', component: TechnicalRecordComponent }

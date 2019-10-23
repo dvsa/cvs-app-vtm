@@ -16,21 +16,21 @@ import {VehicleDetailsComponent} from './vehicle-details/vehicle-details.compone
 import {MatDialogModule} from '@angular/material/dialog';
 import {VehicleExistsDialogComponent} from './vehicle-exists-dialog/vehicle-exists-dialog.component';
 import {HttpClientModule} from '@angular/common/http';
-import {ComponentsModule} from '@app/components/components.module';
-import {ShellPageModule} from '@app/shell/shell.page.module';
-import {VehicleNotFoundDialogComponent} from '@app/vehicle-not-found-dialog/vehicle-not-found-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSquare, faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { faSquare as farSquare, faCheckSquare as farCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { faStackOverflow, faGithub, faMedium } from '@fortawesome/free-brands-svg-icons';
 import { StoreModule } from '@ngrx/store';
-import {appReducers} from '@app/store/reducers/app.reducers';
 import {EffectsModule} from '@ngrx/effects';
-import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecordModel.effects';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
-import {environment} from '@environment/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { VehicleNotFoundDialogComponent } from './vehicle-not-found-dialog/vehicle-not-found-dialog.component';
+import { ComponentsModule } from './components/components.module';
+import { ShellPageModule } from './shell/shell.page.module';
+import { appReducers } from './store/reducers/app.reducers';
+import { VehicleTechRecordModelEffects } from './store/effects/VehicleTechRecordModel.effects';
+import { environment } from '../environments/environment.prod';
 import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
 
 @NgModule({
@@ -60,8 +60,8 @@ import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResul
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
     MsAdalAngular6Module.forRoot({
-      tenant: '',
-      clientId: '',
+      tenant: '6c448d90-4ca1-4caf-ab59-0a2aa67d7801',
+      clientId: '54d151b6-2ca8-4018-8c70-f9ee600d91c7',
       redirectUri: window.location.origin,
       endpoints: {
         'https://localhost/Api/': 'xxx-bae6-4760-b434-xxx'

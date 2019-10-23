@@ -4,14 +4,14 @@ import {CreateVehicleComponent} from './create-vehicle.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MsAdalAngular6Module} from "microsoft-adal-angular6";
-import {AppRoutingModule} from "@app/app-routing.module";
-import {VehicleDetailsComponent} from "@app/vehicle-details/vehicle-details.component";
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {TechnicalRecordService} from "@app/components/technical-record/technical-record.service";
 import {TechnicalRecordServiceMock} from "../../../test-config/services-mocks/technical-record-service.mock";
-import {LandingPageComponent} from "@app/landing-page/landing-page.component";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import { AppRoutingModule } from '../app-routing.module';
+import { VehicleDetailsComponent } from '../vehicle-details/vehicle-details.component';
+import { TechnicalRecordService } from '../components/technical-record/technical-record.service';
+import { LandingPageComponent } from '../landing-page/landing-page.component';
 
 
 describe('CreateVehicleComponent', () => {
