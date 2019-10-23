@@ -19,7 +19,7 @@ dd {
   padding: 0;
 }
 
-.custom-header {
+.custom-header, .open-close-all {
   border-bottom-color: darkgray;
   border-bottom-style: solid;
   border-bottom-width: thin;
@@ -66,13 +66,13 @@ dd {
 
 .item-technical-record {
   color: #1D70B8;
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.11px;
   line-height: 43px;
   width: 284.96px;
   text-align: left;
-  margin-top: 5%;
+  margin-top: 2%;
 }
 
 .accordion {
@@ -221,3 +221,40 @@ dd {
     }
   }
 }
+
+.mat-expanded {
+  border: none !important;
+}
+
+.open-close-all {
+
+  display: flex;
+
+  ::ng-deep a {
+    color: 	#1d70b8;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.09px;
+    line-height: 45px;
+    width: 73px;
+    text-align: right;
+    flex: 1;
+    text-align: right;
+    text-decoration: underline;
+  }
+
+}
+
+::ng-deep .item-technical-record:hover, .mat-expansion-panel-header:hover {
+  background: none !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.notes-section {
+  font-weight: 100 !important;
+}
+
+
+
+
