@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
-import { IAppState } from '@app/store/state/app.state';
-import {IVehicleTestResultModelState} from '@app/store/state/VehicleTestResultModel.state';
+import { IAppState } from '../../store/state/app.state';
+import {IVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
 
 const selectTestResults = (state: IAppState) =>  state.vehicleTestResultModel;
 

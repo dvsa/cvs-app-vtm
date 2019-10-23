@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {map, tap, catchError} from 'rxjs/operators'
+import {map, tap, catchError} from 'rxjs/operators';
 import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
-import {environment} from '@environment/environment';
+import {environment} from '../../../environments/environment';
 
 const routes = {
   testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
@@ -11,7 +11,7 @@ const routes = {
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
-}
+};
 
 @Injectable({
   providedIn: 'root'
