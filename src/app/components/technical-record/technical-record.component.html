@@ -65,8 +65,8 @@
 
   <div class="auto-pad">
     <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #example>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #summary>
+        <mat-expansion-panel-header class="disable_ripple">
           <mat-panel-title>
             <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19 ">
               Vehicle summary
@@ -74,8 +74,8 @@
           </mat-panel-title>
           <mat-panel-description>
             <div class="expansion-icon">
-              <fa-icon *ngIf="!example.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-              <fa-icon *ngIf="example.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+              <fa-icon *ngIf="!summary.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+              <fa-icon *ngIf="summary.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -135,8 +135,8 @@
   </div>
   <div class="auto-pad">
     <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #body>
+        <mat-expansion-panel-header class="disable_ripple">
           <mat-panel-title>
             <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
               Body
@@ -144,8 +144,8 @@
           </mat-panel-title>
           <mat-panel-description>
             <div class="expansion-icon">
-              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="!body.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="body.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -196,8 +196,8 @@
   </div>
   <div class="auto-pad">
     <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #weights>
+        <mat-expansion-panel-header class="disable_ripple">
           <mat-panel-title>
             <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
               Weights
@@ -205,8 +205,8 @@
           </mat-panel-title>
           <mat-panel-description>
             <div class="expansion-icon">
-              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="!weights.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="weights.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -271,8 +271,8 @@
   </div>
   <div class="auto-pad">
     <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #tyres>
+        <mat-expansion-panel-header class="disable_ripple">
           <mat-panel-title>
             <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
               Tyres
@@ -280,8 +280,8 @@
           </mat-panel-title>
           <mat-panel-description>
             <div class="expansion-icon">
-              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="!tyres.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="tyres.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -347,8 +347,8 @@
   </div>
   <div class="auto-pad">
     <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #example2>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #dimensions>
+        <mat-expansion-panel-header class="disable_ripple">
           <mat-panel-title>
             <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19">
               Dimensions
@@ -356,8 +356,8 @@
           </mat-panel-title>
           <mat-panel-description>
             <div class="expansion-icon">
-              <fa-icon *ngIf="!example2.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="example2.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="!dimensions.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+              <fa-icon *ngIf="dimensions.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -462,8 +462,8 @@
   </div>
   <div class="auto-pad">
     <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #example>
-        <mat-expansion-panel-header>
+      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes>
+        <mat-expansion-panel-header class="disable_ripple">
           <mat-panel-title>
             <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19 ">
               Notes
@@ -471,8 +471,8 @@
           </mat-panel-title>
           <mat-panel-description>
             <div class="expansion-icon">
-              <fa-icon *ngIf="!example.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-              <fa-icon *ngIf="example.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+              <fa-icon *ngIf="!notes.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+              <fa-icon *ngIf="notes.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
             </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -492,4 +492,26 @@
   Loading stuff...
 </ng-template>
 <br>
-<pre>{{techRecordsJson$ | async | json }}</pre>
+<br>
+<div class="auto-pad">
+  <mat-accordion>
+    <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes>
+      <mat-expansion-panel-header class="disable_ripple">
+        <mat-panel-title>
+          <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19 ">
+            Sam's Testing Utility
+          </div>
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="expansion-icon">
+            <fa-icon *ngIf="!notes.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+            <fa-icon *ngIf="notes.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <pre>{{techRecordsJson$ | async | json }}</pre>
+      <pre>{{testResultJson$ | async | json }}</pre>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+

@@ -32,6 +32,13 @@ dd {
   margin-right: 0%;
 }
 
+.disable_ripple:hover{
+  background: #fff !important;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: blue;
+}
+
 .rotate_90 {
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
@@ -85,7 +92,8 @@ dd {
 }
 
 .active, .accordion:hover {
-  background-color: #fafafa;
+  //background-color: #fafafa;
+  background-color: #54fa50;
 }
 
 .accordion:after {

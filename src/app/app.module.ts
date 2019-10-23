@@ -31,6 +31,7 @@ import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecor
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {environment} from '@environment/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     MatDialogModule,
     HttpClientModule,
     StoreModule.forRoot(appReducers),
-    EffectsModule.forRoot([VehicleTechRecordModelEffects]),
+    EffectsModule.forRoot([VehicleTechRecordModelEffects, VehicleTestResultModelEffects]),
     StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,

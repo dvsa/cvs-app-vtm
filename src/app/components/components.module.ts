@@ -18,6 +18,7 @@ import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {IsPrimaryVrmPipe} from '@app/pipes/IsPrimaryVrmPipe';
+import {TestResultService} from '@app/components/technical-record/test-result.service';
 
 @NgModule({
   imports: [
@@ -38,7 +39,7 @@ import {IsPrimaryVrmPipe} from '@app/pipes/IsPrimaryVrmPipe';
   exports: [
     TechnicalRecordComponent, LandingPageComponent, IsPrimaryVrmPipe
   ],
-  providers: [TechnicalRecordService],
+  providers: [TechnicalRecordService, TestResultService],
   entryComponents: [],
 })
 export class ComponentsModule {

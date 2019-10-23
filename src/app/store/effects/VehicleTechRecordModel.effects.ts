@@ -2,16 +2,14 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
   EVehicleTechRecordModelActions,
-  GetVehicleTechRecordModel,
-  GetVehicleTechRecordModelHavingStatusAll, GetVehicleTechRecordModelHavingStatusAllSuccess
+  GetVehicleTechRecordModelHavingStatusAll,
+  GetVehicleTechRecordModelHavingStatusAllSuccess,
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {IAppState} from '@app/store/state/app.state';
 import {TechnicalRecordService} from '@app/components/technical-record/technical-record.service';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
-import { of } from 'rxjs';
-import {selectVehicleTechRecordModelHavingStatusAll} from '@app/store/selectors/VehicleTechRecordModel.selectors';
-import {Axle, TechnicalRecordModel} from '@app/components/technical-record/technical-record.model';
+import {of} from 'rxjs';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -27,5 +25,6 @@ export class VehicleTechRecordModelEffects {
     private _technicalRecordService: TechnicalRecordService,
     private _actions$: Actions,
     private _store: Store<IAppState>
-  ) {}
+  ) {
+  }
 }
