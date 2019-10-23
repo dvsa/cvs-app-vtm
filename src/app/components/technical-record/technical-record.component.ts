@@ -18,6 +18,7 @@ export class TechnicalRecordComponent implements OnInit {
   searchIdentifier = '{none searched}';
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
+  xpandStatus : boolean = false;
 
   constructor(private _store: Store<IAppState>) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);

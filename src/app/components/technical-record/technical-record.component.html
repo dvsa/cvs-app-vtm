@@ -11,532 +11,672 @@
 </div>
 
 <div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
-  <div class="govuk-width-container left-pad">
-    <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-thirds float-left">
-          <h1 class="govuk-heading-xl title">Technical record</h1>
-          <div class="grid-container-technical-record-status">
-            <div class="grid-item-technical-record-status rectangle"></div>
-            <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status</div>
-            <div
-              class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
-              {{techRecordsJson.techRecord[0].statusCode | titlecase}}
+  <div *ngIf="(testResultJson$ | async) as testResultJson; else loading">
+
+    <div class="govuk-width-container left-pad">
+      <main class="govuk-main-wrapper">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-thirds float-left">
+            <h1 class="govuk-heading-xl title">Technical record</h1>
+            <div class="grid-container-technical-record-status">
+              <div class="grid-item-technical-record-status rectangle"></div>
+              <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status</div>
+              <div
+                class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
+                {{techRecordsJson.techRecord[0].statusCode | titlecase}}
+              </div>
+              <div class="grid-item-technical-record-status"></div>
             </div>
-            <div class="grid-item-technical-record-status"></div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-
-  <div class="auto-pad">
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Vehicle identification number (VIN)
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{techRecordsJson.vin}}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Vehicle registration mark (VRM)
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
-            {{vrmItem.vrm}}
-          </ul>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Previous VRM
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false  ">
-            {{vrmItem.vrm}}
-          </ul>
-        </dd>
-      </div>
-    </dl>
-  </div>
-
-  <div class="auto-pad">
-    <div class="open-close-all">
-      <a class="govuk-link" (click)='example.expanded = example.expanded?false:true'>{{example.expanded?'Close':'Open'}} all</a>
+      </main>
     </div>
-  </div>
 
-  <div class="auto-pad">
-    <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #summary>
-        <mat-expansion-panel-header class="disable_ripple">
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Vehicle summary
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!summary.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-              <fa-icon *ngIf="summary.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <div class="auto-pad">
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key main-details">
+            Vehicle identification number (VIN)
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{techRecordsJson.vin}}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key main-details">
+           Vehicle registration mark (VRM)
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
+              {{vrmItem.vrm}}
+            </ul>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key main-details">
+            Previous VRM
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false  ">
+              {{vrmItem.vrm}}
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </div>
 
-        <dl class="technical-record-sub-details govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Vehicle type
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].vehicleType==null ? "-" : techRecordsJson.techRecord[0].vehicleType}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              National type approval number
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].ntaNumber==null ? "-" : techRecordsJson.techRecord[0].ntaNumber}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Date of first registration
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].regnDate==null ? "-" : techRecordsJson.techRecord[0].regnDate | date:'shortDate'}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Year of manufacture
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].manufactureYear==null ? "-" : techRecordsJson.techRecord[0].manufactureYear }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Number of axles
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].noOfAxles==null ? "-" : techRecordsJson.techRecord[0].noOfAxles }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              DTp number
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].manufactureYear==null ? "-" : techRecordsJson.techRecord[0].manufactureYear}}
-            </dd>
-          </div>
-        </dl>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-  <div class="auto-pad">
-    <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #body>
-        <mat-expansion-panel-header class="disable_ripple">
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Body
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!body.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="body.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <dl class="technical-record-sub-details govuk-summary-list ">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Make
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].bodyMake==null ? "-" : techRecordsJson.techRecord[0].bodyMake}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Model
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].bodyModel==null ? "-" : techRecordsJson.techRecord[0].bodyModel}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Body type
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].bodyType.description==null ? "-" : techRecordsJson.techRecord[0].bodyType.description | titlecase}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
-            <dt class="govuk-summary-list__key">
-              Function
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].functionCode==null ? "-" : techRecordsJson.techRecord[0].functionCode}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Conversion reference number
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].conversionRefNo==null ? "-" : techRecordsJson.techRecord[0].conversionRefNo}}
-            </dd>
-          </div>
-        </dl>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-  <div class="auto-pad">
-    <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #weights>
-        <mat-expansion-panel-header class="disable_ripple">
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Weights
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!weights.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="weights.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <dl class="technical-record-sub-details govuk-summary-list ">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            </dt>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              GB weight (kg)
-            </dd>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Design weight (kg)
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Gross
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].grossGbWeight==null ? "-" : techRecordsJson.techRecord[0].grossGbWeight }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].grossDesignWeight==null ? "-" : techRecordsJson.techRecord[0].grossDesignWeight }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
-            <dt class="govuk-summary-list__key">
-              Train
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].trainGbWeight==null ? "-" : techRecordsJson.techRecord[0].trainGbWeight}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].trainDesignWeight==null ? "-" : techRecordsJson.techRecord[0].trainDesignWeight}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
-            <dt class="govuk-summary-list__key">
-              Max train
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].maxTrainGbWeight==null ? "-" : techRecordsJson.techRecord[0].maxTrainGbWeight}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{techRecordsJson.techRecord[0].maxTrainDesignWeight==null ? "-" : techRecordsJson.techRecord[0].maxTrainDesignWeight}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngFor="let axelNo of techRecordsJson.techRecord[0].axles">
-            <dt class="govuk-summary-list__key">
-              Axle {{axelNo.axleNumber==null ? "-" : axelNo.axleNumber}}
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.weights.gbWeight==null ? "-" : axelNo.weights.gbWeight}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.weights.designWeight==null ? "-" : axelNo.weights.designWeight}}
-            </dd>
-          </div>
-        </dl>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-  <div class="auto-pad">
-    <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #tyres>
-        <mat-expansion-panel-header class="disable_ripple">
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Tyres
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!tyres.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="tyres.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <dl class="technical-record-sub-details govuk-summary-list ">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Tyre use code
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].tyreUseCode==null ? "-" : techRecordsJson.techRecord[0].tyreUseCode }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-            </dd>
-            <dt class="govuk-summary-list__key">
-            </dt>
-            <dt class="govuk-summary-list__key">
-            </dt>
-            <dt class="govuk-summary-list__key">
-            </dt>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            </dt>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Tyre code
-            </dd>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Tyre size
-            </dd>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Ply rating
-            </dd>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Fitment code
-            </dd>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Load index
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngFor="let axelNo of techRecordsJson.techRecord[0].axles">
-            <dt class="govuk-summary-list__key">
-              Axle {{axelNo.axleNumber==null ? "-" : axelNo.axleNumber}}
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.tyres.tyreCode==null ? "-" : axelNo.tyres.tyreCode}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.tyres.tyreSize==null ? "-" : axelNo.tyres.tyreSize}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.tyres.plyRating==null ? "-" : axelNo.tyres.plyRating}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.tyres.fitmentCode==null ? "-" : axelNo.tyres.fitmentCode}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{axelNo.tyres.dataTrAxles==null ? "-" : axelNo.tyres.dataTrAxles}}
-            </dd>
-          </div>
-        </dl>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-  <div class="auto-pad">
-    <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #dimensions>
-        <mat-expansion-panel-header class="disable_ripple">
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Dimensions
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!dimensions.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
-              <fa-icon *ngIf="dimensions.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <dl class="technical-record-sub-details govuk-summary-list ">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Length (mm)
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].dimensions.length==null ? "-" : techRecordsJson.techRecord[0].dimensions.length}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              Width (mm)
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].dimensions.width==null ? "-" : techRecordsJson.techRecord[0].dimensions.width}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-            <dt class="govuk-summary-list__key">
-              Front axle to rear axle
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].frontAxleToRearAxle==null ? "-" : techRecordsJson.techRecord[0].frontAxleToRearAxle }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-            <dt class="govuk-summary-list__key">
-              Rear axle to rear trailer
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].rearAxleToRearTrl==null ? "-" : techRecordsJson.techRecord[0].rearAxleToRearTrl }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            </dt>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Minimum (mm)
-            </dd>
-            <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
-              Maximum (mm)
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
-            <dt class="govuk-summary-list__key">
-              Front of vehicle to 5th wheel coupling
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin==null ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax==null ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
-            <dt class="govuk-summary-list__key">
-              Front axle to 5th wheel
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].frontAxleTo5thWheelMin==null ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMin }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].frontAxleTo5thWheelMax==null ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMax }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-            <dt class="govuk-summary-list__key">
-              Coupling center to rear axle
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].couplingCenterToRearAxleMin==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearAxleMin}}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].couplingCenterToRearAxleMax==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearAxleMax}}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-            <dt class="govuk-summary-list__key">
-              Coupling center to rear trailer
-            </dt>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].couplingCenterToRearTrlMin==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearTrlMin }}
-            </dd>
-            <dd class="govuk-summary-list__value">
-              {{ techRecordsJson.techRecord[0].couplingCenterToRearTrlMax==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearTrlMax }}
-            </dd>
-          </div>
-        </dl>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-  <div class="auto-pad">
-    <mat-accordion>
-      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes>
-        <mat-expansion-panel-header class="disable_ripple">
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Notes
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!notes.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-              <fa-icon *ngIf="notes.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <div class="auto-pad">
+      <div class="open-close-all">
+        <a class="govuk-link" (click)='xpandStatus?false:true'>{{xpandStatus?'Close':'Open'}} all</a>
+      </div>
+    </div>
 
-        <dl class="technical-record-sub-details govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-              <span class="notes-section">{{techRecordsJson.techRecord[0].notes==null ? "-" : techRecordsJson.techRecord[0].notes}}</span>
-            </dt>
-          </div>
-        </dl>
-      </mat-expansion-panel>
-      <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #example>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <div class="item-technical-record govuk-!-font-weight-bold">
-              Technical record history
-            </div>
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="expansion-icon">
-              <fa-icon *ngIf="!example.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-              <fa-icon *ngIf="example.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <mat-accordion>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #summary>
+          <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Vehicle summary
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!summary.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+                <fa-icon *ngIf="summary.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-        <table class="govuk-table">
-          <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Status</th>
-            <th scope="col" class="govuk-table__header">Reason for creation</th>
-            <th scope="col" class="govuk-table__header">Created by</th>
-            <th scope="col" class="govuk-table__header">Created at</th>
-          </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            <tr class="govuk-table__row" *ngFor="let techRec of techRecordsJson.techRecord">
-              <td class="govuk-table__cell">{{techRec.statusCode==null ? "-" : techRec.statusCode | titlecase}}</td>
-              <td class="govuk-table__cell">{{techRec.reasonForCreation==null ? "-" : techRec.reasonForCreation | titlecase}}</td>
-              <td class="govuk-table__cell">{{techRec.createdBy==null ? "-" : techRec.createdBy | titlecase}}</td>
-              <td class="govuk-table__cell">{{techRec.createdAt==null ? "-" : techRec.createdAt | date :'dd/mm/yyyy' }}</td>
+          <dl class="technical-record-sub-details govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Vehicle type
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].vehicleType==null ? "-" : techRecordsJson.techRecord[0].vehicleType}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                National type approval number
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].ntaNumber==null ? "-" : techRecordsJson.techRecord[0].ntaNumber}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Date of first registration
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].regnDate==null ? "-" : techRecordsJson.techRecord[0].regnDate | date:'shortDate'}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Year of manufacture
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].manufactureYear==null ? "-" : techRecordsJson.techRecord[0].manufactureYear }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Number of axles
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].noOfAxles==null ? "-" : techRecordsJson.techRecord[0].noOfAxles }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                DTp number
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].dtpNumber==null ? "-" : techRecordsJson.techRecord[0].dtpNumber}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Parking brake fitted
+              </dt>
+              <dd class="govuk-summary-list__value">
+                <div *ngIf="techRecordsJson.techRecord[0].parkingBrakeMrk; then thenTemplateName else elseTemplateName">
+                </div>
+                <ng-template #thenTemplateName>
+                  <p *ngFor="let axelNo of techRecordsJson.techRecord[0].axles"> Axle {{axelNo.axleNumber}}</p>
+                </ng-template>
+                <ng-template #elseTemplateName>
+                  <p> - </p>
+                </ng-template>
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Speed limiter exempt
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].speedLimiterMrk==null ? "-" : techRecordsJson.techRecord[0].speedLimiterMrk}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Tacho exempt
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].tachoExemptMrk==null ? "-" : techRecordsJson.techRecord[0].tachoExemptMrk}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Euro standard
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].euroStandard==null ? "-" : techRecordsJson.techRecord[0].euroStandard}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Road friendly suspension
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].roadFriendly==null ? "-" : techRecordsJson.techRecord[0].roadFriendly}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Drawbar coupling fitted
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].drawbarCouplingFitted==null ? "-" : techRecordsJson.techRecord[0].drawbarCouplingFitted}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Vehicle class
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].vehicleClass.description==null ? "-" : techRecordsJson.techRecord[0].vehicleClass.description}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Vehicle configuration
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].vehicleConfiguration==null ? "-" : techRecordsJson.techRecord[0].vehicleConfiguration}}
+              </dd>
+            </div>
+          </dl>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #body >
+          <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Body
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!body.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+                <fa-icon *ngIf="body.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <dl class="technical-record-sub-details govuk-summary-list ">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Make
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].bodyMake==null ? "-" : techRecordsJson.techRecord[0].bodyMake}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Model
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].bodyModel==null ? "-" : techRecordsJson.techRecord[0].bodyModel}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Body type
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].bodyType.description==null ? "-" : techRecordsJson.techRecord[0].bodyType.description | titlecase}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+              <dt class="govuk-summary-list__key">
+                Function
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].functionCode==null ? "-" : techRecordsJson.techRecord[0].functionCode}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Conversion reference number
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].conversionRefNo==null ? "-" : techRecordsJson.techRecord[0].conversionRefNo}}
+              </dd>
+            </div>
+          </dl>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #weights>
+          <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Weights
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!weights.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+                <fa-icon *ngIf="weights.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <dl class="technical-record-sub-details govuk-summary-list ">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                GB weight (kg)
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Design weight (kg)
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Gross
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].grossGbWeight==null ? "-" : techRecordsJson.techRecord[0].grossGbWeight }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].grossDesignWeight==null ? "-" : techRecordsJson.techRecord[0].grossDesignWeight }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+              <dt class="govuk-summary-list__key">
+                Train
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].trainGbWeight==null ? "-" : techRecordsJson.techRecord[0].trainGbWeight}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].trainDesignWeight==null ? "-" : techRecordsJson.techRecord[0].trainDesignWeight}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+              <dt class="govuk-summary-list__key">
+                Max train
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].maxTrainGbWeight==null ? "-" : techRecordsJson.techRecord[0].maxTrainGbWeight}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{techRecordsJson.techRecord[0].maxTrainDesignWeight==null ? "-" : techRecordsJson.techRecord[0].maxTrainDesignWeight}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngFor="let axelNo of techRecordsJson.techRecord[0].axles">
+              <dt class="govuk-summary-list__key">
+                Axle {{axelNo.axleNumber==null ? "-" : axelNo.axleNumber}}
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.weights.gbWeight==null ? "-" : axelNo.weights.gbWeight}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.weights.designWeight==null ? "-" : axelNo.weights.designWeight}}
+              </dd>
+            </div>
+          </dl>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #tyres>
+          <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Tyres
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!tyres.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+                <fa-icon *ngIf="tyres.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <dl class="technical-record-sub-details govuk-summary-list ">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Tyre use code
+              </dt>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].tyreUseCode==null ? "-" : techRecordsJson.techRecord[0].tyreUseCode }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dt class="govuk-summary-list__key">
+              </dt>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__key">
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Tyre code
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Tyre size
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Ply rating
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Fitment code
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Load index
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngFor="let axelNo of techRecordsJson.techRecord[0].axles">
+              <dt class="govuk-summary-list__key">
+                Axle {{axelNo.axleNumber==null ? "-" : axelNo.axleNumber}}
+              </dt>
+              <dd class="govuk-summary-list__key">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.tyres.tyreCode==null ? "-" : axelNo.tyres.tyreCode}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.tyres.tyreSize==null ? "-" : axelNo.tyres.tyreSize}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.tyres.plyRating==null ? "-" : axelNo.tyres.plyRating}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.tyres.fitmentCode==null ? "-" : axelNo.tyres.fitmentCode}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{axelNo.tyres.dataTrAxles==null ? "-" : axelNo.tyres.dataTrAxles}}
+              </dd>
+            </div>
+          </dl>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #dimensions>
+          <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Dimensions
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!dimensions.expanded" [icon]="['fa', 'plus']" size="lg"></fa-icon>
+                <fa-icon *ngIf="dimensions.expanded" [icon]="['fa', 'minus']" size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <dl class="technical-record-sub-details govuk-summary-list ">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Length (mm)
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].dimensions.length==null ? "-" : techRecordsJson.techRecord[0].dimensions.length}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                Width (mm)
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].dimensions.width==null ? "-" : techRecordsJson.techRecord[0].dimensions.width}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+              <dt class="govuk-summary-list__key">
+                Front axle to rear axle
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].frontAxleToRearAxle==null ? "-" : techRecordsJson.techRecord[0].frontAxleToRearAxle }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+              <dt class="govuk-summary-list__key">
+                Rear axle to rear trailer
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].rearAxleToRearTrl==null ? "-" : techRecordsJson.techRecord[0].rearAxleToRearTrl }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Minimum (mm)
+              </dd>
+              <dd class="govuk-summary-list__value govuk-!-font-weight-bold">
+                Maximum (mm)
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+              <dt class="govuk-summary-list__key">
+                Front of vehicle to 5th wheel coupling
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin==null ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax==null ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
+              <dt class="govuk-summary-list__key">
+                Front axle to 5th wheel
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].frontAxleTo5thWheelMin==null ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMin }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].frontAxleTo5thWheelMax==null ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMax }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+              <dt class="govuk-summary-list__key">
+                Coupling center to rear axle
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].couplingCenterToRearAxleMin==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearAxleMin}}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].couplingCenterToRearAxleMax==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearAxleMax}}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+              <dt class="govuk-summary-list__key">
+                Coupling center to rear trailer
+              </dt>
+              <dd class="govuk-summary-list__value">
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].couplingCenterToRearTrlMin==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearTrlMin }}
+              </dd>
+              <dd class="govuk-summary-list__value">
+                {{ techRecordsJson.techRecord[0].couplingCenterToRearTrlMax==null ? "-" : techRecordsJson.techRecord[0].couplingCenterToRearTrlMax }}
+              </dd>
+            </div>
+          </dl>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes >
+          <mat-expansion-panel-header class="disable_ripple">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Notes
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!notes.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+                <fa-icon *ngIf="notes.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <dl class="technical-record-sub-details govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">
+                <span class="notes-section">{{techRecordsJson.techRecord[0].notes==null ? "-" : techRecordsJson.techRecord[0].notes}}</span>
+              </dt>
+            </div>
+          </dl>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #testHistory >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Test history
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!testHistory.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+                <fa-icon *ngIf="testHistory.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <table class="govuk-table">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Test type</th>
+              <th scope="col" class="govuk-table__header">Test date</th>
+              <th scope="col" class="govuk-table__header">Expiry date</th>
+              <th scope="col" class="govuk-table__header">Certificate number</th>
+              <th scope="col" class="govuk-table__header">Result</th>
             </tr>
-          </tbody>
-        </table>
-
-      </mat-expansion-panel>
+            </thead>
+            <tbody class="govuk-table__body">
+            <tr class="govuk-table__row" *ngFor="let testRes of testResultJson">
+              <td class="govuk-table__cell">{{ testRes.testTypes[0].testCode==null ? "-" : testRes.testTypes[0].testCode }}</td>
+              <td class="govuk-table__cell">{{ testRes.testTypes[0].testTypeEndTimestamp==null ? "-" : testRes.testTypes[0].testTypeEndTimestamp }}</td>
+              <td class="govuk-table__cell">{{ testRes.testTypes[0].testExpiryDate==null ? "-" : testRes.testTypes[0].testExpiryDate | date :'dd/mm/yyyy'}}</td>
+              <td class="govuk-table__cell">{{ testRes.testTypes[0].certificateNumber==null ? "-" : testRes.testTypes[0].certificateNumber }}</td>
+              <td class="govuk-table__cell">{{ testRes.testTypes[0].testResult==null ? "-" : testRes.testTypes[0].testResult }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </mat-expansion-panel>
+      </div>
+      <div class="auto-pad">
+        <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #techRecHistory >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Technical record history
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!techRecHistory.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+                <fa-icon *ngIf="techRecHistory.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <table class="govuk-table">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Status</th>
+              <th scope="col" class="govuk-table__header">Reason for creation</th>
+              <th scope="col" class="govuk-table__header">Created by</th>
+              <th scope="col" class="govuk-table__header">Created at</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+              <tr class="govuk-table__row" *ngFor="let techRec of techRecordsJson.techRecord">
+                <td class="govuk-table__cell">{{techRec.statusCode==null ? "-" : techRec.statusCode | titlecase}}</td>
+                <td class="govuk-table__cell">{{techRec.reasonForCreation==null ? "-" : techRec.reasonForCreation | titlecase}}</td>
+                <td class="govuk-table__cell">{{techRec.createdBy==null ? "-" : techRec.createdBy | titlecase}}</td>
+                <td class="govuk-table__cell">{{techRec.createdAt==null ? "-" : techRec.createdAt | date :'dd/mm/yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-expansion-panel>
+      </div>
     </mat-accordion>
+
   </div>
 </div>
+
 <ng-template #loading>
   Loading stuff...
 </ng-template>
+
 <br>
 <br>
+
 <div class="auto-pad">
   <mat-accordion>
-    <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes>
+    <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #sam>
       <mat-expansion-panel-header class="disable_ripple">
         <mat-panel-title>
           <div class="item-technical-record govuk-!-font-weight-bold govuk-!-font-size-19 ">
@@ -545,8 +685,8 @@
         </mat-panel-title>
         <mat-panel-description>
           <div class="expansion-icon">
-            <fa-icon *ngIf="!notes.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-            <fa-icon *ngIf="notes.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
+            <fa-icon *ngIf="!sam.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
+            <fa-icon *ngIf="sam.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
           </div>
         </mat-panel-description>
       </mat-expansion-panel-header>
