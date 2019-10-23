@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TechnicalRecordService } from './technical-record.service';
-import {MatDialog} from '@angular/material/dialog';
 import { initAll } from 'govuk-frontend';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -21,7 +19,7 @@ export class TechnicalRecordComponent implements OnInit {
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
 
-  constructor(private _store: Store<IAppState>, private techRecordService: TechnicalRecordService, public matDialog: MatDialog) {
+  constructor(private _store: Store<IAppState>) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
   }
