@@ -1,4 +1,4 @@
-import {TestResultModel} from '@app/models/test-result.model';
+import {TestResultModel} from '../../models/test-result.model';
 
 export interface IVehicleTestResultModelState {
   testResultModel: TestResultModel;

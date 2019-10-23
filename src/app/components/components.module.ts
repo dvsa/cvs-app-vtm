@@ -14,7 +14,7 @@ import {faCheckSquare as farCheckSquare, faSquare as farSquare} from '@fortaweso
 import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-icons';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {TestResultService} from '@app/components/technical-record/test-result.service';
+import {TestResultService} from '../components/technical-record/test-result.service';
 import { NgxDataTableModule } from '../shared/ngx-data-table/ngx-data-table.module';
 import { ComponentsRoutingModule } from './components-routing.module';
 import { LandingPageComponent } from '../landing-page/landing-page.component';

@@ -4,7 +4,7 @@ import {select, Store} from '@ngrx/store';
 import {IAppState} from '@app/store/state/app.state';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {TestResultService} from '@app/components/technical-record/test-result.service';
+import {TestResultService} from '../../components/technical-record/test-result.service';
 import {
   EVehicleTestResultModelActions,
   GetVehicleTestResultModel,
