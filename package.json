@@ -68,7 +68,7 @@
     "@cypress/webpack-preprocessor": "^4.1.0",
     "@ionic/ng-toolkit": "^1.0.0",
     "@ionic/schematics-angular": "^1.0.0",
-    "@ngrx/store": "^7.4.0",
+    "@ngrx/store": "^6.1.0",
     "@types/jest": "^24.0.19",
     "@types/node": "~10.9.2",
     "codelyzer": "~4.4.2",
