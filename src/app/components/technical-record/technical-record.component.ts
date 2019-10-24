@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -18,7 +18,17 @@ export class TechnicalRecordComponent implements OnInit {
   searchIdentifier = '{none searched}';
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
-  xpandStatus : boolean = false;
+  panelOpenState : boolean = false;
+  panelOpenState2: boolean = false;
+  panelOpenState3: boolean = false;
+  panelOpenState4: boolean = false;
+  panelOpenState5: boolean = false;
+  panelOpenState6: boolean = false;
+  panelOpenState7: boolean = false;
+  panelOpenState8: boolean = false;
+  color:string = 'red';
+
+
 
   constructor(private _store: Store<IAppState>) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -35,4 +45,16 @@ export class TechnicalRecordComponent implements OnInit {
     this._store.dispatch( new GetVehicleTechRecordModelHavingStatusAll(q));
     this._store.dispatch(new GetVehicleTestResultModel(q));
   }
+
+  togglePanel() {
+    this.panelOpenState  = !this.panelOpenState;
+    this.panelOpenState2 = this.panelOpenState;
+    this.panelOpenState3 = this.panelOpenState;
+    this.panelOpenState4 = this.panelOpenState;
+    this.panelOpenState5 = this.panelOpenState;
+    this.panelOpenState6 = this.panelOpenState;
+    this.panelOpenState7 = this.panelOpenState;
+    this.panelOpenState8 = this.panelOpenState;
+  }
+
 }

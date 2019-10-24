@@ -19,7 +19,7 @@ dd {
 
 .custom-header .mat-expansion-panel-header {
   padding: 0;
-  height: 80px !important;
+  height: 80px !important; //ripple
 }
 
 .custom-header, .open-close-all {
@@ -243,6 +243,7 @@ dd {
     flex: 1;
     text-align: right;
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 
@@ -257,8 +258,8 @@ dd {
   font-weight: 100 !important;
 }
 
-::ng-deep .govuk-summary-list__key__double {
-  width: 60% !important;
+::ng-deep .govuk-summary-list__key {
+  width: 355px !important;
 }
 ::ng-deep .main-details {
   padding: 1.5% 0 1.5% 0 !important;
@@ -267,6 +268,18 @@ dd {
   white-space: nowrap;
 }
 
+.govuk-table {
+  th:nth-last-child(1), td:nth-last-child(1){
+    width: 50% !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .item-technical-record {
+    white-space: normal !important;
+    font-size: 24px !important;
+  }
+}
 
 
 
