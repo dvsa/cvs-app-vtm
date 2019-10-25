@@ -87,3 +87,4 @@ export class AppModule {
     library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium);
   }
 }
+

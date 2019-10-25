@@ -631,7 +631,7 @@
               <td class="govuk-table__cell">{{ testRes.testTypes[0].testTypeEndTimestamp==null ? "-" : testRes.testTypes[0].testTypeEndTimestamp | date :'dd/MM/y'}}</td>
               <td class="govuk-table__cell">{{ testRes.testTypes[0].testExpiryDate==null ? "-" : testRes.testTypes[0].testExpiryDate | date :'dd/MM/y'}}</td>
               <td class="govuk-table__cell">{{ testRes.testTypes[0].certificateNumber==null ? "-" : testRes.testTypes[0].certificateNumber }}</td>
-              <td class="govuk-table__cell">
+              <td class="govuk-table__cell govuk-!-font-weight-bold" [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'green' } : testRes.testTypes[0].testResult=='prs' ? {color: 'blue'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: 'red'} : {color: ''}">
                 {{ testRes.testTypes[0].testResult==null ? "-" : testRes.testTypes[0].testResult | uppercase }}
               </td>
             </tr>
