@@ -1,0 +1,78 @@
+"use strict";
+/*
+ * SonarTS
+ * Copyright (C) 2017-2019 SonarSource SA
+ * mailto:info AT sonarsource DOT com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+const rules = require("./rules");
+const metrics_1 = require("./metrics");
+const highlighter_1 = require("./highlighter");
+const cpd_1 = require("./cpd");
+const symbolHighlighting_1 = require("./symbolHighlighting");
+const parser_1 = require("../utils/parser");
+const diagnostics_1 = require("./diagnostics");
+const sensors = [highlighter_1.default, metrics_1.default, cpd_1.default, symbolHighlighting_1.default];
+function processRequest(inputString) {
+    const input = JSON.parse(inputString);
+    let program = parser_1.createProgram(input.tsconfig, input.projectRoot);
+    const progressLogger = new ProgressLogger(input.filepaths.length);
+    let output = input.filepaths.map((filepath) => {
+        progressLogger.log(filepath);
+        const sourceFile = program.getSourceFile(filepath);
+        const output = { filepath };
+        if (sourceFile) {
+            const diagnostics = diagnostics_1.default(sourceFile, program);
+            if (diagnostics.length > 0) {
+                Object.assign(output, { diagnostics });
+            }
+            else {
+                sensors.forEach(sensor => Object.assign(output, sensor(sourceFile, program)));
+                Object.assign(output, rules.getIssues(input.rules, program, sourceFile));
+            }
+        }
+        else {
+            console.error(`Failed to find a source file matching path ${filepath} in program created with ${input.tsconfig}`);
+        }
+        return output;
+    });
+    progressLogger.logLast();
+    return output;
+}
+exports.processRequest = processRequest;
+class ProgressLogger {
+    constructor(filesNumber) {
+        this.filesNumber = filesNumber;
+        this.processedFilesCounter = 0;
+        this.startTime = this.currentTime();
+    }
+    log(currentFile) {
+        // log progress after 10s
+        if (this.currentTime() - this.startTime > 10) {
+            this.startTime = this.currentTime();
+            console.warn(`${this.processedFilesCounter} files analyzed out of ${this.filesNumber}. Current file: ${currentFile}`);
+        }
+        this.processedFilesCounter++;
+    }
+    logLast() {
+        console.warn(`${this.processedFilesCounter} files analyzed out of ${this.filesNumber}`);
+    }
+    currentTime() {
+        return new Date().getTime() / 1000;
+    }
+}
+//# sourceMappingURL=processRequest.js.map
