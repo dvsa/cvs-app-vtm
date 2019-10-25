@@ -15,10 +15,9 @@ import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {TestResultService} from '../components/technical-record/test-result.service';
-import { NgxDataTableModule } from '../shared/ngx-data-table/ngx-data-table.module';
 import { ComponentsRoutingModule } from './components-routing.module';
 import { LandingPageComponent } from '../landing-page/landing-page.component';
-import { IsPrimaryVrmPipe } from '../pipes/IsPrimaryVrmPipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -27,17 +26,17 @@ import { IsPrimaryVrmPipe } from '../pipes/IsPrimaryVrmPipe';
     MatFormFieldModule,
     HttpClientModule,
     NgxJsonViewerModule,
-    NgxDataTableModule,
     ComponentsRoutingModule,
     IonicModule.forRoot(),
     FormsModule,
+    SharedModule,
     FontAwesomeModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent, IsPrimaryVrmPipe
+    TechnicalRecordComponent, LandingPageComponent
   ],
   exports: [
-    TechnicalRecordComponent, LandingPageComponent, IsPrimaryVrmPipe
+    TechnicalRecordComponent, LandingPageComponent
   ],
   providers: [TechnicalRecordService, TestResultService],
   entryComponents: [],

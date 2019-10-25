@@ -32,8 +32,7 @@ export class TechnicalRecordComponent implements OnInit {
   public searchTechRecords(q: string) {
     this.isLoading = true;
     this.searchIdentifier = q;
-    this._store.dispatch(new GetVehicleTestResultModel(q));
     this._store.dispatch( new GetVehicleTechRecordModelHavingStatusAll(q));
-    // this._store.dispatch(new GetVehicleTestResultModel(q));
+    this._store.dispatch(new GetVehicleTestResultModel(q));
   }
 }

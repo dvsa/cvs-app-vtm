@@ -6,12 +6,11 @@ import { APP_BASE_HREF } from '@angular/common';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../material.module';
-import { PipeModule } from '../../pipe.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationGuardMock } from '../../../../test-config/services-mocks/authentication-guard.mock';
-import { IAppState } from 'src/app/store/state/app.state';
 import { Store } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
+import {SharedModule} from '../../shared/shared.module';
 
 describe('TechnicalRecordComponent', () => {
 
@@ -31,7 +30,7 @@ describe('TechnicalRecordComponent', () => {
         MatDialogModule,
         BrowserAnimationsModule,
         MaterialModule,
-        PipeModule,
+        SharedModule,
         RouterTestingModule
       ],
       providers: [
