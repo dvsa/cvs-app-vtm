@@ -1,6 +1,28 @@
 @import "node_modules/govuk-frontend/govuk/all";
 
 $font-stack: GDSTransportWebsite;
+.expander-icon {
+  color: #0B0C0C;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: -0.21px;
+  line-height: 55px;
+  width: 20.8px;
+  text-align: center;
+}
+
+.ng-animating mat-card mat-expansion-panel-header {
+  height: 80px;
+}
+.ng-animating mat-card div.mat-expansion-panel-content {
+  height: 0px;
+  visibility: hidden;
+}
+
+.no-animate {
+  -webkit-transition: none !important;
+  transition: none !important;
+}
 
 dd {
   & ul {
@@ -12,6 +34,9 @@ dd {
   padding: 0 !important;
 }
 
+::ng-deep .auto-pad .mat-expansion-panel-spacing {
+  margin: 0 !important;
+}
 .custom-header .mat-expansion-panel-header-title,
 .custom-header .mat-expansion-panel-header-description {
   flex-basis: 0;
@@ -19,7 +44,7 @@ dd {
 
 .custom-header .mat-expansion-panel-header {
   padding: 0;
-  height: 80px !important; //ripple
+  //height: 80px !important; //ripple
 }
 
 .custom-header, .open-close-all {
@@ -231,6 +256,7 @@ dd {
 
 .open-close-all {
   display: flex;
+  justify-content: flex-end;
 
   ::ng-deep a {
     color: $govuk-link-colour;

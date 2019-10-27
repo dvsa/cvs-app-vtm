@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -14,19 +14,21 @@ import { GetVehicleTechRecordModelHavingStatusAll } from '../../store/actions/Ve
   styleUrls: ['./technical-record.component.scss']
 })
 export class TechnicalRecordComponent implements OnInit {
+  @HostBinding('@.disabled')
+  public animationsDisabled = true;
   isLoading: boolean;
   searchIdentifier = '{none searched}';
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
-  panelOpenState : boolean = false;
-  panelOpenState2: boolean = false;
-  panelOpenState3: boolean = false;
-  panelOpenState4: boolean = false;
-  panelOpenState5: boolean = false;
-  panelOpenState6: boolean = false;
-  panelOpenState7: boolean = false;
-  panelOpenState8: boolean = false;
-  color:string = 'red';
+  panelOpenState = false;
+  panelOpenState2 = false;
+  panelOpenState3 = false;
+  panelOpenState4 = false;
+  panelOpenState5 = false;
+  panelOpenState6 = false;
+  panelOpenState7 = false;
+  panelOpenState8 = false;
+  color = 'red';
 
 
 

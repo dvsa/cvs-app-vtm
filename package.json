@@ -13,7 +13,7 @@
     "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
-    "test:deploy": "npm run build && npx http-server ./www -p 4200 -c-1",
+    "test:deploy": "npm run build && npx http-server ./dist/cvs-app-vtm -p 4200 -c-1",
     "prepush": "npm run tslint && npm run build && npm test",
     "tslint": "tslint src/**/*.ts"
   },

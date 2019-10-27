@@ -16,7 +16,7 @@ import {AuthenticationGuard} from "microsoft-adal-angular6";
     FormsModule,
     IonicModule,
     RouterModule.forChild([
-      { path: 'home', component: ShellPage }
+      { path: 'home', component: ShellPage, canActivate: [AuthenticationGuard] }
     ]),
     ComponentsModule,
     WebComponentsModule
