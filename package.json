@@ -10,7 +10,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
-    "test": "jest --no-cache --testMatch=\"**/ngx-data-table-datasource.spec.ts\" --coverage",
+    "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
     "test:deploy": "npm run build && npx http-server ./dist/cvs-app-vtm -p 4200 -c-1",
@@ -92,7 +92,8 @@
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/dist/",
-      "<rootDir>/src/test.ts"
+      "<rootDir>/src/test.ts",
+      "<rootDir>/test-config"
     ],
     "modulePathIgnorePatterns": [
       "cypress"
