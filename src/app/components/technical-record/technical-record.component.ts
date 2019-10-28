@@ -1,12 +1,12 @@
 import {Component, HostBinding, OnInit} from '@angular/core';
-import { initAll } from 'govuk-frontend';
+import {initAll} from 'govuk-frontend';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {selectSelectedVehicleTestResultModel} from '../../store/selectors/VehicleTestResultModel.selectors';
 import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
-import { IAppState } from '../../store/state/app.state';
-import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
-import { GetVehicleTechRecordModelHavingStatusAll } from '../../store/actions/VehicleTechRecordModel.actions';
+import {IAppState} from '../../store/state/app.state';
+import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
+import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
 
 @Component({
   selector: 'app-technical-record',
@@ -20,16 +20,10 @@ export class TechnicalRecordComponent implements OnInit {
   searchIdentifier = '{none searched}';
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
-  panelOpenState = false;
-  panelOpenState2 = false;
-  panelOpenState3 = false;
-  panelOpenState4 = false;
-  panelOpenState5 = false;
-  panelOpenState6 = false;
-  panelOpenState7 = false;
-  panelOpenState8 = false;
+  panels: {panel: string, isOpened: boolean}[] = [{panel: 'panel1', isOpened: false}, {panel: 'panel2', isOpened: false},{panel: 'panel3', isOpened: false},{panel: 'panel4', isOpened: false},
+                                                  {panel: 'panel5', isOpened: false},{panel: 'panel6', isOpened: false},{panel: 'panel7', isOpened: false},{panel: 'panel8', isOpened: false}];
+  allOpened = false;
   color = 'red';
-
 
 
   constructor(private _store: Store<IAppState>) {
@@ -44,19 +38,15 @@ export class TechnicalRecordComponent implements OnInit {
   public searchTechRecords(q: string) {
     this.isLoading = true;
     this.searchIdentifier = q;
-    this._store.dispatch( new GetVehicleTechRecordModelHavingStatusAll(q));
+    this._store.dispatch(new GetVehicleTechRecordModelHavingStatusAll(q));
     this._store.dispatch(new GetVehicleTestResultModel(q));
   }
 
   togglePanel() {
-    this.panelOpenState  = !this.panelOpenState;
-    this.panelOpenState2 = this.panelOpenState;
-    this.panelOpenState3 = this.panelOpenState;
-    this.panelOpenState4 = this.panelOpenState;
-    this.panelOpenState5 = this.panelOpenState;
-    this.panelOpenState6 = this.panelOpenState;
-    this.panelOpenState7 = this.panelOpenState;
-    this.panelOpenState8 = this.panelOpenState;
+    for (let panel of this.panels) {
+      panel.isOpened = !this.allOpened;
+    }
+    this.allOpened = !this.allOpened;
   }
 
 }
