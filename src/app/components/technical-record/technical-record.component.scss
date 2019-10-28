@@ -294,9 +294,9 @@ dd {
   white-space: nowrap;
 }
 
-.govuk-table {
+.t-history {
   th:nth-last-child(1), td:nth-last-child(1){
-    width: 50% !important;
+   width: 50% !important;
   }
 }
 
@@ -306,6 +306,15 @@ dd {
     font-size: 24px !important;
   }
 }
+
+::ng-deep .table-details thead tr th:nth-child(1), .table-details tbody tr th:nth-child(1) {
+  width: 312px !important;
+}
+
+::ng-deep .table-details tbody tr > *:not(:first-child) {
+  width: 200px !important;
+}
+
 
 
 
