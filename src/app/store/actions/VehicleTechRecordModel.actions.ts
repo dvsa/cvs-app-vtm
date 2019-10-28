@@ -8,8 +8,6 @@ export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success'
 }
 
-
-
 export class GetVehicleTechRecordModel implements Action {
   public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModel;
   constructor(public payload: any) {

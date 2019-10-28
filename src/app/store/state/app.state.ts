@@ -1,6 +1,6 @@
 import {RouterReducerState} from '@ngrx/router-store';
-import {initialVehicleTechRecordModelState, IVehicleTechRecordModelState} from '@app/store/state/VehicleTechRecordModel.state';
-import {initialVehicleTestResultModelState, IVehicleTestResultModelState} from '@app/store/state/VehicleTestResultModel.state';
+import {initialVehicleTechRecordModelState, IVehicleTechRecordModelState} from './VehicleTechRecordModel.state';
+import {initialVehicleTestResultModelState, IVehicleTestResultModelState} from './VehicleTestResultModel.state';
 
 export interface IAppState {
   router?: RouterReducerState;

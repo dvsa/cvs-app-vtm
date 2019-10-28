@@ -1,5 +1,5 @@
-import {VehicleClass} from '@app/models/vehicle.class';
-import {TestType} from '@app/models/test.type';
+import {VehicleClass} from '../models/vehicle.class';
+import {TestType} from '../models/test.type';
 
 export interface TestResultModel {
   testerStaffId: string;

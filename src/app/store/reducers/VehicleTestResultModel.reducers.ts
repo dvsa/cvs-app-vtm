@@ -1,4 +1,3 @@
-import {IAppState} from '@app/store/state/app.state';
 import {initialVehicleTestResultModelState, IVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
 import {EVehicleTestResultModelActions, VehicleTestResultModelActions} from '../../store/actions/VehicleTestResultModel.actions';
 

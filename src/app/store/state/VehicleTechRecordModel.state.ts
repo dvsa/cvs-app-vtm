@@ -1,4 +1,4 @@
-import {VehicleTechRecordModel} from '@app/models/vehicle-tech-record.model';
+import {VehicleTechRecordModel} from '../../models/vehicle-tech-record.model';
 
 export interface IVehicleTechRecordModelState {
   vehicleTechRecordModel: VehicleTechRecordModel;
