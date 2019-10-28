@@ -13,6 +13,7 @@
     "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
+    "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist/cvs-app-vtm -p 4200 -c-1",
     "prepush": "npm run tslint && npm run build && npm test",
     "tslint": "tslint src/**/*.ts"
@@ -84,11 +85,20 @@
     "tslint": "^5.11.0",
     "typescript": "~2.9.2"
   },
+  "jestSonar": {
+    "reportPath": ".reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
   "jest": {
     "preset": "jest-preset-angular",
     "setupFilesAfterEnv": [
       "<rootDir>/setupJest.ts"
     ],
+    "coverageDirectory": "./coverage",
+    "collectCoverage": true,
+    "testResultsProcessor": "jest-sonar-reporter",
+    "testURL": "http://localhost",
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/dist/",
