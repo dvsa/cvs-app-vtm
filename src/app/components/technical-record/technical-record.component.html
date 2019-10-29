@@ -153,12 +153,12 @@
                   Parking brake fitted
                 </dt>
                 <dd class="govuk-summary-list__value">
-                  <div *ngIf="techRecordsJson.techRecord[0].parkingBrakeMrk; then thenTemplateName else elseTemplateName">
+                  <div *ngIf="techRecordsJson.techRecord[0].parkingBrakeMrk; then thenTemplateAxels else elseTemplateNone">
                   </div>
-                  <ng-template #thenTemplateName>
+                  <ng-template #thenTemplateAxels>
                     <p *ngFor="let axelNo of techRecordsJson.techRecord[0].axles"> Axle {{axelNo.axleNumber}}</p>
                   </ng-template>
-                  <ng-template #elseTemplateName>
+                  <ng-template #elseTemplateNone>
                     <p> - </p>
                   </ng-template>
                 </dd>
