@@ -1,7 +1,7 @@
 describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC1: After searching, technical record with status "current" is displayed if it exists for this vehicle in DynamoDB', () => {
 
-    const techRecordHistoryTable = '<!--bindings={\n  "ng-reflect-ng-for-of": "[object Object]"\n}--><tr _ngcontent-c2="" class="govuk-table__row ng-star-inserted" style=""><td _ngcontent-c2="" class="govuk-table__cell">aas</td><td _ngcontent-c2="" class="govuk-table__cell">14/01/2019</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell govuk-!-font-weight-bold" ng-reflect-ng-style="[object Object]" style="color: green;"> PASS </td></tr>';
+    const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Current</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
     it('I have searched for a HGV/TRL', () => {
       cy.visit('/home');
       cy.get('.searchbar-input').type('P012301230123').should('have.value', 'P012301230123');
@@ -14,13 +14,13 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
-      cy.get('#mat-expansion-panel-header-8 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+      cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Technical record history ');
-      cy.get('#mat-expansion-panel-header-8 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record').click();
+      cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record').click();
     });
 
     it('the remaining technical records in this section are displayed in descending order based on the "createdAt" attribute', () => {
-      cy.get('.govuk-table__body')
+      cy.get('#cdk-accordion-child-7 > .mat-expansion-panel-body > .govuk-table > .govuk-table__body > .govuk-table__row')
         .should('have.html', techRecordHistoryTable);
     });
   });
@@ -28,7 +28,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC2: After searching, technical record with status "provisional" is displayed, ' +
     'if this vehicle does not have a technical record with status "current" in DynamoDB', () => {
 
-    const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Provisional</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td>';
+    const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Provisional</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
     it('I have searched for a HGV/TRL', () => {
       cy.visit('/home');
       cy.get('.searchbar-input').type('P012301270123').should('have.value', 'P012301270123');
@@ -41,13 +41,13 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
-      cy.get('#mat-expansion-panel-header-8 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+      cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Technical record history ');
-      cy.get('#mat-expansion-panel-header-8 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record').click();
+      cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record').click();
     });
 
     it('the remaining technical records in this section are displayed in descending order based on the "createdAt" attribute', () => {
-      cy.get('.govuk-table__body > .govuk-table__row')
+      cy.get('#cdk-accordion-child-7 > .mat-expansion-panel-body > .govuk-table > .govuk-table__body > .govuk-table__row')
         .should('have.html', techRecordHistoryTable);
     });
   });
@@ -55,7 +55,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC3: After searching, the technical record with status "archived" and most recent "createdAt" is displayed' +
     ', if this vehicle only has technical records with status "archived" in DynamoDB', () => {
 
-    const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Archived</td><td _ngcontent-c2="" class="govuk-table__cell">New Trailer</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td>';
+    const techRecordHistoryTable = '<th _ngcontent-c2="" class="govuk-table__cell govuk-!-font-weight-bold">Gross</th><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
     it('I have searched for a HGV/TRL', () => {
       cy.visit('/home');
       cy.get('.searchbar-input').type('T13541234').should('have.value', 'T13541234');
@@ -109,7 +109,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
         .should('have.text', ' Dimensions ');
       cy.get(':nth-child(6) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Notes ');
-      cy.get(':nth-child(7) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+      cy.get('#mat-expansion-panel-header-8 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Test history ');
       cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Technical record history ');
@@ -134,9 +134,9 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('all the keys/values under that heading are displayed', () => {
-      const techRecordHistoryTable = '<!--bindings={\n  "ng-reflect-ng-for-of": "[object Object]"\n}--><tr _ngcontent-c2="" class="govuk-table__row ng-star-inserted" style=""><td _ngcontent-c2="" class="govuk-table__cell">aas</td><td _ngcontent-c2="" class="govuk-table__cell">14/01/2019</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell govuk-!-font-weight-bold" ng-reflect-ng-style="[object Object]" style="color: green;"> PASS </td></tr>';
+      const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Current</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
 
-      cy.get('.govuk-table__body')
+      cy.get('#cdk-accordion-child-7 > .mat-expansion-panel-body > .govuk-table > .govuk-table__body > .govuk-table__row')
         .should('have.html', techRecordHistoryTable);
     });
 

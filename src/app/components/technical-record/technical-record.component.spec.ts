@@ -68,14 +68,9 @@ describe('TechnicalRecordComponent', () => {
 
   it('should toggle panel open state', () => {
     component.togglePanel();
-    expect(component.panelOpenState).toEqual(true);
-    expect(component.panelOpenState2).toEqual(true);
-    expect(component.panelOpenState3).toEqual(true);
-    expect(component.panelOpenState4).toEqual(true);
-    expect(component.panelOpenState5).toEqual(true);
-    expect(component.panelOpenState6).toEqual(true);
-    expect(component.panelOpenState7).toEqual(true);
-    expect(component.panelOpenState8).toEqual(true);
+    for(const panel of component.panels){
+      expect(panel.isOpened).toEqual(true);
+    }
   });
 
   it('should dispatch the actions from searchTechRecords action', () => {
