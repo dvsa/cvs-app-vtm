@@ -1,8 +1,8 @@
 import {TestBed, inject, getTestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {TechnicalRecordService} from './technical-record.service';
 import {MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {environment} from '../../../environments/environment';
+import {TestResultService} from './test-result.service';
 
 export const adalConfig = {
   cacheLocation: 'localStorage',
@@ -15,14 +15,13 @@ export const adalConfig = {
 };
 
 const routes = {
-  techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`,
-  techRecordsAllStatuses: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all`
+  testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
 };
 
-describe('TechnicalRecordService', () => {
+describe('TestResultService', () => {
   let httpMock: HttpTestingController;
   let injector: TestBed;
-  let service: TechnicalRecordService;
+  let service: TestResultService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -38,10 +37,10 @@ describe('TechnicalRecordService', () => {
           cacheLocation: 'localStorage',
         })
       ],
-      providers: [TechnicalRecordService]
+      providers: [TestResultService]
     });
     injector = getTestBed();
-    service = injector.get(TechnicalRecordService);
+    service = injector.get(TestResultService);
     httpMock = injector.get(HttpTestingController);
   });
 
@@ -49,41 +48,29 @@ describe('TechnicalRecordService', () => {
     httpMock.verify();
   });
 
-  it('should be created', inject([HttpTestingController, MsAdalAngular6Service], (serviceI: TechnicalRecordService) => {
+  it('should be created', inject([HttpTestingController, MsAdalAngular6Service], (serviceI: TestResultService) => {
     expect(serviceI).toBeTruthy();
   }));
 
   it('getTechnicalRecords should return data', (done) => {
-    service.getTechnicalRecords('1234567').subscribe((res) => {
+    service.getTestResults('1234567').subscribe((res) => {
       expect(res).toBeDefined();
       expect(res).toEqual({mockObject: 'mock'});
       done();
     });
 
-    const req = httpMock.expectOne(routes.techRecords('1234567'));
-    expect(req.request.method).toBe('GET');
-    req.flush({mockObject: 'mock'});
-  });
-
-  it('getTechnicalRecordsAllStatuses should return data', (done) => {
-    service.getTechnicalRecordsAllStatuses('1234567').subscribe((res) => {
-      expect(res).toBeDefined();
-      expect(res).toEqual({mockObject: 'mock'});
-      done();
-    });
-
-    const req = httpMock.expectOne(routes.techRecordsAllStatuses('1234567'));
+    const req = httpMock.expectOne(routes.testResults('1234567'));
     expect(req.request.method).toBe('GET');
     req.flush({mockObject: 'mock'});
   });
 
   it('handleError should return empty result', (done) => {
-    service.getTechnicalRecordsAllStatuses('T14392PSAF').subscribe((res) => {
+    service.getTestResults('T14392PSAF').subscribe((res) => {
       expect(res).toEqual([]);
       done();
     });
 
-    const req = httpMock.expectOne(routes.techRecordsAllStatuses('T14392PSAF'));
+    const req = httpMock.expectOne(routes.testResults('T14392PSAF'));
     expect(req.request.method).toBe('GET');
     req.error(new ErrorEvent('network error'));
   });
