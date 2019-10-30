@@ -1,5 +1,5 @@
 import { ComponentsModule } from './components.module';
-import {TestBed} from "@angular/core/testing";
+import {TestBed} from '@angular/core/testing';
 
 describe('TechnicalRecordModule', () => {
   let componentsModule: ComponentsModule;

@@ -1,20 +1,26 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed, inject} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TechnicalRecordComponent} from './technical-record.component';
-import {TechnicalRecordService} from './technical-record.service';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {APP_BASE_HREF} from "@angular/common";
-import {MsAdalAngular6Module} from "microsoft-adal-angular6";
-import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {MaterialModule} from "@app/material.module";
-import {TechnicalRecordServiceMock} from "../../../../test-config/services-mocks/technical-record-service.mock";
-
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {APP_BASE_HREF} from '@angular/common';
+import {AuthenticationGuard} from 'microsoft-adal-angular6';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MaterialModule} from '../../material.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AuthenticationGuardMock} from '../../../../test-config/services-mocks/authentication-guard.mock';
+import {Store} from '@ngrx/store';
+import {RouterTestingModule} from '@angular/router/testing';
+import {SharedModule} from '../../shared/shared.module';
+import { GetVehicleTechRecordModelHavingStatusAll } from '../../store/actions/VehicleTechRecordModel.actions';
+import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
+import {Subject} from 'rxjs';
 
 describe('TechnicalRecordComponent', () => {
+
   let component: TechnicalRecordComponent;
   let fixture: ComponentFixture<TechnicalRecordComponent>;
-  let service: TechnicalRecordService;
-  let qString = "YV31MEC18GA011900";
+  const authenticationGuardMock = new AuthenticationGuardMock();
+  const unsubscribe = new Subject<void>();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,22 +28,22 @@ describe('TechnicalRecordComponent', () => {
       imports: [
         HttpClientTestingModule,
         MatDialogModule,
+        BrowserAnimationsModule,
         MaterialModule,
-        MsAdalAngular6Module.forRoot({
-          tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
-          clientId: '11x111x1-1xx1-1111-1x11-x1xx111x11x1',
-          redirectUri: window.location.origin,
-          endpoints: {
-            "https://localhost/Api/": "xxx-xxx1-1111-x111-xxx"
-          },
-          navigateToLoginRequestUrl: true,
-          cacheLocation: 'localStorage',
-        })
+        SharedModule,
+        RouterTestingModule
       ],
       providers: [
-        {provide: TechnicalRecordService, useClass: TechnicalRecordServiceMock},
+        {
+          provide: Store,
+          useValue: {
+            dispatch: jest.fn(),
+            pipe: jest.fn(),
+            select: jest.fn()
+          }
+        },
+        {provide: AuthenticationGuard, useValue: authenticationGuardMock},
         {provide: APP_BASE_HREF, useValue: '/'},
-        {provide: MatDialogRef, useValue: {}}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -47,30 +53,39 @@ describe('TechnicalRecordComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TechnicalRecordComponent);
     component = fixture.componentInstance;
-    service = TestBed.get(TechnicalRecordService);
     fixture.detectChanges();
   });
 
   afterEach(() => {
     fixture.destroy();
-    service = null;
+    unsubscribe.next();
+    unsubscribe.complete();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Service injected via inject(...) and TestBed.get(...) should be the same instance',
-    inject([TechnicalRecordService], (injectService: TechnicalRecordService) => {
-      expect(injectService).toBe(service);
-    })
-  );
+  it('should toggle panel open state', () => {
+    component.togglePanel();
+    for(const panel of component.panels){
+      expect(panel.isOpened).toEqual(true);
+    }
+  });
 
-  // it('should test on search tech records logic', () => {
-  //   spyOn(service, "getTechnicalRecordsAllStatuses");
-  //   component.searchTechRecords(qString);
-  //   expect(service.getTechnicalRecordsAllStatuses).toHaveBeenCalled();
-  // });
+  it('should dispatch the actions from searchTechRecords action', () => {
+    const q = '123455677';
+    component.searchTechRecords(q);
+    const statusAllAction = new GetVehicleTechRecordModelHavingStatusAll(q);
+    const testResultModelAction = new GetVehicleTestResultModel(q);
+    const store = TestBed.get(Store);
+    const spy = jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(statusAllAction);
+    expect(spy).toHaveBeenCalledWith(testResultModelAction);
+  });
 
   afterAll(() => {
     TestBed.resetTestingModule();

@@ -2,13 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {IonicModule} from '@ionic/angular';
 import {TechnicalRecordComponent} from './technical-record/technical-record.component';
-import {LandingPageComponent} from '@app/landing-page/landing-page.component';
 
 import {TechnicalRecordService} from './technical-record/technical-record.service';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxJsonViewerModule} from 'ngx-json-viewer';
-import {NgxDataTableModule} from '@app/shared/ngx-data-table/ngx-data-table.module';
-import {ComponentsRoutingModule} from '@app/components/components-routing.module';
 import {FormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
@@ -17,7 +14,10 @@ import {faCheckSquare as farCheckSquare, faSquare as farSquare} from '@fortaweso
 import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-icons';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {IsPrimaryVrmPipe} from '@app/pipes/IsPrimaryVrmPipe';
+import {TestResultService} from '../components/technical-record/test-result.service';
+import { ComponentsRoutingModule } from './components-routing.module';
+import { LandingPageComponent } from '../landing-page/landing-page.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -26,19 +26,19 @@ import {IsPrimaryVrmPipe} from '@app/pipes/IsPrimaryVrmPipe';
     MatFormFieldModule,
     HttpClientModule,
     NgxJsonViewerModule,
-    NgxDataTableModule,
     ComponentsRoutingModule,
     IonicModule.forRoot(),
     FormsModule,
+    SharedModule,
     FontAwesomeModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent, IsPrimaryVrmPipe
+    TechnicalRecordComponent, LandingPageComponent
   ],
   exports: [
-    TechnicalRecordComponent, LandingPageComponent, IsPrimaryVrmPipe
+    TechnicalRecordComponent, LandingPageComponent
   ],
-  providers: [TechnicalRecordService],
+  providers: [TechnicalRecordService, TestResultService],
   entryComponents: [],
 })
 export class ComponentsModule {

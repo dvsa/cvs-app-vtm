@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
-    "module": "es2015",
+    "module": "commonjs",
+    "allowJs": true,
     "paths": {
       "@app/*": [
         "./app/*"
@@ -13,13 +14,10 @@
       ]
     },
     "types": [
-      "jasmine",
+      "jest",
       "node"
     ]
   },
-  "files": [
-    "test.ts"
-  ],
   "include": [
     "polyfills.ts",
     "**/*.spec.ts",
