@@ -1,6 +1,7 @@
 @import "node_modules/govuk-frontend/govuk/all";
 
 $font-stack: GDSTransportWebsite;
+
 .expander-icon {
   color: #0B0C0C;
   font-size: 15px;
@@ -147,10 +148,8 @@ dd {
   transition: max-height 0.2s ease-out;
 }
 
-
 .title {
   color: $govuk-text-colour;
-  font-family: $font-stack;
   font-size: 48px;
   font-weight: 700;
   letter-spacing: -0.09px;
