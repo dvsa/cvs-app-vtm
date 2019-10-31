@@ -18,6 +18,8 @@ import {TestResultService} from '../components/technical-record/test-result.serv
 import { ComponentsRoutingModule } from './components-routing.module';
 import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
+import { TechnicalRecordSearchbarComponent } from './technical-record-searchbar/technical-record-searchbar.component';
+import { TechnicalRecordAccordionComponent } from './technical-record-accordion/technical-record-accordion.component';
 
 @NgModule({
   imports: [
@@ -33,7 +35,7 @@ import { SharedModule } from '../shared/shared.module';
     FontAwesomeModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent
+    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchbarComponent, TechnicalRecordAccordionComponent
   ],
   exports: [
     TechnicalRecordComponent, LandingPageComponent
