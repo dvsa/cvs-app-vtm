@@ -82,10 +82,10 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
 
       it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
         // tslint:disable-next-line:max-line-length
-        cy.get(':nth-child(7) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+        cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
           .should('have.text', ' Technical record history ');
         // tslint:disable-next-line:max-line-length
-        cy.get(':nth-child(7) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+        cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
           .click();
       });
 
@@ -125,7 +125,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
         .should('have.text', ' Dimensions ');
       cy.get(':nth-child(6) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Notes ');
-      cy.get(':nth-child(7) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+      cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Technical record history ');
     });
 
@@ -143,7 +143,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('I click the "+" to expand one heading', () => {
-      cy.get(':nth-child(7) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+      cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .click();
     });
 
