@@ -1,9 +1,20 @@
+/// <reference types="cypres" /
 describe('VTM Detail - HGV+TRL Tech Record View', () => {
+  beforeEach(() => {
+    // cy.visit('http://localhost:4200');
+    // cy.get('input[formcontrolname=loginfmt]').type('Vtm-Admin1@dvsagov.onmicrosoft.com');
+    // cy.get('inout[type=submit]').click();
+    // cy.get('input[formcontrolname=passwd]').type('Vtm-Admin1@dvsagov.onmicrosoft.com');
+    // cy.get('input[formcontrolname=password]').type('Vtmadmin!1');
+    // cy.get('input[type=submit]').click();
+  });
+
   context('AC1: After searching, technical record with status "current" is displayed if it exists for this vehicle in DynamoDB', () => {
 
+    // tslint:disable-next-line:max-line-length
     const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Current</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
     it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
+      cy.visit('http://localhost:4200');
       cy.get('.searchbar-input').type('P012301230123').should('have.value', 'P012301230123');
       cy.get('.searchbar-input').type('{enter}');
     });
@@ -28,62 +39,66 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC2: After searching, technical record with status "provisional" is displayed, ' +
     'if this vehicle does not have a technical record with status "current" in DynamoDB', () => {
 
-    const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Provisional</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
-    it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
-      cy.get('.searchbar-input').type('P012301270123').should('have.value', 'P012301270123');
-      cy.get('.searchbar-input').type('{enter}');
-    });
+      // tslint:disable-next-line:max-line-length
+      const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Provisional</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
+      it('I have searched for a HGV/TRL', () => {
+        cy.visit('http://localhost:4200');
+        cy.get('.searchbar-input').type('P012301270123').should('have.value', 'P012301270123');
+        cy.get('.searchbar-input').type('{enter}');
+      });
 
-    it('the technical record with status "PROVISIONAL" is displayed', () => {
-      cy.get('.record-search-title-text').should('have.text', 'Technical records from searched (vin/vrm) P012301270123');
-      cy.get('.grid-container-technical-record-status').should('have.text', 'Status Provisional ');
-    });
+      it('the technical record with status "PROVISIONAL" is displayed', () => {
+        cy.get('.record-search-title-text').should('have.text', 'Technical records from searched (vin/vrm) P012301270123');
+        cy.get('.grid-container-technical-record-status').should('have.text', 'Status Provisional ');
+      });
 
-    it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
-      cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
-        .should('have.text', ' Technical record history ');
-      cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record').click();
-    });
+      it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
+        cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+          .should('have.text', ' Technical record history ');
+        cy.get('#mat-expansion-panel-header-7 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record').click();
+      });
 
-    it('the remaining technical records in this section are displayed in descending order based on the "createdAt" attribute', () => {
-      cy.get('#cdk-accordion-child-7 > .mat-expansion-panel-body > .govuk-table > .govuk-table__body > .govuk-table__row')
-        .should('have.html', techRecordHistoryTable);
+      it('the remaining technical records in this section are displayed in descending order based on the "createdAt" attribute', () => {
+        cy.get('#cdk-accordion-child-7 > .mat-expansion-panel-body > .govuk-table > .govuk-table__body > .govuk-table__row')
+          .should('have.html', techRecordHistoryTable);
+      });
     });
-  });
 
   context('AC3: After searching, the technical record with status "archived" and most recent "createdAt" is displayed' +
     ', if this vehicle only has technical records with status "archived" in DynamoDB', () => {
 
-    const techRecordHistoryTable = '<th _ngcontent-c2="" class="govuk-table__cell govuk-!-font-weight-bold">Gross</th><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
-    it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
-      cy.get('.searchbar-input').type('T13541234').should('have.value', 'T13541234');
-      cy.get('.searchbar-input').type('{enter}');
-    });
+      // tslint:disable-next-line:max-line-length
+      const techRecordHistoryTable = '<th _ngcontent-c2="" class="govuk-table__cell govuk-!-font-weight-bold">Gross</th><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
+      it('I have searched for a HGV/TRL', () => {
+        cy.visit('http://localhost:4200');
+        cy.get('.searchbar-input').type('T13541234').should('have.value', 'T13541234');
+        cy.get('.searchbar-input').type('{enter}');
+      });
 
-    it('this vehicle has at least one technical record with status "ARCHIVED" in DynamoDB', () => {
-      cy.get('.record-search-title-text').should('have.text', 'Technical records from searched (vin/vrm) T13541234');
-      cy.get('.grid-container-technical-record-status').should('have.text', 'Status Archived ');
-    });
+      it('this vehicle has at least one technical record with status "ARCHIVED" in DynamoDB', () => {
+        cy.get('.record-search-title-text').should('have.text', 'Technical records from searched (vin/vrm) T13541234');
+        cy.get('.grid-container-technical-record-status').should('have.text', 'Status Archived ');
+      });
 
-    it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
-      cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
-        .should('have.text', ' Technical record history ');
-      cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
-        .click();
-    });
+      it('the remaining technical records for this vehicle are summarised within the "Technical record history" section', () => {
+        // tslint:disable-next-line:max-line-length
+        cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+          .should('have.text', ' Technical record history ');
+        // tslint:disable-next-line:max-line-length
+        cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
+          .click();
+      });
 
-    it('the remaining technical records in this section are displayed in descending order based on the "createdAt" attribute', () => {
-      cy.get('.govuk-table__body > .govuk-table__row')
-        .should('have.html', techRecordHistoryTable);
+      it('the remaining technical records in this section are displayed in descending order based on the "createdAt" attribute', () => {
+        cy.get('.govuk-table__body > .govuk-table__row')
+          .should('have.html', techRecordHistoryTable);
+      });
     });
-  });
 
   context('AC4: HGV/TRL tech records are structured correctly', () => {
 
     it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
+      cy.visit('http://localhost:4200');
       cy.get('.searchbar-input').type('T13541234').should('have.value', 'T13541234');
       cy.get('.searchbar-input').type('{enter}');
     });
@@ -96,6 +111,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
       cy.get('.grid-container-technical-record-status').should('be.visible').should('have.text', 'Status Archived ');
     });
 
+    // tslint:disable-next-line:max-line-length
     it('the expandable headings are named "Vehicle summary, "Body", "Weights", "Tyres", "Dimensions", "Additional details", "Test history", "Technical Record history"', () => {
       cy.get('#mat-expansion-panel-header-1 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Vehicle summary ');
@@ -109,8 +125,6 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
         .should('have.text', ' Dimensions ');
       cy.get(':nth-child(6) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Notes ');
-      cy.get('#mat-expansion-panel-header-8 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
-        .should('have.text', ' Test history ');
       cy.get(':nth-child(8) > .custom-header > .disable_ripple > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .should('have.text', ' Technical record history ');
     });
@@ -123,7 +137,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC5: User expands one heading', () => {
 
     it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
+      cy.visit('http://localhost:4200');
       cy.get('.searchbar-input').type('P012301230123').should('have.value', 'P012301230123');
       cy.get('.searchbar-input').type('{enter}');
     });
@@ -134,6 +148,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('all the keys/values under that heading are displayed', () => {
+      // tslint:disable-next-line:max-line-length
       const techRecordHistoryTable = '<td _ngcontent-c2="" class="govuk-table__cell">Current</td><td _ngcontent-c2="" class="govuk-table__cell">New Vehicle</td><td _ngcontent-c2="" class="govuk-table__cell">-</td><td _ngcontent-c2="" class="govuk-table__cell">24/06/2019</td><td _ngcontent-c2="" class="govuk-table__cell"></td><td _ngcontent-c2="" class="govuk-table__cell"></td>';
 
       cy.get('#cdk-accordion-child-7 > .mat-expansion-panel-body > .govuk-table > .govuk-table__body > .govuk-table__row')
@@ -141,6 +156,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('the remaining heading are not expanded (since i only clicked the "+" on one particular heading', () => {
+      // tslint:disable-next-line:max-line-length
       const plusIcon = '<svg aria-hidden="true" focusable="false" data-prefix="fa" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14 fa-lg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>';
       cy.get('#mat-expansion-panel-header-1 > .mat-content > .mat-expansion-panel-header-description > .expansion-icon > .ng-fa-icon')
         .should('have.html', plusIcon);
@@ -160,7 +176,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC6: User clicks the call to action to "open all" headings', () => {
 
     it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
+      cy.visit('http://localhost:4200');
       cy.get('.searchbar-input').type('P012301230123').should('have.value', 'P012301230123');
       cy.get('.searchbar-input').type('{enter}');
     });
@@ -170,6 +186,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('all the headings are expanded', () => {
+      // tslint:disable-next-line:max-line-length
       const minusIcon = '<svg aria-hidden="true" focusable="false" data-prefix="fa" data-icon="minus" class="svg-inline--fa fa-minus fa-w-14 fa-lg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>';
       cy.get('#mat-expansion-panel-header-1 > .mat-content > .mat-expansion-panel-header-description > .expansion-icon > .ng-fa-icon')
         .should('have.html', minusIcon);
@@ -195,7 +212,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC7: User clicks the call to action to "close all" headings', () => {
 
     it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
+      cy.visit('http://localhost:4200');
       cy.get('.searchbar-input').type('P012301230123').should('have.value', 'P012301230123');
       cy.get('.searchbar-input').type('{enter}');
     });
@@ -213,6 +230,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
     });
 
     it('all the headings are expanded', () => {
+      // tslint:disable-next-line:max-line-length
       const plusIcon = '<svg aria-hidden="true" focusable="false" data-prefix="fa" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14 fa-lg" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>';
       cy.get('#mat-expansion-panel-header-1 > .mat-content > .mat-expansion-panel-header-description > .expansion-icon > .ng-fa-icon')
         .should('have.html', plusIcon);
@@ -238,7 +256,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
   context('AC8: "-" is displayed, when an attribute has a value of "null" or space within DynamoDB', () => {
 
     it('I have searched for a HGV/TRL', () => {
-      cy.visit('/home');
+      cy.visit('http://localhost:4200');
       cy.get('.searchbar-input').type('T12765432').should('have.value', 'T12765432');
       cy.get('.searchbar-input').type('{enter}');
     });
@@ -259,6 +277,7 @@ describe('VTM Detail - HGV+TRL Tech Record View', () => {
 
     it('this "null" or space is represented as a "-" on the VTM front end', () => {
       const lineValueHtml = '<span _ngcontent-c2="" class="notes-section">-</span>';
+      // tslint:disable-next-line:max-line-length
       cy.get('#cdk-accordion-child-6 > .mat-expansion-panel-body > .technical-record-sub-details > .govuk-summary-list__row > .govuk-summary-list__key')
         .should('have.html', lineValueHtml);
     });
