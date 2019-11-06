@@ -49,4 +49,8 @@ export class TechnicalRecordComponent implements OnInit {
     this.allOpened = !this.allOpened;
   }
 
+  isNullOrEmpty(str){
+    return (typeof str==='string' || str==null) ? !str||!str.trim():false;
+  }
+
 }
