@@ -675,19 +675,19 @@
                 </thead>
                 <tbody class="govuk-table__body">
                   <tr class="govuk-table__row" *ngFor="let testRes of testResultJson">
-                      <td [id]="test-testCode" class="govuk-table__cell">
+                      <td id="test-testCode" class="govuk-table__cell">
                         {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
                       </td>
-                      <td [id]="test-testEndTimestamp" class="govuk-table__cell">
+                      <td id="test-testEndTimestamp" class="govuk-table__cell">
                         {{ isNullOrEmpty(testRes.testTypes[0].testTypeEndTimestamp) ? "-" : testRes.testTypes[0].testTypeEndTimestamp | date :'dd/MM/y'}}
                       </td>
-                      <td [id]="test-expiryDate" class="govuk-table__cell">
+                      <td id="test-expiryDate" class="govuk-table__cell">
                         {{ isNullOrEmpty(testRes.testTypes[0].testExpiryDate) ? "-" : testRes.testTypes[0].testExpiryDate | date :'dd/MM/y'}}
                       </td>
-                      <td [id]="test-certificateNumber" class="govuk-table__cell">
+                      <td id="test-certificateNumber" class="govuk-table__cell">
                         {{ isNullOrEmpty(testRes.testTypes[0].certificateNumber) ? "-" : testRes.testTypes[0].certificateNumber }}
                       </td>
-                      <td [id]="test-testResult" class="govuk-table__cell govuk-!-font-weight-bold"
+                      <td id="test-testResult" class="govuk-table__cell govuk-!-font-weight-bold"
                           [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'#00703C' } : testRes.testTypes[0].testResult=='prs' ? {color: '#1D70B8'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
                         {{ isNullOrEmpty(testRes.testTypes[0].testResult) ? "-" : testRes.testTypes[0].testResult | uppercase }}
                       </td>
