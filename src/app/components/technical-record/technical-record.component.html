@@ -130,6 +130,15 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  First use date
+                </dt>
+                <dd id="test-firstUseDate" class="govuk-summary-list__value">
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].firstUseDate) ? "-" : techRecordsJson.techRecord[0].firstUseDate | date :'dd/MM/y' }}
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                   Number of axles
@@ -154,15 +163,66 @@
                 </dt>
                 <dd class="govuk-summary-list__value">
                   <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].axles) else hyphen">
-                    <div *ngFor="let axel of techRecordsJson.techRecord[0].axles; let i = index">
-                      <div *ngIf="axel.parkingBrakeMrk">
-                        <span id="{{ 'test-axleNo-' + i }}">Axle {{axel.axleNumber}}</span>
+                    <div *ngIf="hasProperty(techRecordsJson.techRecord[0].axles, 'parkingBrakeMrk') else hyphen">
+                      <div *ngFor="let axel of techRecordsJson.techRecord[0].axles; let i = index">
+                        <div *ngIf="axel.parkingBrakeMrk">
+                          <span id="{{ 'test-axleNo-' + i }}">Axle {{axel.axleNumber}}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <ng-template #hyphen>
                     <span>-</span>
                   </ng-template>
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  Load sensing valve
+                </dt>
+                <dd id="test-loadSensingValve" class="govuk-summary-list__value">
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.loadSensingValve) ? "-" : techRecordsJson.techRecord[0].brakes.loadSensingValve ? "YES":"NO" }}
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  Antilock braking system
+                </dt>
+                <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.antilockBrakingSystem) ? "-" : techRecordsJson.techRecord[0].brakes.antilockBrakingSystem ? "YES":"NO" }}
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  Brake actuator
+                </dt>
+                <dd id="test-brakeActuator" class="govuk-summary-list__value">
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].axles.slice(-1)[0].brakes.brakeActuator) ? "-" : techRecordsJson.techRecord[0].axles.slice(-1)[0].brakes.brakeActuator }}
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  Lever length
+                </dt>
+                <dd id="test-leverLength" class="govuk-summary-list__value">
+                  <div *ngIf="techRecordsJson.techRecord[0].axles[1] != null; else hyphen">
+                    <span>{{ isNullOrEmpty(techRecordsJson.techRecord[0].axles[1].brakes.leverLength) ? "-" : techRecordsJson.techRecord[0].axles[1].brakes.leverLength }}</span>
+                  </div>
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  Spring brake parking
+                </dt>
+                <dd id="test-springBrakeParking" class="govuk-summary-list__value">
+                  <div *ngIf="techRecordsJson.techRecord[0].axles[1] != null; else hyphen">
+                    <span>{{ isNullOrEmpty(techRecordsJson.techRecord[0].axles[1].brakes.springBrakeParking) ? "-" : techRecordsJson.techRecord[0].axles[1].brakes.springBrakeParking ? "YES":"NO" }}</span>
+                  </div>
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
@@ -193,6 +253,15 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
+                <dt class="govuk-summary-list__key">
+                  Suspension type
+                </dt>
+                <dd id="test-suspensionType" class="govuk-summary-list__value">
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].suspensionType) ? "-" : techRecordsJson.techRecord[0].suspensionType }}
+                </dd>
+                <dd class="govuk-summary-list__value"></dd>
+              </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                   Road friendly suspension
@@ -202,7 +271,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Drawbar coupling fitted
                 </dt>
@@ -231,17 +300,6 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  First use date
-                </dt>
-                <dd id="test-firstUseDate" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].firstUseDate) ? "-" : techRecordsJson.techRecord[0].firstUseDate | date :'dd/MM/y' }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
               <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
                 <dt class="govuk-summary-list__key">
                   Coupling type
@@ -251,79 +309,12 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Load sensing valve
-                </dt>
-                <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.loadSensingValve) ? "-" : techRecordsJson.techRecord[0].brakes.loadSensingValve ? "YES":"NO" }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Antilock braking system
-                </dt>
-                <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.antilockBrakingSystem) ? "-" : techRecordsJson.techRecord[0].brakes.antilockBrakingSystem ? "YES":"NO" }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Brake actuator
-                </dt>
-                <dd id="test-brakeActuator" class="govuk-summary-list__value">
-                  <div *ngIf="techRecordsJson.techRecord[0].axles[1] != null; else hyphen">
-                    <span>{{ isNullOrEmpty(techRecordsJson.techRecord[0].axles[1].brakes.brakeActuator) ? "-" : techRecordsJson.techRecord[0].axles[1].brakes.brakeActuator }}</span>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Lever length
-                </dt>
-                <dd id="test-leverLength" class="govuk-summary-list__value">
-                  <div *ngIf="techRecordsJson.techRecord[0].axles[1] != null; else hyphen">
-                    <span>{{ isNullOrEmpty(techRecordsJson.techRecord[0].axles[1].brakes.leverLength) ? "-" : techRecordsJson.techRecord[0].axles[1].brakes.leverLength }}</span>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Spring brake parking
-                </dt>
-                <dd id="test-springBrakeParking" class="govuk-summary-list__value">
-                  <div *ngIf="techRecordsJson.techRecord[0].axles[1] != null; else hyphen">
-                    <span>{{ isNullOrEmpty(techRecordsJson.techRecord[0].axles[1].brakes.springBrakeParking) ? "-" : techRecordsJson.techRecord[0].axles[1].brakes.springBrakeParking ? "YES":"NO" }}</span>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
               <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
                 <dt class="govuk-summary-list__key">
                   Max load on coupling
                 </dt>
                 <dd id="test-maxLoadOnCoupling" class="govuk-summary-list__value">
                   {{ isNullOrEmpty(techRecordsJson.techRecord[0].maxLoadOnCoupling) ? "-" : techRecordsJson.techRecord[0].maxLoadOnCoupling }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-
-              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Suspension type
-                </dt>
-                <dd id="test-suspensionType" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].suspensionType) ? "-" : techRecordsJson.techRecord[0].suspensionType }}
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
@@ -577,7 +568,7 @@
                   <td class="govuk-table__cell"></td>
                   <td class="govuk-table__cell"></td>
                 </tr>
-                <tr class="govuk-table__row">
+                <tr class="govuk-table__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                   <th class="govuk-table__cell govuk-!-font-weight-bold"> Front of vehicle to 5th wheel coupling</th>
                   <td id="test-frontAxleTo5thWheelCouplingMin" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin) ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin }}</td>
                   <td id="test-frontAxleTo5thWheelCouplingMax" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax) ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax }}</td>
@@ -585,7 +576,7 @@
                   <td class="govuk-table__cell"></td>
                   <td class="govuk-table__cell"></td>
                 </tr>
-                <tr class="govuk-table__row">
+                <tr class="govuk-table__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                   <th class="govuk-table__cell govuk-!-font-weight-bold"> Front axle to 5th wheel</th>
                   <td id="test-frontAxleTo5thWheelMin" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontAxleTo5thWheelMin) ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMin }}</td>
                   <td id="test-frontAxleTo5thWheelMax" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontAxleTo5thWheelMax) ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMax }}</td>
