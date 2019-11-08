@@ -202,7 +202,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Drawbar coupling fitted
                 </dt>
@@ -577,7 +577,7 @@
                   <td class="govuk-table__cell"></td>
                   <td class="govuk-table__cell"></td>
                 </tr>
-                <tr class="govuk-table__row">
+                <tr class="govuk-table__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                   <th class="govuk-table__cell govuk-!-font-weight-bold"> Front of vehicle to 5th wheel coupling</th>
                   <td id="test-frontAxleTo5thWheelCouplingMin" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin) ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin }}</td>
                   <td id="test-frontAxleTo5thWheelCouplingMax" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax) ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax }}</td>
@@ -585,7 +585,7 @@
                   <td class="govuk-table__cell"></td>
                   <td class="govuk-table__cell"></td>
                 </tr>
-                <tr class="govuk-table__row">
+                <tr class="govuk-table__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                   <th class="govuk-table__cell govuk-!-font-weight-bold"> Front axle to 5th wheel</th>
                   <td id="test-frontAxleTo5thWheelMin" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontAxleTo5thWheelMin) ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMin }}</td>
                   <td id="test-frontAxleTo5thWheelMax" class="govuk-table__cell">{{ isNullOrEmpty(techRecordsJson.techRecord[0].frontAxleTo5thWheelMax) ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelMax }}</td>
