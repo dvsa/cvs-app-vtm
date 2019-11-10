@@ -53,4 +53,17 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
+  hasProperty(obj, prop){
+    return obj.some( obj => obj['prop'] );
+  }
+
+  changeTechRecord(){
+    //let btn = document.querySelector(".changeTechRecord");
+    //console.log(btn);
+    //btn.innerText("Save techincal record");
+    //radio buttons display none
+    //radio.body.style.display('block or none');
+    //btn.classList = "show";
+  }
+
 }
