@@ -53,8 +53,4 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
-  hasProperty(obj, prop){
-    return obj.some( obj => obj['prop'] );
-  }
-
 }
