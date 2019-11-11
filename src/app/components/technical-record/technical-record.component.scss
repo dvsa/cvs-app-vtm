@@ -320,9 +320,39 @@ dd {
   width: 200px !important;
 }
 
-.govuk-heading-l {
-  color: $govuk-error-colour;
+.adr-details {
+  h2 {
+    margin-top: 2rem;
+    width: 23rem;
+  }
+
+  ::ng-deep .table-tank thead tr th:nth-child(1), .table-tank tbody tr td:nth-child(1) {
+    width: 23rem !important;
+  }
+
+  ::ng-deep .table-tank tbody tr td:nth-child(2) {
+    width: 20rem !important;
+  }
+
+  ::ng-deep a {
+    float: right;
+    color: #005EA5;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 23px;
+    width: 102px;
+    text-align: right;
+    flex: 1;
+    text-align: right;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
 }
+
+
+
+
 
 
 
