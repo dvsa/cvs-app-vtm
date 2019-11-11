@@ -153,7 +153,9 @@
                   DTp number
                 </dt>
                 <dd id="test-dtpNumber" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.dtpNumber) ? "-" : techRecordsJson.techRecord[0].brakes.dtpNumber }}
+                  <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].brakes) else hyphen">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.dtpNumber) ? "-" : techRecordsJson.techRecord[0].brakes.dtpNumber }}
+                  </div>
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
@@ -182,7 +184,9 @@
                   Load sensing valve
                 </dt>
                 <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.loadSensingValve) ? "-" : techRecordsJson.techRecord[0].brakes.loadSensingValve ? "YES":"NO" }}
+                  <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].brakes) else hyphen">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.loadSensingValve) ? "-" : techRecordsJson.techRecord[0].brakes.loadSensingValve ? "YES":"NO" }}
+                  </div>
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
@@ -191,7 +195,9 @@
                   Antilock braking system
                 </dt>
                 <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.antilockBrakingSystem) ? "-" : techRecordsJson.techRecord[0].brakes.antilockBrakingSystem ? "YES":"NO" }}
+                  <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].brakes) else hyphen">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].brakes.antilockBrakingSystem) ? "-" : techRecordsJson.techRecord[0].brakes.antilockBrakingSystem ? "YES":"NO" }}
+                  </div>
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
