@@ -64,6 +64,7 @@
       </div>
 
       <mat-accordion multi="true" [@.disabled]="true">
+
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #summary
                                [(expanded)]="panels[0].isOpened" [@.disabled]="true">
@@ -161,9 +162,6 @@
                       </div>
                     </div>
                   </div>
-                  <ng-template #hyphen>
-                    <span>-</span>
-                  </ng-template>
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
@@ -316,6 +314,7 @@
             </dl>
           </mat-expansion-panel>
         </div>
+
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #body
                                [(expanded)]="panels[1].isOpened" [@.disabled]="true"
@@ -383,6 +382,7 @@
             </dl>
           </mat-expansion-panel>
         </div>
+
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #weights
                                [(expanded)]="panels[2].isOpened" [@.disabled]="true">
@@ -449,6 +449,7 @@
             </table>
           </mat-expansion-panel>
         </div>
+
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #tyres
                                [(expanded)]="panels[3].isOpened" [@.disabled]="true">
@@ -500,6 +501,7 @@
 
           </mat-expansion-panel>
         </div>
+
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #dimensions
                                [(expanded)]="panels[4].isOpened" [@.disabled]="true">
@@ -598,9 +600,367 @@
             </table>
           </mat-expansion-panel>
         </div>
+
+        <div class="auto-pad" [@.disabled]="true">
+          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #adr [(expanded)]="panels[5].isOpened" [@.disabled]="true">
+            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px" collapsedHeight="80px">
+              <mat-panel-title>
+                <div class="item-technical-record govuk-!-font-weight-bold">
+                  ADR
+                </div>
+              </mat-panel-title>
+              <mat-panel-description>
+                <div class="expansion-icon">
+                  <fa-icon *ngIf="!adr.expanded" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
+                  <fa-icon *ngIf="adr.expanded" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <dl class="technical-record-sub-details govuk-summary-list adr-details">
+              <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails)">
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Able to carry dangerous goods </dt>
+                  <dd id="test-ableToCarry" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "Yes" : "No" }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Applicant details</h2>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Name </dt>
+                  <dd id="test-aplicantDetails-name" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.name) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.name }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Street </dt>
+                  <dd id="test-aplicantDetails-street" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.street) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.street }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Town </dt>
+                  <dd id="test-aplicantDetails-town" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.town) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.town }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> City </dt>
+                  <dd id="test-aplicantDetails-city" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.city) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.city }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Postcode </dt>
+                  <dd id="test-aplicantDetails-postcode" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.postcode) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.postcode }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">ADR details</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Vehicle type </dt>
+                  <dd id="test-ADR-type" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.vehicleDetails.type) ? "-" : techRecordsJson.techRecord[0].adrDetails.vehicleDetails.type }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Date processed </dt>
+                  <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.vehicleDetails.approvalDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.vehicleDetails.approvalDate | date :'dd/MM/y' }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Permitted dangerous goods </dt>
+                  <dd id="test-ADR-permittedDangerousGoods" class="govuk-summary-list__value">
+                    <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.permittedDangerousGoods) else hyphen">
+                      <div *ngFor="let perGood of techRecordsJson.techRecord[0].adrDetails.permittedDangerousGoods">
+                        <p>{{perGood}}</p>
+                      </div>
+                    </div>
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Compatibility group J </dt>
+                  <dd id="test-ADR-compatibilityGroupJ" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.compatibilityGroupJ) ? "-" : techRecordsJson.techRecord[0].adrDetails.compatibilityGroupJ }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Guidance notes </dt>
+                  <dd id="test-ADR-additionalNotes-number" class="govuk-summary-list__value">
+                    <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalNotes.number) else hyphen">
+                      <div *ngFor="let number of techRecordsJson.techRecord[0].adrDetails.additionalNotes.number">
+                        <p>{{number}}</p>
+                      </div>
+                    </div>
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> ADR type approval number </dt>
+                  <dd id="test-ADR-adrTypeApprovalNo" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.adrTypeApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.adrTypeApprovalNo }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Tank details</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Make </dt>
+                  <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturer) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturer }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Year of manufacture </dt>
+                  <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.yearOfManufacture) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.yearOfManufacture }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Manufacturer serial number </dt>
+                  <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturerSerialNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturerSerialNo }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Tank type approval number </dt>
+                  <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankTypeAppNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankTypeAppNo }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Code </dt>
+                  <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankCode) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankCode }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Substances permitted </dt>
+                  <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.substancesPermitted) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.substancesPermitted }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+<!--                <div class="govuk-summary-list__row">-->
+<!--                  <dt class="govuk-summary-list__key"> Statement reference number </dt>-->
+<!--                  <dd id="test-ADR-statement" class="govuk-summary-list__value">-->
+<!--                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.statement) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.statement }}-->
+<!--                  </dd>-->
+<!--                  <dd class="govuk-summary-list__value"></dd>-->
+<!--                </div>-->
+<!--                <div class="govuk-summary-list__row">-->
+<!--                  <dt class="govuk-summary-list__key"> Product list reference number </dt>-->
+<!--                  <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">-->
+<!--                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListRefNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListRefNo }}-->
+<!--                  </dd>-->
+<!--                  <dd class="govuk-summary-list__value"></dd>-->
+<!--                </div>-->
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> UN number </dt>
+                  <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListUnNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListUnNo }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Additional product list details </dt>
+                  <dd id="test-ADR-productList" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productList) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productList }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Special provisions </dt>
+                  <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.specialProvisions) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.specialProvisions }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Tank inspections</h2>
+                </div>
+
+                <table class="govuk-table table-tank">
+                  <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Inspection type</th>
+                    <th scope="col" class="govuk-table__header">Certificate number</th>
+                    <th scope="col" class="govuk-table__header">Expiry date</th>
+                  </tr>
+                  </thead>
+                  <tbody class="govuk-table__body">
+                    <tr class="govuk-table__row">
+                      <td id="test-tc2Type" class="govuk-table__cell">
+                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type }}
+                      </td>
+                      <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
+                      </td>
+                      <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
+                      </td>
+                    </tr>
+
+                    <tr class="govuk-table__row" *ngFor="let tc3Details of techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc3Details">
+                      <td id="test-tc3Type" class="govuk-table__cell">
+                        {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
+                      </td>
+                      <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
+                        {{ isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
+                      </td>
+                      <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
+                        {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Applied </dt>
+                  <dd id="test-memosApply" class="govuk-summary-list__value">
+                    <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.memosApply) else hyphen">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.memosApply) ? "-" : techRecordsJson.techRecord[0].adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
+                    </div>
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Tank documents</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Document 1 </dt>
+                  <dd class="govuk-summary-list__value">
+                  </dd>
+                  <dd class="govuk-summary-list__value">
+                    <a class="govuk-link">View</a>
+                  </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Battery list</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Applicable </dt>
+                  <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.listStatementApplicable) ? "-" : techRecordsJson.techRecord[0].adrDetails.listStatementApplicable ? "Yes":"No" }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Reference number  </dt>
+                  <dd id="test-batteryListNumber" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.batteryListNumber) ? "-" : techRecordsJson.techRecord[0].adrDetails.batteryListNumber }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Declarations seen</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Manufacturer brake declaration  </dt>
+                  <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeDeclarationsSeen) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeDeclarationsSeen ? "Yes":"No" }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Issuer </dt>
+                  <dd id="test-brakeDeclarationIssuer" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeDeclarationIssuer) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeDeclarationIssuer }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Brake endurance </dt>
+                  <dd id="test-brakeEndurance" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeEndurance) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeEndurance ? "Yes":"No" }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Break endurance weight (kg)  </dt>
+                  <dd id="test-weight" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Owner/operator declaration  </dt>
+                  <dd id="test-declarationsSeen" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.declarationsSeen) ? "-" : techRecordsJson.techRecord[0].adrDetails.declarationsSeen ? "Yes":"No" }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Certificate</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key"> Required  </dt>
+                  <dd id="test-guidanceNotes" class="govuk-summary-list__value">
+                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.guidanceNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
+                  </dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <h2 class="govuk-heading-m">Additional ADR details</h2>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">
+                  <span id="test-additionalExaminerNotes" class="notes-section">{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes}}</span>
+                  </dt>
+                  <dd class="govuk-summary-list__value"></dd>
+                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+              </div>
+            </dl>
+          </mat-expansion-panel>
+        </div>
+
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes
-                               [(expanded)]="panels[5].isOpened" [@.disabled]="true">
+                               [(expanded)]="panels[6].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
                                         collapsedHeight="80px">
               <mat-panel-title>
@@ -626,11 +986,10 @@
             </dl>
           </mat-expansion-panel>
         </div>
-
         <div *ngIf="(testResultJson$ | async) as testResultJson; else loading">
           <div class="auto-pad" [@.disabled]="true">
             <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #testHistory
-                                 [(expanded)]="panels[6].isOpened" [@.disabled]="true">
+                                 [(expanded)]="panels[7].isOpened" [@.disabled]="true">
               <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
                                           collapsedHeight="80px">
                 <mat-panel-title>
@@ -682,10 +1041,9 @@
             </mat-expansion-panel>
           </div>
         </div>
-
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #techRecHistory
-                               [(expanded)]="panels[7].isOpened" [@.disabled]="true">
+                               [(expanded)]="panels[8].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
                                         collapsedHeight="80px">
               <mat-panel-title>
@@ -728,19 +1086,24 @@
         </div>
       </mat-accordion>
     </div>
-    <ng-template #ifPSV>
-      <div class="govuk-width-container left-pad">
-        <main class="govuk-main-wrapper">
-          <div class="govuk-grid-row">
-              <h2 class="govuk-heading-l">Currenly only HGV/TRL is supported please try HGV/TRL only!</h2>
-          </div>
-        </main>
-      </div>
-    </ng-template>
   </div>
+
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>
 
 <ng-template #loading>
   Loading stuff...
+</ng-template>
+
+<ng-template #ifPSV>
+  <div class="govuk-width-container left-pad">
+    <main class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <h2 class="govuk-heading-l">Currenly only HGV/TRL is supported please try HGV/TRL only!</h2>
+      </div>
+    </main>
+  </div>
 </ng-template>
 
 <br>
