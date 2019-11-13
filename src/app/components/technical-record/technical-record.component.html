@@ -5,13 +5,11 @@
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-thirds float-left">
               <h1 class="govuk-heading-xl title">Technical record</h1>
-              <button *ngIf="!isSubmit" class="govuk-button" data-module="govuk-button" (click)="adrEdit($event)">
+
+              <button class="govuk-button" data-module="govuk-button" (click)="adrEdit()">
                 {{ changeLabel }}
               </button>
-              <button *ngIf="isSubmit" class="govuk-button" data-module="govuk-button" (click)="onSubmit()">
-                Save technical record
-              </button>
-              <a id="cancel_link" [hidden]="!showCancel" (click)="cancelAddrEdit()"><span>Cancel</span></a>
+              <a id="cancel_link" [hidden]="!showCancel" (click)="cancelAddrEdit()">Cancel</a>
 
               <div class="grid-container-technical-record-status">
                 <div class="grid-item-technical-record-status rectangle"></div>
@@ -636,7 +634,7 @@
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">
                     Able to carry dangerous goods
-                    <span [ngClass]="{'hide': adrFormHidden}">
+                    <span [ngClass]="{'hide': isHidden}">
                       <div class="govuk-radios govuk-radios--inline" id="radioADR">
                         <div class="govuk-radios__item">
                           <input class="govuk-radios__input" id="changed-name" name="changed-name" type="radio" value="yes" (change)="switchAdrDisplay($event)">
@@ -654,53 +652,53 @@
                     </span>
                   </dt>
                   <dd id="test-ableToCarry" class="govuk-summary-list__value">
-                    <span [ngClass]="{'hide': adrDataHidden}" >{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}</span>
+                    <span [ngClass]="{'hide': isVisible}" >{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}</span>
                   </dd>
                   <dd class="govuk-summary-list__value"></dd>
                 </div>
 
                 <div>
 
-                  <fieldset class="govuk-fieldset" [ngClass]="{ 'adrDetailsForm': true,'hide': adrFormHidden }">
+                  <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                       <h2 class="govuk-heading-m">Applicant details</h2>
                     </legend>
 
-                    <form [formGroup]="adrDetailsForm" (ngSubmit)="adrEdit($event)">
+                    <form [ngClass]="{ 'adrDetailsForm': true,'hide': isHidden }" [formGroup]="adrDetailsForm" (ngSubmit)="onSubmit(adrDetailsForm)">
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsName">
                           Name
                         </label>
-                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsName" formControlName="applicantDetailsName" type="text">
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsName" name="applicantDetailsName" type="text">
                       </div>
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsStreet">
                           Street
                         </label>
-                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsStreet" formControlName="applicantDetailsStreet" type="text">
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsStreet" name="applicantDetailsStreet" type="text">
                       </div>
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsTown">
                           Town
                         </label>
-                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsTown" formControlName="applicantDetailsTown" type="text">
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsTown" name="applicantDetailsTown" type="text">
                       </div>
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsCity">
                           City
                         </label>
-                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsCity" formControlName="applicantDetailsCity" type="text">
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsCity" name="applicantDetailsCity" type="text">
                       </div>
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsPostcode">
                           Postcode
                         </label>
-                        <input class="govuk-input govuk-input--width-10" id="applicantDetailsPostcode" formControlName="applicantDetailsPostcode" type="text">
+                        <input class="govuk-input govuk-input--width-10" id="applicantDetailsPostcode" name="applicantDetailsPostcode" type="text">
                       </div>
 
                       <h2 class="govuk-heading-m">ADR details</h2>
@@ -709,11 +707,10 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="adrVehicleType">
                           Vehicle type
                         </label>
-                          <select class="govuk-select" id="adrVehicleType" formControlName="adrVehicleType">
-                              <option *ngFor="let type of techRecordsJson.metadata.adrDetails.vehicleDetails.typeFe">
-                                {{ type }}
-                              </option>
-                          </select>
+                        <select class="govuk-select" id="adrVehicleType" name="adrVehicleType">
+                          <option value="{{ vehicleTypes.HGV }}">{{ vehicleTypes.HGV | uppercase }}</option>
+                          <option value="{{ vehicleTypes.TRL }}">{{ vehicleTypes.TRL | uppercase }}</option>
+                        </select>
                       </div>
 
                       <div class="govuk-form-group">
@@ -725,7 +722,7 @@
                                 <label class="govuk-label govuk-date-input__label" for="approvalDate-day">
                                   Day
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="approvalDate-day" formControlName="approvalDate-day" type="number" pattern="[0-9]*">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="approvalDate-day" name="approvalDate-day" type="number" pattern="[0-9]*">
                               </div>
                             </div>
                             <div class="govuk-date-input__item">
@@ -733,7 +730,7 @@
                                 <label class="govuk-label govuk-date-input__label" for="approvalDate-month">
                                   Month
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="approvalDate-month" formControlName="approvalDate-month" type="number" pattern="[0-9]*">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="approvalDate-month" name="approvalDate-month" type="number" pattern="[0-9]*">
                               </div>
                             </div>
                             <div class="govuk-date-input__item">
@@ -741,7 +738,7 @@
                                 <label class="govuk-label govuk-date-input__label" for="approvalDate-year">
                                   Year
                                 </label>
-                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="approvalDate-year" formControlName="approvalDate-year" type="number" pattern="[0-9]*">
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="approvalDate-year" name="approvalDate-year" type="number" pattern="[0-9]*">
                               </div>
                             </div>
                           </div>
@@ -752,22 +749,20 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                           Permitted dangerous goods
                         </label>
-                          <select class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods">
-                            <option *ngFor="let permittedGoods of techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe">
-                              {{ permittedGoods }}
-                            </option>
-                          </select>
+                        <select class="govuk-select" id="permittedDangerousGoods" name="permittedDangerousGoods">
+                          <option value=""></option>
+                          <option value=""></option>
+                        </select>
                       </div>
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
                           Guidance notes
                         </label>
-                          <select class="govuk-select" id="additionalNotes" formControlName="additionalNotes">
-                              <option *ngFor="let note of techRecordsJson.metadata.adrDetails.additionalNotes.numberFe">
-                                {{ note }}
-                              </option>
-                          </select>
+                        <select class="govuk-select" id="additionalNotes" name="additionalNotes">
+                          <option value=""></option>
+                          <option value=""></option>
+                        </select>
                         <p><a class="add-a-guidance-note" href="#">Add a guidance note</a></p>
                       </div>
 
@@ -775,7 +770,7 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
                           ADR type approval number
                         </label>
-                        <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo" formControlName="adrTypeApprovalNo" type="text">
+                        <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo" name="adrTypeApprovalNo" type="text">
                       </div>
 
                       <div class="govuk-form-group">
@@ -785,13 +780,13 @@
 
                           <div class="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="tankManufacturer" formControlName="tankManufacturer" type="checkbox" value="tankManufacturer">
+                              <input class="govuk-checkboxes__input" id="tankManufacturer" name="tankManufacturer" type="checkbox" value="tankManufacturer">
                               <label class="govuk-label govuk-checkboxes__label" for="tankManufacturer">
                                 Manufacturer brake declaration
                               </label>
                             </div>
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="ownerTankManufacturer" formControlName="ownerTankManufacturer" type="checkbox" value="ownerTankManufacturer">
+                              <input class="govuk-checkboxes__input" id="ownerTankManufacturer" name="ownerTankManufacturer" type="checkbox" value="ownerTankManufacturer">
                               <label class="govuk-label govuk-checkboxes__label" for="ownerTankManufacturer">
                                 Owner/operator declaration
                               </label>
@@ -800,18 +795,18 @@
                         </fieldset>
                       </div>
 
-                      <div class="govuk-form-group" formGroupName="certificateReq">
+                      <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
                           <h2 class="govuk-heading-m">Certificate required</h2>
                           <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="certReqYes" formControlName="certificateReqYes" type="radio" value="yes">
+                              <input class="govuk-radios__input" id="certReqYes" name="certReqYes" type="radio" value="yes">
                               <label class="govuk-label govuk-radios__label" for="certReqYes">
                                 Yes
                               </label>
                             </div>
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="certReqNo" formControlName="certificateReqNo" type="radio" value="no">
+                              <input class="govuk-radios__input" id="certReqNo" name="certReqNo" type="radio" value="no">
                               <label class="govuk-label govuk-radios__label" for="certReqNo">
                                 No
                               </label>
@@ -827,7 +822,7 @@
                         <span id="more-detail-hint" class="govuk-hint">
                           Will not be present on the ADR certificate
                         </span>
-                        <textarea class="govuk-textarea" id="adr-more-detail" formControlName="adr-more-detail" rows="8" aria-describedby="adr-more-detail"></textarea>
+                        <textarea class="govuk-textarea" id="adr-more-detail" name="adr-more-detail" rows="8" aria-describedby="adr-more-detail"></textarea>
                       </div>
 
                     </form>
@@ -835,7 +830,7 @@
                   </fieldset>
                 </div>
 
-                <div [ngClass]="{ 'hide': adrDataHidden }">
+                <div [ngStyle]="{ 'display': isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? 'none':'block' }" [ngClass]="{'hide': isVisible}">
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Applicant details</h2>
                   </div>

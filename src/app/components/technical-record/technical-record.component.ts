@@ -7,8 +7,10 @@ import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultMo
 import {IAppState} from '../../store/state/app.state';
 import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
 import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {VEHICLE_TYPES} from '../../app.enums';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialogConfig} from "@angular/material/dialog";
+import {VehicleExistsDialogComponent} from "@app/vehicle-exists-dialog/vehicle-exists-dialog.component";
+import {VEHICLE_TYPES} from "@app/app.enums";
 
 @Component({
   selector: 'app-technical-record',
@@ -27,11 +29,10 @@ export class TechnicalRecordComponent implements OnInit {
                                                   {panel:'panel9',isOpened:false}];
   allOpened = false;
   color = 'red';
-  changeLabel = 'Change technical record';
-  isSubmit = false;
-  adrDataHidden: boolean;
-  adrFormHidden: boolean;
-  showCancel: boolean;
+  isVisible: boolean  = false;
+  isHidden: boolean   = true;
+  changeLabel: string = "Change technical record";
+  showCancel = false;
 
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
@@ -44,30 +45,21 @@ export class TechnicalRecordComponent implements OnInit {
   ngOnInit() {
     initAll();
 
-    this.adrDataHidden = false;
-    this.adrFormHidden = true;
-    this.showCancel = false;
-
     this.adrDetailsForm = new FormGroup({
-      'applicantDetailsName': new FormControl(null, Validators.required),
-      'applicantDetailsStreet': new FormControl(null, Validators.required),
-      'applicantDetailsTown': new FormControl(null, Validators.required),
-      'applicantDetailsCity': new FormControl(null, Validators.required),
-      'applicantDetailsPostcode': new FormControl(null, Validators.required),
+      'name': new FormControl(null, Validators.required),
+      'street': new FormControl(null, Validators.required),
+      'town': new FormControl(null, Validators.required),
+      'city': new FormControl(null, Validators.required),
+      'postcode': new FormControl(null, Validators.required),
       'adrVehicleType': new FormControl(null, Validators.required),
-      'approvalDate-day': new FormControl(null, Validators.required),
-      'approvalDate-month': new FormControl(null, Validators.required),
-      'approvalDate-year': new FormControl(null, Validators.required),
-      'permittedDangerousGoods': new FormControl(null, Validators.required),
-      'additionalNotes': new FormControl(null, Validators.required),
-      'adrTypeApprovalNo': new FormControl(null, Validators.required),
-      'tankManufacturer': new FormControl(null, Validators.required),
-      'ownerTankManufacturer': new FormControl(null, Validators.required),
-      'certificateReq': new FormGroup({
-        'certificateReqYes': new FormControl(null, Validators.required),
-        'certificateReqNo': new FormControl(null, Validators.required)
-      }),
-      'adr-more-detail': new FormControl(null, Validators.required)
+      'approvalDate-day': new FormControl (null, Validators.required),
+      'approvalDate-month': new FormControl (null, Validators.required),
+      'approvalDate-year': new FormControl (null, Validators.required),
+      'permittedDangerousGoods': new FormControl (null, Validators.required),
+      'additionalNotes': new FormControl (null, Validators.required),
+      'adrTypeApprovalNo': new FormControl (null, Validators.required)
+
+
     });
 
   }
@@ -120,5 +112,35 @@ export class TechnicalRecordComponent implements OnInit {
   onSubmit() {
     console.log(this.adrDetailsForm);
   }
+
+  adrEdit(){
+    this.isVisible = true;
+    this.isHidden= false;
+    this.changeLabel = "Save technical record";
+    this.showCancel = true;
+  }
+
+  cancelAddrEdit(){
+    this.showCancel = false;
+    this.changeLabel = "Change technical record";
+
+    // switch to view adr details if some
+  }
+
+  switchAdrDisplay($event){
+    if ( $event.currentTarget.value === 'yes' ) {
+      console.log('value', 'yes');
+    } else if ( $event.currentTarget.value === 'no' ) {
+      console.log('value', 'no');
+    }
+  }
+
+  onSubmit(adrDetails){
+
+    console.log(adrDetails.value);
+
+  }
+
+
 
 }
