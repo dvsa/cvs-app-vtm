@@ -348,7 +348,51 @@ dd {
     cursor: pointer;
   }
 
+  .show {
+    display:block;
+  }
+
+  .hide {
+    display:none;
+  }
+
+  #radioADR {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  #adrVehicleType {
+    width: 20rem;
+  }
+
+  #permittedDangerousGoods {
+    width: 30rem;
+  }
+
+  .add-a-guidance-note {
+    font-weight: 300 !important;
+    line-height: 23px !important;
+    float: initial !important;
+  }
+
+  #adr-more-detail {
+    width: 30rem;
+  }
+
 }
+
+a#cancel_link{
+  color:  $govuk-link-colour !important;
+  display: inline-block;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+}
+
+
+
+
+
+
 
 
 

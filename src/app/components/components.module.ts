@@ -6,7 +6,7 @@ import {TechnicalRecordComponent} from './technical-record/technical-record.comp
 import {TechnicalRecordService} from './technical-record/technical-record.service';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxJsonViewerModule} from 'ngx-json-viewer';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faCheckSquare, faCoffee, faPlus, faMinus, faSquare} from '@fortawesome/free-solid-svg-icons';
@@ -30,7 +30,8 @@ import { SharedModule } from '../shared/shared.module';
     IonicModule.forRoot(),
     FormsModule,
     SharedModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   declarations: [
     TechnicalRecordComponent, LandingPageComponent

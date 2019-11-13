@@ -1,12 +1,16 @@
 import {Component, HostBinding, OnInit} from '@angular/core';
 import {initAll} from 'govuk-frontend';
 import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {selectSelectedVehicleTestResultModel} from '../../store/selectors/VehicleTestResultModel.selectors';
 import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
 import {IAppState} from '../../store/state/app.state';
 import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
 import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MatDialogConfig} from "@angular/material/dialog";
+import {VehicleExistsDialogComponent} from "@app/vehicle-exists-dialog/vehicle-exists-dialog.component";
+import {VEHICLE_TYPES} from "@app/app.enums";
 
 @Component({
   selector: 'app-technical-record',
@@ -25,7 +29,13 @@ export class TechnicalRecordComponent implements OnInit {
                                                   {panel:'panel9',isOpened:false}];
   allOpened = false;
   color = 'red';
+  isVisible: boolean  = false;
+  isHidden: boolean   = true;
+  changeLabel: string = "Change technical record";
+  showCancel = false;
 
+  adrDetailsForm: FormGroup;
+  vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
 
   constructor(private _store: Store<IAppState>) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -34,6 +44,24 @@ export class TechnicalRecordComponent implements OnInit {
 
   ngOnInit() {
     initAll();
+
+    this.adrDetailsForm = new FormGroup({
+      'name': new FormControl(null, Validators.required),
+      'street': new FormControl(null, Validators.required),
+      'town': new FormControl(null, Validators.required),
+      'city': new FormControl(null, Validators.required),
+      'postcode': new FormControl(null, Validators.required),
+      'adrVehicleType': new FormControl(null, Validators.required),
+      'approvalDate-day': new FormControl (null, Validators.required),
+      'approvalDate-month': new FormControl (null, Validators.required),
+      'approvalDate-year': new FormControl (null, Validators.required),
+      'permittedDangerousGoods': new FormControl (null, Validators.required),
+      'additionalNotes': new FormControl (null, Validators.required),
+      'adrTypeApprovalNo': new FormControl (null, Validators.required)
+
+
+    });
+
   }
 
   public searchTechRecords(q: string) {
@@ -53,5 +81,35 @@ export class TechnicalRecordComponent implements OnInit {
   isNullOrEmpty(str){
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
+
+  adrEdit(){
+    this.isVisible = true;
+    this.isHidden= false;
+    this.changeLabel = "Save technical record";
+    this.showCancel = true;
+  }
+
+  cancelAddrEdit(){
+    this.showCancel = false;
+    this.changeLabel = "Change technical record";
+
+    // switch to view adr details if some
+  }
+
+  switchAdrDisplay($event){
+    if ( $event.currentTarget.value === 'yes' ) {
+      console.log('value', 'yes');
+    } else if ( $event.currentTarget.value === 'no' ) {
+      console.log('value', 'no');
+    }
+  }
+
+  onSubmit(adrDetails){
+
+    console.log(adrDetails.value);
+
+  }
+
+
 
 }

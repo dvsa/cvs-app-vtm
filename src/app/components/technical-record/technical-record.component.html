@@ -17,6 +17,12 @@
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-thirds float-left">
               <h1 class="govuk-heading-xl title">Technical record</h1>
+
+              <button class="govuk-button" data-module="govuk-button" (click)="adrEdit()">
+                {{ changeLabel }}
+              </button>
+              <a id="cancel_link" [hidden]="!showCancel" (click)="cancelAddrEdit()">Cancel</a>
+
               <div class="grid-container-technical-record-status">
                 <div class="grid-item-technical-record-status rectangle"></div>
                 <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status</div>
@@ -66,6 +72,7 @@
           </div>
         </dl>
       </div>
+
       <div class="auto-pad">
         <div class="open-close-all">
           <div></div>
@@ -633,336 +640,530 @@
               <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails)">
 
                 <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Able to carry dangerous goods </dt>
-                  <dd id="test-ableToCarry" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "Yes" : "No" }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Applicant details</h2>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Name </dt>
-                  <dd id="test-aplicantDetails-name" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.name) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.name }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Street </dt>
-                  <dd id="test-aplicantDetails-street" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.street) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.street }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Town </dt>
-                  <dd id="test-aplicantDetails-town" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.town) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.town }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> City </dt>
-                  <dd id="test-aplicantDetails-city" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.city) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.city }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Postcode </dt>
-                  <dd id="test-aplicantDetails-postcode" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.postcode) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.postcode }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">ADR details</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Vehicle type </dt>
-                  <dd id="test-ADR-type" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.vehicleDetails.type) ? "-" : techRecordsJson.techRecord[0].adrDetails.vehicleDetails.type }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Date processed </dt>
-                  <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.vehicleDetails.approvalDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.vehicleDetails.approvalDate | date :'dd/MM/y' }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Permitted dangerous goods </dt>
-                  <dd id="test-ADR-permittedDangerousGoods" class="govuk-summary-list__value">
-                    <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.permittedDangerousGoods) else hyphen">
-                      <div *ngFor="let perGood of techRecordsJson.techRecord[0].adrDetails.permittedDangerousGoods">
-                        <p>{{perGood}}</p>
-                      </div>
-                    </div>
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Compatibility group J </dt>
-                  <dd id="test-ADR-compatibilityGroupJ" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.compatibilityGroupJ) ? "-" : techRecordsJson.techRecord[0].adrDetails.compatibilityGroupJ }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Guidance notes </dt>
-                  <dd id="test-ADR-additionalNotes-number" class="govuk-summary-list__value">
-                    <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalNotes.number) else hyphen">
-                      <div *ngFor="let number of techRecordsJson.techRecord[0].adrDetails.additionalNotes.number">
-                        <p>{{number}}</p>
-                      </div>
-                    </div>
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> ADR type approval number </dt>
-                  <dd id="test-ADR-adrTypeApprovalNo" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.adrTypeApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.adrTypeApprovalNo }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Tank details</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Make </dt>
-                  <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturer) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturer }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Year of manufacture </dt>
-                  <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.yearOfManufacture) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.yearOfManufacture }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Manufacturer serial number </dt>
-                  <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturerSerialNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturerSerialNo }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Tank type approval number </dt>
-                  <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankTypeAppNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankTypeAppNo }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Code </dt>
-                  <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankCode) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankCode }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Substances permitted </dt>
-                  <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.substancesPermitted) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.substancesPermitted }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-<!--                <div class="govuk-summary-list__row">-->
-<!--                  <dt class="govuk-summary-list__key"> Statement reference number </dt>-->
-<!--                  <dd id="test-ADR-statement" class="govuk-summary-list__value">-->
-<!--                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.statement) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.statement }}-->
-<!--                  </dd>-->
-<!--                  <dd class="govuk-summary-list__value"></dd>-->
-<!--                </div>-->
-<!--                <div class="govuk-summary-list__row">-->
-<!--                  <dt class="govuk-summary-list__key"> Product list reference number </dt>-->
-<!--                  <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">-->
-<!--                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListRefNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListRefNo }}-->
-<!--                  </dd>-->
-<!--                  <dd class="govuk-summary-list__value"></dd>-->
-<!--                </div>-->
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> UN number </dt>
-                  <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListUnNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListUnNo }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Additional product list details </dt>
-                  <dd id="test-ADR-productList" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productList) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productList }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Special provisions </dt>
-                  <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.specialProvisions) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.specialProvisions }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Tank inspections</h2>
-                </div>
-
-                <table class="govuk-table table-tank">
-                  <thead class="govuk-table__head">
-                  <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">Inspection type</th>
-                    <th scope="col" class="govuk-table__header">Certificate number</th>
-                    <th scope="col" class="govuk-table__header">Expiry date</th>
-                  </tr>
-                  </thead>
-                  <tbody class="govuk-table__body">
-                    <tr class="govuk-table__row">
-                      <td id="test-tc2Type" class="govuk-table__cell">
-                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type }}
-                      </td>
-                      <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
-                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
-                      </td>
-                      <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
-                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
-                      </td>
-                    </tr>
-
-                    <tr class="govuk-table__row" *ngFor="let tc3Details of techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc3Details">
-                      <td id="test-tc3Type" class="govuk-table__cell">
-                        {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
-                      </td>
-                      <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
-                        {{ isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
-                      </td>
-                      <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
-                        {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Applied </dt>
-                  <dd id="test-memosApply" class="govuk-summary-list__value">
-                    <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.memosApply) else hyphen">
-                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.memosApply) ? "-" : techRecordsJson.techRecord[0].adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
-                    </div>
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Tank documents</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Document 1 </dt>
-                  <dd class="govuk-summary-list__value">
-                  </dd>
-                  <dd class="govuk-summary-list__value">
-                    <a class="govuk-link">View</a>
-                  </dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Battery list</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Applicable </dt>
-                  <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.listStatementApplicable) ? "-" : techRecordsJson.techRecord[0].adrDetails.listStatementApplicable ? "Yes":"No" }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Reference number  </dt>
-                  <dd id="test-batteryListNumber" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.batteryListNumber) ? "-" : techRecordsJson.techRecord[0].adrDetails.batteryListNumber }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Declarations seen</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Manufacturer brake declaration  </dt>
-                  <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeDeclarationsSeen) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeDeclarationsSeen ? "Yes":"No" }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Issuer </dt>
-                  <dd id="test-brakeDeclarationIssuer" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeDeclarationIssuer) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeDeclarationIssuer }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Brake endurance </dt>
-                  <dd id="test-brakeEndurance" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeEndurance) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeEndurance ? "Yes":"No" }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Break endurance weight (kg)  </dt>
-                  <dd id="test-weight" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Owner/operator declaration  </dt>
-                  <dd id="test-declarationsSeen" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.declarationsSeen) ? "-" : techRecordsJson.techRecord[0].adrDetails.declarationsSeen ? "Yes":"No" }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Certificate</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key"> Required  </dt>
-                  <dd id="test-guidanceNotes" class="govuk-summary-list__value">
-                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.guidanceNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
-                  </dd>
-                  <dd class="govuk-summary-list__value"></dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                  <h2 class="govuk-heading-m">Additional ADR details</h2>
-                </div>
-
-                <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">
-                  <span id="test-additionalExaminerNotes" class="notes-section">{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes}}</span>
+                    Able to carry dangerous goods
+                    <span [ngClass]="{'hide': isHidden}">
+                      <div class="govuk-radios govuk-radios--inline" id="radioADR">
+                        <div class="govuk-radios__item">
+                          <input class="govuk-radios__input" id="changed-name" name="changed-name" type="radio" value="yes" (change)="switchAdrDisplay($event)">
+                          <label class="govuk-label govuk-radios__label" for="changed-name">
+                            Yes
+                          </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                          <input class="govuk-radios__input" id="changed-name-2" name="changed-name" type="radio" value="no" (change)="switchAdrDisplay($event)">
+                          <label class="govuk-label govuk-radios__label" for="changed-name-2">
+                            No
+                          </label>
+                        </div>
+                      </div>
+                    </span>
                   </dt>
+                  <dd id="test-ableToCarry" class="govuk-summary-list__value">
+                    <span [ngClass]="{'hide': isVisible}" >{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}</span>
+                  </dd>
                   <dd class="govuk-summary-list__value"></dd>
-                  <dd class="govuk-summary-list__value"></dd>
+                </div>
+
+                <div>
+
+                  <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                      <h2 class="govuk-heading-m">Applicant details</h2>
+                    </legend>
+
+                    <form [ngClass]="{ 'adrDetailsForm': true,'hide': isHidden }" [formGroup]="adrDetailsForm" (ngSubmit)="onSubmit(adrDetailsForm)">
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsName">
+                          Name
+                        </label>
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsName" name="applicantDetailsName" type="text">
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsStreet">
+                          Street
+                        </label>
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsStreet" name="applicantDetailsStreet" type="text">
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsTown">
+                          Town
+                        </label>
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsTown" name="applicantDetailsTown" type="text">
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsCity">
+                          City
+                        </label>
+                        <input class="govuk-input govuk-input--width-20" id="applicantDetailsCity" name="applicantDetailsCity" type="text">
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsPostcode">
+                          Postcode
+                        </label>
+                        <input class="govuk-input govuk-input--width-10" id="applicantDetailsPostcode" name="applicantDetailsPostcode" type="text">
+                      </div>
+
+                      <h2 class="govuk-heading-m">ADR details</h2>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="adrVehicleType">
+                          Vehicle type
+                        </label>
+                        <select class="govuk-select" id="adrVehicleType" name="adrVehicleType">
+                          <option value="{{ vehicleTypes.HGV }}">{{ vehicleTypes.HGV | uppercase }}</option>
+                          <option value="{{ vehicleTypes.TRL }}">{{ vehicleTypes.TRL | uppercase }}</option>
+                        </select>
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" role="group" aria-describedby="approval-date">
+                          <span class="govuk-!-font-weight-bold">Date processed</span>
+                          <div class="govuk-date-input" id="approvalDate">
+                            <div class="govuk-date-input__item">
+                              <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="approvalDate-day">
+                                  Day
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="approvalDate-day" name="approvalDate-day" type="number" pattern="[0-9]*">
+                              </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                              <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="approvalDate-month">
+                                  Month
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="approvalDate-month" name="approvalDate-month" type="number" pattern="[0-9]*">
+                              </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                              <div class="govuk-form-group">
+                                <label class="govuk-label govuk-date-input__label" for="approvalDate-year">
+                                  Year
+                                </label>
+                                <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="approvalDate-year" name="approvalDate-year" type="number" pattern="[0-9]*">
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
+                          Permitted dangerous goods
+                        </label>
+                        <select class="govuk-select" id="permittedDangerousGoods" name="permittedDangerousGoods">
+                          <option value=""></option>
+                          <option value=""></option>
+                        </select>
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
+                          Guidance notes
+                        </label>
+                        <select class="govuk-select" id="additionalNotes" name="additionalNotes">
+                          <option value=""></option>
+                          <option value=""></option>
+                        </select>
+                        <p><a class="add-a-guidance-note" href="#">Add a guidance note</a></p>
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
+                          ADR type approval number
+                        </label>
+                        <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo" name="adrTypeApprovalNo" type="text">
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="nationality-hint nationality-error">
+
+                          <h2 class="govuk-heading-m">Declaration seen</h2>
+
+                          <div class="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                              <input class="govuk-checkboxes__input" id="tankManufacturer" name="tankManufacturer" type="checkbox" value="tankManufacturer">
+                              <label class="govuk-label govuk-checkboxes__label" for="tankManufacturer">
+                                Manufacturer brake declaration
+                              </label>
+                            </div>
+                            <div class="govuk-checkboxes__item">
+                              <input class="govuk-checkboxes__input" id="ownerTankManufacturer" name="ownerTankManufacturer" type="checkbox" value="ownerTankManufacturer">
+                              <label class="govuk-label govuk-checkboxes__label" for="ownerTankManufacturer">
+                                Owner/operator declaration
+                              </label>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
+                          <h2 class="govuk-heading-m">Certificate required</h2>
+                          <div class="govuk-radios govuk-radios--inline">
+                            <div class="govuk-radios__item">
+                              <input class="govuk-radios__input" id="certReqYes" name="certReqYes" type="radio" value="yes">
+                              <label class="govuk-label govuk-radios__label" for="certReqYes">
+                                Yes
+                              </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                              <input class="govuk-radios__input" id="certReqNo" name="certReqNo" type="radio" value="no">
+                              <label class="govuk-label govuk-radios__label" for="certReqNo">
+                                No
+                              </label>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="adr-more-detail">
+                          <h2 class="govuk-heading-m">Additional ADR details</h2>
+                        </label>
+                        <span id="more-detail-hint" class="govuk-hint">
+                          Will not be present on the ADR certificate
+                        </span>
+                        <textarea class="govuk-textarea" id="adr-more-detail" name="adr-more-detail" rows="8" aria-describedby="adr-more-detail"></textarea>
+                      </div>
+
+                    </form>
+
+                  </fieldset>
+                </div>
+
+                <div [ngStyle]="{ 'display': isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? 'none':'block' }" [ngClass]="{'hide': isVisible}">
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Applicant details</h2>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Name </dt>
+                    <dd id="test-aplicantDetails-name" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.name) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.name }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Street </dt>
+                    <dd id="test-aplicantDetails-street" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.street) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.street }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Town </dt>
+                    <dd id="test-aplicantDetails-town" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.town) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.town }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> City </dt>
+                    <dd id="test-aplicantDetails-city" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.city) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.city }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Postcode </dt>
+                    <dd id="test-aplicantDetails-postcode" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.applicantDetails.postcode) ? "-" : techRecordsJson.techRecord[0].adrDetails.applicantDetails.postcode }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">ADR details</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Vehicle type </dt>
+                    <dd id="test-ADR-type" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.vehicleDetails.type) ? "-" : techRecordsJson.techRecord[0].adrDetails.vehicleDetails.type }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Date processed </dt>
+                    <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.vehicleDetails.approvalDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.vehicleDetails.approvalDate | date :'dd/MM/y' }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Permitted dangerous goods </dt>
+                    <dd id="test-ADR-permittedDangerousGoods" class="govuk-summary-list__value">
+                      <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.permittedDangerousGoods) else hyphen">
+                        <div *ngFor="let perGood of techRecordsJson.techRecord[0].adrDetails.permittedDangerousGoods">
+                          <p>{{perGood}}</p>
+                        </div>
+                      </div>
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Compatibility group J </dt>
+                    <dd id="test-ADR-compatibilityGroupJ" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.compatibilityGroupJ) ? "-" : techRecordsJson.techRecord[0].adrDetails.compatibilityGroupJ }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Guidance notes </dt>
+                    <dd id="test-ADR-additionalNotes-number" class="govuk-summary-list__value">
+                      <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalNotes.number) else hyphen">
+                        <div *ngFor="let number of techRecordsJson.techRecord[0].adrDetails.additionalNotes.number">
+                          <p>{{number}}</p>
+                        </div>
+                      </div>
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> ADR type approval number </dt>
+                    <dd id="test-ADR-adrTypeApprovalNo" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.adrTypeApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.adrTypeApprovalNo }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Tank details</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Make </dt>
+                    <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturer) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturer }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Year of manufacture </dt>
+                    <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.yearOfManufacture) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.yearOfManufacture }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Manufacturer serial number </dt>
+                    <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturerSerialNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankManufacturerSerialNo }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Tank type approval number </dt>
+                    <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankTypeAppNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankTypeAppNo }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Code </dt>
+                    <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankCode) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tankCode }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Substances permitted </dt>
+                    <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.substancesPermitted) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.substancesPermitted }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+  <!--                <div class="govuk-summary-list__row">-->
+  <!--                  <dt class="govuk-summary-list__key"> Statement reference number </dt>-->
+  <!--                  <dd id="test-ADR-statement" class="govuk-summary-list__value">-->
+  <!--                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.statement) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.statement }}-->
+  <!--                  </dd>-->
+  <!--                  <dd class="govuk-summary-list__value"></dd>-->
+  <!--                </div>-->
+  <!--                <div class="govuk-summary-list__row">-->
+  <!--                  <dt class="govuk-summary-list__key"> Product list reference number </dt>-->
+  <!--                  <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">-->
+  <!--                    {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListRefNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListRefNo }}-->
+  <!--                  </dd>-->
+  <!--                  <dd class="govuk-summary-list__value"></dd>-->
+  <!--                </div>-->
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> UN number </dt>
+                    <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListUnNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productListUnNo }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Additional product list details </dt>
+                    <dd id="test-ADR-productList" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productList) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankStatement.productList }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Special provisions </dt>
+                    <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.specialProvisions) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.specialProvisions }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Tank inspections</h2>
+                  </div>
+
+                  <table class="govuk-table table-tank">
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                      <th scope="col" class="govuk-table__header">Inspection type</th>
+                      <th scope="col" class="govuk-table__header">Certificate number</th>
+                      <th scope="col" class="govuk-table__header">Expiry date</th>
+                    </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                      <tr class="govuk-table__row">
+                        <td id="test-tc2Type" class="govuk-table__cell">
+                          {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type }}
+                        </td>
+                        <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+                          {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
+                        </td>
+                        <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+                          {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
+                        </td>
+                      </tr>
+
+                      <tr class="govuk-table__row" *ngFor="let tc3Details of techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc3Details">
+                        <td id="test-tc3Type" class="govuk-table__cell">
+                          {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
+                        </td>
+                        <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
+                          {{ isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
+                        </td>
+                        <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
+                          {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Applied </dt>
+                    <dd id="test-memosApply" class="govuk-summary-list__value">
+                      <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.memosApply) else hyphen">
+                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.memosApply) ? "-" : techRecordsJson.techRecord[0].adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
+                      </div>
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Tank documents</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Document 1 </dt>
+                    <dd class="govuk-summary-list__value">
+                    </dd>
+                    <dd class="govuk-summary-list__value">
+                      <a class="govuk-link">View</a>
+                    </dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Battery list</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Applicable </dt>
+                    <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.listStatementApplicable) ? "-" : techRecordsJson.techRecord[0].adrDetails.listStatementApplicable ? "Yes":"No" }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Reference number  </dt>
+                    <dd id="test-batteryListNumber" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.batteryListNumber) ? "-" : techRecordsJson.techRecord[0].adrDetails.batteryListNumber }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Declarations seen</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Manufacturer brake declaration  </dt>
+                    <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeDeclarationsSeen) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeDeclarationsSeen ? "Yes":"No" }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Issuer </dt>
+                    <dd id="test-brakeDeclarationIssuer" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeDeclarationIssuer) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeDeclarationIssuer }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Brake endurance </dt>
+                    <dd id="test-brakeEndurance" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.brakeEndurance) ? "-" : techRecordsJson.techRecord[0].adrDetails.brakeEndurance ? "Yes":"No" }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Break endurance weight (kg)  </dt>
+                    <dd id="test-weight" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Owner/operator declaration  </dt>
+                    <dd id="test-declarationsSeen" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.declarationsSeen) ? "-" : techRecordsJson.techRecord[0].adrDetails.declarationsSeen ? "Yes":"No" }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Certificate</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key"> Required  </dt>
+                    <dd id="test-guidanceNotes" class="govuk-summary-list__value">
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.guidanceNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
+                    </dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <h2 class="govuk-heading-m">Additional ADR details</h2>
+                  </div>
+
+                  <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    <span id="test-additionalExaminerNotes" class="notes-section">{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes}}</span>
+                    </dt>
+                    <dd class="govuk-summary-list__value"></dd>
+                    <dd class="govuk-summary-list__value"></dd>
+                  </div>
                 </div>
 
               </div>
