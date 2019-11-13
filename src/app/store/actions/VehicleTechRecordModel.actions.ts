@@ -5,7 +5,9 @@ export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
   GetVehicleTechRecordModelSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModel Success',
   GetVehicleTechRecordModelHavingStatusAll = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll',
-  GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success'
+  GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success',
+  GetVehicleTechRecordModelHavingStatusAllDropDowns = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAllDropDowns',
+  GetVehicleTechRecordModelHavingStatusAllDropDownsSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAllDropDowns Success'
 }
 
 export class GetVehicleTechRecordModel implements Action {
@@ -32,5 +34,19 @@ export class GetVehicleTechRecordModelHavingStatusAllSuccess implements Action {
   }
 }
 
+export class GetVehicleTechRecordModelHavingStatusAllDropDowns implements Action {
+  public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllDropDowns;
+  constructor(public payload: any) {
+  }
+}
+
+export class GetVehicleTechRecordModelHavingStatusAllDropDownsSuccess implements Action {
+  public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllDropDownsSuccess;
+  constructor(public  payload: VehicleTechRecordModel) {
+  }
+}
+
+
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
-                                            GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess;
+                                            GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
+                                            GetVehicleTechRecordModelHavingStatusAllDropDowns | GetVehicleTechRecordModelHavingStatusAllDropDownsSuccess;

@@ -7,8 +7,8 @@ import {environment} from '../../../environments/environment';
 
 const routes = {
   techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`,
-  techRecordsAllStatuses: (searchIdentifier: string) =>
-    `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`
+  techRecordsAllStatuses: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all`,
+  techRecordsAllStatusesDropDowns: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`
 };
 
 const httpOptions = {
@@ -47,6 +47,16 @@ export class TechnicalRecordService {
 
     return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), {headers}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
+      catchError(this.handleError('getTechnicalRecords', []))
+    );
+  }
+
+  getTechnicalRecordsAllStatusesDropDowns(searchIdentifier: string): Observable<any> {
+    // tslint:disable-next-line:max-line-length
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
+
+    return this.httpClient.get<any[]>(routes.techRecordsAllStatusesDropDowns(searchIdentifier), { headers }).pipe(
+      tap(_ => console.log('fetched techRecordDropDowns', _)),
       catchError(this.handleError('getTechnicalRecords', []))
     );
   }
