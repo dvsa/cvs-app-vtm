@@ -54,12 +54,19 @@
             <dt class="govuk-summary-list__key main-details">
               Vehicle registration mark (VRM)
             </dt>
+<<<<<<< HEAD
             <dd id="test-vrm" class="govuk-summary-list__value">
               <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) else hyphen">
                 <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
                   {{vrmItem.vrm}}
                 </ul>
               </div>
+=======
+            <dd id="test-primaryVrm" class="govuk-summary-list__value">
+              <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
+                {{vrmItem.vrm}}
+              </ul>
+>>>>>>> feature/CVSB-9516
             </dd>
             <dd class="govuk-summary-list__value"></dd>
           </div>
@@ -68,11 +75,17 @@
               Previous VRM
             </dt>
             <dd id="test-secondaryVrms" class="govuk-summary-list__value">
+<<<<<<< HEAD
               <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) else hyphen">
                 <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
                   <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
                 </ul>
               </div>
+=======
+              <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
+                <span id="{{ 'test-primaryVrm-' + i }}">{{vrmItem.vrm}}</span>
+              </ul>
+>>>>>>> feature/CVSB-9516
             </dd>
             <dd class="govuk-summary-list__value"></dd>
           </div>
@@ -126,7 +139,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Date of first registration
                 </dt>
@@ -179,9 +192,11 @@
                 </dt>
                 <dd class="govuk-summary-list__value">
                   <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].axles) else hyphen">
-                    <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
-                      <div *ngIf="axel.parkingBrakeMrk">
-                        <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
+                    <div *ngIf="techRecordsJson.techRecord[0].axles.hasOwnProperty('parkingBrakeMrk') else hyphen">
+                      <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
+                        <div *ngIf="axel.parkingBrakeMrk">
+                          <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -241,7 +256,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Speed limiter exempt
                 </dt>
@@ -250,7 +265,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Tacho exempt
                 </dt>
@@ -1295,7 +1310,7 @@
               <tr class="govuk-table__row" *ngFor="let techRec of techRecordsJson.techRecord; let i = index">
                 <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.statusCode) ? "-" : techRec.statusCode.charAt(0).toUpperCase() + techRec.statusCode.substr(1).toLowerCase()}}</td>
                 <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.reasonForCreation) ? "-" : techRec.reasonForCreation | titlecase}}</td>
-                <td id="{{ 'test-createdBy-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.createdBy) ? "-" : techRec.createdBy | titlecase}}</td>
+                <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.createdByName) ? "-" : techRec.createdByName | titlecase}}</td>
                 <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.createdAt) ? "-" : techRec.createdAt | date :'dd/MM/y' }}</td>
                 <td class="govuk-table__cell"></td>
                 <td class="govuk-table__cell"></td>
