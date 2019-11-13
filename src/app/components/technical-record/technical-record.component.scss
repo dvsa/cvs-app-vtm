@@ -349,11 +349,11 @@ dd {
   }
 
   .show {
-    display:block;
+    display: block;
   }
 
   .hide {
-    display:none;
+    display: none;
   }
 
   #radioADR {
@@ -381,11 +381,24 @@ dd {
 
 }
 
-a#cancel_link{
-  color:  $govuk-link-colour !important;
-  display: inline-block;
-  margin-top: 1rem;
-  margin-left: 0.5rem;
+a#cancel_link {
+    color:  $govuk-link-colour !important;
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: -0.09px;
+    line-height: 40px;
+    text-align: right;
+    padding-left: 1.5rem;
+    cursor: pointer;
+
+    span {
+      border-bottom: solid;
+      border-bottom-width: 2px;
+    }
+}
+
+#test-ableToCarry {
+  width: 6rem;
 }
 
 
