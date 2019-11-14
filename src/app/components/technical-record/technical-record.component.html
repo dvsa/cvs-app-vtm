@@ -709,10 +709,15 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="adrVehicleType">
                           Vehicle type
                         </label>
-                        <select class="govuk-select" id="adrVehicleType" formControlName="adrVehicleType">
-                          <option value="{{ vehicleTypes.HGV }}">{{ vehicleTypes.HGV | uppercase }}</option>
-                          <option value="{{ vehicleTypes.TRL }}">{{ vehicleTypes.TRL | uppercase }}</option>
-                        </select>
+                        <div *ngIf="(techRecordDropDowns$ | async) as techRecordDropDowns">
+                          <select class="govuk-select" id="adrVehicleType" formControlName="adrVehicleType">
+<!--                        <div *ngIf="!isNullOrEmpty(techRecordDropDowns)">-->
+                              <option *ngFor="let type of techRecordDropDowns.metadata.adrDetails.vehicleDetails.typeFe">
+                                {{ type }}
+                              </option>
+<!--                        </div>-->
+                          </select>
+                        </div>
                       </div>
 
                       <div class="govuk-form-group">
@@ -751,10 +756,16 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                           Permitted dangerous goods
                         </label>
-                        <select class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods">
-                          <option value=""></option>
-                          <option value=""></option>
-                        </select>
+
+                        <div *ngIf="(techRecordDropDowns$ | async) as techRecordDropDowns">
+                          <select class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods">
+                          <!-- <div *ngIf="!isNullOrEmpty(techRecordDropDowns)">-->
+                            <option *ngFor="let type of techRecordDropDowns.metadata.adrDetails.permittedDangerousGoodsFe">
+                              {{ type }}
+                            </option>
+                            <!-- </div>-->
+                          </select>
+                        </div>
                       </div>
 
                       <div class="govuk-form-group">
