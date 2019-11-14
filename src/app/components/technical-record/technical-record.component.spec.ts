@@ -13,6 +13,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {SharedModule} from '../../shared/shared.module';
 import { GetVehicleTechRecordModelHavingStatusAll } from '../../store/actions/VehicleTechRecordModel.actions';
 import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 
 describe('TechnicalRecordComponent', () => {
@@ -28,6 +29,8 @@ describe('TechnicalRecordComponent', () => {
       imports: [
         HttpClientTestingModule,
         MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
         BrowserAnimationsModule,
         MaterialModule,
         SharedModule,
