@@ -15,8 +15,3 @@ export const selectSelectedVehicleTechRecordModel = createSelector(
   (state: IVehicleTechRecordModelState) => state.selectedVehicleTechRecordModel
 );
 
-export const selectVehicleTechRecordModelHavingStatusAllDropDowns = createSelector(
-  selectTechRecords,
-  (state: IVehicleTechRecordModelState) => state.vehicleTechRecordModel
-);
-
