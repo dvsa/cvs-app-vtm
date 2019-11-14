@@ -348,12 +348,8 @@ dd {
     cursor: pointer;
   }
 
-  .show {
-    display: block;
-  }
-
   .hide {
-    display: none;
+    display: none !important;
   }
 
   #radioADR {

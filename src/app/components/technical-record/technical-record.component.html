@@ -636,7 +636,7 @@
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">
                     Able to carry dangerous goods
-                    <span [ngClass]="{'hide': isHidden}">
+                    <span [ngClass]="{'hide': adrFormHidden}">
                       <div class="govuk-radios govuk-radios--inline" id="radioADR">
                         <div class="govuk-radios__item">
                           <input class="govuk-radios__input" id="changed-name" name="changed-name" type="radio" value="yes" (change)="switchAdrDisplay($event)">
@@ -654,14 +654,14 @@
                     </span>
                   </dt>
                   <dd id="test-ableToCarry" class="govuk-summary-list__value">
-                    <span [ngClass]="{'hide': isVisible}" >{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}</span>
+                    <span [ngClass]="{'hide': adrDataHidden}" >{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}</span>
                   </dd>
                   <dd class="govuk-summary-list__value"></dd>
                 </div>
 
                 <div>
 
-                  <fieldset class="govuk-fieldset" [ngClass]="{ 'adrDetailsForm': true,'hide': isHidden }">
+                  <fieldset class="govuk-fieldset" [ngClass]="{ 'adrDetailsForm': true,'hide': adrFormHidden }">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                       <h2 class="govuk-heading-m">Applicant details</h2>
                     </legend>
@@ -709,15 +709,11 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="adrVehicleType">
                           Vehicle type
                         </label>
-                        <div *ngIf="(techRecordDropDowns$ | async) as techRecordDropDowns">
                           <select class="govuk-select" id="adrVehicleType" formControlName="adrVehicleType">
-<!--                        <div *ngIf="!isNullOrEmpty(techRecordDropDowns)">-->
-                              <option *ngFor="let type of techRecordDropDowns.metadata.adrDetails.vehicleDetails.typeFe">
+                              <option *ngFor="let type of techRecordsJson.metadata.adrDetails.vehicleDetails.typeFe">
                                 {{ type }}
                               </option>
-<!--                        </div>-->
                           </select>
-                        </div>
                       </div>
 
                       <div class="govuk-form-group">
@@ -756,26 +752,22 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                           Permitted dangerous goods
                         </label>
-
-                        <div *ngIf="(techRecordDropDowns$ | async) as techRecordDropDowns">
                           <select class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods">
-                          <!-- <div *ngIf="!isNullOrEmpty(techRecordDropDowns)">-->
-                            <option *ngFor="let type of techRecordDropDowns.metadata.adrDetails.permittedDangerousGoodsFe">
-                              {{ type }}
+                            <option *ngFor="let permittedGoods of techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe">
+                              {{ permittedGoods }}
                             </option>
-                            <!-- </div>-->
                           </select>
-                        </div>
                       </div>
 
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
                           Guidance notes
                         </label>
-                        <select class="govuk-select" id="additionalNotes" formControlName="additionalNotes">
-                          <option value=""></option>
-                          <option value=""></option>
-                        </select>
+                          <select class="govuk-select" id="additionalNotes" formControlName="additionalNotes">
+                              <option *ngFor="let note of techRecordsJson.metadata.adrDetails.additionalNotes.numberFe">
+                                {{ note }}
+                              </option>
+                          </select>
                         <p><a class="add-a-guidance-note" href="#">Add a guidance note</a></p>
                       </div>
 
@@ -843,7 +835,7 @@
                   </fieldset>
                 </div>
 
-                <div [ngStyle]="{ 'display': isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) && isVisible ? 'none':'block' }">
+                <div [ngClass]="{ 'hide': adrDataHidden }">
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Applicant details</h2>
                   </div>
