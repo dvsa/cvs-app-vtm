@@ -7,11 +7,7 @@ import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultMo
 import {IAppState} from '../../store/state/app.state';
 import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
 import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
-import {selectVehicleTechRecordModelHavingStatusAllDropDowns} from '../../store/selectors/VehicleTechRecordModel.selectors';
-import {GetVehicleTechRecordModelHavingStatusAllDropDowns} from '../../store/actions/VehicleTechRecordModel.actions';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatDialogConfig} from "@angular/material/dialog";
-import {VehicleExistsDialogComponent} from "@app/vehicle-exists-dialog/vehicle-exists-dialog.component";
 import {VEHICLE_TYPES} from "@app/app.enums";
 
 @Component({
@@ -32,11 +28,11 @@ export class TechnicalRecordComponent implements OnInit {
                                                   {panel:'panel9',isOpened:false}];
   allOpened = false;
   color = 'red';
-  isVisible: boolean  = false;
-  isHidden: boolean   = true;
   changeLabel: string = "Change technical record";
-  showCancel: boolean = false;
   isSubmit: boolean   = false;
+  adrDataHidden: boolean;
+  adrFormHidden: boolean;
+  showCancel: boolean;
 
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
@@ -44,11 +40,14 @@ export class TechnicalRecordComponent implements OnInit {
   constructor(private _store: Store<IAppState>) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
-    this.techRecordDropDowns$ = this._store.select(selectVehicleTechRecordModelHavingStatusAllDropDowns);
   }
 
   ngOnInit() {
     initAll();
+
+    this.adrDataHidden = false;
+    this.adrFormHidden = true;
+    this.showCancel = false;
 
     this.adrDetailsForm = new FormGroup({
       'applicantDetailsName': new FormControl(null, Validators.required),
@@ -79,7 +78,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.searchIdentifier = q;
     this._store.dispatch(new GetVehicleTechRecordModelHavingStatusAll(q));
     this._store.dispatch(new GetVehicleTestResultModel(q));
-    this._store.dispatch(new GetVehicleTechRecordModelHavingStatusAllDropDowns(q));
   }
 
   public togglePanel() {
@@ -94,28 +92,29 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public adrEdit($event){
-    this.isVisible = false;
-    this.isHidden  = false;
     this.changeLabel = "Save technical record";
-    this.showCancel  = true;
-    this.isSubmit    = true;
+    this.isSubmit      = true;
+    this.adrDataHidden = true;
+    this.adrFormHidden = false;
+    this.showCancel    = true;
+
   }
 
   public cancelAddrEdit(){
-    this.showCancel = false;
-    this.changeLabel = "Change technical record";
-    this.isHidden = true;
-    this.isVisible = true;
-    this.isSubmit    = false;
+    this.changeLabel   = "Change technical record";
+    this.adrDataHidden = false;
+    this.adrFormHidden = true;
+    this.showCancel    = false;
+    this.isSubmit      = false;
   }
 
   public switchAdrDisplay($event){
     if ( $event.currentTarget.value === 'yes' ) {
-      console.log('value', 'yes');
-      //this.isHidden = false;
+      this.adrDataHidden = true;
+      this.adrFormHidden = false;
     } else if ( $event.currentTarget.value === 'no' ) {
-      console.log('value', 'no');
-      //this.isHidden = true;
+      this.adrDataHidden = false;
+      this.adrFormHidden = true;
     }
   }
 

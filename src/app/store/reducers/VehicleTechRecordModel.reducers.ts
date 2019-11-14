@@ -18,13 +18,6 @@ export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordM
       };
     }
 
-    case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllDropDownsSuccess: {
-      return {
-        ...state,
-        vehicleTechRecordModel: action.payload
-      };
-    }
-
     default:
       return state;
   }
