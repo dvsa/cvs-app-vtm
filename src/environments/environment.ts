@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   APIServerUri: 'http://localhost:3005',
-  APITestResultServerUri: 'http://localhost:3006'
+  APITestResultServerUri: 'http://localhost:3005'
 };
 
 /*

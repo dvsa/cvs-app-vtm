@@ -30,9 +30,9 @@ export class TechnicalRecordComponent implements OnInit {
   color = 'red';
   changeLabel: string = "Change technical record";
   isSubmit: boolean   = false;
-  adrDataHidden: boolean;
-  adrFormHidden: boolean;
-  showCancel: boolean;
+  adrData: boolean;
+  showCheck: boolean;
+  checkValue: string;
 
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
@@ -45,9 +45,8 @@ export class TechnicalRecordComponent implements OnInit {
   ngOnInit() {
     initAll();
 
-    this.adrDataHidden = false;
-    this.adrFormHidden = true;
-    this.showCancel = false;
+    this.adrData = true;
+    this.showCheck = false;
 
     this.adrDetailsForm = new FormGroup({
       'applicantDetailsName': new FormControl(null, Validators.required),
@@ -93,28 +92,27 @@ export class TechnicalRecordComponent implements OnInit {
 
   public adrEdit($event){
     this.changeLabel = "Save technical record";
-    this.isSubmit      = true;
-    this.adrDataHidden = true;
-    this.adrFormHidden = false;
-    this.showCancel    = true;
-
+    this.isSubmit    = true;
+     if (this.checkValue=='yes'){
+       this.adrData     = false;
+     }
+    this.showCheck   = !this.showCheck;
   }
 
   public cancelAddrEdit(){
     this.changeLabel   = "Change technical record";
-    this.adrDataHidden = false;
-    this.adrFormHidden = true;
-    this.showCancel    = false;
+    this.adrData       = true;
+    this.showCheck     = !this.showCheck;
     this.isSubmit      = false;
   }
 
   public switchAdrDisplay($event){
-    if ( $event.currentTarget.value === 'yes' ) {
-      this.adrDataHidden = true;
-      this.adrFormHidden = false;
-    } else if ( $event.currentTarget.value === 'no' ) {
-      this.adrDataHidden = false;
-      this.adrFormHidden = true;
+    if ($event.currentTarget.value === 'yes') {
+      this.adrData = !this.adrData;
+      console.log(this.checkValue=='yes');
+    } else if ($event.currentTarget.value === 'no') {
+      this.adrData = !this.adrData;
+      console.log(this.checkValue=='yes');
     }
   }
 
