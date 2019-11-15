@@ -23,7 +23,7 @@
               <button *ngIf="isSubmit" class="govuk-button" data-module="govuk-button" (click)="onSubmit()">
                 Save technical record
               </button>
-              <a id="cancel_link" [hidden]="!showCancel" (click)="cancelAddrEdit()"><span>Cancel</span></a>
+              <a id="cancel_link" [hidden]="adrData" (click)="cancelAddrEdit()"><span>Cancel</span></a>
 
               <div class="grid-container-technical-record-status">
                 <div class="grid-item-technical-record-status rectangle"></div>
@@ -643,37 +643,41 @@
             </mat-expansion-panel-header>
 
             <dl class="technical-record-sub-details govuk-summary-list adr-details">
-              <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails)">
-
                 <div class="govuk-summary-list__row">
                   <dt class="govuk-summary-list__key">
                     Able to carry dangerous goods
-                    <span [ngClass]="{'hide': adrFormHidden}">
-                      <div class="govuk-radios govuk-radios--inline" id="radioADR">
-                        <div class="govuk-radios__item">
-                          <input class="govuk-radios__input" id="changed-name" name="changed-name" type="radio" value="yes" (change)="switchAdrDisplay($event)">
-                          <label class="govuk-label govuk-radios__label" for="changed-name">
-                            Yes
-                          </label>
-                        </div>
-                        <div class="govuk-radios__item">
-                          <input class="govuk-radios__input" id="changed-name-2" name="changed-name" type="radio" value="no" (change)="switchAdrDisplay($event)">
-                          <label class="govuk-label govuk-radios__label" for="changed-name-2">
-                            No
-                          </label>
-                        </div>
-                      </div>
-                    </span>
                   </dt>
                   <dd id="test-ableToCarry" class="govuk-summary-list__value">
-                    <span [ngClass]="{'hide': adrDataHidden}" >{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}</span>
+
+                    <div *ngIf="!showCheck">
+                      <span>
+                        {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) ? "No" : "Yes" }}
+                      </span>
+                    </div>
+                    <div *ngIf="showCheck">
+                      <span>
+                        <div class="govuk-radios govuk-radios--inline" id="radioADR">
+                          <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="changed-name" name="changed-name" type="radio" [checked]="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails)" [(ngModel)]="checkValue" value="yes" (change)="switchAdrDisplay($event)">
+                            <label class="govuk-label govuk-radios__label" for="changed-name">
+                              Yes
+                            </label>
+                          </div>
+                          <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="changed-name-2" name="changed-name" type="radio" [checked]="isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails)" [(ngModel)]="checkValue" value="no" (change)="switchAdrDisplay($event)">
+                            <label class="govuk-label govuk-radios__label" for="changed-name-2">
+                              No
+                            </label>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
                   </dd>
                   <dd class="govuk-summary-list__value"></dd>
                 </div>
 
-                <div>
-
-                  <fieldset class="govuk-fieldset" [ngClass]="{ 'adrDetailsForm': true,'hide': adrFormHidden }">
+                <ng-template #adrForm>
+                  <fieldset class="govuk-fieldset" class="adrDetailsForm">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                       <h2 class="govuk-heading-m">Applicant details</h2>
                     </legend>
@@ -686,37 +690,31 @@
                         </label>
                         <input class="govuk-input govuk-input--width-20" id="applicantDetailsName" formControlName="applicantDetailsName" type="text">
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsStreet">
                           Street
                         </label>
                         <input class="govuk-input govuk-input--width-20" id="applicantDetailsStreet" formControlName="applicantDetailsStreet" type="text">
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsTown">
                           Town
                         </label>
                         <input class="govuk-input govuk-input--width-20" id="applicantDetailsTown" formControlName="applicantDetailsTown" type="text">
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsCity">
                           City
                         </label>
                         <input class="govuk-input govuk-input--width-20" id="applicantDetailsCity" formControlName="applicantDetailsCity" type="text">
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="applicantDetailsPostcode">
                           Postcode
                         </label>
                         <input class="govuk-input govuk-input--width-10" id="applicantDetailsPostcode" formControlName="applicantDetailsPostcode" type="text">
                       </div>
-
                       <h2 class="govuk-heading-m">ADR details</h2>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="adrVehicleType">
                           Vehicle type
@@ -727,7 +725,6 @@
                               </option>
                           </select>
                       </div>
-
                       <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" role="group" aria-describedby="approval-date">
                           <span class="govuk-!-font-weight-bold">Date processed</span>
@@ -759,7 +756,6 @@
                           </div>
                         </fieldset>
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                           Permitted dangerous goods
@@ -770,7 +766,6 @@
                             </option>
                           </select>
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
                           Guidance notes
@@ -782,14 +777,12 @@
                           </select>
                         <p><a class="add-a-guidance-note" href="#">Add a guidance note</a></p>
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
                           ADR type approval number
                         </label>
                         <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo" formControlName="adrTypeApprovalNo" type="text">
                       </div>
-
                       <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset" aria-describedby="nationality-hint nationality-error">
 
@@ -811,7 +804,6 @@
                           </div>
                         </fieldset>
                       </div>
-
                       <div class="govuk-form-group" formGroupName="certificateReq">
                         <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
                           <h2 class="govuk-heading-m">Certificate required</h2>
@@ -831,7 +823,6 @@
                           </div>
                         </fieldset>
                       </div>
-
                       <div class="govuk-form-group">
                         <label class="govuk-label govuk-!-font-weight-bold" for="adr-more-detail">
                           <h2 class="govuk-heading-m">Additional ADR details</h2>
@@ -843,11 +834,11 @@
                       </div>
 
                     </form>
-
                   </fieldset>
-                </div>
+                </ng-template>
 
-                <div [ngClass]="{ 'hide': adrDataHidden }">
+              <ng-container *ngIf="adrData else adrForm">
+                <ng-container *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) else space">
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Applicant details</h2>
                   </div>
@@ -886,11 +877,9 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">ADR details</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Vehicle type </dt>
                     <dd id="test-ADR-type" class="govuk-summary-list__value">
@@ -941,11 +930,9 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Tank details</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Make </dt>
                     <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
@@ -1023,20 +1010,19 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Tank inspections</h2>
                   </div>
-
-                  <table class="govuk-table table-tank">
-                    <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                      <th scope="col" class="govuk-table__header">Inspection type</th>
-                      <th scope="col" class="govuk-table__header">Certificate number</th>
-                      <th scope="col" class="govuk-table__header">Expiry date</th>
-                    </tr>
-                    </thead>
-                    <tbody class="govuk-table__body">
+                  <div class="govuk-summary-list__row">
+                    <table class="govuk-table table-tank">
+                      <thead class="govuk-table__head">
+                      <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">Inspection type</th>
+                        <th scope="col" class="govuk-table__header">Certificate number</th>
+                        <th scope="col" class="govuk-table__header">Expiry date</th>
+                      </tr>
+                      </thead>
+                      <tbody class="govuk-table__body">
                       <tr class="govuk-table__row">
                         <td id="test-tc2Type" class="govuk-table__cell">
                           {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type }}
@@ -1048,7 +1034,6 @@
                           {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
                         </td>
                       </tr>
-
                       <tr class="govuk-table__row" *ngFor="let tc3Details of techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc3Details">
                         <td id="test-tc3Type" class="govuk-table__cell">
                           {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
@@ -1060,13 +1045,12 @@
                           {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
                         </td>
                       </tr>
-                    </tbody>
-                  </table>
-
+                      </tbody>
+                    </table>
+                  </div>
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Applied </dt>
                     <dd id="test-memosApply" class="govuk-summary-list__value">
@@ -1076,11 +1060,9 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Tank documents</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Document 1 </dt>
                     <dd class="govuk-summary-list__value">
@@ -1089,11 +1071,9 @@
                       <a class="govuk-link">View</a>
                     </dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Battery list</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Applicable </dt>
                     <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
@@ -1101,7 +1081,6 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Reference number  </dt>
                     <dd id="test-batteryListNumber" class="govuk-summary-list__value">
@@ -1109,11 +1088,9 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Declarations seen</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Manufacturer brake declaration  </dt>
                     <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
@@ -1149,11 +1126,9 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Certificate</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Required  </dt>
                     <dd id="test-guidanceNotes" class="govuk-summary-list__value">
@@ -1161,11 +1136,9 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Additional ADR details</h2>
                   </div>
-
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
                     <span id="test-additionalExaminerNotes" class="notes-section">{{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes) ? "-" : techRecordsJson.techRecord[0].adrDetails.additionalExaminerNotes}}</span>
@@ -1173,9 +1146,8 @@
                     <dd class="govuk-summary-list__value"></dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-                </div>
-
-              </div>
+                </ng-container>
+              </ng-container>
             </dl>
           </mat-expansion-panel>
         </div>
@@ -1309,6 +1281,10 @@
       </mat-accordion>
     </div>
   </div>
+
+<ng-template #space>
+  <span></span>
+</ng-template>
 
 <ng-template #hyphen>
   <span>-</span>

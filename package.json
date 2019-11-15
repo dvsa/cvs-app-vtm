@@ -16,7 +16,8 @@
     "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist/cvs-app-vtm -p 4200 -c-1",
     "prepush": "npm run tslint && npm run build && npm test",
-    "tslint": "tslint src/**/*.ts"
+    "tslint": "tslint src/**/*.ts",
+    "security-checks": "git secrets --scan && git log -p | scanrepo"
   },
   "private": true,
   "dependencies": {

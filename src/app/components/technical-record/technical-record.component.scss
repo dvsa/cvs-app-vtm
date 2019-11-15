@@ -326,6 +326,10 @@ dd {
     width: 23rem;
   }
 
+  dd {
+    white-space: nowrap !important;
+  }
+
   ::ng-deep .table-tank thead tr th:nth-child(1), .table-tank tbody tr td:nth-child(1) {
     width: 23rem !important;
   }
@@ -373,6 +377,10 @@ dd {
 
   #adr-more-detail {
     width: 30rem;
+  }
+
+  fieldset {
+    border: none !important;
   }
 
 }
