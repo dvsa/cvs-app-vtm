@@ -1,15 +1,3 @@
-<div class="records-container mat-elevation-z8">
-  <div class="records-container-title">
-    <div class="records-container-title-spacer">
-      <div class="record-search-title-text">Technical records from searched (vin/vrm) {{searchIdentifier}}</div>
-      <div>
-        <ion-searchbar #q placeholder="Search (vin/vrm)" (keyup.enter)="searchTechRecords(q.value)">
-        </ion-searchbar>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
     <div *ngIf="techRecordsJson.techRecord[0].vehicleType =='hgv' || techRecordsJson.techRecord[0].vehicleType =='trl'  else ifPSV">
       <div class="govuk-width-container left-pad">

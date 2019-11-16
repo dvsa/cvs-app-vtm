@@ -1,10 +1,12 @@
-import { NgModule }             from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-import { TechnicalRecordComponent } from "../components/technical-record/technical-record.component";
+import {TechnicalRecordComponent} from '../components/technical-record/technical-record.component';
+import {TechnicalRecordSearchComponent} from './technical-record-search/technical-record-search.component';
 
 const secondaryRoutes: Routes = [
-  { path: 'technical-record', component: TechnicalRecordComponent }
+  {path: 'search', component: TechnicalRecordSearchComponent},
+  {path: 'technical-record', component: TechnicalRecordComponent}
 ];
 
 @NgModule({
@@ -15,4 +17,5 @@ const secondaryRoutes: Routes = [
     RouterModule
   ]
 })
-export class ComponentsRoutingModule { }
+export class ComponentsRoutingModule {
+}

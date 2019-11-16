@@ -1,0 +1,38 @@
+@import "node_modules/govuk-frontend/govuk/all";
+
+::ng-deep .govuk-width-container {
+
+  #header-nav-item{
+    margin-left:-9rem;
+    margin-top:0.3rem;
+  }
+
+  .govuk-header__link--homepage {
+    font-size: 24px !important;
+    color: govuk-colour("white");
+    font-weight: 700;
+    letter-spacing: 0.86px;
+    line-height: 29px;
+  }
+
+  ul {
+    position:absolute!important;
+    right:-10rem!important;
+    top:1rem!important;
+
+    a {
+      font-size: 16px !important;
+      color: govuk-colour("white");
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.57px;
+      line-height: 19px;
+    }
+
+  }
+
+  .govuk-header__logo {
+    width: 50% !important;
+  }
+
+}
