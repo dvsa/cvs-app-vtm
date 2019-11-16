@@ -29,7 +29,7 @@ import {appReducers} from '@app/store/reducers/app.reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecordModel.effects';
 import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
-import {environment} from '@environment/environment';
+import {environment} from '@environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
 import {CustomSerializer} from '@app/store/reducers';

@@ -3,6 +3,7 @@ import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/Vehi
 import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
 import {Store} from '@ngrx/store';
 import {IAppState} from '../../store/state/app.state';
+import {TechRecordModel} from '../../models/tech-record.model';
 
 @Component({
   selector: 'app-technical-record-search',
@@ -13,6 +14,7 @@ export class TechnicalRecordSearchComponent {
 
   searchIdentifier = '{none searched}';
   isLoading: boolean;
+  techRecords: TechRecordModel[];
   myError: { message: string } = { message : '' };
   constructor(private _store: Store<IAppState>) {
   }
