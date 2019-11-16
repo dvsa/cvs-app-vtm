@@ -41,9 +41,9 @@
     "@ionic-native/status-bar": "5.0.0-beta.15",
     "@ionic/angular": "4.0.0-beta.5",
     "@ngrx/core": "^1.2.0",
-    "@ngrx/effects": "^6.1.0",
-    "@ngrx/router-store": "^6.1.0",
-    "@ngrx/store-devtools": "^6.1.0",
+    "@ngrx/effects": "^6.1.2",
+    "@ngrx/router-store": "^6.1.2",
+    "@ngrx/store-devtools": "^6.1.2",
     "c-coffee-icon": "0.0.2",
     "core-js": "^2.5.3",
     "govuk-frontend": "^3.3.0",
@@ -116,7 +116,9 @@
     "moduleNameMapper": {
       "^@ionic/angular": "<rootDir>/node_modules/@ionic/angular/dist/index.js",
       "^@ionic/core/loader": "<rootDir>/node_modules/@ionic/core/dist/esm/es5/ionic.define.js",
-      "^@ionic/core/dist/ionic/svg": "<rootDir>/scripts/svgoverride.js"
+      "^@ionic/core/dist/ionic/svg": "<rootDir>/scripts/svgoverride.js",
+      "@app(.*)": "<rootDir>/@app$1.js",
+      "@environments(.*)": "<rootDir>/@environments$1.js"
     },
     "globals": {
       "ts-jest": {

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {RouterModule, RouteReuseStrategy, Routes} from '@angular/router';
+import {RouteReuseStrategy, Routes} from '@angular/router';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
@@ -28,10 +28,11 @@ import { StoreModule } from '@ngrx/store';
 import {appReducers} from '@app/store/reducers/app.reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecordModel.effects';
-import {StoreRouterConnectingModule} from '@ngrx/router-store';
-import {environment} from '@environment/environment';
+import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
+import {environment} from '@environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
+import {CustomSerializer} from '@app/store/reducers';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResul
     AuthenticationGuard,
     StatusBar,
     SplashScreen,
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],
   bootstrap: [AppComponent],
   exports: [ ],

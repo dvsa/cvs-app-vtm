@@ -1,0 +1,13 @@
+@import "node_modules/govuk-frontend/govuk/all";
+
+
+.govuk-main-wrapper {
+
+  #searchIdentifier {
+    background-color: govuk-colour("white");
+    border: 2px solid $govuk-input-border-colour;
+    width: 589px;
+    height: 40px;
+  }
+
+}
