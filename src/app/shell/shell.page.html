@@ -1,13 +1,14 @@
-<ion-app>
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      CVS VTM Application
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="grid-container">
+  <div class="header">
+    <app-header></app-header>
+  </div>
+  <div class="main">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="footer">
+    <app-footer></app-footer>
+  </div>
+</div>
 
-<ion-content>
-  <app-technical-record></app-technical-record>
-</ion-content>
-</ion-app>
+
+

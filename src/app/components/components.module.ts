@@ -15,9 +15,12 @@ import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {TestResultService} from '../components/technical-record/test-result.service';
-import { ComponentsRoutingModule } from './components-routing.module';
 import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
+import { TechnicalRecordSearchComponent } from './technical-record-search/technical-record-search.component';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+import {ComponentsRoutingModule} from './components-routing.module';
 
 @NgModule({
   imports: [
@@ -25,18 +28,18 @@ import { SharedModule } from '../shared/shared.module';
     MatExpansionModule,
     MatFormFieldModule,
     HttpClientModule,
-    NgxJsonViewerModule,
     ComponentsRoutingModule,
+    NgxJsonViewerModule,
     IonicModule.forRoot(),
     FormsModule,
     SharedModule,
     FontAwesomeModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent
+    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, FooterComponent, HeaderComponent
   ],
   exports: [
-    TechnicalRecordComponent, LandingPageComponent
+    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, HeaderComponent, FooterComponent
   ],
   providers: [TechnicalRecordService, TestResultService],
   entryComponents: [],
