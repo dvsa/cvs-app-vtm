@@ -8,7 +8,7 @@ import {IAppState} from '../../store/state/app.state';
 import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
 import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {VEHICLE_TYPES} from "@app/app.enums";
+import {VEHICLE_TYPES} from "../../app.enums";
 
 @Component({
   selector: 'app-technical-record',
