@@ -752,14 +752,14 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                           Permitted dangerous goods
                         </label>
-                          <select multiple class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods">
+                          <select multiple class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods" (change)="onPermittedChange($event)">
                             <option *ngFor="let permittedGoods of techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe" [value]="permittedGoods">
                               {{ permittedGoods }}
                             </option>
                           </select>
                       </div>
 
-                      <div class="govuk-inset-text">
+                      <div class="govuk-inset-text" *ngIf="compatibilityJ">
                         <div class="govuk-form-group" formGroupName="compatibilityGroupJ">
                           <fieldset class="govuk-fieldset">
                             <h2 class="govuk-heading-m">Compatibility group J</h2>
@@ -842,13 +842,13 @@
                           <h2 class="govuk-heading-m">Substances permitted</h2>
                           <div class="govuk-radios">
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="underTankCode" name="underTankCode" type="radio" value="Substances permitted under the tank code and any special provisions specified in 9 may be carried">
+                              <input class="govuk-radios__input" id="underTankCode" name="substancesPermitted" type="radio" value="Substances permitted under the tank code and any special provisions specified in 9 may be carried">
                               <label class="govuk-label govuk-radios__label" for="underTankCode">
                                 Substances permitted under the tank code and any special provisions specified in 9 may be carried
                               </label>
                             </div>
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="classUN" name="classUN" type="radio" value="Substances (Class UN number and if necessary packing group and proper shipping name) may be carried">
+                              <input class="govuk-radios__input" id="classUN" name="substancesPermitted" type="radio" value="Substances (Class UN number and if necessary packing group and proper shipping name) may be carried">
                               <label class="govuk-label govuk-radios__label" for="classUN">
                                 Substances (Class UN number and if necessary packing group and proper shipping name) may be carried
                               </label>
@@ -863,13 +863,13 @@
                             <h2 class="govuk-heading-m">Select</h2>
                             <div class="govuk-radios">
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="isStatement" formControlName="isStatement" type="radio" value="isStatement">
+                                <input class="govuk-radios__input" id="isStatement" formControlName="isStatement" type="radio" value="isStatement" (change)="selectReferenceNumberChange($event)">
                                 <label class="govuk-label govuk-radios__label" for="isStatement">
                                   Statement
                                 </label>
                               </div>
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="isProductListRefNo" formControlName="isProductListRefNo" type="radio" value="isProductListRefNo">
+                                <input class="govuk-radios__input" id="isProductListRefNo" formControlName="isStatement" type="radio" value="isProductListRefNo" (change)="selectReferenceNumberChange($event)">
                                 <label class="govuk-label govuk-radios__label" for="isProductListRefNo">
                                   Product List
                                 </label>
@@ -878,14 +878,14 @@
                           </fieldset>
                         </div>
 
-                        <div class="govuk-form-group">
+                        <div class="govuk-form-group" *ngIf="isStatement">
                           <label class="govuk-label govuk-!-font-weight-bold" for="statement">
                             Reference number
                           </label>
                           <input class="govuk-input govuk-input--width-10" id="statement" formControlName="statement" type="number">
                         </div>
 
-                        <div class="govuk-form-group">
+                        <div class="govuk-form-group" *ngIf="!isStatement">
                           <label class="govuk-label govuk-!-font-weight-bold" for="productListRefNo">
                             Reference number
                           </label>
@@ -898,7 +898,7 @@
                           </label>
                           <div class="form-group"
                           *ngFor="let unControl of adrDetailsForm.get('productListUnNo').controls; let i = index">
-                            <input class="govuk-input govuk-input--width-5" id="productListUnNo" [formControlName]="i" type="number"><br>
+                            <p><input class="govuk-input govuk-input--width-5" id="productListUnNo" [formControlName]="i" type="number"></p>
                           </div>
                           <p><a class="add-a-un-number" (click)="onAddUN()">Add a UN number</a></p>
                         </div>
@@ -923,18 +923,28 @@
                       <label class="govuk-label govuk-!-font-weight-bold">
                         Initial
                       </label>
+
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="tc2Type">
+                          Inspection type
+                        </label>
+                        <select class="govuk-select" id="tc2Type" formControlName="tc2Type">
+                          <option value="initial">Initial</option>
+                        </select>
+                      </div>
+
                       <div class="govuk-inset-text">
                         <div class="govuk-form-group">
-                          <label class="govuk-label govuk-!-font-weight-bold" for="tc3PeriodicNumber">
+                          <label class="govuk-label govuk-!-font-weight-bold" for="tc2IntermediateApprovalNo">
                             Certificate number
                           </label>
-                          <input class="govuk-input govuk-input--width-10" id="tc3PeriodicNumber" formControlName="tc3PeriodicNumber" type="number">
+                          <input class="govuk-input govuk-input--width-10" id="tc2IntermediateApprovalNo" formControlName="tc2IntermediateApprovalNo" type="number">
                         </div>
 
-                        <div class="govuk-form-group" formGroupName="tc3PeriodicExpiryDate">
+                        <div class="govuk-form-group" formGroupName="tc2IntermediateExpiryDate">
                           <fieldset class="govuk-fieldset" role="group">
                             <span class="govuk-!-font-weight-bold">Expiry date</span>
-                            <div class="govuk-date-input" id="tc3PeriodicExpiryDate">
+                            <div class="govuk-date-input" id="tc2IntermediateExpiryDate">
                               <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
                                   <label class="govuk-label govuk-date-input__label" for="dayExpiry">
@@ -981,38 +991,38 @@
                         </div>
 
                         <div class="govuk-form-group">
-                          <label class="govuk-label govuk-!-font-weight-bold" for="tc3PeriodicNumberSubseq">
+                          <label class="govuk-label govuk-!-font-weight-bold" for="tc3PeriodicNumber">
                             Certificate number
                           </label>
-                          <input class="govuk-input govuk-input--width-10" id="tc3PeriodicNumberSubseq" formControlName="tc3PeriodicNumberSubseq" type="number">
+                          <input class="govuk-input govuk-input--width-10" id="tc3PeriodicNumber" formControlName="tc3PeriodicNumber" type="number">
                         </div>
 
-                        <div class="govuk-form-group" formGroupName="tc3PeriodicExpiryDateSubseq">
+                        <div class="govuk-form-group" formGroupName="tc3PeriodicExpiryDate">
                           <fieldset class="govuk-fieldset" role="group">
                             <span class="govuk-!-font-weight-bold">Expiry date</span>
                             <div class="govuk-date-input" id="tc3PeriodicExpiryDateSubseq">
                               <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
-                                  <label class="govuk-label govuk-date-input__label" for="dayExpirySubseq">
+                                  <label class="govuk-label govuk-date-input__label" for="dayExpiryTc3">
                                     Day
                                   </label>
-                                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dayExpirySubseq" formControlName="dayExpirySubseq" type="number" pattern="[0-9]*">
+                                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dayExpiryTc3" formControlName="dayExpiryTc3" type="number" pattern="[0-9]*">
                                 </div>
                               </div>
                               <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
-                                  <label class="govuk-label govuk-date-input__label" for="monthExpirySubseq">
+                                  <label class="govuk-label govuk-date-input__label" for="monthExpiryTc3">
                                     Month
                                   </label>
-                                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="monthExpirySubseq" formControlName="monthExpirySubseq" type="number" pattern="[0-9]*">
+                                  <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="monthExpiryTc3" formControlName="monthExpiryTc3" type="number" pattern="[0-9]*">
                                 </div>
                               </div>
                               <div class="govuk-date-input__item">
                                 <div class="govuk-form-group">
-                                  <label class="govuk-label govuk-date-input__label" for="yearExpirySubseq">
+                                  <label class="govuk-label govuk-date-input__label" for="yearExpiryTc3">
                                     Year
                                   </label>
-                                  <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="yearExpirySubseq" formControlName="yearExpirySubseq" type="number" pattern="[0-9]*">
+                                  <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="yearExpiryTc3" formControlName="yearExpiryTc3" type="number" pattern="[0-9]*">
                                 </div>
                               </div>
                             </div>
@@ -1054,13 +1064,13 @@
                             <h2 class="govuk-heading-m">Battery list applicable</h2>
                             <div class="govuk-radios govuk-radios--inline">
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="applicable" formControlName="applicable" type="radio" value="applicable">
+                                <input class="govuk-radios__input" id="applicable" formControlName="applicable" type="radio" value="applicable" (change)="onBatteryApplicableChange($event)">
                                 <label class="govuk-label govuk-radios__label" for="applicable">
                                   Yes
                                 </label>
                               </div>
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="notApplicable" formControlName="notApplicable" type="radio" value="notApplicable">
+                                <input class="govuk-radios__input" id="notApplicable" formControlName="applicable" type="radio" value="notApplicable" (change)="onBatteryApplicableChange($event)">
                                 <label class="govuk-label govuk-radios__label" for="notApplicable">
                                   No
                                 </label>
@@ -1070,7 +1080,7 @@
                         </div>
                       </div>
 
-                      <div class="govuk-inset-text">
+                      <div class="govuk-inset-text" *ngIf="isBatteryApplicable">
                         <div class="govuk-form-group">
                           <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
                             Reference number
@@ -1087,25 +1097,25 @@
 
                           <div class="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" formControlName="brakeDeclarationsSeen" type="checkbox" value="brakeDeclarationsSeen">
+                              <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" formControlName="brakeDeclarationsSeen" type="checkbox" value="true" (change)="onManufactureBreakChange($event)">
                               <label class="govuk-label govuk-checkboxes__label" for="brakeDeclarationsSeen">
                                 Manufacturer brake declaration
                               </label>
                             </div>
-                            <div class="govuk-inset-text">
-                              <div class="govuk-form-group">
+                            <div class="govuk-inset-text" *ngIf="isBrakeDeclarationsSeen">
+                              <div class="govuk-form-group" >
                                 <label class="govuk-label govuk-!-font-weight-bold" for="brakeDeclarationIssuer">
                                   Issuer
                                 </label>
                                 <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer" formControlName="brakeDeclarationIssuer" type="text">
                               </div>
                               <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="brakeEndurance" formControlName="brakeEndurance" type="checkbox" value="brakeEndurance">
-                                <label class="govuk-label govuk-checkboxes__label" for="brakeDeclarationsSeen">
+                                <input class="govuk-checkboxes__input" id="brakeEndurance" formControlName="brakeEndurance" type="checkbox" value="true" (change)="onBrakeEnduranceChange($event)">
+                                <label class="govuk-label govuk-checkboxes__label" for="brakeEndurance">
                                   Brake endurance
                                 </label>
                               </div>
-                              <div class="govuk-inset-text">
+                              <div class="govuk-inset-text" *ngIf="isBrakeEndurance">
                                 <div class="govuk-form-group">
                                   <label class="govuk-label govuk-!-font-weight-bold" for="weight">
                                     Weight (kg)
@@ -1115,7 +1125,7 @@
                               </div>
                               </div>
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="declarationsSeen" formControlName="declarationsSeen" type="checkbox" value="declarationsSeen">
+                              <input class="govuk-checkboxes__input" id="declarationsSeen" formControlName="declarationsSeen" type="checkbox" value="true">
                               <label class="govuk-label govuk-checkboxes__label" for="declarationsSeen">
                                 Owner/operator declaration
                               </label>
@@ -1329,44 +1339,44 @@
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
+
                   <div class="govuk-summary-list__row">
-                    <h2 class="govuk-heading-m">Tank inspections</h2>
+                      <h2 class="govuk-heading-m">Tank inspections</h2>
+                      <table class="govuk-table table-tank">
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                          <th scope="col" class="govuk-table__header">Inspection type</th>
+                          <th scope="col" class="govuk-table__header">Certificate number</th>
+                          <th scope="col" class="govuk-table__header">Expiry date</th>
+                        </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                        <tr class="govuk-table__row">
+                          <td id="test-tc2Type" class="govuk-table__cell">
+                            {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type }}
+                          </td>
+                          <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+                            {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
+                          </td>
+                          <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+                            {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
+                          </td>
+                        </tr>
+                        <tr class="govuk-table__row" *ngFor="let tc3Details of techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc3Details">
+                          <td id="test-tc3Type" class="govuk-table__cell">
+                            {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
+                          </td>
+                          <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
+                            {{ isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
+                          </td>
+                          <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
+                            {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
                   </div>
-                  <div class="govuk-summary-list__row">
-                    <table class="govuk-table table-tank">
-                      <thead class="govuk-table__head">
-                      <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header">Inspection type</th>
-                        <th scope="col" class="govuk-table__header">Certificate number</th>
-                        <th scope="col" class="govuk-table__header">Expiry date</th>
-                      </tr>
-                      </thead>
-                      <tbody class="govuk-table__body">
-                      <tr class="govuk-table__row">
-                        <td id="test-tc2Type" class="govuk-table__cell">
-                          {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2Type }}
-                        </td>
-                        <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
-                          {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
-                        </td>
-                        <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
-                          {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
-                        </td>
-                      </tr>
-                      <tr class="govuk-table__row" *ngFor="let tc3Details of techRecordsJson.techRecord[0].adrDetails.tank.tankDetails.tc3Details">
-                        <td id="test-tc3Type" class="govuk-table__cell">
-                          {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
-                        </td>
-                        <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
-                          {{ isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
-                        </td>
-                        <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
-                          {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
+
                   <div class="govuk-summary-list__row">
                     <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
                   </div>

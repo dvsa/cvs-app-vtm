@@ -24,7 +24,6 @@ export class TechnicalRecordComponent implements OnInit {
   searchIdentifier = '{none searched}';
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
-  techRecordDropDowns$: Observable<any>;
   panels: {panel: string, isOpened: boolean}[] = [{panel: 'panel1', isOpened: false}, {panel: 'panel2', isOpened: false},{panel: 'panel3', isOpened: false},{panel: 'panel4', isOpened: false},
                                                   {panel: 'panel5', isOpened: false},{panel: 'panel6', isOpened: false},{panel: 'panel7', isOpened: false},{panel: 'panel8', isOpened: false},
                                                   {panel:'panel9',isOpened:false}];
@@ -36,6 +35,12 @@ export class TechnicalRecordComponent implements OnInit {
   showCheck: boolean  = false;
   checkValue: string;
   subsequentInspection: boolean = false;
+  compatibilityJ: boolean = false;
+  isStatement: boolean = false;
+  isBatteryApplicable: boolean = false;
+  isBrakeDeclarationsSeen: boolean = false;
+  isBrakeEndurance: boolean = false;
+
   techRecords: TechRecordModel[];
   techRecordsSubscription: Subscription;
 
@@ -98,19 +103,20 @@ export class TechnicalRecordComponent implements OnInit {
 
       'productList': new FormControl (null, [ Validators.required, Validators.maxLength(1500) ]),
       'specialProvisions': new FormControl (null, [ Validators.required, Validators.maxLength(1024) ]),
-      'tc3PeriodicNumber': new FormControl (null, [ Validators.required, Validators.maxLength(75) ]),
-      'tc3PeriodicExpiryDate': new FormGroup({
+      'tc2Type':  new FormControl (null, Validators.required),
+      'tc2IntermediateApprovalNo': new FormControl (null, [ Validators.required, Validators.maxLength(75) ]),
+      'tc2IntermediateExpiryDate': new FormGroup({
         'dayExpiry': new FormControl(null, Validators.required),
         'monthExpiry': new FormControl(null, Validators.required),
         'yearExpiry': new FormControl(null, Validators.required),
       }, CustomValidators.dateValidator),
 
       'tc3Type': new FormControl(null, Validators.required),
-      'tc3PeriodicNumberSubseq': new FormControl (null, [ Validators.required, Validators.maxLength(75) ]),
-      'tc3PeriodicExpiryDateSubseq': new FormGroup({
-        'dayExpirySubseq': new FormControl(null, Validators.required),
-        'monthExpirySubseq': new FormControl(null, Validators.required),
-        'yearExpirySubseq': new FormControl(null, Validators.required),
+      'tc3PeriodicNumber': new FormControl (null, [ Validators.required, Validators.maxLength(75) ]),
+      'tc3PeriodicExpiryDate': new FormGroup({
+        'dayExpiryTc3': new FormControl(null, Validators.required),
+        'monthExpiryTc3': new FormControl(null, Validators.required),
+        'yearExpiryTc3': new FormControl(null, Validators.required),
       }, CustomValidators.dateValidator),
 
       'memosApply': new FormGroup({
@@ -193,7 +199,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   addAGuidanceNote(){
-
+   // see ticket CVSB-9220
   }
 
   addSubsequentInspection(){
@@ -204,8 +210,31 @@ export class TechnicalRecordComponent implements OnInit {
     console.log($event.currentTarget.value);
   }
 
+  onPermittedChange($event){
+    this.compatibilityJ = $event.currentTarget.value=="6: 'Explosives (type 2)'" || $event.currentTarget.value=="7: 'Explosives (type 3)'";
+  }
+
+  selectReferenceNumberChange($event){
+    this.isStatement = $event.currentTarget.value == "isStatement";
+  }
+
+  onBatteryApplicableChange($event){
+    this.isBatteryApplicable = $event.currentTarget.value == "applicable";
+  }
+
+  onManufactureBreakChange($event){
+    console.log($event.currentTarget.value);
+    this.isBrakeDeclarationsSeen = $event.currentTarget.value == "true";
+  }
+
+  onBrakeEnduranceChange($event){
+    this.isBrakeEndurance = $event.currentTarget.value == "true";
+  }
+
   onSubmit(){
     // before PUT don't forget: Date (DD MM YYYY), converted to YYYY-MM-DD upon saving (as per ACs) -> this.adrDetailsForm.approvalDate
+    // weight in KG -> divide by 1000
+
     console.log(this.adrDetailsForm);
   }
 
