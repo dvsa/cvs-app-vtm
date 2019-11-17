@@ -8,7 +8,11 @@ import {IAppState} from '../../store/state/app.state';
 import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
 import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+<<<<<<< HEAD
 import {VEHICLE_TYPES} from "../../app.enums";
+=======
+import {VEHICLE_TYPES} from "@app/app.enums";
+>>>>>>> 7720020bd7f54faa524454e60a284ef7d7160db9
 
 @Component({
   selector: 'app-technical-record',
