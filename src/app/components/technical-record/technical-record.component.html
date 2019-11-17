@@ -1,15 +1,3 @@
-<div class="records-container mat-elevation-z8">
-  <div class="records-container-title">
-    <div class="records-container-title-spacer">
-      <div class="record-search-title-text">Technical records from searched (vin/vrm) {{searchIdentifier}}</div>
-      <div>
-        <ion-searchbar #q placeholder="Search (vin/vrm)" (keyup.enter)="searchTechRecords(q.value)">
-        </ion-searchbar>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
     <div *ngIf="techRecordsJson.techRecord[0].vehicleType =='hgv' || techRecordsJson.techRecord[0].vehicleType =='trl'  else ifPSV">
       <div class="govuk-width-container left-pad">
@@ -128,7 +116,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Date of first registration
                 </dt>
@@ -182,9 +170,9 @@
                 <dd class="govuk-summary-list__value">
                   <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].axles) else hyphen">
                     <div *ngIf="techRecordsJson.techRecord[0].axles.hasOwnProperty('parkingBrakeMrk') else hyphen">
-                      <div *ngFor="let axel of techRecordsJson.techRecord[0].axles; let i = index">
+                      <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
                         <div *ngIf="axel.parkingBrakeMrk">
-                          <span id="{{ 'test-axleNo-' + i }}">Axle {{axel.axleNumber}}</span>
+                          <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
                         </div>
                       </div>
                     </div>
@@ -245,7 +233,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Speed limiter exempt
                 </dt>
@@ -254,7 +242,7 @@
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
-              <div class="govuk-summary-list__row">
+              <div class="govuk-summary-list__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <dt class="govuk-summary-list__key">
                   Tacho exempt
                 </dt>
@@ -1600,7 +1588,7 @@
               <tr class="govuk-table__row" *ngFor="let techRec of techRecordsJson.techRecord; let i = index">
                 <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.statusCode) ? "-" : techRec.statusCode.charAt(0).toUpperCase() + techRec.statusCode.substr(1).toLowerCase()}}</td>
                 <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.reasonForCreation) ? "-" : techRec.reasonForCreation | titlecase}}</td>
-                <td id="{{ 'test-createdBy-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.createdBy) ? "-" : techRec.createdBy | titlecase}}</td>
+                <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.createdByName) ? "-" : techRec.createdByName | titlecase}}</td>
                 <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">{{ isNullOrEmpty(techRec.createdAt) ? "-" : techRec.createdAt | date :'dd/MM/y' }}</td>
                 <td class="govuk-table__cell"></td>
                 <td class="govuk-table__cell"></td>

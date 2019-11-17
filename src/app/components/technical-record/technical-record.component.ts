@@ -15,7 +15,7 @@ import {CustomValidators} from "@app/components/technical-record/custom-validato
 @Component({
   selector: 'app-technical-record',
   templateUrl: './technical-record.component.html',
-  styleUrls: ['./technical-record.component.scss']
+  styleUrls: ['./technical-record.component.scss'],
 })
 export class TechnicalRecordComponent implements OnInit {
   @HostBinding('@.disabled')
@@ -23,8 +23,8 @@ export class TechnicalRecordComponent implements OnInit {
   isLoading: boolean;
   searchIdentifier = '{none searched}';
   techRecordsJson$: Observable<any>;
-
   testResultJson$: Observable<any>;
+  techRecordDropDowns$: Observable<any>;
   panels: {panel: string, isOpened: boolean}[] = [{panel: 'panel1', isOpened: false}, {panel: 'panel2', isOpened: false},{panel: 'panel3', isOpened: false},{panel: 'panel4', isOpened: false},
                                                   {panel: 'panel5', isOpened: false},{panel: 'panel6', isOpened: false},{panel: 'panel7', isOpened: false},{panel: 'panel8', isOpened: false},
                                                   {panel:'panel9',isOpened:false}];

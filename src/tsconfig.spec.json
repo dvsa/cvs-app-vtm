@@ -9,7 +9,7 @@
       "@app/*": [
         "./app/*"
       ],
-      "@environment/*": [
+      "@environments/*": [
         "./environments/*"
       ]
     },

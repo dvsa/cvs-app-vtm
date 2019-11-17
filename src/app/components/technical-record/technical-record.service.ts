@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {map, tap, catchError} from 'rxjs/operators'
+import {map, tap, catchError} from 'rxjs/operators';
 import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 const routes = {
   techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`,
@@ -12,7 +12,7 @@ const routes = {
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
-}
+};
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,7 @@ export class TechnicalRecordService {
     // tslint:disable-next-line:max-line-length
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
 
-    return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), { headers }).pipe(
+    return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), {headers}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
       catchError(this.handleError('getTechnicalRecords', []))
     );
