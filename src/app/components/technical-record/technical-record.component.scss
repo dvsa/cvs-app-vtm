@@ -352,16 +352,12 @@ dd {
     cursor: pointer;
   }
 
-  .hide {
-    display: none !important;
-  }
-
   #radioADR {
     display: block;
     margin-top: 1rem;
   }
 
-  #adrVehicleType {
+  #type {
     width: 20rem;
   }
 
@@ -369,7 +365,11 @@ dd {
     width: 30rem;
   }
 
-  .add-a-guidance-note {
+  #additionalNotes, #permittedDangerousGoods {
+    height: 5rem;
+  }
+
+  .add-a-guidance-note, .add-a-un-number {
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
@@ -385,7 +385,7 @@ dd {
 
 }
 
-a#cancel_link {
+a#cancel {
     color:  $govuk-link-colour !important;
     font-size: 19px;
     font-weight: 400;
