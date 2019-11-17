@@ -5,17 +5,19 @@
     "baseUrl": "./",
     "module": "es2015",
     "paths": {
-      "@app/*": [
-        "./app/*"
-      ],
-      "@environments/*": [
-        "./environments/*"
-      ]
+      "@app/*": ["app/*"],
+      "@environments/*": ["environments/*"],
     },
     "types": []
   },
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "annotationsAs": "static fields",
+    "annotateForClosureCompiler": true,
+    "preserveWhitespaces": false,
+    "fullTemplateTypeCheck": true
+  }
 }
