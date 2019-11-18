@@ -11,6 +11,7 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {VEHICLE_TYPES} from "@app/app.enums";
 import {TechRecordModel} from "@app/models/tech-record.model";
 import {CustomValidators} from "@app/components/technical-record/custom-validators";
+import {AdrDetailsFormData} from "@app/components/technical-record/adr-details-form";
 
 @Component({
   selector: 'app-technical-record',
@@ -33,16 +34,16 @@ export class TechnicalRecordComponent implements OnInit {
   isSubmit: boolean   = false;
   adrData: boolean    = true;
   showCheck: boolean  = false;
-  checkValue: string;
   subsequentInspection: boolean = false;
   compatibilityJ: boolean = false;
   isStatement: boolean = false;
   isBatteryApplicable: boolean = false;
   isBrakeDeclarationsSeen: boolean = false;
   isBrakeEndurance: boolean = false;
+  vehicleType: string;
+  isMandatory: boolean;
 
   techRecords: TechRecordModel[];
-  techRecordsSubscription: Subscription;
 
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
@@ -55,20 +56,27 @@ export class TechnicalRecordComponent implements OnInit {
   ngOnInit() {
     initAll();
 
-    this.techRecordsSubscription = this.testResultJson$.subscribe(
-      (techRecordState) => {
-        console.log(techRecordState);
-        this.techRecords = techRecordState!=null ? techRecordState.techRecord : [];
-      }
-    );
+    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
 
-    this.adrDetailsForm = new FormGroup({
+    function requiredIfValidator(predicate) {
+      return (formControl => {
+        if (!formControl.parent) {
+          return null;
+        }
+        if (predicate()) {
+          return Validators.required(formControl);
+        }
+        return null;
+      })
+    }
+
+    this.adrDetailsForm =  new FormGroup({
       'applicantDetails': new FormGroup({
-        'name': new FormControl(null, [ Validators.required, Validators.maxLength(150) ]),
-        'street': new FormControl(null, [ Validators.required, Validators.maxLength(150) ]),
-        'town': new FormControl(null, [ Validators.required, Validators.maxLength(100) ]),
-        'city': new FormControl(null, [ Validators.required, Validators.maxLength(100) ]),
-        'postcode': new FormControl(null, [ Validators.required, Validators.maxLength(25) ]),
+        'name': new FormControl(null, [Validators.required, Validators.maxLength(150)]),
+        'street': new FormControl(null, [Validators.required, Validators.maxLength(150)]),
+        'town': new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+        'city': new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+        'postcode': new FormControl(null, [Validators.required, Validators.maxLength(25)]),
       }),
       'type': new FormControl(null, Validators.required),
       'approvalDate': new FormGroup({
@@ -76,79 +84,71 @@ export class TechnicalRecordComponent implements OnInit {
         'month': new FormControl(null, Validators.required),
         'year': new FormControl(null, Validators.required),
       }, CustomValidators.dateValidator),
-      'permittedDangerousGoods': new FormControl ([''], Validators.required),
+      'permittedDangerousGoods': new FormControl([''], Validators.required),
       'compatibilityGroupJ': new FormGroup({
-        'yes': new FormControl (null, Validators.required),
-        'no': new FormControl (null, Validators.required)
+        'yes': new FormControl(null),
+        'no': new FormControl(null)
       }),
-      'additionalNotes': new FormControl ([''], Validators.required),
-      'adrTypeApprovalNo': new FormControl (null, Validators.required),
-      'tankManufacturer': new FormControl(null, [ Validators.required, Validators.maxLength(70) ]),
-      'yearOfManufacture': new FormControl(null, [ Validators.required, Validators.maxLength(4) ]),
-      'tankManufacturerSerialNo': new FormControl(null, [ Validators.required, Validators.maxLength(50) ]),
-      'tankTypeAppNo': new FormControl(null, [ Validators.required, Validators.maxLength(65) ]),
-      'tankCode': new FormControl(null, [ Validators.required, Validators.maxLength(30) ]),
+      'additionalNotes': new FormControl(['']),
+      'adrTypeApprovalNo': new FormControl(null),
+      'tankManufacturer': new FormControl(null, [ Validators.maxLength(70), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank'))]),
+      'yearOfManufacture': new FormControl(null, [ Validators.maxLength(4), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank'))] ),
+      'tankManufacturerSerialNo': new FormControl(null, [ Validators.maxLength(50), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank'))]),
+      'tankTypeAppNo': new FormControl(null, [ Validators.maxLength(65),requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank'))]),
+      'tankCode': new FormControl(null, [ Validators.maxLength(30), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank'))]),
       'substancesPermitted': new FormGroup({
-        'underTankCode': new FormControl (null, Validators.required),
-        'classUN': new FormControl (null, Validators.required)
-      }),
+        'underTankCode': new FormControl(null),
+        'classUN': new FormControl(null)
+      },[requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery') || this.adrDetailsForm.get('type').value.includes('tank'))]),
       'selectReferenceNumber': new FormGroup({
-        'isStatement': new FormControl (null, Validators.required),
-        'isProductListRefNo': new FormControl (null, Validators.required)
+        'isStatement': new FormControl(null),
+        'isProductListRefNo': new FormControl(null)
       }),
-      'statement': new FormControl (null, [ Validators.required, Validators.maxLength(1500) ]),
-      'productListRefNo': new FormControl (null, Validators.required),
-
+      'statement': new FormControl(null, [Validators.maxLength(1500)]),
+      'productListRefNo': new FormControl(null),
       'productListUnNo': new FormArray([]),
-
-      'productList': new FormControl (null, [ Validators.required, Validators.maxLength(1500) ]),
-      'specialProvisions': new FormControl (null, [ Validators.required, Validators.maxLength(1024) ]),
-      'tc2Type':  new FormControl (null, Validators.required),
-      'tc2IntermediateApprovalNo': new FormControl (null, [ Validators.required, Validators.maxLength(75) ]),
+      'productList': new FormControl(null, [Validators.maxLength(1500)]),
+      'specialProvisions': new FormControl(null, [Validators.maxLength(1024)]),
+      'tc2Type': new FormControl(null),
+      'tc2IntermediateApprovalNo': new FormControl(null, [Validators.maxLength(75)]),
       'tc2IntermediateExpiryDate': new FormGroup({
-        'dayExpiry': new FormControl(null, Validators.required),
-        'monthExpiry': new FormControl(null, Validators.required),
-        'yearExpiry': new FormControl(null, Validators.required),
+        'dayExpiry': new FormControl(null),
+        'monthExpiry': new FormControl(null),
+        'yearExpiry': new FormControl(null),
       }, CustomValidators.dateValidator),
-
-      'tc3Type': new FormControl(null, Validators.required),
-      'tc3PeriodicNumber': new FormControl (null, [ Validators.required, Validators.maxLength(75) ]),
+      'tc3Type': new FormControl(null),
+      'tc3PeriodicNumber': new FormControl(null, [Validators.maxLength(75)]),
       'tc3PeriodicExpiryDate': new FormGroup({
-        'dayExpiryTc3': new FormControl(null, Validators.required),
-        'monthExpiryTc3': new FormControl(null, Validators.required),
-        'yearExpiryTc3': new FormControl(null, Validators.required),
+        'dayExpiryTc3': new FormControl(null),
+        'monthExpiryTc3': new FormControl(null),
+        'yearExpiryTc3': new FormControl(null),
       }, CustomValidators.dateValidator),
-
       'memosApply': new FormGroup({
-        'isMemo': new FormControl (null, Validators.required),
-        'isNotMemo': new FormControl (null, Validators.required)
+        'isMemo': new FormControl(null, Validators.required),
+        'isNotMemo': new FormControl(null, Validators.required)
       }),
-
       'listStatementApplicable': new FormGroup({
-        'applicable': new FormControl (null, Validators.required),
-        'notApplicable': new FormControl (null, Validators.required)
+        'applicable': new FormControl(null),
+        'notApplicable': new FormControl(null)
       }),
-
-      'batteryListNumber': new FormControl (null, [ Validators.required, Validators.maxLength(8) ]),
-      'brakeDeclarationIssuer': new FormControl (null, Validators.required),
-      'brakeEndurance': new FormControl (null, Validators.required),
-      'brakeDeclarationsSeen': new FormControl (null, Validators.required),
-      'declarationsSeen': new FormControl (null, Validators.required),
-      'weight': new FormControl (null, Validators.required),
+      'batteryListNumber': new FormControl(null, [ Validators.maxLength(8), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery'))]),
+      'brakeDeclarationIssuer': new FormControl(null),
+      'brakeEndurance': new FormControl(null),
+      'brakeDeclarationsSeen': new FormControl(null),
+      'declarationsSeen': new FormControl(null),
+      'weight': new FormControl(null, requiredIfValidator(() => this.adrDetailsForm.get('brakeEndurance').value == "true")),
       'certificateReq': new FormGroup({
-        'yesCert': new FormControl (null, Validators.required),
-        'noCert': new FormControl (null, Validators.required)
+        'yesCert': new FormControl(null),
+        'noCert': new FormControl(null)
       }),
-      'adr-more-detail': new FormControl (null, Validators.required),
-
+      'adr-more-detail': new FormControl(null),
     });
 
-  }
-
-  ngOnDestroy() {
-    if (this.techRecordsSubscription) {
-      this.techRecordsSubscription.unsubscribe();
-    }
   }
 
   public searchTechRecords(q: string) {
@@ -184,13 +184,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public switchAdrDisplay($event){
-    if ($event.currentTarget.value === 'yes') {
-      this.adrData = !this.adrData;
-      this.checkValue = $event.currentTarget.value;
-    } else if ($event.currentTarget.value === 'no') {
-      this.adrData = !this.adrData;
-      this.checkValue = $event.currentTarget.value;
-    }
+    this.adrData = $event.currentTarget.value === 'true' ? !this.adrData : false;
   }
 
   onAddUN(){
@@ -207,7 +201,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   onVTypeChange($event){
-    console.log($event.currentTarget.value);
+    this.isMandatory = this.vehicleType.includes('battery') || this.vehicleType.includes('tank');
   }
 
   onPermittedChange($event){
@@ -223,7 +217,6 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   onManufactureBreakChange($event){
-    console.log($event.currentTarget.value);
     this.isBrakeDeclarationsSeen = $event.currentTarget.value == "true";
   }
 
