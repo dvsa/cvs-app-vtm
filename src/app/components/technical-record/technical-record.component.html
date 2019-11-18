@@ -899,7 +899,7 @@
                                 UN number
                               </label>
                               <div class="form-group"
-                              *ngFor="let unControl of adrDetailsForm.get('productListUnNo').controls; let i = index">
+                              *ngFor="let unControl of adrDetailsForm.get('productListUnNo')['controls']; let i = index">
                                 <p><input class="govuk-input govuk-input--width-5" id="productListUnNo" [formControlName]="i" type="number"></p>
                               </div>
                               <p><a class="add-a-un-number" (click)="onAddUN()">Add a UN number</a></p>

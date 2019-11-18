@@ -82,6 +82,7 @@
     "cypress-jest-adapter": "^0.1.1",
     "jest": "^24.9.0",
     "jest-plugin-context": "^2.9.0",
+    "jest-runner-tsc": "^1.6.0",
     "jest-sonar-reporter": "^2.0.0",
     "ts-loader": "^6.2.1",
     "ts-node": "~7.0.0",
@@ -92,6 +93,9 @@
     "reportPath": ".reports",
     "reportFile": "test-report.xml",
     "indent": 4
+  },
+  "jest-runner-tsc": {
+    "tsconfigPath": "./tsconfig.json"
   },
   "jest": {
     "preset": "jest-preset-angular",
@@ -118,8 +122,8 @@
       "^@ionic/angular": "<rootDir>/node_modules/@ionic/angular/dist/index.js",
       "^@ionic/core/loader": "<rootDir>/node_modules/@ionic/core/dist/esm/es5/ionic.define.js",
       "^@ionic/core/dist/ionic/svg": "<rootDir>/scripts/svgoverride.js",
-      "@app(.*)": "<rootDir>/@app$1.js",
-      "@environments(.*)": "<rootDir>/@environments$1.js"
+      "@app/(.*)": "<rootDir>/src/app/$1",
+      "@environments/(.*)": "<rootDir>/src/environments/$1"
     },
     "globals": {
       "ts-jest": {
