@@ -320,9 +320,100 @@ dd {
   width: 200px !important;
 }
 
-.govuk-heading-l {
-  color: $govuk-error-colour;
+.adr-details {
+  h2 {
+    margin-top: 2rem;
+    width: 23rem;
+  }
+
+  dd {
+    white-space: nowrap !important;
+  }
+
+  ::ng-deep .table-tank thead tr th:nth-child(1), .table-tank tbody tr td:nth-child(1) {
+    width: 23rem !important;
+  }
+
+  ::ng-deep .table-tank tbody tr td:nth-child(2) {
+    width: 20rem !important;
+  }
+
+  ::ng-deep a {
+    float: right;
+    color: #005EA5;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 23px;
+    width: 102px;
+    text-align: right;
+    flex: 1;
+    text-align: right;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  #radioADR {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  #type {
+    width: 20rem;
+  }
+
+  #permittedDangerousGoods {
+    width: 30rem;
+  }
+
+  #additionalNotes, #permittedDangerousGoods {
+    height: 5rem;
+  }
+
+  .add-a-guidance-note, .add-a-un-number {
+    font-weight: 300 !important;
+    line-height: 23px !important;
+    float: initial !important;
+  }
+
+  #adr-more-detail {
+    width: 30rem;
+  }
+
+  fieldset {
+    border: none !important;
+  }
+
 }
+
+a#cancel {
+    color:  $govuk-link-colour !important;
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: -0.09px;
+    line-height: 40px;
+    text-align: right;
+    padding-left: 1.5rem;
+    cursor: pointer;
+
+    span {
+      border-bottom: solid;
+      border-bottom-width: 2px;
+    }
+}
+
+#test-ableToCarry {
+  width: 6rem;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

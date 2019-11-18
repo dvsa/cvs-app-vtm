@@ -88,5 +88,7 @@ export class AppModule {
     // Add an icon to the library for convenient access in other components
     library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium);
   }
+
+
 }
 

@@ -53,8 +53,7 @@
             ],
             "scripts": [
               { "input": "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-module" },
-              {"input":  "node_modules/govuk-frontend/govuk/all.js",
-              "bundleName": "govuk-js-module"}
+              { "input":  "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-js-module"}
             ]
           },
           "configurations": {

@@ -14,3 +14,4 @@ export const selectSelectedVehicleTechRecordModel = createSelector(
   selectTechRecords,
   (state: IVehicleTechRecordModelState) => state.selectedVehicleTechRecordModel
 );
+

@@ -3,7 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess,
+  GetVehicleTechRecordModelHavingStatusAllSuccess
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {Store} from '@ngrx/store';
 import {IAppState} from '@app/store/state/app.state';

@@ -32,5 +32,5 @@ export class GetVehicleTechRecordModelHavingStatusAllSuccess implements Action {
   }
 }
 
-export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess
-  | GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess;
+export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
+                                            GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess;

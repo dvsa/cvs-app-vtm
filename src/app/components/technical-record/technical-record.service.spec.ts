@@ -16,7 +16,8 @@ export const adalConfig = {
 
 const routes = {
   techRecords: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records`,
-  techRecordsAllStatuses: (searchIdentifier: string) => `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all`
+  techRecordsAllStatuses: (searchIdentifier: string) =>
+    `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`
 };
 
 describe('TechnicalRecordService', () => {
