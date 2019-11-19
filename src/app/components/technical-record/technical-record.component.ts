@@ -156,7 +156,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.isLoading = true;
     this.searchIdentifier = q;
     this._store.dispatch(new GetVehicleTechRecordModelHavingStatusAll(q));
-    this._store.dispatch(new GetVehicleTestResultModel(q));
   }
 
   public togglePanel() {

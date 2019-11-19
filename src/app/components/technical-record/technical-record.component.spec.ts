@@ -90,11 +90,8 @@ describe('TechnicalRecordComponent', () => {
     const testResultModelAction = new GetVehicleTestResultModel(q);
     const store = TestBed.get(Store);
     const spy = jest.spyOn(store, 'dispatch');
-
     fixture.detectChanges();
-
     expect(spy).toHaveBeenCalledWith(statusAllAction);
-    expect(spy).toHaveBeenCalledWith(testResultModelAction);
   });
 
   afterAll(() => {
