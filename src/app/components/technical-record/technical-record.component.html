@@ -5,7 +5,7 @@
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-thirds float-left">
               <h1 class="govuk-heading-xl title">Technical record</h1>
-              <button *ngIf="!isSubmit" class="govuk-button" data-module="govuk-button" (click)="adrEdit($event)">
+              <button *ngIf="!isSubmit" class="govuk-button" data-module="govuk-button" (click)="adrEdit($event, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe)">
                 {{ changeLabel }}
               </button>
               <button *ngIf="isSubmit" class="govuk-button" data-module="govuk-button" (click)="onSubmit()">
@@ -753,11 +753,15 @@
                           Permitted dangerous goods
                         </label>
                           <select multiple class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods" (change)="onPermittedChange($event)">
-                            <option *ngFor="let permittedGoods of techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe" [value]="permittedGoods">
+                            <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
                               {{ permittedGoods }}
                             </option>
                           </select>
                       </div>
+
+                      <p><a class="add-a-guidance-note" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a></p>
+
+                      <input class="govuk-input govuk-input--width-5" #dangerousGood id="addDangerousGood" placeholder="Add good" type="text"><br><br>
 
                       <div class="govuk-inset-text" *ngIf="compatibilityJ">
                         <div class="govuk-form-group" formGroupName="compatibilityGroupJ">
@@ -786,11 +790,14 @@
                           Guidance notes
                         </label>
                           <select multiple class="govuk-select" id="additionalNotes" formControlName="additionalNotes">
-                              <option *ngFor="let note of techRecordsJson.metadata.adrDetails.additionalNotes.numberFe" [value]="note">
+                              <option *ngFor="let note of numberFee" [value]="note">
                                 {{ note }}
                               </option>
                           </select>
-                        <p><a class="add-a-guidance-note" (click)="addAGuidanceNote()">Add a guidance note</a></p>
+                        <p><a class="add-a-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a></p>
+
+                        <input class="govuk-input govuk-input--width-5" #guidanceNote id="addGuidanceNote" placeholder="Add note" type="text">
+
                       </div>
 
                       <div class="govuk-form-group">

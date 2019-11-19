@@ -42,6 +42,8 @@ export class TechnicalRecordComponent implements OnInit {
   isBrakeEndurance: boolean = false;
   vehicleType: string;
   isMandatory: boolean;
+  numberFee: any;
+  dangerousGoods: any;
 
   techRecords: TechRecordModel[];
 
@@ -86,8 +88,7 @@ export class TechnicalRecordComponent implements OnInit {
       }, CustomValidators.dateValidator),
       'permittedDangerousGoods': new FormControl([''], Validators.required),
       'compatibilityGroupJ': new FormGroup({
-        'yes': new FormControl(null),
-        'no': new FormControl(null)
+        'compatibilityJ': new FormControl(null),
       }),
       'additionalNotes': new FormControl(['']),
       'adrTypeApprovalNo': new FormControl(null),
@@ -169,11 +170,13 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
-  public adrEdit($event){
+  public adrEdit($event, numberFee, dangerousGoods){
     this.changeLabel = "Save technical record";
     this.isSubmit    = true;
     this.adrData     = false;
     this.showCheck   = !this.showCheck;
+    this.numberFee   = numberFee;
+    this.dangerousGoods = dangerousGoods;
   }
 
   public cancelAddrEdit(){
@@ -192,8 +195,22 @@ export class TechnicalRecordComponent implements OnInit {
     (<FormArray>this.adrDetailsForm.get('productListUnNo')).push(control);
   }
 
-  addAGuidanceNote(){
-   // see ticket CVSB-9220
+  addAGuidanceNote(note : string){
+    setTimeout(() => {
+      this.numberFee.push(note);
+      this.adrDetailsForm.controls['additionalNotes'].patchValue(
+        [note]
+      );
+    }, 500);
+  }
+
+  addDangerousGood(good : string){
+    setTimeout(() => {
+      this.dangerousGoods.push(good);
+      this.adrDetailsForm.controls['additionalNotes'].patchValue(
+        [good]
+      );
+    }, 500);
   }
 
   addSubsequentInspection(){
