@@ -671,7 +671,7 @@
                       <h2 class="govuk-heading-m">Applicant details</h2>
                     </legend>
 
-                    <form [formGroup]="adrDetailsForm" (ngSubmit)="adrEdit($event)">
+                    <form [formGroup]="adrDetailsForm" (ngSubmit)="adrEdit($event, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe, techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe)">
 
                       <div class="govuk-form-group" formGroupName="applicantDetails">
                         <div class="govuk-form-group">
