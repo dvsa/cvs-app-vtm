@@ -9,7 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --aot",
     "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",

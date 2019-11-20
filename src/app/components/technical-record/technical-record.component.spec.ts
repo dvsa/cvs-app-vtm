@@ -83,16 +83,18 @@ describe('TechnicalRecordComponent', () => {
     }
   });
 
-  it('should dispatch the actions from searchTechRecords action',  () => {
-    const q = '123455677';
-    component.searchTechRecords(q);
-    const statusAllAction = new GetVehicleTechRecordModelHavingStatusAll(q);
-    const testResultModelAction = new GetVehicleTestResultModel(q);
-    const store = TestBed.get(Store);
-    const spy = jest.spyOn(store, 'dispatch');
-    fixture.detectChanges();
-    expect(spy).toHaveBeenCalledWith(statusAllAction);
-  });
+  /*
+   logic moved to search component
+  */
+  // it('should dispatch the actions from searchTechRecords action',  () => {
+  //   const q = '123455677';
+  //   const statusAllAction = new GetVehicleTechRecordModelHavingStatusAll(q);
+  //   const testResultModelAction = new GetVehicleTestResultModel(q);
+  //   const store = TestBed.get(Store);
+  //   const spy = jest.spyOn(store, 'dispatch');
+  //   fixture.detectChanges();
+  //   expect(spy).toHaveBeenCalledWith(statusAllAction);
+  // });
 
   afterAll(() => {
     TestBed.resetTestingModule();

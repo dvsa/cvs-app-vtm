@@ -1,17 +1,14 @@
 import {Component, HostBinding, OnInit} from '@angular/core';
 import {initAll} from 'govuk-frontend';
-import {select, Store} from '@ngrx/store';
-import {forkJoin, Observable, Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
 import {selectSelectedVehicleTestResultModel} from '../../store/selectors/VehicleTestResultModel.selectors';
-import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
 import {IAppState} from '../../store/state/app.state';
 import {selectVehicleTechRecordModelHavingStatusAll} from '../../store/selectors/VehicleTechRecordModel.selectors';
-import {GetVehicleTechRecordModelHavingStatusAll} from '../../store/actions/VehicleTechRecordModel.actions';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {VEHICLE_TYPES} from "@app/app.enums";
 import {TechRecordModel} from "@app/models/tech-record.model";
 import {CustomValidators} from "@app/components/technical-record/custom-validators";
-import {AdrDetailsFormData} from "@app/components/technical-record/adr-details-form";
 
 @Component({
   selector: 'app-technical-record',
@@ -152,12 +149,6 @@ export class TechnicalRecordComponent implements OnInit {
 
   }
 
-  public searchTechRecords(q: string) {
-    this.isLoading = true;
-    this.searchIdentifier = q;
-    this._store.dispatch(new GetVehicleTechRecordModelHavingStatusAll(q));
-  }
-
   public togglePanel() {
     for (let panel of this.panels) {
       panel.isOpened = !this.allOpened;
@@ -169,7 +160,7 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
-  public adrEdit($event, numberFee, dangerousGoods){
+  public adrEdit(numberFee, dangerousGoods){
     this.changeLabel = "Save technical record";
     this.isSubmit    = true;
     this.adrData     = false;
@@ -216,7 +207,7 @@ export class TechnicalRecordComponent implements OnInit {
     this.subsequentInspection = true;
   }
 
-  onVTypeChange($event){
+  onVTypeChange(){
     this.isMandatory = this.vehicleType.includes('battery') || this.vehicleType.includes('tank');
   }
 

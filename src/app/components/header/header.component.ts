@@ -8,11 +8,16 @@ import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
 })
 export class HeaderComponent implements OnInit {
   userName: string;
+  menuOpen = false;
   constructor(private adal: MsAdalAngular6Service) {
   }
 
   ngOnInit() {
     this.userName = this.adal.userInfo != null ? this.adal.userInfo.profile.name : '';
+  }
+
+  onClick($event) {
+    this.menuOpen = !this.menuOpen;
   }
 
 }

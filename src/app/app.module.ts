@@ -21,7 +21,7 @@ import {ShellPageModule} from '@app/shell/shell.page.module';
 import {VehicleNotFoundDialogComponent} from '@app/vehicle-not-found-dialog/vehicle-not-found-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSquare, faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faSquare, faCheckSquare, faCoffee, faBars } from '@fortawesome/free-solid-svg-icons';
 import { faSquare as farSquare, faCheckSquare as farCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { faStackOverflow, faGithub, faMedium } from '@fortawesome/free-brands-svg-icons';
 import { StoreModule } from '@ngrx/store';
@@ -86,9 +86,7 @@ import {CustomSerializer} from '@app/store/reducers';
 export class AppModule {
   constructor() {
     // Add an icon to the library for convenient access in other components
-    library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium);
+    library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium, faBars);
   }
-
-
 }
 
