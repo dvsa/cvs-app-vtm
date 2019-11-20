@@ -1,0 +1,13 @@
+
+<div mat-dialog-content>
+  <h1 class="govuk-heading-m enter-reason-for-cha">Enter reason for changing technical record</h1>
+  <textarea class="govuk-textarea" id="reasonForCreation" formControlName="reasonForCreation" rows="8" aria-describedby="reasonForCreation"></textarea>
+</div>
+
+<button class="govuk-button" data-module="govuk-button" (click)="onSubmit()">
+  Save technical record
+</button>
+
+<a class="cancel"(click)="close()">
+  <span>Cancel</span>
+</a>
