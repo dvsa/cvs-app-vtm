@@ -711,7 +711,7 @@
                         <label class="govuk-label govuk-!-font-weight-bold" for="type">
                           Vehicle type
                         </label>
-                        <select class="govuk-select" id="type" formControlName="type" [(ngModel)]="vehicleType" (change)="onVTypeChange($event)">
+                        <select class="govuk-select" id="type" formControlName="type" [(ngModel)]="vehicleType" (change)="onVTypeChange">
                             <option *ngFor="let type of techRecordsJson.metadata.adrDetails.vehicleDetails.typeFe" [value]="type">
                               {{ type }}
                             </option>
@@ -1652,7 +1652,7 @@
       <mat-expansion-panel-header class="disable_ripple">
         <mat-panel-title>
           <div class="item-technical-record govuk-!-font-weight-bold">
-           API Output 
+           API Output
           </div>
         </mat-panel-title>
         <mat-panel-description>
