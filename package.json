@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "husky": "^3.0.9"
+  },
+  "scripts": {
+    "security-checks": "git secrets --scan && git log -p | scanrepo"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run security-checks"
+    }
+  }
+}
