@@ -34,6 +34,7 @@ export class TechnicalRecordComponent implements OnInit {
   changeLabel: string = "Change technical record";
   isSubmit: boolean   = false;
   adrData: boolean    = true;
+  hideForm: boolean   = false;
   showCheck: boolean  = false;
   subsequentInspection: boolean = false;
   compatibilityJ: boolean = false;
@@ -45,6 +46,7 @@ export class TechnicalRecordComponent implements OnInit {
   isMandatory: boolean;
   numberFee: any;
   dangerousGoods: any;
+  isAdrNull: any;
 
   techRecords: TechRecordModel[];
 
@@ -164,24 +166,27 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
-  public adrEdit($event, numberFee, dangerousGoods){
+  public adrEdit($event, numberFee, dangerousGoods, isAdrNull){
     this.changeLabel = "Save technical record";
     this.isSubmit    = true;
     this.adrData     = false;
-    this.showCheck   = !this.showCheck;
+    this.showCheck   = true;
     this.numberFee   = numberFee;
     this.dangerousGoods = dangerousGoods;
+    this.isAdrNull      = isAdrNull;
   }
 
   public cancelAddrEdit(){
     this.changeLabel   = "Change technical record";
     this.adrData       = true;
-    this.showCheck     = !this.showCheck;
+    this.showCheck     = false;
     this.isSubmit      = false;
+    this.hideForm      = false;
   }
 
   public switchAdrDisplay($event){
-    this.adrData = $event.currentTarget.value === 'true' ? !this.adrData : false;
+    this.adrData   = !($event.currentTarget.value === 'true');
+    this.hideForm  = $event.currentTarget.value === 'false';
   }
 
   onAddUN(){

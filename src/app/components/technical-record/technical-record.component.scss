@@ -382,10 +382,9 @@ dd {
   fieldset {
     border: none !important;
   }
-
 }
 
-a#cancel {
+a#cancel1, a#cancel2 {
     color:  $govuk-link-colour !important;
     font-family: "GDS Transport", Arial, sans-serif;
     font-size: 19px;

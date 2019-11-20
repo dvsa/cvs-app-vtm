@@ -8,6 +8,9 @@
   width: 705px;
   text-align: left;
 }
+textarea {
+  width: 80% !important;
+}
 
 .cancel {
   color: #005EA5;
@@ -17,4 +20,9 @@
   line-height: 44px;
   text-align: left;
   padding-left: 2rem;
+  cursor: pointer;
+  span {
+    border-bottom: solid;
+    border-bottom-width: 2px;
+  }
 }
