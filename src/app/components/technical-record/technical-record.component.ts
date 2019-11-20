@@ -166,6 +166,11 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
+  public isEmptyObject(obj) {
+    console.log(`isEmptyObject (obj && (Object.keys(obj).length === 0))`, (obj && (Object.keys(obj).length === 0)));
+    return (obj && (Object.keys(obj).length === 0));
+  }
+
   public adrEdit($event, numberFee, dangerousGoods, isAdrNull){
     this.changeLabel = "Save technical record";
     this.isSubmit    = true;
