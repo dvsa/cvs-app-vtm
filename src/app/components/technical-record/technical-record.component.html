@@ -169,11 +169,9 @@
                 </dt>
                 <dd class="govuk-summary-list__value">
                   <div *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].axles) else hyphen">
-                    <div *ngIf="techRecordsJson.techRecord[0].axles.hasOwnProperty('parkingBrakeMrk') else hyphen">
-                      <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
-                        <div *ngIf="axel.parkingBrakeMrk">
-                          <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
-                        </div>
+                    <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
+                      <div *ngIf="axel.parkingBrakeMrk">
+                        <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
                       </div>
                     </div>
                   </div>
