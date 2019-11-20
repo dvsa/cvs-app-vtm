@@ -21,6 +21,7 @@ import { TechnicalRecordSearchComponent } from './technical-record-search/techni
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import {ComponentsRoutingModule} from './components-routing.module';
+import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.component';
 
 @NgModule({
   imports: [
@@ -37,13 +38,13 @@ import {ComponentsRoutingModule} from './components-routing.module';
     ReactiveFormsModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, FooterComponent, HeaderComponent
+    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, FooterComponent, HeaderComponent, AdrReasonModalComponent
   ],
   exports: [
-    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, HeaderComponent, FooterComponent
+    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, HeaderComponent, FooterComponent, AdrReasonModalComponent
   ],
   providers: [TechnicalRecordService, TestResultService],
-  entryComponents: [],
+  entryComponents: [ AdrReasonModalComponent ],
 })
 export class ComponentsModule {
   constructor() {

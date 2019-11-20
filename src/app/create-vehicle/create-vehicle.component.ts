@@ -7,7 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { VEHICLE_TYPES } from '../app.enums';
 import { TechnicalRecordService } from '../components/technical-record/technical-record.service';
 import { CreateVehicleService } from './create-vehicle.service';
-import { VehicleExistsDialogComponent } from '../vehicle-exists-dialog/vehicle-exists-dialog.component';
+import {AdrReasonModalComponent} from "@app/components/adr-reason-modal/adr-reason-modal.component";
 
 
 @Component({
@@ -46,7 +46,7 @@ export class CreateVehicleComponent implements OnInit {
             this.router.navigate(['/details']);
           } else {
             const errorDialog = new MatDialogConfig();
-            this.matDialog.open(VehicleExistsDialogComponent, errorDialog);
+            this.matDialog.open(AdrReasonModalComponent, errorDialog);
             this.createVehicleForm.reset();
           }
         },

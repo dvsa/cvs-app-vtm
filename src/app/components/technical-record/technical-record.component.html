@@ -8,7 +8,7 @@
               <button *ngIf="!isSubmit" class="govuk-button" data-module="govuk-button" (click)="adrEdit($event, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe)">
                 {{ changeLabel }}
               </button>
-              <button *ngIf="isSubmit" class="govuk-button" data-module="govuk-button" (click)="onSubmit()">
+              <button *ngIf="isSubmit" class="govuk-button" data-module="govuk-button" (click)="onModalShow()">
                 Save technical record
               </button>
               <a id="cancel" *ngIf="!adrData" (click)="cancelAddrEdit()">
@@ -1107,7 +1107,7 @@
 
                           <div class="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" formControlName="brakeDeclarationsSeen" type="checkbox" value="true" (change)="onManufactureBreakChange($event)">
+                              <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" formControlName="brakeDeclarationsSeen" type="checkbox" (change)="onManufactureBreakChange($event)">
                               <label class="govuk-label govuk-checkboxes__label" for="brakeDeclarationsSeen">
                                 Manufacturer brake declaration
                               </label>
@@ -1120,7 +1120,7 @@
                                 <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer" formControlName="brakeDeclarationIssuer" type="text">
                               </div>
                               <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="brakeEndurance" formControlName="brakeEndurance" type="checkbox" value="true" (change)="onBrakeEnduranceChange($event)">
+                                <input class="govuk-checkboxes__input" id="brakeEndurance" formControlName="brakeEndurance" type="checkbox" (change)="onBrakeEnduranceChange($event)">
                                 <label class="govuk-label govuk-checkboxes__label" for="brakeEndurance">
                                   Brake endurance
                                 </label>
@@ -1154,7 +1154,7 @@
                               </label>
                             </div>
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="noCert" formControlName="noCert" type="radio" value="no">
+                              <input class="govuk-radios__input" id="noCert" formControlName="yesCert" type="radio" value="no">
                               <label class="govuk-label govuk-radios__label" for="noCert">
                                 No
                               </label>

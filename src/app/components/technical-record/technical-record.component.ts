@@ -9,6 +9,10 @@ import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {VEHICLE_TYPES} from "@app/app.enums";
 import {TechRecordModel} from "@app/models/tech-record.model";
 import {CustomValidators} from "@app/components/technical-record/custom-validators";
+import {AdrDetailsFormData} from "@app/components/technical-record/adr-details-form";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {VehicleExistsDialogComponent} from "@app/vehicle-exists-dialog/vehicle-exists-dialog.component";
+import {AdrReasonModalComponent} from "@app/components/adr-reason-modal/adr-reason-modal.component";
 
 @Component({
   selector: 'app-technical-record',
@@ -47,7 +51,7 @@ export class TechnicalRecordComponent implements OnInit {
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
 
-  constructor(private _store: Store<IAppState>) {
+  constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
   }
@@ -89,20 +93,20 @@ export class TechnicalRecordComponent implements OnInit {
       }),
       'additionalNotes': new FormControl(['']),
       'adrTypeApprovalNo': new FormControl(null),
-      'tankManufacturer': new FormControl(null, [ Validators.maxLength(70), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
-        || this.adrDetailsForm.get('type').value.includes('tank'))]),
-      'yearOfManufacture': new FormControl(null, [ Validators.maxLength(4), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
-        || this.adrDetailsForm.get('type').value.includes('tank'))] ),
-      'tankManufacturerSerialNo': new FormControl(null, [ Validators.maxLength(50), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
-        || this.adrDetailsForm.get('type').value.includes('tank'))]),
-      'tankTypeAppNo': new FormControl(null, [ Validators.maxLength(65),requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
-        || this.adrDetailsForm.get('type').value.includes('tank'))]),
-      'tankCode': new FormControl(null, [ Validators.maxLength(30), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery')
-        || this.adrDetailsForm.get('type').value.includes('tank'))]),
+      'tankManufacturer': new FormControl(null, [ Validators.maxLength(70), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank') : false)]),
+      'yearOfManufacture': new FormControl(null, [ Validators.maxLength(4), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank') : false )] ),
+      'tankManufacturerSerialNo': new FormControl(null, [ Validators.maxLength(50), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
+      'tankTypeAppNo': new FormControl(null, [ Validators.maxLength(65),requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
+      'tankCode': new FormControl(null, [ Validators.maxLength(30), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+        || this.adrDetailsForm.get('type').value.includes('tank') : false)]),
       'substancesPermitted': new FormGroup({
         'underTankCode': new FormControl(null),
         'classUN': new FormControl(null)
-      },[requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery') || this.adrDetailsForm.get('type').value.includes('tank'))]),
+      },[requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery') || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
       'selectReferenceNumber': new FormGroup({
         'isStatement': new FormControl(null),
         'isProductListRefNo': new FormControl(null)
@@ -134,12 +138,12 @@ export class TechnicalRecordComponent implements OnInit {
         'applicable': new FormControl(null),
         'notApplicable': new FormControl(null)
       }),
-      'batteryListNumber': new FormControl(null, [ Validators.maxLength(8), requiredIfValidator(() => this.adrDetailsForm.get('type').value.includes('battery'))]),
+      'batteryListNumber': new FormControl(null, [ Validators.maxLength(8), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery'):false)]),
       'brakeDeclarationIssuer': new FormControl(null),
       'brakeEndurance': new FormControl(null),
       'brakeDeclarationsSeen': new FormControl(null),
       'declarationsSeen': new FormControl(null),
-      'weight': new FormControl(null, requiredIfValidator(() => this.adrDetailsForm.get('brakeEndurance').value == "true")),
+      'weight': new FormControl(null, requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('brakeEndurance').value == "true" : false)),
       'certificateReq': new FormGroup({
         'yesCert': new FormControl(null),
         'noCert': new FormControl(null)
@@ -160,7 +164,7 @@ export class TechnicalRecordComponent implements OnInit {
     return (typeof str==='string' || str==null) ? !str||!str.trim():false;
   }
 
-  public adrEdit(numberFee, dangerousGoods){
+  public adrEdit($event, numberFee, dangerousGoods){
     this.changeLabel = "Save technical record";
     this.isSubmit    = true;
     this.adrData     = false;
@@ -224,16 +228,18 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   onManufactureBreakChange($event){
-    this.isBrakeDeclarationsSeen = $event.currentTarget.value == "true";
+    this.isBrakeDeclarationsSeen = $event.currentTarget.checked == true;
   }
 
   onBrakeEnduranceChange($event){
-    this.isBrakeEndurance = $event.currentTarget.value == "true";
+    this.isBrakeEndurance = $event.currentTarget.checked == true;
   }
 
-  onSubmit(){
-    // before PUT don't forget: Date (DD MM YYYY), converted to YYYY-MM-DD upon saving (as per ACs) -> this.adrDetailsForm.approvalDate
-    // weight in KG -> divide by 1000
+  onModalShow(){
+
+    const errorDialog = new MatDialogConfig();
+    errorDialog.data = this.adrDetailsForm;
+    this.matDialog.open(AdrReasonModalComponent, errorDialog);
 
     console.log(this.adrDetailsForm);
   }
