@@ -95,20 +95,20 @@ export class TechnicalRecordComponent implements OnInit {
       }),
       'additionalNotes': new FormControl(['']),
       'adrTypeApprovalNo': new FormControl(null),
-      'tankManufacturer': new FormControl(null, [ Validators.maxLength(70), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+      'tankManufacturer': new FormControl(null, [ Validators.maxLength(70), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false)]),
-      'yearOfManufacture': new FormControl(null, [ Validators.maxLength(4), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+      'yearOfManufacture': new FormControl(null, [ Validators.maxLength(4), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false )] ),
-      'tankManufacturerSerialNo': new FormControl(null, [ Validators.maxLength(50), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+      'tankManufacturerSerialNo': new FormControl(null, [ Validators.maxLength(50), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
-      'tankTypeAppNo': new FormControl(null, [ Validators.maxLength(65),requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+      'tankTypeAppNo': new FormControl(null, [ Validators.maxLength(65),requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
-      'tankCode': new FormControl(null, [ Validators.maxLength(30), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery')
+      'tankCode': new FormControl(null, [ Validators.maxLength(30), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false)]),
       'substancesPermitted': new FormGroup({
         'underTankCode': new FormControl(null),
         'classUN': new FormControl(null)
-      },[requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery') || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
+      },[requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery') || this.adrDetailsForm.get('type').value.includes('tank') : false )]),
       'selectReferenceNumber': new FormGroup({
         'isStatement': new FormControl(null),
         'isProductListRefNo': new FormControl(null)
@@ -140,12 +140,12 @@ export class TechnicalRecordComponent implements OnInit {
         'applicable': new FormControl(null),
         'notApplicable': new FormControl(null)
       }),
-      'batteryListNumber': new FormControl(null, [ Validators.maxLength(8), requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('type').value.includes('battery'):false)]),
+      'batteryListNumber': new FormControl(null, [ Validators.maxLength(8), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery'):false)]),
       'brakeDeclarationIssuer': new FormControl(null),
       'brakeEndurance': new FormControl(null),
       'brakeDeclarationsSeen': new FormControl(null),
       'declarationsSeen': new FormControl(null),
-      'weight': new FormControl(null, requiredIfValidator(() => this.adrDetailsForm.get('type')!=null ? this.adrDetailsForm.get('brakeEndurance').value == "true" : false)),
+      'weight': new FormControl(null, requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('brakeEndurance').value == "true" : false)),
       'certificateReq': new FormGroup({
         'yesCert': new FormControl(null),
         'noCert': new FormControl(null)
