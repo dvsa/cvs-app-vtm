@@ -176,9 +176,10 @@
                 Parking brake fitted
               </dt>
               <dd class="govuk-summary-list__value">
-                <div *ngIf="!isEmptyObject(techRecordsJson.techRecord[0].axles) else hyphen">
+                <div *ngIf="!isEmptyObject(techRecordsJson.techRecord[0].axles) &&  
+                            !axlesHasNoParkingBrakeMrk(techRecordsJson.techRecord[0].axles) else hyphen">
                   <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
-                    <div *ngIf="axel.hasOwnProperty('parkingBrakeMrk') else hyphen">
+                    <div *ngIf="axel.hasOwnProperty('parkingBrakeMrk') && axel.parkingBrakeMrk === true">
                       <div *ngIf="axel.parkingBrakeMrk">
                         <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
                       </div>
@@ -1170,9 +1171,24 @@
                       </div>
 
                       <h2 class="govuk-heading-m">Tank documents</h2>
-                      <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
-                        Upload documents
-                      </button>
+                      <!-- <div class="govuk-width-container left-pad"> -->
+                        <ul class="govuk-width-container left-pad" *ngFor="let file of files">
+                          <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key"> {{file.name}} </dt>
+                            <dd class="govuk-summary-list__value">
+                            </dd>
+                            <dd class="govuk-summary-list__value">
+                              <a class="govuk-link">View</a>
+                            </dd>
+                          </div>
+                        </ul>
+                      <!-- </div> -->
+                      <div id="hide">
+                        <label class="hand-cursor">
+                          <input #fileInput type="file" (change)="changeListener($event)" multiple>
+                          <span class="govuk-button govuk-button--secondary">Upload documents</span>
+                        </label>
+                      </div>
 
                       <div class="govuk-form-group" formGroupName="listStatementApplicable">
                         <fieldset class="govuk-fieldset">
