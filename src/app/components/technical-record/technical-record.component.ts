@@ -218,8 +218,8 @@ export class TechnicalRecordComponent implements OnInit {
     if (bhasNoPrimaryVrms) return true;
   }
 
-  public adrEdit($event, techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
-    console.log(`$event is ${$event}, numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
+  public adrEdit(techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
+    console.log(`numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
     this.changeLabel = "Save technical record";
     this.isSubmit = true;
     this.adrData = false;
@@ -342,5 +342,4 @@ export class TechnicalRecordComponent implements OnInit {
 
     console.log(this.adrDetailsForm);
   }
-
 }

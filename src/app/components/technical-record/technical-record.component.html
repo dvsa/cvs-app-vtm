@@ -8,7 +8,7 @@
             <h1 class="govuk-heading-xl title">Technical record</h1>
             <div *ngIf="!isSubmit">
               <button class="govuk-button" data-module="govuk-button"
-                (click)="adrEdit($event, techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, isNullOrEmpty(techRecordsJson.metadata.adrDetails))">
+                (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, isNullOrEmpty(techRecordsJson.metadata.adrDetails))">
                 {{ changeLabel }}
               </button>
               <a id="cancel1" *ngIf="showCheck" (click)="cancelAddrEdit()">
@@ -1729,6 +1729,7 @@
                           <span class="govuk-button govuk-button--secondary">Upload documents</span>
                         </label>
                       </div>
+
 
                       <div class="govuk-form-group" formGroupName="listStatementApplicable">
                         <fieldset class="govuk-fieldset">
