@@ -99,8 +99,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!summary.expanded" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="summary.expanded" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!summary.expanded" id="test-fa-plus-summary" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="summary.expanded" id="test-fa-minus-summary" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -175,7 +175,7 @@
                 Parking brake fitted
               </dt>
               <dd class="govuk-summary-list__value">
-                <div *ngIf="!isEmptyObject(techRecordsJson.techRecord[0].axles) &&  
+                <div *ngIf="!isEmptyObject(techRecordsJson.techRecord[0].axles) &&
                             !axlesHasNoParkingBrakeMrk(techRecordsJson.techRecord[0].axles) else hyphen">
                   <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
                     <div *ngIf="axel.hasOwnProperty('parkingBrakeMrk') && axel.parkingBrakeMrk === true">
@@ -349,8 +349,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!body.expanded" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="body.expanded" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!body.expanded" id="test-fa-plus-body" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="body.expanded" id="test-fa-minus-body" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -416,8 +416,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!weights.expanded" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="weights.expanded" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!weights.expanded" id="test-fa-plus-weights" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="weights.expanded" id="test-fa-minus-weights" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -498,8 +498,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!tyres.expanded" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="tyres.expanded" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!tyres.expanded" id="test-fa-plus-tyres" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="tyres.expanded" id="test-fa-minus-tyres" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -558,8 +558,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!dimensions.expanded" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="dimensions.expanded" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!dimensions.expanded" id="test-fa-plus-dimensions" [icon]="['fa', 'plus']" size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="dimensions.expanded" id="test-fa-minus-dimensions" [icon]="['fa', 'minus']" size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -681,8 +681,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!adr.expanded" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="adr.expanded" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!adr.expanded" id="test-fa-plus-adr" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="adr.expanded" id="test-fa-minus-adr" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -1000,9 +1000,6 @@
                       <label class="govuk-label govuk-!-font-weight-bold">
                         Initial
                       </label>
-
-
-
                       <div class="govuk-inset-text">
                         <div class="govuk-form-group">
                           <label class="govuk-label govuk-!-font-weight-bold" for="tc2Type">
@@ -2186,8 +2183,8 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!notes.expanded" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
-                <fa-icon *ngIf="notes.expanded" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="!notes.expanded" id="test-fa-plus-notes" [icon]="['fa', 'plus'] " size="lg" class="expander-icon"></fa-icon>
+                <fa-icon *ngIf="notes.expanded" id="test-fa-minus-notes" [icon]="['fa', 'minus'] " size="lg" class="expander-icon"></fa-icon>
               </div>
             </mat-panel-description>
           </mat-expansion-panel-header>
@@ -2215,9 +2212,9 @@
               </mat-panel-title>
               <mat-panel-description>
                 <div class="expansion-icon">
-                  <fa-icon *ngIf="!testHistory.expanded" [icon]="['fa', 'plus'] " size="lg" class="expander-icon">
+                  <fa-icon *ngIf="!testHistory.expanded" id="test-fa-plus-testHistory" [icon]="['fa', 'plus'] " size="lg" class="expander-icon">
                   </fa-icon>
-                  <fa-icon *ngIf="testHistory.expanded" [icon]="['fa', 'minus'] " size="lg" class="expander-icon">
+                  <fa-icon *ngIf="testHistory.expanded" id="test-fa-minus-testHistory" [icon]="['fa', 'minus'] " size="lg" class="expander-icon">
                   </fa-icon>
                 </div>
               </mat-panel-description>
@@ -2269,9 +2266,9 @@
             </mat-panel-title>
             <mat-panel-description>
               <div class="expansion-icon">
-                <fa-icon *ngIf="!techRecHistory.expanded" [icon]="['fa', 'plus'] " size="lg" class="expander-icon">
+                <fa-icon *ngIf="!techRecHistory.expanded" id="test-fa-plus-techRecHistory" [icon]="['fa', 'plus'] " size="lg" class="expander-icon">
                 </fa-icon>
-                <fa-icon *ngIf="techRecHistory.expanded" [icon]="['fa', 'minus'] " size="lg" class="expander-icon">
+                <fa-icon *ngIf="techRecHistory.expanded" id="test-fa-minus-techRecHistory" [icon]="['fa', 'minus'] " size="lg" class="expander-icon">
                 </fa-icon>
               </div>
             </mat-panel-description>

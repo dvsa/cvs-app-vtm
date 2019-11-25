@@ -58,12 +58,8 @@ export class TechnicalRecordComponent implements OnInit {
   isAdrNull: any;
   fileList: FileList;
   public files: Set<File> = new Set();
-
-  techRecords: TechRecordModel[];
-
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
-  store: Observable<any>;
   isVehicleTankOrBatterytest$: Observable<any>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
@@ -76,9 +72,7 @@ export class TechnicalRecordComponent implements OnInit {
         if (this.isNullOrEmpty(formState.value.type)) {
           return false;
         }
-        console.log(`formState.value.type is ${JSON.stringify(formState.value.type)}`);
         const selectedVehicleType = techRecords.metadata.adrDetails.vehicleDetails.typeFe[formState.value.type];
-        console.log(`fselectedVehicleType is ${JSON.stringify(selectedVehicleType)}`);
         return selectedVehicleType.includes('battery') || selectedVehicleType.includes('tank');
       }));
   }

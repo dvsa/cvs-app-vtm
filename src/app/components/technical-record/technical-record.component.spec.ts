@@ -15,6 +15,9 @@ import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import { IAppState } from '@app/store/state/app.state';
 import { appReducers } from '@app/store/reducers/app.reducers';
+import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgrxFormsModule } from 'ngrx-forms';
 
 describe('TechnicalRecordComponent', () => {
 
@@ -35,7 +38,13 @@ describe('TechnicalRecordComponent', () => {
         BrowserAnimationsModule,
         MaterialModule,
         SharedModule,
-        RouterTestingModule
+        RouterTestingModule,
+        StoreModule.forFeature('adrDetails', adrDetailsReducer),
+        FormsModule,
+        SharedModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        NgrxFormsModule,
       ],
       declarations: [TechnicalRecordComponent],
       providers: [
