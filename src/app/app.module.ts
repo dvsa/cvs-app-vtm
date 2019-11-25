@@ -34,6 +34,8 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
 import {CustomSerializer} from '@app/store/reducers';
 
+const redirectUri = `${window.location.origin}`;
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,7 +65,7 @@ import {CustomSerializer} from '@app/store/reducers';
     MsAdalAngular6Module.forRoot({
       tenant: '',
       clientId: '',
-      redirectUri: window.location.origin,
+      redirectUri: redirectUri,
       endpoints: {
         'https://localhost/Api/': 'xxx-bae6-4760-b434-xxx'
       },
