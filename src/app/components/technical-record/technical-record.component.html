@@ -53,7 +53,7 @@
             Vehicle registration mark (VRM)
           </dt>
           <dd id="test-vrm" class="govuk-summary-list__value">
-            <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) else hyphen">
+            <div *ngIf="!isEmptyObject(techRecordsJson.vrms) else hyphen">
               <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
                 {{vrmItem.vrm}}
               </ul>
@@ -66,7 +66,7 @@
             Previous VRM
           </dt>
           <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-            <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) else hyphen">
+            <div *ngIf="!isEmptyObject(techRecordsJson.vrms) else hyphen">
               <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
                 <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
               </ul>
@@ -1313,9 +1313,13 @@
 
             <ng-container *ngIf="adrData else adrForm">
               <ng-container *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) else space">
-                <div *ngIf="!hideForm">
+                <ng-container *ngIf="!hideForm">
                   <div class="govuk-summary-list__row">
-                    <h2 class="govuk-heading-m">Applicant details</h2>
+                    <dt class="govuk-summary-list__key">
+                      <h2 class="govuk-heading-m">Applicant details</h2>
+                    </dt>
+                    <dd class="govuk-summary-list__value"></dd>
+                    <dd class="govuk-summary-list__value"></dd>
                   </div>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Name </dt>
@@ -1624,7 +1628,7 @@
                     <dd class="govuk-summary-list__value"></dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-                </div>
+                </ng-container>
               </ng-container>
             </ng-container>
           </dl>

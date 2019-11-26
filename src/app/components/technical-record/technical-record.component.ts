@@ -185,6 +185,16 @@ export class TechnicalRecordComponent implements OnInit {
     if(baxlesHasNoParkingBrakeMrk) return true;
   }
 
+  // public hasSecondaryVrms(vrms){
+  //   let hasSecondary: boolean = false;
+  //   vrms.forEach( vrm =>{
+  //       if (vrm.isPrimary===false){
+  //         hasSecondary = true;
+  //       }
+  //     }
+  //   );
+  // }
+
   public adrEdit($event, numberFee, dangerousGoods, isAdrNull) {
     console.log(`$event is ${$event}, numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
     this.changeLabel = "Save technical record";
