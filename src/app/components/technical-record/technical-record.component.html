@@ -807,7 +807,7 @@
                     </div>
                     <div class="govuk-form-group">
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
-                        Permitted dangerous goods 
+                        Permitted dangerous goods
                       </label>
                       <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select" id="permittedDangerousGoods" (change)="onPermittedChange($event)">
                         <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
@@ -2240,10 +2240,10 @@
                     {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
                   </td>
                   <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypes[0].testTypeEndTimestamp) ? "-" : testRes.testTypes[0].testTypeEndTimestamp | date :'dd/MM/y'}}
+                    {{ isNullOrEmpty(testRes.testTypeEndTimestamp) ? "-" : testRes.testTypeEndTimestamp | date :'dd/MM/y'}}
                   </td>
                   <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypes[0].testExpiryDate) ? "-" : testRes.testTypes[0].testExpiryDate | date :'dd/MM/y'}}
+                    {{ isNullOrEmpty(testRes.testExpiryDate) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
                   </td>
                   <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
                     {{ isNullOrEmpty(testRes.testTypes[0].certificateNumber) ? "-" : testRes.testTypes[0].certificateNumber }}
