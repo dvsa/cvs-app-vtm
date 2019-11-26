@@ -50,6 +50,10 @@ export class TechnicalRecordService {
     );
   }
 
+  uploadDocuments() {
+    
+  }
+
   private log(message: string) {
     console.log(`TechnicalRecordService: ${message}`);
   }

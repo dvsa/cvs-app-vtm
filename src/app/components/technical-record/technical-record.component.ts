@@ -1,36 +1,43 @@
-import { Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { initAll } from 'govuk-frontend';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable, pipe, combineLatest } from 'rxjs';
 import { selectSelectedVehicleTestResultModel } from '../../store/selectors/VehicleTestResultModel.selectors';
-import { IAppState } from '../../store/state/app.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { VEHICLE_TYPES } from "@app/app.enums";
 import { TechRecordModel } from "@app/models/tech-record.model";
 import { CustomValidators } from "@app/components/technical-record/custom-validators";
-import { AdrDetailsFormData } from "@app/components/technical-record/adr-details-form";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { VehicleExistsDialogComponent } from "@app/vehicle-exists-dialog/vehicle-exists-dialog.component";
 import { AdrReasonModalComponent } from "@app/components/adr-reason-modal/adr-reason-modal.component";
-import { RequestOptions } from '@angular/http';
+import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
+import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
+import { IAppState } from '@app/store/state/adrDetailsForm.state';
+import { CreateGroupElementAction, RemoveGroupElementAction, SetSubmittedValueAction } from '@app/store/actions/adrDetailsForm.actions';
+import { take, map, tap, withLatestFrom, filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-technical-record',
   templateUrl: './technical-record.component.html',
   styleUrls: ['./technical-record.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechnicalRecordComponent implements OnInit {
+
+  formState$: Observable<FormGroupState<adrDetailsFormModel>>;
+  submittedValue$: Observable<adrDetailsFormModel | undefined>;
+  isVehicleTankOrBattery$: Observable<boolean>;
+  techRecordsJson$: Observable<any>;
+  testResultJson$: Observable<any>;
+
   @ViewChild('fileInput') fileInputVariable: ElementRef;
   @HostBinding('@.disabled')
   public animationsDisabled = true;
   isLoading: boolean;
   searchIdentifier = '{none searched}';
-  techRecordsJson$: Observable<any>;
-  testResultJson$: Observable<any>;
   panels: { panel: string, isOpened: boolean }[] = [{ panel: 'panel1', isOpened: false }, { panel: 'panel2', isOpened: false }, { panel: 'panel3', isOpened: false }, { panel: 'panel4', isOpened: false },
   { panel: 'panel5', isOpened: false }, { panel: 'panel6', isOpened: false }, { panel: 'panel7', isOpened: false }, { panel: 'panel8', isOpened: false },
-  { panel: 'panel9', isOpened: false }];
+  { panel: 'panel9', isOpened: false }, { panel: 'panel10', isOpened: false }];
   allOpened = false;
   color = 'red';
   changeLabel: string = "Change technical record";
@@ -51,20 +58,27 @@ export class TechnicalRecordComponent implements OnInit {
   isAdrNull: any;
   fileList: FileList;
   public files: Set<File> = new Set();
-
-  techRecords: TechRecordModel[];
-
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
+  isVehicleTankOrBatterytest$: Observable<any>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
+    this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
+    this.submittedValue$ = this._store.pipe(select(s => s.adrDetails.submittedValue));
+    this.isVehicleTankOrBattery$ = combineLatest(this.techRecordsJson$, this.formState$).pipe(
+      map(([techRecords, formState]) => {
+        if (this.isNullOrEmpty(formState.value.type)) {
+          return false;
+        }
+        const selectedVehicleType = techRecords.metadata.adrDetails.vehicleDetails.typeFe[formState.value.type];
+        return selectedVehicleType.includes('battery') || selectedVehicleType.includes('tank');
+      }));
   }
 
   ngOnInit() {
     initAll();
-
     //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
 
     function requiredIfValidator(predicate) {
@@ -154,9 +168,16 @@ export class TechnicalRecordComponent implements OnInit {
         'yesCert': new FormControl(null),
         'noCert': new FormControl(null)
       }),
-      'adr-more-detail': new FormControl(null),
+      'adrMoreDetail': new FormControl(null),
     });
 
+  }
+
+  public submit() {
+    this.formState$.pipe(
+      take(1),
+      map(fs => new SetSubmittedValueAction(fs.value)),
+    ).subscribe(this._store);
   }
 
   public togglePanel() {
@@ -175,27 +196,28 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public axlesHasNoParkingBrakeMrk(axles) {
-    let baxlesHasNoParkingBrakeMrk:boolean  = true;
+    let baxlesHasNoParkingBrakeMrk: boolean = true;
     axles.forEach(axle => {
       if (axle.parkingBrakeMrk === true) {
-        baxlesHasNoParkingBrakeMrk  = false;
+        baxlesHasNoParkingBrakeMrk = false;
         return false;
       }
     });
-    if(baxlesHasNoParkingBrakeMrk) return true;
+    if (baxlesHasNoParkingBrakeMrk) return true;
   }
 
-  // public hasSecondaryVrms(vrms){
-  //   let hasSecondary: boolean = false;
-  //   vrms.forEach( vrm =>{
-  //       if (vrm.isPrimary===false){
-  //         hasSecondary = true;
-  //       }
-  //     }
-  //   );
-  // }
+  public hasNoPrimaryVrms(vrms) {
+    let bhasNoPrimaryVrms: boolean = true;
+    vrms.forEach(vrm => {
+      if (vrm.isPrimary === true) {
+        bhasNoPrimaryVrms = false;
+        return false;
+      }
+    });
+    if (bhasNoPrimaryVrms) return true;
+  }
 
-  public adrEdit($event, numberFee, dangerousGoods, isAdrNull) {
+  public adrEdit($event, techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
     console.log(`$event is ${$event}, numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
     this.changeLabel = "Save technical record";
     this.isSubmit = true;
@@ -204,6 +226,7 @@ export class TechnicalRecordComponent implements OnInit {
     this.numberFee = numberFee;
     this.dangerousGoods = dangerousGoods;
     this.isAdrNull = isAdrNull;
+    this._store.dispatch(new CreateGroupElementAction('adrDetails', techRecordsJson));
   }
 
   public cancelAddrEdit() {
@@ -241,8 +264,7 @@ export class TechnicalRecordComponent implements OnInit {
     var file: File = inputValue.files[0];
     var myReader: FileReader = new FileReader();
 
-    myReader.onloadend = (e) => {
-      let base64File = myReader.result;
+    myReader.onloadend = () => {
       // console.log(myReader.result);
     }
     myReader.readAsDataURL(file);
@@ -254,11 +276,8 @@ export class TechnicalRecordComponent implements OnInit {
         let reader = new FileReader();
         reader.readAsBinaryString(file);
         this.files.add(file);
-        console.log(file.name);
       }
     }
-
-
   }
 
   onAddUN() {
@@ -289,7 +308,8 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   onVTypeChange() {
-    this.isMandatory = this.vehicleType.includes('battery') || this.vehicleType.includes('tank');
+    console.log(`called onVTypeChange `);
+    // this.isMandatory = this.vehicleType.includes('battery') || this.vehicleType.includes('tank');
   }
 
   onPermittedChange($event) {

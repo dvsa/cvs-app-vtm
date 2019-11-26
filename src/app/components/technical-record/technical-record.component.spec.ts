@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TechnicalRecordComponent} from './technical-record.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {APP_BASE_HREF} from '@angular/common';
@@ -8,15 +8,16 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MaterialModule} from '../../material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AuthenticationGuardMock} from '../../../../test-config/services-mocks/authentication-guard.mock';
-import {Store, StoreModule, combineReducers} from '@ngrx/store';
+import {Store, StoreModule} from '@ngrx/store';
 import {RouterTestingModule} from '@angular/router/testing';
 import {SharedModule} from '../../shared/shared.module';
-import { GetVehicleTechRecordModelHavingStatusAll } from '../../store/actions/VehicleTechRecordModel.actions';
-import {GetVehicleTestResultModel} from '../../store/actions/VehicleTestResultModel.actions';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import { IAppState } from '@app/store/state/app.state';
 import { appReducers } from '@app/store/reducers/app.reducers';
+import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgrxFormsModule } from 'ngrx-forms';
 
 describe('TechnicalRecordComponent', () => {
 
@@ -37,7 +38,13 @@ describe('TechnicalRecordComponent', () => {
         BrowserAnimationsModule,
         MaterialModule,
         SharedModule,
-        RouterTestingModule
+        RouterTestingModule,
+        StoreModule.forFeature('adrDetails', adrDetailsReducer),
+        FormsModule,
+        SharedModule,
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        NgrxFormsModule,
       ],
       declarations: [TechnicalRecordComponent],
       providers: [
@@ -70,7 +77,6 @@ describe('TechnicalRecordComponent', () => {
   it('should create', () => {
     store = TestBed.get(Store);
     fixture.detectChanges();
-    const spy = jest.spyOn(store, 'dispatch');
 
     fixture.detectChanges();
     expect(component).toBeTruthy();

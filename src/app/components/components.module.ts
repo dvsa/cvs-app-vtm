@@ -5,7 +5,6 @@ import {TechnicalRecordComponent} from './technical-record/technical-record.comp
 
 import {TechnicalRecordService} from './technical-record/technical-record.service';
 import {HttpClientModule} from '@angular/common/http';
-import {NgxJsonViewerModule} from 'ngx-json-viewer';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
@@ -20,8 +19,11 @@ import { SharedModule } from '../shared/shared.module';
 import { TechnicalRecordSearchComponent } from './technical-record-search/technical-record-search.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import {ComponentsRoutingModule} from './components-routing.module';
+import { ComponentsRoutingModule } from './components-routing.module';
 import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.component';
+import { NgrxFormsModule } from 'ngrx-forms';
+import { StoreModule } from '@ngrx/store';
+import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 
 @NgModule({
   imports: [
@@ -30,12 +32,13 @@ import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.com
     MatFormFieldModule,
     HttpClientModule,
     ComponentsRoutingModule,
-    NgxJsonViewerModule,
     IonicModule.forRoot(),
+    StoreModule.forFeature('adrDetails', adrDetailsReducer),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgrxFormsModule,
   ],
   declarations: [
     TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, FooterComponent, HeaderComponent, AdrReasonModalComponent
