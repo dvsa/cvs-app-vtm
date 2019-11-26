@@ -807,9 +807,9 @@
                     </div>
                     <div class="govuk-form-group">
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
-                        Permitted dangerous goods
+                        Permitted dangerous goods 
                       </label>
-                      <select multiple class="govuk-select" id="permittedDangerousGoods" formControlName="permittedDangerousGoods" (change)="onPermittedChange($event)">
+                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select" id="permittedDangerousGoods" (change)="onPermittedChange($event)">
                         <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
                           {{ permittedGoods }}
                         </option>

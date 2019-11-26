@@ -1,6 +1,6 @@
 import { IAppState as RootState } from './app.state';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
-import { createFormGroupState, FormGroupState } from 'ngrx-forms';
+import { createFormGroupState, FormGroupState, box } from 'ngrx-forms';
 
 export interface IAppState extends RootState {
   adrDetails: {
@@ -23,7 +23,7 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     month: 1,
     year: 1920
   },
-  permittedDangerousGoods: false,
+  permittedDangerousGoods: box([]),
   compatibilityGroupJ: {
     compatibilityJ: false
   },

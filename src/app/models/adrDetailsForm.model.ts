@@ -1,3 +1,5 @@
+import { Boxed } from "ngrx-forms";
+
 export interface approvalDate {
     day: number;
     month: number;
@@ -11,7 +13,7 @@ export interface adrDetailsFormModel {
     postcode: string;
     type: string;
     approvalDate: approvalDate;
-    permittedDangerousGoods: boolean,
+    permittedDangerousGoods: Boxed<string[]>,
     compatibilityGroupJ: {
         compatibilityJ: boolean
     };
