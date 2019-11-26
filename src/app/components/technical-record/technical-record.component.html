@@ -2240,7 +2240,7 @@
                     {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
                   </td>
                   <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypeEndTimestamp) ? "-" : testRes.testTypeEndTimestamp | date :'dd/MM/y'}}
+                    {{ isNullOrEmpty(testRes.testEndTimestamp) ? "-" : testRes.testEndTimestamp | date :'dd/MM/y'}}
                   </td>
                   <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
                     {{ isNullOrEmpty(testRes.testExpiryDate) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
