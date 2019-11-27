@@ -108,11 +108,28 @@ export class TechnicalRecordComponent implements OnInit {
         'month': new FormControl(null, Validators.required),
         'year': new FormControl(null, Validators.required),
       }, CustomValidators.dateValidator),
-      'permittedDangerousGoods': new FormControl([''], Validators.required),
+      'permittedDangerousGoods': new FormControl({
+        'permitted-0': new FormControl(null, Validators.required),
+        'permitted-1': new FormControl(null, Validators.required),
+        'permitted-2': new FormControl(null, Validators.required),
+        'permitted-3': new FormControl(null, Validators.required),
+        'permitted-4': new FormControl(null, Validators.required),
+        'permitted-5': new FormControl(null, Validators.required),
+        'permitted-6': new FormControl(null, Validators.required),
+        'permitted-7': new FormControl(null, Validators.required)
+      }),
       'compatibilityGroupJ': new FormGroup({
         'compatibilityJ': new FormControl(null),
       }),
-      'additionalNotes': new FormControl(['']),
+      'additionalNotes': new FormControl({
+        'note-0': new FormControl(null, Validators.required),
+        'note-1': new FormControl(null, Validators.required),
+        'note-2': new FormControl(null, Validators.required),
+        'note-3': new FormControl(null, Validators.required),
+        'note-4': new FormControl(null, Validators.required),
+        'note-5': new FormControl(null, Validators.required),
+        'note-6': new FormControl(null, Validators.required)
+      }),
       'adrTypeApprovalNo': new FormControl(null),
       'tankManufacturer': new FormControl(null, [Validators.maxLength(70), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false)]),
