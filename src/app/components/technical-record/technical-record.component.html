@@ -809,7 +809,7 @@
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                         Permitted dangerous goods
                       </label>
-                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select multiselect" (change)="onPermittedChange($event)">
+                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select multiselect">
                         <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
                           {{ permittedGoods }}
                         </option>
