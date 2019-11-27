@@ -61,6 +61,13 @@ export class TechnicalRecordComponent implements OnInit {
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
+
+  }
+
+  ngOnInit() {
+    initAll();
+    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
+
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
@@ -76,11 +83,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map( s => {
       return s.value.permittedDangerousGoods.value.includes('Explosives (type 2)') || s.value.permittedDangerousGoods.value.includes('Explosives (type 3)');
     }));
-  }
-
-  ngOnInit() {
-    initAll();
-    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
 
     function requiredIfValidator(predicate) {
       return (formControl => {
@@ -309,14 +311,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.subsequentInspection = true;
   }
 
-  onVTypeChange() {
-    console.log(`called onVTypeChange `);
-    // this.isMandatory = this.vehicleType.includes('battery') || this.vehicleType.includes('tank');
-  }
-
-  onPermittedChange($event) {
-    this.compatibilityJ = $event.currentTarget.value == "6: 'Explosives (type 2)'" || $event.currentTarget.value == "7: 'Explosives (type 3)'";
-  }
 
   selectReferenceNumberChange($event) {
     this.isStatement = $event.currentTarget.value == "isStatement";

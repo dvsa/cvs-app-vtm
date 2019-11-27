@@ -7,6 +7,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppComponent} from './app.component';
 import {Store} from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
   const obj: any = {};
@@ -31,6 +32,7 @@ describe('AppComponent', () => {
     storeSpy = createSpyObj('Store', ['dispatch']);
 
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
