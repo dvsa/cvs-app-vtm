@@ -780,7 +780,7 @@
                               <label class="govuk-label govuk-date-input__label" for="day">
                                 Day
                               </label>
-                              <input [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.day" 
+                              <input [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.day"
                                      class="govuk-input govuk-date-input__input govuk-input--width-2" id="day" type="number" pattern="[0-9]*">
                             </div>
                           </div>
@@ -789,7 +789,7 @@
                               <label class="govuk-label govuk-date-input__label" for="month">
                                 Month
                               </label>
-                              <input [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.month"  
+                              <input [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.month"
                                      class="govuk-input govuk-date-input__input govuk-input--width-2" id="month" type="number" pattern="[0-9]*">
                             </div>
                           </div>
@@ -798,7 +798,7 @@
                               <label class="govuk-label govuk-date-input__label" for="year">
                                 Year
                               </label>
-                              <input [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.year" 
+                              <input [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.year"
                                      class="govuk-input govuk-date-input__input govuk-input--width-4" id="year" type="number" pattern="[0-9]*">
                             </div>
                           </div>
@@ -807,7 +807,7 @@
                     </div>
                     <div class="govuk-form-group">
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
-                        Permitted dangerous goods 
+                        Permitted dangerous goods
                       </label>
                       <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select multiselect" (change)="onPermittedChange($event)">
                         <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
@@ -1853,9 +1853,13 @@
 
             <ng-container *ngIf="adrData else adrForm">
               <ng-container *ngIf="!isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails) else space">
-                <div *ngIf="!hideForm">
+                <ng-container *ngIf="!hideForm">
                   <div class="govuk-summary-list__row">
-                    <h2 class="govuk-heading-m">Applicant details</h2>
+                    <dt class="govuk-summary-list__key">
+                      <h2 class="govuk-heading-m">Applicant details</h2>
+                    </dt>
+                    <dd class="govuk-summary-list__value"></dd>
+                    <dd class="govuk-summary-list__value"></dd>
                   </div>
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Name </dt>
@@ -2164,7 +2168,7 @@
                     <dd class="govuk-summary-list__value"></dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
-                </div>
+                </ng-container>
               </ng-container>
             </ng-container>
           </dl>
@@ -2236,10 +2240,10 @@
                     {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
                   </td>
                   <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypes[0].testTypeEndTimestamp) ? "-" : testRes.testTypes[0].testTypeEndTimestamp | date :'dd/MM/y'}}
+                    {{ isNullOrEmpty(testRes.testEndTimestamp) ? "-" : testRes.testEndTimestamp | date :'dd/MM/y'}}
                   </td>
                   <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypes[0].testExpiryDate) ? "-" : testRes.testTypes[0].testExpiryDate | date :'dd/MM/y'}}
+                    {{ isNullOrEmpty(testRes.testExpiryDate) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
                   </td>
                   <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
                     {{ isNullOrEmpty(testRes.testTypes[0].certificateNumber) ? "-" : testRes.testTypes[0].certificateNumber }}
