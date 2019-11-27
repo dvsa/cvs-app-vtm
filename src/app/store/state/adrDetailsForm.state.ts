@@ -24,10 +24,8 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     year: 1920
   },
   permittedDangerousGoods: box([]),
-  compatibilityGroupJ: {
-    compatibilityJ: false
-  },
-  additionalNotes: '',
+  compatibilityJ: false,
+  additionalNotes: box([]),
   adrTypeApprovalNo: '',
   tankManufacturer: '',
   yearOfManufacture: 1,

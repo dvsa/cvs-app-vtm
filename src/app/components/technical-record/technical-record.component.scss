@@ -2,6 +2,12 @@
 
 
 
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
 
 
 #hide input[type=file] {
@@ -67,34 +73,6 @@
 .fileContainer [type=file] {
   cursor: pointer;
 }
-
-// input[type=file] {
-//   color: #0b0c0c;
-//   background-color: #f3f2f1;
-//   box-shadow: 0 2px 0 #929191;
-//   width: auto;
-//   font-family: "GDS Transport", Arial, sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   font-weight: 400;
-//   box-sizing: border-box;
-//   display: inline-block;
-//   position: relative;
-//   margin-top: 0;
-//   padding: 8px 10px 7px;
-//   border: 2px solid transparent;
-//   border-radius: 0;
-//   text-align: center;
-//   vertical-align: top;
-//   cursor: pointer;
-//   -webkit-appearance: none;
-  
-//   @media (min-width: 40.0625em) {
-//     margin-bottom: 32px;
-//     font-size: 1.1875rem;
-//     line-height: 1;
-//  }
-
-// }
 
 $font-stack: GDSTransportWebsite;
 .expander-icon {
@@ -461,14 +439,19 @@ dd {
     width: 30rem;
   }
 
-  #additionalNotes, #permittedDangerousGoods {
-    height: 5rem;
+  .multiselect {
+    height: 13rem;
+   }
+
+  .additionalNotes {
+    height: 10rem;
   }
 
   .add-a-guidance-note, .add-a-un-number {
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
+    cursor: not-allowed;
   }
 
   #adr-more-detail {

@@ -14,10 +14,8 @@ export interface adrDetailsFormModel {
     type: string;
     approvalDate: approvalDate;
     permittedDangerousGoods: Boxed<string[]>,
-    compatibilityGroupJ: {
-        compatibilityJ: boolean
-    };
-    additionalNotes: string;
+    compatibilityJ: boolean
+    additionalNotes: Boxed<string[]>;
     adrTypeApprovalNo: string;
     tankManufacturer: string;
     yearOfManufacture: number;

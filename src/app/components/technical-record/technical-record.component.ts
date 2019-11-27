@@ -1,20 +1,19 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
-import { Observable, pipe, combineLatest } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { selectSelectedVehicleTestResultModel } from '../../store/selectors/VehicleTestResultModel.selectors';
 import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { VEHICLE_TYPES } from "@app/app.enums";
-import { TechRecordModel } from "@app/models/tech-record.model";
 import { CustomValidators } from "@app/components/technical-record/custom-validators";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { AdrReasonModalComponent } from "@app/components/adr-reason-modal/adr-reason-modal.component";
-import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
+import { FormGroupState } from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { IAppState } from '@app/store/state/adrDetailsForm.state';
-import { CreateGroupElementAction, RemoveGroupElementAction, SetSubmittedValueAction } from '@app/store/actions/adrDetailsForm.actions';
-import { take, map, tap, withLatestFrom, filter, switchMap } from 'rxjs/operators';
+import { CreateGroupElementAction, SetSubmittedValueAction } from '@app/store/actions/adrDetailsForm.actions';
+import { take, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-technical-record',
@@ -27,6 +26,7 @@ export class TechnicalRecordComponent implements OnInit {
   formState$: Observable<FormGroupState<adrDetailsFormModel>>;
   submittedValue$: Observable<adrDetailsFormModel | undefined>;
   isVehicleTankOrBattery$: Observable<boolean>;
+  isPermittedExplosiveDangerousGoods$: Observable<boolean>;
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
 
@@ -52,7 +52,6 @@ export class TechnicalRecordComponent implements OnInit {
   isBrakeDeclarationsSeen: boolean = false;
   isBrakeEndurance: boolean = false;
   vehicleType: string;
-  isMandatory: boolean;
   numberFee: any;
   dangerousGoods: any;
   isAdrNull: any;
@@ -60,7 +59,6 @@ export class TechnicalRecordComponent implements OnInit {
   public files: Set<File> = new Set();
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
-  isVehicleTankOrBatterytest$: Observable<any>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -75,6 +73,9 @@ export class TechnicalRecordComponent implements OnInit {
         const selectedVehicleType = techRecords.metadata.adrDetails.vehicleDetails.typeFe[formState.value.type];
         return selectedVehicleType.includes('battery') || selectedVehicleType.includes('tank');
       }));
+    this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map( s => {
+      return s.value.permittedDangerousGoods.value.includes('Explosives (type 2)') || s.value.permittedDangerousGoods.value.includes('Explosives (type 3)');
+    }));
   }
 
   ngOnInit() {
@@ -295,6 +296,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   addDangerousGood(good: string) {
+    console.log(`addDangerousGood good => ${good}`);
     setTimeout(() => {
       this.dangerousGoods.push(good);
       this.adrDetailsForm.controls['additionalNotes'].patchValue(

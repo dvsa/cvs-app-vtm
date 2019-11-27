@@ -809,31 +809,31 @@
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                         Permitted dangerous goods 
                       </label>
-                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select" id="permittedDangerousGoods" (change)="onPermittedChange($event)">
+                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select multiselect" (change)="onPermittedChange($event)">
                         <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
                           {{ permittedGoods }}
                         </option>
                       </select>
                     </div>
-                    <p><a class="add-a-guidance-note" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous
-                        good</a></p>
+                    <!-- <p><a class="add-a-guidance-note isDisabled" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a></p>
 
-                    <input class="govuk-input govuk-input--width-5" #dangerousGood id="addDangerousGood" placeholder="Add good" type="text"><br><br>
+                    <input class="govuk-input govuk-input--width-5 isDisabled" #dangerousGood id="addDangerousGood" placeholder="Add good" type="text"><br><br> -->
 
-                    <div class="govuk-inset-text" *ngIf="compatibilityJ">
-                      <div class="govuk-form-group" formGroupName="compatibilityGroupJ">
+                    <div class="govuk-inset-text" *ngIf="isPermittedExplosiveDangerousGoods$ | async">
+                      <div  class="govuk-form-group">
                         <fieldset class="govuk-fieldset">
-                          <h2 class="govuk-heading-m">Compatibility group J</h2>
+                          <h3 class="govuk-heading-m">Compatibility group J</h3>
                           <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="yes" formControlName="compatibilityJ" type="radio"
-                                value="true">
+                              <input class="govuk-radios__input" id="yes"  type="radio"
+                                value="true" [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
                               <label class="govuk-label govuk-radios__label" for="yes">
                                 Yes
                               </label>
                             </div>
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="no" formControlName="compatibilityJ" type="radio" value="false">
+                              <input class="govuk-radios__input" id="no"  type="radio" 
+                                value="false" [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
                               <label class="govuk-label govuk-radios__label" for="no">
                                 No
                               </label>
@@ -846,7 +846,7 @@
                       <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
                         Guidance notes
                       </label>
-                      <select multiple class="govuk-select" id="additionalNotes" formControlName="additionalNotes">
+                      <select multiple class="govuk-select additionalNotes"  formControlName="additionalNotes">
                         <option *ngFor="let note of numberFee" [value]="note">
                           {{ note }}
                         </option>
