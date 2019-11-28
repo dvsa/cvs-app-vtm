@@ -805,7 +805,7 @@
                         </div>
                       </fieldset>
                     </div>
-                    <div class="govuk-form-group" formGroupName="permittedDangerousGoods">
+                    <div class="govuk-form-group permittedDangerousGoods" formGroupName="permittedDangerousGoods">
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                         Permitted dangerous goods
                       </label>
@@ -821,16 +821,17 @@
                           <input formControlName="permitted-{{i}}"
                                  class="govuk-checkboxes__input" id="permitted-{{i}}" type="checkbox" [value]="permittedGoods" (change)="onPermittedChange($event)">
                           <label class="govuk-label govuk-checkboxes__label" for="permitted-{{i}}">
-                            {{ permittedGoods }}
+                            <span>{{ permittedGoods }}</span>
                           </label>
                         </div>
                       </div>
 
                     </div>
 
-                    <!-- <p><a class="add-dangerous-note isDisabled" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a></p>
-
-                    <input class="govuk-input govuk-input--width-5 isDisabled" #dangerousGood id="addDangerousGood" placeholder="Add good" type="text"><br><br> -->
+                    <div class="govuk-form-group">
+                      <a class="add-dangerous-note isDisabled" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a><br><br>
+                      <input class="govuk-input govuk-input--width-5 isDisabled" #dangerousGood id="addDangerousGood" placeholder="Add good" type="text">
+                    </div>
 
                     <div class="govuk-inset-text" *ngIf="isPermittedExplosiveDangerousGoods$ | async">
                       <div  class="govuk-form-group">
@@ -871,18 +872,18 @@
                           <input formControlName="note-{{i}}"
                                  class="govuk-checkboxes__input" id="note-{{i}}" type="checkbox" [value]="note">
                           <label class="govuk-label govuk-checkboxes__label" for="note-{{i}}">
-                            {{ note }}
+                            <span>{{ note }}</span>
                           </label>
                         </div>
+                      </div><br>
+
+                      <div class="govuk-form-group">
+                        <a class="add-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a><br><br>
+                        <input class="govuk-input govuk-input--width-5" #guidanceNote id="addGuidanceNote" placeholder="Add note" type="text">
                       </div>
-
-<!--                      <p><a class="add-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance-->
-<!--                          note</a></p>-->
-
-<!--                      <input class="govuk-input govuk-input&#45;&#45;width-5" #guidanceNote id="addGuidanceNote" placeholder="Add note" type="text">-->
-
                     </div>
-                    <div class="govuk-form-group">
+
+                    <div class="govuk-form-group adrType">
                       <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
                         ADR type approval number
                       </label>

@@ -110,16 +110,7 @@ export class TechnicalRecordComponent implements OnInit {
         'month': new FormControl(null, Validators.required),
         'year': new FormControl(null, Validators.required),
       }, CustomValidators.dateValidator),
-      'permittedDangerousGoods': new FormControl({
-        'permitted-0': new FormControl(null, Validators.required),
-        'permitted-1': new FormControl(null, Validators.required),
-        'permitted-2': new FormControl(null, Validators.required),
-        'permitted-3': new FormControl(null, Validators.required),
-        'permitted-4': new FormControl(null, Validators.required),
-        'permitted-5': new FormControl(null, Validators.required),
-        'permitted-6': new FormControl(null, Validators.required),
-        'permitted-7': new FormControl(null, Validators.required)
-      }),
+      'permittedDangerousGoods': new FormControl(['']),
       'compatibilityGroupJ': new FormGroup({
         'compatibilityJ': new FormControl(null),
       }),
