@@ -819,7 +819,7 @@
                       <div class="govuk-checkboxes">
                         <div class="govuk-checkboxes__item" *ngFor="let permittedGoods of dangerousGoods;  let i = index">
                           <input formControlName="permitted-{{i}}"
-                                 class="govuk-checkboxes__input" id="permitted-{{i}}" type="checkbox" [value]="permittedGoods" (change)="onPermittedChange($event)">
+                                 class="govuk-checkboxes__input" id="permitted-{{i}}" type="checkbox" [value]="permittedGoods">
                           <label class="govuk-label govuk-checkboxes__label" for="permitted-{{i}}">
                             {{ permittedGoods }}
                           </label>
