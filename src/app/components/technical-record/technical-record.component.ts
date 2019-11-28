@@ -61,6 +61,13 @@ export class TechnicalRecordComponent implements OnInit {
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
+
+  }
+
+  ngOnInit() {
+    initAll();
+    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
+
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
@@ -76,11 +83,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map( s => {
       return s.value.permittedDangerousGoods.value.includes('Explosives (type 2)') || s.value.permittedDangerousGoods.value.includes('Explosives (type 3)');
     }));
-  }
-
-  ngOnInit() {
-    initAll();
-    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
 
     function requiredIfValidator(predicate) {
       return (formControl => {
@@ -108,11 +110,28 @@ export class TechnicalRecordComponent implements OnInit {
         'month': new FormControl(null, Validators.required),
         'year': new FormControl(null, Validators.required),
       }, CustomValidators.dateValidator),
-      'permittedDangerousGoods': new FormControl([''], Validators.required),
+      'permittedDangerousGoods': new FormControl({
+        'permitted-0': new FormControl(null, Validators.required),
+        'permitted-1': new FormControl(null, Validators.required),
+        'permitted-2': new FormControl(null, Validators.required),
+        'permitted-3': new FormControl(null, Validators.required),
+        'permitted-4': new FormControl(null, Validators.required),
+        'permitted-5': new FormControl(null, Validators.required),
+        'permitted-6': new FormControl(null, Validators.required),
+        'permitted-7': new FormControl(null, Validators.required)
+      }),
       'compatibilityGroupJ': new FormGroup({
         'compatibilityJ': new FormControl(null),
       }),
-      'additionalNotes': new FormControl(['']),
+      'additionalNotes': new FormControl({
+        'note-0': new FormControl(null, Validators.required),
+        'note-1': new FormControl(null, Validators.required),
+        'note-2': new FormControl(null, Validators.required),
+        'note-3': new FormControl(null, Validators.required),
+        'note-4': new FormControl(null, Validators.required),
+        'note-5': new FormControl(null, Validators.required),
+        'note-6': new FormControl(null, Validators.required)
+      }),
       'adrTypeApprovalNo': new FormControl(null),
       'tankManufacturer': new FormControl(null, [Validators.maxLength(70), requiredIfValidator(() => !this.adrDetailsForm.get('type').errors ? this.adrDetailsForm.get('type').value.includes('battery')
         || this.adrDetailsForm.get('type').value.includes('tank') : false)]),
@@ -309,14 +328,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.subsequentInspection = true;
   }
 
-  onVTypeChange() {
-    console.log(`called onVTypeChange `);
-    // this.isMandatory = this.vehicleType.includes('battery') || this.vehicleType.includes('tank');
-  }
-
-  onPermittedChange($event) {
-    this.compatibilityJ = $event.currentTarget.value == "6: 'Explosives (type 2)'" || $event.currentTarget.value == "7: 'Explosives (type 3)'";
-  }
 
   selectReferenceNumberChange($event) {
     this.isStatement = $event.currentTarget.value == "isStatement";

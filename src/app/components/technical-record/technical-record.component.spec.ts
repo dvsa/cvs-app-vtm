@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, getTestBed} from '@angular/core/testing';
 import {TechnicalRecordComponent} from './technical-record.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {APP_BASE_HREF} from '@angular/common';
@@ -13,11 +13,12 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {SharedModule} from '../../shared/shared.module';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
-import { IAppState } from '@app/store/state/app.state';
+import { IAppState, INITIAL_STATE } from '@app/store/state/adrDetailsForm.state';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgrxFormsModule } from 'ngrx-forms';
+import { hot } from 'jasmine-marbles';
 
 describe('TechnicalRecordComponent', () => {
 
@@ -25,6 +26,7 @@ describe('TechnicalRecordComponent', () => {
   let fixture: ComponentFixture<TechnicalRecordComponent>;
   const authenticationGuardMock = new AuthenticationGuardMock();
   const unsubscribe = new Subject<void>();
+  let injector: TestBed;
   let store: Store<IAppState>;
 
   beforeEach(() => {
@@ -52,7 +54,7 @@ describe('TechnicalRecordComponent', () => {
           provide: Store,
           useValue: {
             dispatch: jest.fn(),
-            pipe: jest.fn(),
+            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
             select: jest.fn()
           }
         },
@@ -64,6 +66,7 @@ describe('TechnicalRecordComponent', () => {
       store = TestBed.get(Store);
       spyOn(store, 'dispatch').and.callThrough();
       fixture = TestBed.createComponent(TechnicalRecordComponent);
+      injector = getTestBed();
       component = fixture.componentInstance;
       fixture.detectChanges();
   });
@@ -88,19 +91,6 @@ describe('TechnicalRecordComponent', () => {
       expect(panel.isOpened).toEqual(true);
     }
   });
-
-  /*
-   logic moved to search component
-  */
-  // it('should dispatch the actions from searchTechRecords action',  () => {
-  //   const q = '123455677';
-  //   const statusAllAction = new GetVehicleTechRecordModelHavingStatusAll(q);
-  //   const testResultModelAction = new GetVehicleTestResultModel(q);
-  //   const store = TestBed.get(Store);
-  //   const spy = jest.spyOn(store, 'dispatch');
-  //   fixture.detectChanges();
-  //   expect(spy).toHaveBeenCalledWith(statusAllAction);
-  // });
 
   afterAll(() => {
     TestBed.resetTestingModule();

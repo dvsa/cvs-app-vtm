@@ -805,17 +805,30 @@
                         </div>
                       </fieldset>
                     </div>
-                    <div class="govuk-form-group">
+                    <div class="govuk-form-group" formGroupName="permittedDangerousGoods">
                       <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
                         Permitted dangerous goods
                       </label>
-                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select multiselect" (change)="onPermittedChange($event)">
-                        <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">
-                          {{ permittedGoods }}
-                        </option>
-                      </select>
+
+<!--                      <select [ngrxFormControlState]="(formState$ | async).controls.permittedDangerousGoods" multiple class="govuk-select multiselect" (change)="onPermittedChange($event)">-->
+<!--                        <option *ngFor="let permittedGoods of dangerousGoods" [value]="permittedGoods">-->
+<!--                          {{ permittedGoods }}-->
+<!--                        </option>-->
+<!--                      </select>-->
+
+                      <div class="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item" *ngFor="let permittedGoods of dangerousGoods;  let i = index">
+                          <input formControlName="permitted-{{i}}"
+                                 class="govuk-checkboxes__input" id="permitted-{{i}}" type="checkbox" [value]="permittedGoods" (change)="onPermittedChange($event)">
+                          <label class="govuk-label govuk-checkboxes__label" for="permitted-{{i}}">
+                            {{ permittedGoods }}
+                          </label>
+                        </div>
+                      </div>
+
                     </div>
-                    <!-- <p><a class="add-a-guidance-note isDisabled" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a></p>
+
+                    <!-- <p><a class="add-dangerous-note isDisabled" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a></p>
 
                     <input class="govuk-input govuk-input--width-5 isDisabled" #dangerousGood id="addDangerousGood" placeholder="Add good" type="text"><br><br> -->
 
@@ -832,7 +845,7 @@
                               </label>
                             </div>
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="no"  type="radio" 
+                              <input class="govuk-radios__input" id="no"  type="radio"
                                 value="false" [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
                               <label class="govuk-label govuk-radios__label" for="no">
                                 No
@@ -842,19 +855,31 @@
                         </fieldset>
                       </div>
                     </div>
-                    <div class="govuk-form-group">
+
+                    <div class="govuk-form-group" formGroupName="additionalNotes">
                       <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
                         Guidance notes
                       </label>
-                      <select multiple class="govuk-select additionalNotes"  formControlName="additionalNotes">
-                        <option *ngFor="let note of numberFee" [value]="note">
-                          {{ note }}
-                        </option>
-                      </select>
-                      <p><a class="add-a-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance
-                          note</a></p>
+<!--                      <select multiple class="govuk-select additionalNotes"  formControlName="additionalNotes">-->
+<!--                        <option *ngFor="let note of numberFee" [value]="note">-->
+<!--                          {{ note }}-->
+<!--                        </option>-->
+<!--                      </select>-->
 
-                      <input class="govuk-input govuk-input--width-5" #guidanceNote id="addGuidanceNote" placeholder="Add note" type="text">
+                      <div class="govuk-checkboxes">
+                        <div class="govuk-checkboxes__item" *ngFor="let note of numberFee;  let i = index">
+                          <input formControlName="note-{{i}}"
+                                 class="govuk-checkboxes__input" id="note-{{i}}" type="checkbox" [value]="note">
+                          <label class="govuk-label govuk-checkboxes__label" for="note-{{i}}">
+                            {{ note }}
+                          </label>
+                        </div>
+                      </div>
+
+<!--                      <p><a class="add-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance-->
+<!--                          note</a></p>-->
+
+<!--                      <input class="govuk-input govuk-input&#45;&#45;width-5" #guidanceNote id="addGuidanceNote" placeholder="Add note" type="text">-->
 
                     </div>
                     <div class="govuk-form-group">
