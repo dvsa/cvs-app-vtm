@@ -174,7 +174,7 @@
               <dt class="govuk-summary-list__key">
                 Parking brake fitted
               </dt>
-              <dd class="govuk-summary-list__value">
+              <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk">
                 <div *ngIf="!isEmptyObject(techRecordsJson.techRecord[0].axles) &&
                             !axlesHasNoParkingBrakeMrk(techRecordsJson.techRecord[0].axles) else hyphen">
                   <div *ngFor="let axel of techRecordsJson.techRecord[0].axles">
@@ -619,10 +619,10 @@
               <tr class="govuk-table__row" *ngIf="techRecordsJson.techRecord[0].vehicleType == 'hgv'">
                 <th class="govuk-table__cell govuk-!-font-weight-bold"> Front of vehicle to 5th wheel coupling</th>
                 <td id="test-frontAxleTo5thWheelCouplingMin" class="govuk-table__cell">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin) ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMin }}
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].frontAxleTo5thWheelCouplingMin) ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelCouplingMin }}
                 </td>
                 <td id="test-frontAxleTo5thWheelCouplingMax" class="govuk-table__cell">
-                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax) ? "-" : techRecordsJson.techRecord[0].frontVehicleTo5thWheelCouplingMax }}
+                  {{ isNullOrEmpty(techRecordsJson.techRecord[0].frontAxleTo5thWheelCouplingMax) ? "-" : techRecordsJson.techRecord[0].frontAxleTo5thWheelCouplingMax }}
                 </td>
                 <td class="govuk-table__cell"></td>
                 <td class="govuk-table__cell"></td>
@@ -819,7 +819,7 @@
                       <div class="govuk-checkboxes">
                         <div class="govuk-checkboxes__item" *ngFor="let permittedGoods of dangerousGoods;  let i = index">
                           <input formControlName="permitted-{{i}}"
-                                 class="govuk-checkboxes__input" id="permitted-{{i}}" type="checkbox" [value]="permittedGoods" (change)="onPermittedChange($event)">
+                                 class="govuk-checkboxes__input" id="permitted-{{i}}" type="checkbox" [value]="permittedGoods">
                           <label class="govuk-label govuk-checkboxes__label" for="permitted-{{i}}">
                             {{ permittedGoods }}
                           </label>
