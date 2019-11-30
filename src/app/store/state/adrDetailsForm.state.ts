@@ -5,6 +5,8 @@ import { createFormGroupState, FormGroupState, box } from 'ngrx-forms';
 export interface IAppState extends RootState {
   adrDetails: {
     formState: FormGroupState<adrDetailsFormModel>;
+    permittedDangerousGoodsOptions: string[];
+    additionalNotesOptions: string[];
     submittedValue: adrDetailsFormModel | undefined;
   };
 }
@@ -23,9 +25,15 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     month: 1,
     year: 1920
   },
-  permittedDangerousGoods: box([]),
+  permittedDangerousGoods: {
+    'Danger 1': false,
+    'Danger xyz': false,
+  },
   compatibilityJ: false,
-  additionalNotes: box([]),
+  additionalNotes: {
+    'Document 1': false,
+    'Document xyz': false,
+  },
   adrTypeApprovalNo: '',
   tankManufacturer: '',
   yearOfManufacture: 1,

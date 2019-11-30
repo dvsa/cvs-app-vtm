@@ -24,11 +24,14 @@ import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.com
 import { NgrxFormsModule } from 'ngrx-forms';
 import { StoreModule } from '@ngrx/store';
 import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { AceEditorModule } from 'ng2-ace-editor';
+import { MaterialModule } from '@app/material.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    MatExpansionModule,
+    MaterialModule,
     MatFormFieldModule,
     HttpClientModule,
     ComponentsRoutingModule,
@@ -39,6 +42,8 @@ import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
     FontAwesomeModule,
     ReactiveFormsModule,
     NgrxFormsModule,
+    NgxJsonViewerModule, 
+    AceEditorModule
   ],
   declarations: [
     TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, FooterComponent, HeaderComponent, AdrReasonModalComponent

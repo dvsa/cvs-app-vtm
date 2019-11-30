@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { selectSelectedVehicleTestResultModel } from '../../store/selectors/VehicleTestResultModel.selectors';
 import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
@@ -12,8 +12,9 @@ import { AdrReasonModalComponent } from "@app/components/adr-reason-modal/adr-re
 import { FormGroupState } from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { IAppState } from '@app/store/state/adrDetailsForm.state';
-import { CreateGroupElementAction, SetSubmittedValueAction } from '@app/store/actions/adrDetailsForm.actions';
-import { take, map } from 'rxjs/operators';
+import { SetSubmittedValueAction, CreatePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction } from '@app/store/actions/adrDetailsForm.actions';
+import { take, map, catchError } from 'rxjs/operators';
+import { a } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-technical-record',
@@ -59,30 +60,62 @@ export class TechnicalRecordComponent implements OnInit {
   public files: Set<File> = new Set();
   adrDetailsForm: FormGroup;
   vehicleTypes: typeof VEHICLE_TYPES = VEHICLE_TYPES;
+  public permittedDangerousGoodsOptions$: Observable<string[]>;
+  additionalNotesOptions$: Observable<string[]>;
+  adrDetails$: Observable<any>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
-
-  }
-
-  ngOnInit() {
-    initAll();
-    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
-
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
+    this.adrDetails$ = this._store.select(s => s.adrDetails);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
+    this.permittedDangerousGoodsOptions$ = this._store.pipe(select(s => s.adrDetails.permittedDangerousGoodsOptions));
     this.submittedValue$ = this._store.pipe(select(s => s.adrDetails.submittedValue));
     this.isVehicleTankOrBattery$ = combineLatest(this.techRecordsJson$, this.formState$).pipe(
       map(([techRecords, formState]) => {
         if (this.isNullOrEmpty(formState.value.type)) {
           return false;
         }
-        const selectedVehicleType = techRecords.metadata.adrDetails.vehicleDetails.typeFe[formState.value.type];
-        return selectedVehicleType.includes('battery') || selectedVehicleType.includes('tank');
-      }));
-    this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map( s => {
-      return s.value.permittedDangerousGoods.value.includes('Explosives (type 2)') || s.value.permittedDangerousGoods.value.includes('Explosives (type 3)');
-    }));
+        return formState.value.type.includes('battery') || formState.value.type.includes('tank');
+      }),
+      catchError(err => {
+        return of(false);
+      })
+    );
+    this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map(s =>
+      s.value.permittedDangerousGoods['Explosives (type 2)'] || s.value.permittedDangerousGoods['Explosives (type 3)']),
+      catchError(err => {
+        return of(false);
+      })
+    );
+    this.additionalNotesOptions$ = this._store.pipe(select(s => s.adrDetails.additionalNotesOptions));
+  }
+
+  public keepOriginalOrder = (a, b) => a.key;
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
+  private log(message: string) {
+    console.log(`TestResultService: ${message}`);
+  }
+
+
+  ngOnInit() {
+    initAll();
+    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
+
+
 
     function requiredIfValidator(predicate) {
       return (formControl => {
@@ -246,7 +279,7 @@ export class TechnicalRecordComponent implements OnInit {
     this.numberFee = numberFee;
     this.dangerousGoods = dangerousGoods;
     this.isAdrNull = isAdrNull;
-    this._store.dispatch(new CreateGroupElementAction('adrDetails', techRecordsJson));
+    // this._store.dispatch(new CreateGroupElementAction('adrDetails', techRecordsJson));
   }
 
   public cancelAddrEdit() {
@@ -306,22 +339,11 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   addAGuidanceNote(note: string) {
-    setTimeout(() => {
-      this.numberFee.push(note);
-      this.adrDetailsForm.controls['additionalNotes'].patchValue(
-        [note]
-      );
-    }, 500);
+    this._store.dispatch(new CreateGuidanceNoteElementAction(note, false));
   }
 
   addDangerousGood(good: string) {
-    console.log(`addDangerousGood good => ${good}`);
-    setTimeout(() => {
-      this.dangerousGoods.push(good);
-      this.adrDetailsForm.controls['additionalNotes'].patchValue(
-        [good]
-      );
-    }, 500);
+    this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good, false));
   }
 
   addSubsequentInspection() {
@@ -352,6 +374,14 @@ export class TechnicalRecordComponent implements OnInit {
     this.matDialog.open(AdrReasonModalComponent, errorDialog);
 
     console.log(this.adrDetailsForm);
+  }
+
+  trackByIndex(index: number) {
+    return index;
+  }
+
+  trackById(_: number, id: string) {
+    return id;
   }
 
 }

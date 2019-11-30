@@ -6,6 +6,7 @@ import {
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess
 } from '../actions/VehicleTechRecordModel.actions';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
 describe('VehicleTechRecordModel Reducer', () => {
   describe('undefined action', () => {
@@ -29,14 +30,17 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModel Success', () => {
     it('should update the state with the payload', () => {
-      const vehicleTechRecord = {
+      const vehicleTechRecord: VehicleTechRecordModel = {
         vrms: [
           {
             vrm: '53654645',
             isPrimary: true
           }],
         vin: '1234566',
-        techRecord: []
+        techRecord: [],
+        metadata: {
+          adrDetails: undefined
+        }
       };
       const action = new GetVehicleTechRecordModelSuccess(vehicleTechRecord);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
@@ -59,14 +63,17 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success', () => {
     it('should update the state with the payload', () => {
-      const vehicleTechRecord = {
+      const vehicleTechRecord: VehicleTechRecordModel = {
         vrms: [
           {
             vrm: '53654645',
             isPrimary: true
           }],
         vin: '1234566',
-        techRecord: []
+        techRecord: [],
+        metadata: {
+          adrDetails: undefined
+        }
       };
       const action = new GetVehicleTechRecordModelHavingStatusAllSuccess(vehicleTechRecord);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);

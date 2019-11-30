@@ -9,14 +9,26 @@ export class SetSubmittedValueAction implements Action {
   constructor(public submittedValue: adrDetailsFormModel) { }
 }
 
-export class CreateGroupElementAction implements Action {
-  static readonly TYPE = 'adrDetails/CREATE_GROUP_ELEMENT';
-  readonly type = CreateGroupElementAction.TYPE;
-  constructor(public name: string, public  payload: VehicleTechRecordModel) { }
+export class CreatePermittedDangerousGoodElementAction implements Action {
+  static readonly TYPE = 'adrDetails/CREATE_PERMITTED_DANGEROUS_GOOD_ELEMENT';
+  readonly type = CreatePermittedDangerousGoodElementAction.TYPE;
+  constructor(public name: string, public  payload: boolean) { }
 }
 
-export class RemoveGroupElementAction implements Action {
-  static readonly TYPE = 'adrDetails/REMOVE_GROUP_ELEMENT';
-  readonly type = RemoveGroupElementAction.TYPE;
+export class RemovePermittedDangerousGoodElementAction implements Action {
+  static readonly TYPE = 'adrDetails/REMOVE_PERMITTED_DANGEROUS_GOOD_ELEMENT';
+  readonly type = RemovePermittedDangerousGoodElementAction.TYPE;
+  constructor(public name: string) { }
+}
+
+export class CreateGuidanceNoteElementAction implements Action {
+  static readonly TYPE = 'adrDetails/CREATE_GUIDANCE_NOTE_ELEMENT';
+  readonly type = CreateGuidanceNoteElementAction.TYPE;
+  constructor(public name: string, public  payload: boolean) { }
+}
+
+export class RemoveGuidanceNoteElementAction implements Action {
+  static readonly TYPE = 'adrDetails/REMOVE_GUIDANCE_NOTE_ELEMENT';
+  readonly type = RemoveGuidanceNoteElementAction.TYPE;
   constructor(public name: string) { }
 }

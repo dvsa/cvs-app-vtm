@@ -4,7 +4,8 @@
     "baseUrl": "./", // This must be specified if "paths" is.
     "paths": {
       "@app/*": ["src/app/*"],
-      "@environments/*": ["src/environments/*"]
+      "@environments/*": ["src/environments/*"],
+      "@angular/": ["node_modules/@angular/"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

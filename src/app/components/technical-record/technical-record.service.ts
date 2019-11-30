@@ -23,9 +23,9 @@ export class TechnicalRecordService {
   private readonly tokenSubscription: any;
 
   constructor(private httpClient: HttpClient, private adalSvc: MsAdalAngular6Service) {
-    console.log(this.adalSvc.userInfo);
+    // console.log(this.adalSvc.userInfo);
     this.tokenSubscription = this.adalSvc.acquireToken('https://graph.microsoft.com').subscribe((token: string) => {
-      console.log(token);
+      // console.log(token);
       this.jwttoken = token;
     });
   }

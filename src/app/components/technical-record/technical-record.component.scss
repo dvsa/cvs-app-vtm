@@ -1,6 +1,11 @@
 @import "node_modules/govuk-frontend/govuk/all";
 
-
+.form-state {
+  margin: 20px 20px 20px 10px;
+  overflow: auto;
+  min-width: 500px;
+  max-width: 1248px;
+}
 
 .isDisabled {
   color: currentColor;
@@ -395,6 +400,16 @@ dd {
 }
 
 .adr-details {
+  .grid-container-row {
+    display: grid;
+    grid-template-columns: auto;
+    margin-bottom: 2em;
+  }
+  
+  .grid-item {
+    float: left;
+  }
+  
   h2 {
     margin-top: 2rem;
     width: 23rem;

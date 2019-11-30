@@ -5,6 +5,7 @@ export interface approvalDate {
     month: number;
     year: number;
 };
+
 export interface adrDetailsFormModel {
     name: string;
     street: string;
@@ -13,9 +14,9 @@ export interface adrDetailsFormModel {
     postcode: string;
     type: string;
     approvalDate: approvalDate;
-    permittedDangerousGoods: Boxed<string[]>,
-    compatibilityJ: boolean
-    additionalNotes: Boxed<string[]>;
+    permittedDangerousGoods: { [id: string]: boolean };
+    compatibilityJ: boolean;
+    additionalNotes: { [id: string]: boolean };
     adrTypeApprovalNo: string;
     tankManufacturer: string;
     yearOfManufacture: number;
