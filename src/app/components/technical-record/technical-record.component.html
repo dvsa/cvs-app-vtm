@@ -870,7 +870,7 @@
                                 </label>
                               </div>
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="no" type="radio" value="false"
+                                <input class="govuk-radios__input" id="no" type="radio"
                                   [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
                                 <label class="govuk-label govuk-radios__label" for="no">
                                   No
@@ -899,7 +899,8 @@
                         </div>
 
                         <p>
-                          <a class="add-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a>
+                          <a class="add-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">
+                            Add a guidance note</a>
                         </p>
 
                         <input class="govuk-input govuk-input&#45;&#45;width-5" #guidanceNote id="addGuidanceNote"
@@ -912,7 +913,7 @@
                           ADR type approval number
                         </label>
                         <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo"
-                          formControlName="adrTypeApprovalNo" type="text">
+                          [ngrxFormControlState]="(formState$ | async).controls.adrTypeApprovalNo" type="text">
                       </div>
                       <div *ngIf="isVehicleTankOrBattery$ | async">
                         <h2 class="govuk-heading-m">Tank details</h2>
@@ -922,7 +923,7 @@
                             Make
                           </label>
                           <input class="govuk-input govuk-input--width-20" id="tankManufacturer"
-                            formControlName="tankManufacturer" type="text">
+                          [ngrxFormControlState]="(formState$ | async).controls.tankManufacturer" type="text">
                         </div>
 
                         <div class="govuk-form-group">
@@ -930,7 +931,7 @@
                             Year of manufacture
                           </label>
                           <input class="govuk-input govuk-input--width-20" id="yearOfManufacture"
-                            formControlName="yearOfManufacture" type="number">
+                          [ngrxFormControlState]="(formState$ | async).controls.yearOfManufacture" type="number">
                         </div>
 
                         <div class="govuk-form-group">
@@ -938,7 +939,7 @@
                             Manufacturer serial number
                           </label>
                           <input class="govuk-input govuk-input--width-10" id="tankManufacturerSerialNo"
-                            formControlName="tankManufacturerSerialNo" type="text">
+                          [ngrxFormControlState]="(formState$ | async).controls.tankManufacturerSerialNo" type="text">
                         </div>
 
                         <div class="govuk-form-group">
@@ -946,25 +947,23 @@
                             Tank type approval number
                           </label>
                           <input class="govuk-input govuk-input--width-10" id="tankTypeAppNo"
-                            formControlName="tankTypeAppNo" type="text">
+                           [ngrxFormControlState]="(formState$ | async).controls.tankTypeAppNo" type="text">
                         </div>
 
                         <div class="govuk-form-group">
                           <label class="govuk-label govuk-!-font-weight-bold" for="tankCode">
                             Code
                           </label>
-                          <input class="govuk-input govuk-input--width-10" id="tankCode" formControlName="tankCode"
-                            type="text">
+                          <input class="govuk-input govuk-input--width-10" id="tankCode"
+                          [ngrxFormControlState]="(formState$ | async).controls.tankCode" type="text">
                         </div>
 
-                        <div class="govuk-form-group" formGroupName="substancesPermitted"
-                          *ngIf="isVehicleTankOrBattery$ | async">
+                        <div class="govuk-form-group" formGroupName="substancesPermitted" *ngIf="isVehicleTankOrBattery$ | async">
                           <fieldset class="govuk-fieldset">
                             <h2 class="govuk-heading-m">Substances permitted</h2>
                             <div class="govuk-radios">
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="underTankCode" name="substancesPermitted"
-                                  type="radio"
+                                <input class="govuk-radios__input" id="underTankCode" name="substancesPermitted" type="radio"
                                   value="Substances permitted under the tank code and any special provisions specified in 9 may be carried">
                                 <label class="govuk-label govuk-radios__label" for="underTankCode">
                                   Substances permitted under the tank code and any special provisions specified in 9 may
