@@ -845,16 +845,9 @@
                         </div>
                       </div>
 
-
                       <div class="grid-container-row">
-                        <div class="grid-item">
-                          <input class="govuk-input govuk-input--width-5" #dangerousGood placeholder="Add good"
-                            type="text">
-                        </div>
-                        <div class="grid-item">
-                          <a class="add-dangerous-note" (click)="addDangerousGood(dangerousGood.value)">
-                            Add a dangerous good</a>
-                        </div>
+                        <a class="add-dangerous-note mb-1" (click)="addDangerousGood(dangerousGood.value)">Add a dangerous good</a>
+                        <input class="govuk-input govuk-input--width-10" #dangerousGood placeholder="Type a dangerous good" type="text">
                       </div>
 
                       <div class="govuk-inset-text" *ngIf="isPermittedExplosiveDangerousGoods$ | async">
@@ -898,13 +891,10 @@
                           </div>
                         </div>
 
-                        <p>
-                          <a class="add-guidance-note" (click)="addAGuidanceNote(guidanceNote.value)">
-                            Add a guidance note</a>
-                        </p>
-
-                        <input class="govuk-input govuk-input&#45;&#45;width-5" #guidanceNote id="addGuidanceNote"
-                          placeholder="Add note" type="text">
+                        <div class="grid-container-row mt-1">
+                          <a class="add-guidance-note mb-1" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a>
+                          <input class="govuk-input govuk-input--width-10" #guidanceNote id="addGuidanceNote" placeholder="Type a guidance note" type="text">
+                        </div>
 
                       </div>
 
