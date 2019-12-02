@@ -1,11 +1,12 @@
 import {TestResultModel} from '../../models/test-result.model';
 
 export interface IVehicleTestResultModelState {
-  testResultModel: TestResultModel;
+  vehicleTestResultModel: TestResultModel;
   selectedTestResultModel: TestResultModel;
+  error?:any;
 }
 
 export const initialVehicleTestResultModelState: IVehicleTestResultModelState = {
-  testResultModel: null,
+  vehicleTestResultModel: null,
   selectedTestResultModel: null
 }

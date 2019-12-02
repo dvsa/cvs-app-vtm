@@ -5,7 +5,8 @@ export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
   GetVehicleTechRecordModelSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModel Success',
   GetVehicleTechRecordModelHavingStatusAll = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll',
-  GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success'
+  GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success',
+  GetVehicleTechRecordModelHavingStatusAllFailure = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Failure'
 }
 
 export class GetVehicleTechRecordModel implements Action {
@@ -32,5 +33,12 @@ export class GetVehicleTechRecordModelHavingStatusAllSuccess implements Action {
   }
 }
 
+export class GetVehicleTechRecordModelHavingStatusAllFailure implements Action {
+  public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure;
+  constructor(public  payload: any) {
+  }
+}
+
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
-                                            GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess;
+                                            GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
+                                            GetVehicleTechRecordModelHavingStatusAllFailure;

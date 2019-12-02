@@ -1,11 +1,12 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, createFeatureSelector } from '@ngrx/store';
 
-import { IAppState } from '../../store/state/app.state';
 import {IVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
 
-const selectTestResults = (state: IAppState) =>  state.vehicleTestResultModel;
+export const selectFeature = createFeatureSelector<IVehicleTestResultModelState>(
+  'vehicleTechRecordModel'
+);
 
 export const selectSelectedVehicleTestResultModel = createSelector(
-  selectTestResults,
+  selectFeature,
   (state: IVehicleTestResultModelState) => state.selectedTestResultModel
 );
