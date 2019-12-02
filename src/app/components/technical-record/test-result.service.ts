@@ -34,8 +34,8 @@ export class TestResultService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
 
     return this.httpClient.get<any[]>(routes.testResults(searchIdentifier), {headers}).pipe(
-      tap(_ => console.log('fetched testResults', _)),
-      catchError(this.handleError('getTestResults', []))
+      tap(_ => console.log('fetched testResults', _))
+      // catchError(this.handleError('getTestResults', []))
     );
   }
 

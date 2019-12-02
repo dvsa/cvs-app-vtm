@@ -4,6 +4,7 @@ import {TestResultModel} from '../../models/test-result.model';
 export enum EVehicleTestResultModelActions {
   GetVehicleTestResultModel = '[TestResultModel] Get TestResultModel',
   GetVehicleTestResultModelSuccess = '[TestResultModel] Get TestResultModel Success',
+  GetVehicleTestResultModelFailure = GetVehicleTestResultModelSuccess
 }
 
 export class GetVehicleTestResultModel implements Action {
@@ -18,4 +19,10 @@ export class GetVehicleTestResultModelSuccess implements Action {
   }
 }
 
-export type VehicleTestResultModelActions = GetVehicleTestResultModel | GetVehicleTestResultModelSuccess;
+export class GetVehicleTestResultModelFailure implements Action {
+  public readonly type = EVehicleTestResultModelActions.GetVehicleTestResultModelFailure;
+  constructor(public  payload: any) {
+  }
+}
+
+export type VehicleTestResultModelActions = GetVehicleTestResultModel | GetVehicleTestResultModelSuccess | GetVehicleTestResultModelFailure;

@@ -7,5 +7,5 @@ import {VehicleTestResultModelReducers} from '@app/store/reducers/VehicleTestRes
 export const appReducers: ActionReducerMap<IAppState, any> = {
   router: routerReducer,
   vehicleTechRecordModel: VehicleTechRecordModelReducers,
-  vehicleTestResultModel: VehicleTestResultModelReducers
+  vehicleTestResultModel: VehicleTestResultModelReducers,
 };

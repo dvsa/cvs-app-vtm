@@ -6,11 +6,12 @@ export interface IAppState {
   router?: RouterReducerState;
   vehicleTechRecordModel: IVehicleTechRecordModelState;
   vehicleTestResultModel: IVehicleTestResultModelState;
+  error?: string | null; // track errors
 }
 
 export const initialAppState: IAppState = {
   vehicleTechRecordModel: initialVehicleTechRecordModelState,
-  vehicleTestResultModel: initialVehicleTestResultModelState
+  vehicleTestResultModel: initialVehicleTestResultModelState,
 };
 
 export const getInitialState = (): IAppState => initialAppState;

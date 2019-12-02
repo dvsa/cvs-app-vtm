@@ -65,7 +65,7 @@
             Previous VRM
           </dt>
           <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-            <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) && hasNoPrimaryVrms(techRecordsJson.vrms) else hyphen">
+            <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) && hasSecondaryVrms(techRecordsJson.vrms); else hyphen">
               <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
                 <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
               </ul>

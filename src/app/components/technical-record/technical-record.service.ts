@@ -36,7 +36,6 @@ export class TechnicalRecordService {
 
     return this.httpClient.get<any[]>(routes.techRecords(searchIdentifier), {headers}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
-      catchError(this.handleError('getTechnicalRecords', []))
     );
   }
 
@@ -46,7 +45,6 @@ export class TechnicalRecordService {
 
     return this.httpClient.get<any[]>(routes.techRecordsAllStatuses(searchIdentifier), {headers}).pipe(
       tap(_ => console.log('fetched techRecords', _)),
-      catchError(this.handleError('getTechnicalRecords', []))
     );
   }
 

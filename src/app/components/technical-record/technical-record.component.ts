@@ -259,15 +259,8 @@ export class TechnicalRecordComponent implements OnInit {
     if (baxlesHasNoParkingBrakeMrk) return true;
   }
 
-  public hasNoPrimaryVrms(vrms) {
-    let bhasNoPrimaryVrms: boolean = true;
-    vrms.forEach(vrm => {
-      if (vrm.isPrimary === true) {
-        bhasNoPrimaryVrms = false;
-        return false;
-      }
-    });
-    if (bhasNoPrimaryVrms) return true;
+  public hasSecondaryVrms(vrms) {
+    return (vrms.length > 1) && (vrms.filter( vrm => vrm.isPrimary === false).length > 0);
   }
 
   public adrEdit($event, techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
