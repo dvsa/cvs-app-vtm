@@ -263,8 +263,8 @@ export class TechnicalRecordComponent implements OnInit {
     return (vrms.length > 1) && (vrms.filter( vrm => vrm.isPrimary === false).length > 0);
   }
 
-  public adrEdit($event, techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
-    console.log(`$event is ${$event}, numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
+  public adrEdit(techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
+    console.log(`numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
     this.changeLabel = "Save technical record";
     this.isSubmit = true;
     this.adrData = false;

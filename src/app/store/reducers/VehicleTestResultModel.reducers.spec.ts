@@ -7,6 +7,7 @@ import {
 } from '../actions/VehicleTestResultModel.actions';
 
 describe('VehicleTestResultModel Reducer', () => {
+
   describe('undefined action', () => {
     it('should return the default state', () => {
       const action = {type: 'NOOP'} as any;
@@ -33,9 +34,11 @@ describe('VehicleTestResultModel Reducer', () => {
       const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
       expect(result).toEqual({
         ...initialVehicleTestResultModelState,
-        selectedTestResultModel: vehicleTestResult
+        selectedTestResultModel: vehicleTestResult,
+
       });
     });
   });
+
 });
 

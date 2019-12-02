@@ -8,5 +8,6 @@ export interface IVehicleTestResultModelState {
 
 export const initialVehicleTestResultModelState: IVehicleTestResultModelState = {
   vehicleTestResultModel: null,
-  selectedTestResultModel: null
-}
+  selectedTestResultModel: null,
+  error: null
+};

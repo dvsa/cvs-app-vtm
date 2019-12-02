@@ -10,4 +10,4 @@ export const initialVehicleTechRecordModelState: IVehicleTechRecordModelState = 
   vehicleTechRecordModel: null,
   selectedVehicleTechRecordModel: null,
   error: null
-}
+};
