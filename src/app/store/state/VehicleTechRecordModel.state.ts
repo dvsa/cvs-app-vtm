@@ -8,5 +8,6 @@ export interface IVehicleTechRecordModelState {
 
 export const initialVehicleTechRecordModelState: IVehicleTechRecordModelState = {
   vehicleTechRecordModel: null,
-  selectedVehicleTechRecordModel: null
+  selectedVehicleTechRecordModel: null,
+  error: null
 }

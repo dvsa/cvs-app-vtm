@@ -7,4 +7,5 @@ export interface VehicleTechRecordModel {
   vin: string;
   techRecord: TechRecordModel[];
   metadata: MetaData;
+  error?: any | null | undefined;
 }

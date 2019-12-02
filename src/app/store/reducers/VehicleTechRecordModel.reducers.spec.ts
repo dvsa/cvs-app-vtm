@@ -40,7 +40,8 @@ describe('VehicleTechRecordModel Reducer', () => {
         techRecord: [],
         metadata: {
           adrDetails: undefined
-        }
+        },
+        error: null        
       };
       const action = new GetVehicleTechRecordModelSuccess(vehicleTechRecord);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
