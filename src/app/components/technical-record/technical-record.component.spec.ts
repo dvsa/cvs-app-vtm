@@ -28,6 +28,12 @@ describe('TechnicalRecordComponent', () => {
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
   let store: Store<IAppState>;
+  let axles = [
+    { "parkingBrakeMrk": false,
+      "axleNumber": 1 },
+    { "parkingBrakeMrk": true,
+      "axleNumber": 2 }
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -87,6 +93,69 @@ describe('TechnicalRecordComponent', () => {
       expect(panel.isOpened).toEqual(true);
     }
   });
+
+  it('should check if string empty', () => {
+    expect(component.isNullOrEmpty('')).toBeTruthy();
+  });
+
+  it('should check if string null', () => {
+    expect(component.isNullOrEmpty(null)).toBeTruthy();
+  });
+
+  it('should check if string is not empty', () => {
+    expect(component.isNullOrEmpty('aaa')).toBeFalsy();
+  });
+
+  it('should check if string is not empty', () => {
+    expect(component.isNullOrEmpty('aaa')).toBeFalsy();
+  });
+
+  it('should check if object is empty', () => {
+    expect(component.isEmptyObject({})).toBeTruthy();
+  });
+
+  it('should check if object is empty', () => {
+    expect(component.isEmptyObject({})).toBeTruthy();
+  });
+
+  it('should check if edit action updates variables properly', () => {
+    component.adrEdit({},["1A", "1B", "2C" ], ["Hydrogen", "Expl (type 2)", "Expl (type 3)"], false);
+    expect(component.changeLabel).toEqual("Save technical record");
+    expect(component.isSubmit).toEqual(true);
+    expect(component.adrData).toEqual(false);
+    expect(component.showCheck).toEqual(true);
+    expect(component.numberFee).toEqual(["1A", "1B", "2C" ]);
+    expect(component.dangerousGoods).toEqual(["Hydrogen", "Expl (type 2)", "Expl (type 3)"]);
+    expect(component.isAdrNull).toEqual(false);
+  });
+
+  it('should check if axles has no parking brake mrk', () => {
+    component.axlesHasNoParkingBrakeMrk(axles);
+    for (const axle of axles) {
+      if (axle.parkingBrakeMrk === true){
+        expect(component.axlesHasNoParkingBrakeMrk(axles)).toBeFalsy();
+      }
+    }
+  });
+
+  it('should check if cancel action updates variables properly', () => {
+    component.cancelAddrEdit();
+    expect(component.changeLabel).toEqual("Change technical record");
+    expect(component.adrData).toEqual(true);
+    expect(component.showCheck).toEqual(false);
+    expect(component.isSubmit).toEqual(false);
+    expect(component.hideForm).toEqual(false);
+  });
+
+  it('should switch ADR display conditionally', () => {
+    let customObject =  { 'currentTarget' : {'value': 'true'} };
+    component.switchAdrDisplay(customObject as any);
+
+    expect(component.adrData).toEqual(false);
+    expect(component.hideForm).toEqual(false);
+  });
+
+
 
   afterAll(() => {
     TestBed.resetTestingModule();

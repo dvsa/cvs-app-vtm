@@ -10,4 +10,4 @@ export const initialVehicleTestResultModelState: IVehicleTestResultModelState = 
   vehicleTestResultModel: null,
   selectedTestResultModel: null,
   error: null
-}
+};

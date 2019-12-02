@@ -22,13 +22,14 @@ import { hot } from 'jasmine-marbles';
 import { IAppState } from '@app/store/state/app.state';
 
 describe('TechnicalRecordSearchComponent', () => {
+
   let component: TechnicalRecordSearchComponent;
   let fixture: ComponentFixture<TechnicalRecordSearchComponent>;
   let httpMock: HttpTestingController;
   const authenticationGuardMock = new AuthenticationGuardMock();
   const unsubscribe = new Subject<void>();
+  let store: Store<IAppState>;
   let injector: TestBed;
-  let store: Store<IAppState>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -82,8 +83,8 @@ describe('TechnicalRecordSearchComponent', () => {
     injector = getTestBed();
     component = fixture.componentInstance;
     fixture.detectChanges();
-  })
-   
+  });
+
   afterEach(() => {
     fixture.destroy();
     unsubscribe.next();
