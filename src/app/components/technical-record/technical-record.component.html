@@ -7,7 +7,7 @@
           <div class="govuk-grid-column-one-thirds float-left">
             <h1 class="govuk-heading-xl title">Technical record</h1>
             <div *ngIf="!isSubmit">
-              <button class="govuk-button" data-module="govuk-button"
+              <button id="test-change-btn" class="govuk-button" data-module="govuk-button"
                 (click)="adrEdit($event, techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, isNullOrEmpty(techRecordsJson.metadata.adrDetails))">
                 {{ changeLabel }}
               </button>
@@ -16,7 +16,7 @@
               </a>
             </div>
             <div *ngIf="isSubmit">
-              <button class="govuk-button" data-module="govuk-button" (click)="onModalShow()">
+              <button id="test-save-btn" class="govuk-button" data-module="govuk-button" (click)="onModalShow()">
                 Save technical record
               </button>
               <a id="cancel2" *ngIf="showCheck" (click)="cancelAddrEdit()">
