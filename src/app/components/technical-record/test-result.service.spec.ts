@@ -66,6 +66,7 @@ describe('TestResultService', () => {
 
   it('handleError should return empty result', (done) => {
     service.getTestResults('T14392PSAF').subscribe((res) => {
+      console.log(`handleError should return empty result => ${JSON.stringify(res)}`);
       expect(res).toEqual([]);
       done();
     });
