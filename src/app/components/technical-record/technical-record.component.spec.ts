@@ -42,8 +42,6 @@ describe('TechnicalRecordComponent', () => {
         SharedModule,
         RouterTestingModule,
         StoreModule.forFeature('adrDetails', adrDetailsReducer),
-        FormsModule,
-        SharedModule,
         FontAwesomeModule,
         ReactiveFormsModule,
         NgrxFormsModule,
@@ -79,8 +77,6 @@ describe('TechnicalRecordComponent', () => {
 
   it('should create', () => {
     store = TestBed.get(Store);
-    fixture.detectChanges();
-
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
