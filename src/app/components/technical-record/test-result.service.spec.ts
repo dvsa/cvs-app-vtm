@@ -21,10 +21,15 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {NgrxFormsModule} from "ngrx-forms";
 import {hot} from "jasmine-marbles";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import {Router} from "@angular/router";
 
 const routes = {
   testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
 };
+
+class MockRouter {
+  navigate = jasmine.createSpy('navigate');
+}
 
 describe('TestResultService', () => {
   let httpMock: HttpTestingController;
@@ -75,6 +80,7 @@ describe('TestResultService', () => {
         },
         {provide: AuthenticationGuard, useValue: authenticationGuardMock},
         {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: Router, useClass: MockRouter}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

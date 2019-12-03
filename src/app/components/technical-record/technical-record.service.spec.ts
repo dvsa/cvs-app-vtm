@@ -21,6 +21,7 @@ import {APP_BASE_HREF} from "@angular/common";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 import {AuthenticationGuardMock} from "../../../../test-config/services-mocks/authentication-guard.mock";
 import {Subject} from "rxjs";
+import {Router} from "@angular/router";
 
 export const adalConfig = {
   cacheLocation: 'localStorage',
@@ -37,6 +38,10 @@ const routes = {
   techRecordsAllStatuses: (searchIdentifier: string) =>
     `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`
 };
+
+class MockRouter {
+  navigate = jasmine.createSpy('navigate');
+}
 
 describe('TechnicalRecordService', () => {
 
@@ -88,6 +93,7 @@ describe('TechnicalRecordService', () => {
         },
         {provide: AuthenticationGuard, useValue: authenticationGuardMock},
         {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: Router, useClass: MockRouter}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
