@@ -32,27 +32,6 @@ export class TestResultService {
   getTestResults(searchIdentifier: string): Observable<any> {
     // tslint:disable-next-line:max-line-length
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
-
-    return this.httpClient.get<any[]>(routes.testResults(searchIdentifier), {headers}).pipe(
-      tap(_ => console.log('fetched testResults', _))
-      // catchError(this.handleError('getTestResults', []))
-    );
-  }
-
-  private log(message: string) {
-    console.log(`TestResultService: ${message}`);
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+    return this.httpClient.get<any[]>(routes.testResults(searchIdentifier), {headers});
   }
 }

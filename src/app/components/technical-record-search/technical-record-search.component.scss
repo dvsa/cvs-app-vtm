@@ -1,5 +1,8 @@
 @import "node_modules/govuk-frontend/govuk/all";
 
+.mt-2 {
+  margin-top: 2rem;
+}
 
 .govuk-main-wrapper {
 
@@ -8,6 +11,18 @@
     border: 2px solid $govuk-input-border-colour;
     width: 589px;
     height: 40px;
+  }
+
+  .govuk-input--error {
+    border: 4px solid $govuk-error-colour !important;
+  }
+
+  .govuk-error-summary {
+    width: 57rem;
+  }
+
+  .govuk-error-message {
+    white-space: nowrap;
   }
 
 }
