@@ -1618,7 +1618,7 @@
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Break endurance weight (kg) </dt>
                     <dd id="test-weight" class="govuk-summary-list__value">
-                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight }}
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight*1000 }}
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
