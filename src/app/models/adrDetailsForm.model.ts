@@ -28,10 +28,7 @@ export interface adrDetailsFormModel {
     tankManufacturerSerialNo: string;
     tankTypeAppNo: string;
     tankCode: string;
-    substancesPermitted: {
-        underTankCode: string;
-        classUN: string;
-    };
+    substancesPermitted: string;
     selectReferenceNumber: {
         isStatement: string;
         isProductListRefNo: string;
