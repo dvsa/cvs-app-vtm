@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed, getTestBed, inject } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, getTestBed, inject} from '@angular/core/testing';
 
-import { TechnicalRecordSearchComponent } from './technical-record-search.component';
+import {TechnicalRecordSearchComponent} from './technical-record-search.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {MatDialogModule} from '@angular/material/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -13,13 +13,13 @@ import {APP_BASE_HREF} from '@angular/common';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {AuthenticationGuardMock} from '../../../../test-config/services-mocks/authentication-guard.mock';
 import {Subject} from 'rxjs';
-import { appReducers } from '@app/store/reducers/app.reducers';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgrxFormsModule } from 'ngrx-forms';
-import { hot } from 'jasmine-marbles';
-import { IAppState } from '@app/store/state/app.state';
+import {appReducers} from '@app/store/reducers/app.reducers';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {adrDetailsReducer} from '@app/store/reducers/adrDetailsForm.reducer';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {NgrxFormsModule} from 'ngrx-forms';
+import {hot} from 'jasmine-marbles';
+import {IAppState} from '@app/store/state/app.state';
 
 describe('TechnicalRecordSearchComponent', () => {
   let component: TechnicalRecordSearchComponent;
@@ -28,11 +28,11 @@ describe('TechnicalRecordSearchComponent', () => {
   const authenticationGuardMock = new AuthenticationGuardMock();
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
-  let store: Store<IAppState>
+  let store: Store<IAppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TechnicalRecordSearchComponent],
+      declarations: [TechnicalRecordSearchComponent],
       imports: [
         MsAdalAngular6Module.forRoot({
           tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
@@ -63,7 +63,7 @@ describe('TechnicalRecordSearchComponent', () => {
           provide: Store,
           useValue: {
             dispatch: jest.fn(),
-            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
+            pipe: jest.fn(() => hot('-a', {a: INITIAL_STATE})),
             select: jest.fn()
           }
         },
@@ -72,7 +72,7 @@ describe('TechnicalRecordSearchComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -82,8 +82,8 @@ describe('TechnicalRecordSearchComponent', () => {
     injector = getTestBed();
     component = fixture.componentInstance;
     fixture.detectChanges();
-  })
-   
+  });
+
   afterEach(() => {
     fixture.destroy();
     unsubscribe.next();
@@ -98,5 +98,12 @@ describe('TechnicalRecordSearchComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should test searchTechRecords', () => {
+    component.searchTechRecords('123456');
+    expect(component.isLoading).toEqual(true);
+    expect(component.searchIdentifier).toEqual('123456');
+    expect(store.dispatch).toHaveBeenCalled();
   });
 });

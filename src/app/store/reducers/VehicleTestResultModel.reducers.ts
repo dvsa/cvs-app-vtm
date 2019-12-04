@@ -10,12 +10,12 @@ export function VehicleTestResultModelReducers(state = initialVehicleTestResultM
         error: null // clear error message
       };
     }
-    
+
     case EVehicleTestResultModelActions.GetVehicleTestResultModelFailure: {
       return {
         ...state,
         error: action.payload  // capture error message
-      }
+      };
     }
 
     default:

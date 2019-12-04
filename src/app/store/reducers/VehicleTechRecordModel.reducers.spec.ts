@@ -4,7 +4,7 @@ import {
   GetVehicleTechRecordModel,
   GetVehicleTechRecordModelSuccess,
   GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess
+  GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelHavingStatusAllFailure
 } from '../actions/VehicleTechRecordModel.actions';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
@@ -41,7 +41,7 @@ describe('VehicleTechRecordModel Reducer', () => {
         metadata: {
           adrDetails: undefined
         },
-        error: null        
+        error: null
       };
       const action = new GetVehicleTechRecordModelSuccess(vehicleTechRecord);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
@@ -81,6 +81,18 @@ describe('VehicleTechRecordModel Reducer', () => {
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
         vehicleTechRecordModel: vehicleTechRecord
+      });
+    });
+  });
+
+  describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Failure', () => {
+    it('should update the state with the payload', () => {
+      const mock = 'mock';
+      const action = new GetVehicleTechRecordModelHavingStatusAllFailure(mock);
+      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
+      expect(result).toEqual({
+        ...initialVehicleTechRecordModelState,
+        error: mock
       });
     });
   });

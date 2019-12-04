@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 
-import { AdrReasonModalComponent } from './adr-reason-modal.component';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {MaterialModule} from "@app/material.module";
+import {AdrReasonModalComponent} from './adr-reason-modal.component';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MaterialModule} from '@app/material.module';
 
 describe('AdrReasonModalComponent', () => {
   let component: AdrReasonModalComponent;
@@ -10,14 +10,14 @@ describe('AdrReasonModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdrReasonModalComponent ],
-      imports: [ MatDialogModule, MaterialModule ],
+      declarations: [AdrReasonModalComponent],
+      imports: [MatDialogModule, MaterialModule],
       providers: [
-        {provide: MatDialogRef, useValue: {}},
-        {provide: MAT_DIALOG_DATA,useValue: {}}
-        ]
+        {provide: MatDialogRef, useValue: {close: jest.fn()}},
+        {provide: MAT_DIALOG_DATA, useValue: {}}
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -29,4 +29,9 @@ describe('AdrReasonModalComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should close dialog', inject([MatDialogRef], () => {
+    component.close();
+    expect(component.dialogRef.close).toHaveBeenCalled();
+  }));
 });

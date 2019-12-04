@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { VehicleNotFoundDialogComponent } from './vehicle-not-found-dialog.component';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {VehicleNotFoundDialogComponent} from './vehicle-not-found-dialog.component';
 
 describe('VehicleNotFoundDialogComponent', () => {
   let component: VehicleNotFoundDialogComponent;
@@ -8,11 +8,11 @@ describe('VehicleNotFoundDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VehicleNotFoundDialogComponent ],
-      imports: [ MatDialogModule ],
-      providers: [{provide: MatDialogRef, useValue: {}}]
+      declarations: [VehicleNotFoundDialogComponent],
+      imports: [MatDialogModule],
+      providers: [{provide: MatDialogRef, useValue: {close: jest.fn()}}]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -24,4 +24,9 @@ describe('VehicleNotFoundDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should close dialog', inject([MatDialogRef], () => {
+    component.close();
+    expect(component.dialogRef.close).toHaveBeenCalled();
+  }));
 });
