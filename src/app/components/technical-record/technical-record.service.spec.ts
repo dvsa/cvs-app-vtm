@@ -1,8 +1,27 @@
-import {TestBed, inject, getTestBed} from '@angular/core/testing';
+import {TestBed, inject, getTestBed, ComponentFixture} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TechnicalRecordService} from './technical-record.service';
-import {MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
+import {AuthenticationGuard, MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {environment} from '../../../environments/environment';
+import {Store, StoreModule} from "@ngrx/store";
+import {appReducers} from "@app/store/reducers/app.reducers";
+import {MatDialogModule} from "@angular/material/dialog";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MaterialModule} from "@app/material.module";
+import {SharedModule} from "@app/shared/shared.module";
+import {RouterTestingModule} from "@angular/router/testing";
+import {adrDetailsReducer} from "@app/store/reducers/adrDetailsForm.reducer";
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {NgrxFormsModule} from "ngrx-forms";
+import {TechnicalRecordComponent} from "@app/components/technical-record/technical-record.component";
+import {hot} from "jasmine-marbles";
+import {IAppState, INITIAL_STATE} from "@app/store/state/adrDetailsForm.state";
+import {APP_BASE_HREF} from "@angular/common";
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import {AuthenticationGuardMock} from "../../../../test-config/services-mocks/authentication-guard.mock";
+import {Subject} from "rxjs";
+import {Router} from "@angular/router";
 
 export const adalConfig = {
   cacheLocation: 'localStorage',
@@ -20,14 +39,36 @@ const routes = {
     `${environment.APIServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`
 };
 
+class MockRouter {
+  navigate = jasmine.createSpy('navigate');
+}
+
 describe('TechnicalRecordService', () => {
+
   let httpMock: HttpTestingController;
   let injector: TestBed;
   let service: TechnicalRecordService;
+  let component: TechnicalRecordComponent;
+  let fixture: ComponentFixture<TechnicalRecordComponent>;
+  const authenticationGuardMock = new AuthenticationGuardMock();
+  let store: Store<IAppState>;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        StoreModule.forRoot(appReducers),
         HttpClientTestingModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MaterialModule,
+        SharedModule,
+        RouterTestingModule,
+        StoreModule.forFeature('adrDetails', adrDetailsReducer),
+        FontAwesomeModule,
+        ReactiveFormsModule,
+        NgrxFormsModule,
         MsAdalAngular6Module.forRoot({
           tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
           clientId: '11x111x1-1xx1-1111-1x11-x1xx111x11x1',
@@ -39,11 +80,31 @@ describe('TechnicalRecordService', () => {
           cacheLocation: 'localStorage',
         })
       ],
-      providers: [TechnicalRecordService]
-    });
-    injector = getTestBed();
-    service = injector.get(TechnicalRecordService);
-    httpMock = injector.get(HttpTestingController);
+      declarations: [TechnicalRecordComponent],
+      providers: [
+        TechnicalRecordService,
+        {
+          provide: Store,
+          useValue: {
+            dispatch: jest.fn(),
+            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
+            select: jest.fn()
+          }
+        },
+        {provide: AuthenticationGuard, useValue: authenticationGuardMock},
+        {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: Router, useClass: MockRouter}
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
+        store = TestBed.get(Store);
+        spyOn(store, 'dispatch').and.callThrough();
+        fixture = TestBed.createComponent(TechnicalRecordComponent);
+        injector = getTestBed();
+        service  = injector.get(TechnicalRecordService);
+        httpMock = injector.get(HttpTestingController);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
   });
 
   afterEach(() => {
