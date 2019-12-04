@@ -8,43 +8,53 @@
         <div *ngIf="(searchError$ | async) as searchError" class="govuk-error-summary"
           aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
           <div *ngIf="searchError != null || searchError != undefined">
-            <h2 class="govuk-error-summary__title" id="error-summary-title">
+            <h2 class="govuk-error-summary__title govuk-!-font-weight-bold" id="error-summary-title">
               There is a problem
             </h2>
-            <span class="govuk-error-message">
-                <span class="govuk-visually-hidden">Error:</span> {{ searchError.error }}
-              </span>
-            <!-- <div class="govuk-error-summary__body">
-              <ul class="govuk-list govuk-error-summary__list">
-                <li>
-                  <a href="#searchIdentifier">{{ searchError.error }} </a>
-                </li>
-              </ul>
-            </div> -->
+            <span class="govuk-error-message govuk-!-font-weight-bold">
+              <div *ngIf="searchError.error =='No resources match the search criteria.'">
+                Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error.error != null">
+                Enter a vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error =='The provided partial VIN returned more than one match.'">
+                Multiple vehicles found, search using the full vehicle identification number
+              </div>
+            </span>
+
           </div>
         </div>
 
         <h1 class="govuk-heading-xl">Search for a technical record</h1>
 
         <div
-          [ngClass]="{'govuk-form-group': true, 'govuk-form-group--error': techRecords != undefined ? techRecords.length == 0 || techRecords.length > 1 : false}">
+          [ngClass]="{'govuk-form-group': true, 'govuk-form-group--error': (searchError$ | async) ? (searchError$ | async)!=null || (searchError$ | async)!=undefined : false}">
 
           <label class="govuk-label" for="searchIdentifier">
-            Enter vehicle registration mark, trailer ID or vehicle identification number
+            Vehicle registration mark, trailer ID or vehicle identification number
           </label>
-
-          <span *ngIf="techRecords != undefined ? techRecords.length == 0 || techRecords.length > 1 : false"
-            id="name-error" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span>
-            Check and re-enter vehicle registration mark, trailer ID or vehicle identification number
-          </span>
+          <div *ngIf="(searchError$ | async) as searchError">
+            <span *ngIf="searchError != null || searchError != undefined" id="name-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span>
+              <div *ngIf="searchError.error =='No resources match the search criteria.'">
+                Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error.error != null">
+                Enter a vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error =='The provided partial VIN returned more than one match.'">
+                Multiple vehicles found, search using the full vehicle identification number
+              </div>
+            </span>
+          </div>
 
           <input #q
-            [ngClass]="{'govuk-input': true, 'govuk-input--error': techRecords != undefined ? techRecords.length == 0 || techRecords.length > 1 : false }"
+            [ngClass]="{'govuk-input': true, 'govuk-input--error': (searchError$ | async) ? (searchError$ | async)!=null || (searchError$ | async)!=undefined : false }"
             id="searchIdentifier" name="searchIdentifier" type="text" aria-describedby="name-error">
         </div>
 
-        <a role="button" (click)="searchTechRecords(q.value)" draggable="false" class="govuk-button govuk-button--start"
+        <a role="button" (click)="searchTechRecords(q.value)" draggable="false" class="govuk-button govuk-button--start mt-2"
           data-module="govuk-button">
           Search
           <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19"

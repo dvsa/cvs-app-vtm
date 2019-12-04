@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed, getTestBed, inject } from '@angular/core/testing';
-
 import { TechnicalRecordSearchComponent } from './technical-record-search.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -28,11 +27,11 @@ describe('TechnicalRecordSearchComponent', () => {
   const authenticationGuardMock = new AuthenticationGuardMock();
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
-  let store: Store<IAppState>
+  let store: Store<IAppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TechnicalRecordSearchComponent],
+      declarations: [ TechnicalRecordSearchComponent ],
       imports: [
         MsAdalAngular6Module.forRoot({
           tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
@@ -72,7 +71,7 @@ describe('TechnicalRecordSearchComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -80,10 +79,11 @@ describe('TechnicalRecordSearchComponent', () => {
     fixture = TestBed.createComponent(TechnicalRecordSearchComponent);
     // httpMock = injector.get(HttpTestingController);
     injector = getTestBed();
+    httpMock = injector.get(HttpTestingController);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  })
-   
+  });
+
   afterEach(() => {
     fixture.destroy();
     unsubscribe.next();
@@ -99,4 +99,5 @@ describe('TechnicalRecordSearchComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
+
 });

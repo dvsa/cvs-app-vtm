@@ -1,16 +1,37 @@
 import { Action, combineReducers } from '@ngrx/store';
 import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, updateGroup, validate, addGroupControl, setValue } from 'ngrx-forms';
-import { greaterThan, required, lessThan, lessThanOrEqualTo } from 'ngrx-forms/validation';
-import { approvalDate, adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
+import { greaterThan, required, lessThan, lessThanOrEqualTo, maxLength} from 'ngrx-forms/validation';
+import { approvalDate, certificateReq, adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { INITIAL_STATE, IAppState } from '../state/adrDetailsForm.state';
 import { SetSubmittedValueAction, CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction } from '../actions/adrDetailsForm.actions';
 
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
+  name: validate(required, maxLength(150)),
+  street: validate(required, maxLength(150)),
+  town: validate(required, maxLength(100)),
+  city: validate(required, maxLength(100)),
+  postcode: validate(required, maxLength(25)),
+  type: validate(required),
   approvalDate: updateGroup<approvalDate>({
     day: validate(required, greaterThan(0), lessThanOrEqualTo(31)),
     month: validate(required, greaterThan(0), lessThanOrEqualTo(12)),
     year: validate(required, greaterThan(1970)),
-  })
+  }),
+  permittedDangerousGoods: validate(required),
+  additionalNotes: validate(required),
+  tankManufacturer: validate(maxLength(70)),
+  //yearOfManufacture: validate(maxLength(4)),
+  tankManufacturerSerialNo: validate(maxLength(50)),
+  tankTypeAppNo: validate(maxLength(65)),
+  tankCode: validate(maxLength(30)),
+  statement: validate(maxLength(1500)),
+  productList: validate(maxLength(1500)),
+  specialProvisions: validate(maxLength(1024)),
+  tc2IntermediateApprovalNo: validate(maxLength(75)),
+  tc3PeriodicNumber: validate(maxLength(75)),
+  memosApply: validate(required),
+  batteryListNumber: validate(maxLength(8))
+
 }));
 
 
