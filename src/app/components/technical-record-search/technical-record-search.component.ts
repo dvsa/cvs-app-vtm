@@ -19,7 +19,6 @@ export class TechnicalRecordSearchComponent {
   searchError$: Observable<any>;
   constructor(private _store: Store<IAppState>) {
     this.searchError$ = this._store.select( s => s.vehicleTechRecordModel.error);
-    this.searchError$.subscribe( s => console.log(`searchError$ => ${JSON.stringify(s)}`));
   }
 
   public searchTechRecords(q: string) {

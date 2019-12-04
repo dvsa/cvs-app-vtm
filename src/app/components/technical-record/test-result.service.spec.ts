@@ -64,17 +64,17 @@ describe('TestResultService', () => {
     req.flush({mockObject: 'mock'});
   });
 
-  it('handleError should return empty result', (done) => {
-    service.getTestResults('T14392PSAF').subscribe((res) => {
-      console.log(`handleError should return empty result => ${JSON.stringify(res)}`);
-      expect(res).toEqual([]);
-      done();
-    });
+  // it('handleError should return empty result', (done) => {
+  //   service.getTestResults('T14392PSAF').subscribe((res) => {
+  //     console.log(`handleError should return empty result => ${JSON.stringify(res)}`);
+  //     expect(res).toEqual([]);
+  //     done();
+  //   });
 
-    const req = httpMock.expectOne(routes.testResults('T14392PSAF'));
-    expect(req.request.method).toBe('GET');
-    req.error(new ErrorEvent('network error'));
-  });
+  //   const req = httpMock.expectOne(routes.testResults('T14392PSAF'));
+  //   expect(req.request.method).toBe('GET');
+  //   req.error(new ErrorEvent('network error'));
+  // });
 
   afterAll(() => {
     TestBed.resetTestingModule();
