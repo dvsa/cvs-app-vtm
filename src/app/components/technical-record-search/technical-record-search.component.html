@@ -8,12 +8,19 @@
         <div *ngIf="(searchError$ | async) as searchError" class="govuk-error-summary"
           aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
           <div *ngIf="searchError != null || searchError != undefined">
-            <h2 class="govuk-error-summary__title" id="error-summary-title">
+            <h2 class="govuk-error-summary__title govuk-!-font-weight-bold" id="error-summary-title">
               There is a problem
             </h2>
-            <span class="govuk-error-message">
-              <!--{{ searchError.error }}-->
-              Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number
+            <span class="govuk-error-message govuk-!-font-weight-bold">
+              <div *ngIf="searchError.error =='No resources match the search criteria.'">
+                Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error.error != null">
+                Enter a vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error =='The provided partial VIN returned more than one match.'">
+                Multiple vehicles found, search using the full vehicle identification number
+              </div>
             </span>
 
           </div>
@@ -25,12 +32,20 @@
           [ngClass]="{'govuk-form-group': true, 'govuk-form-group--error': (searchError$ | async) ? (searchError$ | async)!=null || (searchError$ | async)!=undefined : false}">
 
           <label class="govuk-label" for="searchIdentifier">
-            Enter vehicle registration mark, trailer ID or vehicle identification number
+            Vehicle registration mark, trailer ID or vehicle identification number
           </label>
           <div *ngIf="(searchError$ | async) as searchError">
             <span *ngIf="searchError != null || searchError != undefined" id="name-error" class="govuk-error-message">
               <span class="govuk-visually-hidden">Error:</span>
-              Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number
+              <div *ngIf="searchError.error =='No resources match the search criteria.'">
+                Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error.error != null">
+                Enter a vehicle registration mark, trailer ID or vehicle identification number
+              </div>
+              <div *ngIf="searchError.error =='The provided partial VIN returned more than one match.'">
+                Multiple vehicles found, search using the full vehicle identification number
+              </div>
             </span>
           </div>
 

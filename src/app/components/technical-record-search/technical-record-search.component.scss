@@ -23,6 +23,13 @@
 
   .govuk-error-message {
     white-space: nowrap;
+    font-weight: bolder;
+  }
+
+  .govuk-error-summary {
+    .govuk-error-message {
+      text-decoration: underline;
+    }
   }
 
 }
