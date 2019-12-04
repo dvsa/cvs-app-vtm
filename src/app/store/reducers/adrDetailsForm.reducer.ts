@@ -1,9 +1,17 @@
 import { Action, combineReducers } from '@ngrx/store';
-import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, updateGroup, validate, addGroupControl, setValue } from 'ngrx-forms';
+import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, updateGroup, validate, addGroupControl, setValue, updateArray } from 'ngrx-forms';
 import { greaterThan, required, lessThan, lessThanOrEqualTo, maxLength} from 'ngrx-forms/validation';
 import { approvalDate, certificateReq, adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { INITIAL_STATE, IAppState } from '../state/adrDetailsForm.state';
-import { SetSubmittedValueAction, CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction } from '../actions/adrDetailsForm.actions';
+import {
+  SetSubmittedValueAction,
+  CreatePermittedDangerousGoodElementAction,
+  RemovePermittedDangerousGoodElementAction,
+  CreateGuidanceNoteElementAction,
+  RemoveGuidanceNoteElementAction
+  //CreateProductListUnNoAction
+} from '../actions/adrDetailsForm.actions';
+import {FormArray, FormControl, Validators} from "@angular/forms";
 
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
   name: validate(required, maxLength(150)),
@@ -39,6 +47,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
   formState(
     s = INITIAL_STATE,
     a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction | CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction
+       // | CreateProductListUnNoAction
   ) {
     s = formGroupReducerWithUpdate(s, a);
 
@@ -96,6 +105,18 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             return newGroup;
           },
         })(s);
+
+      // case CreateProductListUnNoAction.TYPE:
+      //   return updateGroup<adrDetailsFormModel>({
+      //     productListUnNo: group => {
+      //       const newValue = { ...group.value };
+      //       delete newValue[a.name];
+      //       const newGroup = setValue(group, newValue);
+      //
+      //       return newGroup;
+      //     },
+      //   })(s);
+
 
       default:
         return s;

@@ -35,7 +35,7 @@ export interface adrDetailsFormModel {
     };
     statement: string;
     productListRefNo: string;
-    productListUnNo: number;
+    productListUnNo: { [id: number]: string };
     productList: string;
     specialProvisions: string;
     tc2Type: string;

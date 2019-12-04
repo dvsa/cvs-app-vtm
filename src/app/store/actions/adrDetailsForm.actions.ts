@@ -32,3 +32,9 @@ export class RemoveGuidanceNoteElementAction implements Action {
   readonly type = RemoveGuidanceNoteElementAction.TYPE;
   constructor(public name: string) { }
 }
+
+// export class CreateProductListUnNoAction implements Action {
+//   static readonly TYPE = 'adrDetails/CREATE_PRODUCT_LIST_UN_ELEMENT';
+//   readonly type = CreateProductListUnNoAction.TYPE;
+//   constructor(public name: string) { }
+// }

@@ -12,7 +12,12 @@ import { AdrReasonModalComponent } from "@app/components/adr-reason-modal/adr-re
 import { FormGroupState } from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { IAppState } from '@app/store/state/adrDetailsForm.state';
-import { SetSubmittedValueAction, CreatePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction } from '@app/store/actions/adrDetailsForm.actions';
+import {
+  SetSubmittedValueAction,
+  CreatePermittedDangerousGoodElementAction,
+  CreateGuidanceNoteElementAction,
+  //CreateProductListUnNoAction
+} from '@app/store/actions/adrDetailsForm.actions';
 import { take, map, catchError } from 'rxjs/operators';
 import { a } from '@angular/core/src/render3';
 
@@ -360,6 +365,7 @@ export class TechnicalRecordComponent implements OnInit {
   onAddUN() {
     const control = new FormControl(null, Validators.required);
     (<FormArray>this.adrDetailsForm.get('productListUnNo')).push(control);
+    //this._store.dispatch(new CreateProductListUnNoAction());
   }
 
   addAGuidanceNote(note: string) {
@@ -373,7 +379,6 @@ export class TechnicalRecordComponent implements OnInit {
   addSubsequentInspection() {
     this.subsequentInspection = true;
   }
-
 
   selectReferenceNumberChange($event) {
     this.isStatement = $event.currentTarget.value == "isStatement";
@@ -407,16 +412,5 @@ export class TechnicalRecordComponent implements OnInit {
   trackById(_: number, id: string) {
     return id;
   }
-  //
-  // isControlValid( controlGroupName : string, controlName: string ){
-  //
-  //   let adrDetailsForm = this.adrDetailsForm;
-  //
-  //   if (controlGroupName == ''){
-  //     return adrDetailsForm.controls[controlName].errors !=null ? adrDetailsForm.controls[controlName].errors.required && adrDetailsForm.controls[controlName].touched : false;
-  //   } else {
-  //     return adrDetailsForm.controls[controlGroupName].get(controlName).errors !=null ? adrDetailsForm.controls[controlGroupName].get(controlName).errors.required && adrDetailsForm.controls[controlGroupName].get(controlName).touched : false;
-  //   }
-  // }
 
 }
