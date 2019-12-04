@@ -63,8 +63,8 @@ const redirectUri = `${window.location.origin}`;
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
     MsAdalAngular6Module.forRoot({
-      tenant: '6c448d90-4ca1-4caf-ab59-0a2aa67d7801',
-      clientId: '54d151b6-2ca8-4018-8c70-f9ee600d91c7',
+      tenant: '',
+      clientId: '',
       redirectUri: redirectUri,
       endpoints: {
         'https://localhost/Api/': 'xxx-bae6-4760-b434-xxx'
