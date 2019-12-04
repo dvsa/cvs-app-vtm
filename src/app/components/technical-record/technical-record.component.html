@@ -4,6 +4,20 @@
     <div class="govuk-width-container left-pad">
       <main class="govuk-main-wrapper">
         <div class="govuk-grid-row">
+
+          <!--          <div *ngIf="!adrDetailsForm.valid" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">-->
+          <!--            <h2 class="govuk-error-summary__title" id="error-summary-title">-->
+          <!--              There is a problem-->
+          <!--            </h2>-->
+          <!--            <div class="govuk-error-summary__body">-->
+          <!--              <ul class="govuk-list govuk-error-summary__list">-->
+          <!--                <li>-->
+          <!--                  <a>Please enter mandatory fields</a>-->
+          <!--                </li>-->
+          <!--              </ul>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
           <div class="govuk-grid-column-one-thirds float-left">
             <h1 class="govuk-heading-xl title">Technical record</h1>
             <div *ngIf="!isSubmit">
@@ -743,12 +757,17 @@
                     </legend>
                     <form [formGroup]="adrDetailsForm" [ngrxFormState]="formState" (submit)="submit()">
                       <div class="govuk-form-group">
-                        <div class="govuk-form-group">
+                        <div [ngClass]="{ 'govuk-form-group': true,
+                                          'govuk-form-group--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.errors.required}">
+                          <span *ngIf="(formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid " id="name-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> Please enter your full name
+                          </span>
                           <label class="govuk-label govuk-!-font-weight-bold">
                             Name
                           </label>
                           <input [ngrxFormControlState]="(formState$ | async).controls.name"
-                            class="govuk-input govuk-input--width-20" type="text">
+                                 [ngClass]="{ 'govuk-input': true, 'govuk-input--width-20': true,
+                                              'govuk-input--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid }" type="text">
                         </div>
                         <div class="govuk-form-group">
                           <label class="govuk-label govuk-!-font-weight-bold" for="street">

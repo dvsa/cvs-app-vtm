@@ -4,7 +4,12 @@ export interface approvalDate {
     day: number;
     month: number;
     year: number;
-};
+}
+
+export interface certificateReq {
+  yesCert: boolean;
+  noCert: boolean;
+}
 
 export interface adrDetailsFormModel {
     name: string;
@@ -44,7 +49,7 @@ export interface adrDetailsFormModel {
         year: number;
     };
     tc3Type: string;
-    tc3PeriodicNumber: number,
+    tc3PeriodicNumber: string,
     tc3PeriodicExpiryDate: {
         day: number;
         month: number;
@@ -58,15 +63,12 @@ export interface adrDetailsFormModel {
         applicable: boolean;
         notApplicable: boolean;
     },
-    batteryListNumber: number;
+    batteryListNumber: string;
     brakeDeclarationIssuer: string;
     brakeEndurance: string;
     brakeDeclarationsSeen: string;
     declarationsSeen: string;
     weight: number;
-    certificateReq: {
-        yesCert: boolean;
-        noCert: boolean;
-    },
+    certificateReq: certificateReq,
     adrMoreDetail: string;
 }
