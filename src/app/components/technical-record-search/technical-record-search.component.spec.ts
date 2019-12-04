@@ -77,6 +77,7 @@ describe('TechnicalRecordSearchComponent', () => {
   beforeEach(() => {
     store = TestBed.get(Store);
     fixture = TestBed.createComponent(TechnicalRecordSearchComponent);
+    // httpMock = injector.get(HttpTestingController);
     injector = getTestBed();
     httpMock = injector.get(HttpTestingController);
     component = fixture.componentInstance;
@@ -89,15 +90,14 @@ describe('TechnicalRecordSearchComponent', () => {
     unsubscribe.complete();
   });
 
-  it('should create', inject([HttpTestingController, MsAdalAngular6Service], () => {
+  it('should create', () => {
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
     fixture = TestBed.createComponent(TechnicalRecordSearchComponent);
-    httpMock = injector.get(HttpTestingController);
     injector = getTestBed();
     component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component).toBeTruthy();
-  }));
+  });
 
 });

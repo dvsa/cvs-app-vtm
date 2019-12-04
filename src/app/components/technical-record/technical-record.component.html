@@ -1637,7 +1637,7 @@
                   <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key"> Break endurance weight (kg) </dt>
                     <dd id="test-weight" class="govuk-summary-list__value">
-                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight }}
+                      {{ isNullOrEmpty(techRecordsJson.techRecord[0].adrDetails.weight) ? "-" : techRecordsJson.techRecord[0].adrDetails.weight*1000 }}
                     </dd>
                     <dd class="govuk-summary-list__value"></dd>
                   </div>
@@ -1707,40 +1707,39 @@
         </mat-expansion-panel>
       </div>
 
-      <div *ngIf="(testResultJson$ | async) as testResultJson">
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #testHistory
-            [(expanded)]="panels[7].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Test history
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!testHistory.expanded" id="test-fa-plus-testHistory" [icon]="['fa', 'plus'] "
-                    size="lg" class="expander-icon">
-                  </fa-icon>
-                  <fa-icon *ngIf="testHistory.expanded" id="test-fa-minus-testHistory" [icon]="['fa', 'minus'] "
-                    size="lg" class="expander-icon">
-                  </fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
+      <div class="auto-pad" [@.disabled]="true">
+        <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #testHistory
+          [(expanded)]="panels[7].isOpened" [@.disabled]="true">
+          <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
+            collapsedHeight="80px">
+            <mat-panel-title>
+              <div class="item-technical-record govuk-!-font-weight-bold">
+                Test history
+              </div>
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="expansion-icon">
+                <fa-icon *ngIf="!testHistory.expanded" id="test-fa-plus-testHistory" [icon]="['fa', 'plus'] "
+                  size="lg" class="expander-icon">
+                </fa-icon>
+                <fa-icon *ngIf="testHistory.expanded" id="test-fa-minus-testHistory" [icon]="['fa', 'minus'] "
+                  size="lg" class="expander-icon">
+                </fa-icon>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-            <table class="govuk-table t-history">
-              <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                  <th scope="col" class="govuk-table__header">Test type</th>
-                  <th scope="col" class="govuk-table__header">Test date</th>
-                  <th scope="col" class="govuk-table__header">Expiry date</th>
-                  <th scope="col" class="govuk-table__header">Certificate number</th>
-                  <th scope="col" class="govuk-table__header">Result</th>
-                </tr>
-              </thead>
-              <tbody class="govuk-table__body">
+          <table class="govuk-table t-history">
+            <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Test type</th>
+                <th scope="col" class="govuk-table__header">Test date</th>
+                <th scope="col" class="govuk-table__header">Expiry date</th>
+                <th scope="col" class="govuk-table__header">Certificate number</th>
+                <th scope="col" class="govuk-table__header">Result</th>
+              </tr>
+            </thead>
+              <tbody class="govuk-table__body" *ngIf="(testResultJson$ | async) as testResultJson; else noTestHistory">
                 <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
                   <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
                     {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
@@ -1760,9 +1759,19 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </mat-expansion-panel>
-        </div>
+              <ng-template #noTestHistory>
+                <tbody class="govuk-table__body">
+                  <tr>
+                    <td> - </td>
+                    <td> - </td>
+                    <td> - </td>
+                    <td> - </td>
+                    <td> - </td>
+                  </tr>
+                </tbody>
+              </ng-template>
+          </table>
+        </mat-expansion-panel>
       </div>
 
       <div class="auto-pad" [@.disabled]="true">
