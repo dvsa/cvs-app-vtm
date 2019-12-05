@@ -11,16 +11,13 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 import {faCheckSquare, faCoffee, faPlus, faMinus, faSquare} from '@fortawesome/free-solid-svg-icons';
 import {faCheckSquare as farCheckSquare, faSquare as farSquare} from '@fortawesome/free-regular-svg-icons';
 import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-icons';
-import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {TestResultService} from '../components/technical-record/test-result.service';
 import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
-import { TechnicalRecordSearchComponent } from './technical-record-search/technical-record-search.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { ComponentsRoutingModule } from './components-routing.module';
-import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.component';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { StoreModule } from '@ngrx/store';
 import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
@@ -46,13 +43,12 @@ import { MaterialModule } from '@app/material.module';
     AceEditorModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, FooterComponent, HeaderComponent, AdrReasonModalComponent
+    TechnicalRecordComponent, LandingPageComponent, FooterComponent, HeaderComponent 
   ],
   exports: [
-    TechnicalRecordComponent, LandingPageComponent, TechnicalRecordSearchComponent, HeaderComponent, FooterComponent, AdrReasonModalComponent
+    TechnicalRecordComponent, LandingPageComponent, HeaderComponent, FooterComponent 
   ],
   providers: [TechnicalRecordService, TestResultService],
-  entryComponents: [ AdrReasonModalComponent ],
 })
 export class ComponentsModule {
   constructor() {

@@ -5,6 +5,7 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@environments/*": ["src/environments/*"],
+      "@testconfig/*": ["src/testconfig/*"],
       "@angular/": ["node_modules/@angular/"]
     },
     "outDir": "./dist/out-tsc",
