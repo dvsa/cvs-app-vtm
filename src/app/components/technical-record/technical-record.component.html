@@ -1763,6 +1763,7 @@
               </tr>
             </thead>
               <tbody class="govuk-table__body" *ngIf="(testResultJson$ | async) as testResultJson; else noTestHistory">
+
                 <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
                   <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
                     {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
@@ -1781,6 +1782,7 @@
                     {{ isNullOrEmpty(testRes.testTypes[0].testResult) ? "-" : testRes.testTypes[0].testResult | uppercase }}
                   </td>
                 </tr>
+
               </tbody>
               <ng-template #noTestHistory>
                 <tbody class="govuk-table__body">
