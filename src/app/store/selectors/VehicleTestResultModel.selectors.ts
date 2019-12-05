@@ -1,9 +1,8 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-
 import {IVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
 
 export const selectFeature = createFeatureSelector<IVehicleTestResultModelState>(
-  'vehicleTechRecordModel'
+  'vehicleTestResultModel'
 );
 
 export const selectSelectedVehicleTestResultModel = createSelector(
