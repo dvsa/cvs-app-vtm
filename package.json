@@ -9,8 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot --prod --output-path=dist/cvsb-9213 --base-href /cvsb-9213/",
-    "build:prod": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot --prod",
+    "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot --prod",
     "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
@@ -124,7 +123,8 @@
       "^@ionic/core/loader": "<rootDir>/node_modules/@ionic/core/dist/esm/es5/ionic.define.js",
       "^@ionic/core/dist/ionic/svg": "<rootDir>/scripts/svgoverride.js",
       "@app/(.*)": "<rootDir>/src/app/$1",
-      "@environments/(.*)": "<rootDir>/src/environments/$1"
+      "@environments/(.*)": "<rootDir>/src/environments/$1",
+      "@testconfig/(.*)": "<rootDir>/src/testconfig/$1"
     },
     "globals": {
       "ts-jest": {

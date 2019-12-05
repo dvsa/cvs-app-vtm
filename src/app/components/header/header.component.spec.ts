@@ -11,7 +11,7 @@ import {Store} from '@ngrx/store';
 import {AuthenticationGuard, MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {APP_BASE_HREF} from '@angular/common';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {AuthenticationGuardMock} from '../../../../test-config/services-mocks/authentication-guard.mock';
+import {AuthenticationGuardMock} from '../../../../testconfig/services-mocks/authentication-guard.mock';
 import {Subject} from 'rxjs';
 
 describe('HeaderComponent', () => {

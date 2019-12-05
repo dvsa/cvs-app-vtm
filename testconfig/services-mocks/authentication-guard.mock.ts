@@ -1,10 +1,6 @@
-import {CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
-import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {Observable, of} from 'rxjs';
 
 export class AuthenticationGuardMock  {
-  private adalConfig;
-  private context;
   readonly LoggedInUserEmail: string;
   readonly LoggedInUserName: any;
   readonly userInfo: adal.User;
@@ -27,11 +23,11 @@ export class AuthenticationGuardMock  {
     return;
   }
 
-  acquireToken(url: string): Observable<any> {
+  acquireToken(): Observable<any> {
     return of({token: '342304932049234'});
   }
 
-  getToken(url: string): string {
+  getToken(): string {
     return 'token';
   }
 
