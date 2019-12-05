@@ -9,11 +9,13 @@ import {WebComponentsModule} from '../web-components/web-components.module';
 
 import {ShellPage} from './shell.page';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
-import {TechnicalRecordSearchComponent} from '@app/components/technical-record-search/technical-record-search.component';
+import { TechnicalRecordSearchComponent } from '@app/technical-record-search/technical-record-search.component';
+import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    SharedModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild([

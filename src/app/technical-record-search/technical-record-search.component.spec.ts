@@ -1,16 +1,13 @@
-import { async, ComponentFixture, TestBed, getTestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { TechnicalRecordSearchComponent } from './technical-record-search.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {MatDialogModule} from '@angular/material/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from '../../material.module';
-import {SharedModule} from '../../shared/shared.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {Store, StoreModule, INITIAL_STATE} from '@ngrx/store';
-import {AuthenticationGuard, MsAdalAngular6Service, MsAdalAngular6Module} from 'microsoft-adal-angular6';
+import {AuthenticationGuard, MsAdalAngular6Module} from 'microsoft-adal-angular6';
 import {APP_BASE_HREF} from '@angular/common';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {AuthenticationGuardMock} from '../../../../test-config/services-mocks/authentication-guard.mock';
 import {Subject} from 'rxjs';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,12 +16,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { hot } from 'jasmine-marbles';
 import { IAppState } from '@app/store/state/app.state';
+import { MaterialModule } from '@app/material.module';
+import { SharedModule } from '@app/shared/shared.module';
+import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
 
 describe('TechnicalRecordSearchComponent', () => {
 
   let component: TechnicalRecordSearchComponent;
   let fixture: ComponentFixture<TechnicalRecordSearchComponent>;
-  let httpMock: HttpTestingController;
   const authenticationGuardMock = new AuthenticationGuardMock();
   const unsubscribe = new Subject<void>();
   let store: Store<IAppState>;
@@ -78,9 +77,7 @@ describe('TechnicalRecordSearchComponent', () => {
   beforeEach(() => {
     store = TestBed.get(Store);
     fixture = TestBed.createComponent(TechnicalRecordSearchComponent);
-    // httpMock = injector.get(HttpTestingController);
     injector = getTestBed();
-    httpMock = injector.get(HttpTestingController);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

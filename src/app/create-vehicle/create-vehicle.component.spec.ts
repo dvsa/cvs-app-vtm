@@ -6,7 +6,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {MsAdalAngular6Module} from 'microsoft-adal-angular6';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TechnicalRecordServiceMock} from '../../../test-config/services-mocks/technical-record-service.mock';
+import {TechnicalRecordServiceMock} from '../../../testconfig/services-mocks/technical-record-service.mock';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { AppRoutingModule } from '../app-routing.module';
 import { VehicleDetailsComponent } from '../vehicle-details/vehicle-details.component';

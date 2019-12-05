@@ -7,7 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import { VEHICLE_TYPES } from '../app.enums';
 import { TechnicalRecordService } from '../components/technical-record/technical-record.service';
 import { CreateVehicleService } from './create-vehicle.service';
-import {AdrReasonModalComponent} from "@app/components/adr-reason-modal/adr-reason-modal.component";
+import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 
 
 @Component({

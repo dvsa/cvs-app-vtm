@@ -6,12 +6,9 @@
     "module": "commonjs",
     "allowJs": true,
     "paths": {
-      "@app/*": [
-        "./app/*"
-      ],
-      "@environments/*": [
-        "./environments/*"
-      ]
+      "@app/*": [ "./app/*" ],
+      "@environments/*": [ "./environments/*"],
+      "@testconfig/*": ["./testconfig/*"],
     },
     "types": [
       "jest",
