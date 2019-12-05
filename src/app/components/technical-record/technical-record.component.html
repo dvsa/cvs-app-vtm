@@ -989,9 +989,7 @@
                                     [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted"
                                     value="Substances permitted under the tank code and any special provisions specified in 9 may be carried">
                                   <label class="govuk-label govuk-radios__label" for="underTankCode">
-                                    Substances permitted under the tank code and any special provisions specified in 9
-                                    may
-                                    be carried
+                                    Substances permitted under the tank code and any special provisions specified in 9 may be carried
                                   </label>
                                 </div>
                                 <div class="govuk-radios__item">
@@ -999,40 +997,12 @@
                                     [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted"
                                     value="Substances (Class UN number and if necessary packing group and proper shipping name) may be carried">
                                   <label class="govuk-label govuk-radios__label" for="classUN">
-                                    Substances (Class UN number and if necessary packing group and proper shipping name)
-                                    may
-                                    be carried
+                                    Substances (Class UN number and if necessary packing group and proper shipping name) may be carried
                                   </label>
                                 </div>
                               </div>
                             </fieldset>
                           </div>
-                        <div class="govuk-form-group" formGroupName="substancesPermitted" *ngIf="isVehicleTankOrBattery$ | async">
-                          <fieldset class="govuk-fieldset">
-                            <h2 class="govuk-heading-m">Substances permitted</h2>
-                            <div class="govuk-radios">
-                              <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="underTankCode" name="substancesPermitted" type="radio"
-                                  value="Substances permitted under the tank code and any special provisions specified in 9 may be carried"
-                                       [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted">
-                                <label class="govuk-label govuk-radios__label" for="underTankCode">
-                                  Substances permitted under the tank code and any special provisions specified in 9 may
-                                  be carried
-                                </label>
-                              </div>
-                              <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="classUN" name="substancesPermitted" type="radio"
-                                  value="Substances (Class UN number and if necessary packing group and proper shipping name) may be carried"
-                                       [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted">
-                                <label class="govuk-label govuk-radios__label" for="classUN">
-                                  Substances (Class UN number and if necessary packing group and proper shipping name)
-                                  may
-                                  be carried
-                                </label>
-                              </div>
-                            </div>
-                          </fieldset>
-                        </div>
 
                         <div class="govuk-inset-text">
                           <div class="govuk-form-group" formGroupName="selectReferenceNumber">
@@ -1040,16 +1010,14 @@
                               <h2 class="govuk-heading-m">Select</h2>
                               <div class="govuk-radios">
                                 <div class="govuk-radios__item">
-                                  <input class="govuk-radios__input" id="isStatement" formControlName="isStatement"
-                                    type="radio" value="isStatement" (change)="selectReferenceNumberChange($event)"
+                                  <input class="govuk-radios__input" id="isStatement" type="radio" value="isStatement" (change)="selectReferenceNumberChange($event)"
                                          [ngrxFormControlState]="(formState$ | async).controls.selectReferenceNumber.controls.isStatement">
                                   <label class="govuk-label govuk-radios__label" for="isStatement">
                                     Statement
                                   </label>
                                 </div>
                                 <div class="govuk-radios__item">
-                                  <input class="govuk-radios__input" id="isProductListRefNo"
-                                    formControlName="isStatement" type="radio" value="isProductListRefNo" (change)="selectReferenceNumberChange($event)"
+                                  <input class="govuk-radios__input" id="isProductListRefNo" type="radio" value="isProductListRefNo" (change)="selectReferenceNumberChange($event)"
                                          [ngrxFormControlState]="(formState$ | async).controls.selectReferenceNumber.controls.isProductListRefNo">
                                   <label class="govuk-label govuk-radios__label" for="isProductListRefNo">
                                     Product List
@@ -1064,8 +1032,7 @@
                               <label class="govuk-label govuk-!-font-weight-bold" for="statement">
                                 Reference number
                               </label>
-                              <input class="govuk-input govuk-input--width-10" id="statement"
-                                formControlName="statement" type="number"
+                              <input class="govuk-input govuk-input--width-10" id="statement" type="number"
                                      [ngrxFormControlState]="(formState$ | async).controls.statement">
                             </div>
 
@@ -1073,8 +1040,7 @@
                               <label class="govuk-label govuk-!-font-weight-bold" for="productListRefNo">
                                 Reference number
                               </label>
-                              <input class="govuk-input govuk-input--width-10" id="productListRefNo"
-                                formControlName="productListRefNo" type="number"
+                              <input class="govuk-input govuk-input--width-10" id="productListRefNo" type="number"
                                      [ngrxFormControlState]="(formState$ | async).controls.productListRefNo">
                             </div>
 
@@ -1094,8 +1060,7 @@
                               <label class="govuk-label govuk-!-font-weight-bold" for="productList">
                                 Additional details
                               </label>
-                              <textarea class="govuk-textarea" id="productList" formControlName="productList" rows="8"
-                                        aria-describedby="productList"
+                              <textarea class="govuk-textarea" id="productList" rows="8" aria-describedby="productList"
                                         [ngrxFormControlState]="(formState$ | async).controls.productList">
                               </textarea>
                             </div>
@@ -1106,8 +1071,7 @@
                           <label class="govuk-label govuk-!-font-weight-bold" for="specialProvisions">
                             Special provisions
                           </label>
-                          <textarea class="govuk-textarea" id="specialProvisions" formControlName="specialProvisions"
-                                    rows="8" aria-describedby="specialProvisions"
+                          <textarea class="govuk-textarea" id="specialProvisions" rows="8" aria-describedby="specialProvisions"
                                     [ngrxFormControlState]="(formState$ | async).controls.specialProvisions">
                           </textarea>
                         </div>
@@ -1122,7 +1086,7 @@
                             <label class="govuk-label govuk-!-font-weight-bold" for="tc2Type">
                               Inspection type
                             </label>
-                            <select class="govuk-select" id="tc2Type" formControlName="tc2Type" [ngrxFormControlState]="(formState$ | async).controls.tc2Type">
+                            <select class="govuk-select" id="tc2Type" [ngrxFormControlState]="(formState$ | async).controls.tc2Type">
                               <option value="initial">Initial</option>
                             </select>
                           </div>
@@ -1130,8 +1094,7 @@
                             <label class="govuk-label govuk-!-font-weight-bold" for="tc2IntermediateApprovalNo">
                               Certificate number
                             </label>
-                            <input class="govuk-input govuk-input--width-10" id="tc2IntermediateApprovalNo"
-                                   formControlName="tc2IntermediateApprovalNo" type="number"
+                            <input class="govuk-input govuk-input--width-10" id="tc2IntermediateApprovalNo" type="number"
                                    [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateApprovalNo">
                           </div>
 
@@ -1144,8 +1107,7 @@
                                     <label class="govuk-label govuk-date-input__label" for="dayExpiry">
                                       Day
                                     </label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                           id="dayExpiry" formControlName="dayExpiry" type="number" pattern="[0-9]*"
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dayExpiry" type="number" pattern="[0-9]*"
                                            [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateExpiryDate.controls.day">
                                   </div>
                                 </div>
@@ -1154,8 +1116,7 @@
                                     <label class="govuk-label govuk-date-input__label" for="monthExpiry">
                                       Month
                                     </label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                           id="monthExpiry" formControlName="monthExpiry" type="number" pattern="[0-9]*"
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="monthExpiry" type="number" pattern="[0-9]*"
                                            [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateExpiryDate.controls.month">
                                   </div>
                                 </div>
@@ -1164,8 +1125,7 @@
                                     <label class="govuk-label govuk-date-input__label" for="yearExpiry">
                                       Year
                                     </label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                           id="yearExpiry" formControlName="yearExpiry" type="number" pattern="[0-9]*"
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="yearExpiry" type="number" pattern="[0-9]*"
                                            [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateExpiryDate.controls.year">
                                   </div>
                                 </div>
@@ -1183,7 +1143,7 @@
                               <label class="govuk-label govuk-!-font-weight-bold" for="tc3Type">
                                 Inspection type
                               </label>
-                              <select class="govuk-select" id="tc3Type" formControlName="tc3Type" [ngrxFormControlState]="(formState$ | async).controls.tc3Type">
+                              <select class="govuk-select" id="tc3Type" [ngrxFormControlState]="(formState$ | async).controls.tc3Type">
                                 <option value="intermediate">Intermediate</option>
                                 <option value="periodic">Periodic</option>
                                 <option value="exceptional">Exceptional</option>
@@ -1194,8 +1154,7 @@
                               <label class="govuk-label govuk-!-font-weight-bold" for="tc3PeriodicNumber">
                                 Certificate number
                               </label>
-                              <input class="govuk-input govuk-input--width-10" id="tc3PeriodicNumber"
-                                     formControlName="tc3PeriodicNumber" type="number"
+                              <input class="govuk-input govuk-input--width-10" id="tc3PeriodicNumber" type="number"
                                      [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicNumber">
                             </div>
 
@@ -1208,8 +1167,7 @@
                                       <label class="govuk-label govuk-date-input__label" for="dayExpiryTc3">
                                         Day
                                       </label>
-                                      <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                             id="dayExpiryTc3" formControlName="dayExpiryTc3" type="number" pattern="[0-9]*"
+                                      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dayExpiryTc3" type="number" pattern="[0-9]*"
                                              [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls.day">
                                     </div>
                                   </div>
@@ -1218,8 +1176,7 @@
                                       <label class="govuk-label govuk-date-input__label" for="monthExpiryTc3">
                                         Month
                                       </label>
-                                      <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                             id="monthExpiryTc3" formControlName="monthExpiryTc3" type="number" pattern="[0-9]*"
+                                      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="monthExpiryTc3" type="number" pattern="[0-9]*"
                                              [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls.month">
                                     </div>
                                   </div>
@@ -1228,8 +1185,7 @@
                                       <label class="govuk-label govuk-date-input__label" for="yearExpiryTc3">
                                         Year
                                       </label>
-                                      <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                             id="yearExpiryTc3" formControlName="yearExpiryTc3" type="number" pattern="[0-9]*"
+                                      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="yearExpiryTc3" type="number" pattern="[0-9]*"
                                              [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls.year">
                                     </div>
                                   </div>
@@ -1239,23 +1195,21 @@
                           </div>
                         </div>
 
-                          <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent
-                              inspection</a>
-                          </p>
+                          <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent inspection</a></p>
 
                         <div class="govuk-form-group" formGroupName="memosApply">
                           <fieldset class="govuk-fieldset">
                             <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
                             <div class="govuk-radios">
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="isMemo" formControlName="isMemo" type="radio" value="07/09 3mth leak ext"
+                                <input class="govuk-radios__input" id="isMemo" type="radio" value="07/09 3mth leak ext"
                                        [ngrxFormControlState]="(formState$ | async).controls.memosApply.controls.isMemo">
                                 <label class="govuk-label govuk-radios__label" for="isMemo">
                                   Yes
                                 </label>
                               </div>
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="isNotMemo" formControlName="isMemo" type="radio" value="false"
+                                <input class="govuk-radios__input" id="isNotMemo" type="radio" value="false"
                                        [ngrxFormControlState]="(formState$ | async).controls.memosApply.controls.isNotMemo">
                                 <label class="govuk-label govuk-radios__label" for="isNotMemo">
                                   No
@@ -1292,16 +1246,14 @@
                             <h2 class="govuk-heading-m">Battery list applicable</h2>
                             <div class="govuk-radios govuk-radios--inline">
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="applicable" formControlName="applicable"
-                                  type="radio" value="applicable" (change)="onBatteryApplicableChange($event)"
+                                <input class="govuk-radios__input" id="applicable" type="radio" value="applicable" (change)="onBatteryApplicableChange($event)"
                                        [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable.controls.applicable">
                                 <label class="govuk-label govuk-radios__label" for="applicable">
                                   Yes
                                 </label>
                               </div>
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="notApplicable" formControlName="applicable"
-                                  type="radio" value="notApplicable" (change)="onBatteryApplicableChange($event)"
+                                <input class="govuk-radios__input" id="notApplicable" type="radio" value="notApplicable" (change)="onBatteryApplicableChange($event)"
                                        [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable.controls.notApplicable">
                                 <label class="govuk-label govuk-radios__label" for="notApplicable">
                                   No
@@ -1316,8 +1268,7 @@
                             <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
                               Reference number
                             </label>
-                            <input class="govuk-input govuk-input--width-10" id="batteryListNumber"
-                                   formControlName="batteryListNumber" type="number"
+                            <input class="govuk-input govuk-input--width-10" id="batteryListNumber" type="number"
                                    [ngrxFormControlState]="(formState$ | async).controls.batteryListNumber">
                           </div>
                         </div>
@@ -1329,8 +1280,7 @@
 
                           <div class="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen"
-                                     formControlName="brakeDeclarationsSeen" type="checkbox"
+                              <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" type="checkbox"
                                      (change)="onManufactureBreakChange($event)"
                                      [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationsSeen">
                               <label class="govuk-label govuk-checkboxes__label" for="brakeDeclarationsSeen">
@@ -1342,13 +1292,11 @@
                                 <label class="govuk-label govuk-!-font-weight-bold" for="brakeDeclarationIssuer">
                                   Issuer
                                 </label>
-                                <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer"
-                                       formControlName="brakeDeclarationIssuer" type="text"
+                                <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer" type="text"
                                        [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationIssuer">
                               </div>
                               <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="brakeEndurance"
-                                       formControlName="brakeEndurance" type="checkbox"
+                                <input class="govuk-checkboxes__input" id="brakeEndurance" type="checkbox"
                                        (change)="onBrakeEnduranceChange($event)"
                                        [ngrxFormControlState]="(formState$ | async).controls.brakeEndurance">
                                 <label class="govuk-label govuk-checkboxes__label" for="brakeEndurance">
@@ -1360,14 +1308,13 @@
                                   <label class="govuk-label govuk-!-font-weight-bold" for="weight">
                                     Weight (kg)
                                   </label>
-                                  <input class="govuk-input govuk-input--width-10" id="weight" formControlName="weight" type="text"
+                                  <input class="govuk-input govuk-input--width-10" id="weight" type="text"
                                          [ngrxFormControlState]="(formState$ | async).controls.weight">
                                 </div>
                               </div>
                             </div>
                             <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="declarationsSeen"
-                                     formControlName="declarationsSeen" type="checkbox" value="true"
+                              <input class="govuk-checkboxes__input" id="declarationsSeen" type="checkbox" value="true"
                                      [ngrxFormControlState]="(formState$ | async).controls.declarationsSeen">
                               <label class="govuk-label govuk-checkboxes__label" for="declarationsSeen">
                                 Owner/operator declaration
@@ -1381,14 +1328,14 @@
                           <h2 class="govuk-heading-m">Certificate required</h2>
                           <div class="govuk-radios govuk-radios--inline">
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="yesCert" formControlName="yesCert" type="radio" value="yes"
+                              <input class="govuk-radios__input" id="yesCert" type="radio" value="yes"
                                      [ngrxFormControlState]="(formState$ | async).controls.certificateReq.controls.yesCert">
                               <label class="govuk-label govuk-radios__label" for="yesCert">
                                 Yes
                               </label>
                             </div>
                             <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="noCert" formControlName="yesCert" type="radio" value="no"
+                              <input class="govuk-radios__input" id="noCert" type="radio" value="no"
                                      [ngrxFormControlState]="(formState$ | async).controls.certificateReq.controls.yesCert">
                               <label class="govuk-label govuk-radios__label" for="noCert">
                                 No
@@ -1404,9 +1351,8 @@
                         <span id="more-detail-hint" class="govuk-hint">
                           Will not be present on the ADR certificate
                         </span>
-                        <textarea class="govuk-textarea" id="adr-more-detail" formControlName="adrMoreDetail" rows="8" aria-describedby="adrMoreDetail"
+                        <textarea class="govuk-textarea" id="adr-more-detail" rows="8" aria-describedby="adrMoreDetail"
                                   [ngrxFormControlState]="(formState$ | async).controls.adrMoreDetail">
-
                         </textarea>
                       </div>
                     </form>
@@ -1872,7 +1818,7 @@
                 </tr>
               </thead>
               <tbody class="govuk-table__body">
-                <tr class="govuk-table__row" *ngFor="let techRec of techRecordsJson.techRecord; let i = index">
+                <tr class="govuk-table__row" *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index">
                   <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
                     {{ isNullOrEmpty(techRec.statusCode) ? "-" : techRec.statusCode.charAt(0).toUpperCase() + techRec.statusCode.substr(1).toLowerCase()}}
                   </td>
