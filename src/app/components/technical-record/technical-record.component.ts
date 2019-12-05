@@ -8,7 +8,6 @@ import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { VEHICLE_TYPES } from "@app/app.enums";
 import { CustomValidators } from "@app/components/technical-record/custom-validators";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { AdrReasonModalComponent } from "@app/components/adr-reason-modal/adr-reason-modal.component";
 import { FormGroupState } from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { IAppState } from '@app/store/state/adrDetailsForm.state';
@@ -20,6 +19,7 @@ import {
 } from '@app/store/actions/adrDetailsForm.actions';
 import { take, map, catchError } from 'rxjs/operators';
 import { a } from '@angular/core/src/render3';
+import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 
 @Component({
   selector: 'app-technical-record',

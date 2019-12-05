@@ -19,7 +19,7 @@ import {hot} from "jasmine-marbles";
 import {IAppState, INITIAL_STATE} from "@app/store/state/adrDetailsForm.state";
 import {APP_BASE_HREF} from "@angular/common";
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import {AuthenticationGuardMock} from "../../../../test-config/services-mocks/authentication-guard.mock";
+import {AuthenticationGuardMock} from "../../../../testconfig/services-mocks/authentication-guard.mock";
 import {Subject} from "rxjs";
 import {Router} from "@angular/router";
 

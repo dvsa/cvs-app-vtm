@@ -3,7 +3,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {AuthenticationGuard, MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {environment} from '../../../environments/environment';
 import {TestResultService} from './test-result.service';
-import {AuthenticationGuardMock} from "../../../../test-config/services-mocks/authentication-guard.mock";
+import {AuthenticationGuardMock} from "../../../../testconfig/services-mocks/authentication-guard.mock";
 import {APP_BASE_HREF} from "@angular/common";
 import {TechnicalRecordService} from "@app/components/technical-record/technical-record.service";
 import {TechnicalRecordComponent} from "@app/components/technical-record/technical-record.component";
