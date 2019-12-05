@@ -10,7 +10,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot --prod",
-    "build:prod": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot --prod",
     "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
