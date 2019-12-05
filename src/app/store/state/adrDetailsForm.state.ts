@@ -40,10 +40,7 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
   tankManufacturerSerialNo: '',
   tankTypeAppNo: '',
   tankCode: '',
-  substancesPermitted: {
-    underTankCode: '',
-    classUN: '',
-  },
+  substancesPermitted: '',
   selectReferenceNumber: {
     isStatement: '',
     isProductListRefNo: '',
