@@ -32,30 +32,30 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     it('THEN I am able to update the attributes on this technical record', () => {
       cy.get('#mat-expansion-panel-header-6 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .click();
-      cy.get('#name').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.name').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
     });
 
     it('AND there is a call to action to \'cancel\' my change', () => {
-      cy.get('#cancel').should('have.text', 'Cancel');
+      cy.get('#cancel2').should('have.text', 'Cancel');
     });
   });
 
   context('AC2. User clicks the call to action to cancel the change', () => {
 
     it('GIVEN I have clicked the call to action to "change technical record" (as per the designs)', () => {
-      cy.get('.govuk-grid-column-one-thirds > .govuk-button').should('have.text', ' Save technical record ');
+      cy.get('.govuk-button').should('have.text', ' Save technical record ');
     });
 
     it('AND there is a call to action to \'cancel\' my change', () => {
-      cy.get('#cancel').should('have.text', 'Cancel');
+      cy.get('#cancel2').should('have.text', 'Cancel');
     });
 
     it('AND I could have updated some values', () => {
-      cy.get('#name').type(' Banciu').should('have.value', 'Dorel Grigore Banciu');
+      cy.get('#adrDetails\\.name').type(' Banciu').should('have.value', 'Dorel Grigore Banciu');
     });
 
     it('WHEN I click the call to action to \'cancel\' my change', () => {
-      cy.get('#cancel').click();
+      cy.get('#cancel2').click();
     });
 
     it('THEN I am returned to the "view technical record page" for my technical record', () => {
@@ -74,7 +74,7 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
       cy.get('#searchIdentifier').type('P012301230123').should('have.value', 'P012301230123');
       cy.get('.govuk-button').click();
       cy.get('#test-vin').should('have.text', ' P012301230123 ');
-      cy.get('.govuk-grid-column-one-thirds > .govuk-button').click();
+      cy.get('.govuk-button').click();
     });
 
     it('AND this technical record DOES NOT already have ADR details on it', () => {
@@ -88,7 +88,7 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     });
 
     it('THEN I am able to add ADR details on this technical record', () => {
-      cy.get('#name').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.name').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
     });
   });
 
@@ -99,19 +99,19 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
       cy.get('#searchIdentifier').type('ABCDEFGH777777').should('have.value', 'ABCDEFGH777777');
       cy.get('.govuk-button').click();
       cy.get('#test-vin').should('have.text', ' ABCDEFGH777777 ');
-      cy.get('.govuk-grid-column-one-thirds > .govuk-button').click();
+      cy.get('.govuk-button').click();
     });
 
     it('AND this technical record DOES already have ADR details on it', () => {
       cy.get('#mat-expansion-panel-header-6 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .click();
-      cy.get('#name').should('be.visible');
+      cy.get('#adrDetails\\.name').should('be.visible');
     });
 
     it('WHEN I scroll to the ADR details section on this screen', () => {
       cy.get('#mat-expansion-panel-header-6 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .scrollIntoView();
-      cy.get('#name').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.name').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
     });
 
     it('THEN the Able to carry dangerous goods radio button is already set to yes', () => {
@@ -119,14 +119,14 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     });
 
     it('AND I am already able to update ADR details on this technical record', () => {
-      cy.get('#street').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.street').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
     });
   });
 
   context('AC5. User is presented with the applicant details for updating', () => {
 
     it('GIVEN am able to update the ADR details on this technical record', () => {
-      cy.get('.govuk-grid-column-one-thirds > .govuk-button').should('have.text', ' Save technical record ');
+      cy.get('.govuk-button').should('have.text', ' Save technical record ');
     });
 
     it('WHEN I scroll to the ADR details section (to update the ADR details)', () => {
@@ -135,39 +135,40 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     });
 
     it('THEN I must first enter the applicant details as per the design (name, street, town, city, post code)', () => {
-      cy.get('#city').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
-      cy.get('#town').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
-      cy.get('#postcode').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.city').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.town').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.postcode').type('Dorel Grigore').should('have.value', 'Dorel Grigore');
     });
 
     it('AND I am able to select one vehicle type from the list ', () => {
-      cy.get('#type').select('Rigid tank').should('have.value', 'Rigid tank');
+      cy.get('#adrDetails\\.type').select('Rigid tank').should('have.value', 'Rigid tank');
     });
   });
 
   context('AC6. User enters the remaining details for their vehicle type', () => {
 
     it('GIVEN I am updating the ADR details on this technical record', () => {
-      cy.get('.govuk-grid-column-one-thirds > .govuk-button').should('have.text', ' Save technical record ');
+      cy.get('div.ng-star-inserted > .govuk-button').should('have.text', ' Save technical record ');
     });
 
     it('AND I have entered the applicant details and WHEN I select a vehicle type', () => {
       cy.get('#mat-expansion-panel-header-6 > .mat-content > .mat-expansion-panel-header-title > .item-technical-record')
         .scrollIntoView();
-      cy.get('#type').should('have.value', 'Rigid tank');
+      cy.get('#adrDetails\\.type').should('have.value', 'Rigid tank');
     });
 
     it('THEN I must complete all mandatory attributes for my vehicle type', () => {
-      cy.get('#city').should('have.value', 'Dorel Grigore');
-      cy.get('#town').should('have.value', 'Dorel Grigore');
-      cy.get('#postcode').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.city').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.town').should('have.value', 'Dorel Grigore');
+      cy.get('#adrDetails\\.postcode').should('have.value', 'Dorel Grigore');
     });
 
     it('AND I am able to complete any of the optional fields for my vehicle type, if I wish to', () => {
       cy.get('#day').type('22').should('have.value', '22');
       cy.get('#month').type('10').should('have.value', '10');
       cy.get('#year').type('2019').should('have.value', '2019');
-      cy.get('#permittedDangerousGoods').select('1: \'1A\'');
+      cy.get('#permittedDangerousGoods').select('1: \'AT\'');
+      cy.get('#additionalNotes').select('1: \'1A\'');
       cy.get('#adrTypeApprovalNo').type('123456').should('have.value', '123456');
       cy.get('#tankManufacturer').type('123456').should('have.value', '123456');
       cy.get('#yearOfManufacture').type('123456').should('have.value', '123456');
@@ -203,51 +204,73 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     });
   });
 
-  // context('AC7. User clicks the call to action to save the ADR details, ' +
-  //   'is presented with "Enter reason for changing technical record" modal', () => {
-  //
-  //   it('GIVEN I have completed all the mandatory ADR fields for my vehicle type', () => {
-  //     cy.get('#applicantDetailsName').should('have.value', 'Dorel Grigore');
-  //     cy.get('#applicantDetailsCity').should('have.value', 'Dorel Grigore');
-  //     cy.get('#applicantDetailsTown').should('have.value', 'Dorel Grigore');
-  //     cy.get('#applicantDetailsPostcode').should('have.value', 'Dorel Grigore');
-  //     cy.get('#approvalDate-day').should('have.value', '22');
-  //     cy.get('#approvalDate-month').should('have.value', '10');
-  //     cy.get('#approvalDate-year').should('have.value', '2019');
-  //     cy.get('#adrTypeApprovalNo').should('have.value', '123456');
-  //   });
-  //
-  //   it('AND I could have completed the optional ADR fields for my vehicle type', () => {
-  //     cy.get('#adr-more-detail').should('have.value', 'ADR more details');
-  //   });
-  //
-  //   it('AND I could have attached documents to my ADR record', () => {
-  //   });
-  //
-  //   it('WHEN I click the call to action to save my ADR record', () => {
-  //     cy.get('.govuk-button').should('have.text', ' Save technical record ');
-  //     cy.get('.govuk-button').click();
-  //   });
-  //
-  //   it('THEN I am presented with a modal window which asks me to enter the "Enter reason for changing technical record"', () => {
-  //     cy.get('#modalIdHere').should('be.visible');
-  //   });
-  // });
+  context('AC7. User clicks the call to action to save the ADR details, ' +
+    'is presented with "Enter reason for changing technical record" modal', () => {
+
+    it('GIVEN I have completed all the mandatory ADR fields for my vehicle type', () => {
+      cy.get('#name').should('have.value', 'Dorel Grigore');
+      cy.get('#city').should('have.value', 'Dorel Grigore');
+      cy.get('#town').should('have.value', 'Dorel Grigore');
+      cy.get('#postcode').should('have.value', 'Dorel Grigore');
+      cy.get('#approvalDate-day').should('have.value', '22');
+      cy.get('#approvalDate-month').should('have.value', '10');
+      cy.get('#approvalDate-year').should('have.value', '2019');
+      cy.get('#adrTypeApprovalNo').should('have.value', '123456');
+    });
+
+    it('AND I could have completed the optional ADR fields for my vehicle type', () => {
+      cy.get('#adr-more-detail').should('have.value', 'ADR more details');
+    });
+
+    it('AND I could have attached documents to my ADR record', () => {
+    });
+
+    it('WHEN I click the call to action to save my ADR record', () => {
+      cy.get('div.ng-star-inserted > .govuk-button').should('have.text', ' Save technical record ');
+      cy.get('div.ng-star-inserted > .govuk-button').click();
+    });
+
+    it('THEN I am presented with a modal window which asks me to enter the "Enter reason for changing technical record"', () => {
+      cy.get('#mat-dialog-0').should('be.visible');
+    });
+  });
+
+  context('AC9. User backs out of actually saving the ADR details, ' +
+    'after being presented with "Enter reason for changing technical record" modal', () => {
+
+    it('GIVEN I am presented with the "Enter reason for changing technical record" modal', () => {
+      cy.get('#mat-dialog-0').should('be.visible');
+    });
+
+    it('WHEN I click the call to action to cancel\n', () => {
+      cy.get('.cancel').click();
+    });
+
+    it('THEN I am taken back to ADR update screen\n', () => {
+      cy.get('#mat-dialog-0').should('not.be.visible');
+    });
+
+    it('AND the values that I was updating are still present on this front end screen', () => {
+      cy.get('#tankTypeAppNo').should('have.value', '123456');
+      cy.get('#tankCode').should('have.value', '123456');
+      cy.get('#name').should('have.value', 'Dorel Grigore');
+    });
+  });
 
   context('AC8. User actually saves the ADR details (New technical record is created' +
     ', existing technical record gets archived, audit fields get set on both)', () => {
 
     it('GIVEN I am presented with the "Enter reason for changing technical record" modal', () => {
-      // functionality was not implemented at the time this test was written.
-      cy.get('#functionality-not-implemented-yet').should('be.visible');
+      cy.get('div.ng-star-inserted > .govuk-button').click();
+      cy.get('#mat-dialog-1').should('be.visible');
     });
 
     it('AND I have entered a reason into this modal', () => {
-
+      cy.get('#reasonForCreation').type('Reason for creation').should('have.value', 'Reason for creation');
     });
 
     it('WHEN I click the call to action to save', () => {
-
+      cy.get('#saveTechRecord').click();
     });
 
     it('THEN a new technical record is created for this vehicle', () => {
@@ -299,23 +322,4 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     });
   });
 
-  context('AC9. User backs out of actually saving the ADR details, ' +
-    'after being presented with "Enter reason for changing technical record" modal', () => {
-
-    it('GIVEN I am presented with the "Enter reason for changing technical record" modal', () => {
-      // functionality was not implemented at the time this test was written.
-      cy.get('#functionality-not-implemented-yet').should('be.visible');
-    });
-
-    it('WHEN I click the call to action to cancel\n', () => {
-    });
-
-    it('THEN I am taken back to ADR update screen\n', () => {
-    });
-
-    it('AND the values that I was updating are still present on this front end screen', () => {
-    });
-  });
-
 });
-
