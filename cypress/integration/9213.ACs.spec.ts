@@ -274,50 +274,60 @@ describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
     });
 
     it('THEN a new technical record is created for this vehicle', () => {
-
+      cy.get('not-implemented').click();
     });
 
     it('AND this new technical record consists of all the fields on the existing (queried) technical record,' +
       ' plus the updated ADR details, plus the updated "reasonForCreation"', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND the relevant audit fields (as per CVSB-7244 + CVSB-8677) are automatically' +
       ' set on this new technical record (createdByName, createdById, createdAt)', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND the existing technical record (with the "old" adrDetails{} object,' +
       ' or no adrDetails{} object on it at all) has it\'s statusCode set to \'archived\'', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND the relevant audit fields (as per CVSB-7244 + CVSB-8677) are automatically set ' +
       'on this archived technical record (lastUpdatedByName, lastUpdatedById, updateType, lastUpdatedAt)', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND any dates entered in the front end are converted into YYYY-MM-DD format (to comply with the API)', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND the \'weight\' that I entered (in kg) gets converted to tonnes (i.e, divide by 1000) ', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND all other fields on these technical records are unaffected', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND all other technical records for this vehicle are unaffected', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND any attached documents are stored against my ADR record (see CVSB-9214 for details)', () => {
+      cy.get('not-implemented').click();
 
     });
 
     it('AND I am presented with the "tech record view" screen of my new record', () => {
+      cy.get('not-implemented').click();
 
     });
   });
