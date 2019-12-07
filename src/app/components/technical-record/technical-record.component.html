@@ -4,20 +4,6 @@
       <div class="govuk-width-container left-pad">
         <main class="govuk-main-wrapper">
           <div class="govuk-grid-row">
-
-            <!--          <div *ngIf="!adrDetailsForm.valid" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">-->
-            <!--            <h2 class="govuk-error-summary__title" id="error-summary-title">-->
-            <!--              There is a problem-->
-            <!--            </h2>-->
-            <!--            <div class="govuk-error-summary__body">-->
-            <!--              <ul class="govuk-list govuk-error-summary__list">-->
-            <!--                <li>-->
-            <!--                  <a>Please enter mandatory fields</a>-->
-            <!--                </li>-->
-            <!--              </ul>-->
-            <!--            </div>-->
-            <!--          </div>-->
-
             <div class="govuk-grid-column-one-thirds float-left">
               <h1 class="govuk-heading-xl title">Technical record</h1>
               <div *ngIf="!isSubmit">
@@ -67,8 +53,8 @@
               Vehicle registration mark (VRM)
             </dt>
             <dd id="test-vrm" class="govuk-summary-list__value">
-              <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true  ">
+              <div *ngIf="!isEmptyObject(techRecordsJson.vrms) else hyphen">
+                <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true">
                   {{vrmItem.vrm}}
                 </ul>
               </div>
@@ -80,7 +66,7 @@
               Previous VRM
             </dt>
             <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-              <div *ngIf="!isNullOrEmpty(techRecordsJson.vrms) && hasSecondaryVrms(techRecordsJson.vrms); else hyphen">
+              <div *ngIf="!isEmptyObject(techRecordsJson.vrms) && hasSecondaryVrms(techRecordsJson.vrms); else hyphen">
                 <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
                   <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
                 </ul>
@@ -771,8 +757,8 @@
                               Name
                             </label>
                             <input [ngrxFormControlState]="(formState$ | async).controls.name"
-                                   [ngClass]="{ 'govuk-input': true, 'govuk-input--width-20': true,
-                                              'govuk-input--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid }"
+                                   [ngClass]="{ 'govuk-input': true, 'govuk-input--width-20': true, 'govuk-input--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid }"
+                                   value='{{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.name) ? " " : activeRecord.adrDetails.applicantDetails.name }}'
                                    type="text">
                           </div>
                           <div class="govuk-form-group">
@@ -1612,8 +1598,8 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Applied</dt>
                       <dd id="test-memosApply" class="govuk-summary-list__value">
-                        <div *ngIf="!isNullOrEmpty(activeRecord.adrDetails.memosApply) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.memosApply) ? "-" : activeRecord.adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
+                        <div *ngIf="!isEmptyObject(activeRecord.adrDetails.memosApply) else hyphen">
+                          {{ isEmptyObject(activeRecord.adrDetails.memosApply) ? "-" : activeRecord.adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
                         </div>
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
@@ -1621,14 +1607,20 @@
                     <div class="govuk-summary-list__row">
                       <h2 class="govuk-heading-m">Tank documents</h2>
                     </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Document 1</dt>
-                      <dd class="govuk-summary-list__value">
-                      </dd>
-                      <dd class="govuk-summary-list__value">
-                        <a class="govuk-link">View</a>
-                      </dd>
-                    </div>
+                    <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.documents) else noDoc">
+                      <div class="govuk-summary-list__row" *ngFor="let doc of activeRecord.adrDetails.documents">
+                        <dt class="govuk-summary-list__key"> {{doc}} </dt>
+                        <dd class="govuk-summary-list__value"></dd>
+                        <dd class="govuk-summary-list__value"> <a class="govuk-link">View</a> </dd>
+                      </div>
+                    </ng-container>
+                    <ng-template #noDoc>
+                      <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__value"> - </dt>
+                        <dd class="govuk-summary-list__value"></dd>
+                        <dd class="govuk-summary-list__value"></dd>
+                      </div>
+                    </ng-template>
                     <div class="govuk-summary-list__row">
                       <h2 class="govuk-heading-m">Battery list</h2>
                     </div>
