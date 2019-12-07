@@ -758,7 +758,6 @@
                             </label>
                             <input [ngrxFormControlState]="(formState$ | async).controls.name"
                                    [ngClass]="{ 'govuk-input': true, 'govuk-input--width-20': true, 'govuk-input--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid }"
-                                   value='{{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.name) ? " " : activeRecord.adrDetails.applicantDetails.name }}'
                                    type="text">
                           </div>
                           <div class="govuk-form-group">
