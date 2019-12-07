@@ -1,17 +1,25 @@
-import { Action, combineReducers } from '@ngrx/store';
-import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, updateGroup, validate, addGroupControl, setValue, updateArray } from 'ngrx-forms';
-import { greaterThan, required, lessThan, lessThanOrEqualTo, maxLength} from 'ngrx-forms/validation';
-import { approvalDate, certificateReq, adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
-import { INITIAL_STATE, IAppState } from '../state/adrDetailsForm.state';
+import {Action, combineReducers} from '@ngrx/store';
 import {
-  SetSubmittedValueAction,
-  CreatePermittedDangerousGoodElementAction,
-  RemovePermittedDangerousGoodElementAction,
+  AddArrayControlAction,
+  addGroupControl,
+  createFormStateReducerWithUpdate,
+  RemoveArrayControlAction,
+  setValue,
+  updateGroup,
+  validate
+} from 'ngrx-forms';
+import {greaterThan, lessThanOrEqualTo, maxLength, required} from 'ngrx-forms/validation';
+import {adrDetailsFormModel, approvalDate} from '@app/models/adrDetailsForm.model';
+import {IAppState, INITIAL_STATE} from '../state/adrDetailsForm.state';
+import {
   CreateGuidanceNoteElementAction,
-  RemoveGuidanceNoteElementAction
-  //CreateProductListUnNoAction
+  CreatePermittedDangerousGoodElementAction,
+  CreateProductListUnNoElementAction,
+  RemoveGuidanceNoteElementAction,
+  RemovePermittedDangerousGoodElementAction,
+  RemoveProductListUnNoElementAction,
+  SetSubmittedValueAction
 } from '../actions/adrDetailsForm.actions';
-import {FormArray, FormControl, Validators} from "@angular/forms";
 
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
   name: validate(required, maxLength(150)),
@@ -28,7 +36,6 @@ const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFo
   permittedDangerousGoods: validate(required),
   additionalNotes: validate(required),
   tankManufacturer: validate(maxLength(70)),
-  //yearOfManufacture: validate(maxLength(4)),
   tankManufacturerSerialNo: validate(maxLength(50)),
   tankTypeAppNo: validate(maxLength(65)),
   tankCode: validate(maxLength(30)),
@@ -46,8 +53,9 @@ const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFo
 const reducers = combineReducers<IAppState['adrDetails'], any>({
   formState(
     s = INITIAL_STATE,
-    a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction | CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction
-       // | CreateProductListUnNoAction
+    a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction |
+       CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction |
+       CreateProductListUnNoElementAction | RemoveProductListUnNoElementAction
   ) {
     s = formGroupReducerWithUpdate(s, a);
 
@@ -55,13 +63,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
       case CreatePermittedDangerousGoodElementAction.TYPE:
         return updateGroup<adrDetailsFormModel>({
           permittedDangerousGoods: group => {
-            const newGroup = addGroupControl(group, a.name, false);
-
-            // alternatively we can also use setValue
-            // const newValue = { ...group.value, [a.name]: false };
-            // const newGroup = setValue(group, newValue);
-
-            return newGroup;
+            return addGroupControl(group, a.name, false);
           },
         })(s);
 
@@ -70,25 +72,14 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
           permittedDangerousGoods: group => {
             const newValue = { ...group.value };
             delete newValue[a.name];
-            const newGroup = setValue(group, newValue);
-
-            // alternatively we can also use removeGroupControl
-            // const newGroup = removeGroupControl(group, a.name);
-
-            return newGroup;
+            return setValue(group, newValue);
           },
         })(s);
 
       case CreateGuidanceNoteElementAction.TYPE:
         return updateGroup<adrDetailsFormModel>({
           additionalNotes: group => {
-            const newGroup = addGroupControl(group, a.name, false);
-
-            // alternatively we can also use setValue
-            // const newValue = { ...group.value, [a.name]: false };
-            // const newGroup = setValue(group, newValue);
-
-            return newGroup;
+            return addGroupControl(group, a.name, false);
           },
         })(s);
 
@@ -97,26 +88,28 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
           additionalNotes: group => {
             const newValue = { ...group.value };
             delete newValue[a.name];
-            const newGroup = setValue(group, newValue);
-
-            // alternatively we can also use removeGroupControl
-            // const newGroup = removeGroupControl(group, a.name);
-
-            return newGroup;
+            return setValue(group, newValue);
           },
         })(s);
 
-      // case CreateProductListUnNoAction.TYPE:
-      //   return updateGroup<adrDetailsFormModel>({
-      //     productListUnNo: group => {
-      //       const newValue = { ...group.value };
-      //       delete newValue[a.name];
-      //       const newGroup = setValue(group, newValue);
-      //
-      //       return newGroup;
-      //     },
-      //   })(s);
 
+      case CreateProductListUnNoElementAction.TYPE:
+        return updateGroup<adrDetailsFormModel>({
+          productListUnNo: group => {
+            const newValue = { ...group.value };
+            delete newValue[a.name];
+            return setValue(group, newValue);
+          },
+        })(s);
+
+      case RemoveProductListUnNoElementAction.TYPE:
+        return updateGroup<adrDetailsFormModel>({
+          productListUnNo: group => {
+            const newValue = { ...group.value };
+            delete newValue[a.name];
+            return setValue(group, newValue);
+          },
+        })(s);
 
       default:
         return s;
@@ -149,6 +142,37 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
       case RemoveGuidanceNoteElementAction.TYPE:
         return s.filter(i => i !== a.name);
+
+      default:
+        return s;
+    }
+  },
+  productListUnNo: function (
+    s = {maxIndex: 0, options: []},
+    a: AddArrayControlAction<number> | RemoveArrayControlAction,
+  ) {
+    switch (a.type) {
+      case AddArrayControlAction.TYPE: {
+        console.log(`inside reducer productListUnNo AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, maxIndex);
+        return {
+          maxIndex,
+          options,
+        };
+      }
+
+      case RemoveArrayControlAction.TYPE: {
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 1);
+        return {
+          ...s,
+          options,
+        };
+      }
 
       default:
         return s;

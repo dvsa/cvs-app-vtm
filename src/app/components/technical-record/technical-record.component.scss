@@ -1,4 +1,9 @@
 @import "node_modules/govuk-frontend/govuk/all";
+.un-number {
+  display: grid;
+  grid-template-columns: auto auto;
+
+}
 
 .form-state {
   margin: 20px 20px 20px 10px;
@@ -416,6 +421,10 @@ dd {
     margin-bottom: 2em;
   }
 
+  .remove-a-un-number {
+    float: left;
+  }
+
   .grid-item {
     float: left;
   }
@@ -477,7 +486,7 @@ dd {
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
-    cursor: not-allowed;
+    // cursor: not-allowed;
   }
 
   #adr-more-detail {

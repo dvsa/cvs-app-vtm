@@ -7,6 +7,10 @@ export interface IAppState extends RootState {
     formState: FormGroupState<adrDetailsFormModel>;
     permittedDangerousGoodsOptions: string[];
     additionalNotesOptions: string[];
+    productListUnNo: {
+      maxIndex: number;
+      options: number[];
+    };
     submittedValue: adrDetailsFormModel | undefined;
   };
 }
@@ -41,13 +45,10 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
   tankTypeAppNo: '',
   tankCode: '',
   substancesPermitted: '',
-  selectReferenceNumber: {
-    isStatement: '',
-    isProductListRefNo: '',
-  },
+  selectReferenceNumber: '',
   statement: '',
   productListRefNo: '',
-  productListUnNo: [''],
+  productListUnNo: [],
   productList: '',
   specialProvisions: '',
   tc2Type: '',

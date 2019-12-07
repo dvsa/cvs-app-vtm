@@ -1,6 +1,5 @@
-import { Action } from "@ngrx/store";
-import { VehicleTechRecordModel } from "@app/models/vehicle-tech-record.model";
-import { adrDetailsFormModel } from "@app/models/adrDetailsForm.model";
+import { Action } from '@ngrx/store';
+import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 
 
 export class SetSubmittedValueAction implements Action {
@@ -33,8 +32,14 @@ export class RemoveGuidanceNoteElementAction implements Action {
   constructor(public name: string) { }
 }
 
-// export class CreateProductListUnNoAction implements Action {
-//   static readonly TYPE = 'adrDetails/CREATE_PRODUCT_LIST_UN_ELEMENT';
-//   readonly type = CreateProductListUnNoAction.TYPE;
-//   constructor(public name: string) { }
-// }
+export class CreateProductListUnNoElementAction implements Action {
+  static readonly TYPE = 'adrDetails/CREATE_PRODUCTLIST_UNNO_ELEMENT';
+  readonly type = CreateProductListUnNoElementAction.TYPE;
+  constructor(public name: string, public  payload: string) { }
+}
+
+export class RemoveProductListUnNoElementAction implements Action {
+  static readonly TYPE = 'adrDetails/REMOVE_PRODUCTLIST_UNNO_ELEMENT';
+  readonly type = RemoveProductListUnNoElementAction.TYPE;
+  constructor(public name: string) { }
+}
