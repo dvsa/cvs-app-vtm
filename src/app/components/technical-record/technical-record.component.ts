@@ -4,21 +4,20 @@ import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of } from 'rxjs';
 import { selectSelectedVehicleTestResultModel } from '../../store/selectors/VehicleTestResultModel.selectors';
 import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
-import { VEHICLE_TYPES } from "@app/app.enums";
-import { CustomValidators } from "@app/components/technical-record/custom-validators";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import { FormGroupState } from 'ngrx-forms';
+import { FormGroup, Validators } from '@angular/forms';
+import { VEHICLE_TYPES } from '@app/app.enums';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import {FormGroupState, AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { IAppState } from '@app/store/state/adrDetailsForm.state';
 import {
   SetSubmittedValueAction,
   CreatePermittedDangerousGoodElementAction,
   CreateGuidanceNoteElementAction,
-  //CreateProductListUnNoAction
+  CreateProductListUnNoElementAction,
 } from '@app/store/actions/adrDetailsForm.actions';
 import { take, map, catchError } from 'rxjs/operators';
-import { a } from '@angular/core/src/render3';
+// import { a } from '@angular/core/src/render3';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 
 @Component({
@@ -46,17 +45,17 @@ export class TechnicalRecordComponent implements OnInit {
   { panel: 'panel9', isOpened: false }, { panel: 'panel10', isOpened: false }];
   allOpened = false;
   color = 'red';
-  changeLabel: string = "Change technical record";
-  isSubmit: boolean = false;
-  adrData: boolean = true;
-  hideForm: boolean = false;
-  showCheck: boolean = false;
-  subsequentInspection: boolean = false;
-  compatibilityJ: boolean = false;
-  isStatement: boolean = false;
-  isBatteryApplicable: boolean = false;
-  isBrakeDeclarationsSeen: boolean = false;
-  isBrakeEndurance: boolean = false;
+  changeLabel = 'Change technical record';
+  isSubmit = false;
+  adrData = true;
+  hideForm = false;
+  showCheck = false;
+  subsequentInspection = false;
+  compatibilityJ = false;
+  isStatement = false;
+  isBatteryApplicable = false;
+  isBrakeDeclarationsSeen = false;
+  isBrakeEndurance = false;
   vehicleType: string;
   numberFee: any;
   dangerousGoods: any;
@@ -68,6 +67,7 @@ export class TechnicalRecordComponent implements OnInit {
   public permittedDangerousGoodsOptions$: Observable<string[]>;
   additionalNotesOptions$: Observable<string[]>;
   adrDetails$: Observable<any>;
+  productListUnNoOptions$: Observable<number[]>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -75,6 +75,7 @@ export class TechnicalRecordComponent implements OnInit {
     this.adrDetails$ = this._store.select(s => s.adrDetails);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
     this.permittedDangerousGoodsOptions$ = this._store.pipe(select(s => s.adrDetails.permittedDangerousGoodsOptions));
+    this.productListUnNoOptions$ = this._store.pipe(select(s => s.adrDetails.productListUnNo.options));
     this.submittedValue$ = this._store.pipe(select(s => s.adrDetails.submittedValue));
     this.isVehicleTankOrBattery$ = combineLatest(this.techRecordsJson$, this.formState$).pipe(
       map(([techRecords, formState]) => {
@@ -87,6 +88,7 @@ export class TechnicalRecordComponent implements OnInit {
         return of(false);
       })
     );
+
     this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map(s =>
       s.value.permittedDangerousGoods['Explosives (type 2)'] || s.value.permittedDangerousGoods['Explosives (type 3)']),
       catchError(err => {
@@ -96,170 +98,8 @@ export class TechnicalRecordComponent implements OnInit {
     this.additionalNotesOptions$ = this._store.pipe(select(s => s.adrDetails.additionalNotesOptions));
   }
 
-  public keepOriginalOrder = (a, b) => a.key;
-
-  // private handleError<T>(operation = 'operation', result?: T) {
-  //   return (error: any): Observable<T> => {
-  //     // TODO: send the error to remote logging infrastructure
-  //     console.error(error); // log to console instead
-
-  //     // TODO: better job of transforming error for user consumption
-  //     this.log(`${operation} failed: ${error.message}`);
-
-  //     // Let the app keep running by returning an empty result.
-  //     return of(result as T);
-  //   };
-  // }
-
-  // private log(message: string) {
-  //   console.log(`TestResultService: ${message}`);
-  // }
-
-
   ngOnInit() {
     initAll();
-    //this.adrDetailsForm = AdrDetailsFormData.AdrDetailsForm;
-
-    function requiredIfValidator(predicate) {
-      return (formControl => {
-        if (!formControl.parent) {
-          return null;
-        }
-        if (predicate()) {
-          return Validators.required(formControl);
-        }
-        return null;
-      })
-    }
-
-    this.adrDetailsForm = new FormGroup({
-      'applicantDetails': new FormGroup({
-        'name': new FormControl(null),
-        'street': new FormControl(null),
-        'town': new FormControl(null),
-        'city': new FormControl(null),
-        'postcode': new FormControl(null),
-      }),
-      'type': new FormControl(null, Validators.required),
-      'approvalDate': new FormGroup({
-        'day': new FormControl(null, Validators.required),
-        'month': new FormControl(null, Validators.required),
-        'year': new FormControl(null, Validators.required),
-      }, CustomValidators.dateValidator),
-      'permittedDangerousGoods': new FormControl({
-        'permitted-0': new FormControl(null, Validators.required),
-        'permitted-1': new FormControl(null, Validators.required),
-        'permitted-2': new FormControl(null, Validators.required),
-        'permitted-3': new FormControl(null, Validators.required),
-        'permitted-4': new FormControl(null, Validators.required),
-        'permitted-5': new FormControl(null, Validators.required),
-        'permitted-6': new FormControl(null, Validators.required),
-        'permitted-7': new FormControl(null, Validators.required)
-      }),
-      'compatibilityGroupJ': new FormGroup({
-        'compatibilityJ': new FormControl(null),
-      }),
-      'additionalNotes': new FormControl({
-        'note-0': new FormControl(null, Validators.required),
-        'note-1': new FormControl(null, Validators.required),
-        'note-2': new FormControl(null, Validators.required),
-        'note-3': new FormControl(null, Validators.required),
-        'note-4': new FormControl(null, Validators.required),
-        'note-5': new FormControl(null, Validators.required),
-        'note-6': new FormControl(null, Validators.required)
-      }),
-      'adrTypeApprovalNo': new FormControl(null),
-      'tankManufacturer': new FormControl(null, [Validators.maxLength(70)]),
-      'yearOfManufacture': new FormControl(null, [Validators.maxLength(4)]),
-      'tankManufacturerSerialNo': new FormControl(null, [Validators.maxLength(50)]),
-      'tankTypeAppNo': new FormControl(null, [Validators.maxLength(65)]),
-      'tankCode': new FormControl(null, [Validators.maxLength(30)]),
-      'substancesPermitted': new FormGroup({
-        'underTankCode': new FormControl(null),
-        'classUN': new FormControl(null)
-      }),
-      'selectReferenceNumber': new FormGroup({
-        'isStatement': new FormControl(null),
-        'isProductListRefNo': new FormControl(null)
-      }),
-      'statement': new FormControl(null, [Validators.maxLength(1500)]),
-      'productListRefNo': new FormControl(null),
-      'productListUnNo': new FormArray([]),
-      'productList': new FormControl(null, [Validators.maxLength(1500)]),
-      'specialProvisions': new FormControl(null, [Validators.maxLength(1024)]),
-      'tc2Type': new FormControl(null),
-      'tc2IntermediateApprovalNo': new FormControl(null, [Validators.maxLength(75)]),
-      'tc2IntermediateExpiryDate': new FormGroup({
-        'dayExpiry': new FormControl(null),
-        'monthExpiry': new FormControl(null),
-        'yearExpiry': new FormControl(null),
-      }, CustomValidators.dateValidator),
-      'tc3Type': new FormControl(null),
-      'tc3PeriodicNumber': new FormControl(null, [Validators.maxLength(75)]),
-      'tc3PeriodicExpiryDate': new FormGroup({
-        'dayExpiryTc3': new FormControl(null),
-        'monthExpiryTc3': new FormControl(null),
-        'yearExpiryTc3': new FormControl(null),
-      }, CustomValidators.dateValidator),
-      'memosApply': new FormGroup({
-        'isMemo': new FormControl(null, Validators.required),
-        'isNotMemo': new FormControl(null, Validators.required)
-      }),
-      'listStatementApplicable': new FormGroup({
-        'applicable': new FormControl(null),
-        'notApplicable': new FormControl(null)
-      }),
-      'batteryListNumber': new FormControl(null, [Validators.maxLength(8)]),
-      'brakeDeclarationIssuer': new FormControl(null),
-      'brakeEndurance': new FormControl(null),
-      'brakeDeclarationsSeen': new FormControl(null),
-      'declarationsSeen': new FormControl(null),
-      'weight': new FormControl(null),
-      'certificateReq': new FormGroup({
-        'yesCert': new FormControl(null),
-        'noCert': new FormControl(null)
-      }),
-      'adrMoreDetail': new FormControl(null),
-    });
-
-    this.setVTypeValidators();
-
-  }
-
-  setVTypeValidators() {
-    const vehicleType = this.adrDetailsForm.get('type');
-    const tankManufacturer = this.adrDetailsForm.get('tankManufacturer');
-    const yearOfManufacture = this.adrDetailsForm.get('yearOfManufacture');
-    const tankManufacturerSerialNo = this.adrDetailsForm.get('tankManufacturerSerialNo');
-    const tankTypeAppNo = this.adrDetailsForm.get('tankTypeAppNo');
-    const tankCode = this.adrDetailsForm.get('tankCode');
-    const weight = this.adrDetailsForm.get('weight');
-    const batteryListNumber = this.adrDetailsForm.get('batteryListNumber');
-    const permittedDangerousGoods = this.adrDetailsForm.get('permittedDangerousGoods');
-
-    vehicleType.valueChanges
-      .subscribe(vType => {
-        if (vehicleType.value != undefined) {
-          if (vehicleType.value.includes('battery') || vehicleType.value.includes('tank') ) {
-            tankManufacturer.setValidators([Validators.required]);
-            yearOfManufacture.setValidators([Validators.required]);
-            tankManufacturerSerialNo.setValidators([Validators.required]);
-            tankTypeAppNo.setValidators([Validators.required]);
-            tankCode.setValidators([Validators.required]);
-            weight.setValidators([Validators.required]);
-            batteryListNumber.setValidators([Validators.required]);
-            permittedDangerousGoods.setValidators([Validators.required]);
-          }
-        }
-        tankManufacturer.updateValueAndValidity();
-        yearOfManufacture.updateValueAndValidity();
-        tankManufacturerSerialNo.updateValueAndValidity();
-        tankTypeAppNo.updateValueAndValidity();
-        tankCode.updateValueAndValidity();
-        weight.updateValueAndValidity();
-        batteryListNumber.updateValueAndValidity();
-        permittedDangerousGoods.updateValueAndValidity();
-      });
   }
 
   public submit() {
@@ -270,7 +110,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public togglePanel() {
-    for (let panel of this.panels) {
+    for (const panel of this.panels) {
       panel.isOpened = !this.allOpened;
     }
     this.allOpened = !this.allOpened;
@@ -285,14 +125,14 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public axlesHasNoParkingBrakeMrk(axles) {
-    let baxlesHasNoParkingBrakeMrk: boolean = true;
+    let baxlesHasNoParkingBrakeMrk = true;
     axles.forEach(axle => {
       if (axle.parkingBrakeMrk === true) {
         baxlesHasNoParkingBrakeMrk = false;
         return false;
       }
     });
-    if (baxlesHasNoParkingBrakeMrk) return true;
+    if (baxlesHasNoParkingBrakeMrk) { return true; }
   }
 
   public hasSecondaryVrms(vrms) {
@@ -301,7 +141,7 @@ export class TechnicalRecordComponent implements OnInit {
 
   public adrEdit(techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
     console.log(`numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
-    this.changeLabel = "Save technical record";
+    this.changeLabel = 'Save technical record';
     this.isSubmit = true;
     this.adrData = false;
     this.showCheck = true;
@@ -312,7 +152,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public cancelAddrEdit() {
-    this.changeLabel = "Change technical record";
+    this.changeLabel = 'Change technical record';
     this.adrData = true;
     this.showCheck = false;
     this.isSubmit = false;
@@ -329,7 +169,7 @@ export class TechnicalRecordComponent implements OnInit {
     if (this.fileList.length > 0) {
       for (let index = 0; index < this.fileList.length; index++) {
         const file: File = this.fileList[index];
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsBinaryString(file);
         this.files.add(file);
         console.log(file.name);
@@ -339,33 +179,43 @@ export class TechnicalRecordComponent implements OnInit {
 
   public changeListener($event): void {
     this.readThis($event.target);
-    this.fileInputVariable.nativeElement.value = "";
+    this.fileInputVariable.nativeElement.value = '';
   }
 
   private readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
 
     myReader.onloadend = () => {
       // console.log(myReader.result);
-    }
+    };
     myReader.readAsDataURL(file);
 
     this.fileList = inputValue.files;
     if (this.fileList.length > 0) {
       for (let index = 0; index < this.fileList.length; index++) {
         const file: File = this.fileList[index];
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsBinaryString(file);
         this.files.add(file);
       }
     }
   }
 
-  onAddUN() {
-    const control = new FormControl(null, Validators.required);
-    (<FormArray>this.adrDetailsForm.get('productListUnNo')).push(control);
-    //this._store.dispatch(new CreateProductListUnNoAction());
+  addAddUNOption() {
+    this.formState$.pipe(
+      take(1),
+      map(s => s.controls.productListUnNo.id),
+      map(id => new AddArrayControlAction(id, null, null)),
+    ).subscribe(this._store);
+  }
+
+  removeUnoOption(index: number) {
+    this.formState$.pipe(
+      take(1),
+      map(s => s.controls.productListUnNo.id),
+      map(id => new RemoveArrayControlAction(id, index)),
+    ).subscribe(this._store);
   }
 
   addAGuidanceNote(note: string) {
@@ -381,11 +231,11 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   selectReferenceNumberChange($event) {
-    this.isStatement = $event.currentTarget.value == "isStatement";
+    this.isStatement = $event.currentTarget.value == 'isStatement';
   }
 
   onBatteryApplicableChange($event) {
-    this.isBatteryApplicable = $event.currentTarget.value == "applicable";
+    this.isBatteryApplicable = $event.currentTarget.value == 'applicable';
   }
 
   onManufactureBreakChange($event) {
@@ -413,4 +263,7 @@ export class TechnicalRecordComponent implements OnInit {
     return id;
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
 }

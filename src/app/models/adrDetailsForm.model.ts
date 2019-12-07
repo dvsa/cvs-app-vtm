@@ -29,13 +29,10 @@ export interface adrDetailsFormModel {
     tankTypeAppNo: string;
     tankCode: string;
     substancesPermitted: string;
-    selectReferenceNumber: {
-        isStatement: string;
-        isProductListRefNo: string;
-    };
+    selectReferenceNumber: string;
     statement: string;
     productListRefNo: string;
-    productListUnNo: { [id: number]: string };
+    productListUnNo: number[];
     productList: string;
     specialProvisions: string;
     tc2Type: string;
