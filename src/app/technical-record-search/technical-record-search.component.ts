@@ -1,14 +1,14 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {Store} from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectSearchPageError } from '@app/store/selectors/searchPage.selectors';
 import { IAppState } from '@app/store/state/app.state';
 import { GetVehicleTechRecordModelHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
 
 @Component({
-  selector: 'app-technical-record-search',
+  selector: 'vtm-technical-record-search',
   templateUrl: './technical-record-search.component.html',
-  styleUrls: ['./technical-record-search.component.scss']
+  styleUrls: ['./technical-record-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechnicalRecordSearchComponent {
 

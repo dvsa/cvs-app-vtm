@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {IonicModule} from '@ionic/angular';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,6 +13,9 @@ import { MaterialModule } from '@app/material.module';
 import { TechnicalRecordSearchComponent } from './technical-record-search.component';
 import { RouterModule } from '@angular/router';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
+import { TechnicalRecordService } from './technical-record.service';
+import { TestResultService } from './test-result.service';
+import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 
 @NgModule({
   imports: [
@@ -21,26 +23,30 @@ import { AuthenticationGuard } from 'microsoft-adal-angular6';
     MaterialModule,
     MatFormFieldModule,
     HttpClientModule,
-    IonicModule.forRoot(),
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
     RouterModule.forChild([
-        {path: 'search', component: TechnicalRecordSearchComponent,  canActivate: [AuthenticationGuard]},
+        {path: '', component: TechnicalRecordSearchComponent,  canActivate: [AuthenticationGuard]},
     ]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
     ReactiveFormsModule,
     NgrxFormsModule,
-    NgxJsonViewerModule, 
+    NgxJsonViewerModule,
   ],
   declarations: [
-    TechnicalRecordSearchComponent, 
+    TechnicalRecordSearchComponent,
   ],
   exports: [
      TechnicalRecordSearchComponent
   ],
+  providers: [TechnicalRecordService, TestResultService],
+  entryComponents: [ AdrReasonModalComponent ],
 })
 export class TechnicalRecordSearchModule {
-  constructor() {
+  static forRoot() {
+    return {
+      ngModule: TechnicalRecordSearchModule,
+    };
   }
 }

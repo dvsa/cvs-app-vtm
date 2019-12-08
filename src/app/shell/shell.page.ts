@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-shell',
+  selector: 'vtm-shell',
   templateUrl: 'shell.page.html',
   styleUrls: ['shell.page.scss'],
 })

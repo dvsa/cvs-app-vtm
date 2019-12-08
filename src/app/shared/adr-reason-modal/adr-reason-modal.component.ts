@@ -2,7 +2,7 @@ import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-adr-reason-modal',
+  selector: 'vtm-adr-reason-modal',
   templateUrl: './adr-reason-modal.component.html',
   styleUrls: ['./adr-reason-modal.component.scss']
 })
