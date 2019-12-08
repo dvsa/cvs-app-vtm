@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, Ele
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of } from 'rxjs';
-import { selectSelectedVehicleTestResultModel } from '../../store/selectors/VehicleTestResultModel.selectors';
-import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
 import { FormGroup, Validators } from '@angular/forms';
 import { VEHICLE_TYPES } from '@app/app.enums';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -14,14 +12,14 @@ import {
   SetSubmittedValueAction,
   CreatePermittedDangerousGoodElementAction,
   CreateGuidanceNoteElementAction,
-  CreateProductListUnNoElementAction,
 } from '@app/store/actions/adrDetailsForm.actions';
 import { take, map, catchError } from 'rxjs/operators';
-// import { a } from '@angular/core/src/render3';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
+import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 
 @Component({
-  selector: 'app-technical-record',
+  selector: 'vtm-technical-record',
   templateUrl: './technical-record.component.html',
   styleUrls: ['./technical-record.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

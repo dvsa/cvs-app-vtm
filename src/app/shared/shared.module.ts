@@ -4,11 +4,21 @@ import { PageNotFoundComponentComponent } from './page-not-found-component/page-
 import {KeysPipe} from '@app/pipes/keysPipe';
 import {FilterRecordPipe} from '@app/pipes/FilterRecordPipe';
 import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.component';
-import {OrderByStatusPipe} from "@app/pipes/OrderByStatusPipe";
+import {OrderByStatusPipe} from '@app/pipes/OrderByStatusPipe';
+
+
+export const PIPES_AND_COMPONENTS = [
+  IsPrimaryVrmPipe,
+  KeysPipe,
+  FilterRecordPipe,
+  PageNotFoundComponentComponent,
+  AdrReasonModalComponent,
+  OrderByStatusPipe
+];
 
 @NgModule({
-  declarations: [ IsPrimaryVrmPipe, KeysPipe, FilterRecordPipe, PageNotFoundComponentComponent, AdrReasonModalComponent, OrderByStatusPipe ],
-  exports: [ IsPrimaryVrmPipe, KeysPipe, FilterRecordPipe, PageNotFoundComponentComponent, AdrReasonModalComponent, OrderByStatusPipe ],
+  declarations: PIPES_AND_COMPONENTS,
+  exports: PIPES_AND_COMPONENTS,
   entryComponents: [ AdrReasonModalComponent ],
 })
 export class SharedModule {}

@@ -1,24 +1,13 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {RouteReuseStrategy, Routes} from '@angular/router';
-import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
-import {SplashScreen} from '@ionic-native/splash-screen/ngx';
-import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {WebComponentsModule} from './web-components/web-components.module';
 import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app-routing.module';
 import {AuthenticationGuard, MsAdalAngular6Module} from 'microsoft-adal-angular6';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {MaterialModule} from './material.module';
-import {CreateVehicleComponent} from './create-vehicle/create-vehicle.component';
-import {VehicleDetailsComponent} from './vehicle-details/vehicle-details.component';
 import {MatDialogModule} from '@angular/material/dialog';
-import {VehicleExistsDialogComponent} from './vehicle-exists-dialog/vehicle-exists-dialog.component';
 import {HttpClientModule} from '@angular/common/http';
-import {ComponentsModule} from '@app/components/components.module';
 import {ShellPageModule} from '@app/shell/shell.page.module';
-import {VehicleNotFoundDialogComponent} from '@app/vehicle-not-found-dialog/vehicle-not-found-dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSquare, faCheckSquare, faCoffee, faBars } from '@fortawesome/free-solid-svg-icons';
@@ -32,38 +21,38 @@ import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-s
 import {environment} from '@environments/environment';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
-import {CustomSerializer} from '@app/store/reducers';
 import { TechnicalRecordSearchModule } from './technical-record-search/technical-record-search.module';
+import { CustomRouterStateSerializer } from './shared/utils';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from './shared/shared.module';
+import {AppRoutingModule} from '@app/app-routing.module';
 
 const redirectUri = `${window.location.origin}`;
 
+export const COMPONENTS = [
+  AppComponent
+];
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    CreateVehicleComponent,
-    VehicleDetailsComponent,
-    VehicleExistsDialogComponent,
-    VehicleNotFoundDialogComponent
-  ],
   imports: [
+    CommonModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FontAwesomeModule,
     MaterialModule,
+    SharedModule,
     TechnicalRecordSearchModule,
-    ComponentsModule,
     ShellPageModule,
-    IonicModule.forRoot(),
-    WebComponentsModule.forRoot(),
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
     HttpClientModule,
     StoreModule.forRoot(appReducers),
-    EffectsModule.forRoot([VehicleTechRecordModelEffects, VehicleTestResultModelEffects]),
     StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
+    EffectsModule.forRoot([VehicleTechRecordModelEffects, VehicleTestResultModelEffects]),
     MsAdalAngular6Module.forRoot({
       tenant: '',
       clientId: '',
@@ -73,19 +62,15 @@ const redirectUri = `${window.location.origin}`;
       },
       navigateToLoginRequestUrl: true,
       cacheLocation: 'localStorage',
-    }),
-    BrowserAnimationsModule
+    })
   ],
+  declarations: COMPONENTS,
+  exports: COMPONENTS,
   providers: [
     AuthenticationGuard,
-    StatusBar,
-    SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: RouterStateSerializer, useClass: CustomSerializer }
+    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer }
   ],
   bootstrap: [AppComponent],
-  exports: [ ],
-  entryComponents: [VehicleExistsDialogComponent, VehicleNotFoundDialogComponent]
 })
 export class AppModule {
   constructor() {

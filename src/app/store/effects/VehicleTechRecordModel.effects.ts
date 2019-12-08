@@ -8,12 +8,12 @@ import {
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
-import { TechnicalRecordService } from '@app/components/technical-record/technical-record.service';
 import { map, switchMap, tap, catchError } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { CreatePermittedDangerousGoodElementAction } from '../actions/adrDetailsForm.actions';
+import {TechnicalRecordService} from '@app/technical-record-search/technical-record.service';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -31,7 +31,7 @@ export class VehicleTechRecordModelEffects {
         this._store.dispatch(new GetVehicleTestResultModel(_.payload.vin));
         this.router.navigate([`/technical-record`]);
       }),
-      catchError((error) => 
+      catchError((error) =>
         of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
       ))));
 

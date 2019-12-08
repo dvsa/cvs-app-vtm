@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "app": {
+    "cvs-app-vtm": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
+      "prefix": "vtm",
       "schematics": {
         "@schematics/angular:component": {
           "styleext": "scss"
@@ -17,8 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "progress": false,
-            "outputPath": "dist/cvs-app-vtm",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -28,11 +27,6 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
-              },
-              {
-                "glob": "**/*.svg",
-                "input": "node_modules/@ionic/angular/dist/ionic/svg",
-                "output": "./svg"
               },
               {
                 "glob": "**/*",
@@ -79,7 +73,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "cvs-app-vtm:build"
           },
           "configurations": {
             "production": {
@@ -121,7 +115,9 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]
@@ -132,14 +128,20 @@
   },
   "defaultProject": "cvs-app-vtm",
   "cli": {
-    "defaultCollection": "@ionic/schematics-angular"
+    "warnings": {
+      "typescriptMismatch": false
+    }
   },
   "schematics": {
-    "@ionic/schematics-angular:component": {
+    "@schematics/angular:component": {
+      "viewEncapsulation": "Emulated",
+      "changeDetection": "OnPush",
+      "spec": false,
+      "prefix": "vtm",
       "styleext": "scss"
     },
-    "@ionic/schematics-angular:page": {
-      "styleext": "scss"
+    "@schematics/angular:directive": {
+      "prefix": "vtm"
     }
   }
 }

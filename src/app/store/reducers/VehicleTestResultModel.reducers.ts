@@ -1,4 +1,4 @@
-import {initialVehicleTestResultModelState, IVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
+import {initialVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
 import {EVehicleTestResultModelActions, VehicleTestResultModelActions} from '../../store/actions/VehicleTestResultModel.actions';
 
 export function VehicleTestResultModelReducers(state = initialVehicleTestResultModelState, action: VehicleTestResultModelActions) {

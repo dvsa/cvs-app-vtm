@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
 
 @Component({
-  selector: 'app-header',
+  selector: 'vtm-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -19,5 +19,4 @@ export class HeaderComponent implements OnInit {
   onClick($event) {
     this.menuOpen = !this.menuOpen;
   }
-
 }

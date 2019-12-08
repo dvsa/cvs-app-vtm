@@ -1,9 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {IonicModule} from '@ionic/angular';
-import {TechnicalRecordComponent} from './technical-record/technical-record.component';
-
-import {TechnicalRecordService} from './technical-record/technical-record.service';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -12,18 +8,15 @@ import {faCheckSquare, faCoffee, faPlus, faMinus, faSquare} from '@fortawesome/f
 import {faCheckSquare as farCheckSquare, faSquare as farSquare} from '@fortawesome/free-regular-svg-icons';
 import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-icons';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {TestResultService} from '../components/technical-record/test-result.service';
-import { LandingPageComponent } from '../landing-page/landing-page.component';
 import { SharedModule } from '../shared/shared.module';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
-import { ComponentsRoutingModule } from './components-routing.module';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { StoreModule } from '@ngrx/store';
 import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
-import { AceEditorModule } from 'ng2-ace-editor';
 import { MaterialModule } from '@app/material.module';
+import {RouterModule} from '@angular/router';
+import {AuthenticationGuard} from 'microsoft-adal-angular6';
+import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
 
 @NgModule({
   imports: [
@@ -31,26 +24,25 @@ import { MaterialModule } from '@app/material.module';
     MaterialModule,
     MatFormFieldModule,
     HttpClientModule,
-    ComponentsRoutingModule,
-    IonicModule.forRoot(),
+    RouterModule.forChild([
+      {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard]}
+    ]),
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
     ReactiveFormsModule,
     NgrxFormsModule,
-    NgxJsonViewerModule, 
-    AceEditorModule
+    NgxJsonViewerModule
   ],
   declarations: [
-    TechnicalRecordComponent, LandingPageComponent, FooterComponent, HeaderComponent 
+    TechnicalRecordComponent
   ],
   exports: [
-    TechnicalRecordComponent, LandingPageComponent, HeaderComponent, FooterComponent 
-  ],
-  providers: [TechnicalRecordService, TestResultService],
+    TechnicalRecordComponent
+  ]
 })
-export class ComponentsModule {
+export class TechnicalRecordModule {
   constructor() {
     // Add an icon to the library for convenient access in other components
     library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium, faPlus, faMinus);

@@ -1,11 +1,11 @@
 {
   "name": "cvs-app-vtm",
   "version": "0.0.1",
-  "author": "https://ionicthemes.com",
+  "author": "CVS VTM Team",
   "contributors": [
-    "Arup Banerjee <arupalan@gmail.com>"
+    "Irina, Catlin, Arup"
   ],
-  "homepage": "https://ionicthemes.com",
+  "homepage": "",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -38,15 +38,10 @@
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@ionic-native/core": "5.0.0-beta.15",
-    "@ionic-native/splash-screen": "5.0.0-beta.15",
-    "@ionic-native/status-bar": "5.0.0-beta.15",
-    "@ionic/angular": "4.0.0-beta.5",
     "@ngrx/effects": "6.0.1",
     "@ngrx/router-store": "6.0.1",
     "@ngrx/store": "6.0.1",
     "@ngrx/store-devtools": "6.0.1",
-    "c-coffee-icon": "0.0.2",
     "core-js": "2.5.4",
     "faker": "^4.1.0",
     "govuk-frontend": "^3.3.0",
@@ -55,7 +50,6 @@
     "install": "^0.13.0",
     "jest-preset-angular": "^7.1.1",
     "microsoft-adal-angular6": "^1.3.0",
-    "ng2-ace-editor": "^0.3.9",
     "ngrx-forms": "3.2.1",
     "ngrx-store-freeze": "^0.2.4",
     "ngx-json-viewer": "^2.4.0",
@@ -71,8 +65,6 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
     "@cypress/webpack-preprocessor": "^4.1.0",
-    "@ionic/ng-toolkit": "^1.0.0",
-    "@ionic/schematics-angular": "^1.0.0",
     "@types/jest": "^24.0.19",
     "@types/node": "~10.9.2",
     "chance": "^1.1.3",
@@ -119,9 +111,6 @@
       "node_modules/(?!@ionic)"
     ],
     "moduleNameMapper": {
-      "^@ionic/angular": "<rootDir>/node_modules/@ionic/angular/dist/index.js",
-      "^@ionic/core/loader": "<rootDir>/node_modules/@ionic/core/dist/esm/es5/ionic.define.js",
-      "^@ionic/core/dist/ionic/svg": "<rootDir>/scripts/svgoverride.js",
       "@app/(.*)": "<rootDir>/src/app/$1",
       "@environments/(.*)": "<rootDir>/src/environments/$1",
       "@testconfig/(.*)": "<rootDir>/src/testconfig/$1"
@@ -157,5 +146,5 @@
       "pre-push": "npm run prepush"
     }
   },
-  "description": "An Ionic project showcasing Angular custom components and Stencil custom web components"
+  "description": "CVS VTM Application"
 }

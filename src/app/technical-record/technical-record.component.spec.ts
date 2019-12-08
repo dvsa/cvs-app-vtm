@@ -5,12 +5,9 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {APP_BASE_HREF} from '@angular/common';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {MatDialogModule} from '@angular/material/dialog';
-import {MaterialModule} from '../../material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {AuthenticationGuardMock} from '../../../../testconfig/services-mocks/authentication-guard.mock';
 import {Store, StoreModule} from '@ngrx/store';
 import {RouterTestingModule} from '@angular/router/testing';
-import {SharedModule} from '../../shared/shared.module';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import { IAppState, INITIAL_STATE } from '@app/store/state/adrDetailsForm.state';
@@ -19,6 +16,9 @@ import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { hot } from 'jasmine-marbles';
+import { MaterialModule } from '@app/material.module';
+import { SharedModule } from '@app/shared/shared.module';
+import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
 
 describe('TechnicalRecordComponent', () => {
 

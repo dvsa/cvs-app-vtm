@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {select, Store} from '@ngrx/store';
-import {IAppState} from '@app/store/state/app.state';
-import {map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {TestResultService} from '../../components/technical-record/test-result.service';
 import {
   EVehicleTestResultModelActions,
   GetVehicleTestResultModel,
   GetVehicleTestResultModelSuccess
 } from '@app/store/actions/VehicleTestResultModel.actions';
+import {TestResultService} from '@app/technical-record-search/test-result.service';
 
 @Injectable()
 export class VehicleTestResultModelEffects {
@@ -23,8 +21,6 @@ export class VehicleTestResultModelEffects {
 
   constructor(
     private _testResultService: TestResultService,
-    private _actions$: Actions,
-    private _store: Store<IAppState>
-  ) {
+    private _actions$: Actions  ) {
   }
 }
