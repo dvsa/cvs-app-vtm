@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['shell.page.scss'],
 })
 export class ShellPage {
-
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/@angular-devkit/core/src/workspace/workspace-schema.json",
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -46,11 +46,27 @@
               }
             ],
             "scripts": [
-              { "input": "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-module" },
-              { "input":  "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-js-module"}
+              { "input": "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-module" }
             ]
           },
           "configurations": {
+            "deploy": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.deploy.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -76,6 +92,9 @@
             "browserTarget": "cvs-app-vtm:build"
           },
           "configurations": {
+            "deploy": {
+              "browserTarget": "cvs-app-vtm:build:deploy"
+            },
             "production": {
               "browserTarget": "cvs-app-vtm:build:production"
             }

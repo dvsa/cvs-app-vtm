@@ -1,27 +1,23 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
-import { environment } from '@environments/environment';
-
-const routes = {
-  testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
-};
-
+import {AppConfig} from '@app/app.config';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class TestResultService {
-  private jwttoken: string;
+  protected apiServer = AppConfig.settings.apiServer;
+  private readonly routes;
 
-  constructor(private httpClient: HttpClient, private adalSvc: MsAdalAngular6Service) {
+  constructor(private httpClient: HttpClient) {
+    this.routes = {
+      testResults: (searchIdentifier: string) => `${this.apiServer.APITestResultServerUri}/test-results/${searchIdentifier}`,
+    };
   }
 
   getTestResults(searchIdentifier: string): Observable<any> {
-    // tslint:disable-next-line:max-line-length
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8').set('Authorization', `Bearer ${this.jwttoken}`);
-    return this.httpClient.get<any[]>(routes.testResults(searchIdentifier), {headers});
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.get<any[]>(this.routes.testResults(searchIdentifier), {headers});
   }
 }

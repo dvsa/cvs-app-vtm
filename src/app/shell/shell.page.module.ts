@@ -7,10 +7,6 @@ import {HeaderComponent} from '@app/shell/header/header.component';
 import {FooterComponent} from '@app/shell/footer/footer.component';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {RouterModule} from '@angular/router';
-import {TechnicalRecordSearchComponent} from '@app/technical-record-search/technical-record-search.component';
-import {TechnicalRecordSearchModule} from '@app/technical-record-search/technical-record-search.module';
-import { TechnicalRecordComponent } from '@app/technical-record/technical-record.component';
-import { TechnicalRecordModule } from '@app/technical-record/technical-record.module';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faCheckSquare, faCoffee, faPlus, faMinus, faSquare} from '@fortawesome/free-solid-svg-icons';
@@ -35,23 +31,12 @@ export const COMPONENTS = [
           {path: '', redirectTo: 'search', pathMatch: 'full'},
           {
             path: 'search',
-            component: TechnicalRecordSearchComponent,
-            // tslint:disable-next-line:max-line-length
             loadChildren: '../technical-record-search/technical-record-search.module#TechnicalRecordSearchModule',
-            canActivate: [AuthenticationGuard]
-          },
-          {
-            path: 'technical-record',
-            component: TechnicalRecordComponent,
-            // tslint:disable-next-line:max-line-length
-            loadChildren: '../technical-record/technical-record.module#TechnicalRecordModule',
             canActivate: [AuthenticationGuard]
           }
         ]
       }
     ]),
-    TechnicalRecordSearchModule,
-    TechnicalRecordModule,
     FontAwesomeModule
   ],
   declarations: COMPONENTS,
