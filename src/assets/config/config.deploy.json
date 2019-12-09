@@ -1,0 +1,29 @@
+{
+  "env": {
+    "name": "#{envName}"
+  },
+  "appInsights": {
+    "instrumentationKey": "#{appInsightsKey}"
+  },
+  "logging": {
+    "console": true,
+    "appInsights": true
+  },
+  "aad": {
+    "requireAuth": true,
+    "tenant": "#{aadTenant}",
+    "clientId": "#{aadClientId}"
+  },
+  "adalConfig": {
+    "clientId": "#{aadClientId}",
+    "tenant": "#{aadTenant}",
+    "cacheLocation": "localStorage",
+    "endpoints": {
+      "api": "xxx-bae6-4760-b434-xxx"
+    }
+  },
+  "apiServer": {
+    "APIServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
+    "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/"
+  }
+}
