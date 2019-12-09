@@ -1,29 +1,29 @@
 {
   "env": {
-    "name": "#{envName}"
+    "name": "dev"
   },
   "appInsights": {
-    "instrumentationKey": "#{appInsightsKey}"
+    "instrumentationKey": "<dev-guid-here>"
   },
   "logging": {
     "console": true,
-    "appInsights": true
+    "appInsights": false
   },
   "aad": {
     "requireAuth": true,
-    "tenant": "#{aadTenant}",
-    "clientId": "#{aadClientId}"
+    "tenant": "6c448d90-4ca1-4caf-ab59-0a2aa67d7801",
+    "clientId": "54d151b6-2ca8-4018-8c70-f9ee600d91c7"
   },
   "adalConfig": {
-    "clientId": "#{aadClientId}",
-    "tenant": "#{aadTenant}",
+    "clientId": "54d151b6-2ca8-4018-8c70-f9ee600d91c7",
+    "tenant": "6c448d90-4ca1-4caf-ab59-0a2aa67d7801",
     "cacheLocation": "localStorage",
     "endpoints": {
       "api": "xxx-bae6-4760-b434-xxx"
     }
   },
   "apiServer": {
-    "APIServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
-    "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/"
+    "APITechnicalRecordServerUri": "http://localhost:3005",
+    "APITestResultServerUri": "http://localhost:3006"
   }
 }
