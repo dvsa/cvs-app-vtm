@@ -17,6 +17,7 @@ import { MaterialModule } from '@app/material.module';
 import {RouterModule} from '@angular/router';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import {InspectionDetailsModule} from '@app/inspection-details/inspection-details.module';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import {TechnicalRecordComponent} from '@app/technical-record/technical-record.c
     FontAwesomeModule,
     ReactiveFormsModule,
     NgrxFormsModule,
-    NgxJsonViewerModule
+    NgxJsonViewerModule,
+    InspectionDetailsModule
   ],
   declarations: [
     TechnicalRecordComponent
