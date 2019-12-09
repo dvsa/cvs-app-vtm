@@ -18,8 +18,9 @@ import {IAppState, INITIAL_STATE} from '@app/store/state/adrDetailsForm.state';
 import {APP_BASE_HREF} from '@angular/common';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {Router} from '@angular/router';
-import { environment } from '@environments/environment';
 import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
+import {TechnicalRecordSearchModule} from "@app/technical-record-search/technical-record-search.module";
+import {environment} from "@environments/environment";
 
 export const adalConfig = {
   cacheLocation: 'localStorage',
@@ -53,6 +54,7 @@ describe('TechnicalRecordService', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot(appReducers),
+        TechnicalRecordSearchModule,
         HttpClientTestingModule,
         MatDialogModule,
         FormsModule,
@@ -106,18 +108,6 @@ describe('TechnicalRecordService', () => {
   it('should be created', inject([HttpTestingController, MsAdalAngular6Service], (serviceI: TechnicalRecordService) => {
     expect(serviceI).toBeTruthy();
   }));
-
-  it('getTechnicalRecords should return data', (done) => {
-    service.getTechnicalRecords('1234567').subscribe((res) => {
-      expect(res).toBeDefined();
-      expect(res).toEqual({mockObject: 'mock'});
-      done();
-    });
-
-    const req = httpMock.expectOne(routes.techRecords('1234567'));
-    expect(req.request.method).toBe('GET');
-    req.flush({mockObject: 'mock'});
-  });
 
   it('getTechnicalRecordsAllStatuses should return data', (done) => {
     service.getTechnicalRecordsAllStatuses('1234567').subscribe((res) => {

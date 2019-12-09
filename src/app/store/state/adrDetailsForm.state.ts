@@ -11,18 +11,6 @@ export interface IAppState extends RootState {
       maxIndex: number;
       options: number[];
     };
-    tc3Type: {
-      maxIndex: number;
-      options: number[];
-    };
-    tc3PeriodicNumber: {
-      maxIndex: number;
-      options: number[];
-    };
-    tc3PeriodicExpiryDate: {
-      maxIndex: number;
-      options: number[];
-    };
     submittedValue: adrDetailsFormModel | undefined;
   };
 }
@@ -42,9 +30,14 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     year: 1920
   },
   permittedDangerousGoods: {
+    'Danger 1': false,
+    'Danger xyz': false,
   },
   compatibilityJ: false,
-  additionalNotes: {},
+  additionalNotes: {
+    'Document 1': false,
+    'Document xyz': false,
+  },
   adrTypeApprovalNo: '',
   tankManufacturer: '',
   yearOfManufacture: 1,
@@ -65,30 +58,21 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     month: 1,
     year: 1920
   },
-  tc3Type: [],
-  tc3PeriodicNumber: [],
-  tc3PeriodicExpiryDate: [{
+  tc3Type: '',
+  tc3PeriodicNumber: '',
+  tc3PeriodicExpiryDate: {
     day: 1,
     month: 1,
     year: 1920
-  }],
-  memosApply: {
-    isMemo: true,
-    isNotMemo: true,
   },
-  listStatementApplicable: {
-    applicable: true,
-    notApplicable: false,
-  },
+  memosApply: { '07/09 3mth leak ext' : false },
+  listStatementApplicable: '',
   batteryListNumber: '',
   brakeDeclarationIssuer: '',
   brakeEndurance: '',
   brakeDeclarationsSeen: '',
   declarationsSeen: '',
   weight: 0,
-  certificateReq: {
-    yesCert: true,
-    noCert: false,
-  },
+  certificateReq: '',
   adrMoreDetail: ''
 });

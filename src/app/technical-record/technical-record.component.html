@@ -1112,14 +1112,14 @@
                                 <div class="govuk-radios__item">
                                   <input class="govuk-radios__input" id="isMemo" type="radio"
                                          value="07/09 3mth leak ext"
-                                         [ngrxFormControlState]="(formState$ | async).controls.memosApply.controls.isMemo">
+                                         [ngrxFormControlState]="(formState$ | async).controls.memosApply">
                                   <label class="govuk-label govuk-radios__label" for="isMemo">
                                     Yes
                                   </label>
                                 </div>
                                 <div class="govuk-radios__item">
                                   <input class="govuk-radios__input" id="isNotMemo" type="radio" value="false"
-                                         [ngrxFormControlState]="(formState$ | async).controls.memosApply.controls.isNotMemo">
+                                         [ngrxFormControlState]="(formState$ | async).controls.memosApply">
                                   <label class="govuk-label govuk-radios__label" for="isNotMemo">
                                     No
                                   </label>
@@ -1157,7 +1157,7 @@
                                 <div class="govuk-radios__item">
                                   <input class="govuk-radios__input" id="applicable" type="radio" value="applicable"
                                          (change)="onBatteryApplicableChange($event)"
-                                         [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable.controls.applicable">
+                                         [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
                                   <label class="govuk-label govuk-radios__label" for="applicable">
                                     Yes
                                   </label>
@@ -1165,7 +1165,7 @@
                                 <div class="govuk-radios__item">
                                   <input class="govuk-radios__input" id="notApplicable" type="radio"
                                          value="notApplicable" (change)="onBatteryApplicableChange($event)"
-                                         [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable.controls.notApplicable">
+                                         [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
                                   <label class="govuk-label govuk-radios__label" for="notApplicable">
                                     No
                                   </label>
@@ -1242,15 +1242,15 @@
                             <h2 class="govuk-heading-m">Certificate required</h2>
                             <div class="govuk-radios govuk-radios--inline">
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="yesCert" type="radio" value="yes"
-                                       [ngrxFormControlState]="(formState$ | async).controls.certificateReq.controls.yesCert">
+                                <input class="govuk-radios__input" id="yesCert" type="radio" value="New certificate requested"
+                                       [ngrxFormControlState]="(formState$ | async).controls.certificateReq">
                                 <label class="govuk-label govuk-radios__label" for="yesCert">
                                   Yes
                                 </label>
                               </div>
                               <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="noCert" type="radio" value="no"
-                                       [ngrxFormControlState]="(formState$ | async).controls.certificateReq.controls.yesCert">
+                                <input class="govuk-radios__input" id="noCert" type="radio" value=""
+                                       [ngrxFormControlState]="(formState$ | async).controls.certificateReq">
                                 <label class="govuk-label govuk-radios__label" for="noCert">
                                   No
                                 </label>

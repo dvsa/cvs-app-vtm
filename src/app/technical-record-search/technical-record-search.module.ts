@@ -43,7 +43,7 @@ import {AdrReasonModalComponent} from '@app/shared/adr-reason-modal/adr-reason-m
     TechnicalRecordSearchComponent,
   ],
   exports: [
-    TechnicalRecordSearchComponent
+    TechnicalRecordSearchComponent,
   ],
   providers: [TechnicalRecordService, TestResultService],
   entryComponents: [AdrReasonModalComponent],

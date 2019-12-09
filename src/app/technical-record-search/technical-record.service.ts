@@ -7,11 +7,10 @@ import {AppConfig} from '@app/app.config';
   providedIn: 'root'
 })
 export class TechnicalRecordService {
-  protected apiServer ;
+  protected apiServer = AppConfig.settings.apiServer;
   private readonly routes;
 
   constructor(private httpClient: HttpClient) {
-    this.apiServer = AppConfig.settings.apiServer;
     console.log(`TechnicalRecordService ctor apiServer => ${JSON.stringify(this.apiServer)}`);
     this.routes = {
       techRecords: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,

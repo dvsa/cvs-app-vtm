@@ -1,12 +1,11 @@
-import {approvalDate} from '@app/models/approvalDate';
+import { Boxed } from "ngrx-forms";
 
-// tslint:disable-next-line:class-name
-export interface certificateReq {
-  yesCert: boolean;
-  noCert: boolean;
+export interface approvalDate {
+    day: number;
+    month: number;
+    year: number;
 }
 
-// tslint:disable-next-line:class-name
 export interface adrDetailsFormModel {
     name: string;
     street: string;
@@ -38,27 +37,21 @@ export interface adrDetailsFormModel {
         month: number;
         year: number;
     };
-    tc3Type: number[];
-    tc3PeriodicNumber: number[];
+    tc3Type: string;
+    tc3PeriodicNumber: string,
     tc3PeriodicExpiryDate: {
         day: number;
         month: number;
         year: number;
-    }[];
-    memosApply: {
-        isMemo: boolean;
-        isNotMemo: boolean;
     };
-    listStatementApplicable: {
-        applicable: boolean;
-        notApplicable: boolean;
-    };
+    memosApply: { [id: string]: boolean };
+    listStatementApplicable: '',
     batteryListNumber: string;
     brakeDeclarationIssuer: string;
     brakeEndurance: string;
     brakeDeclarationsSeen: string;
     declarationsSeen: string;
     weight: number;
-    certificateReq: certificateReq;
+    certificateReq: string,
     adrMoreDetail: string;
 }
