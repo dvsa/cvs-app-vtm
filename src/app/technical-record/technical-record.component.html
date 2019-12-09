@@ -1147,71 +1147,10 @@
                           </div>
 
                           <div *ngIf="subsequentInspection">
-                            <label class="govuk-label govuk-!-font-weight-bold">
-                              Subsequent
-                            </label>
-                            <div class="govuk-inset-text">
-                              <div class="govuk-form-group">
-                                <label class="govuk-label govuk-!-font-weight-bold" for="tc3Type">
-                                  Inspection type
-                                </label>
-                                <select class="govuk-select" id="tc3Type"
-                                        [ngrxFormControlState]="(formState$ | async).controls.tc3Type">
-                                  <option value="intermediate">Intermediate</option>
-                                  <option value="periodic">Periodic</option>
-                                  <option value="exceptional">Exceptional</option>
-                                </select>
-                              </div>
-
-                              <div class="govuk-form-group">
-                                <label class="govuk-label govuk-!-font-weight-bold" for="tc3PeriodicNumber">
-                                  Certificate number
-                                </label>
-                                <input class="govuk-input govuk-input--width-10" id="tc3PeriodicNumber" type="number"
-                                       [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicNumber">
-                              </div>
-
-                              <!-- <div class="govuk-form-group" formGroupName="tc3PeriodicExpiryDate"> -->
-                              <div class="govuk-form-group">
-                                <fieldset class="govuk-fieldset" role="group">
-                                  <span class="govuk-!-font-weight-bold">Expiry date</span>
-                                  <div class="govuk-date-input" id="tc3PeriodicExpiryDateSubseq">
-                                    <div class="govuk-date-input__item">
-                                      <div class="govuk-form-group">
-                                        <label class="govuk-label govuk-date-input__label" for="dayExpiryTc3">
-                                          Day
-                                        </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                               id="dayExpiryTc3" type="number" pattern="[0-9]*"
-                                               [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls.day">
-                                      </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                      <div class="govuk-form-group">
-                                        <label class="govuk-label govuk-date-input__label" for="monthExpiryTc3">
-                                          Month
-                                        </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                               id="monthExpiryTc3" type="number" pattern="[0-9]*"
-                                               [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls.month">
-                                      </div>
-                                    </div>
-                                    <div class="govuk-date-input__item">
-                                      <div class="govuk-form-group">
-                                        <label class="govuk-label govuk-date-input__label" for="yearExpiryTc3">
-                                          Year
-                                        </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                               id="yearExpiryTc3" type="number" pattern="[0-9]*"
-                                               [ngrxFormControlState]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls.year">
-                                      </div>
-                                    </div>
-                                  </div>
-                                </fieldset>
-                              </div>
-                            </div>
+                            <vtm-inspection-details></vtm-inspection-details>
                           </div>
                           <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent inspection</a></p>
+
                           <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                               <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
