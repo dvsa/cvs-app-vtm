@@ -23,7 +23,7 @@
     }
   },
   "apiServer": {
-    "APIServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
+    "APITechnicalRecordServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
     "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/"
   }
 }
