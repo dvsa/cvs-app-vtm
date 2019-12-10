@@ -42,8 +42,6 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     year: 1920
   },
   permittedDangerousGoods: {
-    'Danger 1': false,
-    'Danger xyz': false,
   },
   compatibilityJ: false,
   additionalNotes: {},

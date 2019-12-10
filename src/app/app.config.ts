@@ -21,6 +21,7 @@ export class AppConfig {
           } else {
             AppConfig.settings = <IAppConfig>configJsonDeploy.default;
           }
+          console.log(`adalConfig => ${JSON.stringify(AppConfig.settings.adalConfig)}`);
         })
       )
       .toPromise();
