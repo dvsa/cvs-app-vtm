@@ -14,7 +14,10 @@ import {IAppState, INITIAL_STATE} from '../state/adrDetailsForm.state';
 import {
   CreateGuidanceNoteElementAction,
   CreatePermittedDangerousGoodElementAction,
-  CreateProductListUnNoElementAction, CreateTc3TypeElementAction,
+  CreateProductListUnNoElementAction,
+  CreateTc3PeriodicExpiryDateElementAction,
+  CreateTc3PeriodicNumberElementAction,
+  CreateTc3TypeElementAction,
   RemoveGuidanceNoteElementAction,
   RemovePermittedDangerousGoodElementAction,
   RemoveProductListUnNoElementAction,
@@ -57,7 +60,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction |
        CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction |
        CreateProductListUnNoElementAction | RemoveProductListUnNoElementAction |
-       CreateTc3TypeElementAction
+       CreateTc3TypeElementAction | CreateTc3PeriodicNumberElementAction | CreateTc3PeriodicExpiryDateElementAction
   ) {
     s = formGroupReducerWithUpdate(s, a);
 
@@ -180,11 +183,11 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
   },
   tc3Type: function (
     s = {maxIndex: 0, options: []},
-    a: CreateTc3TypeElementAction,
+    a: CreateTc3TypeElementAction
   ) {
     switch (a.type) {
       case CreateTc3TypeElementAction.TYPE: {
-        console.log(`inside reducer tc3Type AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        console.log(`inside reducer tc3Type CreateTc3TypeElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
         const maxIndex = s.maxIndex + 1;
         const options = [...s.options];
         // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
@@ -195,15 +198,47 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
         };
       }
 
-      // case CreateTc3TypeElementAction.TYPE: {
-      //   const options = [...s.options];
-      //   // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
-      //   options.splice(a.index!, 1);
-      //   return {
-      //     ...s,
-      //     options,
-      //   };
-      // }
+      default:
+        return s;
+    }
+  },
+  tc3PeriodicNumber: function (
+    s = {maxIndex: 0, options: []},
+    a: CreateTc3PeriodicNumberElementAction,
+  ) {
+    switch (a.type) {
+      case CreateTc3PeriodicNumberElementAction.TYPE: {
+        console.log(`inside reducer tc3Type CreateTc3PeriodicNumberElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, maxIndex);
+        return {
+          maxIndex,
+          options,
+        };
+      }
+
+      default:
+        return s;
+    }
+  },
+  tc3PeriodicExpiryDate: function (
+    s = {maxIndex: 0, options: []},
+    a: CreateTc3PeriodicExpiryDateElementAction,
+  ) {
+    switch (a.type) {
+      case CreateTc3PeriodicExpiryDateElementAction.TYPE: {
+        console.log(`inside reducer tc3Type CreateTc3PeriodicExpiryDateElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, maxIndex);
+        return {
+          maxIndex,
+          options,
+        };
+      }
 
       default:
         return s;
