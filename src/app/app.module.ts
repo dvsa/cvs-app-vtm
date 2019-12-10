@@ -41,7 +41,7 @@ export function initializeApp(appConfig: AppConfig) {
     adalConfig = {
       tenant: AppConfig.settings.adalConfig.tenant,
       clientId: AppConfig.settings.adalConfig.clientId,
-      redirectUri: window.location.origin,
+      redirectUri: AppConfig.settings.adalConfig.redirectUri,
       endpoints: AppConfig.settings.adalConfig.endpoints,
       navigateToLoginRequestUrl: true,
       cacheLocation: AppConfig.settings.adalConfig.cacheLocation
