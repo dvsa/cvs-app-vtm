@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChange} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {FormGroupState} from 'ngrx-forms';
 import {adrDetailsFormModel} from '@app/models/adrDetailsForm.model';
@@ -13,6 +13,10 @@ import {IAppState} from '@app/store/state/adrDetailsForm.state';
 })
 export class InspectionDetailsComponent implements OnInit {
   formState$: Observable<FormGroupState<adrDetailsFormModel>>;
+  @Input() inspectionType: any;
+  @Input() type: any;
+  @Input() periodicNumber: any;
+  @Input() expiryDate: any;
 
   constructor(private _store: Store<IAppState>) {
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));

@@ -1039,7 +1039,7 @@
                                         number </label>
                                       <ng-container
                                         *ngFor="let o of (productListUnNoOptions$ | async); let i = index; trackBy: trackByFn">
-<!--                                        *ngFor="let o of (productListUnNoOptions$ | async); trackBy: trackByIndex; let i = index">-->
+                                        <!--                                        *ngFor="let o of (productListUnNoOptions$ | async); trackBy: trackByIndex; let i = index">-->
                                         <div class="un-number">
                                           <div>
                                             <p>
@@ -1084,72 +1084,23 @@
 
                           <h2 class="govuk-heading-m" *ngIf="isVehicleTankOrBattery$ | async">Tank inspections</h2>
 
-                          <label class="govuk-label govuk-!-font-weight-bold">
-                            Initial
-                          </label>
-                          <div class="govuk-inset-text">
-                            <div class="govuk-form-group">
-                              <label class="govuk-label govuk-!-font-weight-bold" for="tc2Type">
-                                Inspection type
-                              </label>
-                              <select class="govuk-select" id="tc2Type"
-                                      [ngrxFormControlState]="(formState$ | async).controls.tc2Type">
-                                <option value="initial">Initial</option>
-                              </select>
-                            </div>
-                            <div class="govuk-form-group">
-                              <label class="govuk-label govuk-!-font-weight-bold" for="tc2IntermediateApprovalNo">
-                                Certificate number
-                              </label>
-                              <input class="govuk-input govuk-input--width-10" id="tc2IntermediateApprovalNo"
-                                     type="number"
-                                     [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateApprovalNo">
-                            </div>
-
-                            <!-- <div class="govuk-form-group" formGroupName="tc2IntermediateExpiryDate"> -->
-                            <div class="govuk-form-group">
-                              <fieldset class="govuk-fieldset" role="group">
-                                <span class="govuk-!-font-weight-bold">Expiry date</span>
-                                <div class="govuk-date-input" id="tc2IntermediateExpiryDate">
-                                  <div class="govuk-date-input__item">
-                                    <div class="govuk-form-group">
-                                      <label class="govuk-label govuk-date-input__label" for="dayExpiry">
-                                        Day
-                                      </label>
-                                      <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                             id="dayExpiry" type="number" pattern="[0-9]*"
-                                             [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateExpiryDate.controls.day">
-                                    </div>
-                                  </div>
-                                  <div class="govuk-date-input__item">
-                                    <div class="govuk-form-group">
-                                      <label class="govuk-label govuk-date-input__label" for="monthExpiry">
-                                        Month
-                                      </label>
-                                      <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                                             id="monthExpiry" type="number" pattern="[0-9]*"
-                                             [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateExpiryDate.controls.month">
-                                    </div>
-                                  </div>
-                                  <div class="govuk-date-input__item">
-                                    <div class="govuk-form-group">
-                                      <label class="govuk-label govuk-date-input__label" for="yearExpiry">
-                                        Year
-                                      </label>
-                                      <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                                             id="yearExpiry" type="number" pattern="[0-9]*"
-                                             [ngrxFormControlState]="(formState$ | async).controls.tc2IntermediateExpiryDate.controls.year">
-                                    </div>
-                                  </div>
-                                </div>
-                              </fieldset>
-                            </div>
-                          </div>
+                          <vtm-inspection-details
+                            [inspectionType]="'tc2'"
+                            [type]="(formState$ | async).controls.tc2Type"
+                            [periodicNumber]="(formState$ | async).controls.tc2IntermediateApprovalNo"
+                            [expiryDate]="(formState$ | async).controls.tc2IntermediateExpiryDate">
+                          </vtm-inspection-details>
 
                           <div *ngIf="subsequentInspection">
-                            <vtm-inspection-details></vtm-inspection-details>
+                            <vtm-inspection-details
+                              [inspectionType]="'tc3'"
+                              [type]="(formState$ | async).controls.tc3Type"
+                              [periodicNumber]="(formState$ | async).controls.tc3PeriodicNumber"
+                              [expiryDate]="(formState$ | async).controls.tc3PeriodicExpiryDate">
+                            </vtm-inspection-details>
                           </div>
-                          <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent inspection</a></p>
+                          <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent
+                            inspection</a></p>
 
                           <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
@@ -1545,12 +1496,12 @@
                       <div class="govuk-summary-list__row" *ngFor="let doc of activeRecord.adrDetails.documents">
                         <dt class="govuk-summary-list__key"> {{doc}} </dt>
                         <dd class="govuk-summary-list__value"></dd>
-                        <dd class="govuk-summary-list__value"> <a class="govuk-link">View</a> </dd>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link">View</a></dd>
                       </div>
                     </ng-container>
                     <ng-template #noDoc>
                       <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__value"> - </dt>
+                        <dt class="govuk-summary-list__value"> -</dt>
                         <dd class="govuk-summary-list__value"></dd>
                         <dd class="govuk-summary-list__value"></dd>
                       </div>
