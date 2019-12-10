@@ -18,6 +18,12 @@ import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 
+export interface Tc3Controls {
+  Type: any;
+  PeriodicNumber: any;
+  ExpiryDate: any;
+}
+
 @Component({
   selector: 'vtm-technical-record',
   templateUrl: './technical-record.component.html',
@@ -66,6 +72,7 @@ export class TechnicalRecordComponent implements OnInit {
   additionalNotesOptions$: Observable<string[]>;
   adrDetails$: Observable<any>;
   productListUnNoOptions$: Observable<number[]>;
+  tc3Inspections$: Observable<Tc3Controls[]>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -94,6 +101,17 @@ export class TechnicalRecordComponent implements OnInit {
       })
     );
     this.additionalNotesOptions$ = this._store.pipe(select(s => s.adrDetails.additionalNotesOptions));
+    this.tc3Inspections$ = this._store.pipe(select( s => {
+      const tc3ControlsArray = [];
+      for (let index = 0; index < s.adrDetails.formState.controls.tc3Type.controls.length; index++ ) {
+        tc3ControlsArray.push(<Tc3Controls> {
+          Type: s.adrDetails.formState.controls.tc3Type.controls[index],
+          PeriodicNumber: s.adrDetails.formState.controls.tc3PeriodicNumber.controls[index],
+          ExpiryDate: s.adrDetails.formState.controls.tc3PeriodicExpiryDate.controls[index],
+        });
+      }
+      return tc3ControlsArray;
+    }));
   }
 
   ngOnInit() {
@@ -146,7 +164,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.numberFee = numberFee;
     this.dangerousGoods = dangerousGoods;
     this.isAdrNull = isAdrNull;
-    // this._store.dispatch(new CreateGroupElementAction('adrDetails', techRecordsJson));
   }
 
   public cancelAddrEdit() {
@@ -225,6 +242,23 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   addSubsequentInspection() {
+    this.formState$.pipe(
+      take(1),
+      map(s => s.controls.tc3Type.id),
+      map(id => new AddArrayControlAction(id, null, null)),
+    ).subscribe(this._store);
+
+    this.formState$.pipe(
+      take(1),
+      map(s => s.controls.tc3PeriodicNumber.id),
+      map(id => new AddArrayControlAction(id, null, null)),
+    ).subscribe(this._store);
+
+    this.formState$.pipe(
+      take(1),
+      map(s => s.controls.tc3PeriodicExpiryDate.id),
+      map(id => new AddArrayControlAction(id, null, null)),
+    ).subscribe(this._store);
     this.subsequentInspection = true;
   }
 

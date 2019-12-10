@@ -42,7 +42,7 @@ export function initializeApp(appConfig: AppConfig) {
       clientId: AppConfig.settings.adalConfig.clientId,
       redirectUri: window.location.origin,
       endpoints: AppConfig.settings.adalConfig.endpoints,
-      navigateToLoginRequestUrl: false,
+      navigateToLoginRequestUrl: true,
       cacheLocation: AppConfig.settings.adalConfig.cacheLocation
     };
   });

@@ -11,6 +11,10 @@ export interface IAppState extends RootState {
       maxIndex: number;
       options: number[];
     };
+    tc3Type: {
+      maxIndex: number;
+      options: number[];
+    };
     submittedValue: adrDetailsFormModel | undefined;
   };
 }
@@ -34,10 +38,7 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     'Danger xyz': false,
   },
   compatibilityJ: false,
-  additionalNotes: {
-    'Document 1': false,
-    'Document xyz': false,
-  },
+  additionalNotes: {},
   adrTypeApprovalNo: '',
   tankManufacturer: '',
   yearOfManufacture: 1,
@@ -58,13 +59,13 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     month: 1,
     year: 1920
   },
-  tc3Type: '',
-  tc3PeriodicNumber: '',
-  tc3PeriodicExpiryDate: {
+  tc3Type: [],
+  tc3PeriodicNumber: [],
+  tc3PeriodicExpiryDate: [{
     day: 1,
     month: 1,
     year: 1920
-  },
+  }],
   memosApply: {
     isMemo: true,
     isNotMemo: true,
