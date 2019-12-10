@@ -1092,12 +1092,15 @@
                           </vtm-inspection-details>
 
                           <div *ngIf="subsequentInspection">
-                            <vtm-inspection-details
-                              [inspectionType]="'tc3'"
-                              [type]="(formState$ | async).controls.tc3Type"
-                              [periodicNumber]="(formState$ | async).controls.tc3PeriodicNumber"
-                              [expiryDate]="(formState$ | async).controls.tc3PeriodicExpiryDate">
-                            </vtm-inspection-details>
+                            <ng-container
+                              *ngFor="let tc of (tc3Inspections$ | async); let i = index; trackBy: trackByFn">
+                              <vtm-inspection-details
+                                [inspectionType]="'tc3'"
+                                [type]="tc.Type"
+                                [periodicNumber]="tc.PeriodicNumber"
+                                [expiryDate]="tc.ExpiryDate">
+                              </vtm-inspection-details>
+                            </ng-container>
                           </div>
                           <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent
                             inspection</a></p>
@@ -1147,7 +1150,6 @@
                             </label>
                           </div>
 
-                          <!-- <div class="govuk-form-group" formGroupName="listStatementApplicable"> -->
                           <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                               <h2 class="govuk-heading-m">Battery list applicable</h2>

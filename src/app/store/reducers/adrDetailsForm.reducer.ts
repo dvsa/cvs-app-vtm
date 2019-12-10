@@ -9,17 +9,18 @@ import {
   validate
 } from 'ngrx-forms';
 import {greaterThan, lessThanOrEqualTo, maxLength, required} from 'ngrx-forms/validation';
-import {adrDetailsFormModel, approvalDate} from '@app/models/adrDetailsForm.model';
+import {adrDetailsFormModel} from '@app/models/adrDetailsForm.model';
 import {IAppState, INITIAL_STATE} from '../state/adrDetailsForm.state';
 import {
   CreateGuidanceNoteElementAction,
   CreatePermittedDangerousGoodElementAction,
-  CreateProductListUnNoElementAction,
+  CreateProductListUnNoElementAction, CreateTc3TypeElementAction,
   RemoveGuidanceNoteElementAction,
   RemovePermittedDangerousGoodElementAction,
   RemoveProductListUnNoElementAction,
   SetSubmittedValueAction
 } from '../actions/adrDetailsForm.actions';
+import {approvalDate} from '@app/models/approvalDate';
 
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
   name: validate(required, maxLength(150)),
@@ -55,7 +56,8 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     s = INITIAL_STATE,
     a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction |
        CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction |
-       CreateProductListUnNoElementAction | RemoveProductListUnNoElementAction
+       CreateProductListUnNoElementAction | RemoveProductListUnNoElementAction |
+       CreateTc3TypeElementAction
   ) {
     s = formGroupReducerWithUpdate(s, a);
 
@@ -116,7 +118,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     }
   },
   permittedDangerousGoodsOptions(
-    s: string[] = ['Danger Option 1', 'Danger Option 2'],
+    s: string[] = [],
     a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction
   ) {
     // console.log(`inside reducer permittedDangerousGoodsOptions s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
@@ -156,7 +158,6 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
         console.log(`inside reducer productListUnNo AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
         const maxIndex = s.maxIndex + 1;
         const options = [...s.options];
-        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
         options.splice(a.index!, 0, maxIndex);
         return {
           maxIndex,
@@ -166,13 +167,43 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
       case RemoveArrayControlAction.TYPE: {
         const options = [...s.options];
-        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
         options.splice(a.index!, 1);
         return {
           ...s,
           options,
         };
       }
+
+      default:
+        return s;
+    }
+  },
+  tc3Type: function (
+    s = {maxIndex: 0, options: []},
+    a: CreateTc3TypeElementAction,
+  ) {
+    switch (a.type) {
+      case CreateTc3TypeElementAction.TYPE: {
+        console.log(`inside reducer tc3Type AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, maxIndex);
+        return {
+          maxIndex,
+          options,
+        };
+      }
+
+      // case CreateTc3TypeElementAction.TYPE: {
+      //   const options = [...s.options];
+      //   // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+      //   options.splice(a.index!, 1);
+      //   return {
+      //     ...s,
+      //     options,
+      //   };
+      // }
 
       default:
         return s;

@@ -1,10 +1,4 @@
-import { Boxed } from "ngrx-forms";
-
-export interface approvalDate {
-    day: number;
-    month: number;
-    year: number;
-}
+import {approvalDate} from '@app/models/approvalDate';
 
 export interface certificateReq {
   yesCert: boolean;
@@ -42,13 +36,13 @@ export interface adrDetailsFormModel {
         month: number;
         year: number;
     };
-    tc3Type: string;
-    tc3PeriodicNumber: string,
+    tc3Type: string[];
+    tc3PeriodicNumber: string[];
     tc3PeriodicExpiryDate: {
         day: number;
         month: number;
         year: number;
-    };
+    }[];
     memosApply: {
         isMemo: boolean;
         isNotMemo: boolean;
@@ -56,13 +50,13 @@ export interface adrDetailsFormModel {
     listStatementApplicable: {
         applicable: boolean;
         notApplicable: boolean;
-    },
+    };
     batteryListNumber: string;
     brakeDeclarationIssuer: string;
     brakeEndurance: string;
     brakeDeclarationsSeen: string;
     declarationsSeen: string;
     weight: number;
-    certificateReq: certificateReq,
+    certificateReq: certificateReq;
     adrMoreDetail: string;
 }
