@@ -12,6 +12,9 @@ import {
   SetSubmittedValueAction,
   CreatePermittedDangerousGoodElementAction,
   CreateGuidanceNoteElementAction,
+  CreateTc3TypeElementAction,
+  CreateTc3PeriodicExpiryDateElementAction,
+  CreateTc3PeriodicNumberElementAction,
 } from '@app/store/actions/adrDetailsForm.actions';
 import { take, map, catchError } from 'rxjs/operators';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
@@ -104,6 +107,7 @@ export class TechnicalRecordComponent implements OnInit {
     this.tc3Inspections$ = this._store.pipe(select( s => {
       const tc3ControlsArray = [];
       for (let index = 0; index < s.adrDetails.formState.controls.tc3Type.controls.length; index++ ) {
+        console.log(`index => ${index} length => ${JSON.stringify(s.adrDetails.formState.controls.tc3Type.controls.length)}`);
         tc3ControlsArray.push(<Tc3Controls> {
           Type: s.adrDetails.formState.controls.tc3Type.controls[index],
           PeriodicNumber: s.adrDetails.formState.controls.tc3PeriodicNumber.controls[index],
@@ -112,6 +116,8 @@ export class TechnicalRecordComponent implements OnInit {
       }
       return tc3ControlsArray;
     }));
+
+    this.tc3Inspections$.subscribe( tc => console.log(`tc => ${JSON.stringify(tc)}`));
   }
 
   ngOnInit() {
@@ -245,21 +251,21 @@ export class TechnicalRecordComponent implements OnInit {
     this.formState$.pipe(
       take(1),
       map(s => s.controls.tc3Type.id),
-      map(id => new AddArrayControlAction(id, null, null)),
+      map(id => new CreateTc3TypeElementAction(id, null, null)),
     ).subscribe(this._store);
 
     this.formState$.pipe(
       take(1),
       map(s => s.controls.tc3PeriodicNumber.id),
-      map(id => new AddArrayControlAction(id, null, null)),
+      map(id => new CreateTc3PeriodicNumberElementAction(id, null, null)),
     ).subscribe(this._store);
 
     this.formState$.pipe(
       take(1),
       map(s => s.controls.tc3PeriodicExpiryDate.id),
-      map(id => new AddArrayControlAction(id, null, null)),
+      map(id => new CreateTc3PeriodicExpiryDateElementAction(id, null, null)),
     ).subscribe(this._store);
-    this.subsequentInspection = true;
+    // this.subsequentInspection = true;
   }
 
   selectReferenceNumberChange($event) {

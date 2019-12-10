@@ -32,6 +32,7 @@ import {CustomSerializer} from '@app/store/reducers';
 
 let adalConfig: any; // will be initialized by APP_INITIALIZER
 export function msAdalAngular6ConfigFactory() {
+  console.log(`initializing msAdal with adalConfig => ${JSON.stringify(adalConfig)}`);
   return adalConfig;
 }
 

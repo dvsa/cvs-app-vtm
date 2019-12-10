@@ -15,6 +15,14 @@ export interface IAppState extends RootState {
       maxIndex: number;
       options: number[];
     };
+    tc3PeriodicNumber: {
+      maxIndex: number;
+      options: number[];
+    };
+    tc3PeriodicExpiryDate: {
+      maxIndex: number;
+      options: number[];
+    };
     submittedValue: adrDetailsFormModel | undefined;
   };
 }

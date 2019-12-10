@@ -58,6 +58,32 @@ export class CreateTc3TypeElementAction  {
   }
 }
 
+export class CreateTc3PeriodicNumberElementAction  {
+  static readonly TYPE = 'adrDetails/CREATE_TC3_PERIODIC_NUMBER_ELEMENT';
+  readonly type = CreateTc3PeriodicNumberElementAction.TYPE;
+  private readonly arraycontrolAction: AddArrayControlAction<number>;
+  constructor(public controlId: string, public value: any, index?: number) {
+    this.arraycontrolAction = new AddArrayControlAction<number>(controlId, value, index);
+  }
+
+  get index(): number | undefined {
+    return this.arraycontrolAction.index;
+  }
+}
+
+export class CreateTc3PeriodicExpiryDateElementAction  {
+  static readonly TYPE = 'adrDetails/CREATE_TC3_PERIODIC_EXPIRY_DATE_ELEMENT';
+  readonly type = CreateTc3PeriodicExpiryDateElementAction.TYPE;
+  private readonly arraycontrolAction: AddArrayControlAction<number>;
+  constructor(public controlId: string, public value: any, index?: number) {
+    this.arraycontrolAction = new AddArrayControlAction<number>(controlId, value, index);
+  }
+
+  get index(): number | undefined {
+    return this.arraycontrolAction.index;
+  }
+}
+
 // export class RemoveTc3TypeElementAction extends RemoveArrayControlAction {
 //   // static readonly TYPE = 'adrDetails/REMOVE_TC3_TYPE_ELEMENT';
 //   // readonly type = RemoveTc3TypeElementAction.TYPE;
