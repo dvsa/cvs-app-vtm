@@ -10,8 +10,9 @@ export class FilterRecordPipe implements PipeTransform {
       records = techRecordList.find((record: any) => record.statusCode === 'provisional');
       if (records !== undefined) return records;
 
-      records = techRecordList.find((record: any) => record.statusCode === 'archived');
-      if (records !== undefined) return records;
+      records = techRecordList.filter((record: any) => record.statusCode === 'archived');
+      records.sort((a,b)=> new Date (a.createdAt).getTime() - new Date (b.createdAt).getTime() );
+      if (records !== undefined) return records[0];
     }
   }
 }

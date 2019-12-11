@@ -65,14 +65,33 @@
   cursor: pointer;
 }
 
+.topnav a:visited, #menuLinks:visited {
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .topnav a:hover {
-  background-color: #ddd;
-  color: black;
+
+  fa-icon:hover {
+    color: white;
+    border: solid $govuk-focus-colour;
+    padding: 5px;
+  }
+
+  span:hover {
+    color: $govuk-text-colour;
+    background-color: $govuk-focus-colour;
+    text-decoration: underline;
+    padding: 5px;
+  }
   cursor: pointer;
 }
 
 .active {
-  color: white;
+  color: $govuk-focus-colour;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 @media (max-width: 1313px) {

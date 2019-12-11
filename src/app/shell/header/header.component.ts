@@ -19,4 +19,8 @@ export class HeaderComponent implements OnInit {
   onClick($event) {
     this.menuOpen = !this.menuOpen;
   }
+
+  logOut(){
+   (this.adal.isAuthenticated) ? this.adal.logout(): false;
+  }
 }

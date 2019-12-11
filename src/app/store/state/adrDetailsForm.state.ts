@@ -72,23 +72,14 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
     month: 1,
     year: 1920
   }],
-  memosApply: {
-    isMemo: true,
-    isNotMemo: true,
-  },
-  listStatementApplicable: {
-    applicable: true,
-    notApplicable: false,
-  },
+  memosApply: { '07/09 3mth leak ext' : false },
+  listStatementApplicable: '',
   batteryListNumber: '',
   brakeDeclarationIssuer: '',
   brakeEndurance: '',
   brakeDeclarationsSeen: '',
   declarationsSeen: '',
   weight: 0,
-  certificateReq: {
-    yesCert: true,
-    noCert: false,
-  },
+  certificateReq: '',
   adrMoreDetail: ''
 });

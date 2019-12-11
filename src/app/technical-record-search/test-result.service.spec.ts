@@ -1,6 +1,6 @@
-import {TestBed, inject, getTestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, inject, getTestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {AuthenticationGuard, MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
+import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TestResultService} from './test-result.service';
 import {APP_BASE_HREF} from '@angular/common';
 import {Store, StoreModule} from '@ngrx/store';
@@ -14,14 +14,13 @@ import {SharedModule} from '@app/shared/shared.module';
 import {RouterTestingModule} from '@angular/router/testing';
 import {adrDetailsReducer} from '@app/store/reducers/adrDetailsForm.reducer';
 import { environment } from '@environments/environment';
-import { TechnicalRecordService } from './technical-record.service';
-import { TechnicalRecordComponent } from '@app/technical-record/technical-record.component';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
 import {Router} from '@angular/router';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {hot} from 'jasmine-marbles';
+import {TechnicalRecordSearchModule} from "@app/technical-record-search/technical-record-search.module";
 
 const routes = {
   testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
@@ -35,8 +34,6 @@ describe('TestResultService', () => {
   let httpMock: HttpTestingController;
   let injector: TestBed;
   let service: TestResultService;
-  let component: TechnicalRecordComponent;
-  let fixture: ComponentFixture<TechnicalRecordComponent>;
   const authenticationGuardMock = new AuthenticationGuardMock();
   let store: Store<IAppState>;
 
@@ -44,6 +41,7 @@ describe('TestResultService', () => {
     TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot(appReducers),
+        TechnicalRecordSearchModule,
         HttpClientTestingModule,
         MatDialogModule,
         FormsModule,
@@ -55,21 +53,11 @@ describe('TestResultService', () => {
         StoreModule.forFeature('adrDetails', adrDetailsReducer),
         FontAwesomeModule,
         ReactiveFormsModule,
-        NgrxFormsModule,
-        MsAdalAngular6Module.forRoot({
-          tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
-          clientId: '11x111x1-1xx1-1111-1x11-x1xx111x11x1',
-          redirectUri: window.location.origin,
-          endpoints: {
-            'https://localhost/Api/': 'xxx-xxx1-1111-x111-xxx'
-          },
-          navigateToLoginRequestUrl: true,
-          cacheLocation: 'localStorage',
-        })
+        NgrxFormsModule
       ],
-      declarations: [TechnicalRecordComponent],
+      declarations: [],
       providers: [
-        TechnicalRecordService,
+        TestResultService,
         {
           provide: Store,
           useValue: {
@@ -86,19 +74,22 @@ describe('TestResultService', () => {
     }).compileComponents();
         store = TestBed.get(Store);
         spyOn(store, 'dispatch').and.callThrough();
-        fixture = TestBed.createComponent(TechnicalRecordComponent);
         injector = getTestBed();
         service  = injector.get(TestResultService);
         httpMock = injector.get(HttpTestingController);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+  });
+
+  beforeEach( ()=> {
+    injector = getTestBed();
+    service  = injector.get(TestResultService);
+    httpMock = injector.get(HttpTestingController);
   });
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  it('should be created', inject([HttpTestingController, MsAdalAngular6Service], (serviceI: TestResultService) => {
+  it('should be created', inject([HttpTestingController], (serviceI: TestResultService) => {
     expect(serviceI).toBeTruthy();
   }));
 

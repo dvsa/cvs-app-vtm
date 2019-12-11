@@ -1,12 +1,6 @@
 import {approvalDate} from '@app/models/approvalDate';
 
-// tslint:disable-next-line:class-name
-export interface certificateReq {
-  yesCert: boolean;
-  noCert: boolean;
-}
 
-// tslint:disable-next-line:class-name
 export interface adrDetailsFormModel {
     name: string;
     street: string;
@@ -44,21 +38,15 @@ export interface adrDetailsFormModel {
         day: number;
         month: number;
         year: number;
-    }[];
-    memosApply: {
-        isMemo: boolean;
-        isNotMemo: boolean;
     };
-    listStatementApplicable: {
-        applicable: boolean;
-        notApplicable: boolean;
-    };
+    memosApply: { [id: string]: boolean };
+    listStatementApplicable: '';
     batteryListNumber: string;
     brakeDeclarationIssuer: string;
     brakeEndurance: string;
     brakeDeclarationsSeen: string;
     declarationsSeen: string;
     weight: number;
-    certificateReq: certificateReq;
+    certificateReq: string;
     adrMoreDetail: string;
 }
