@@ -14,9 +14,10 @@ export interface IAppConfig {
     tenant: string;
     clientId: string;
   };
- adalConfig: {
+  adalConfig: {
     clientId: string,
     tenant: string,
+    redirectUri: string,
     cacheLocation: string,
     endpoints: {
       api: string

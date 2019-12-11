@@ -32,6 +32,7 @@ import {CustomSerializer} from '@app/store/reducers';
 
 let adalConfig: any; // will be initialized by APP_INITIALIZER
 export function msAdalAngular6ConfigFactory() {
+  console.log(`initializing msAdal with adalConfig => ${JSON.stringify(adalConfig)}`);
   return adalConfig;
 }
 
@@ -40,9 +41,9 @@ export function initializeApp(appConfig: AppConfig) {
     adalConfig = {
       tenant: AppConfig.settings.adalConfig.tenant,
       clientId: AppConfig.settings.adalConfig.clientId,
-      redirectUri: window.location.origin,
+      redirectUri: AppConfig.settings.adalConfig.redirectUri,
       endpoints: AppConfig.settings.adalConfig.endpoints,
-      navigateToLoginRequestUrl: false,
+      navigateToLoginRequestUrl: true,
       cacheLocation: AppConfig.settings.adalConfig.cacheLocation
     };
   });

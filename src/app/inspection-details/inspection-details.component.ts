@@ -12,14 +12,12 @@ import {IAppState} from '@app/store/state/adrDetailsForm.state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InspectionDetailsComponent implements OnInit {
-  formState$: Observable<FormGroupState<adrDetailsFormModel>>;
   @Input() inspectionType: any;
   @Input() type: any;
   @Input() periodicNumber: any;
   @Input() expiryDate: any;
 
-  constructor(private _store: Store<IAppState>) {
-    this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
+  constructor() {
   }
 
   ngOnInit(): void {
