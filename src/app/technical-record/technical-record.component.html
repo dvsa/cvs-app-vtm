@@ -8,7 +8,7 @@
               <h1 class="govuk-heading-xl title">Technical record</h1>
               <div *ngIf="!isSubmit">
                 <button id="test-change-btn" class="govuk-button" data-module="govuk-button"
-                        (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, isNullOrEmpty(techRecordsJson.metadata.adrDetails))">
+                        (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, activeRecord.adrDetails)">
                   {{ changeLabel }}
                 </button>
                 <a id="cancel1" *ngIf="showCheck" (click)="cancelAddrEdit()">
@@ -737,7 +737,7 @@
               </div>
 
               <ng-template #adrForm>
-                <div *ngIf="!hideForm && (formState$ | async) as formState; else loading">
+                <div *ngIf="!hideForm && (formState$ | async) as formState; else space">
                   <div *ngIf="formState !==null || formState != undefined">
                     <fieldset class="govuk-fieldset" class="adrDetailsForm">
                       <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
@@ -1416,6 +1416,20 @@
                       <dt class="govuk-summary-list__key"> Substances permitted</dt>
                       <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
                         {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.substancesPermitted) ? "-" : activeRecord.adrDetails.tank.tankStatement.substancesPermitted }}
+                      </dd>
+                      <dd class="govuk-summary-list__value"></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Statement reference number</dt>
+                      <dd id="test-ADR-statement" class="govuk-summary-list__value">
+                        {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.statement) ? "-" : activeRecord.adrDetails.tank.tankStatement.statement }}
+                      </dd>
+                      <dd class="govuk-summary-list__value"></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                      <dt class="govuk-summary-list__key">Product list reference number</dt>
+                      <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">
+                        {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListRefNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListRefNo }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>

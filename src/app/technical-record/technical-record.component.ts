@@ -169,7 +169,9 @@ export class TechnicalRecordComponent implements OnInit {
     this.showCheck = true;
     this.numberFee = numberFee;
     this.dangerousGoods = dangerousGoods;
-    this.isAdrNull = isAdrNull;
+    this.isAdrNull = isAdrNull == undefined || isAdrNull == null;
+    console.log(this.isAdrNull);
+    this.hideForm = this.isAdrNull;
   }
 
   public cancelAddrEdit() {
