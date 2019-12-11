@@ -38,7 +38,7 @@ export interface adrDetailsFormModel {
         day: number;
         month: number;
         year: number;
-    };
+    }[];
     memosApply: { [id: string]: boolean };
     listStatementApplicable: '';
     batteryListNumber: string;
