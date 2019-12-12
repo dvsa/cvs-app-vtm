@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of, forkJoin } from 'rxjs';
 import { FormGroup, Validators } from '@angular/forms';
 import { VEHICLE_TYPES } from '@app/app.enums';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {FormGroupState, AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
+import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
 import { IAppState } from '@app/store/state/adrDetailsForm.state';
 import {
@@ -16,7 +16,7 @@ import {
   CreateTc3PeriodicExpiryDateElementAction,
   CreateTc3PeriodicNumberElementAction,
 } from '@app/store/actions/adrDetailsForm.actions';
-import { take, map, catchError } from 'rxjs/operators';
+import { take, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
@@ -75,7 +75,14 @@ export class TechnicalRecordComponent implements OnInit {
   additionalNotesOptions$: Observable<string[]>;
   adrDetails$: Observable<any>;
   productListUnNoOptions$: Observable<number[]>;
-  tc3Inspections$: Observable<Tc3Controls[]>;
+  tc3TypeOptions$: Observable<number[]>;
+  tc3PeriodicNumberOptions$: Observable<number[]>;
+  tc3PeriodicExpiryDateOptions$: Observable<{
+    day: number;
+    month: number;
+    year: number;
+  }[]>;
+  tc3Inspections$: Observable<any[]>;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -83,7 +90,23 @@ export class TechnicalRecordComponent implements OnInit {
     this.adrDetails$ = this._store.select(s => s.adrDetails);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
     this.permittedDangerousGoodsOptions$ = this._store.pipe(select(s => s.adrDetails.permittedDangerousGoodsOptions));
-    this.productListUnNoOptions$ = this._store.pipe(select(s => s.adrDetails.productListUnNo.options));
+
+    this.productListUnNoOptions$ = this._store.pipe(
+      filter(s => s.adrDetails.productListUnNo !== undefined),
+      select(s => s.adrDetails.productListUnNo.options));
+    this.tc3TypeOptions$ = this._store.pipe(
+      filter(s => s.adrDetails.tc3Type !== undefined),
+      select(s => s.adrDetails.tc3Type.options));
+    this.tc3PeriodicNumberOptions$ = this._store.pipe(
+      filter(s => s.adrDetails.tc3PeriodicNumber !== undefined),
+      select(s => s.adrDetails.tc3PeriodicNumber.options));
+    this.tc3PeriodicExpiryDateOptions$ = this._store.pipe(
+      filter(s => s.adrDetails.tc3PeriodicExpiryDate !== undefined),
+      select(s => s.adrDetails.tc3PeriodicExpiryDate.options));
+
+    this.tc3TypeOptions$.subscribe(t => console.log(`tc3TypeOptions$ => ${JSON.stringify(t)}`));
+    this.tc3PeriodicNumberOptions$.subscribe(t => console.log(`tc3PeriodicNumberOptions$ => ${JSON.stringify(t)}`));
+    this.tc3PeriodicExpiryDateOptions$.subscribe(t => console.log(`tc3PeriodicExpiryDateOptions$ => ${JSON.stringify(t)}`));
     this.submittedValue$ = this._store.pipe(select(s => s.adrDetails.submittedValue));
     this.isVehicleTankOrBattery$ = combineLatest(this.techRecordsJson$, this.formState$).pipe(
       map(([techRecords, formState]) => {
@@ -104,20 +127,13 @@ export class TechnicalRecordComponent implements OnInit {
       })
     );
     this.additionalNotesOptions$ = this._store.pipe(select(s => s.adrDetails.additionalNotesOptions));
-    this.tc3Inspections$ = this._store.pipe(select( s => {
-      const tc3ControlsArray = [];
-      for (let index = 0; index < s.adrDetails.formState.controls.tc3Type.controls.length; index++ ) {
-        console.log(`index => ${index} length => ${JSON.stringify(s.adrDetails.formState.controls.tc3Type.controls.length)}`);
-        tc3ControlsArray.push(<Tc3Controls> {
-          Type: s.adrDetails.formState.controls.tc3Type.controls[index],
-          PeriodicNumber: s.adrDetails.formState.controls.tc3PeriodicNumber.controls[index],
-          ExpiryDate: s.adrDetails.formState.controls.tc3PeriodicExpiryDate.controls[index],
-        });
-      }
-      return tc3ControlsArray;
-    }));
-
-    this.tc3Inspections$.subscribe( tc => console.log(`tc => ${JSON.stringify(tc)}`));
+    this.tc3Inspections$ = combineLatest(this.tc3TypeOptions$, this.tc3PeriodicNumberOptions$, this.tc3PeriodicExpiryDateOptions$).pipe(
+      withLatestFrom(this.tc3PeriodicNumberOptions$, this.tc3PeriodicExpiryDateOptions$),
+      filter(([type, periodicNumber, expiryDate]) => type !== undefined || periodicNumber !== undefined || expiryDate !== undefined),
+      map(([type, periodicNumber, expiryDate]) => {
+        return [{type,periodicNumber,expiryDate}];
+      })
+    );
   }
 
   ngOnInit() {
@@ -158,7 +174,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public hasSecondaryVrms(vrms) {
-    return (vrms.length > 1) && (vrms.filter( vrm => vrm.isPrimary === false).length > 0);
+    return (vrms.length > 1) && (vrms.filter(vrm => vrm.isPrimary === false).length > 0);
   }
 
   public adrEdit(techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
@@ -253,19 +269,23 @@ export class TechnicalRecordComponent implements OnInit {
     this.formState$.pipe(
       take(1),
       map(s => s.controls.tc3Type.id),
-      map(id => new CreateTc3TypeElementAction(id, null, null)),
+      map(id => new CreateTc3TypeElementAction(id, '1')),
     ).subscribe(this._store);
 
     this.formState$.pipe(
       take(1),
       map(s => s.controls.tc3PeriodicNumber.id),
-      map(id => new CreateTc3PeriodicNumberElementAction(id, null, null)),
+      map(id => new CreateTc3PeriodicNumberElementAction(id, '')),
     ).subscribe(this._store);
 
     this.formState$.pipe(
       take(1),
       map(s => s.controls.tc3PeriodicExpiryDate.id),
-      map(id => new CreateTc3PeriodicExpiryDateElementAction(id, null, null)),
+      map(id => new CreateTc3PeriodicExpiryDateElementAction(id, {
+        day: 1,
+        month: 1,
+        year: 1930
+      })),
     ).subscribe(this._store);
     // this.subsequentInspection = true;
   }
