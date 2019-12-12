@@ -1,9 +1,4 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {FormGroupState} from 'ngrx-forms';
-import {adrDetailsFormModel} from '@app/models/adrDetailsForm.model';
-import {select, Store} from '@ngrx/store';
-import {IAppState} from '@app/store/state/adrDetailsForm.state';
 
 @Component({
   selector: 'vtm-inspection-details',

@@ -21,7 +21,7 @@ export interface IAppState extends RootState {
     };
     tc3PeriodicExpiryDate: {
       maxIndex: number;
-      options: number[];
+      options: { day: number; month: number; year: number; }[];
     };
     submittedValue: adrDetailsFormModel | undefined;
   };
@@ -67,12 +67,8 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
   },
   tc3Type: [],
   tc3PeriodicNumber: [],
-  tc3PeriodicExpiryDate: [{
-    day: 1,
-    month: 1,
-    year: 1920
-  }],
-  memosApply: { '07/09 3mth leak ext' : false },
+  tc3PeriodicExpiryDate: [],
+  memosApply: { '07/09 3mth leak ext': false },
   listStatementApplicable: '',
   batteryListNumber: '',
   brakeDeclarationIssuer: '',

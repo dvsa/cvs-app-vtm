@@ -45,49 +45,26 @@ export class RemoveProductListUnNoElementAction implements Action {
   constructor(public name: string) { }
 }
 
-export class CreateTc3TypeElementAction  {
-  static readonly TYPE = 'adrDetails/CREATE_TC3_TYPE_ELEMENT';
-  readonly type = CreateTc3TypeElementAction.TYPE;
-  private readonly arraycontrolAction: AddArrayControlAction<number>;
+export class CreateTc3TypeElementAction extends AddArrayControlAction<number>  {
+  static readonly SUB_TYPE = 'adrDetails/CREATE_TC3_TYPE_ELEMENT';
+  public readonly subtype = CreateTc3TypeElementAction.SUB_TYPE;
   constructor(public controlId: string, public value: any, index?: number) {
-    this.arraycontrolAction = new AddArrayControlAction<number>(controlId, value, index);
-  }
-
-  get index(): number | undefined {
-    return this.arraycontrolAction.index;
+    super(controlId,value,index);
   }
 }
 
-export class CreateTc3PeriodicNumberElementAction  {
-  static readonly TYPE = 'adrDetails/CREATE_TC3_PERIODIC_NUMBER_ELEMENT';
-  readonly type = CreateTc3PeriodicNumberElementAction.TYPE;
-  private readonly arraycontrolAction: AddArrayControlAction<number>;
+export class CreateTc3PeriodicNumberElementAction extends AddArrayControlAction<number> {
+  static readonly SUB_TYPE = 'adrDetails/CREATE_TC3_PERIODIC_NUMBER_ELEMENT';
+  readonly subtype = CreateTc3PeriodicNumberElementAction.SUB_TYPE;
   constructor(public controlId: string, public value: any, index?: number) {
-    this.arraycontrolAction = new AddArrayControlAction<number>(controlId, value, index);
-  }
-
-  get index(): number | undefined {
-    return this.arraycontrolAction.index;
+    super(controlId,value,index);
   }
 }
 
-export class CreateTc3PeriodicExpiryDateElementAction  {
-  static readonly TYPE = 'adrDetails/CREATE_TC3_PERIODIC_EXPIRY_DATE_ELEMENT';
-  readonly type = CreateTc3PeriodicExpiryDateElementAction.TYPE;
-  private readonly arraycontrolAction: AddArrayControlAction<number>;
+export class CreateTc3PeriodicExpiryDateElementAction  extends AddArrayControlAction<{day: number; month: number; year: number;}> {
+  static readonly SUB_TYPE = 'adrDetails/CREATE_TC3_PERIODIC_EXPIRY_DATE_ELEMENT';
+  readonly subtype = CreateTc3PeriodicExpiryDateElementAction.SUB_TYPE;
   constructor(public controlId: string, public value: any, index?: number) {
-    this.arraycontrolAction = new AddArrayControlAction<number>(controlId, value, index);
-  }
-
-  get index(): number | undefined {
-    return this.arraycontrolAction.index;
+    super(controlId,value,index);
   }
 }
-
-// export class RemoveTc3TypeElementAction extends RemoveArrayControlAction {
-//   // static readonly TYPE = 'adrDetails/REMOVE_TC3_TYPE_ELEMENT';
-//   // readonly type = RemoveTc3TypeElementAction.TYPE;
-//   constructor(public controlId: string, index: number) {
-//     super(controlId, index);
-//   }
-// }

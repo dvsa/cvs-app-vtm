@@ -1,7 +1,12 @@
 <div>
+  <label *ngIf="inspectionType ==='tc2'; else showTc3" class="govuk-label govuk-!-font-weight-bold">
+    Initial
+  </label>
+  <ng-template #showTc3>
   <label class="govuk-label govuk-!-font-weight-bold">
     Subsequent
-  </label>
+    </label>
+  </ng-template>
   <div class="govuk-inset-text">
     <div class="govuk-form-group">
       <label class="govuk-label govuk-!-font-weight-bold">
@@ -23,8 +28,7 @@
       <label class="govuk-label govuk-!-font-weight-bold">
         Certificate number
       </label>
-      <input class="govuk-input govuk-input--width-10" type="number"
-             [ngrxFormControlState]="periodicNumber">
+      <input class="govuk-input govuk-input--width-10" type="number" [ngrxFormControlState]="periodicNumber">
     </div>
 
     <div class="govuk-form-group">
@@ -36,9 +40,8 @@
               <label class="govuk-label govuk-date-input__label">
                 Day
               </label>
-              <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                     type="number" pattern="[0-9]*"
-                     [ngrxFormControlState]="expiryDate.controls.day">
+              <input class="govuk-input govuk-date-input__input govuk-input--width-2" type="number" pattern="[0-9]*"
+                [ngrxFormControlState]="expiryDate.controls.day">
             </div>
           </div>
           <div class="govuk-date-input__item">
@@ -46,9 +49,8 @@
               <label class="govuk-label govuk-date-input__label">
                 Month
               </label>
-              <input class="govuk-input govuk-date-input__input govuk-input--width-2"
-                     type="number" pattern="[0-9]*"
-                     [ngrxFormControlState]="expiryDate.controls.month">
+              <input class="govuk-input govuk-date-input__input govuk-input--width-2" type="number" pattern="[0-9]*"
+                [ngrxFormControlState]="expiryDate.controls.month">
             </div>
           </div>
           <div class="govuk-date-input__item">
@@ -56,9 +58,8 @@
               <label class="govuk-label govuk-date-input__label">
                 Year
               </label>
-              <input class="govuk-input govuk-date-input__input govuk-input--width-4"
-                     type="number" pattern="[0-9]*"
-                     [ngrxFormControlState]="expiryDate.controls.year">
+              <input class="govuk-input govuk-date-input__input govuk-input--width-4" type="number" pattern="[0-9]*"
+                [ngrxFormControlState]="expiryDate.controls.year">
             </div>
           </div>
         </div>

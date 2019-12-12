@@ -124,7 +124,6 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     s: string[] = [],
     a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction
   ) {
-    // console.log(`inside reducer permittedDangerousGoodsOptions s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
     switch (a.type) {
       case CreatePermittedDangerousGoodElementAction.TYPE:
         return [...s, a.name];
@@ -140,7 +139,6 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     s: string[] = ['Document Option 1', 'Document Option 2'],
     a: CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction
   ) {
-    // console.log(`inside reducer additionalNotesOptions s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
     switch (a.type) {
       case CreateGuidanceNoteElementAction.TYPE:
         return [...s, a.name];
@@ -152,10 +150,92 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
         return s;
     }
   },
+  tc3Type: function (
+    s = {maxIndex: 0, options: []},
+    a: CreateTc3TypeElementAction
+  ) {
+
+    if( !a.hasOwnProperty('subtype') && (<CreateTc3TypeElementAction>a).subtype !== CreateTc3TypeElementAction.SUB_TYPE ) {
+      return;
+    }
+
+    switch (a.type) {
+      case CreateTc3TypeElementAction.TYPE: {
+        console.log(`inside reducer tc3Type CreateTc3TypeElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, a.value);
+        return {
+          maxIndex,
+          options,
+        };
+      }
+
+      default:
+        return s;
+    }
+  },
+  tc3PeriodicNumber: function (
+    s = {maxIndex: 0, options: []},
+    a: CreateTc3PeriodicNumberElementAction,
+  ) {
+
+    if( !a.hasOwnProperty('subtype') && (<CreateTc3PeriodicNumberElementAction>a).subtype !== CreateTc3PeriodicNumberElementAction.SUB_TYPE ) {
+      return;
+    }
+
+    switch (a.type) {
+      case CreateTc3PeriodicNumberElementAction.TYPE: {
+        console.log(`inside reducer tc3PeriodicNumber CreateTc3PeriodicNumberElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, a.value);
+        return {
+          maxIndex,
+          options,
+        };
+      }
+
+      default:
+        return s;
+    }
+  },
+  tc3PeriodicExpiryDate: function (
+    s = {maxIndex: 0, options: []},
+    a: CreateTc3PeriodicExpiryDateElementAction,
+  ) {
+
+    if( !a.hasOwnProperty('subtype') && (<CreateTc3PeriodicExpiryDateElementAction>a).subtype !== CreateTc3PeriodicExpiryDateElementAction.SUB_TYPE ) {
+      return;
+    }
+
+    switch (a.type) {
+      case CreateTc3PeriodicExpiryDateElementAction.TYPE: {
+        const maxIndex = s.maxIndex + 1;
+        const options = [...s.options];
+        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
+        options.splice(a.index!, 0, a.value);
+        return {
+          maxIndex,
+          options,
+        };
+      }
+
+      default:
+        return s;
+    }
+  },
   productListUnNo: function (
     s = {maxIndex: 0, options: []},
     a: AddArrayControlAction<number> | RemoveArrayControlAction,
   ) {
+
+    if(a.hasOwnProperty('subtype') ) {
+      return;
+    }
+
     switch (a.type) {
       case AddArrayControlAction.TYPE: {
         console.log(`inside reducer productListUnNo AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
@@ -173,69 +253,6 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
         options.splice(a.index!, 1);
         return {
           ...s,
-          options,
-        };
-      }
-
-      default:
-        return s;
-    }
-  },
-  tc3Type: function (
-    s = {maxIndex: 0, options: []},
-    a: CreateTc3TypeElementAction
-  ) {
-    switch (a.type) {
-      case CreateTc3TypeElementAction.TYPE: {
-        console.log(`inside reducer tc3Type CreateTc3TypeElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
-        const maxIndex = s.maxIndex + 1;
-        const options = [...s.options];
-        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
-        options.splice(a.index!, 0, maxIndex);
-        return {
-          maxIndex,
-          options,
-        };
-      }
-
-      default:
-        return s;
-    }
-  },
-  tc3PeriodicNumber: function (
-    s = {maxIndex: 0, options: []},
-    a: CreateTc3PeriodicNumberElementAction,
-  ) {
-    switch (a.type) {
-      case CreateTc3PeriodicNumberElementAction.TYPE: {
-        console.log(`inside reducer tc3PeriodicNumber CreateTc3PeriodicNumberElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
-        const maxIndex = s.maxIndex + 1;
-        const options = [...s.options];
-        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
-        options.splice(a.index!, 0, maxIndex);
-        return {
-          maxIndex,
-          options,
-        };
-      }
-
-      default:
-        return s;
-    }
-  },
-  tc3PeriodicExpiryDate: function (
-    s = {maxIndex: 0, options: []},
-    a: CreateTc3PeriodicExpiryDateElementAction,
-  ) {
-    switch (a.type) {
-      case CreateTc3PeriodicExpiryDateElementAction.TYPE: {
-        console.log(`inside reducer tc3PeriodicExpiryDate CreateTc3PeriodicExpiryDateElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
-        const maxIndex = s.maxIndex + 1;
-        const options = [...s.options];
-        // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
-        options.splice(a.index!, 0, maxIndex);
-        return {
-          maxIndex,
           options,
         };
       }
