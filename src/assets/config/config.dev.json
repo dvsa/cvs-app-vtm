@@ -1,6 +1,6 @@
 {
   "env": {
-    "name": "#{envName}"
+    "name": "dev"
   },
   "appInsights": {
     "instrumentationKey": "#{appInsightsKey}"
@@ -15,8 +15,8 @@
     "clientId": "#{aadClientId}"
   },
   "adalConfig": {
-    "clientId": "#{aadClientId}",
-    "tenant": "#{aadTenant}",
+    "clientId": "54d151b6-2ca8-4018-8c70-f9ee600d91c7",
+    "tenant": "6c448d90-4ca1-4caf-ab59-0a2aa67d7801",
     "redirectUri": "http://localhost:4200",
     "cacheLocation": "localStorage",
     "endpoints": {
@@ -24,7 +24,7 @@
     }
   },
   "apiServer": {
-    "APITechnicalRecordServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
-    "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/"
+    "APITechnicalRecordServerUri": "http://localhost:3005",
+    "APITestResultServerUri": "http://localhost:3006"
   }
 }
