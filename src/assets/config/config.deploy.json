@@ -25,6 +25,7 @@
   },
   "apiServer": {
     "APITechnicalRecordServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
-    "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/"
+    "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
+    "APIDocumentsServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH"
   }
 }
