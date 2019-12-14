@@ -1,9 +1,9 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, getTestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, getTestBed, inject} from '@angular/core/testing';
 import {TechnicalRecordComponent} from './technical-record.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {APP_BASE_HREF} from '@angular/common';
-import {AuthenticationGuard} from 'microsoft-adal-angular6';
+import {AuthenticationGuard, MsAdalAngular6Service} from 'microsoft-adal-angular6';
 import {MatDialogModule} from '@angular/material/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Store, StoreModule} from '@ngrx/store';
@@ -19,12 +19,15 @@ import { hot } from 'jasmine-marbles';
 import { MaterialModule } from '@app/material.module';
 import { SharedModule } from '@app/shared/shared.module';
 import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
+import {TechnicalRecordService} from "@app/technical-record-search/technical-record.service";
+import {TechnicalRecordServiceMock} from "../../../testconfig/services-mocks/technical-record-service.mock";
 
 describe('TechnicalRecordComponent', () => {
 
   let component: TechnicalRecordComponent;
   let fixture: ComponentFixture<TechnicalRecordComponent>;
   const authenticationGuardMock = new AuthenticationGuardMock();
+  const techRecService = new TechnicalRecordServiceMock();
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
   let store: Store<IAppState>;
@@ -63,6 +66,7 @@ describe('TechnicalRecordComponent', () => {
           }
         },
         {provide: AuthenticationGuard, useValue: authenticationGuardMock},
+        {provide: TechnicalRecordService, useValue: techRecService},
         {provide: APP_BASE_HREF, useValue: '/'},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -81,11 +85,11 @@ describe('TechnicalRecordComponent', () => {
     unsubscribe.complete();
   });
 
-  it('should create', () => {
+  it('should be created', inject([TechnicalRecordService], (serviceI: TechnicalRecordService) => {
     store = TestBed.get(Store);
     fixture.detectChanges();
     expect(component).toBeTruthy();
-  });
+  }));
 
   it('should toggle panel open state', () => {
     component.togglePanel();

@@ -1,25 +1,27 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { initAll } from 'govuk-frontend';
-import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, of, forkJoin } from 'rxjs';
-import { FormGroup, Validators } from '@angular/forms';
-import { VEHICLE_TYPES } from '@app/app.enums';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
-import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
-import { IAppState } from '@app/store/state/adrDetailsForm.state';
+import {ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {initAll} from 'govuk-frontend';
+import {Store, select} from '@ngrx/store';
+import {Observable, combineLatest, of, forkJoin} from 'rxjs';
+import {FormGroup, Validators} from '@angular/forms';
+import {VEHICLE_TYPES} from '@app/app.enums';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {FormGroupState, AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
+import {adrDetailsFormModel} from '@app/models/adrDetailsForm.model';
+import {IAppState} from '@app/store/state/adrDetailsForm.state';
 import {
   SetSubmittedValueAction,
   CreatePermittedDangerousGoodElementAction,
   CreateGuidanceNoteElementAction,
   CreateTc3TypeElementAction,
   CreateTc3PeriodicExpiryDateElementAction,
-  CreateTc3PeriodicNumberElementAction,
+  CreateTc3PeriodicNumberElementAction, UpdateTechRecordFormState,
 } from '@app/store/actions/adrDetailsForm.actions';
-import { take, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
-import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
-import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import {take, map, catchError, filter, withLatestFrom} from 'rxjs/operators';
+import {AdrReasonModalComponent} from '@app/shared/adr-reason-modal/adr-reason-modal.component';
+import {selectVehicleTechRecordModelHavingStatusAll} from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import {selectSelectedVehicleTestResultModel} from '@app/store/selectors/VehicleTestResultModel.selectors';
+import {VehicleTechRecordModel} from "@app/models/vehicle-tech-record.model";
+import {TechnicalRecordService} from "@app/technical-record-search/technical-record.service";
 
 export interface Tc3Controls {
   Type: any;
@@ -47,9 +49,15 @@ export class TechnicalRecordComponent implements OnInit {
   public animationsDisabled = true;
   isLoading: boolean;
   searchIdentifier = '{none searched}';
-  panels: { panel: string, isOpened: boolean }[] = [{ panel: 'panel1', isOpened: false }, { panel: 'panel2', isOpened: false }, { panel: 'panel3', isOpened: false }, { panel: 'panel4', isOpened: false },
-  { panel: 'panel5', isOpened: false }, { panel: 'panel6', isOpened: false }, { panel: 'panel7', isOpened: false }, { panel: 'panel8', isOpened: false },
-  { panel: 'panel9', isOpened: false }, { panel: 'panel10', isOpened: false }];
+  panels: { panel: string, isOpened: boolean }[] = [{panel: 'panel1', isOpened: false}, {
+    panel: 'panel2',
+    isOpened: false
+  }, {panel: 'panel3', isOpened: false}, {panel: 'panel4', isOpened: false},
+    {panel: 'panel5', isOpened: false}, {panel: 'panel6', isOpened: false}, {
+      panel: 'panel7',
+      isOpened: false
+    }, {panel: 'panel8', isOpened: false},
+    {panel: 'panel9', isOpened: false}, {panel: 'panel10', isOpened: false}];
   allOpened = false;
   color = 'red';
   changeLabel = 'Change technical record';
@@ -84,7 +92,7 @@ export class TechnicalRecordComponent implements OnInit {
   }[]>;
   tc3Inspections$: Observable<any[]>;
 
-  constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
+  constructor(private _store: Store<IAppState>, public matDialog: MatDialog, private techRecService:TechnicalRecordService) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
     this.adrDetails$ = this._store.select(s => s.adrDetails);
@@ -131,7 +139,7 @@ export class TechnicalRecordComponent implements OnInit {
       withLatestFrom(this.tc3PeriodicNumberOptions$, this.tc3PeriodicExpiryDateOptions$),
       filter(([type, periodicNumber, expiryDate]) => type !== undefined || periodicNumber !== undefined || expiryDate !== undefined),
       map(([type, periodicNumber, expiryDate]) => {
-        return [{type,periodicNumber,expiryDate}];
+        return [{type, periodicNumber, expiryDate}];
       })
     );
   }
@@ -170,15 +178,70 @@ export class TechnicalRecordComponent implements OnInit {
         return false;
       }
     });
-    if (baxlesHasNoParkingBrakeMrk) { return true; }
+    if (baxlesHasNoParkingBrakeMrk) {
+      return true;
+    }
   }
 
   public hasSecondaryVrms(vrms) {
     return (vrms.length > 1) && (vrms.filter(vrm => vrm.isPrimary === false).length > 0);
   }
 
+  techRecordToAdrForm(techRecordsJson: VehicleTechRecordModel) {
+
+    let adrForm:adrDetailsFormModel = {} as adrDetailsFormModel;
+    let activeRecord = this.techRecService.getActiveTechRecord(techRecordsJson);
+
+    adrForm.name = activeRecord.adrDetails.applicantDetails.name;
+    adrForm.street = activeRecord.adrDetails.applicantDetails.street;
+    adrForm.town = activeRecord.adrDetails.applicantDetails.town;
+    adrForm.city = activeRecord.adrDetails.applicantDetails.city;
+    adrForm.postcode = activeRecord.adrDetails.applicantDetails.postcode;
+    adrForm.type = activeRecord.adrDetails.vehicleDetails.type;
+    adrForm.approvalDate.day = new Date(activeRecord.adrDetails.vehicleDetails.approvalDate).getDate();
+    adrForm.approvalDate.month = new Date(activeRecord.adrDetails.vehicleDetails.approvalDate).getMonth();
+    adrForm.approvalDate.year = new Date(activeRecord.adrDetails.vehicleDetails.approvalDate).getFullYear();
+    adrForm.permittedDangerousGoods = activeRecord.adrDetails.permittedDangerousGoods;
+    adrForm.compatibilityJ = activeRecord.adrDetails.compatibilityGroupJ;
+    adrForm.additionalNotes = activeRecord.adrDetails.additionalNotes.number;
+    adrForm.adrTypeApprovalNo = activeRecord.adrDetails.adrTypeApprovalNo;
+    adrForm.tankManufacturer = activeRecord.adrDetails.tank.tankDetails.tankManufacturer;
+    adrForm.yearOfManufacture = activeRecord.adrDetails.tank.tankDetails.yearOfManufacture;
+    adrForm.tankManufacturerSerialNo = activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo;
+    adrForm.tankTypeAppNo = activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo;
+    adrForm.tankCode = activeRecord.adrDetails.tank.tankDetails.tankCode;
+    adrForm.substancesPermitted = activeRecord.adrDetails.tank.tankStatement.substancesPermitted;
+    //adrForm.selectReferenceNumber = activeRecord.adrDetails.tank.tankStatement.statement;
+    adrForm.statement = activeRecord.adrDetails.tank.tankStatement.statement;
+    adrForm.productListRefNo = activeRecord.adrDetails.tank.tankStatement.productListRefNo;
+    adrForm.productListUnNo = activeRecord.adrDetails.tank.tankStatement.productListUnNo;
+    adrForm.productList = activeRecord.adrDetails.tank.tankStatement.productList;
+    adrForm.specialProvisions = activeRecord.adrDetails.tank.tankDetails.specialProvisions;
+    adrForm.tc2Type = activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type;
+    adrForm.tc2IntermediateApprovalNo = activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo;
+    adrForm.tc2IntermediateExpiryDate.day =  new Date(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate).getDate();
+    adrForm.tc2IntermediateExpiryDate.month = new Date(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate).getMonth();
+    adrForm.tc2IntermediateExpiryDate.year = new Date(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate).getFullYear();
+    adrForm.tc3Type = activeRecord.adrDetails.tank.tankDetails.tc3Details != null ? activeRecord.adrDetails.tank.tankDetails.tc3Details.tc3Type : "";
+    adrForm.tc3PeriodicNumber = activeRecord.adrDetails.tank.tankDetails.tc3Details != null ? activeRecord.adrDetails.tank.tankDetails.tc3Details.tc3PeriodicNumber : "";
+    // adrForm.tc3PeriodicExpiryDate[0].day = activeRecord.adrDetails.tank.tankDetails.tc3Details != null ? new Date(activeRecord.adrDetails.tank.tankDetails.tc3Details.tc3PeriodicExpiryDate).getDate() : 0;
+    // adrForm.tc3PeriodicExpiryDate[0].month = activeRecord.adrDetails.tank.tankDetails.tc3Details != null ? new Date(activeRecord.adrDetails.tank.tankDetails.tc3Details.tc3PeriodicExpiryDate).getMonth() : 0;
+    // adrForm.tc3PeriodicExpiryDate[0].year = activeRecord.adrDetails.tank.tankDetails.tc3Details != null ? new Date(activeRecord.adrDetails.tank.tankDetails.tc3Details.tc3PeriodicExpiryDate).getFullYear() : 0;
+    adrForm.memosApply = activeRecord.adrDetails.memosApply;
+    adrForm.listStatementApplicable = activeRecord.adrDetails.listStatementApplicable;
+    adrForm.batteryListNumber = activeRecord.adrDetails.batteryListNumber;
+    adrForm.brakeDeclarationIssuer = activeRecord.adrDetails.brakeDeclarationIssuer;
+    adrForm.brakeEndurance =  activeRecord.adrDetails.brakeEndurance;
+    adrForm.brakeDeclarationsSeen = activeRecord.adrDetails.brakeDeclarationsSeen;
+    adrForm.declarationsSeen = activeRecord.adrDetails.declarationsSeen;
+    adrForm.weight = activeRecord.adrDetails.weight;
+    adrForm.certificateReq = activeRecord.adrDetails.guidanceNotes;
+    adrForm.adrMoreDetail = activeRecord.adrDetails.additionalExaminerNotes;
+
+    return adrForm;
+  }
+
   public adrEdit(techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
-    console.log(`numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
     this.changeLabel = 'Save technical record';
     this.isSubmit = true;
     this.adrData = false;
@@ -186,8 +249,11 @@ export class TechnicalRecordComponent implements OnInit {
     this.numberFee = numberFee;
     this.dangerousGoods = dangerousGoods;
     this.isAdrNull = isAdrNull == undefined || isAdrNull == null;
-    console.log(this.isAdrNull);
     this.hideForm = this.isAdrNull;
+
+    let adrForm = this.techRecordToAdrForm(techRecordsJson);
+
+    this._store.dispatch(new UpdateTechRecordFormState(adrForm));
   }
 
   public cancelAddrEdit() {

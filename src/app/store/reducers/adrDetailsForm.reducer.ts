@@ -21,7 +21,7 @@ import {
   RemoveGuidanceNoteElementAction,
   RemovePermittedDangerousGoodElementAction,
   RemoveProductListUnNoElementAction,
-  SetSubmittedValueAction
+  SetSubmittedValueAction, UpdateTechRecordFormState
 } from '../actions/adrDetailsForm.actions';
 import {approvalDate} from '@app/models/approvalDate';
 
@@ -60,11 +60,18 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction |
        CreateGuidanceNoteElementAction | RemoveGuidanceNoteElementAction |
        CreateProductListUnNoElementAction | RemoveProductListUnNoElementAction |
-       CreateTc3TypeElementAction | CreateTc3PeriodicNumberElementAction | CreateTc3PeriodicExpiryDateElementAction
+       CreateTc3TypeElementAction | CreateTc3PeriodicNumberElementAction | CreateTc3PeriodicExpiryDateElementAction /*|  UpdateTechRecordFormState */
   ) {
     s = formGroupReducerWithUpdate(s, a);
 
     switch (a.type) {
+
+      // case UpdateTechRecordFormState.TYPE:  // to be completed
+      //   return {
+          //...s,
+          //a.payload
+        // };
+
       case CreatePermittedDangerousGoodElementAction.TYPE:
         return updateGroup<adrDetailsFormModel>({
           permittedDangerousGoods: group => {

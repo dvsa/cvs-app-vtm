@@ -10,4 +10,9 @@ export class TechnicalRecordServiceMock {
     return of({ techRecord: [], vin: 'XXXXX11XX1X111111', vrms: []});
   }
 
+  getActiveTechRecord(): Observable<any> {
+    return of({ techRecord: [], vin: 'XXXXX11XX1X111111', vrms: []});
+  }
+
+
 }

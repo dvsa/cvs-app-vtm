@@ -1,18 +1,14 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
+import {TechnicalRecordService} from "@app/technical-record-search/technical-record.service";
+
 @Pipe({name: 'FilterRecord'})
 export class FilterRecordPipe implements PipeTransform {
 
-  transform(techRecordList: any): any {
-    if (techRecordList) {
-      let records = techRecordList.find((record: any) => record.statusCode === 'current');
-      if (records !== undefined) return records;
-
-      records = techRecordList.find((record: any) => record.statusCode === 'provisional');
-      if (records !== undefined) return records;
-
-      records = techRecordList.filter((record: any) => record.statusCode === 'archived');
-      records.sort((a,b)=> new Date (a.createdAt).getTime() - new Date (b.createdAt).getTime() );
-      if (records !== undefined) return records[0];
-    }
+  constructor(private techRecordService: TechnicalRecordService) {
   }
+
+  transform(techRecordList: any): any {
+    this.techRecordService.getActiveTechRecord(techRecordList);
+  }
+
 }

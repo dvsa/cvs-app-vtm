@@ -3,29 +3,27 @@
     "name": "dev"
   },
   "appInsights": {
-    "instrumentationKey": "#{appInsightsKey}"
+    "instrumentationKey": "<dev-guid-here>"
   },
   "logging": {
     "console": true,
-    "appInsights": true
+    "appInsights": false
   },
   "aad": {
     "requireAuth": true,
-    "tenant": "#{aadTenant}",
-    "clientId": "#{aadClientId}"
+    "tenant": "",
+    "clientId": ""
   },
   "adalConfig": {
-    "clientId": "#{aadClientId}",
-    "tenant": "#{aadTenant}",
-    "redirectUri": "http://localhost:4200",
+    "clientId": "",
+    "tenant": "",
     "cacheLocation": "localStorage",
     "endpoints": {
       "api": "xxx-bae6-4760-b434-xxx"
     }
   },
   "apiServer": {
-    "APITechnicalRecordServerUri": "http://localhost:3005",
-    "APITestResultServerUri": "http://localhost:3006",
-    "APIDocumentsServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH"
+    "APITechnicalRecordServerUri": "",
+    "APITestResultServerUri": ""
   }
 }
