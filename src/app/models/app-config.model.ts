@@ -26,5 +26,6 @@ export interface IAppConfig {
   apiServer: {
     APITechnicalRecordServerUri: string;
     APITestResultServerUri: string;
+    APIDocumentsServerUri: string;
   };
 }

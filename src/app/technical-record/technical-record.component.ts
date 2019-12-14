@@ -20,6 +20,7 @@ import { take, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { DownloadDocumentFileAction } from '@app/store/actions/VehicleTechRecordModel.actions';
 
 export interface Tc3Controls {
   Type: any;
@@ -239,6 +240,11 @@ export class TechnicalRecordComponent implements OnInit {
         this.files.add(file);
       }
     }
+  }
+
+  downloadDocument(doc) {
+    console.log(`dispatching donwloadDocuement for ${JSON.stringify(doc)}`);
+    this._store.dispatch(new DownloadDocumentFileAction(doc));
   }
 
   addAddUNOption() {
