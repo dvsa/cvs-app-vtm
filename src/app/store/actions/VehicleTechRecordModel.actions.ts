@@ -1,4 +1,4 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 
 export enum EVehicleTechRecordModelActions {
@@ -17,7 +17,7 @@ export class GetVehicleTechRecordModel implements Action {
 
 export class GetVehicleTechRecordModelSuccess implements Action {
   public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess;
-  constructor(public  payload: VehicleTechRecordModel) {
+  constructor(public payload: VehicleTechRecordModel) {
   }
 }
 
@@ -29,16 +29,38 @@ export class GetVehicleTechRecordModelHavingStatusAll implements Action {
 
 export class GetVehicleTechRecordModelHavingStatusAllSuccess implements Action {
   public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess;
-  constructor(public  payload: VehicleTechRecordModel) {
+  constructor(public payload: VehicleTechRecordModel) {
   }
 }
 
 export class GetVehicleTechRecordModelHavingStatusAllFailure implements Action {
   public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure;
-  constructor(public  payload: any) {
+  constructor(public payload: any) {
   }
 }
 
+export class DownloadDocumentFileAction implements Action {
+  static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE';
+  readonly type = DownloadDocumentFileAction.TYPE;
+  constructor(public filename: string) {
+  }
+}
+
+export class DownloadDocumentFileActionSuccess implements Action {
+  static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE_SUCCESS';
+  readonly type = DownloadDocumentFileActionSuccess.TYPE;
+  constructor(public payload:any) {
+  }
+}
+
+export class DownloadDocumentFileActionFailure implements Action {
+  static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE_FAILURE';
+  readonly type = DownloadDocumentFileActionFailure.TYPE;
+  constructor(public payload:any) {
+  }
+}
+
+
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
-                                            GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
-                                            GetVehicleTechRecordModelHavingStatusAllFailure;
+  GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
+  GetVehicleTechRecordModelHavingStatusAllFailure;

@@ -1093,8 +1093,9 @@
                               [expiryDate]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls[i]">
                             </vtm-inspection-details>
                           </ng-container>
-                          <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent inspection</a></p>
-                          
+                          <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent
+                              inspection</a></p>
+
                           <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                               <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
@@ -1499,10 +1500,13 @@
                       <h2 class="govuk-heading-m">Tank documents</h2>
                     </div>
                     <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.documents) else noDoc">
-                      <div class="govuk-summary-list__row" *ngFor="let doc of activeRecord.adrDetails.documents">
-                        <dt class="govuk-summary-list__key"> {{doc}} </dt>
+                      <div class="govuk-summary-list__row"
+                        *ngFor="let doc of activeRecord.adrDetails.documents; let i = index; trackBy: trackByFn">
+                        <dt class="govuk-summary-list__key">Document {{i +1}} </dt>
                         <dd class="govuk-summary-list__value"></dd>
-                        <dd class="govuk-summary-list__value"><a class="govuk-link">View</a></dd>
+                        <dd class="govuk-summary-list__value">
+                          <a class="govuk-link" (click)="downloadDocument(doc)">Download</a>
+                        </dd>
                       </div>
                     </ng-container>
                     <ng-template #noDoc>

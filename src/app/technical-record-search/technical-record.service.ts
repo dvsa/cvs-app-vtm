@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import {AppConfig} from '@app/app.config';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AppConfig } from '@app/app.config';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class TechnicalRecordService {
     console.log(`TechnicalRecordService ctor apiServer => ${JSON.stringify(this.apiServer)}`);
     this.routes = {
       techRecords: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
-      // tslint:disable-next-line:max-line-length
       techRecordsAllStatuses: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
+      downloadDocument: (vin: string, filename: string) => `${this.apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file/${filename}}`
     };
   }
 
@@ -26,5 +27,20 @@ export class TechnicalRecordService {
 
   uploadDocuments() {
 
+  }
+
+  downloadDocument(vin: string, filename: string) : Observable<any> {
+    console.log(`downloadDocument route => ${JSON.stringify(this.routes.downloadDocument(vin, filename))}`);
+    return this.httpClient.get(this.routes.downloadDocument(vin, filename), {
+      observe: 'response',
+      responseType: 'blob'
+    }).pipe(
+      map(response => {
+        return {
+          fileName: filename,
+          blob: response.body
+        }
+      })
+    );
   }
 }

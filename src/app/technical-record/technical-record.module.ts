@@ -18,6 +18,8 @@ import {RouterModule} from '@angular/router';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
 import {InspectionDetailsModule} from '@app/inspection-details/inspection-details.module';
+import { EffectsModule } from '@ngrx/effects';
+import { DownloadDocumentsEffects } from './download-documents.effects';
 
 @NgModule({
   imports: [
@@ -29,6 +31,7 @@ import {InspectionDetailsModule} from '@app/inspection-details/inspection-detail
       {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard]}
     ]),
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
+    EffectsModule.forFeature([DownloadDocumentsEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
