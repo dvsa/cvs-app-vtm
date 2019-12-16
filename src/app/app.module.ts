@@ -73,7 +73,7 @@ export const COMPONENTS = [
     StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     !(environment.name === 'deploy') ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
-    EffectsModule.forRoot([VehicleTechRecordModelEffects, VehicleTestResultModelEffects])
+    EffectsModule.forRoot([]),
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,
