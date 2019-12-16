@@ -16,7 +16,7 @@ export class TechnicalRecordService {
     this.routes = {
       techRecords: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
       techRecordsAllStatuses: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
-      downloadDocument: (vin: string, filename: string) => `${this.apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file/${filename}}`
+      downloadDocument: (vin: string, filename: string) => `${this.apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file/${filename}`
     };
   }
 
