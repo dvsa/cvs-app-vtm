@@ -21,10 +21,11 @@ export class DownloadDocumentsEffects {
                 tap(_ => {
                     console.log(`withLatestFrom _ => ${JSON.stringify(_)}`);
                 })
-                )),
+            )),
         switchMap(([action, vin]) => this._technicalRecordService.downloadDocument(vin, action.filename)
             .pipe(switchMap((payload: any) => of(new DownloadDocumentFileActionSuccess(payload))),
                 tap((_) => {
+                    console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
                     this._FileSaverService.save(_.payload.blob, _.payload.fileName);
                 }),
                 catchError((error) =>

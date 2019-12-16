@@ -11,12 +11,12 @@
   },
   "aad": {
     "requireAuth": true,
-    "tenant": "#{aadTenant}",
-    "clientId": "#{aadClientId}"
+    "clientId": "#{aadClientId}",
+    "tenant": "#{aadTenant}"
   },
   "adalConfig": {
-    "clientId": "54d151b6-2ca8-4018-8c70-f9ee600d91c7",
-    "tenant": "6c448d90-4ca1-4caf-ab59-0a2aa67d7801",
+    "clientId": "#{aadClientId}",
+    "tenant": "#{aadTenant}",
     "redirectUri": "http://localhost:4200",
     "cacheLocation": "localStorage",
     "endpoints": {

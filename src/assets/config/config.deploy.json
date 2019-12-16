@@ -11,8 +11,8 @@
   },
   "aad": {
     "requireAuth": true,
-    "tenant": "#{aadTenant}",
-    "clientId": "#{aadClientId}"
+    "clientId": "#{aadClientId}",
+    "tenant": "#{aadTenant}"
   },
   "adalConfig": {
     "clientId": "#{aadClientId}",
