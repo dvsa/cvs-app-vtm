@@ -1122,23 +1122,26 @@
                           <div class="govuk-summary-list__row">
                             <h2 class="govuk-heading-m">Tank documents</h2>
                           </div>
-                          <div class="govuk-summary-list__row">
-                            <ul *ngFor="let file of files">
-                              <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key"> {{file.name}} </dt>
-                                <dd class="govuk-summary-list__value">
-                                </dd>
-                                <dd class="govuk-summary-list__value">
-                                  <a class="govuk-link">View</a>
-                                </dd>
-                              </div>
-                            </ul>
-                          </div>
-                          <div id="hide">
-                            <label class="hand-cursor">
-                              <input #fileInput type="file" (change)="changeListener($event)" multiple>
-                              <span class="govuk-button govuk-button--secondary">Upload documents</span>
-                            </label>
+                          <div class="govuk-form-group">
+                            <div class="govuk-summary-list__row">
+                                <div *ngFor="let file of files" class="govuk-summary-list__row tank-documents">
+                                  <dt class="govuk-summary-list__key"> {{file.name}} </dt>
+                                  <dd class="govuk-summary-list__value">
+                                  </dd>
+                                  <dd class="govuk-summary-list__value">
+                                    <a class="govuk-link">View</a>
+                                  </dd>
+                                  <dd class="govuk-summary-list__value">
+                                    <a class="govuk-link">Remove</a>
+                                  </dd>
+                                </div>
+                            </div>
+                            <div id="hide">
+                              <label class="hand-cursor">
+                                <input #fileInput type="file" (change)="changeListener($event)" multiple>
+                                <span class="govuk-button govuk-button--secondary mt-1">Upload documents</span>
+                              </label>
+                            </div>
                           </div>
 
                           <div class="govuk-form-group">
