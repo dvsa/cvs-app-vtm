@@ -7,7 +7,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {SharedModule} from '../shared/shared.module';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {StoreModule} from '@ngrx/store';
-import {adrDetailsReducer} from '@app/store/reducers/adrDetailsForm.reducer';
 import {NgxJsonViewerModule} from 'ngx-json-viewer';
 import {MaterialModule} from '@app/material.module';
 import {TechnicalRecordSearchComponent} from './technical-record-search.component';
@@ -26,7 +25,6 @@ import { VehicleTechRecordModelEffects } from '@app/store/effects/VehicleTechRec
     MaterialModule,
     MatFormFieldModule,
     HttpClientModule,
-    StoreModule.forFeature('adrDetails', adrDetailsReducer),
     RouterModule.forChild([
       {path: '', component: TechnicalRecordSearchComponent, canActivate: [AuthenticationGuard]},
       {

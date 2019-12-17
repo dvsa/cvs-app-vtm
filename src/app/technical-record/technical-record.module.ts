@@ -11,7 +11,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { SharedModule } from '../shared/shared.module';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { StoreModule } from '@ngrx/store';
-import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { MaterialModule } from '@app/material.module';
 import {RouterModule} from '@angular/router';
@@ -20,6 +19,7 @@ import {TechnicalRecordComponent} from '@app/technical-record/technical-record.c
 import {InspectionDetailsModule} from '@app/inspection-details/inspection-details.module';
 import { EffectsModule } from '@ngrx/effects';
 import { DownloadDocumentsEffects } from './download-documents.effects';
+import { adrDetailsReducer } from './technical-record.reducer';
 
 @NgModule({
   imports: [

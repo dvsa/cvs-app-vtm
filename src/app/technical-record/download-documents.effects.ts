@@ -26,7 +26,9 @@ export class DownloadDocumentsEffects {
             .pipe(switchMap((payload: any) => of(new DownloadDocumentFileActionSuccess(payload))),
                 tap((_) => {
                     console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
-                    this._FileSaverService.save(_.payload.blob, _.payload.fileName);
+                    console.log(`blob pre "" trim => ${_.payload.blob}`);
+                    console.log(`blob post "" trim => ${_.payload.blob.replace(/^"(.*)"$/, '$1')}`);
+                    this._FileSaverService.save(_.payload.blob.replace(/^"(.*)"$/, '$1'), _.payload.fileName);
                 }),
                 catchError((error) =>
                     of(new DownloadDocumentFileActionFailure(error))

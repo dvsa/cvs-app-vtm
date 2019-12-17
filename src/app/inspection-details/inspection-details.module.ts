@@ -7,7 +7,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { SharedModule } from '../shared/shared.module';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { StoreModule } from '@ngrx/store';
-import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { MaterialModule } from '@app/material.module';
 import {InspectionDetailsComponent} from '@app/inspection-details/inspection-details.component';
@@ -18,7 +17,6 @@ import {InspectionDetailsComponent} from '@app/inspection-details/inspection-det
     MaterialModule,
     MatFormFieldModule,
     HttpClientModule,
-    StoreModule.forFeature('adrDetails', adrDetailsReducer),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
