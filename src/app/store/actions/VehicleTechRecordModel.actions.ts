@@ -49,7 +49,7 @@ export class DownloadDocumentFileAction implements Action {
 export class DownloadDocumentFileActionSuccess implements Action {
   static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE_SUCCESS';
   readonly type = DownloadDocumentFileActionSuccess.TYPE;
-  constructor(public payload:any) {
+  constructor(public payload:{blob: Blob, fileName?: string}) {
   }
 }
 

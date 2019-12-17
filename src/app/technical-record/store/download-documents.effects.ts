@@ -26,9 +26,8 @@ export class DownloadDocumentsEffects {
             .pipe(switchMap((payload: any) => of(new DownloadDocumentFileActionSuccess(payload))),
                 tap((_) => {
                     console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
-                    console.log(`blob pre "" trim => ${JSON.stringify(_.payload.blob)}`);
-                    console.log(`blob post "" trim => ${JSON.stringify(_.payload.blob.replace(/^"(.*)"$/, '$1'))}`);
-                    this._FileSaverService.save(_.payload.blob.replace(/^"(.*)"$/, '$1'), _.payload.fileName);
+                    this.printFile(_.payload.blob);
+                    this._FileSaverService.save(_.payload.blob, _.payload.fileName);
                 }),
                 catchError((error) =>
                     of(new DownloadDocumentFileActionFailure(error))
@@ -39,4 +38,12 @@ export class DownloadDocumentsEffects {
         private _technicalRecordService: TechnicalRecordService,
         private _store$: Store<IAppState>,
         private _FileSaverService: FileSaverService) { }
+
+    private printFile(file) {
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+            console.log(evt.target.result);
+        };
+        reader.readAsText(file);
+    }
 }

@@ -29,7 +29,7 @@ export class TechnicalRecordService {
 
   }
 
-  downloadDocument(vin: string, fileName: string): Observable<any> {
+  downloadDocument(vin: string, fileName: string): Observable<{blob: Blob, fileName?: string}> {
     console.log(`downloadDocument route => ${JSON.stringify(this.routes.downloadDocument(vin))}`);
     return this.httpClient.get(this.routes.downloadDocument(vin), {
       params: {
@@ -40,8 +40,8 @@ export class TechnicalRecordService {
     }).pipe(
       map(response => {
         return {
+          blob: response.body,
           fileName: fileName,
-          blob: response.body
         }
       })
     );
