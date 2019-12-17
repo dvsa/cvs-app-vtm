@@ -4,7 +4,7 @@ import {AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
 
 
 export class SetSubmittedValueAction implements Action {
-  static readonly TYPE = 'simpleForm/SET_SUBMITTED_VALUE';
+  static readonly TYPE = 'adrDetails/SET_SUBMITTED_VALUE';
   readonly type = SetSubmittedValueAction.TYPE;
   constructor(public submittedValue: adrDetailsFormModel) { }
 }
