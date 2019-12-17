@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { adrDetailsFormModel } from '@app/technical-record/adrDetailsForm.model';
+import { adrDetailsFormModel } from '@app/technical-record/store/adrDetailsForm.model';
 import {AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
 
 

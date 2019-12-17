@@ -9,7 +9,7 @@ import {
   validate
 } from 'ngrx-forms';
 import {greaterThan, lessThanOrEqualTo, maxLength, required} from 'ngrx-forms/validation';
-import {adrDetailsFormModel} from '@app/technical-record/adrDetailsForm.model';
+import {adrDetailsFormModel} from '@app/technical-record/store/adrDetailsForm.model';
 
 import {
   CreateGuidanceNoteElementAction,

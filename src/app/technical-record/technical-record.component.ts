@@ -14,7 +14,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { VEHICLE_TYPES } from '@app/app.enums';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
-import { adrDetailsFormModel } from '@app/technical-record/adrDetailsForm.model';
+import { adrDetailsFormModel } from '@app/technical-record/store/adrDetailsForm.model';
 import {
   SetSubmittedValueAction,
   CreatePermittedDangerousGoodElementAction,
@@ -28,7 +28,7 @@ import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { DownloadDocumentFileAction } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { IAppState } from './adrDetailsForm.state';
+import { IAppState } from './store/adrDetailsForm.state';
 
 export interface Tc3Controls {
   Type: any;
