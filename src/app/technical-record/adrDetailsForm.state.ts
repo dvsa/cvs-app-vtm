@@ -1,6 +1,6 @@
-import { IAppState as RootState } from './app.state';
-import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
+import { IAppState as RootState } from '@app/store/state/app.state';
 import { createFormGroupState, FormGroupState, box } from 'ngrx-forms';
+import { adrDetailsFormModel } from './adrDetailsForm.model';
 
 export interface IAppState extends RootState {
   adrDetails: {
@@ -51,6 +51,7 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
   tankManufacturerSerialNo: '',
   tankTypeAppNo: '',
   tankCode: '',
+  tankDocuments:{},
   substancesPermitted: '',
   selectReferenceNumber: '',
   statement: '',

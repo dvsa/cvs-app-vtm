@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { adrDetailsFormModel } from '@app/technical-record/adrDetailsForm.model';
 import {AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
+import { adrDetailsFormModel } from './adrDetailsForm.model';
 
 
 export class SetSubmittedValueAction implements Action {
@@ -67,4 +67,10 @@ export class CreateTc3PeriodicExpiryDateElementAction  extends AddArrayControlAc
   constructor(public controlId: string, public value: any, index?: number) {
     super(controlId,value,index);
   }
+}
+
+export class AddTankDocumentAction implements Action {
+    static readonly TYPE = 'technicalRecord/ADD_TANK_DOCUMENT';
+    readonly type = AddTankDocumentAction.TYPE;
+    constructor( public documentBase64: string | ArrayBuffer) { }
 }

@@ -14,8 +14,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { VEHICLE_TYPES } from '@app/app.enums';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
-import { adrDetailsFormModel } from '@app/models/adrDetailsForm.model';
-import { IAppState } from '@app/store/state/adrDetailsForm.state';
+import { adrDetailsFormModel } from '@app/technical-record/adrDetailsForm.model';
 import {
   SetSubmittedValueAction,
   CreatePermittedDangerousGoodElementAction,
@@ -29,6 +28,7 @@ import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { DownloadDocumentFileAction } from '@app/store/actions/VehicleTechRecordModel.actions';
+import { IAppState } from './adrDetailsForm.state';
 
 export interface Tc3Controls {
   Type: any;
@@ -234,7 +234,7 @@ export class TechnicalRecordComponent implements OnInit {
     const myReader: FileReader = new FileReader();
 
     myReader.onloadend = () => {
-      // console.log(myReader.result);
+      console.log(myReader.result);
     };
     myReader.readAsDataURL(file);
 

@@ -23,6 +23,7 @@ export interface adrDetailsFormModel {
     tankManufacturerSerialNo: string;
     tankTypeAppNo: string;
     tankCode: string;
+    tankDocuments: { [id: string]: string };
     substancesPermitted: string;
     selectReferenceNumber: string;
     statement: string;
