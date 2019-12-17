@@ -117,6 +117,14 @@ $font-stack: GDSTransportWebsite;
   margin-bottom: 1rem;
 }
 
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
 dd {
   & ul {
     padding-left: 0%;
@@ -520,7 +528,7 @@ a#cancel1, a#cancel2 {
   width: 6rem;
 }
 
-::ng-deep #cdk-accordion-child-5 > div > dl > div:nth-child(27) {
+::ng-deep #cdk-accordion-child-5 > div > dl > div:nth-child(27), .tank-documents {
   display: block !important;
   width: 100vw;
   max-width: 1500px;
@@ -529,6 +537,21 @@ a#cancel1, a#cancel2 {
 .govuk-inset-text {
   padding-top: 0!important;
 }
+
+textarea .specialProvisions {
+  max-width: 480px;
+}
+
+.tank-documents {
+  a {
+    width: 47px !important;
+  }
+}
+
+
+
+
+
 
 
 

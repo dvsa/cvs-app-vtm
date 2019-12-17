@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener
+} from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, forkJoin } from 'rxjs';
@@ -135,6 +143,7 @@ export class TechnicalRecordComponent implements OnInit {
         return [{type,periodicNumber,expiryDate}];
       })
     );
+
   }
 
   ngOnInit() {
@@ -179,7 +188,6 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   public adrEdit(techRecordsJson, numberFee, dangerousGoods, isAdrNull) {
-    console.log(`numberFee is ${numberFee}, dangerousGoods is ${dangerousGoods}, isAdrNull is ${isAdrNull}`);
     this.changeLabel = 'Save technical record';
     this.isSubmit = true;
     this.adrData = false;
@@ -187,7 +195,6 @@ export class TechnicalRecordComponent implements OnInit {
     this.numberFee = numberFee;
     this.dangerousGoods = dangerousGoods;
     this.isAdrNull = isAdrNull == undefined || isAdrNull == null;
-    console.log(this.isAdrNull);
     this.hideForm = this.isAdrNull;
   }
 
