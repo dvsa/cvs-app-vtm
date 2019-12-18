@@ -12,8 +12,9 @@ import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
-import { CreatePermittedDangerousGoodElementAction } from '../actions/adrDetailsForm.actions';
 import {TechnicalRecordService} from '@app/technical-record-search/technical-record.service';
+import { CreatePermittedDangerousGoodElementAction } from '@app/technical-record/store/technical-record.actions';
+import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -38,7 +39,7 @@ export class VehicleTechRecordModelEffects {
   constructor(
     private _technicalRecordService: TechnicalRecordService,
     private _actions$: Actions,
-    private _store: Store<IAppState>,
+    private _store: Store<IVehicleTechRecordModelState>,
     private router: Router
   ) {
   }

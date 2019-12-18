@@ -17,7 +17,7 @@ export class TechnicalRecordSearchComponent {
   searchError$: Observable<any>;
 
   constructor(private _store: Store<IAppState>) {
-    this.searchError$ = this._store.select( s => s.vehicleTechRecordModel.error);
+    this.searchError$ = this._store.select( s => s.error);
   }
 
   public searchTechRecords(q: string) {

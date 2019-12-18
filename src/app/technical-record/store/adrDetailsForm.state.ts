@@ -1,6 +1,6 @@
-import { IAppState as RootState } from '@app/store/state/app.state';
 import { createFormGroupState, FormGroupState, box } from 'ngrx-forms';
 import { adrDetailsFormModel } from './adrDetailsForm.model';
+import {IAppState as RootState} from '../../store/state/app.state';
 
 export interface IAppState extends RootState {
   adrDetails: {
