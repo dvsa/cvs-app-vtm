@@ -4,9 +4,7 @@ import {
   HostBinding,
   OnInit,
   ViewChild,
-  ElementRef,
-  HostListener
-} from '@angular/core';
+  ElementRef} from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of, forkJoin } from 'rxjs';
@@ -15,20 +13,12 @@ import { VEHICLE_TYPES } from '@app/app.enums';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
 import { adrDetailsFormModel } from '@app/technical-record/store/adrDetailsForm.model';
-import {
-  SetSubmittedValueAction,
-  CreatePermittedDangerousGoodElementAction,
-  CreateGuidanceNoteElementAction,
-  CreateTc3TypeElementAction,
-  CreateTc3PeriodicExpiryDateElementAction,
-  CreateTc3PeriodicNumberElementAction,
-} from '@app/store/actions/adrDetailsForm.actions';
 import { take, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
-import { DownloadDocumentFileAction } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { IAppState } from './store/adrDetailsForm.state';
+import { SetSubmittedValueAction, DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction } from './store/technical-record.actions';
+import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 
 export interface Tc3Controls {
   Type: any;
@@ -250,7 +240,6 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   downloadDocument(doc) {
-    console.log(`dispatching donwloadDocuement for ${JSON.stringify(doc)}`);
     this._store.dispatch(new DownloadDocumentFileAction(doc));
   }
 
@@ -300,7 +289,6 @@ export class TechnicalRecordComponent implements OnInit {
         year: 1930
       })),
     ).subscribe(this._store);
-    // this.subsequentInspection = true;
   }
 
   selectReferenceNumberChange($event) {

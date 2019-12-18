@@ -1,4 +1,3 @@
-import {VehicleTechRecordModelReducers} from './VehicleTechRecordModel.reducers';
 import {initialVehicleTechRecordModelState} from '../state/VehicleTechRecordModel.state';
 import {
   GetVehicleTechRecordModel,
@@ -7,6 +6,7 @@ import {
   GetVehicleTechRecordModelHavingStatusAllSuccess
 } from '../actions/VehicleTechRecordModel.actions';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModelReducers } from '@app/store/reducers/VehicleTechRecordModel.reducers';
 
 describe('VehicleTechRecordModel Reducer', () => {
   describe('undefined action', () => {

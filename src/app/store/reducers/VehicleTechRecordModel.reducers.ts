@@ -1,5 +1,5 @@
-import {initialVehicleTechRecordModelState, IVehicleTechRecordModelState} from '../state/VehicleTechRecordModel.state';
 import {EVehicleTechRecordModelActions, VehicleTechRecordModelActions} from '../actions/VehicleTechRecordModel.actions';
+import { initialVehicleTechRecordModelState, IVehicleTechRecordModelState } from '@app/store/state/VehicleTechRecordModel.state';
 
 export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions): 
 IVehicleTechRecordModelState {

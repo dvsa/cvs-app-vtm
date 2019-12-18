@@ -39,26 +39,6 @@ export class GetVehicleTechRecordModelHavingStatusAllFailure implements Action {
   }
 }
 
-export class DownloadDocumentFileAction implements Action {
-  static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE';
-  readonly type = DownloadDocumentFileAction.TYPE;
-  constructor(public filename: string) {
-  }
-}
-
-export class DownloadDocumentFileActionSuccess implements Action {
-  static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE_SUCCESS';
-  readonly type = DownloadDocumentFileActionSuccess.TYPE;
-  constructor(public payload:{blob: Blob, fileName?: string}) {
-  }
-}
-
-export class DownloadDocumentFileActionFailure implements Action {
-  static readonly TYPE = 'technicalRecords/DOWNLOAD_DOCUMENT_FILE_FAILURE';
-  readonly type = DownloadDocumentFileActionFailure.TYPE;
-  constructor(public payload:any) {
-  }
-}
 
 
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |

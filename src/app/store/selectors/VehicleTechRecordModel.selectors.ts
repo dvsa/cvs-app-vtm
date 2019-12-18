@@ -5,11 +5,6 @@ export const selectFeature = createFeatureSelector<IVehicleTechRecordModelState>
   'vehicleTechRecordModel'
 );
 
-export const selectTechRecords = createSelector(
-  selectFeature,
-  (state: IVehicleTechRecordModelState) => state.vehicleTechRecordModel
-);
-
 export const selectVehicleTechRecordModelHavingStatusAll = createSelector(
   selectFeature,
   (state: IVehicleTechRecordModelState) => state.vehicleTechRecordModel
