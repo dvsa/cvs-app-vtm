@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppConfig } from '@app/app.config';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,21 +29,20 @@ export class TechnicalRecordService {
 
   }
 
-  downloadDocument(vin: string, fileName: string): Observable<{blob: Blob, fileName?: string}> {
+  downloadDocument(vin: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
     console.log(`downloadDocument route => ${JSON.stringify(this.routes.downloadDocument(vin))}`);
-    return this.httpClient.get(this.routes.downloadDocument(vin), {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    });
+    return this.httpClient.get<Blob>(this.routes.downloadDocument(vin), {
       params: {
         filename: fileName
       },
-      observe: 'response',
-      responseType: 'blob'
+      headers: headers,
+      responseType: 'blob' as 'json'
     }).pipe(
-      map(response => {
-        return {
-          blob: response.body,
-          fileName: fileName,
-        }
-      })
+      switchMap(response => of({ blob: response, fileName: fileName}))
     );
   }
 }
