@@ -41,18 +41,12 @@ export class DownloadDocumentsEffects {
         private _FileSaverService: FileSaverService) { }
 
     private saveFile(payload) {
-        // const reader = new FileReader();
         payload.blob.text().then( text => {
             console.log(text);
-            const fileType = this._FileSaverService.genType(payload.fileName);
-            const txtBlob = new Blob([text.split("base64,").pop()], { type: fileType });
-            this._FileSaverService.save(txtBlob, payload.fileName);
+            // const fileType = this._FileSaverService.genType(payload.fileName);
+            // const txtBlob = new Blob([btoa(text.replace(/^data:.+;base64,/, '')] , { type: fileType });
+            this._FileSaverService.save(text.replace(/^data:.+;base64,/, ''), payload.fileName);
         })
-        // reader.onload = function (evt) {
-        //     console.log(evt.target.result);
-
-        // };
-        // reader.readAsText(payload.blob);
     }
 
     private textBlob:string;
