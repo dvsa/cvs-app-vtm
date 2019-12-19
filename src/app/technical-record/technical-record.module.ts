@@ -18,7 +18,7 @@ import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
 import {InspectionDetailsModule} from '@app/inspection-details/inspection-details.module';
 import { EffectsModule } from '@ngrx/effects';
-import { adrDetailsReducer } from './store/technical-record.reducer';
+import { adrDetailsReducer } from './store/adrDetails.reducer';
 import { DownloadDocumentsEffects } from './store/download-documents.effects';
 import { VehicleTechRecordModelEffects } from '../store/effects/VehicleTechRecordModel.effects';
 

@@ -23,6 +23,10 @@ export interface IAppState extends RootState {
       maxIndex: number;
       options: { day: number; month: number; year: number; }[];
     };
+    tankDocuments: {
+      maxIndex: number;
+      options: (string | ArrayBuffer) [];
+    };
     submittedValue: adrDetailsFormModel | undefined;
   };
 }
@@ -51,7 +55,7 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
   tankManufacturerSerialNo: '',
   tankTypeAppNo: '',
   tankCode: '',
-  tankDocuments:{},
+  tankDocuments:[],
   substancesPermitted: '',
   selectReferenceNumber: '',
   statement: '',
