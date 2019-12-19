@@ -43,9 +43,9 @@ export class DownloadDocumentsEffects {
     private saveFile(payload) {
         payload.blob.text().then( text => {
             console.log(text);
-            // const fileType = this._FileSaverService.genType(payload.fileName);
-            // const txtBlob = new Blob([btoa(text.replace(/^data:.+;base64,/, '')] , { type: fileType });
-            this._FileSaverService.save(text.replace(/^data:.+;base64,/, ''), payload.fileName);
+            const fileType = this._FileSaverService.genType(payload.fileName);
+            const txtBlob = new Blob([atob(text.replace(/^data:.+;base64,/, ''))] , { type: fileType });
+            this._FileSaverService.save(txtBlob, payload.fileName);
         })
     }
 
