@@ -17,7 +17,7 @@ import { take, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { IAppState } from './store/adrDetailsForm.state';
-import { SetSubmittedValueAction, DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction } from './store/technical-record.actions';
+import { SetSubmittedValueAction, DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction } from './store/adrDetails.actions';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 
 export interface Tc3Controls {
@@ -221,12 +221,17 @@ export class TechnicalRecordComponent implements OnInit {
 
   private readThis(inputValue: any): void {
     const file: File = inputValue.files[0];
-    const myReader: FileReader = new FileReader();
+    const tankDocReader: FileReader = new FileReader();
 
-    myReader.onloadend = () => {
-      console.log(myReader.result);
+    tankDocReader.onloadend = () => {
+      console.log(tankDocReader.result);
+      this.formState$.pipe(
+        take(1),
+        map(s => s.controls.tankDocuments.id),
+        map(id => new AddTankDocumentAction(id, tankDocReader.result)),
+      ).subscribe(this._store);
     };
-    myReader.readAsDataURL(file);
+    tankDocReader.readAsDataURL(file);
 
     this.fileList = inputValue.files;
     if (this.fileList.length > 0) {
@@ -308,7 +313,6 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   onModalShow() {
-
     const errorDialog = new MatDialogConfig();
     errorDialog.data = this.adrDetailsForm;
     this.matDialog.open(AdrReasonModalComponent, errorDialog);
