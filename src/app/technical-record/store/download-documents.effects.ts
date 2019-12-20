@@ -46,12 +46,12 @@ export class DownloadDocumentsEffects {
             const fileType = this._FileSaverService.genType(payload.fileName);
             const b64Data = text.split(';base64,').pop();
             console.log(`b64Data base64 => ${b64Data}`);
-            const byteCharacters = atob(b64Data);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
+            // const byteCharacters = atob(b64Data);
+            // const byteNumbers = new Array(byteCharacters.length);
+            // for (let i = 0; i < byteCharacters.length; i++) {
+            //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+            // }
+            // const byteArray = new Uint8Array(byteNumbers);
             // const blob = new Blob([byteArray], { type: fileType });
             const blob = this.b64toBlob(b64Data, fileType);
             // this._FileSaverService.save(blob, payload.fileName);
