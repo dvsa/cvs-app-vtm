@@ -54,7 +54,7 @@ export class DownloadDocumentsEffects {
             const byteArray = new Uint8Array(byteNumbers);
             // const blob = new Blob([byteArray], { type: fileType });
             const blob = this.b64toBlob(b64Data, fileType);
-            this._FileSaverService.save(blob, payload.fileName);
+            // this._FileSaverService.save(blob, payload.fileName);
         })
     }
 
