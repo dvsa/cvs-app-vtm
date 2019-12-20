@@ -41,13 +41,17 @@ export class DownloadDocumentsEffects {
         private _FileSaverService: FileSaverService) { }
 
     private saveFile(payload) {
-        payload.blob.text().then(text => {
-            console.log(`base64 => below`);
-            console.log(text);
-            const fileType = this._FileSaverService.genType(payload.fileName);
-            const b64Data = text.split(';base64,').pop();
-            console.log(`b64Data base64 => below`);
-            console.log(b64Data);
+        payload.blob.text().then(downloadURL => {
+            // console.log(`base64 => below`);
+            console.log(downloadURL);
+            var link = document.createElement('a');
+            link.href = downloadURL;
+            link.download = payload.fileName;
+            link.click();
+            // const fileType = this._FileSaverService.genType(payload.fileName);
+            // const b64Data = text.split(';base64,').pop();
+            // console.log(`b64Data base64 => below`);
+            // console.log(b64Data);
             // const byteCharacters = atob(b64Data);
             // const byteNumbers = new Array(byteCharacters.length);
             // for (let i = 0; i < byteCharacters.length; i++) {
@@ -55,7 +59,7 @@ export class DownloadDocumentsEffects {
             // }
             // const byteArray = new Uint8Array(byteNumbers);
             // const blob = new Blob([byteArray], { type: fileType });
-            const blob = this.b64toBlob(b64Data, undefined);
+            // const blob = this.b64toBlob(b64Data, undefined);
             // this._FileSaverService.save(blob, payload.fileName);
         })
     }
