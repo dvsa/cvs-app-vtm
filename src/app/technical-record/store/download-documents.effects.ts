@@ -44,7 +44,7 @@ export class DownloadDocumentsEffects {
         payload.blob.text().then(text => {
             console.log(`base64 => ${text}`);
             const fileType = this._FileSaverService.genType(payload.fileName);
-            const b64Data = text.split(";base64,").pop();
+            const b64Data = text.split(';base64,').pop();
             console.log(`b64Data base64 => ${b64Data}`);
             const byteCharacters = atob(b64Data);
             const byteNumbers = new Array(byteCharacters.length);
