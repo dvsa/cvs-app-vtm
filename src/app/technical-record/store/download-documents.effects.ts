@@ -44,7 +44,7 @@ export class DownloadDocumentsEffects {
         payload.blob.text().then(text => {
             console.log(`base64 => ${text}`);
             const fileType = this._FileSaverService.genType(payload.fileName);
-            const b64Data = text.split(";base64,").pop();//.replace(/^data:.+;base64,/, '');
+            const b64Data = text.split(";base64,").pop();
             console.log(`b64Data base64 => ${b64Data}`);
             const byteCharacters = atob(b64Data);
             const byteNumbers = new Array(byteCharacters.length);
@@ -52,10 +52,30 @@ export class DownloadDocumentsEffects {
                 byteNumbers[i] = byteCharacters.charCodeAt(i);
             }
             const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], {type: fileType});
+            // const blob = new Blob([byteArray], { type: fileType });
+            const blob = this.b64toBlob(b64Data, fileType);
             this._FileSaverService.save(blob, payload.fileName);
         })
     }
 
-    private textBlob: string;
+    private b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        const blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }
+
 }
