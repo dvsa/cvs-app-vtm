@@ -197,7 +197,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
         switch (a.type) {
             case CreateTc3TypeElementAction.TYPE: {
-                console.log(`inside reducer tc3Type CreateTc3TypeElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+                // console.log(`inside reducer tc3Type CreateTc3TypeElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
                 const maxIndex = s.maxIndex + 1;
                 const options = [...s.options];
                 // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
@@ -223,7 +223,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
         switch (a.type) {
             case CreateTc3PeriodicNumberElementAction.TYPE: {
-                console.log(`inside reducer tc3PeriodicNumber CreateTc3PeriodicNumberElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+                // console.log(`inside reducer tc3PeriodicNumber CreateTc3PeriodicNumberElementAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
                 const maxIndex = s.maxIndex + 1;
                 const options = [...s.options];
                 // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
@@ -274,7 +274,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
         switch (a.type) {
             case AddArrayControlAction.TYPE: {
-                console.log(`inside reducer productListUnNo AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
+                // console.log(`inside reducer productListUnNo AddArrayControlAction.TYPE s => ${JSON.stringify(s)}, a => ${JSON.stringify(a)}`);
                 const maxIndex = s.maxIndex + 1;
                 const options = [...s.options];
                 options.splice(a.index!, 0, maxIndex);

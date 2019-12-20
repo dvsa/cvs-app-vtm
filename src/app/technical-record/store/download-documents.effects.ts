@@ -28,7 +28,7 @@ export class DownloadDocumentsEffects {
                 tap((_) => {
                     console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
                     this.saveFile(_.payload);
-                    this._FileSaverService.save(_.payload.blob, _.payload.fileName);
+                    // this._FileSaverService.save(_.payload.blob, _.payload.fileName);
                 }),
                 catchError((error) =>
                     of(new DownloadDocumentFileActionFailure(error))
