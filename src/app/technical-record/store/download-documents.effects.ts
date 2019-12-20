@@ -11,6 +11,7 @@ import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selector
 import { IAppState } from '@app/store/state/app.state';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
 
 @Injectable()
@@ -47,16 +48,17 @@ export class DownloadDocumentsEffects {
         payload.blob.text().then(downloadURL => {
             // console.log(`base64 => below`);
             console.log(downloadURL);
+            saveAs(downloadURL, payload.fileName);
             // var link = document.createElement('a');
             // link.href = this.sanitizer.bypassSecurityTrustResourceUrl(downloadURL);
             // link.download = payload.fileName;
             // link.click();
-            this.httpClient.get(`${downloadURL}`, {
-                observe: 'response',
-                responseType: 'blob'
-              }).subscribe(res => {
-                this._FileSaverService.save(res.body, payload.fileName);
-              });
+            // this.httpClient.get(`${downloadURL}`, {
+            //     observe: 'response',
+            //     responseType: 'blob'
+            //   }).subscribe(res => {
+            //     this._FileSaverService.save(res.body, payload.fileName);
+            //   });
             // const fileType = this._FileSaverService.genType(payload.fileName);
             // const b64Data = text.split(';base64,').pop();
             // console.log(`b64Data base64 => below`);

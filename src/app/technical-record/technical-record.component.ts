@@ -82,6 +82,7 @@ export class TechnicalRecordComponent implements OnInit {
     year: number;
   }[]>;
   tc3Inspections$: Observable<any[]>;
+  downloadUrl: string;
 
   constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -137,6 +138,7 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.downloadUrl ="https://cvs-nonprod-adr-pdfs.s3.eu-west-1.amazonaws.com/cvsb-9213/3781ddc2-fdfd-4661-b4c4-6fcfa9d80bd3.pdf?AWSAccessKeyId=ASIAQC27VTVQER3KPMVU&Expires=1576864298&Signature=noIjMDmc3lspKj%2FfBFaXtUh3zXo%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEIL%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCWV1LXdlc3QtMSJGMEQCICVAiVJnXDGswwOhWTC9SNi90RxtrsjY2MecjVHQPGfzAiBYso3QWa3vzs6Afj5iIve7nvM4qM0hcdn26jU64REWAyrjAQjb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAEaDDAwNjEwNjIyNjAxNiIMqDP5B1Zgb7jTpqMiKrcBaXjw7V%2FKlKaAi2aEno6Y3J%2FW7QrDwglB%2FXBUcSmWTeXZyFr7viTHLdsuKssEtEyESifh%2BSonwIDkQkpRXiV6%2FsoR9omW3JCJnRjiPusSGEWW%2FmycHWqMfC%2FhsYLaXreW6D9yX7Ek6Udr7W5dQyyh6d25EcaqEsGm5zvxGg3uzMVSVr3MrgmDFUv3dO93cSppwksbD8u4qbb6IbFFy8B0nEivJ48B%2F8JD3zThgZPiG%2B2wO67AOBu1MJWI9O8FOuEBlpnrvgx8BOIjpveE%2BDljhogEHkzgQvedSXyliQr5iwEtuhlPp0OXP6diad%2BTcpUjjYcfYVTWdqzLu222eWhjeP%2BM5Fj%2Bje4y3QoPnQJdC1ncVamKTyx4lGXX9DeV7coImuCPb9%2Fj90vL3a%2FFXCToVPnAqL%2FKEEKUc39hafAKV0BB497WHoAz9uiufIzav9o1b8qBUelLOiBUAhSMFVeI5zgwfBTU5d7KOY8uglH115JW1phHT0GfhFxWfyAe6FVlmkC%2BBrboZyYevq%2Bdrjp9hFuZH9JJPEtfZZ70Hq1sLAE5";
     initAll();
   }
 
