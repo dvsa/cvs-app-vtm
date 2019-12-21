@@ -30,8 +30,8 @@ export class DownloadDocumentsEffects {
             .pipe(switchMap((payload: any) => of(new DownloadDocumentFileActionSuccess(payload))),
                 tap((_) => {
                     console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
-                    // this.downloadFile(_.payload);
-                    this.saveFile(_.payload);
+                    this.downloadFile(_.payload);
+                    // this.saveFile(_.payload);
                     // this._FileSaverService.save(_.payload.blob, _.payload.fileName);
                 }),
                 catchError((error) =>
