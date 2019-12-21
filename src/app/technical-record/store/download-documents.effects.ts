@@ -79,16 +79,16 @@ export class DownloadDocumentsEffects {
 
     private downloadFile(payload) {
         payload.blob.text().then(downloadURL => {
-            console.log(`${downloadURL}`);
+            console.log(`downloadURL => ${downloadURL}`);
             this.httpClient
                 .get(downloadURL, {
-                    responseType: 'blob',
-                    observe: 'body'
+                    observe: 'response',
+                    responseType: 'blob'
                 }).pipe(
                     map(res => {
                         return {
                             filename: payload.fileName,
-                            data: res
+                            data: res.body
                         };
                     }))
                 .subscribe(res => {
