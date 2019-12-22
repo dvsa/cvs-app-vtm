@@ -26,6 +26,7 @@
   "apiServer": {
     "APITechnicalRecordServerUri": "http://localhost:3005",
     "APITestResultServerUri": "http://localhost:3006",
-    "APIDocumentsServerUri": "assets/files"
+    "APIDocumentsServerUri": "assets/files",
+    "APIDocumentBlobUri": "https://cvs-nonprod-adr-pdfs.s3.eu-west-1.amazonaws.com/cvsb-9213"
   }
 }
