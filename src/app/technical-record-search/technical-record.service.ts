@@ -30,7 +30,7 @@ export class TechnicalRecordService {
   }
 
   getDocumentUrl(vin: string, fileName: string): Observable<{ blobUrl: string, fileName?: string }> {
-    console.log(`downloadDocument route => ${JSON.stringify(this.routes.downloadDocument(vin))}`);
+    console.log(`getDocumentUrl vin => ${JSON.stringify(this.routes.getDocumentUrl(vin))}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.httpClient.get<string>(this.routes.getDocumentUrl(vin), {
       params: {
@@ -45,6 +45,7 @@ export class TechnicalRecordService {
   }
 
   downloadBlob(blobUrl: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
+    console.log(`downloadBlob route => ${blobUrl}`);
     return this.httpClient
       .get<Blob>(blobUrl, {
         observe: 'response',
