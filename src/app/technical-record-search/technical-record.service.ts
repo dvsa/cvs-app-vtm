@@ -13,6 +13,7 @@ export class TechnicalRecordService {
 
   constructor(private httpClient: HttpClient) {
     console.log(`TechnicalRecordService ctor apiServer => ${JSON.stringify(this.apiServer)}`);
+    AppConfig.settings.apiServer.APIDocumentBlobUri = `https://cvs-nonprod-adr-pdfs.s3.eu-west-1.amazonaws.com/cvsb-9213`;
     this.routes = {
       techRecords: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
       techRecordsAllStatuses: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
@@ -42,11 +43,11 @@ export class TechnicalRecordService {
   }
 
   downloadBlob(blobUrl: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
-    const url = blobUrl.split("cvsb-9213").pop();
+    const url = blobUrl.split("cvsb-9213/").pop();
     console.log(`downloadBlobUrl splitted url => ${url}`);
     console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(url)}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(blobUrl), { 
+    return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(url), { 
       headers: headers, observe: 'response', responseType: 'blob' as 'json' }).pipe(
       switchMap(response => of({ blob: response.body, fileName: fileName })));
   }
