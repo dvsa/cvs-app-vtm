@@ -47,8 +47,7 @@ export class TechnicalRecordService {
     const url = blobUrl.split("cvsb-9213/").pop();
     console.log(`downloadBlobUrl splitted url => ${url}`);
     console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(url)}`);
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8')
-      .set('Access-Control-Allow-Origin', 'https://vtm.nonprod.cvs.dvsacloud.uk')
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', 'https://vtm.nonprod.cvs.dvsacloud.uk')
       .set('Access-Control-Allow-Credentials', 'true')
       .set('Access-Control-Max-Age', '600');
     return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(url), {
