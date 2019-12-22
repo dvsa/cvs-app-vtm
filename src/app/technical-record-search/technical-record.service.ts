@@ -36,7 +36,8 @@ export class TechnicalRecordService {
     console.log(`getDocumentUrl vin => ${this.routes.getDocumentUrl(vin)}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.httpClient.get<string>(this.routes.getDocumentUrl(vin), {
-      params: { filename: fileName }, headers: headers, responseType: 'text' as 'json' }).pipe(
+      params: { filename: fileName }, headers: headers, responseType: 'text' as 'json'
+    }).pipe(
       switchMap(response => of({ blobUrl: response, fileName: fileName })),
       tap(_ => console.log(`getDocumentUrl => ${JSON.stringify(_)}`))
     );
@@ -46,11 +47,13 @@ export class TechnicalRecordService {
     const url = blobUrl.split("cvsb-9213/").pop();
     console.log(`downloadBlobUrl splitted url => ${url}`);
     console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(url)}`);
-    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    headers.append('Access-Control-Allow-Origin', 'https://vtm.nonprod.cvs.dvsacloud.uk');
-    headers.append('Access-Control-Allow-Credentials', 'true');
-    return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(url), { 
-      headers: headers, observe: 'response', responseType: 'blob' as 'json' }).pipe(
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8')
+      .set('Access-Control-Allow-Origin', 'https://vtm.nonprod.cvs.dvsacloud.uk')
+      .set('Access-Control-Allow-Credentials', 'true')
+      .set('Access-Control-Max-Age', '600');
+    return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(url), {
+      headers: headers, observe: 'response', responseType: 'blob' as 'json'
+    }).pipe(
       switchMap(response => of({ blob: response.body, fileName: fileName })));
   }
 }
