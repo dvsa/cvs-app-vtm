@@ -47,6 +47,8 @@ export class TechnicalRecordService {
     console.log(`downloadBlobUrl splitted url => ${url}`);
     console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(url)}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    headers.append('Access-Control-Allow-Origin', 'https://vtm.nonprod.cvs.dvsacloud.uk');
+    headers.append('Access-Control-Allow-Credentials', 'true');
     return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(url), { 
       headers: headers, observe: 'response', responseType: 'blob' as 'json' }).pipe(
       switchMap(response => of({ blob: response.body, fileName: fileName })));
