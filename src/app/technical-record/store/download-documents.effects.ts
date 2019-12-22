@@ -26,17 +26,19 @@ export class DownloadDocumentsEffects {
                     console.log(`withLatestFrom _ => ${JSON.stringify(_)}`);
                 })
             )),
-        switchMap(([action, vin]) => this._technicalRecordService.downloadDocument(vin, action.filename)
-            .pipe(switchMap((payload: any) => of(new DownloadDocumentFileActionSuccess(payload))),
-                tap((_) => {
-                    console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
-                    // this.downloadFile(_.payload);
-                    // this.saveFile(_.payload);
-                    this._FileSaverService.save(_.payload.blob, _.payload.fileName);
-                }),
-                catchError((error) =>
-                    of(new DownloadDocumentFileActionFailure(error))
-                ))));
+        switchMap(([action, vin]) => this._technicalRecordService.getDocumentUrl(vin, action.filename)),
+        switchMap((response: { blobUrl: string, fileName?: string }) => this._technicalRecordService.downloadBlob(response.blobUrl, response.fileName)),
+        switchMap((payload: any) => of(new DownloadDocumentFileActionSuccess(payload))),
+        tap((_) => {
+            console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
+            // this.downloadFile(_.payload);
+            // this.saveFile(_.payload);
+            this._FileSaverService.save(_.payload.blob, _.payload.fileName);
+        }),
+        catchError((error) =>
+            of(new DownloadDocumentFileActionFailure(error))
+        )
+    );
 
     constructor(
         private _actions$: Actions,

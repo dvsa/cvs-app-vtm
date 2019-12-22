@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppConfig } from '@app/app.config';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class TechnicalRecordService {
     this.routes = {
       techRecords: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
       techRecordsAllStatuses: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
-      downloadDocument: (vin: string) => `${this.apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file`
+      getDocumentUrl: (vin: string) => `${this.apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file`
     };
   }
 
@@ -29,28 +29,30 @@ export class TechnicalRecordService {
 
   }
 
-  downloadDocument(vin: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
+  getDocumentUrl(vin: string, fileName: string): Observable<{ blobUrl: string, fileName?: string }> {
     console.log(`downloadDocument route => ${JSON.stringify(this.routes.downloadDocument(vin))}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.httpClient.get<string>(this.routes.downloadDocument(vin), {
+    return this.httpClient.get<string>(this.routes.getDocumentUrl(vin), {
       params: {
         filename: fileName
       },
       headers: headers,
       responseType: 'text' as 'json'
     }).pipe(
-      // switchMap(response => of({ blob: response, fileName: fileName})),
-      tap(_ => console.log(`downloadDocument => ${_}`)),
-      switchMap(downloadURL =>
-        this.httpClient
-          .get<Blob>(downloadURL, {
-            observe: 'response',
-            responseType: 'blob' as 'json'
-          }).pipe(
-            switchMap(res => of({
-              blob: res.body,
-              fileName: fileName
-            })))
-      ));
+      switchMap(response => of({ blobUrl: response, fileName: fileName })),
+      tap(_ => console.log(`getDocumentUrl => ${_}`))
+    );
+  }
+
+  downloadBlob(blobUrl: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
+    return this.httpClient
+      .get<Blob>(blobUrl, {
+        observe: 'response',
+        responseType: 'blob' as 'json'
+      }).pipe(
+        switchMap(res => of({
+          blob: res.body,
+          fileName: fileName
+        })));
   }
 }
