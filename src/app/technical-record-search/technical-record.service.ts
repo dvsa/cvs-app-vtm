@@ -22,6 +22,7 @@ export class TechnicalRecordService {
   }
 
   getTechnicalRecordsAllStatuses(searchIdentifier: string): Observable<any> {
+    console.log(`getTechnicalRecordsAllStatuses url => ${this.routes.techRecordsAllStatuses(searchIdentifier)}`);
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return this.httpClient.get<any[]>(this.routes.techRecordsAllStatuses(searchIdentifier), { headers });
   }
@@ -31,7 +32,7 @@ export class TechnicalRecordService {
   }
 
   getDocumentUrl(vin: string, fileName: string): Observable<{ blobUrl: string, fileName?: string }> {
-    console.log(`getDocumentUrl vin => ${JSON.stringify(this.routes.getDocumentUrl(vin))}`);
+    console.log(`getDocumentUrl vin => ${this.routes.getDocumentUrl(vin)}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.httpClient.get<string>(this.routes.getDocumentUrl(vin), {
       params: { filename: fileName }, headers: headers, responseType: 'text' as 'json' }).pipe(
@@ -41,7 +42,7 @@ export class TechnicalRecordService {
   }
 
   downloadBlob(blobUrl: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
-    console.log(`downloadBlobUrl route => ${JSON.stringify(this.routes.downloadBlobUrl(blobUrl))}`);
+    console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(blobUrl)}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(blobUrl), { 
       headers: headers, observe: 'response', responseType: 'blob' as 'json' }).pipe(
