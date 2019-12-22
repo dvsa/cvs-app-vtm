@@ -26,6 +26,7 @@
   "apiServer": {
     "APITechnicalRecordServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
     "APITestResultServerUri": "https://#{apiServerPrefix}.demo.com/api/v1.0/",
-    "APIDocumentsServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH"
+    "APIDocumentsServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH",
+    "APIDocumentBlobUri": "https://cvs-nonprod-adr-pdfs.s3.eu-west-1.amazonaws.com/cvsb-9213"
   }
 }

@@ -17,7 +17,7 @@ export class TechnicalRecordService {
       techRecords: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
       techRecordsAllStatuses: (searchIdentifier: string) => `${this.apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
       getDocumentUrl: (vin: string) => `${this.apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file`,
-      downloadBlobUrl: (url: string) => `${url}`
+      downloadBlobUrl: (url: string) => `${this.apiServer.APIDocumentBlobUri}/${url}`
     };
   }
 
@@ -42,7 +42,9 @@ export class TechnicalRecordService {
   }
 
   downloadBlob(blobUrl: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
-    console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(blobUrl)}`);
+    const url = blobUrl.split("cvsb-9213").pop();
+    console.log(`downloadBlobUrl splitted url => ${url}`);
+    console.log(`downloadBlobUrl route => ${this.routes.downloadBlobUrl(url)}`);
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
     return this.httpClient.get<Blob>(this.routes.downloadBlobUrl(blobUrl), { 
       headers: headers, observe: 'response', responseType: 'blob' as 'json' }).pipe(
