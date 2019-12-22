@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppConfig } from '@app/app.config';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,18 +31,26 @@ export class TechnicalRecordService {
 
   downloadDocument(vin: string, fileName: string): Observable<{ blob: Blob, fileName?: string }> {
     console.log(`downloadDocument route => ${JSON.stringify(this.routes.downloadDocument(vin))}`);
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    });
-    return this.httpClient.get<Blob>(this.routes.downloadDocument(vin), {
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this.httpClient.get<string>(this.routes.downloadDocument(vin), {
       params: {
         filename: fileName
       },
       headers: headers,
-      responseType: 'blob' as 'json'
+      responseType: 'text' as 'json'
     }).pipe(
-      switchMap(response => of({ blob: response, fileName: fileName}))
-    );
+      // switchMap(response => of({ blob: response, fileName: fileName})),
+      tap(_ => console.log(`downloadDocument => ${_}`)),
+      switchMap(downloadURL =>
+        this.httpClient
+          .get<Blob>(downloadURL, {
+            observe: 'response',
+            responseType: 'blob' as 'json'
+          }).pipe(
+            switchMap(res => of({
+              blob: res.body,
+              fileName: fileName
+            })))
+      ));
   }
 }
