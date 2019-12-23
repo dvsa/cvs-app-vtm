@@ -7,12 +7,11 @@ import {
   GetVehicleTechRecordModelHavingStatusAllFailure
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { Store } from '@ngrx/store';
-import { IAppState } from '@app/store/state/app.state';
 import { map, switchMap, tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
-import {TechnicalRecordService} from '@app/technical-record-search/technical-record.service';
+import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { CreatePermittedDangerousGoodElementAction } from '@app/technical-record/store/adrDetails.actions';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 
