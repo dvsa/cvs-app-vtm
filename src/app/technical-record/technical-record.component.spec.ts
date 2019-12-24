@@ -10,15 +10,18 @@ import {Store, StoreModule} from '@ngrx/store';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
-import { IAppState, INITIAL_STATE } from '@app/store/state/adrDetailsForm.state';
+// import { IAppState, INITIAL_STATE } from '@app/store/state/adrDetailsForm.state';
 import { appReducers } from '@app/store/reducers/app.reducers';
-import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
+// import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { hot } from 'jasmine-marbles';
 import { MaterialModule } from '@app/material.module';
 import { SharedModule } from '@app/shared/shared.module';
 import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
+import { IAppState } from '@app/store/state/app.state';
+import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
+import { INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
 
 describe('TechnicalRecordComponent', () => {
 
@@ -125,7 +128,7 @@ describe('TechnicalRecordComponent', () => {
     expect(component.adrData).toEqual(false);
     expect(component.showCheck).toEqual(true);
     expect(component.numberFee).toEqual(["1A", "1B", "2C" ]);
-    expect(component.dangerousGoods).toEqual(["Hydrogen", "Expl (type 2)", "Expl (type 3)"]);
+    // expect(component.dangerousGoods).toEqual(["Hydrogen", "Expl (type 2)", "Expl (type 3)"]);
     expect(component.isAdrNull).toEqual(false);
   });
 

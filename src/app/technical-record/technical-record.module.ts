@@ -18,9 +18,9 @@ import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
 import {InspectionDetailsModule} from '@app/inspection-details/inspection-details.module';
 import { EffectsModule } from '@ngrx/effects';
-import { adrDetailsReducer } from './store/adrDetails.reducer';
-import { DownloadDocumentsEffects } from './store/download-documents.effects';
-import { VehicleTechRecordModelEffects } from '../store/effects/VehicleTechRecordModel.effects';
+import { adrDetailsReducer } from '../adr-details-form/store/adrDetails.reducer';
+import { DownloadDocumentsEffects } from '../adr-details-form/store/download-documents.effects';
+import { AdrDetailsFormModule } from '@app/adr-details-form/adr-details-form.module';
 
 @NgModule({
   imports: [
@@ -31,15 +31,13 @@ import { VehicleTechRecordModelEffects } from '../store/effects/VehicleTechRecor
     RouterModule.forChild([
       {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard]}
     ]),
-    StoreModule.forFeature('adrDetails', adrDetailsReducer),
-    EffectsModule.forFeature([DownloadDocumentsEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
     ReactiveFormsModule,
     NgrxFormsModule,
     NgxJsonViewerModule,
-    InspectionDetailsModule
+    AdrDetailsFormModule
   ],
   declarations: [
     TechnicalRecordComponent
