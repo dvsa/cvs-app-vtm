@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { IAppState } from '../adr-details-form/store/adrDetailsForm.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import {DownloadDocumentFileAction} from '@app/adr-details-form/store/adrDetails.actions';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -110,6 +111,11 @@ export class TechnicalRecordComponent implements OnInit {
   public switchAdrDisplay($event) {
     this.adrData = !($event.currentTarget.value === 'true');
     this.hideForm = $event.currentTarget.value === 'false';
+  }
+
+
+  downloadDocument(doc) {
+    this._store.dispatch(new DownloadDocumentFileAction(doc));
   }
 
   onModalShow() {

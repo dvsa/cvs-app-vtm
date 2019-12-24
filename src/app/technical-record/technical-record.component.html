@@ -743,7 +743,7 @@
               </ng-template>
 
               <ng-container *ngIf="adrData else adrForm">
-                <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails) else space">
+                <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails)">
                   <ng-container *ngIf="!hideForm">
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key">
@@ -1224,114 +1224,6 @@
               </tbody>
             </table>
           </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #sam
-                               [(expanded)]="panels[9].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  API Output
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!sam.expanded" [icon]="['fa', 'plus'] " size="lg"></fa-icon>
-                  <fa-icon *ngIf="sam.expanded" [icon]="['fa', 'minus'] " size="lg"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div *ngIf="techRecordsJson !== null || techRecordsJson !== undefined; else loading">
-              <mat-card class="form-state">
-                <mat-card-content>
-                  <ngx-json-viewer [json]="techRecordsJson"></ngx-json-viewer>
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <div *ngIf="(adrDetails$ | async) as adrDetails">
-              <mat-card class="form-state">
-                <mat-card-content>
-                  <div *ngIf="adrDetails !== null; else loading">
-                    <ngx-json-viewer [json]="adrDetails"></ngx-json-viewer>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <div *ngIf="(formState$ | async) as formState">
-              <mat-card class="form-state">
-                <mat-card-content>
-                  <div *ngIf="formState !== null; else loading">
-                    <ngx-json-viewer [json]="formState"></ngx-json-viewer>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-            <div *ngIf="(testResultJson$ | async) as testResultJson">
-              <mat-card class="form-state">
-                <mat-card-content>
-                  <div *ngIf="testResultJson !== null; else loading">
-                    <ngx-json-viewer [json]="testResultJson"></ngx-json-viewer>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-          </mat-expansion-panel>
-          <mat-accordion>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  ADR Form Details Analysis
-                </mat-panel-title>
-                <mat-panel-description>
-                  Internal ADR Form Data
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <mat-card class="example-card">
-                <mat-card-content>
-                  <div *ngIf="(adrDetails$ | async) as adrDetails">
-                    <mat-card class="form-state">
-                      <mat-card-content>
-                        <div *ngIf="adrDetails !== null; else loading">
-                          <ngx-json-viewer [json]="adrDetails"></ngx-json-viewer>
-                        </div>
-                      </mat-card-content>
-                    </mat-card>
-                  </div>
-                </mat-card-content>
-                <mat-card-actions>
-                  <button mat-button>Collapse All</button>
-                  <button mat-button>Expand All</button>
-                </mat-card-actions>
-              </mat-card>
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Technical Records
-                </mat-panel-title>
-                <mat-panel-description>
-                  Dynamo Fetched Json Data
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <mat-card class="example-card">
-                <mat-card-content>
-                  <div *ngIf="techRecordsJson !== null || techRecordsJson !== undefined; else loading">
-                    <mat-card class="form-state">
-                      <mat-card-content>
-                        <ngx-json-viewer [json]="techRecordsJson" [expanded]="false"></ngx-json-viewer>
-                      </mat-card-content>
-                    </mat-card>
-                  </div>
-                </mat-card-content>
-                <mat-card-actions>
-                  <button mat-button>Collapse All</button>
-                  <button mat-button>Expand All</button>
-                </mat-card-actions>
-              </mat-card>
-            </mat-expansion-panel>
-          </mat-accordion>
         </div>
       </mat-accordion>
     </div>
