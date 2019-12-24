@@ -7,7 +7,7 @@ import {adrDetailsFormModel} from '@app/adr-details-form/store/adrDetailsForm.mo
 import {filter, catchError, map, withLatestFrom, take, tap} from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
-  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction
+  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction
 } from './store/adrDetails.actions';
 
 @Component({
@@ -37,7 +37,7 @@ export class AdrDetailsFormComponent implements OnInit {
   tc3Inspections$: Observable<any[]>;
   downloadUrl: string;
   submittedValue$: Observable<adrDetailsFormModel | undefined>;
-  isVehicleTankOrBattery$: Observable<boolean> | undefined | null | {};
+  isVehicleTankOrBattery$: Observable<boolean>;
   isPermittedExplosiveDangerousGoods$: Observable<boolean>;
   fileList: FileList;
   public files: Set<File> = new Set();
@@ -212,6 +212,13 @@ export class AdrDetailsFormComponent implements OnInit {
 
   onBrakeEnduranceChange($event) {
     this.isBrakeEndurance = $event.currentTarget.checked === true;
+  }
+
+  public submit() {
+    this.formState$.pipe(
+      take(1),
+      map(fs => new SetSubmittedValueAction(fs.value)),
+    ).subscribe(this._store);
   }
 
   public isNullOrEmpty(str) {
