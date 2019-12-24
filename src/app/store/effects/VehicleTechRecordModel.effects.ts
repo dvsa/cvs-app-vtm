@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
-import { CreatePermittedDangerousGoodElementAction } from '@app/technical-record/store/adrDetails.actions';
+import { CreatePermittedDangerousGoodElementAction } from '@app/adr-details-form/store/adrDetails.actions';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 
 @Injectable()
@@ -24,10 +24,6 @@ export class VehicleTechRecordModelEffects {
     switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(searchIdentifier).pipe(
       switchMap((techRecordJson: any) => of(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordJson))),
       tap((_) => {
-        _.payload.metadata.adrDetails.permittedDangerousGoodsFe.forEach(good => {
-          console.log(`dispatching create element for good => ${JSON.stringify(good)}`);
-          this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good, false));
-        });
         this._store.dispatch(new GetVehicleTestResultModel(_.payload.vin));
         this.router.navigate([`/technical-record`]);
       }),
