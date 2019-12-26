@@ -3,62 +3,62 @@ import { createFormGroupState, AddArrayControlAction, RemoveArrayControlAction, 
 import { adrDetailsFormModel } from './adrDetailsForm.model';
 import { required, maxLength, greaterThan, lessThanOrEqualTo } from 'ngrx-forms/validation';
 import { approvalDate } from '@app/models/approvalDate';
-import { IAppState } from './adrDetailsForm.state';
+import {IAppState, INITIAL_STATE} from './adrDetailsForm.state';
 import { CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction, CreateProductListUnNoElementAction, RemoveProductListUnNoElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, SetSubmittedValueAction, AddTankDocumentAction } from './adrDetails.actions';
 
 export const FORM_ID = 'adrDetails';
-
-export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, {
-    name: '',
-    street: '',
-    town: '',
-    city: '',
-    postcode: '',
-    type: '',
-    approvalDate: {
-        day: 1,
-        month: 1,
-        year: 1920
-    },
-    permittedDangerousGoods: {
-    },
-    compatibilityJ: false,
-    additionalNotes: {},
-    adrTypeApprovalNo: '',
-    tankManufacturer: '',
-    yearOfManufacture: 1,
-    tankManufacturerSerialNo: '',
-    tankTypeAppNo: '',
-    tankCode: '',
-    tankDocuments: [],
-    substancesPermitted: '',
-    selectReferenceNumber: '',
-    statement: '',
-    productListRefNo: '',
-    productListUnNo: [],
-    productList: '',
-    specialProvisions: '',
-    tc2Type: '',
-    tc2IntermediateApprovalNo: '',
-    tc2IntermediateExpiryDate: {
-        day: 1,
-        month: 1,
-        year: 1920
-    },
-    tc3Type: [],
-    tc3PeriodicNumber: [],
-    tc3PeriodicExpiryDate: [],
-    memosApply: { '07/09 3mth leak ext': false },
-    listStatementApplicable: '',
-    batteryListNumber: '',
-    brakeDeclarationIssuer: '',
-    brakeEndurance: '',
-    brakeDeclarationsSeen: '',
-    declarationsSeen: '',
-    weight: 0,
-    certificateReq: '',
-    adrMoreDetail: ''
-});
+//
+// export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, {
+//     name: '',
+//     street: '',
+//     town: '',
+//     city: '',
+//     postcode: '',
+//     type: '',
+//     approvalDate: {
+//         day: 1,
+//         month: 1,
+//         year: 1920
+//     },
+//     permittedDangerousGoods: {
+//     },
+//     compatibilityJ: false,
+//     additionalNotes: {},
+//     adrTypeApprovalNo: '',
+//     tankManufacturer: '',
+//     yearOfManufacture: 1,
+//     tankManufacturerSerialNo: '',
+//     tankTypeAppNo: '',
+//     tankCode: '',
+//     tankDocuments: [],
+//     substancesPermitted: '',
+//     selectReferenceNumber: '',
+//     statement: '',
+//     productListRefNo: '',
+//     productListUnNo: [],
+//     productList: '',
+//     specialProvisions: '',
+//     tc2Type: '',
+//     tc2IntermediateApprovalNo: '',
+//     tc2IntermediateExpiryDate: {
+//         day: 1,
+//         month: 1,
+//         year: 1920
+//     },
+//     tc3Type: [],
+//     tc3PeriodicNumber: [],
+//     tc3PeriodicExpiryDate: [],
+//     memosApply: { '07/09 3mth leak ext': false },
+//     listStatementApplicable: '',
+//     batteryListNumber: '',
+//     brakeDeclarationIssuer: '',
+//     brakeEndurance: '',
+//     brakeDeclarationsSeen: '',
+//     declarationsSeen: '',
+//     weight: 0,
+//     certificateReq: '',
+//     adrMoreDetail: ''
+// });
 
 
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
@@ -104,7 +104,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case CreatePermittedDangerousGoodElementAction.TYPE:
                 return updateGroup<adrDetailsFormModel>({
                     permittedDangerousGoods: group => {
-                        return addGroupControl(group, a.name, false);
+                        return addGroupControl(group, a.name, a.payload );
                     },
                 })(s);
 
@@ -120,7 +120,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case CreateGuidanceNoteElementAction.TYPE:
                 return updateGroup<adrDetailsFormModel>({
                     additionalNotes: group => {
-                        return addGroupControl(group, a.name, false);
+                        return addGroupControl(group, a.name, a.payload);
                     },
                 })(s);
 

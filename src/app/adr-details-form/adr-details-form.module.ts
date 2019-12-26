@@ -23,8 +23,6 @@ import { DownloadDocumentsEffects } from '@app/adr-details-form/store/download-d
     HttpClientModule,
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
     EffectsModule.forFeature([DownloadDocumentsEffects]),
-    StoreModule.forFeature('adrDetails', adrDetailsReducer),
-    EffectsModule.forFeature([DownloadDocumentsEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,

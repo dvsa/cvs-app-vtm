@@ -2,6 +2,11 @@ import { Action } from '@ngrx/store';
 import { AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
 import { adrDetailsFormModel } from './adrDetailsForm.model';
 
+export class LoadAction implements Action {
+  static readonly TYPE = 'adrDetails/LOAD';
+  readonly type = LoadAction.TYPE;
+  constructor(public payload: any) { }
+}
 
 export class SetSubmittedValueAction implements Action {
   static readonly TYPE = 'adrDetails/SET_SUBMITTED_VALUE';
@@ -12,7 +17,7 @@ export class SetSubmittedValueAction implements Action {
 export class CreatePermittedDangerousGoodElementAction implements Action {
   static readonly TYPE = 'adrDetails/CREATE_PERMITTED_DANGEROUS_GOOD_ELEMENT';
   readonly type = CreatePermittedDangerousGoodElementAction.TYPE;
-  constructor(public name: string, public payload: boolean) { }
+  constructor(public name: string, public payload: boolean = false) { }
 }
 
 export class RemovePermittedDangerousGoodElementAction implements Action {
@@ -24,7 +29,7 @@ export class RemovePermittedDangerousGoodElementAction implements Action {
 export class CreateGuidanceNoteElementAction implements Action {
   static readonly TYPE = 'adrDetails/CREATE_GUIDANCE_NOTE_ELEMENT';
   readonly type = CreateGuidanceNoteElementAction.TYPE;
-  constructor(public name: string, public payload: boolean) { }
+  constructor(public name: string, public payload: boolean = false) { }
 }
 
 export class RemoveGuidanceNoteElementAction implements Action {

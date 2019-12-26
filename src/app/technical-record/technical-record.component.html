@@ -738,7 +738,11 @@
               </div>
               <ng-template #adrForm>
                 <div *ngIf="!hideForm">
-                  <vtm-adr-details-form [vehicletypes$]="vehicleTypes$" [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$" [guidanceNotesFe$]="guidanceNotesFe$"></vtm-adr-details-form>
+                  <vtm-adr-details-form [vehicletypes$]="vehicleTypes$"
+                                        [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$"
+                                        [guidanceNotesFe$]="guidanceNotesFe$"
+                                        [initialAdrDetails]="activeRecord?.adrDetails">
+                  </vtm-adr-details-form>
                 </div>
               </ng-template>
 
@@ -1229,10 +1233,6 @@
     </div>
   </div>
 </div>
-
-<!-- <ng-template #space>
-  <span></span>
-</ng-template> -->
 
 <ng-template #hyphen>
   <span>-</span>

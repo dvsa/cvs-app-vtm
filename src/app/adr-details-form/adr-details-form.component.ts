@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import {Store, select} from '@ngrx/store';
-import {IAppState} from '@app/adr-details-form/store/adrDetailsForm.state';
-import {FormGroupState, AddArrayControlAction, RemoveArrayControlAction} from 'ngrx-forms';
+import {createInitialState, IAppState, INITIAL_STATE} from '@app/adr-details-form/store/adrDetailsForm.state';
+import {FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction} from 'ngrx-forms';
 import {Observable, combineLatest, of} from 'rxjs';
 import {adrDetailsFormModel} from '@app/adr-details-form/store/adrDetailsForm.model';
 import {filter, catchError, map, withLatestFrom, take, tap} from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
-  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction
+  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction, LoadAction
 } from './store/adrDetails.actions';
 
 @Component({
@@ -17,11 +17,12 @@ import {
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdrDetailsFormComponent implements OnInit {
+export class AdrDetailsFormComponent implements OnInit , OnDestroy {
   @ViewChild('fileInput') fileInputVariable: ElementRef;
   @Input() vehicletypes$: Observable<string[]>;
   @Input() permittedDangerousGoodsFe$: Observable<string[]>;
   @Input() guidanceNotesFe$: Observable<string[]>;
+  @Input() initialAdrDetails: any;
   adrDetails$: Observable<any>;
   formState$: Observable<FormGroupState<adrDetailsFormModel>>;
   permittedDangerousGoodsOptions$: Observable<string[]>;
@@ -93,26 +94,40 @@ export class AdrDetailsFormComponent implements OnInit {
         return [{type, periodicNumber, expiryDate}];
       })
     );
+  }
+
+  ngOnInit() {
+
+    this._store.dispatch(new LoadAction({}));
+
+    if (this.initialAdrDetails !== undefined) {
+      console.log(`initialAdrDetails is => ${JSON.stringify(this.initialAdrDetails)}`);
+      this._store.dispatch(new SetValueAction(INITIAL_STATE.id, createInitialState(this.initialAdrDetails)));
+    }
+    this.permittedDangerousGoodsFe$.subscribe( goods => {
+      goods.forEach(good => {
+        this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good,
+          this.initialAdrDetails && this.initialAdrDetails.permittedDangerousGoods.includes(good)));
+      });
+    });
+    this.guidanceNotesFe$.subscribe( notes => {
+      notes.forEach(note => {
+        this._store.dispatch(new CreateGuidanceNoteElementAction(note,
+          this.initialAdrDetails && this.initialAdrDetails.additionalNotes.guidanceNotes.includes(note)));
+      });
+    });
 
 
   }
 
-  ngOnInit() {
-    this.permittedDangerousGoodsFe$.subscribe(pg => console.log(`this.permittedDangerousGoodsFe$ are ${JSON.stringify(pg)}`));
-    this.permittedDangerousGoodsFe$.subscribe( goods => {
-      console.log(`dispatching create element for good => ${JSON.stringify(goods)}`);
-      goods.forEach(good => {
-        console.log(`dispatch create action for ${good}`);
-        this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good, false));
-      });
-    });
-    this.guidanceNotesFe$.subscribe( notes => {
-      console.log(`dispatching create element for guidanceNotesFe$ => ${JSON.stringify(notes)}`);
-      notes.forEach(note => {
-        console.log(`dispatch create action for ${note}`);
-        this._store.dispatch(new CreateGuidanceNoteElementAction(note, false));
-      });
-    });
+  ngOnDestroy(): void {
+    this.reset();
+    console.log(`called adr-details ngOnDestroy`);
+  }
+
+  reset() {
+    this._store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
+    this._store.dispatch(new ResetAction(INITIAL_STATE.id));
   }
 
   downloadDocument(doc) {
