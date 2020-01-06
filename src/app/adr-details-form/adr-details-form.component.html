@@ -1,529 +1,527 @@
-
-  <div *ngIf="(formState$ | async) as formState; else space">
-    <div *ngIf="formState !==null || formState != undefined" class="adr-details">
-      <fieldset class="govuk-fieldset" >
-        <form novalidate [ngrxFormState]="formState" (submit)="submit()">
-          <h2 class="govuk-heading-m">Applicant details</h2>
-          <div class="govuk-form-group">
-            <div
-              [ngClass]="{ 'govuk-form-group': true,
+<div *ngIf="(formState$ | async) as formState; else space">
+  <div *ngIf="formState !==null || formState != undefined" class="adr-details">
+    <fieldset class="govuk-fieldset">
+      <form novalidate [ngrxFormState]="formState" (submit)="submit()">
+        <h2 class="govuk-heading-m">Applicant details</h2>
+        <div class="govuk-form-group">
+          <div
+            [ngClass]="{ 'govuk-form-group': true,
                             'govuk-form-group--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.errors.required}">
               <span
                 *ngIf="(formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid "
                 id="name-error" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span> Please enter your full name
               </span>
-              <label class="govuk-label govuk-!-font-weight-bold">
-                Name
-              </label>
-              <input [ngrxFormControlState]="(formState$ | async).controls.name"
-                [ngClass]="{ 'govuk-input': true, 'govuk-input--width-20': true, 'govuk-input--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid }"
-                type="text">
-            </div>
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="street">
-                Street
-              </label>
-              <input [ngrxFormControlState]="(formState$ | async).controls.street"
-                class="govuk-input govuk-input--width-20" type="text">
-            </div>
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="town">
-                Town
-              </label>
-              <input [ngrxFormControlState]="(formState$ | async).controls.town"
-                class="govuk-input govuk-input--width-20" type="text">
-            </div>
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="city">
-                City
-              </label>
-              <input [ngrxFormControlState]="(formState$ | async).controls.city"
-                class="govuk-input govuk-input--width-20" type="text">
-            </div>
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="postcode">
-                Postcode
-              </label>
-              <input [ngrxFormControlState]="(formState$ | async).controls.postcode"
-                class="govuk-input govuk-input--width-20" type="text">
-            </div>
-          </div>
-          <h2 class="govuk-heading-m">ADR details</h2>
-          <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="type">
-              Vehicle type
+            <label class="govuk-label govuk-!-font-weight-bold">
+              Name
             </label>
-            <select [ngrxFormState]="formState" [ngrxFormControlState]="formState.controls.type"
-              class="govuk-select">
-                <option
-                *ngFor="let vehicletype of (vehicletypes$ | async)"
-                [value]="vehicletype"> {{ vehicletype }} </option>
-            </select>
+            <input [ngrxFormControlState]="(formState$ | async).controls.name"
+                   [ngClass]="{ 'govuk-input': true, 'govuk-input--width-20': true, 'govuk-input--error': (formState$ | async).controls.name.isTouched && (formState$ | async).controls.name.isInvalid }"
+                   type="text">
           </div>
           <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" role="group" aria-describedby="approval-date">
-              <span class="govuk-!-font-weight-bold">Date processed</span>
-              <div class="govuk-date-input" id="approvalDate">
-                <div class="govuk-date-input__item">
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" for="day">
-                      Day
-                    </label>
-                    <input
-                      [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.day"
-                      class="govuk-input govuk-date-input__input govuk-input--width-2" id="day"
-                      type="number" pattern="[0-9]*">
-                  </div>
-                </div>
-                <div class="govuk-date-input__item">
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" for="month">
-                      Month
-                    </label>
-                    <input
-                      [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.month"
-                      class="govuk-input govuk-date-input__input govuk-input--width-2" id="month"
-                      type="number" pattern="[0-9]*">
-                  </div>
-                </div>
-                <div class="govuk-date-input__item">
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-date-input__label" for="year">
-                      Year
-                    </label>
-                    <input
-                      [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.year"
-                      class="govuk-input govuk-date-input__input govuk-input--width-4" id="year"
-                      type="number" pattern="[0-9]*">
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-          <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
-              Permitted dangerous goods
+            <label class="govuk-label govuk-!-font-weight-bold" for="street">
+              Street
             </label>
-
-            <div class="govuk-checkboxes">
-              <div class="govuk-checkboxes__item"
-                *ngFor="let permittedGood of formState.value.permittedDangerousGoods | keys">
-                <input class="govuk-checkboxes__input" type="checkbox" [value]="permittedGood"
-                  [ngrxFormControlState]="formState.controls.permittedDangerousGoods.controls[permittedGood.key]">
-                <label class="govuk-label govuk-checkboxes__label" for="permittedGood.key">
-                  {{ permittedGood.key }} </label>
-              </div>
-            </div>
+            <input [ngrxFormControlState]="(formState$ | async).controls.street"
+                   class="govuk-input govuk-input--width-20" type="text">
           </div>
-
-          <div class="grid-container-row">
-            <a class="add-dangerous-note mb-1" (click)="addDangerousGood(dangerousGood.value)">Add a
-              dangerous good</a>
-            <input class="govuk-input govuk-input--width-10" #dangerousGood
-              placeholder="Type a dangerous good" type="text">
-          </div>
-
-          <div class="govuk-inset-text" *ngIf="isPermittedExplosiveDangerousGoods$ | async">
-            <div class="govuk-form-group">
-              <fieldset class="govuk-fieldset">
-                <h3 class="govuk-heading-m">Compatibility group J</h3>
-                <div class="govuk-radios govuk-radios--inline">
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="yes" type="radio" value="true"
-                      [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
-                    <label class="govuk-label govuk-radios__label" for="yes">
-                      Yes
-                    </label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="no" type="radio" value="false"
-                      [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
-                    <label class="govuk-label govuk-radios__label" for="no">
-                      No
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </div>
-
-
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
-              Guidance notes
+            <label class="govuk-label govuk-!-font-weight-bold" for="town">
+              Town
             </label>
-
-            <div class="govuk-checkboxes">
-              <div class="govuk-checkboxes__item"
-                *ngFor="let note of formState.value.additionalNotes | keys">
-                <input class="govuk-checkboxes__input" type="checkbox" [value]="note"
-                  [ngrxFormControlState]="formState.controls.additionalNotes.controls[note.key]">
-                <label class=" govuk-label govuk-checkboxes__label"> {{ note.key }} </label>
-              </div>
-            </div>
-
-            <div class="grid-container-row mt-1">
-              <a class="add-guidance-note mb-1" (click)="addAGuidanceNote(guidanceNote.value)">Add a
-                guidance note</a>
-              <input class="govuk-input govuk-input--width-10" #guidanceNote id="addGuidanceNote"
-                placeholder="Type a guidance note" type="text">
-            </div>
-
+            <input [ngrxFormControlState]="(formState$ | async).controls.town"
+                   class="govuk-input govuk-input--width-20" type="text">
           </div>
-
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
-              ADR type approval number
+            <label class="govuk-label govuk-!-font-weight-bold" for="city">
+              City
             </label>
-            <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo"
-              [ngrxFormControlState]="(formState$ | async).controls.adrTypeApprovalNo" type="text">
-          </div>
-          <div *ngIf="isVehicleTankOrBattery$ | async">
-            <h2 class="govuk-heading-m">Tank details</h2>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="tankManufacturer">
-                Make
-              </label>
-              <input class="govuk-input govuk-input--width-20" id="tankManufacturer"
-                [ngrxFormControlState]="(formState$ | async).controls.tankManufacturer" type="text">
-            </div>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="yearOfManufacture">
-                Year of manufacture
-              </label>
-              <input class="govuk-input govuk-input--width-20" id="yearOfManufacture"
-                [ngrxFormControlState]="(formState$ | async).controls.yearOfManufacture" type="number">
-            </div>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="tankManufacturerSerialNo">
-                Manufacturer serial number
-              </label>
-              <input class="govuk-input govuk-input--width-10" id="tankManufacturerSerialNo"
-                [ngrxFormControlState]="(formState$ | async).controls.tankManufacturerSerialNo"
-                type="text">
-            </div>
-
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="tankTypeAppNo">
-                Tank type approval number
-              </label>
-              <input class="govuk-input govuk-input--width-10" id="tankTypeAppNo"
-                [ngrxFormControlState]="(formState$ | async).controls.tankTypeAppNo" type="text">
-            </div>
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="tankCode">
-                Code
-              </label>
-              <input class="govuk-input govuk-input--width-10" id="tankCode"
-                [ngrxFormControlState]="(formState$ | async).controls.tankCode" type="text">
-            </div>
-            <div class="govuk-form-group" *ngIf="isVehicleTankOrBattery$ | async">
-              <fieldset class="govuk-fieldset">
-                <h2 class="govuk-heading-m">Substances permitted</h2>
-                <div class="govuk-radios">
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="underTankCode" type="radio"
-                      [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted"
-                      value="Substances permitted under the tank code and any special provisions specified in 9 may be carried">
-                    <label class="govuk-label govuk-radios__label" for="underTankCode">
-                      Substances permitted under the tank code and any special provisions specified in 9
-                      may be carried
-                    </label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="classUN" type="radio"
-                      [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted"
-                      value="Substances (Class UN number and if necessary packing group and proper shipping name) may be carried">
-                    <label class="govuk-label govuk-radios__label" for="classUN">
-                      Substances (Class UN number and if necessary packing group and proper shipping name)
-                      may be carried
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-
-            <div class="govuk-inset-text">
-              <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
-                  <h2 class="govuk-heading-m">Select</h2>
-                  <div class="govuk-radios">
-                    <div class="govuk-radios__item">
-                      <input class="govuk-radios__input" id="isStatement" type="radio" value="isStatement"
-                        (change)="selectReferenceNumberChange($event)"
-                        [ngrxFormControlState]="(formState$ | async).controls.selectReferenceNumber">
-                      <label class="govuk-label govuk-radios__label" for="isStatement">
-                        Statement
-                      </label>
-                    </div>
-                    <div class="govuk-inset-text"
-                      *ngIf="(formState$ | async).value.selectReferenceNumber === 'isStatement'">
-                      <div class="govuk-form-group"
-                        *ngIf="(formState$ | async).value.selectReferenceNumber === 'isStatement'">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="statement">
-                          Reference number
-                        </label>
-                        <input class="govuk-input govuk-input--width-10" id="statement" type="number"
-                          [ngrxFormControlState]="(formState$ | async).controls.statement">
-                      </div>
-                    </div>
-                    <div class="govuk-radios__item">
-                      <input class="govuk-radios__input" id="isProductListRefNo" type="radio"
-                        value="isProductListRefNo" (change)="selectReferenceNumberChange($event)"
-                        [ngrxFormControlState]="(formState$ | async).controls.selectReferenceNumber">
-                      <label class="govuk-label govuk-radios__label" for="isProductListRefNo">
-                        Product List
-                      </label>
-                    </div>
-                    <div class="govuk-inset-text"
-                      *ngIf="(formState$ | async).value.selectReferenceNumber === 'isProductListRefNo'">
-                      <div class="govuk-form-group">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="productListRefNo">
-                          Reference number
-                        </label>
-                        <input class="govuk-input govuk-input--width-10" id="productListRefNo"
-                          type="number"
-                          [ngrxFormControlState]="(formState$ | async).controls.productListRefNo">
-                      </div>
-                      <div class="govuk-form-group">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="productListUnNo"> UN
-                          number </label>
-                        <ng-container
-                          *ngFor="let o of (productListUnNoOptions$ | async); let i = index; trackBy: trackByFn">
-                          <div class="un-number">
-                            <div>
-                              <p>
-                                <input class="govuk-input govuk-input--width-5" type="number"
-                                  [ngrxFormControlState]="(formState$ | async).controls.productListUnNo.controls[i]">
-                              </p>
-                            </div>
-                            <div>
-                              <p>
-                                <a class="remove-a-un-number" (click)="removeUnoOption(i)">Remove</a>
-                              </p>
-                            </div>
-                          </div>
-                        </ng-container>
-                        <p>
-                          <a class="add-a-un-number" (click)="addAddUNOption()">Add a UN number</a>
-                        </p>
-                      </div>
-                      <div class="govuk-form-group">
-                        <label class="govuk-label govuk-!-font-weight-bold" for="productList">
-                          Additional details
-                        </label>
-                        <textarea class="govuk-textarea" id="productList" rows="8"
-                          aria-describedby="productList"
-                          [ngrxFormControlState]="(formState$ | async).controls.productList">
-                      </textarea>
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              </div>
-            </div>
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="specialProvisions">
-                Special provisions
-              </label>
-              <textarea class="govuk-textarea" id="specialProvisions" rows="8"
-                aria-describedby="specialProvisions"
-                [ngrxFormControlState]="(formState$ | async).controls.specialProvisions">
-            </textarea>
-            </div>
-
-            <h2 class="govuk-heading-m" *ngIf="isVehicleTankOrBattery$ | async">Tank inspections</h2>
-
-            <vtm-inspection-details [inspectionType]="'tc2'"
-              [type]="(formState$ | async).controls.tc2Type"
-              [periodicNumber]="(formState$ | async).controls.tc2IntermediateApprovalNo"
-              [expiryDate]="(formState$ | async).controls.tc2IntermediateExpiryDate">
-            </vtm-inspection-details>
-            <ng-container
-              *ngFor="let tc of (formState$ | async).controls.tc3Type.controls; let i = index; trackBy: trackByFn">
-              <vtm-inspection-details [inspectionType]="'tc3'"
-                [type]="(formState$ | async).controls.tc3Type.controls[i]"
-                [periodicNumber]="(formState$ | async).controls.tc3PeriodicNumber.controls[i]"
-                [expiryDate]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls[i]">
-              </vtm-inspection-details>
-            </ng-container>
-            <p><a class="add-a-un-number" (click)="addSubsequentInspection()">Add a subsequent inspection</a></p>
-
-            <div class="govuk-form-group">
-              <fieldset class="govuk-fieldset">
-                <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
-                <div class="govuk-radios">
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="isMemo" type="radio"
-                      value="07/09 3mth leak ext"
-                      [ngrxFormControlState]="(formState$ | async).controls.memosApply">
-                    <label class="govuk-label govuk-radios__label" for="isMemo">
-                      Yes
-                    </label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="isNotMemo" type="radio" value="false"
-                      [ngrxFormControlState]="(formState$ | async).controls.memosApply">
-                    <label class="govuk-label govuk-radios__label" for="isNotMemo">
-                      No
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-
-            <div class="govuk-summary-list__row">
-              <h2 class="govuk-heading-m">Tank documents</h2>
-            </div>
-            <div class="govuk-form-group">
-              <div class="govuk-summary-list__row">
-                  <div *ngFor="let file of files" class="govuk-summary-list__row tank-documents">
-                    <dt class="govuk-summary-list__key"> {{file.name}} </dt>
-                    <dd class="govuk-summary-list__value">
-                    </dd>
-                    <dd class="govuk-summary-list__value">
-                      <a class="govuk-link">Download</a>
-                    </dd>
-                    <dd class="govuk-summary-list__value">
-                      <a class="govuk-link">Remove</a>
-                    </dd>
-                  </div>
-              </div>
-              <div id="hide">
-                <label class="hand-cursor">
-                  <input #fileInput type="file" (change)="changeListener($event)" multiple>
-                  <span class="govuk-button govuk-button--secondary mt-1">Upload documents</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="govuk-form-group">
-              <fieldset class="govuk-fieldset">
-                <h2 class="govuk-heading-m">Battery list applicable</h2>
-                <div class="govuk-radios govuk-radios--inline">
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="applicable" type="radio" value="applicable"
-                      (change)="onBatteryApplicableChange($event)"
-                      [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
-                    <label class="govuk-label govuk-radios__label" for="applicable">
-                      Yes
-                    </label>
-                  </div>
-                  <div class="govuk-radios__item">
-                    <input class="govuk-radios__input" id="notApplicable" type="radio"
-                      value="notApplicable" (change)="onBatteryApplicableChange($event)"
-                      [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
-                    <label class="govuk-label govuk-radios__label" for="notApplicable">
-                      No
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-
-            <div class="govuk-inset-text" *ngIf="isBatteryApplicable">
-              <div class="govuk-form-group">
-                <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
-                  Reference number
-                </label>
-                <input class="govuk-input govuk-input--width-10" id="batteryListNumber" type="number"
-                  [ngrxFormControlState]="(formState$ | async).controls.batteryListNumber">
-              </div>
-            </div>
+            <input [ngrxFormControlState]="(formState$ | async).controls.city"
+                   class="govuk-input govuk-input--width-20" type="text">
           </div>
           <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="nationality-hint nationality-error">
-
-              <h2 class="govuk-heading-m">Declaration seen</h2>
-
-              <div class="govuk-checkboxes">
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" type="checkbox"
-                    (change)="onManufactureBreakChange($event)"
-                    [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationsSeen">
-                  <label class="govuk-label govuk-checkboxes__label" for="brakeDeclarationsSeen">
-                    Manufacturer brake declaration
+            <label class="govuk-label govuk-!-font-weight-bold" for="postcode">
+              Postcode
+            </label>
+            <input [ngrxFormControlState]="(formState$ | async).controls.postcode"
+                   class="govuk-input govuk-input--width-20" type="text">
+          </div>
+        </div>
+        <h2 class="govuk-heading-m">ADR details</h2>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-weight-bold" for="type">
+            Vehicle type
+          </label>
+          <select [ngrxFormState]="formState" [ngrxFormControlState]="formState.controls.type"
+                  class="govuk-select">
+            <option
+              *ngFor="let vehicletype of (vehicletypes$ | async)"
+              [value]="vehicletype"> {{ vehicletype }} </option>
+          </select>
+        </div>
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" role="group" aria-describedby="approval-date">
+            <span class="govuk-!-font-weight-bold">Date processed</span>
+            <div class="govuk-date-input" id="approvalDate">
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label class="govuk-label govuk-date-input__label" for="day">
+                    Day
                   </label>
-                </div>
-                <div class="govuk-inset-text" *ngIf="isBrakeDeclarationsSeen">
-                  <div class="govuk-form-group">
-                    <label class="govuk-label govuk-!-font-weight-bold" for="brakeDeclarationIssuer">
-                      Issuer
-                    </label>
-                    <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer"
-                      type="text"
-                      [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationIssuer">
-                  </div>
-                  <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="brakeEndurance" type="checkbox"
-                      (change)="onBrakeEnduranceChange($event)"
-                      [ngrxFormControlState]="(formState$ | async).controls.brakeEndurance">
-                    <label class="govuk-label govuk-checkboxes__label" for="brakeEndurance">
-                      Brake endurance
-                    </label>
-                  </div>
-                  <div class="govuk-inset-text" *ngIf="isBrakeEndurance">
-                    <div class="govuk-form-group">
-                      <label class="govuk-label govuk-!-font-weight-bold" for="weight">
-                        Weight (kg)
-                      </label>
-                      <input class="govuk-input govuk-input--width-10" id="weight" type="text"
-                        [ngrxFormControlState]="(formState$ | async).controls.weight">
-                    </div>
-                  </div>
-                </div>
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="declarationsSeen" type="checkbox"
-                    value="true" [ngrxFormControlState]="(formState$ | async).controls.declarationsSeen">
-                  <label class="govuk-label govuk-checkboxes__label" for="declarationsSeen">
-                    Owner/operator declaration
-                  </label>
+                  <input
+                    [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.day"
+                    class="govuk-input govuk-date-input__input govuk-input--width-2" id="day"
+                    type="number" pattern="[0-9]*">
                 </div>
               </div>
-            </fieldset>
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label class="govuk-label govuk-date-input__label" for="month">
+                    Month
+                  </label>
+                  <input
+                    [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.month"
+                    class="govuk-input govuk-date-input__input govuk-input--width-2" id="month"
+                    type="number" pattern="[0-9]*">
+                </div>
+              </div>
+              <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                  <label class="govuk-label govuk-date-input__label" for="year">
+                    Year
+                  </label>
+                  <input
+                    [ngrxFormControlState]="(formState$ | async).controls.approvalDate.controls.year"
+                    class="govuk-input govuk-date-input__input govuk-input--width-4" id="year"
+                    type="number" pattern="[0-9]*">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
+            Permitted dangerous goods
+          </label>
+
+          <div class="govuk-checkboxes">
+            <div class="govuk-checkboxes__item"
+                 *ngFor="let permittedGood of formState.value.permittedDangerousGoods | keys">
+              <input class="govuk-checkboxes__input" type="checkbox" [value]="permittedGood"
+                     [ngrxFormControlState]="formState.controls.permittedDangerousGoods.controls[permittedGood.key]">
+              <label class="govuk-label govuk-checkboxes__label" for="permittedGood.key">
+                {{ permittedGood.key }} </label>
+            </div>
           </div>
+        </div>
+
+        <div class="grid-container-row">
+          <a class="add-dangerous-note mb-1" (click)="addDangerousGood(dangerousGood.value)">Add a
+            dangerous good</a>
+          <input class="govuk-input govuk-input--width-10" #dangerousGood
+                 placeholder="Type a dangerous good" type="text">
+        </div>
+
+        <div class="govuk-inset-text" *ngIf="isPermittedExplosiveDangerousGoods$ | async">
           <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
-              <h2 class="govuk-heading-m">Certificate required</h2>
+              <h3 class="govuk-heading-m">Compatibility group J</h3>
               <div class="govuk-radios govuk-radios--inline">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="yesCert" type="radio"
-                    value="New certificate requested"
-                    [ngrxFormControlState]="(formState$ | async).controls.certificateReq">
-                  <label class="govuk-label govuk-radios__label" for="yesCert">
+                  <input class="govuk-radios__input" id="yes" type="radio" value="true"
+                         [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
+                  <label class="govuk-label govuk-radios__label" for="yes">
                     Yes
                   </label>
                 </div>
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="noCert" type="radio" value=""
-                    [ngrxFormControlState]="(formState$ | async).controls.certificateReq">
-                  <label class="govuk-label govuk-radios__label" for="noCert">
+                  <input class="govuk-radios__input" id="no" type="radio" value="false"
+                         [ngrxFormControlState]="(formState$ | async).controls.compatibilityJ">
+                  <label class="govuk-label govuk-radios__label" for="no">
                     No
                   </label>
                 </div>
               </div>
             </fieldset>
           </div>
+        </div>
+
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
+            Guidance notes
+          </label>
+
+          <div class="govuk-checkboxes">
+            <div class="govuk-checkboxes__item"
+                 *ngFor="let note of formState.value.additionalNotes | keys">
+              <input class="govuk-checkboxes__input" type="checkbox" [value]="note"
+                     [ngrxFormControlState]="formState.controls.additionalNotes.controls[note.key]">
+              <label class=" govuk-label govuk-checkboxes__label"> {{ note.key }} </label>
+            </div>
+          </div>
+
+          <div class="grid-container-row mt-1">
+            <a class="add-guidance-note mb-1" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a>
+            <input class="govuk-input govuk-input--width-10" #guidanceNote id="addGuidanceNote" placeholder="Type a guidance note" type="text">
+          </div>
+
+        </div>
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
+            ADR type approval number
+          </label>
+          <input class="govuk-input govuk-input--width-10" id="adrTypeApprovalNo"
+                 [ngrxFormControlState]="(formState$ | async).controls.adrTypeApprovalNo" type="text">
+        </div>
+        <div *ngIf="isVehicleTankOrBattery$ | async">
+          <h2 class="govuk-heading-m">Tank details</h2>
+
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="adr-more-detail">
-              <h2 class="govuk-heading-m">Additional ADR details</h2>
+            <label class="govuk-label govuk-!-font-weight-bold" for="tankManufacturer">
+              Make
             </label>
-            <span id="more-detail-hint" class="govuk-hint">
+            <input class="govuk-input govuk-input--width-20" id="tankManufacturer"
+                   [ngrxFormControlState]="(formState$ | async).controls.tankManufacturer" type="text">
+          </div>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="yearOfManufacture">
+              Year of manufacture
+            </label>
+            <input class="govuk-input govuk-input--width-20" id="yearOfManufacture"
+                   [ngrxFormControlState]="(formState$ | async).controls.yearOfManufacture" type="number">
+          </div>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="tankManufacturerSerialNo">
+              Manufacturer serial number
+            </label>
+            <input class="govuk-input govuk-input--width-10" id="tankManufacturerSerialNo"
+                   [ngrxFormControlState]="(formState$ | async).controls.tankManufacturerSerialNo"
+                   type="text">
+          </div>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="tankTypeAppNo">
+              Tank type approval number
+            </label>
+            <input class="govuk-input govuk-input--width-10" id="tankTypeAppNo"
+                   [ngrxFormControlState]="(formState$ | async).controls.tankTypeAppNo" type="text">
+          </div>
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="tankCode">
+              Code
+            </label>
+            <input class="govuk-input govuk-input--width-10" id="tankCode"
+                   [ngrxFormControlState]="(formState$ | async).controls.tankCode" type="text">
+          </div>
+          <div class="govuk-form-group" *ngIf="isVehicleTankOrBattery$ | async">
+            <fieldset class="govuk-fieldset">
+              <h2 class="govuk-heading-m">Substances permitted</h2>
+              <div class="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="underTankCode" type="radio"
+                         [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted"
+                         value="Substances permitted under the tank code and any special provisions specified in 9 may be carried">
+                  <label class="govuk-label govuk-radios__label" for="underTankCode">
+                    Substances permitted under the tank code and any special provisions specified in 9
+                    may be carried
+                  </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="classUN" type="radio"
+                         [ngrxFormControlState]="(formState$ | async).controls.substancesPermitted"
+                         value="Substances (Class UN number and if necessary packing group and proper shipping name) may be carried">
+                  <label class="govuk-label govuk-radios__label" for="classUN">
+                    Substances (Class UN number and if necessary packing group and proper shipping name)
+                    may be carried
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="govuk-inset-text">
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset">
+                <h2 class="govuk-heading-m">Select</h2>
+                <div class="govuk-radios">
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="isStatement" type="radio" value="isStatement"
+                           (change)="selectReferenceNumberChange($event)"
+                           [ngrxFormControlState]="(formState$ | async).controls.selectReferenceNumber">
+                    <label class="govuk-label govuk-radios__label" for="isStatement">
+                      Statement
+                    </label>
+                  </div>
+                  <div class="govuk-inset-text"
+                       *ngIf="(formState$ | async).value.selectReferenceNumber === 'isStatement'">
+                    <div class="govuk-form-group"
+                         *ngIf="(formState$ | async).value.selectReferenceNumber === 'isStatement'">
+                      <label class="govuk-label govuk-!-font-weight-bold" for="statement">
+                        Reference number
+                      </label>
+                      <input class="govuk-input govuk-input--width-10" id="statement" type="number"
+                             [ngrxFormControlState]="(formState$ | async).controls.statement">
+                    </div>
+                  </div>
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="isProductListRefNo" type="radio"
+                           value="isProductListRefNo" (change)="selectReferenceNumberChange($event)"
+                           [ngrxFormControlState]="(formState$ | async).controls.selectReferenceNumber">
+                    <label class="govuk-label govuk-radios__label" for="isProductListRefNo">
+                      Product List
+                    </label>
+                  </div>
+                  <div class="govuk-inset-text"
+                       *ngIf="(formState$ | async).value.selectReferenceNumber === 'isProductListRefNo'">
+                    <div class="govuk-form-group">
+                      <label class="govuk-label govuk-!-font-weight-bold" for="productListRefNo">
+                        Reference number
+                      </label>
+                      <input class="govuk-input govuk-input--width-10" id="productListRefNo"
+                             type="number"
+                             [ngrxFormControlState]="(formState$ | async).controls.productListRefNo">
+                    </div>
+                    <div class="govuk-form-group">
+                      <label class="govuk-label govuk-!-font-weight-bold" for="productListUnNo"> UN
+                        number </label>
+                      <ng-container
+                        *ngFor="let o of (productListUnNoOptions$ | async); let i = index; trackBy: trackByFn">
+                        <div class="un-number">
+                          <div>
+                            <p>
+                              <input class="govuk-input govuk-input--width-5" type="number"
+                                     [ngrxFormControlState]="(formState$ | async).controls.productListUnNo.controls[i]">
+                            </p>
+                          </div>
+                          <div>
+                            <p>
+                              <a class="remove-a-un-number" (click)="removeUnoOption(i)">Remove</a>
+                            </p>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <p>
+                        <a class="add-a-un-number" (click)="addAddUNOption()">Add a UN number</a>
+                      </p>
+                    </div>
+                    <div class="govuk-form-group">
+                      <label class="govuk-label govuk-!-font-weight-bold" for="productList">
+                        Additional details
+                      </label>
+                      <textarea class="govuk-textarea" id="productList" rows="8"
+                                aria-describedby="productList"
+                                [ngrxFormControlState]="(formState$ | async).controls.productList">
+                      </textarea>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="specialProvisions">
+              Special provisions
+            </label>
+            <textarea class="govuk-textarea" id="specialProvisions" rows="8"
+                      aria-describedby="specialProvisions"
+                      [ngrxFormControlState]="(formState$ | async).controls.specialProvisions">
+            </textarea>
+          </div>
+
+          <h2 class="govuk-heading-m" *ngIf="isVehicleTankOrBattery$ | async">Tank inspections</h2>
+
+          <vtm-inspection-details [inspectionType]="'tc2'"
+                                  [type]="(formState$ | async).controls.tc2Type"
+                                  [periodicNumber]="(formState$ | async).controls.tc2IntermediateApprovalNo"
+                                  [expiryDate]="(formState$ | async).controls.tc2IntermediateExpiryDate">
+          </vtm-inspection-details>
+          <ng-container
+            *ngFor="let tc of (formState$ | async).controls.tc3Type.controls; let i = index; trackBy: trackByFn">
+            <vtm-inspection-details [inspectionType]="'tc3'"
+                                    [type]="(formState$ | async).controls.tc3Type.controls[i]"
+                                    [periodicNumber]="(formState$ | async).controls.tc3PeriodicNumber.controls[i]"
+                                    [expiryDate]="(formState$ | async).controls.tc3PeriodicExpiryDate.controls[i]">
+            </vtm-inspection-details>
+          </ng-container>
+          <p><a class="add-subsequent-inspection" (click)="addSubsequentInspection()">Add a subsequent inspection</a>
+          </p>
+
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+              <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
+              <div class="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="isMemo" type="radio"
+                         value="07/09 3mth leak ext"
+                         [ngrxFormControlState]="(formState$ | async).controls.memosApply">
+                  <label class="govuk-label govuk-radios__label" for="isMemo">
+                    Yes
+                  </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="isNotMemo" type="radio" value=""
+                         [ngrxFormControlState]="(formState$ | async).controls.memosApply">
+                  <label class="govuk-label govuk-radios__label" for="isNotMemo">
+                    No
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="govuk-summary-list__row">
+            <h2 class="govuk-heading-m">Tank documents</h2>
+          </div>
+          <div class="govuk-form-group">
+            <div class="govuk-summary-list__row">
+              <div *ngFor="let file of files" class="govuk-summary-list__row tank-documents">
+                <dt class="govuk-summary-list__key"> {{file.name}} </dt>
+                <dd class="govuk-summary-list__value">
+                </dd>
+                <dd class="govuk-summary-list__value">
+                  <a class="govuk-link">Download</a>
+                </dd>
+                <dd class="govuk-summary-list__value">
+                  <a class="govuk-link">Remove</a>
+                </dd>
+              </div>
+            </div>
+            <div id="hide">
+              <label class="hand-cursor">
+                <input #fileInput type="file" (change)="changeListener($event)" multiple>
+                <span class="govuk-button govuk-button--secondary mt-1">Upload documents</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+              <h2 class="govuk-heading-m">Battery list applicable</h2>
+              <div class="govuk-radios govuk-radios--inline">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="applicable" type="radio" value="applicable"
+                         (change)="onBatteryApplicableChange($event)"
+                         [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
+                  <label class="govuk-label govuk-radios__label" for="applicable">
+                    Yes
+                  </label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="notApplicable" type="radio" value="notApplicable"
+                         (change)="onBatteryApplicableChange($event)"
+                         [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
+                  <label class="govuk-label govuk-radios__label" for="notApplicable">
+                    No
+                  </label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="govuk-inset-text" *ngIf="isBatteryApplicable">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
+                Reference number
+              </label>
+              <input class="govuk-input govuk-input--width-10" id="batteryListNumber" type="number"
+                     [ngrxFormControlState]="(formState$ | async).controls.batteryListNumber">
+            </div>
+          </div>
+        </div>
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="nationality-hint nationality-error">
+
+            <h2 class="govuk-heading-m">Declaration seen</h2>
+
+            <div class="govuk-checkboxes">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="brakeDeclarationsSeen" type="checkbox"
+                       (change)="onManufactureBreakChange($event)"
+                       [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationsSeen">
+                <label class="govuk-label govuk-checkboxes__label" for="brakeDeclarationsSeen">
+                  Manufacturer brake declaration
+                </label>
+              </div>
+              <div class="govuk-inset-text" *ngIf="isBrakeDeclarationsSeen">
+                <div class="govuk-form-group">
+                  <label class="govuk-label govuk-!-font-weight-bold" for="brakeDeclarationIssuer">
+                    Issuer
+                  </label>
+                  <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer"
+                         type="text"
+                         [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationIssuer">
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="brakeEndurance" type="checkbox"
+                         (change)="onBrakeEnduranceChange($event)"
+                         [ngrxFormControlState]="(formState$ | async).controls.brakeEndurance">
+                  <label class="govuk-label govuk-checkboxes__label" for="brakeEndurance">
+                    Brake endurance
+                  </label>
+                </div>
+                <div class="govuk-inset-text" *ngIf="isBrakeEndurance">
+                  <div class="govuk-form-group">
+                    <label class="govuk-label govuk-!-font-weight-bold" for="weight">
+                      Weight (kg)
+                    </label>
+                    <input class="govuk-input govuk-input--width-10" id="weight" type="text"
+                           [ngrxFormControlState]="(formState$ | async).controls.weight">
+                  </div>
+                </div>
+              </div>
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="declarationsSeen" type="checkbox"
+                       value="true" [ngrxFormControlState]="(formState$ | async).controls.declarationsSeen">
+                <label class="govuk-label govuk-checkboxes__label" for="declarationsSeen">
+                  Owner/operator declaration
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+            <h2 class="govuk-heading-m">Certificate required</h2>
+            <div class="govuk-radios govuk-radios--inline">
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="yesCert" type="radio"
+                       value="New certificate requested"
+                       [ngrxFormControlState]="(formState$ | async).controls.certificateReq">
+                <label class="govuk-label govuk-radios__label" for="yesCert">
+                  Yes
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input class="govuk-radios__input" id="noCert" type="radio" value=""
+                       [ngrxFormControlState]="(formState$ | async).controls.certificateReq">
+                <label class="govuk-label govuk-radios__label" for="noCert">
+                  No
+                </label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-weight-bold" for="adr-more-detail">
+            <h2 class="govuk-heading-m">Additional ADR details</h2>
+          </label>
+          <span id="more-detail-hint" class="govuk-hint">
               Will not be present on the ADR certificate
             </span>
-            <textarea class="govuk-textarea" id="adr-more-detail" rows="8"
-              aria-describedby="adrMoreDetail"
-              [ngrxFormControlState]="(formState$ | async).controls.adrMoreDetail">
+          <textarea class="govuk-textarea" id="adr-more-detail" rows="8"
+                    aria-describedby="adrMoreDetail"
+                    [ngrxFormControlState]="(formState$ | async).controls.adrMoreDetail">
           </textarea>
-          </div>
-        </form>
-      </fieldset>
-    </div>
+        </div>
+      </form>
+    </fieldset>
   </div>
+</div>
 
 <ng-template #space>
   <span></span>

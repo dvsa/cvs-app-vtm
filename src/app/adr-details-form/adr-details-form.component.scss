@@ -3,6 +3,14 @@
 
 .adr-details {
 
+  .mt-1 {
+    margin-top: 1rem;
+  }
+
+  .mb-1 {
+    margin-bottom: 1rem;
+  }
+
   fieldset {
     border: none !important;
   }
@@ -73,7 +81,7 @@
     height: 10rem;
   }
 
-  .add-a-guidance-note, .add-a-un-number {
+  .add-a-guidance-note, .add-a-un-number, .add-subsequent-inspection {
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
