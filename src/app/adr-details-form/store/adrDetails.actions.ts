@@ -104,3 +104,11 @@ export class AddTankDocumentAction extends AddArrayControlAction<(string | Array
   }
 }
 
+export class RemoveTankDocumentAction extends RemoveArrayControlAction {
+  static readonly SUB_TYPE = 'adrDetails/REMOVE_TANK_DOCUMENT';
+  readonly subtype = RemoveTankDocumentAction.SUB_TYPE;
+  constructor(public controlId: string, index?: number) {
+    super(controlId, index);
+  }
+}
+

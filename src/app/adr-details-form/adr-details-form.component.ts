@@ -134,6 +134,8 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
     this._store.dispatch(new DownloadDocumentFileAction(doc));
   }
 
+
+
   addAddUNOption() {
     this.formState$.pipe(
       take(1),
@@ -210,6 +212,14 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
         this.files.add(file);
       }
     }
+  }
+
+  removeTankDocument(index: number) {
+    this.formState$.pipe(
+      take(1),
+      map(s => s.controls.tankDocuments.id),
+      map(id => new RemoveArrayControlAction(id, index)),
+    ).subscribe(this._store);
   }
 
   selectReferenceNumberChange($event) {

@@ -4,63 +4,9 @@ import { adrDetailsFormModel } from './adrDetailsForm.model';
 import { required, maxLength, greaterThan, lessThanOrEqualTo } from 'ngrx-forms/validation';
 import { approvalDate } from '@app/models/approvalDate';
 import {IAppState, INITIAL_STATE} from './adrDetailsForm.state';
-import { CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction, CreateProductListUnNoElementAction, RemoveProductListUnNoElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, SetSubmittedValueAction, AddTankDocumentAction } from './adrDetails.actions';
+import { CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction, CreateProductListUnNoElementAction, RemoveProductListUnNoElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, SetSubmittedValueAction, AddTankDocumentAction, RemoveTankDocumentAction } from './adrDetails.actions';
 
 export const FORM_ID = 'adrDetails';
-//
-// export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, {
-//     name: '',
-//     street: '',
-//     town: '',
-//     city: '',
-//     postcode: '',
-//     type: '',
-//     approvalDate: {
-//         day: 1,
-//         month: 1,
-//         year: 1920
-//     },
-//     permittedDangerousGoods: {
-//     },
-//     compatibilityJ: false,
-//     additionalNotes: {},
-//     adrTypeApprovalNo: '',
-//     tankManufacturer: '',
-//     yearOfManufacture: 1,
-//     tankManufacturerSerialNo: '',
-//     tankTypeAppNo: '',
-//     tankCode: '',
-//     tankDocuments: [],
-//     substancesPermitted: '',
-//     selectReferenceNumber: '',
-//     statement: '',
-//     productListRefNo: '',
-//     productListUnNo: [],
-//     productList: '',
-//     specialProvisions: '',
-//     tc2Type: '',
-//     tc2IntermediateApprovalNo: '',
-//     tc2IntermediateExpiryDate: {
-//         day: 1,
-//         month: 1,
-//         year: 1920
-//     },
-//     tc3Type: [],
-//     tc3PeriodicNumber: [],
-//     tc3PeriodicExpiryDate: [],
-//     memosApply: { '07/09 3mth leak ext': false },
-//     listStatementApplicable: '',
-//     batteryListNumber: '',
-//     brakeDeclarationIssuer: '',
-//     brakeEndurance: '',
-//     brakeDeclarationsSeen: '',
-//     declarationsSeen: '',
-//     weight: 0,
-//     certificateReq: '',
-//     adrMoreDetail: ''
-// });
-
-
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
     name: validate(required, maxLength(150)),
     street: validate(required, maxLength(150)),
@@ -299,10 +245,11 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     },
     tankDocuments: function (
         s = { maxIndex: 0, options: [] },
-        a: AddTankDocumentAction
+        a: AddTankDocumentAction | RemoveTankDocumentAction
     ) {
 
-        if (!a.hasOwnProperty('subtype') && (<AddTankDocumentAction>a).subtype !== AddTankDocumentAction.SUB_TYPE) {
+        if (!a.hasOwnProperty('subtype') && ((<AddTankDocumentAction>a).subtype !== AddTankDocumentAction.SUB_TYPE ||
+        (<RemoveTankDocumentAction>a).subtype !== RemoveTankDocumentAction.SUB_TYPE )) {
             return;
         }
 
@@ -310,12 +257,20 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case AddTankDocumentAction.TYPE: {
                 const maxIndex = s.maxIndex + 1;
                 const options = [...s.options];
-                // tslint:disable-next-line:no-unnecessary-type-assertion no-non-null-assertion
                 options.splice(a.index!, 0, a.value);
                 return {
                     maxIndex,
                     options,
                 };
+            }
+
+            case RemoveTankDocumentAction.TYPE: {
+                const options = [...s.options];
+                options.splice(a.index!, 1);
+                return {
+                  ...s,
+                  options,
+                };             
             }
 
             default:
