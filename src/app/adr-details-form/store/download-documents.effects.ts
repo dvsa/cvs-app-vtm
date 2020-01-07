@@ -26,24 +26,20 @@ export class DownloadDocumentsEffects {
                     console.log(`DownloadDocumentsEffects withLatestFrom _ => ${JSON.stringify(_)}`);
                 })
             )),
-        switchMap(([action, vin]) => this._technicalRecordService.getDocumentUrl(vin, action.filename)
+        switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
             .pipe(
-                switchMap((response: { blobUrl: string, fileName?: string }) =>
-                    this._technicalRecordService.downloadBlob(response.blobUrl, response.fileName)
-                        .pipe(
-                            switchMap((payload: any) => {
-                                this._FileSaverService.save(payload.blob, payload.fileName);
-                                // this.downloadFile(payload);
-                                // this.saveFile(payload);
-                                return of(new DownloadDocumentFileActionSuccess(payload))
-                            }),
-                            tap((_) => {
-                                console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
-                            }),
-                            catchError((error) =>
-                                of(new DownloadDocumentFileActionFailure(error))
-                            )
-                        )))));
+                switchMap((response: { buffer: ArrayBuffer, fileName?: string }) => {
+                                const fileblob = new Blob([response.buffer], {type: 'application/octet-stream'});
+                                this._FileSaverService.save(fileblob, response.fileName);
+                                return of(new DownloadDocumentFileActionSuccess({blob: fileblob , fileName: response.fileName}));
+
+                }),
+                tap((_) => {
+                    console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
+                }),
+                catchError((error) =>
+                    of(new DownloadDocumentFileActionFailure(error))
+                ))));
 
     constructor(
         private _actions$: Actions,

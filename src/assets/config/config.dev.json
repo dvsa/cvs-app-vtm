@@ -24,8 +24,8 @@
     }
   },
   "apiServer": {
-    "APITechnicalRecordServerUri": "",
-    "APITestResultServerUri": "",
+    "APITechnicalRecordServerUri": "http://localhost:3005",
+    "APITestResultServerUri": "http://localhost:3006",
     "APIDocumentsServerUri": "assets/files",
     "APIDocumentBlobUri": ""
   }
