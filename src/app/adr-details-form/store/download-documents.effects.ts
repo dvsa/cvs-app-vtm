@@ -35,7 +35,7 @@ export class DownloadDocumentsEffects {
 
                 }),
                 tap((_) => {
-                    console.log(`_.payload.fileName => ${JSON.stringify(_.payload.fileName)}`);
+                    console.log(`DownloadDocumentFileActionSuccess _.payload.blob => ${JSON.stringify(_.payload.blob)}`);
                 }),
                 catchError((error) =>
                     of(new DownloadDocumentFileActionFailure(error))
