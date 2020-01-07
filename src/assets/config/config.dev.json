@@ -26,7 +26,7 @@
   "apiServer": {
     "APITechnicalRecordServerUri": "",
     "APITestResultServerUri": "",
-    "APIDocumentsServerUri": "",
+    "APIDocumentsServerUri": "assets/files",
     "APIDocumentBlobUri": ""
   }
 }
