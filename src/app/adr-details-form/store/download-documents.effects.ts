@@ -31,6 +31,7 @@ export class DownloadDocumentsEffects {
             .pipe(
                 switchMap((response: { buffer: ArrayBuffer, fileName?: string }) => {
                                 console.log(`getDocumentBlob response => ${JSON.stringify(response.buffer)}`);
+                                console.log(`getDocumentBlob buffer byteLength => ${JSON.stringify(response.buffer.byteLength)}`);
                                 const fileblob = new Blob([response.buffer], {type: 'application/octet-stream'});
                                 this._FileSaverService.save(fileblob, response.fileName);
                                 return of(new DownloadDocumentFileActionSuccess({blob: fileblob , fileName: response.fileName}));
