@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppConfig } from '@app/app.config';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -46,10 +46,17 @@ export class TechnicalRecordService {
 
   getDocumentBlob(vin: string, fileName: string): Observable<{ buffer: ArrayBuffer, fileName?: string }> {
     console.log(`getDocumentBlob vin => ${this.routes.getDocumentBlob(vin)}`);
-    return this.httpClient.get<{type: string , data: ArrayBuffer}>(this.routes.getDocumentBlob(vin), {
+    return this.httpClient.get<{type: string , data: Array<number>}>(this.routes.getDocumentBlob(vin), {
       params: { filename: fileName }, responseType: 'json'
     }).pipe(
-      switchMap(response => of({ buffer: response.data, fileName: fileName })),
+      switchMap(response => {
+        const ab = new ArrayBuffer(response.data.length);
+        const view = new Uint8Array(ab);
+        for (let i = 0; i < response.data.length; i++) {
+          view[i] = response.data[i];
+        }
+        return of({ buffer: ab, fileName: fileName });
+      }),
       tap(_ => console.log(`getDocumentBlob => ${JSON.stringify(_)}`))
     );
   }
