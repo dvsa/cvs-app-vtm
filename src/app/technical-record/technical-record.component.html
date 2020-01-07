@@ -1021,7 +1021,7 @@
                     </ng-container>
                     <ng-template #noDoc>
                       <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__value"> -</dt>
+                        <dt class="govuk-summary-list__value">-</dt>
                         <dd class="govuk-summary-list__value"></dd>
                         <dd class="govuk-summary-list__value"></dd>
                       </div>
@@ -1087,7 +1087,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Required</dt>
                       <dd id="test-guidanceNotes" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.guidanceNotes) ? "-" : activeRecord.adrDetails.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
+                        {{ isNullOrEmpty(activeRecord.adrDetails.additionalNotes.guidanceNotes) ? "-" : activeRecord.adrDetails.additionalNotes.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>
