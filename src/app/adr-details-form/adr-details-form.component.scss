@@ -11,6 +11,10 @@
     margin-bottom: 1rem;
   }
 
+  .mb-0 {
+    margin-bottom: 0 !important;
+  }
+
   fieldset {
     border: none !important;
   }
@@ -60,23 +64,6 @@
     white-space: nowrap;
   }
 
-  #radioADR {
-    display: block;
-    margin-top: 1rem;
-  }
-
-  #type {
-    width: 20rem;
-  }
-
-  #permittedDangerousGoods {
-    width: 30rem;
-  }
-
-  .multiselect {
-    height: 13rem;
-  }
-
   .additionalNotes {
     height: 10rem;
   }
@@ -85,10 +72,6 @@
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
-  }
-
-  #adr-more-detail {
-    width: 30rem;
   }
 
   .un-number {
@@ -106,12 +89,12 @@
   }
 
 
-  #hide input[type=file] {
+  .hide input[type=file] {
     display: none;
     margin: 10px;
   }
 
-  #hide input[type=file] + label {
+  .hide input[type=file] + label {
     display: inline-block;
     margin: 20px;
     padding: 4px 32px;
@@ -121,9 +104,19 @@
     color: #666F77;
   }
 
-  #hide input[type=file]:active + label {
+  .hide input[type=file]:active + label {
     background-image: none;
     background-color: #2D6C7A;
     color: #FFFFFF;
+  }
+}
+
+.specialProvisions textarea, .adr-more-detail textarea {
+  width: 30rem;
+}
+
+.tank-documents {
+  a {
+    width: 65vw;
   }
 }

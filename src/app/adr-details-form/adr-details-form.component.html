@@ -20,28 +20,28 @@
                    type="text">
           </div>
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="street">
+            <label class="govuk-label govuk-!-font-weight-bold">
               Street
             </label>
             <input [ngrxFormControlState]="(formState$ | async).controls.street"
                    class="govuk-input govuk-input--width-20" type="text">
           </div>
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="town">
+            <label class="govuk-label govuk-!-font-weight-bold">
               Town
             </label>
             <input [ngrxFormControlState]="(formState$ | async).controls.town"
                    class="govuk-input govuk-input--width-20" type="text">
           </div>
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="city">
+            <label class="govuk-label govuk-!-font-weight-bold">
               City
             </label>
             <input [ngrxFormControlState]="(formState$ | async).controls.city"
                    class="govuk-input govuk-input--width-20" type="text">
           </div>
           <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="postcode">
+            <label class="govuk-label govuk-!-font-weight-bold">
               Postcode
             </label>
             <input [ngrxFormControlState]="(formState$ | async).controls.postcode"
@@ -50,7 +50,7 @@
         </div>
         <h2 class="govuk-heading-m">ADR details</h2>
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-!-font-weight-bold" for="type">
+          <label class="govuk-label govuk-!-font-weight-bold">
             Vehicle type
           </label>
           <select [ngrxFormState]="formState" [ngrxFormControlState]="formState.controls.type"
@@ -101,16 +101,16 @@
           </fieldset>
         </div>
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-!-font-weight-bold" for="permittedDangerousGoods">
+          <label class="govuk-label govuk-!-font-weight-bold">
             Permitted dangerous goods
           </label>
 
           <div class="govuk-checkboxes">
             <div class="govuk-checkboxes__item"
                  *ngFor="let permittedGood of formState.value.permittedDangerousGoods | keys">
-              <input class="govuk-checkboxes__input" type="checkbox" [value]="permittedGood"
+              <input class="govuk-checkboxes__input" id="permittedDangerousGoods" type="checkbox" [value]="permittedGood"
                      [ngrxFormControlState]="formState.controls.permittedDangerousGoods.controls[permittedGood.key]">
-              <label class="govuk-label govuk-checkboxes__label" for="permittedGood.key">
+              <label class="govuk-label govuk-checkboxes__label">
                 {{ permittedGood.key }} </label>
             </div>
           </div>
@@ -149,7 +149,7 @@
 
 
         <div class="govuk-form-group">
-          <label class="govuk-label govuk-!-font-weight-bold" for="additionalNotes">
+          <label class="govuk-label govuk-!-font-weight-bold">
             Guidance notes
           </label>
 
@@ -287,7 +287,7 @@
                              [ngrxFormControlState]="(formState$ | async).controls.productListRefNo">
                     </div>
                     <div class="govuk-form-group">
-                      <label class="govuk-label govuk-!-font-weight-bold" for="productListUnNo"> UN
+                      <label class="govuk-label govuk-!-font-weight-bold"> UN
                         number </label>
                       <ng-container
                         *ngFor="let o of (productListUnNoOptions$ | async); let i = index; trackBy: trackByFn">
@@ -323,11 +323,11 @@
               </fieldset>
             </div>
           </div>
-          <div class="govuk-form-group">
-            <label class="govuk-label govuk-!-font-weight-bold" for="specialProvisions">
+          <div class="govuk-form-group specialProvisions">
+            <label class="govuk-label govuk-!-font-weight-bold">
               Special provisions
             </label>
-            <textarea class="govuk-textarea" id="specialProvisions" rows="8"
+            <textarea class="govuk-textarea" rows="8"
                       aria-describedby="specialProvisions"
                       [ngrxFormControlState]="(formState$ | async).controls.specialProvisions">
             </textarea>
@@ -377,21 +377,18 @@
           <div class="govuk-summary-list__row">
             <h2 class="govuk-heading-m">Tank documents</h2>
           </div>
-          <div class="govuk-form-group">
+          <div class="govuk-form-group mb-0">
             <div class="govuk-summary-list__row">
               <div *ngFor="let file of files" class="govuk-summary-list__row tank-documents">
                 <dt class="govuk-summary-list__key"> {{file.name}} </dt>
                 <dd class="govuk-summary-list__value">
                 </dd>
                 <dd class="govuk-summary-list__value">
-                  <a class="govuk-link">Download</a>
-                </dd>
-                <dd class="govuk-summary-list__value">
                   <a class="govuk-link">Remove</a>
                 </dd>
               </div>
             </div>
-            <div id="hide">
+            <div class="hide">
               <label class="hand-cursor">
                 <input #fileInput type="file" (change)="changeListener($event)" multiple>
                 <span class="govuk-button govuk-button--secondary mt-1">Upload documents</span>
@@ -404,18 +401,18 @@
               <h2 class="govuk-heading-m">Battery list applicable</h2>
               <div class="govuk-radios govuk-radios--inline">
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="applicable" type="radio" value="applicable"
+                  <input class="govuk-radios__input" type="radio" value="applicable"
                          (change)="onBatteryApplicableChange($event)"
                          [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
-                  <label class="govuk-label govuk-radios__label" for="applicable">
+                  <label class="govuk-label govuk-radios__label">
                     Yes
                   </label>
                 </div>
                 <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="notApplicable" type="radio" value="notApplicable"
+                  <input class="govuk-radios__input" type="radio" value="notApplicable"
                          (change)="onBatteryApplicableChange($event)"
                          [ngrxFormControlState]="(formState$ | async).controls.listStatementApplicable">
-                  <label class="govuk-label govuk-radios__label" for="notApplicable">
+                  <label class="govuk-label govuk-radios__label">
                     No
                   </label>
                 </div>
@@ -423,7 +420,7 @@
             </fieldset>
           </div>
 
-          <div class="govuk-inset-text" *ngIf="isBatteryApplicable">
+          <div class="govuk-inset-text" *ngIf="isBatteryApplicable || (formState$ | async).controls.listStatementApplicable.value == 'applicable'">
             <div class="govuk-form-group">
               <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
                 Reference number
@@ -505,15 +502,12 @@
             </div>
           </fieldset>
         </div>
-        <div class="govuk-form-group">
-          <label class="govuk-label govuk-!-font-weight-bold" for="adr-more-detail">
+        <div class="govuk-form-group adr-more-detail">
+          <label class="govuk-label govuk-!-font-weight-bold">
             <h2 class="govuk-heading-m">Additional ADR details</h2>
           </label>
-          <span id="more-detail-hint" class="govuk-hint">
-              Will not be present on the ADR certificate
-            </span>
-          <textarea class="govuk-textarea" id="adr-more-detail" rows="8"
-                    aria-describedby="adrMoreDetail"
+          <span class="govuk-hint"> Will not be present on the ADR certificate </span>
+          <textarea class="govuk-textarea" rows="8" aria-describedby="adrMoreDetail"
                     [ngrxFormControlState]="(formState$ | async).controls.adrMoreDetail">
           </textarea>
         </div>

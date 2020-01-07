@@ -21,27 +21,6 @@
 }
 
 
-#hide input[type=file] {
-  display:none;
-  margin:10px;
-  }
-  #hide input[type=file] + label {
-  display:inline-block;
-  margin:20px;
-  padding: 4px 32px;
-  background-color: #FFFFFF;
-  border:solid 1px #666F77;
-  border-radius: 6px;
-  color:#666F77;
-  }
-  #hide input[type=file]:active + label {
-  background-image: none;
-  background-color:#2D6C7A;
-  color:#FFFFFF;
-  }
-
-
-
 .fileContainer {
   overflow: hidden;
   position: relative;
@@ -71,7 +50,7 @@
     margin-bottom: 32px;
     font-size: 1.1875rem;
     line-height: 1;
- }
+  }
 }
 
 .fileContainer {
@@ -127,7 +106,7 @@ $font-stack: GDSTransportWebsite;
 
 dd {
   & ul {
-    padding-left: 0%;
+    padding-left: 0;
   }
 }
 
@@ -145,7 +124,6 @@ dd {
 
 .custom-header .mat-expansion-panel-header {
   padding: 0;
-  //height: 80px !important; //ripple
 }
 
 .custom-header, .open-close-all {
@@ -470,22 +448,10 @@ dd {
     white-space: nowrap;
   }
 
-  #radioADR {
+  .radioADR {
     display: block;
     margin-top: 1rem;
   }
-
-  #type {
-    width: 20rem;
-  }
-
-  #permittedDangerousGoods {
-    width: 30rem;
-  }
-
-  .multiselect {
-    height: 13rem;
-   }
 
   .additionalNotes {
     height: 10rem;
@@ -495,11 +461,6 @@ dd {
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
-    // cursor: not-allowed;
-  }
-
-  #adr-more-detail {
-    width: 30rem;
   }
 
   fieldset {
@@ -507,7 +468,7 @@ dd {
   }
 }
 
-a#cancel1, a#cancel2 {
+a.cancel1, a.cancel2 {
     color:  $govuk-link-colour !important;
     font-family: "GDS Transport", Arial, sans-serif;
     font-size: 19px;
@@ -537,15 +498,9 @@ a#cancel1, a#cancel2 {
   padding-top: 0!important;
 }
 
-textarea .specialProvisions {
-  max-width: 480px;
-}
 
-.tank-documents {
-  a {
-    width: 47px !important;
-  }
-}
+
+
 
 
 

@@ -216,7 +216,6 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
     this.isStatement = $event.currentTarget.value === 'isStatement';
   }
 
-
   onBatteryApplicableChange($event) {
     this.isBatteryApplicable = $event.currentTarget.value === 'applicable';
   }

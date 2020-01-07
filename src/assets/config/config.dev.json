@@ -18,7 +18,7 @@
     "clientId": "",
     "tenant": "",
     "redirectUri": "",
-    "cacheLocation": "",
+    "cacheLocation": "localStorage",
     "endpoints": {
       "api": ""
     }
