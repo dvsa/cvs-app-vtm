@@ -12,6 +12,7 @@ import { IAppState } from '@app/store/state/app.state';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+import { resolveReflectiveProviders } from '@angular/core/src/di/reflective_provider';
 
 
 @Injectable()
@@ -29,6 +30,7 @@ export class DownloadDocumentsEffects {
         switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
             .pipe(
                 switchMap((response: { buffer: ArrayBuffer, fileName?: string }) => {
+                                console.log(`getDocumentBlob response => ${JSON.stringify(response.buffer)}`);
                                 const fileblob = new Blob([response.buffer], {type: 'application/octet-stream'});
                                 this._FileSaverService.save(fileblob, response.fileName);
                                 return of(new DownloadDocumentFileActionSuccess({blob: fileblob , fileName: response.fileName}));
