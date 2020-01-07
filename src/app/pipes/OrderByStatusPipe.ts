@@ -14,7 +14,7 @@ export class OrderByStatusPipe implements PipeTransform {
       if (records !== undefined) orderedTechRec.push(records);
 
       records = techRecordList.filter((record: any) => record.statusCode === 'archived');
-      records.sort((a,b)=> new Date (a.createdAt).getTime() - new Date (b.createdAt).getTime() );
+      records.sort((a,b)=> new Date (b.createdAt).getTime() - new Date (a.createdAt).getTime() );
       if (records !== undefined) records.forEach(element => orderedTechRec.push(element));
 
       return orderedTechRec;
