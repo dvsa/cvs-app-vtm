@@ -164,7 +164,7 @@
 
           <div class="grid-container-row mt-1">
             <a class="add-guidance-note mb-1" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a>
-            <input class="govuk-input govuk-input--width-10" #guidanceNote id="addGuidanceNote" placeholder="Type a guidance note" type="text">
+            <input class="govuk-input govuk-input--width-10" #guidanceNote placeholder="Type a guidance note" type="text">
           </div>
 
         </div>
@@ -447,13 +447,12 @@
                   Manufacturer brake declaration
                 </label>
               </div>
-              <div class="govuk-inset-text" *ngIf="isBrakeDeclarationsSeen">
+              <div class="govuk-inset-text" *ngIf="isBrakeDeclarationsSeen || (formState$ | async).controls.brakeDeclarationsSeen.value">
                 <div class="govuk-form-group">
                   <label class="govuk-label govuk-!-font-weight-bold" for="brakeDeclarationIssuer">
                     Issuer
                   </label>
-                  <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer"
-                         type="text"
+                  <input class="govuk-input govuk-input--width-10" id="brakeDeclarationIssuer" type="text"
                          [ngrxFormControlState]="(formState$ | async).controls.brakeDeclarationIssuer">
                 </div>
                 <div class="govuk-checkboxes__item">
@@ -464,7 +463,7 @@
                     Brake endurance
                   </label>
                 </div>
-                <div class="govuk-inset-text" *ngIf="isBrakeEndurance">
+                <div class="govuk-inset-text" *ngIf="isBrakeEndurance || (formState$ | async).controls.brakeEndurance.value">
                   <div class="govuk-form-group">
                     <label class="govuk-label govuk-!-font-weight-bold" for="weight">
                       Weight (kg)
