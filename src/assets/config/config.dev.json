@@ -11,22 +11,22 @@
   },
   "aad": {
     "requireAuth": true,
-    "clientId": "",
-    "tenant": ""
+    "clientId": "#{aadClientId}",
+    "tenant": "#{aadTenant}"
   },
   "adalConfig": {
-    "clientId": "",
-    "tenant": "",
-    "redirectUri": "",
-    "cacheLocation": "",
+    "clientId": "#{aadClientId}",
+    "tenant": "#{aadTenant}",
+    "redirectUri": "http://localhost:4200",
+    "cacheLocation": "localStorage",
     "endpoints": {
-      "api": ""
+      "api": "xxx-bae6-4760-b434-xxx"
     }
   },
   "apiServer": {
-    "APITechnicalRecordServerUri": "",
-    "APITestResultServerUri": "",
-    "APIDocumentsServerUri": "",
-    "APIDocumentBlobUri": ""
+    "APITechnicalRecordServerUri": "http://localhost:3005",
+    "APITestResultServerUri": "http://localhost:3006",
+    "APIDocumentsServerUri": "assets/files",
+    "APIDocumentBlobUri": "https://cvs-nonprod-adr-pdfs.s3.eu-west-1.amazonaws.com/cvsb-9213"
   }
 }
