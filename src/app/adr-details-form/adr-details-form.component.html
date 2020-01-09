@@ -377,16 +377,12 @@
           <div class="govuk-summary-list__row">
             <h2 class="govuk-heading-m">Tank documents</h2>
           </div>
-          <div class="govuk-form-group">
+          <div class="govuk-form-group mb-0">
             <div class="govuk-summary-list__row">
-              <div *ngFor="let file of (formState$ | async).controls.tankDocuments.controls; let i = index; trackBy: trackByFn"
-              class="govuk-summary-list__row tank-documents">
+              <div *ngFor="let file of (formState$ | async).controls.tankDocuments.controls; let i = index; trackBy: trackByFn" class="govuk-summary-list__row tank-documents">
                 <dt class="govuk-summary-list__key"> Document {{i + 1}} </dt>
                 <dd class="govuk-summary-list__value">
                 </dd>
-                <!-- <dd class="govuk-summary-list__value">
-                  <a class="govuk-link">Download</a>
-                </dd> -->
                 <dd class="govuk-summary-list__value">
                   <a class="govuk-link" (click)="removeTankDocument(i)">Remove</a>
                 </dd>

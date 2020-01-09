@@ -11,6 +11,11 @@
     margin-bottom: 1rem;
   }
 
+  .mb-0 {
+    margin-bottom: 0;
+  }
+
+
   fieldset {
     border: none !important;
   }
@@ -87,7 +92,7 @@
     float: initial !important;
   }
 
-  #adr-more-detail {
+  #adr-more-detail, #specialProvisions {
     width: 30rem;
   }
 
@@ -126,4 +131,8 @@
     background-color: #2D6C7A;
     color: #FFFFFF;
   }
+}
+
+.tank-documents a {
+    width: 78vw;
 }
