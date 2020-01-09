@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy} from '@angular/core';
-import {Store, select} from '@ngrx/store';
-import {createInitialState, IAppState, INITIAL_STATE} from '@app/adr-details-form/store/adrDetailsForm.state';
-import {FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction} from 'ngrx-forms';
-import {Observable, combineLatest, of} from 'rxjs';
-import {adrDetailsFormModel} from '@app/adr-details-form/store/adrDetailsForm.model';
-import {filter, catchError, map, withLatestFrom, take, tap} from 'rxjs/operators';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { createInitialState, IAppState, INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
+import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction } from 'ngrx-forms';
+import { Observable, combineLatest, of } from 'rxjs';
+import { adrDetailsFormModel } from '@app/adr-details-form/store/adrDetailsForm.model';
+import { filter, catchError, map, withLatestFrom, take, tap } from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
   CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction, LoadAction
@@ -17,12 +17,13 @@ import {
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdrDetailsFormComponent implements OnInit , OnDestroy {
+export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('fileInput') fileInputVariable: ElementRef;
   @Input() vehicletypes$: Observable<string[]>;
   @Input() permittedDangerousGoodsFe$: Observable<string[]>;
   @Input() guidanceNotesFe$: Observable<string[]>;
   @Input() initialAdrDetails: any;
+  @Input() submitData: any;
   adrDetails$: Observable<any>;
   formState$: Observable<FormGroupState<adrDetailsFormModel>>;
   permittedDangerousGoodsOptions$: Observable<string[]>;
@@ -64,9 +65,6 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
       filter(s => s.adrDetails.tc3PeriodicExpiryDate !== undefined),
       select(s => s.adrDetails.tc3PeriodicExpiryDate.options));
 
-    this.tc3TypeOptions$.subscribe(t => console.log(`tc3TypeOptions$ => ${JSON.stringify(t)}`));
-    this.tc3PeriodicNumberOptions$.subscribe(t => console.log(`tc3PeriodicNumberOptions$ => ${JSON.stringify(t)}`));
-    this.tc3PeriodicExpiryDateOptions$.subscribe(t => console.log(`tc3PeriodicExpiryDateOptions$ => ${JSON.stringify(t)}`));
     this.submittedValue$ = this._store.pipe(select(s => s.adrDetails.submittedValue));
     this.isVehicleTankOrBattery$ = this.formState$.pipe(
       map(formState => {
@@ -91,7 +89,7 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
       withLatestFrom(this.tc3PeriodicNumberOptions$, this.tc3PeriodicExpiryDateOptions$),
       filter(([type, periodicNumber, expiryDate]) => type !== undefined || periodicNumber !== undefined || expiryDate !== undefined),
       map(([type, periodicNumber, expiryDate]) => {
-        return [{type, periodicNumber, expiryDate}];
+        return [{ type, periodicNumber, expiryDate }];
       })
     );
   }
@@ -104,13 +102,13 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
       console.log(`initialAdrDetails is => ${JSON.stringify(this.initialAdrDetails)}`);
       this._store.dispatch(new SetValueAction(INITIAL_STATE.id, createInitialState(this.initialAdrDetails)));
     }
-    this.permittedDangerousGoodsFe$.subscribe( goods => {
+    this.permittedDangerousGoodsFe$.subscribe(goods => {
       goods.forEach(good => {
         this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good,
           this.initialAdrDetails && this.initialAdrDetails.permittedDangerousGoods.includes(good)));
       });
     });
-    this.guidanceNotesFe$.subscribe( notes => {
+    this.guidanceNotesFe$.subscribe(notes => {
       notes.forEach(note => {
         this._store.dispatch(new CreateGuidanceNoteElementAction(note,
           this.initialAdrDetails && this.initialAdrDetails.additionalNotes.guidanceNotes.includes(note)));
@@ -118,6 +116,20 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
     });
 
 
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      let change = changes[propName];
+
+      let curVal = JSON.stringify(change.currentValue);
+      let prevVal = JSON.stringify(change.previousValue);
+      let changeLog = `${propName}: currentValue = ${curVal}, previousValue = ${prevVal}`;
+
+      if (propName === 'submitData') {
+        console.log(`detected change in submitData => ${changeLog}`);
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -190,28 +202,29 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
   }
 
   private readThis(inputValue: any): void {
-    const file: File = inputValue.files[0];
-    const tankDocReader: FileReader = new FileReader();
-
-    tankDocReader.onloadend = () => {
-      console.log(tankDocReader.result);
-      this.formState$.pipe(
-        take(1),
-        map(s => s.controls.tankDocuments.id),
-        map(id => new AddTankDocumentAction(id, tankDocReader.result)),
-      ).subscribe(this._store);
-    };
-    tankDocReader.readAsDataURL(file);
-
     this.fileList = inputValue.files;
+    let currentFileIndex = 0;
+    let filenames = [];
+    for (let index = 0; index < this.fileList.length; index++) {
+      filenames.push(this.fileList[index].name);
+    }
+
     if (this.fileList.length > 0) {
       for (let index = 0; index < this.fileList.length; index++) {
         const file: File = this.fileList[index];
-        const reader = new FileReader();
-        reader.readAsBinaryString(file);
         this.files.add(file);
+        const tankDocReader: FileReader = new FileReader();
+        tankDocReader.readAsDataURL(file);
+        tankDocReader.onload = () => {
+          this.formState$.pipe(
+            take(1),
+            map(s => s.controls.tankDocuments.id),
+            map(id => new AddTankDocumentAction(id, filenames[currentFileIndex++].concat(';', tankDocReader.result))),
+          ).subscribe(this._store);
+        };
       }
     }
+
   }
 
   removeTankDocument(index: number) {
@@ -265,6 +278,4 @@ export class AdrDetailsFormComponent implements OnInit , OnDestroy {
   trackByFn(index, item) {
     return item.id;
   }
-
-
 }

@@ -5,6 +5,8 @@ import {KeysPipe} from '@app/pipes/keysPipe';
 import {FilterRecordPipe} from '@app/pipes/FilterRecordPipe';
 import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.component';
 import {OrderByStatusPipe} from '@app/pipes/OrderByStatusPipe';
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 export const PIPES_AND_COMPONENTS = [
@@ -17,6 +19,10 @@ export const PIPES_AND_COMPONENTS = [
 ];
 
 @NgModule({
+  imports: [
+    FormsModule,
+    MatDialogModule
+  ],
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
   entryComponents: [ AdrReasonModalComponent ],

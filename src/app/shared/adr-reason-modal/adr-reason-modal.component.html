@@ -1,13 +1,14 @@
-
 <div mat-dialog-content>
-  <h1 class="govuk-heading-m enter-reason-for-cha">Enter reason for changing technical record</h1>
-  <textarea class="govuk-textarea" id="reasonForCreation" rows="8" aria-describedby="reasonForCreation"></textarea>
+  <h1 class="govuk-heading-m enter-reason-for-cha">{{data.context}}</h1>
+  <textarea class="govuk-textarea" id="reasonForCreation" rows="8" [(ngModel)]="data.response"
+    aria-describedby="reasonForCreation">
+</textarea>
 </div>
 
-<button class="govuk-button" data-module="govuk-button" (click)="onSubmit()">
+<button class="govuk-button" data-module="govuk-button" [mat-dialog-close]="data.response" cdkFocusInitial>
   Save technical record
 </button>
 
-<a class="cancel"(click)="close()">
+<a class="cancel" (click)="close()">
   <span>Cancel</span>
 </a>

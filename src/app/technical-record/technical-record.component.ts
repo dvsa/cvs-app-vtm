@@ -7,11 +7,12 @@ import {
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
 import { Observable, combineLatest, of } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { IAppState } from '../adr-details-form/store/adrDetailsForm.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import {DownloadDocumentFileAction} from '@app/adr-details-form/store/adrDetails.actions';
+import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -45,7 +46,7 @@ export class TechnicalRecordComponent implements OnInit {
   permittedDangerousGoodsFe$: Observable<string[]>;
   guidanceNotesFe$: Observable<string[]>;
 
-  constructor(private _store: Store<IAppState>, public matDialog: MatDialog) {
+  constructor(private _store: Store<IAppState>, public dialog: MatDialog) {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.vehicleTypes$ = this._store
       .pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.vehicleDetails.typeFe));
@@ -118,12 +119,18 @@ export class TechnicalRecordComponent implements OnInit {
     this._store.dispatch(new DownloadDocumentFileAction(doc));
   }
 
-  onModalShow() {
-    // const errorDialog = new MatDialogConfig();
-    // errorDialog.data = this.adrDetailsForm;
-    // this.matDialog.open(AdrReasonModalComponent, errorDialog);
+  onSaveChanges() {
 
-    // console.log(this.adrDetailsForm);
+    let reasonForChanges = '';
+    const dialogRef = this.dialog.open(AdrReasonModalComponent, {
+      width: '600px',
+      data: {context: 'Enter reason for changing technical record', response: reasonForChanges }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      reasonForChanges = result;
+      console.log(`The dialog was closed with response ${reasonForChanges}`);
+    });
   }
 
   trackByIndex(index: number) {
