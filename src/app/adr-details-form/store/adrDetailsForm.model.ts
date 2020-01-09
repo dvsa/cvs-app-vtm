@@ -38,8 +38,8 @@ export interface adrDetailsFormModel {
     month: number;
     year: number;
   };
-  tc3Type: string;
-  tc3PeriodicNumber: string;
+  tc3Type: [];
+  tc3PeriodicNumber: [];
   tc3PeriodicExpiryDate: {
     day: number;
     month: number;
