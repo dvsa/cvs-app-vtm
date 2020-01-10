@@ -2,7 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostBinding,
-  OnInit
+  OnInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
@@ -21,7 +23,7 @@ import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechnicalRecordComponent implements OnInit {
-
+  submitData: string;
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
 
@@ -121,7 +123,7 @@ export class TechnicalRecordComponent implements OnInit {
 
   onSaveChanges() {
 
-    let reasonForChanges = '';
+    let reasonForChanges: string = '';
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
       data: {context: 'Enter reason for changing technical record', response: reasonForChanges }
@@ -130,6 +132,7 @@ export class TechnicalRecordComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       reasonForChanges = result;
       console.log(`The dialog was closed with response ${reasonForChanges}`);
+      this.submitData = reasonForChanges;
     });
   }
 
