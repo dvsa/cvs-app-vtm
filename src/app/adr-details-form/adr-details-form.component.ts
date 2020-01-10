@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { createInitialState, IAppState, INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction } from 'ngrx-forms';
@@ -23,7 +23,7 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() permittedDangerousGoodsFe$: Observable<string[]>;
   @Input() guidanceNotesFe$: Observable<string[]>;
   @Input() initialAdrDetails: any;
-  @Input() submitData: any;
+  @Input() submitData: string;
   adrDetails$: Observable<any>;
   formState$: Observable<FormGroupState<adrDetailsFormModel>>;
   permittedDangerousGoodsOptions$: Observable<string[]>;
@@ -99,7 +99,7 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
     this._store.dispatch(new LoadAction({}));
 
     if (this.initialAdrDetails !== undefined) {
-      console.log(`initialAdrDetails is => ${JSON.stringify(this.initialAdrDetails)}`);
+      // console.log(`initialAdrDetails is => ${JSON.stringify(this.initialAdrDetails)}`);
       this._store.dispatch(new SetValueAction(INITIAL_STATE.id, createInitialState(this.initialAdrDetails)));
     }
     this.permittedDangerousGoodsFe$.subscribe(goods => {
@@ -118,18 +118,40 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    console.log(`Inside ngOnChanges`)
+    let log: string[] = [];
     for (let propName in changes) {
-      let change = changes[propName];
-
-      let curVal = JSON.stringify(change.currentValue);
-      let prevVal = JSON.stringify(change.previousValue);
-      let changeLog = `${propName}: currentValue = ${curVal}, previousValue = ${prevVal}`;
-
+      let changedProp = changes[propName];
+      // let to = JSON.stringify(changedProp.currentValue);
       if (propName === 'submitData') {
-        console.log(`detected change in submitData => ${changeLog}`);
+        log.push(`Initial value of ${propName} set to ${changedProp.currentValue}`);
+      } else {
+        // let from = JSON.stringify(changedProp.previousValue);
+        log.push(`${propName} changed from ${changedProp.previousValue} to ${changedProp.currentValue}`);
       }
     }
+
+    console.log( `ngOnChanges => ${JSON.stringify(log)}`);
+
+
+
+
+    // for (let propName in changes) {
+    //   let change = changes[propName];
+
+    //   let curVal = JSON.stringify(change.currentValue);
+    //   let prevVal = JSON.stringify(change.previousValue);
+    //   let changeLog = `${propName}: currentValue = ${curVal}, previousValue = ${prevVal}`;
+
+    //   if (propName === 'submitData') {
+    //     console.log(`detected change in submitData => ${changeLog}`);
+    //   }
+    // }
+  }
+
+  onSubmittedAdrDetails(event: {context: string, canSubmit: boolean}) {
+    console.log(`received event from parent ${JSON.stringify(event)}`);
   }
 
   ngOnDestroy(): void {

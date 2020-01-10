@@ -11,7 +11,6 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {Subject} from 'rxjs';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { hot } from 'jasmine-marbles';
@@ -19,6 +18,7 @@ import { IAppState } from '@app/store/state/app.state';
 import { MaterialModule } from '@app/material.module';
 import { SharedModule } from '@app/shared/shared.module';
 import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
+import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
 
 describe('TechnicalRecordSearchComponent', () => {
 
