@@ -14,6 +14,12 @@ export class SetSubmittedValueAction implements Action {
   constructor(public submittedValue: adrDetailsFormModel) { }
 }
 
+export class SetMsUserDetailsAction implements Action {
+  static readonly TYPE = 'adrDetails/SET_MS_USER_DETAILS';
+  readonly type = SetMsUserDetailsAction.TYPE;
+  constructor(public msUserDetails: {}) { }
+}
+
 export class CreatePermittedDangerousGoodElementAction implements Action {
   static readonly TYPE = 'adrDetails/CREATE_PERMITTED_DANGEROUS_GOOD_ELEMENT';
   readonly type = CreatePermittedDangerousGoodElementAction.TYPE;

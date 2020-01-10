@@ -6,9 +6,18 @@ import { Observable, combineLatest, of } from 'rxjs';
 import { adrDetailsFormModel } from '@app/adr-details-form/store/adrDetailsForm.model';
 import { filter, catchError, map, withLatestFrom, take, tap } from 'rxjs/operators';
 import {
-  DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
-  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction, LoadAction
+  DownloadDocumentFileAction,
+  CreateGuidanceNoteElementAction,
+  CreatePermittedDangerousGoodElementAction,
+  CreateTc3TypeElementAction,
+  CreateTc3PeriodicNumberElementAction,
+  CreateTc3PeriodicExpiryDateElementAction,
+  AddTankDocumentAction,
+  SetSubmittedValueAction,
+  LoadAction,
+  SetMsUserDetailsAction
 } from './store/adrDetails.actions';
+import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
 
 @Component({
   selector: 'vtm-adr-details-form',
@@ -47,8 +56,12 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
   isBatteryApplicable: boolean;
   isBrakeDeclarationsSeen: boolean;
   isBrakeEndurance: boolean;
+  msUserDetails: {
+    msUser: string,
+    msOid: string
+  };
 
-  constructor(private _store: Store<IAppState>) {
+  constructor(private _store: Store<IAppState>, private adal: MsAdalAngular6Service) {
     this.adrDetails$ = this._store.select(s => s.adrDetails);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
     this.permittedDangerousGoodsOptions$ = this._store.pipe(select(s => s.adrDetails.permittedDangerousGoodsOptions));
@@ -115,6 +128,9 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
       });
     });
 
+    this.msUserDetails.msOid  =  this.adal.userInfo != null ? this.adal.userInfo.profile.name : '';
+    this.msUserDetails.msUser =  this.adal.userInfo != null ? this.adal.userInfo.profile.oid : '';
+    this._store.dispatch(new SetMsUserDetailsAction(this.msUserDetails));
 
   }
 
