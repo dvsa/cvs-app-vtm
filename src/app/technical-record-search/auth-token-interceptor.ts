@@ -1,27 +1,32 @@
-import {Injectable} from '@angular/core';
-import {HttpInterceptor, HttpHandler, HttpRequest} from '@angular/common/http';
-import {mergeMap} from 'rxjs/operators';
-import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
+import { HttpHandler, HttpInterceptor, HttpRequest, HttpEvent } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import { mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthTokenInterceptor implements HttpInterceptor {
-  constructor(private adal: MsAdalAngular6Service) {
-  }
+  constructor(private adal: MsAdalAngular6Service) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    // get api url from adal config
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const resource = this.adal.GetResourceForEndpoint(req.url);
-    if (!resource || !this.adal.isAuthenticated) {
+    if (!resource) {
       return next.handle(req);
     }
 
-    // merge the bearer token into the existing headers
-    return this.adal.acquireToken(resource).pipe(
-      mergeMap((token: string) => {
-        const authorizedRequest = req.clone({
-          headers: req.headers.set('Authorization', `Bearer ${token}`),
-        });
-        return next.handle(authorizedRequest);
-      }));
+    if (!this.adal.isAuthenticated) {
+      return this.adal.acquireToken(resource).pipe(
+        mergeMap((token: string) => {
+          const authorizedRequest = req.clone({
+            headers: req.headers.set('Authorization', `Bearer ${token}`),
+          });
+          return next.handle(authorizedRequest);
+        }));
+    }
+
+    const authorizedRequest = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${this.adal.accessToken}`),
+    });
+    return next.handle(authorizedRequest);
   }
 }
