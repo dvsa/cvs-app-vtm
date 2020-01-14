@@ -102,10 +102,9 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     axles.forEach(axle => {
       if (axle.parkingBrakeMrk === true) {
         baxlesHasNoParkingBrakeMrk = false;
-        return false;
       }
     });
-    if (baxlesHasNoParkingBrakeMrk) { return true; }
+    return baxlesHasNoParkingBrakeMrk;
   }
 
   public hasSecondaryVrms(vrms) {

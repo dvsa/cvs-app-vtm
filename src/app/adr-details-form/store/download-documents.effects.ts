@@ -12,27 +12,27 @@ import { IAppState } from '@app/store/state/app.state';
 
 @Injectable()
 export class DownloadDocumentsEffects {
-    @Effect()
-    downloadDocuments$ = this._actions$.pipe(
-        ofType<DownloadDocumentFileAction>(DownloadDocumentFileAction.TYPE),
-        withLatestFrom(this._store$.select(selectVehicleTechRecordModelHavingStatusAll)
-            .pipe(
-                map(s => s.vin)
-            )),
-        switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
-            .pipe(
-                switchMap((response: { buffer: ArrayBuffer, contentType: string, fileName?: string }) => {
-                    const fileblob = new Blob([response.buffer], { type: response.contentType });
-                    this._FileSaverService.save(fileblob, response.fileName);
-                    return of(new DownloadDocumentFileActionSuccess({ blob: fileblob, fileName: response.fileName }));
-                }),
-                catchError((error) =>
-                    of(new DownloadDocumentFileActionFailure(error))
-                ))));
+  @Effect()
+  downloadDocuments$ = this._actions$.pipe(
+    ofType<DownloadDocumentFileAction>(DownloadDocumentFileAction.TYPE),
+    withLatestFrom(this._store$.select(selectVehicleTechRecordModelHavingStatusAll)
+      .pipe(
+        map(s => s.vin)
+      )),
+    switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
+      .pipe(
+        switchMap((response: { buffer: ArrayBuffer, contentType: string, fileName?: string }) => {
+          const fileblob = new Blob([response.buffer], { type: response.contentType });
+          this._FileSaverService.save(fileblob, response.fileName);
+          return of(new DownloadDocumentFileActionSuccess({ blob: fileblob, fileName: response.fileName }));
+        }),
+        catchError((error) =>
+          of(new DownloadDocumentFileActionFailure(error))
+        ))));
 
-    constructor(
-        private _actions$: Actions,
-        private _technicalRecordService: TechnicalRecordService,
-        private _store$: Store<IAppState>,
-        private _FileSaverService: FileSaverService) { }
+  constructor(
+    private _actions$: Actions,
+    private _technicalRecordService: TechnicalRecordService,
+    private _store$: Store<IAppState>,
+    private _FileSaverService: FileSaverService) { }
 }

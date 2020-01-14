@@ -21,6 +21,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logOut() {
-   (this.adal.isAuthenticated) ? this.adal.logout() : false;
+    if (this.adal.isAuthenticated) {
+      this.adal.logout();
+    } else {
+      return false;
+    }
   }
 }
