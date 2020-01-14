@@ -25,7 +25,8 @@
               </div>
               <div class="grid-container-technical-record-status">
                 <div class="grid-item-technical-record-status rectangle"></div>
-                <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status</div>
+                <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status
+                </div>
                 <div id="test-status"
                      class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
                   {{activeRecord.statusCode | titlecase}}
@@ -42,7 +43,7 @@
             <dt class="govuk-summary-list__key main-details">
               Vehicle identification number (VIN)
             </dt>
-            <dd id="test-vin" class="govuk-summary-list__value">
+            <dd class="govuk-summary-list__value">
               {{techRecordsJson.vin}}
             </dd>
             <dd class="govuk-summary-list__value"></dd>
@@ -303,8 +304,8 @@
                 </dt>
                 <dd id="test-vehicleClassDescription" class="govuk-summary-list__value">
                   {{ activeRecord.vehicleClass == null ? "-" :
-                   (activeRecord.vehicleClass.description == null) ? "-" :
-                    activeRecord.vehicleClass.description.charAt(0).toUpperCase() + activeRecord.vehicleClass.description.substr(1).toLowerCase() }}
+                    (activeRecord.vehicleClass.description == null) ? "-" :
+                        activeRecord.vehicleClass.description.charAt(0).toUpperCase() + activeRecord.vehicleClass.description.substr(1).toLowerCase() }}
                 </dd>
                 <dd class="govuk-summary-list__value"></dd>
               </div>
@@ -537,7 +538,7 @@
               </tr>
               <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
                 <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
-                  {{ (axelNo.axleNumber == null ) ? "-" : axelNo.axleNumber }}</th>
+                  {{ (axelNo.axleNumber == null) ? "-" : axelNo.axleNumber }}</th>
                 <td id="{{ 'test-tyreCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
                   {{ (axelNo.tyres.tyreCode == null) ? "-" : axelNo.tyres.tyreCode }}</td>
                 <td id="{{ 'test-tyreSize-' + axelNo.axleNumber }}" class="govuk-table__cell">
@@ -580,7 +581,7 @@
               <tr class="govuk-table__row">
                 <th class="govuk-table__cell govuk-!-font-weight-bold">Length (mm)</th>
                 <td id="test-length" class="govuk-table__cell">
-                  {{ (activeRecord.dimensions.length == null ) ? "-" : activeRecord.dimensions.length}}
+                  {{ (activeRecord.dimensions.length == null) ? "-" : activeRecord.dimensions.length}}
                 </td>
                 <th class="govuk-table__cell"></th>
                 <th class="govuk-table__cell"></th>
@@ -765,7 +766,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Street</dt>
                       <dd id="test-aplicantDetails-street" class="govuk-summary-list__value">
-                        {{ (activeRecord.adrDetails.applicantDetails.street == null ) ? "-" : activeRecord.adrDetails.applicantDetails.street }}
+                        {{ (activeRecord.adrDetails.applicantDetails.street == null) ? "-" : activeRecord.adrDetails.applicantDetails.street }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>
@@ -786,7 +787,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Postcode</dt>
                       <dd id="test-aplicantDetails-postcode" class="govuk-summary-list__value">
-                        {{ (activeRecord.adrDetails.applicantDetails.postcode == null ) ? "-" : activeRecord.adrDetails.applicantDetails.postcode }}
+                        {{ (activeRecord.adrDetails.applicantDetails.postcode == null) ? "-" : activeRecord.adrDetails.applicantDetails.postcode }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>
@@ -796,7 +797,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Vehicle type</dt>
                       <dd id="test-ADR-type" class="govuk-summary-list__value">
-                        {{ (activeRecord.adrDetails.vehicleDetails.type == null ) ? "-" : activeRecord.adrDetails.vehicleDetails.type }}
+                        {{ (activeRecord.adrDetails.vehicleDetails.type == null) ? "-" : activeRecord.adrDetails.vehicleDetails.type }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>
@@ -848,7 +849,7 @@
                       <h2 class="govuk-heading-m">Tank details</h2>
                     </div>
                     <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Make </dt>
+                      <dt class="govuk-summary-list__key"> Make</dt>
                       <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
                         <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
                           {{ (activeRecord.adrDetails.tank.tankDetails.tankManufacturer == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturer }}
@@ -914,7 +915,7 @@
                       <dt class="govuk-summary-list__key">Product list reference number</dt>
                       <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">
                         <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
-                        {{ (activeRecord.adrDetails.tank.tankStatement.productListRefNo == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListRefNo }}
+                          {{ (activeRecord.adrDetails.tank.tankStatement.productListRefNo == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListRefNo }}
                         </ng-container>
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
@@ -923,7 +924,7 @@
                       <dt class="govuk-summary-list__key"> UN number</dt>
                       <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
                         <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
-                        {{ (activeRecord.adrDetails.tank.tankStatement.productListUnNo == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListUnNo }}
+                          {{ (activeRecord.adrDetails.tank.tankStatement.productListUnNo == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListUnNo }}
                         </ng-container>
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
@@ -932,7 +933,7 @@
                       <dt class="govuk-summary-list__key"> Additional product list details</dt>
                       <dd id="test-ADR-productList" class="govuk-summary-list__value">
                         <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
-                        {{ (activeRecord.adrDetails.tank.tankStatement.productList == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.productList }}
+                          {{ (activeRecord.adrDetails.tank.tankStatement.productList == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.productList }}
                         </ng-container>
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
@@ -941,7 +942,7 @@
                       <dt class="govuk-summary-list__key"> Special provisions</dt>
                       <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
                         <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
-                        {{ (activeRecord.adrDetails.tank.tankDetails.specialProvisions == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.specialProvisions }}
+                          {{ (activeRecord.adrDetails.tank.tankDetails.specialProvisions == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.specialProvisions }}
                         </ng-container>
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
@@ -952,42 +953,44 @@
                       <table class="govuk-table table-tank">
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                          <th scope="col" class="govuk-table__header">Inspection type </th>
+                          <th scope="col" class="govuk-table__header">Inspection type</th>
                           <th scope="col" class="govuk-table__header">Certificate number</th>
                           <th scope="col" class="govuk-table__header">Expiry date</th>
                         </tr>
                         </thead>
-                          <tbody class="govuk-table__body" *ngIf="(activeRecord.adrDetails.vehicleDetails.type.includes('tank') || activeRecord.adrDetails.vehicleDetails.type.includes('battery')) else noTankHistory">
-                            <tr class="govuk-table__row">
-                              <td id="test-tc2Type" class="govuk-table__cell">
-                                {{ (activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type }}
-                              </td>
-                              <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
-                                {{ (activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
-                              </td>
-                              <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
-                                {{ (activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
-                              </td>
-                            </tr>
-                            <tr class="govuk-table__row" *ngFor="let tc3Details of activeRecord.adrDetails.tank.tankDetails.tc3Details">
-                              <td id="test-tc3Type" class="govuk-table__cell">
-                                {{ (tc3Details.tc3Type == null ) ? "-" : tc3Details.tc3Type }}
-                              </td>
-                              <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
-                                {{ (tc3Details.tc3PeriodicNumber == null ) ? "-" : tc3Details.tc3PeriodicNumber }}
-                              </td>
-                              <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
-                                {{ (tc3Details.tc3PeriodicExpiryDate == null ) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
-                              </td>
-                            </tr>
+                        <tbody class="govuk-table__body"
+                               *ngIf="(activeRecord.adrDetails.vehicleDetails.type.includes('tank') || activeRecord.adrDetails.vehicleDetails.type.includes('battery')) else noTankHistory">
+                        <tr class="govuk-table__row">
+                          <td id="test-tc2Type" class="govuk-table__cell">
+                            {{ (activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type }}
+                          </td>
+                          <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+                            {{ (activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
+                          </td>
+                          <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+                            {{ (activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
+                          </td>
+                        </tr>
+                        <tr class="govuk-table__row"
+                            *ngFor="let tc3Details of activeRecord.adrDetails.tank.tankDetails.tc3Details">
+                          <td id="test-tc3Type" class="govuk-table__cell">
+                            {{ (tc3Details.tc3Type == null) ? "-" : tc3Details.tc3Type }}
+                          </td>
+                          <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
+                            {{ (tc3Details.tc3PeriodicNumber == null) ? "-" : tc3Details.tc3PeriodicNumber }}
+                          </td>
+                          <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
+                            {{ (tc3Details.tc3PeriodicExpiryDate == null) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
+                          </td>
+                        </tr>
                         </tbody>
                         <ng-template #noTankHistory>
                           <tbody class="govuk-table__body">
-                            <tr>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
+                          <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                          </tr>
                           </tbody>
                         </ng-template>
                       </table>
@@ -1031,14 +1034,14 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key">Applicable</dt>
                       <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
-                        {{ (activeRecord.adrDetails.listStatementApplicable == null ) ? "-" : activeRecord.adrDetails.listStatementApplicable ? "Yes" : "No" }}
+                        {{ (activeRecord.adrDetails.listStatementApplicable == null) ? "-" : activeRecord.adrDetails.listStatementApplicable ? "Yes" : "No" }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Reference number</dt>
                       <dd id="test-batteryListNumber" class="govuk-summary-list__value">
-                        {{ (activeRecord.adrDetails.batteryListNumber == null ) ? "-" : activeRecord.adrDetails.batteryListNumber }}
+                        {{ (activeRecord.adrDetails.batteryListNumber == null) ? "-" : activeRecord.adrDetails.batteryListNumber }}
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
                     </div>
@@ -1096,7 +1099,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key">
                         <span id="test-additionalExaminerNotes"
-                              class="notes-section">{{ (activeRecord.adrDetails.additionalExaminerNotes == null ) ? "-" : activeRecord.adrDetails.additionalExaminerNotes}}</span>
+                              class="notes-section">{{ (activeRecord.adrDetails.additionalExaminerNotes == null) ? "-" : activeRecord.adrDetails.additionalExaminerNotes}}</span>
                       </dt>
                       <dd class="govuk-summary-list__value"></dd>
                       <dd class="govuk-summary-list__value"></dd>
@@ -1163,33 +1166,33 @@
 
             <table class="govuk-table t-history">
               <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                  <th scope="col" class="govuk-table__header">Test type</th>
-                  <th scope="col" class="govuk-table__header">Test date</th>
-                  <th scope="col" class="govuk-table__header">Expiry date</th>
-                  <th scope="col" class="govuk-table__header">Certificate number</th>
-                  <th scope="col" class="govuk-table__header">Result</th>
-                </tr>
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Test type</th>
+                <th scope="col" class="govuk-table__header">Test date</th>
+                <th scope="col" class="govuk-table__header">Expiry date</th>
+                <th scope="col" class="govuk-table__header">Certificate number</th>
+                <th scope="col" class="govuk-table__header">Result</th>
+              </tr>
               </thead>
               <tbody class="govuk-table__body" *ngIf="(testResultJson$ | async) as testResultJson; else noTestHistory">
-                <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
-                  <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
-                    {{ (testRes.testTypes[0].testCode == null) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
-                  </td>
-                  <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-                    {{ (testRes.testEndTimestamp == null) ? "-" : testRes.testEndTimestamp | date :'dd/MM/y'}}
-                  </td>
-                  <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
-                    {{ (testRes.testExpiryDate == null) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
-                  </td>
-                  <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
-                    {{ (testRes.testTypes[0].certificateNumber == null) ? "-" : testRes.testTypes[0].certificateNumber }}
-                  </td>
-                  <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
-                      [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'#00703C' } : testRes.testTypes[0].testResult=='prs' ? {color: '#1D70B8'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
-                    {{ (testRes.testTypes[0].testResult == null) ? "-" : testRes.testTypes[0].testResult | uppercase }}
-                  </td>
-                </tr>
+              <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
+                <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
+                  {{ (testRes.testTypes[0].testCode == null) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
+                </td>
+                <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
+                  {{ (testRes.testEndTimestamp == null) ? "-" : testRes.testEndTimestamp | date :'dd/MM/y'}}
+                </td>
+                <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
+                  {{ (testRes.testExpiryDate == null) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
+                </td>
+                <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
+                  {{ (testRes.testTypes[0].certificateNumber == null) ? "-" : testRes.testTypes[0].certificateNumber }}
+                </td>
+                <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
+                    [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'#00703C' } : testRes.testTypes[0].testResult=='prs' ? {color: '#1D70B8'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
+                  {{ (testRes.testTypes[0].testResult == null) ? "-" : testRes.testTypes[0].testResult | uppercase }}
+                </td>
+              </tr>
               </tbody>
               <ng-template #noTestHistory>
                 <tbody class="govuk-table__body">
