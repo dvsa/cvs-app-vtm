@@ -852,7 +852,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Make </dt>
                       <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankManufacturer) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturer }}
                         </ng-container>
                       </dd>
@@ -861,7 +861,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Year of manufacture</dt>
                       <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.yearOfManufacture) ? "-" : activeRecord.adrDetails.tank.tankDetails.yearOfManufacture }}
                         </ng-container>
                       </dd>
@@ -870,7 +870,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Manufacturer serial number</dt>
                       <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo }}
                         </ng-container>
                       </dd>
@@ -879,7 +879,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Tank type approval number</dt>
                       <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo }}
                         </ng-container>
                       </dd>
@@ -888,7 +888,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Code</dt>
                       <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankCode) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankCode }}
                         </ng-container>
                       </dd>
@@ -897,7 +897,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Substances permitted</dt>
                       <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.substancesPermitted) ? "-" : activeRecord.adrDetails.tank.tankStatement.substancesPermitted }}
                         </ng-container>
                       </dd>
@@ -906,7 +906,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key">Statement reference number</dt>
                       <dd id="test-ADR-statement" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                           {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.statement) ? "-" : activeRecord.adrDetails.tank.tankStatement.statement }}
                         </ng-container>
                       </dd>
@@ -915,7 +915,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key">Product list reference number</dt>
                       <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                         {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListRefNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListRefNo }}
                         </ng-container>
                       </dd>
@@ -924,7 +924,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> UN number</dt>
                       <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                         {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListUnNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListUnNo }}
                         </ng-container>
                       </dd>
@@ -933,7 +933,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Additional product list details</dt>
                       <dd id="test-ADR-productList" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                         {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productList) ? "-" : activeRecord.adrDetails.tank.tankStatement.productList }}
                         </ng-container>
                       </dd>
@@ -942,7 +942,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Special provisions</dt>
                       <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails.tank) else hyphen">
                         {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.specialProvisions) ? "-" : activeRecord.adrDetails.tank.tankDetails.specialProvisions }}
                         </ng-container>
                       </dd>
@@ -1016,7 +1016,7 @@
                         <dt class="govuk-summary-list__key">Document {{i + 1}} </dt>
                         <dd class="govuk-summary-list__value"></dd>
                         <dd class="govuk-summary-list__value">
-                          <a class="govuk-link" (click)="downloadDocument(doc)">Download</a>
+                          <a class="govuk-link" id="{{ 'test-documents-' + i }}" (click)="downloadDocument(doc)">Download</a>
                         </dd>
                       </div>
                     </ng-container>
