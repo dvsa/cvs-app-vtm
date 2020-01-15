@@ -8,14 +8,14 @@
   "homepage": "",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -o",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
-    "test": "jest --no-cache --testMatch=\"**/*.spec.ts\" --coverage",
+    "test": "jest --coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
     "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
-    "prepush": "npm run tslint && npm run build && npm test",
+    "prepush": "ng lint && npm run build && npm test",
     "tslint": "tslint src/**/*.ts",
     "security-checks": "git secrets --scan && git log -p | scanrepo",
     "coverage": "jest --coverage"

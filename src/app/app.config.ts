@@ -1,29 +1,33 @@
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { IAppConfig } from './models/app-config.model';
-import {Injectable} from '@angular/core';
-import * as configJsonDev from './../assets/config/config.dev.json';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import * as configJsonDeploy from './../assets/config/config.deploy.json';
-import {Observable, of} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import * as configJsonDev from './../assets/config/config.dev.json';
+import { IAppConfig } from './models/app-config.model';
 
 @Injectable()
 export class AppConfig {
-  static settings: IAppConfig;
-  constructor(private http: HttpClient) {}
+  private _settings: IAppConfig;
+  constructor(private http: HttpClient) { }
   load() {
     const jsonFile = `assets/config/config.${environment.name}.json`;
     return of(configJsonDev) // this could be a http request
       .pipe(
         tap(config => {
           if (!(environment.name === 'deploy')) {
-            AppConfig.settings = <IAppConfig>configJsonDev.default;
+            this._settings = <IAppConfig>configJsonDev.default;
           } else {
-            AppConfig.settings = <IAppConfig>configJsonDeploy.default;
+            this._settings = <IAppConfig>configJsonDeploy.default;
           }
-          console.log(`adalConfig => ${JSON.stringify(AppConfig.settings.adalConfig)}`);
+          console.log(`adalConfig => ${JSON.stringify(this._settings.adalConfig)}`);
         })
       )
       .toPromise();
+  }
+
+  get settings(): IAppConfig {
+    return this._settings;
   }
 }
