@@ -95,8 +95,6 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this._store.dispatch(new LoadAction({}));
-
     if (this.initialAdrDetails !== undefined) {
       this._store.dispatch(new SetValueAction(INITIAL_STATE.id, createInitialState(this.initialAdrDetails)));
     }
@@ -116,11 +114,9 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.reset();
-    console.log(`called adr-details ngOnDestroy`);
   }
 
   reset() {
-    console.log(`AdrDetailsFormComponent INITIAL_STATE.value => ${JSON.stringify(INITIAL_STATE.value)}`);
     this._store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this._store.dispatch(new ResetAction(INITIAL_STATE.id));
   }

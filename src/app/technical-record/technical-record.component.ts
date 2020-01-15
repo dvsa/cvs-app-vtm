@@ -51,17 +51,16 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   navigationSubscription;
 
   constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router,) {
-    this.cancelAddrEdit();
     this.initializeTechnicalRecord();
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
-        console.log(`TechnicalRecordComponent => NavigationEnd called`);
         this.initializeTechnicalRecord();
       }
     });
   }
 
   initializeTechnicalRecord() {
+    this.cancelAddrEdit();
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.vehicleTypes$ = this._store
       .pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.vehicleDetails.typeFe));
@@ -77,7 +76,6 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log(`called TechnicalRecordComponent ngOnDestroy`);
     if (this.navigationSubscription) {  
       this.navigationSubscription.unsubscribe();
    }
@@ -91,9 +89,9 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     this.allOpened = !this.allOpened;
   }
 
-  public isNullOrEmpty(str) {
-    return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
-  }
+  // public isNullOrEmpty(str) {
+  //   return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
+  // }
 
   public isEmptyObject(obj) {
     return (obj && (Object.keys(obj).length === 0));
@@ -120,7 +118,7 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     this.adrData = false;
     this.showCheck = true;
     this.numberFee = numberFee;
-    this.isAdrNull = isAdrNull === undefined || isAdrNull == null;
+    this.isAdrNull = isAdrNull == null;
     this.hideForm = this.isAdrNull;
   }
 

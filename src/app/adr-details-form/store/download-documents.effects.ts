@@ -17,10 +17,7 @@ export class DownloadDocumentsEffects {
         ofType<DownloadDocumentFileAction>(DownloadDocumentFileAction.TYPE),
         withLatestFrom(this._store$.select(selectVehicleTechRecordModelHavingStatusAll)
             .pipe(
-                map(s => s.vin),
-                tap(_ => {
-                    console.log(`DownloadDocumentsEffects withLatestFrom _ => ${JSON.stringify(_)}`);
-                })
+                map(s => s.vin)
             )),
         switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
             .pipe(
@@ -28,9 +25,6 @@ export class DownloadDocumentsEffects {
                     const fileblob = new Blob([response.buffer], { type: 'application/pdf' });
                     this._FileSaverService.save(fileblob, response.fileName);
                     return of(new DownloadDocumentFileActionSuccess({ blob: fileblob, fileName: response.fileName }));
-                }),
-                tap((_) => {
-                    console.log(`DownloadDocumentFileActionSuccess _.payload.blob => ${JSON.stringify(_.payload.blob)}`);
                 }),
                 catchError((error) =>
                     of(new DownloadDocumentFileActionFailure(error))

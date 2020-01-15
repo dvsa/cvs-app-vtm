@@ -4,13 +4,14 @@ import { Observable, of } from 'rxjs';
 import { tap, exhaustMap, switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { Store } from '@ngrx/store';
-import { IVehicleTechRecordModelState } from '../../store/state/VehicleTechRecordModel.state';
 import { Router } from '@angular/router';
 import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
 import { SubmitAdrAction, SubmitAdrActionFailure, SubmitAdrActionSuccess } from './adrDetailsSubmit.actions';
 import { GetVehicleTechRecordModelHavingStatusAllSuccess } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { GetVehicleTestResultModel } from '@app/store/actions/VehicleTestResultModel.actions';
 import { IAppState } from '@app/store/state/app.state';
+import { SetValueAction, ResetAction } from 'ngrx-forms';
+import { INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
 
 @Injectable()
 export class AdrDetailsSubmitEffects implements OnRunEffects {
@@ -19,23 +20,20 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
     ofType<SubmitAdrAction>(SubmitAdrAction.TYPE),
     withLatestFrom(this._store$.select(selectVehicleTechRecordModelHavingStatusAll)
       .pipe(
-        map(s => s.vin),
-        tap((_) => {
-          console.log(`AdrDetailsSubmitEffects  withLatestFrom => ${JSON.stringify(_)}`);
-        })
+        map(s => s.vin)
       )),
     switchMap(([action, vin]) => {
-      console.log(`AdrDetailsSubmitEffects [action, vin] => ${JSON.stringify([action, vin])}`);
       return this._technicalRecordService.uploadDocuments()
         .pipe(
           switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(vin)
             .pipe(
               switchMap((techRecordJson: any) => of(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordJson))),
               tap((vin: string) => {
-                console.log(`AdrDetailsSubmitEffects success withLatestFrom vin => ${JSON.stringify(vin)}`);
+                this._store$.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
+                this._store$.dispatch(new ResetAction(INITIAL_STATE.id));
                 this._store$.dispatch(new SubmitAdrActionSuccess({}));
                 this._store$.dispatch(new GetVehicleTestResultModel(vin));
-                this.router.navigate([`/technical-record`]);
+                this._router$.navigate([`/technical-record`]);
               })
             )),
           catchError((error) =>
@@ -55,6 +53,6 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
     private _actions$: Actions,
     private _technicalRecordService: TechnicalRecordService,
     private _store$: Store<IAppState>,
-    private router: Router
+    private _router$: Router
   ) {}
 }
