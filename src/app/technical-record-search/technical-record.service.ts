@@ -15,8 +15,7 @@ export class TechnicalRecordService {
     private _appConfig: AppConfig) {
     this.routes = {
       techRecords: (searchIdentifier: string) => `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
-      techRecordsAllStatuses:
-        (searchIdentifier: string) => `${this._apiServer.APITechnicalRecordServerUri}
+      techRecordsAllStatuses: (searchIdentifier: string) => `${this._apiServer.APITechnicalRecordServerUri}
         /vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
       getDocumentBlob: (vin: string) => `${this._apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file`,
     };
