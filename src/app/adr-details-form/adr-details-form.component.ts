@@ -17,13 +17,12 @@ import {
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
+export class AdrDetailsFormComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInputVariable: ElementRef;
   @Input() vehicletypes$: Observable<string[]>;
   @Input() permittedDangerousGoodsFe$: Observable<string[]>;
   @Input() guidanceNotesFe$: Observable<string[]>;
   @Input() initialAdrDetails: any;
-  @Input() submitData: string;
   adrDetails$: Observable<any>;
   formState$: Observable<FormGroupState<adrDetailsFormModel>>;
   permittedDangerousGoodsOptions$: Observable<string[]>;
@@ -99,7 +98,6 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
     this._store.dispatch(new LoadAction({}));
 
     if (this.initialAdrDetails !== undefined) {
-      // console.log(`initialAdrDetails is => ${JSON.stringify(this.initialAdrDetails)}`);
       this._store.dispatch(new SetValueAction(INITIAL_STATE.id, createInitialState(this.initialAdrDetails)));
     }
     this.permittedDangerousGoodsFe$.subscribe(goods => {
@@ -114,44 +112,6 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
           this.initialAdrDetails && this.initialAdrDetails.additionalNotes.guidanceNotes.includes(note)));
       });
     });
-
-
-  }
-
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    console.log(`Inside ngOnChanges`)
-    let log: string[] = [];
-    for (let propName in changes) {
-      let changedProp = changes[propName];
-      // let to = JSON.stringify(changedProp.currentValue);
-      if (propName === 'submitData') {
-        log.push(`Initial value of ${propName} set to ${changedProp.currentValue}`);
-      } else {
-        // let from = JSON.stringify(changedProp.previousValue);
-        log.push(`${propName} changed from ${changedProp.previousValue} to ${changedProp.currentValue}`);
-      }
-    }
-
-    console.log( `ngOnChanges => ${JSON.stringify(log)}`);
-
-
-
-
-    // for (let propName in changes) {
-    //   let change = changes[propName];
-
-    //   let curVal = JSON.stringify(change.currentValue);
-    //   let prevVal = JSON.stringify(change.previousValue);
-    //   let changeLog = `${propName}: currentValue = ${curVal}, previousValue = ${prevVal}`;
-
-    //   if (propName === 'submitData') {
-    //     console.log(`detected change in submitData => ${changeLog}`);
-    //   }
-    // }
-  }
-
-  onSubmittedAdrDetails(event: {context: string, canSubmit: boolean}) {
-    console.log(`received event from parent ${JSON.stringify(event)}`);
   }
 
   ngOnDestroy(): void {
@@ -160,6 +120,7 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   reset() {
+    console.log(`AdrDetailsFormComponent INITIAL_STATE.value => ${JSON.stringify(INITIAL_STATE.value)}`);
     this._store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this._store.dispatch(new ResetAction(INITIAL_STATE.id));
   }
@@ -167,8 +128,6 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
   downloadDocument(doc) {
     this._store.dispatch(new DownloadDocumentFileAction(doc));
   }
-
-
 
   addAddUNOption() {
     this.formState$.pipe(
@@ -246,7 +205,6 @@ export class AdrDetailsFormComponent implements OnInit, OnChanges, OnDestroy {
         };
       }
     }
-
   }
 
   removeTankDocument(index: number) {

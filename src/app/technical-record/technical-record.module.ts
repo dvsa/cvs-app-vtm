@@ -10,17 +10,16 @@ import {faGithub, faMedium, faStackOverflow} from '@fortawesome/free-brands-svg-
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { SharedModule } from '../shared/shared.module';
 import { NgrxFormsModule } from 'ngrx-forms';
-import { StoreModule } from '@ngrx/store';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { MaterialModule } from '@app/material.module';
 import {RouterModule} from '@angular/router';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
-import {InspectionDetailsModule} from '@app/inspection-details/inspection-details.module';
 import { EffectsModule } from '@ngrx/effects';
-import { adrDetailsReducer } from '../adr-details-form/store/adrDetails.reducer';
-import { DownloadDocumentsEffects } from '../adr-details-form/store/download-documents.effects';
 import { AdrDetailsFormModule } from '@app/adr-details-form/adr-details-form.module';
+import { AdrDetailsSubmitEffects } from '@app/technical-record/store/adr-details-submit-effects';
+import { StoreModule } from '@ngrx/store';
+import { AdrDetailsSubmitReducer } from './store/adrDetailsSubmit.reducer';
 
 @NgModule({
   imports: [
@@ -29,8 +28,10 @@ import { AdrDetailsFormModule } from '@app/adr-details-form/adr-details-form.mod
     MatFormFieldModule,
     HttpClientModule,
     RouterModule.forChild([
-      {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard]}
+      {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard], runGuardsAndResolvers: "always"}
     ]),
+    StoreModule.forFeature('adrDetailsSubmit', AdrDetailsSubmitReducer),
+    EffectsModule.forFeature([AdrDetailsSubmitEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,

@@ -12,7 +12,6 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
-import { CreatePermittedDangerousGoodElementAction } from '@app/adr-details-form/store/adrDetails.actions';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 
 @Injectable()

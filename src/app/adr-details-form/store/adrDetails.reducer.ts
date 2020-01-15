@@ -5,6 +5,7 @@ import { required, maxLength, greaterThan, lessThanOrEqualTo } from 'ngrx-forms/
 import { approvalDate } from '@app/models/approvalDate';
 import {IAppState, INITIAL_STATE} from './adrDetailsForm.state';
 import { CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction, CreateProductListUnNoElementAction, RemoveProductListUnNoElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, SetSubmittedValueAction, AddTankDocumentAction, RemoveTankDocumentAction } from './adrDetails.actions';
+import { SubmitAdrActionSuccess } from '@app/technical-record/store/adrDetailsSubmit.actions';
 
 export const FORM_ID = 'adrDetails';
 const formGroupReducerWithUpdate = createFormStateReducerWithUpdate<adrDetailsFormModel>(updateGroup<adrDetailsFormModel>({
@@ -104,7 +105,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     },
     permittedDangerousGoodsOptions(
         s: string[] = [],
-        a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction
+        a: CreatePermittedDangerousGoodElementAction | RemovePermittedDangerousGoodElementAction | SubmitAdrActionSuccess
     ) {
         switch (a.type) {
             case CreatePermittedDangerousGoodElementAction.TYPE:
@@ -113,6 +114,9 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case RemovePermittedDangerousGoodElementAction.TYPE:
                 return s.filter(i => i !== a.name);
 
+            case SubmitAdrActionSuccess.TYPE:
+                return undefined;
+                
             default:
                 return s;
         }
