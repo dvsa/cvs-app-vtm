@@ -859,7 +859,7 @@
                     <div class="govuk-summary-list__row">
                       <dt class="govuk-summary-list__key"> Year of manufacture</dt>
                       <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
-                        <ng-container *ngIf="!(activeRecord.adrDetails.tank) else hyphen">
+                        <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
                           {{ (activeRecord.adrDetails.tank.tankDetails.yearOfManufacture == null) ? "-" : activeRecord.adrDetails.tank.tankDetails.yearOfManufacture }}
                         </ng-container>
                       </dd>
