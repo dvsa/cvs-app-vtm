@@ -1,11 +1,10 @@
-import {Component, Inject, OnInit, Optional} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
   response: string;
   context: string;
 }
-
 
 @Component({
   selector: 'vtm-adr-reason-modal',
@@ -14,12 +13,10 @@ export interface DialogData {
 })
 export class AdrReasonModalComponent {
   constructor(
-    public dialogRef: MatDialogRef<AdrReasonModalComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data : DialogData) {}
-
+    public dialogRef: MatDialogRef<AdrReasonModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   close(): void {
     this.dialogRef.close();
   }
-
 }

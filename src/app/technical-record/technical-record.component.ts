@@ -143,7 +143,8 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   }
 
   onSaveChanges() {
-    let reasonForChanges: string = '';
+
+    let reasonForChanges = '';
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
       data: {context: 'Enter reason for changing technical record', response: reasonForChanges }

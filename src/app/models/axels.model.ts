@@ -3,7 +3,7 @@ import {TyresModel} from '@app/models/tyres.model';
 
 export interface AxelsModel {
   parkingBrakeMrk: boolean;
-  axleNumber: number
+  axleNumber: number;
   weights: WeightsModel;
   tyres: TyresModel;
 }

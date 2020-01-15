@@ -1,4 +1,4 @@
-import { AdrDetails } from "./AdrDetails";
+import { AdrDetails } from './AdrDetails';
 export interface MetaData {
   adrDetails: AdrDetails | undefined;
 }
