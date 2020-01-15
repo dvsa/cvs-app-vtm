@@ -25,8 +25,9 @@ export class TechnicalRecordService {
     return this.httpClient.get<any[]>(this.routes.techRecordsAllStatuses(searchIdentifier), { headers });
   }
 
-  uploadDocuments() {
-
+  uploadDocuments(): Observable<any>   {
+    console.log(`inside uploadDocuments`);
+    return of<any>("succeeded");
   }
 
   getDocumentBlob(vin: string, fileName: string): Observable<{ buffer: ArrayBuffer, fileName?: string }> {

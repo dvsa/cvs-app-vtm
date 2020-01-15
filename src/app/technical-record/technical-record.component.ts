@@ -3,18 +3,19 @@ import {
   Component,
   HostBinding,
   OnInit,
-  Output,
-  EventEmitter
+  OnDestroy
 } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 import { Store, select } from '@ngrx/store';
-import { Observable, combineLatest, of } from 'rxjs';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { IAppState } from '../adr-details-form/store/adrDetailsForm.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import {DownloadDocumentFileAction} from '@app/adr-details-form/store/adrDetails.actions';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
+import { Router, NavigationEnd } from '@angular/router';
+import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -22,7 +23,7 @@ import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason
   styleUrls: ['./technical-record.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TechnicalRecordComponent implements OnInit {
+export class TechnicalRecordComponent implements OnInit , OnDestroy {
   submitData: string;
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
@@ -47,8 +48,20 @@ export class TechnicalRecordComponent implements OnInit {
   vehicleTypes$: Observable<string[]>;
   permittedDangerousGoodsFe$: Observable<string[]>;
   guidanceNotesFe$: Observable<string[]>;
+  navigationSubscription;
 
-  constructor(private _store: Store<IAppState>, public dialog: MatDialog) {
+  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router,) {
+    this.cancelAddrEdit();
+    this.initializeTechnicalRecord();
+    this.navigationSubscription = this.router.events.subscribe((e: any) => {
+      if (e instanceof NavigationEnd) {
+        console.log(`TechnicalRecordComponent => NavigationEnd called`);
+        this.initializeTechnicalRecord();
+      }
+    });
+  }
+
+  initializeTechnicalRecord() {
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
     this.vehicleTypes$ = this._store
       .pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.vehicleDetails.typeFe));
@@ -62,6 +75,14 @@ export class TechnicalRecordComponent implements OnInit {
   ngOnInit() {
     initAll();
   }
+
+  ngOnDestroy(): void {
+    console.log(`called TechnicalRecordComponent ngOnDestroy`);
+    if (this.navigationSubscription) {  
+      this.navigationSubscription.unsubscribe();
+   }
+  }
+
 
   public togglePanel() {
     for (const panel of this.panels) {
@@ -122,7 +143,6 @@ export class TechnicalRecordComponent implements OnInit {
   }
 
   onSaveChanges() {
-
     let reasonForChanges: string = '';
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
@@ -132,7 +152,7 @@ export class TechnicalRecordComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       reasonForChanges = result;
       console.log(`The dialog was closed with response ${reasonForChanges}`);
-      this.submitData = reasonForChanges;
+      this._store.dispatch(new SubmitAdrAction(reasonForChanges));
     });
   }
 

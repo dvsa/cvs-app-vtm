@@ -25,10 +25,9 @@ export class DownloadDocumentsEffects {
         switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
             .pipe(
                 switchMap((response: { buffer: ArrayBuffer, fileName?: string }) => {
-                                const fileblob = new Blob([response.buffer], {type: 'application/pdf'});
-                                this._FileSaverService.save(fileblob, response.fileName);
-                                return of(new DownloadDocumentFileActionSuccess({blob: fileblob , fileName: response.fileName}));
-
+                    const fileblob = new Blob([response.buffer], { type: 'application/pdf' });
+                    this._FileSaverService.save(fileblob, response.fileName);
+                    return of(new DownloadDocumentFileActionSuccess({ blob: fileblob, fileName: response.fileName }));
                 }),
                 tap((_) => {
                     console.log(`DownloadDocumentFileActionSuccess _.payload.blob => ${JSON.stringify(_.payload.blob)}`);

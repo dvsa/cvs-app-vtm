@@ -14,7 +14,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
 import { DownloadDocumentsEffects } from '@app/adr-details-form/store/download-documents.effects';
-import { AdrDetailsFormEffects } from './store/adr-details-form-effects';
 
 @NgModule({
   imports: [
@@ -23,7 +22,7 @@ import { AdrDetailsFormEffects } from './store/adr-details-form-effects';
     MatFormFieldModule,
     HttpClientModule,
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
-    EffectsModule.forFeature([DownloadDocumentsEffects,AdrDetailsFormEffects]),
+    EffectsModule.forFeature([DownloadDocumentsEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,

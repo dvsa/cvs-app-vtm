@@ -32,7 +32,8 @@ export const COMPONENTS = [
           {
             path: 'search',
             loadChildren: '../technical-record-search/technical-record-search.module#TechnicalRecordSearchModule',
-            canActivate: [AuthenticationGuard]
+            canActivate: [AuthenticationGuard],
+            runGuardsAndResolvers: "always"
           }
         ]
       }

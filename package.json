@@ -17,7 +17,8 @@
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
     "prepush": "npm run tslint && npm run build && npm test",
     "tslint": "tslint src/**/*.ts",
-    "security-checks": "git secrets --scan && git log -p | scanrepo"
+    "security-checks": "git secrets --scan && git log -p | scanrepo",
+    "coverage": "jest --coverage"
   },
   "private": true,
   "dependencies": {
