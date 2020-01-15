@@ -1,23 +1,25 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MaterialModule } from '@app/material.module';
 import { AdrReasonModalComponent } from './adr-reason-modal.component';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {MaterialModule} from "@app/material.module";
+
 
 describe('AdrReasonModalComponent', () => {
   let component: AdrReasonModalComponent;
   let fixture: ComponentFixture<AdrReasonModalComponent>;
+  const dialogMock = { close: () => {} };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdrReasonModalComponent ],
-      imports: [ MatDialogModule, MaterialModule ],
+      declarations: [AdrReasonModalComponent],
+      imports: [MatDialogModule, MaterialModule, FormsModule],
       providers: [
-        {provide: MatDialogRef, useValue: {}},
-        {provide: MAT_DIALOG_DATA,useValue: {}}
-        ]
+        { provide: MatDialogRef, useValue: dialogMock },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -26,7 +28,16 @@ describe('AdrReasonModalComponent', () => {
     fixture.detectChanges();
   });
 
-  test.skip('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('close', () => {
+    it('should close the modal when called', () => {
+      spyOn(component.dialogRef, 'close');
+      component.close();
+
+      expect(component.dialogRef.close).toHaveBeenCalled();
+    });
   });
 });

@@ -1,6 +1,6 @@
 import { createFormGroupState, FormGroupState, box } from 'ngrx-forms';
 import { adrDetailsFormModel } from './adrDetailsForm.model';
-import {IAppState as RootState} from '../../store/state/app.state';
+import { IAppState as RootState } from '../../store/state/app.state';
 
 export interface IAppState extends RootState {
   adrDetails: {
@@ -25,7 +25,7 @@ export interface IAppState extends RootState {
     };
     tankDocuments: {
       maxIndex: number;
-      options: (string | ArrayBuffer) [];
+      options: (string | ArrayBuffer)[];
     };
     submittedValue: adrDetailsFormModel | undefined;
     // msUserDetails: {
@@ -59,7 +59,7 @@ export const INITIAL_STATE = createFormGroupState<adrDetailsFormModel>(FORM_ID, 
   tankManufacturerSerialNo: '',
   tankTypeAppNo: '',
   tankCode: '',
-  tankDocuments:[],
+  tankDocuments: [],
   substancesPermitted: '',
   selectReferenceNumber: '',
   statement: '',
