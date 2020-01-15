@@ -1,4 +1,4 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController, RequestMatch } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { AppConfig } from '@app/app.config';
 import { environment } from '@environments/environment';
@@ -16,7 +16,7 @@ const appConfigMock = {
   get settings() {
     return {
       apiServer: {
-        APITechnicalRecordServerUri: 'http://localhost:3005'
+        APITechnicalRecordServerUri: `http://localhost:3005`
       }
     };
   }
@@ -36,7 +36,6 @@ describe('TechnicalRecordService', () => {
       providers: [
         TechnicalRecordService,
         { provide: AppConfig, useValue: appConfigMock },
-        provideMockActions(() => actions)
       ]
     }).compileComponents();
     injector = getTestBed();
@@ -53,15 +52,15 @@ describe('TechnicalRecordService', () => {
   });
 
   it('getTechnicalRecordsAllStatuses should return data', (done) => {
+    const mock = { mockObject: 'mock' };
     service.getTechnicalRecordsAllStatuses('1234567').subscribe((res) => {
       expect(res).toBeDefined();
-      expect(res).toEqual({ mockObject: 'mock' });
+      expect(res).toEqual(mock);
       done();
     });
 
-    const req = httpMock.expectOne(routes.techRecordsAllStatuses('1234567'));
-    expect(req.request.method).toBe('GET');
-    req.flush({ mockObject: 'mock' });
+    const req = httpMock.expectOne(req => req.url.includes(`/vehicles/1234567/tech-records?status=all&metadata=true`));
+    req.flush(mock);
   });
 
   afterAll(() => {
