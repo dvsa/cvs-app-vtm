@@ -97,22 +97,6 @@ describe('TechnicalRecordComponent', () => {
     }
   });
 
-  it('should check if string empty', () => {
-    expect(component.isNullOrEmpty('')).toBeTruthy();
-  });
-
-  it('should check if string null', () => {
-    expect(component.isNullOrEmpty(null)).toBeTruthy();
-  });
-
-  it('should check if string is not empty', () => {
-    expect(component.isNullOrEmpty('aaa')).toBeFalsy();
-  });
-
-  it('should check if string is not empty', () => {
-    expect(component.isNullOrEmpty('aaa')).toBeFalsy();
-  });
-
   it('should check if object is empty', () => {
     expect(component.isEmptyObject({})).toBeTruthy();
   });
