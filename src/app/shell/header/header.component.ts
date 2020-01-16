@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
     this.menuOpen = !this.menuOpen;
   }
 
-  logOut(){
-   (this.adal.isAuthenticated) ? this.adal.logout(): false;
+  logOut() {
+   (this.adal.isAuthenticated) ? this.adal.logout() : false;
   }
 }

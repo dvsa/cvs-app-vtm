@@ -1,4 +1,4 @@
-import { TankStatement } from "./TankStatement";
+import { TankStatement } from './TankStatement';
 export interface Tank {
   tankStatement: TankStatement;
 }

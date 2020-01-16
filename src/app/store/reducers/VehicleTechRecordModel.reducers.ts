@@ -1,7 +1,7 @@
 import {EVehicleTechRecordModelActions, VehicleTechRecordModelActions} from '../actions/VehicleTechRecordModel.actions';
 import { initialVehicleTechRecordModelState, IVehicleTechRecordModelState } from '@app/store/state/VehicleTechRecordModel.state';
 
-export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions): 
+export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions):
 IVehicleTechRecordModelState {
   switch (action.type) {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
@@ -24,7 +24,7 @@ IVehicleTechRecordModelState {
       return {
         ...state,
         error: action.payload  // capture error message
-      }
+      };
     }
 
     default:
