@@ -528,23 +528,13 @@ a#cancel1, a#cancel2 {
   width: 6rem;
 }
 
-::ng-deep #cdk-accordion-child-5 > div > dl > div:nth-child(27), .tank-documents {
+::ng-deep #cdk-accordion-child-5 > div > dl > div:nth-child(27) {
   display: block !important;
   width: 89vw;
 }
 
 .govuk-inset-text {
   padding-top: 0!important;
-}
-
-textarea .specialProvisions {
-  max-width: 480px;
-}
-
-.tank-documents {
-  a {
-    width: 47px !important;
-  }
 }
 
 

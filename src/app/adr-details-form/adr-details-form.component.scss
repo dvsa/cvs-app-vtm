@@ -69,7 +69,7 @@
     width: 20rem;
   }
 
-  #permittedDangerousGoods {
+  #permittedDangerousGoods, #specialProvisions {
     width: 30rem;
   }
 
@@ -125,5 +125,14 @@
     background-image: none;
     background-color: #2D6C7A;
     color: #FFFFFF;
+  }
+
+  & .tank-documents {
+    & a {
+      width: 78vw;
+    }
+    & span {
+      margin-bottom: 0;
+    }
   }
 }
