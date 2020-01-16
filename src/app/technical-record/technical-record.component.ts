@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { IAppState } from '../adr-details-form/store/adrDetailsForm.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
-import {DownloadDocumentFileAction} from '@app/adr-details-form/store/adrDetails.actions';
+import { DownloadDocumentFileAction } from '@app/adr-details-form/store/adrDetails.actions';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';

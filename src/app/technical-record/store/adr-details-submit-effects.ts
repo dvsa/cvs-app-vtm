@@ -5,7 +5,7 @@ import { tap, exhaustMap, switchMap, map, catchError, withLatestFrom, take } fro
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { selectVehicleTechRecordModelHavingStatusAll } from '../../store/selectors/VehicleTechRecordModel.selectors';
+import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { SubmitAdrAction, SubmitAdrActionFailure, SubmitAdrActionSuccess } from './adrDetailsSubmit.actions';
 import { GetVehicleTechRecordModelHavingStatusAllSuccess } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { GetVehicleTestResultModel } from '@app/store/actions/VehicleTestResultModel.actions';
@@ -22,7 +22,7 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
     ofType<SubmitAdrAction>(SubmitAdrAction.TYPE),
     withLatestFrom(this._store$.select(selectVehicleTechRecordModelHavingStatusAll)
       .pipe(
-        map(s => { 
+        map(s => {
           return {
             vin: s.vin,
             activeRecord: this._filterRecordPipe.transform(s.techRecord)

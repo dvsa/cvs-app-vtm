@@ -1,15 +1,13 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy, OnChanges, SimpleChanges, SimpleChange, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { createInitialState, IAppState, INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction } from 'ngrx-forms';
 import { Observable, combineLatest, of } from 'rxjs';
 import { adrDetailsFormModel } from '@app/adr-details-form/store/adrDetailsForm.model';
-import { filter, catchError, map, withLatestFrom, take, tap } from 'rxjs/operators';
+import { filter, catchError, map, withLatestFrom, take } from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
-  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction, LoadAction
-} from './store/adrDetails.actions';
-import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
+  CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, AddTankDocumentAction, SetSubmittedValueAction} from './store/adrDetails.actions';
 
 @Component({
   selector: 'vtm-adr-details-form',
@@ -77,14 +75,14 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
         }
         return formState.value.type.includes('battery') || formState.value.type.includes('tank');
       }),
-      catchError(err => {
+      catchError(() => {
         return of(false);
       })
     );
 
     this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map(s =>
       s.value.permittedDangerousGoods['Explosives (type 2)'] || s.value.permittedDangerousGoods['Explosives (type 3)']),
-      catchError(err => {
+      catchError(() => {
         return of(false);
       })
     );
@@ -191,7 +189,7 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
   private readThis(inputValue: any): void {
     this.fileList = inputValue.files;
     let currentFileIndex = 0;
-    let filenames = [];
+    const filenames = [];
     for (let index = 0; index < this.fileList.length; index++) {
       filenames.push(this.fileList[index].name);
     }
@@ -261,7 +259,7 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
     return id;
   }
 
-  trackByFn(index, item) {
+  trackByFn(item) {
     return item.id;
   }
 }
