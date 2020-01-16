@@ -26,5 +26,6 @@ export const PIPES_AND_COMPONENTS = [
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
   entryComponents: [ AdrReasonModalComponent ],
+  providers: [FilterRecordPipe],
 })
 export class SharedModule {}

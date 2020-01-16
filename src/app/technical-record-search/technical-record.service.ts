@@ -25,8 +25,8 @@ export class TechnicalRecordService {
     return this.httpClient.get<any[]>(this.routes.techRecordsAllStatuses(searchIdentifier), { headers });
   }
 
-  uploadDocuments(): Observable<any>   {
-    console.log(`inside uploadDocuments`);
+  uploadDocuments(submitData: any): Observable<any>   {
+    console.log(`inside uploadDocuments received submiData => ${JSON.stringify(submitData)}`);
     return of<any>("succeeded");
   }
 
