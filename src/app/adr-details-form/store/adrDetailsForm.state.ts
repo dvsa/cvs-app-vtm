@@ -113,8 +113,10 @@ export function createInitialState(initialAdrDetails: any): any {
     tankTypeAppNo: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankDetails.tankTypeAppNo : '',
     tankCode: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankDetails.tankCode : '',
     tankDocuments: initialAdrDetails.documents,
-    substancesPermitted:  initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankStatement.substancesPermitted : ' ',
-    selectReferenceNumber: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankStatement ? initialAdrDetails.tank.tankStatement.hasOwnProperty('statement') ? 'isStatement' : 'isProductListRefNo' : '') : '',
+    substancesPermitted: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankStatement.substancesPermitted : ' ',
+    selectReferenceNumber: initialAdrDetails.hasOwnProperty('tank') ?
+      (initialAdrDetails.tank.tankStatement ? initialAdrDetails.tank.tankStatement.hasOwnProperty('statement')
+        ? 'isStatement' : 'isProductListRefNo' : '') : '',
     statement: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankStatement.statement : '',
     productListRefNo: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankStatement.productListRefNo : '',
     productListUnNo: [initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankStatement.productListUnNo : ''],
@@ -123,9 +125,12 @@ export function createInitialState(initialAdrDetails: any): any {
     tc2Type: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankDetails.tc2Details.tc2Type : '',
     tc2IntermediateApprovalNo: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo : '',
     tc2IntermediateExpiryDate: {
-      day: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[2] : '') : '',
-      month: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[1] : '') : '',
-      year: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[0] : '') : ''
+      day: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate 
+        ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[2] : '') : '',
+      month: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate 
+        ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[1] : '') : '',
+      year: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate 
+        ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[0] : '') : ''
     },
     tc3Type: [],
     tc3PeriodicNumber: [],
@@ -138,12 +143,13 @@ export function createInitialState(initialAdrDetails: any): any {
     brakeDeclarationsSeen: initialAdrDetails.brakeDeclarationsSeen,
     declarationsSeen: initialAdrDetails.declarationsSeen, // boolean in DB
     weight: initialAdrDetails.weight,
-    certificateReq: initialAdrDetails.additionalNotes.guidanceNotes ? initialAdrDetails.additionalNotes.guidanceNotes.includes('New certificate requested') ? 'New certificate requested' : '' : '',
+    certificateReq: initialAdrDetails.additionalNotes.guidanceNotes ? initialAdrDetails.additionalNotes.guidanceNotes.includes('New certificate requested') 
+    ? 'New certificate requested' : '' : '',
     adrMoreDetail: initialAdrDetails.additionalExaminerNotes
   };
 }
 
-export function createSubmitState(adrDetails: any, techRecord:any): any {
+export function createSubmitState(adrDetails: any, techRecord: any): any {
   return {
     vehicleDetails: {
       type: adrDetails.type,
@@ -188,13 +194,15 @@ export function createSubmitState(adrDetails: any, techRecord:any): any {
         tc2Details: {
           tc2Type: adrDetails.tc2Type,
           tc2IntermediateApprovalNo: adrDetails.tc2IntermediateApprovalNo,
-          tc2IntermediateExpiryDate: adrDetails.tc2IntermediateExpiryDate.year + '-' + adrDetails.tc2IntermediateExpiryDate.month + '-' + adrDetails.tc2IntermediateExpiryDate.day
+          tc2IntermediateExpiryDate: adrDetails.tc2IntermediateExpiryDate.year + '-' + adrDetails.tc2IntermediateExpiryDate.month + 
+          '-' + adrDetails.tc2IntermediateExpiryDate.day
         },
         tc3Details: [
           {
             tc3Type: adrDetails.tc3Type,
             tc3PeriodicNumber: adrDetails.tc3PeriodicNumber,
-            tc3PeriodicExpiryDate: adrDetails.tc3PeriodicExpiryDate.year + '-' + adrDetails.tc3PeriodicExpiryDate.month + '-' + adrDetails.tc3PeriodicExpiryDate.day
+            tc3PeriodicExpiryDate: adrDetails.tc3PeriodicExpiryDate.year + '-' + adrDetails.tc3PeriodicExpiryDate.month + '-' 
+            + adrDetails.tc3PeriodicExpiryDate.day
           }
         ]
 

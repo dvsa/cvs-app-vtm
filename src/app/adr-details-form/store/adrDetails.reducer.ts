@@ -1,10 +1,15 @@
-import { Action, combineReducers } from '@ngrx/store'
-import { createFormGroupState, AddArrayControlAction, RemoveArrayControlAction, createFormStateReducerWithUpdate, updateGroup, validate, addGroupControl, setValue } from 'ngrx-forms';
+import { Action, combineReducers } from '@ngrx/store';
+import { AddArrayControlAction, RemoveArrayControlAction, createFormStateReducerWithUpdate, updateGroup, validate, addGroupControl, setValue } from 'ngrx-forms';
 import { adrDetailsFormModel } from './adrDetailsForm.model';
 import { required, maxLength, greaterThan, lessThanOrEqualTo } from 'ngrx-forms/validation';
 import { approvalDate } from '@app/models/approvalDate';
-import {IAppState, INITIAL_STATE} from './adrDetailsForm.state';
-import { CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction, RemoveGuidanceNoteElementAction, CreateProductListUnNoElementAction, RemoveProductListUnNoElementAction, CreateTc3TypeElementAction, CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, SetSubmittedValueAction, AddTankDocumentAction, RemoveTankDocumentAction } from './adrDetails.actions';
+import { IAppState, INITIAL_STATE } from './adrDetailsForm.state';
+import {
+    CreatePermittedDangerousGoodElementAction, RemovePermittedDangerousGoodElementAction, CreateGuidanceNoteElementAction,
+    RemoveGuidanceNoteElementAction, CreateProductListUnNoElementAction, RemoveProductListUnNoElementAction, CreateTc3TypeElementAction,
+    CreateTc3PeriodicNumberElementAction, CreateTc3PeriodicExpiryDateElementAction, SetSubmittedValueAction, AddTankDocumentAction,
+    RemoveTankDocumentAction
+} from './adrDetails.actions';
 import { SubmitAdrActionSuccess } from '@app/technical-record/store/adrDetailsSubmit.actions';
 
 export const FORM_ID = 'adrDetails';
@@ -51,7 +56,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case CreatePermittedDangerousGoodElementAction.TYPE:
                 return updateGroup<adrDetailsFormModel>({
                     permittedDangerousGoods: group => {
-                        return addGroupControl(group, a.name, a.payload );
+                        return addGroupControl(group, a.name, a.payload);
                     },
                 })(s);
 
@@ -116,7 +121,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
             case SubmitAdrActionSuccess.TYPE:
                 return undefined;
-                
+
             default:
                 return s;
         }
@@ -253,7 +258,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     ) {
 
         if (!a.hasOwnProperty('subtype') && ((<AddTankDocumentAction>a).subtype !== AddTankDocumentAction.SUB_TYPE ||
-        (<RemoveTankDocumentAction>a).subtype !== RemoveTankDocumentAction.SUB_TYPE )) {
+            (<RemoveTankDocumentAction>a).subtype !== RemoveTankDocumentAction.SUB_TYPE)) {
             return;
         }
 
@@ -272,9 +277,9 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
                 const options = [...s.options];
                 options.splice(a.index!, 1);
                 return {
-                  ...s,
-                  options,
-                };             
+                    ...s,
+                    options,
+                };
             }
 
             default:

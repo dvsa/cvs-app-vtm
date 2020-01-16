@@ -15,7 +15,7 @@
     "e2e": "cypress open",
     "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
-    "prepush": "ng lint && npm run build && npm test",
+    "prepush": "npm run build && npm test",
     "tslint": "tslint src/**/*.ts",
     "security-checks": "git secrets --scan && git log -p | scanrepo",
     "coverage": "jest --coverage"

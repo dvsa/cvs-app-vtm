@@ -26,25 +26,32 @@ export class TechnicalRecordService {
     return this.httpClient.get<any[]>(this.routes.techRecordsAllStatuses(searchIdentifier), { headers });
   }
 
-  uploadDocuments(submitData: any): Observable<any>   {
+  uploadDocuments(submitData: any): Observable<any> {
     console.log(`inside uploadDocuments received submiData => ${JSON.stringify(submitData)}`);
     return of<any>("succeeded");
   }
 
-  getDocumentBlob(vin: string, fileName: string): Observable<{ buffer: ArrayBuffer, fileName?: string }> {
+  getDocumentBlob(vin: string, fileName: string): Observable<{ buffer: ArrayBuffer, contentType: string, fileName?: string }> {
     console.log(`getDocumentBlob vin => ${this.routes.getDocumentBlob(vin)}`);
-    return this.httpClient.get<{ type: string, data: Array<number> }>(this.routes.getDocumentBlob(vin), {
-      params: { filename: fileName }, responseType: 'json'
-    }).pipe(
-      switchMap(response => {
-        const ab = new ArrayBuffer(response.data.length);
-        const view = new Uint8Array(ab);
-        for (let i = 0; i < response.data.length; i++) {
-          view[i] = response.data[i];
-        }
-        return of({ buffer: ab, fileName: fileName });
-      }),
-      tap(_ => console.log(`getDocumentBlob => ${JSON.stringify(_)}`))
-    );
+    return this.httpClient.get<
+      {
+        fileBuffer: {
+          type: string,
+          data: Array<number>
+        },
+        contentType: string
+      }>(this.routes.getDocumentBlob(vin), {
+        params: { filename: fileName }, responseType: 'json'
+      }).pipe(
+        switchMap(response => {
+          const ab = new ArrayBuffer(response.fileBuffer.data.length);
+          const view = new Uint8Array(ab);
+          for (let i = 0; i < response.fileBuffer.data.length; i++) {
+            view[i] = response.fileBuffer.data[i];
+          }
+          return of({ buffer: ab, contentType: response.contentType, fileName: fileName });
+        }),
+        tap(_ => console.log(`getDocumentBlob => ${JSON.stringify(_)}`))
+      );
   }
 }
