@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { AddArrayControlAction, RemoveArrayControlAction } from 'ngrx-forms';
-import { adrDetailsFormModel } from './adrDetailsForm.model';
+import {adrDetailsFormModel, CheckBoxValue} from './adrDetailsForm.model';
 
 export class LoadAction implements Action {
   static readonly TYPE = 'adrDetails/LOAD';
@@ -23,7 +23,7 @@ export class SetMsUserDetailsAction implements Action {
 export class CreatePermittedDangerousGoodElementAction implements Action {
   static readonly TYPE = 'adrDetails/CREATE_PERMITTED_DANGEROUS_GOOD_ELEMENT';
   readonly type = CreatePermittedDangerousGoodElementAction.TYPE;
-  constructor(public name: string, public payload: boolean = false) { }
+  constructor(public payload: CheckBoxValue) { }
 }
 
 export class RemovePermittedDangerousGoodElementAction implements Action {
@@ -35,7 +35,7 @@ export class RemovePermittedDangerousGoodElementAction implements Action {
 export class CreateGuidanceNoteElementAction implements Action {
   static readonly TYPE = 'adrDetails/CREATE_GUIDANCE_NOTE_ELEMENT';
   readonly type = CreateGuidanceNoteElementAction.TYPE;
-  constructor(public name: string, public payload: boolean = false) { }
+  constructor(public payload: CheckBoxValue) { }
 }
 
 export class RemoveGuidanceNoteElementAction implements Action {

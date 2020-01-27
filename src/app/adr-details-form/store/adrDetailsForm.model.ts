@@ -1,5 +1,10 @@
 import {approvalDate} from '@app/models/approvalDate';
 
+export interface CheckBoxValue {
+  content: string;
+  value: boolean;
+  index: number;
+}
 
 export interface adrDetailsFormModel {
     name: string;
@@ -9,9 +14,9 @@ export interface adrDetailsFormModel {
     postcode: string;
     type: string;
     approvalDate: approvalDate;
-    permittedDangerousGoods: { [id: string]: boolean };
+    permittedDangerousGoods: { [id: string]: CheckBoxValue };
     compatibilityJ: boolean;
-    additionalNotes: { [id: string]: boolean };
+    additionalNotes: { [id: string]: CheckBoxValue };
     adrTypeApprovalNo: string;
     tankManufacturer: string;
     yearOfManufacture: number;

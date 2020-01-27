@@ -50,7 +50,7 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   guidanceNotesFe$: Observable<string[]>;
   navigationSubscription;
 
-  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router,) {
+  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router) {
     this.initializeTechnicalRecord();
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -76,7 +76,7 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.navigationSubscription) {  
+    if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
    }
   }

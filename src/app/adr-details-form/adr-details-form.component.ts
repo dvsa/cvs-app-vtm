@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { createInitialState, IAppState, INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
-import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction } from 'ngrx-forms';
+import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction, NgrxValueConverters } from 'ngrx-forms';
 import { Observable, combineLatest, of } from 'rxjs';
-import { adrDetailsFormModel } from '@app/adr-details-form/store/adrDetailsForm.model';
+import {adrDetailsFormModel, CheckBoxValue} from '@app/adr-details-form/store/adrDetailsForm.model';
 import { filter, catchError, map, withLatestFrom, take } from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
@@ -45,12 +45,8 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
   isBatteryApplicable: boolean;
   isBrakeDeclarationsSeen: boolean;
   isBrakeEndurance: boolean;
-  // msUserDetails: {
-  //   msUser: string,
-  //   msOid: string
-  // };
 
-  constructor(private _store: Store<IAppState>/*, private adal: MsAdalAngular6Service*/) {
+  constructor(private _store: Store<IAppState>) {
     this.adrDetails$ = this._store.select(s => s.adrDetails);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
     this.permittedDangerousGoodsOptions$ = this._store.pipe(select(s => s.adrDetails.permittedDangerousGoodsOptions));
@@ -81,7 +77,7 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
     );
 
     this.isPermittedExplosiveDangerousGoods$ = this.formState$.pipe(map(s =>
-      s.value.permittedDangerousGoods['Explosives (type 2)'] || s.value.permittedDangerousGoods['Explosives (type 3)']),
+      s.value.permittedDangerousGoods['Explosives (type 2)'].value || s.value.permittedDangerousGoods['Explosives (type 3)'].value),
       catchError(() => {
         return of(false);
       })
@@ -102,21 +98,21 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
       this._store.dispatch(new SetValueAction(INITIAL_STATE.id, createInitialState(this.initialAdrDetails)));
     }
     this.permittedDangerousGoodsFe$.subscribe(goods => {
+      let incr = 0;
       goods.forEach(good => {
-        this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good,
-          this.initialAdrDetails && this.initialAdrDetails.permittedDangerousGoods.includes(good)));
+        const goodValue: CheckBoxValue = { content: good, value: this.initialAdrDetails && this.initialAdrDetails.permittedDangerousGoods.includes(good), index: incr };
+        this._store.dispatch(new CreatePermittedDangerousGoodElementAction(goodValue));
+        incr++;
       });
     });
     this.guidanceNotesFe$.subscribe(notes => {
       notes.forEach(note => {
-        this._store.dispatch(new CreateGuidanceNoteElementAction(note,
-          this.initialAdrDetails && this.initialAdrDetails.additionalNotes.guidanceNotes.includes(note)));
+        let incr = 0;
+        const noteValue: CheckBoxValue = { content: note, value: this.initialAdrDetails && this.initialAdrDetails.permittedDangerousGoods.includes(note), index: incr };
+        this._store.dispatch(new CreateGuidanceNoteElementAction(noteValue));
+        incr++;
       });
     });
-
-    // this.msUserDetails.msOid  =  this.adal.userInfo != null ? this.adal.userInfo.profile.name : '';
-    // this.msUserDetails.msUser =  this.adal.userInfo != null ? this.adal.userInfo.profile.oid : '';
-    // this._store.dispatch(new SetMsUserDetailsAction(this.msUserDetails));
 
   }
 
@@ -149,12 +145,16 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
     ).subscribe(this._store);
   }
 
-  addAGuidanceNote(note: string) {
-    this._store.dispatch(new CreateGuidanceNoteElementAction(note, false));
+  addAGuidanceNote(note: string, guidanceNotes: CheckBoxValue) {
+    console.log(Object.keys(guidanceNotes).length + 1);
+    const noteValue: CheckBoxValue = {content: note, value: false, index: Object.keys(guidanceNotes).length};
+    this._store.dispatch(new CreateGuidanceNoteElementAction(noteValue));
   }
 
-  addDangerousGood(good: string) {
-    this._store.dispatch(new CreatePermittedDangerousGoodElementAction(good, false));
+  addDangerousGood(good: string, permittedGoods: CheckBoxValue) {
+    console.log(Object.keys(permittedGoods).length + 1);
+    const goodValue: CheckBoxValue = {content: good, value: false, index: Object.keys(permittedGoods).length};
+    this._store.dispatch(new CreatePermittedDangerousGoodElementAction(goodValue));
   }
 
   addSubsequentInspection() {

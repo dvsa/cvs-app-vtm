@@ -108,8 +108,8 @@
           <div class="govuk-checkboxes">
             <div class="govuk-checkboxes__item"
                  *ngFor="let permittedGood of formState.value.permittedDangerousGoods | keys">
-              <input class="govuk-checkboxes__input" type="checkbox" [value]="permittedGood"
-                     [ngrxFormControlState]="formState.controls.permittedDangerousGoods.controls[permittedGood.key]">
+              <input class="govuk-checkboxes__input" type="checkbox"
+                     [ngrxFormControlState]="formState.controls.permittedDangerousGoods.controls[permittedGood.index]">
               <label class="govuk-label govuk-checkboxes__label" for="permittedGood.key">
                 {{ permittedGood.key }} </label>
             </div>
@@ -117,7 +117,7 @@
         </div>
 
         <div class="grid-container-row">
-          <a class="add-dangerous-note mb-1" (click)="addDangerousGood(dangerousGood.value)">Add a
+          <a class="add-dangerous-note mb-1" (click)="addDangerousGood(dangerousGood.value, formState.value.permittedDangerousGoods)">Add a
             dangerous good</a>
           <input class="govuk-input govuk-input--width-10" #dangerousGood
                  placeholder="Type a dangerous good" type="text">
@@ -156,14 +156,14 @@
           <div class="govuk-checkboxes">
             <div class="govuk-checkboxes__item"
                  *ngFor="let note of formState.value.additionalNotes | keys">
-              <input class="govuk-checkboxes__input" type="checkbox" [value]="note"
-                     [ngrxFormControlState]="formState.controls.additionalNotes.controls[note.key]">
+              <input class="govuk-checkboxes__input" type="checkbox" [value]="note.value"
+                     [ngrxFormControlState]="formState.controls.additionalNotes.controls[note.index]">
               <label class=" govuk-label govuk-checkboxes__label"> {{ note.key }} </label>
             </div>
           </div>
 
           <div class="grid-container-row mt-1">
-            <a class="add-guidance-note mb-1" (click)="addAGuidanceNote(guidanceNote.value)">Add a guidance note</a>
+            <a class="add-guidance-note mb-1" (click)="addAGuidanceNote(guidanceNote.value, formState.value.additionalNotes)">Add a guidance note</a>
             <input class="govuk-input govuk-input--width-10" #guidanceNote placeholder="Type a guidance note" type="text">
           </div>
 

@@ -1,6 +1,6 @@
 import { Action, combineReducers } from '@ngrx/store';
 import { AddArrayControlAction, RemoveArrayControlAction, createFormStateReducerWithUpdate, updateGroup, validate, addGroupControl, setValue } from 'ngrx-forms';
-import { adrDetailsFormModel } from './adrDetailsForm.model';
+import {adrDetailsFormModel, CheckBoxValue} from './adrDetailsForm.model';
 import { required, maxLength, greaterThan, lessThanOrEqualTo } from 'ngrx-forms/validation';
 import { approvalDate } from '@app/models/approvalDate';
 import { IAppState, INITIAL_STATE } from './adrDetailsForm.state';
@@ -56,7 +56,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case CreatePermittedDangerousGoodElementAction.TYPE:
                 return updateGroup<adrDetailsFormModel>({
                     permittedDangerousGoods: group => {
-                        return addGroupControl(group, a.name, a.payload);
+                      return addGroupControl(group, a.payload.index, a.payload);
                     },
                 })(s);
 
@@ -72,7 +72,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
             case CreateGuidanceNoteElementAction.TYPE:
                 return updateGroup<adrDetailsFormModel>({
                     additionalNotes: group => {
-                        return addGroupControl(group, a.name, a.payload);
+                        return addGroupControl(group, a.payload.index, a.payload);
                     },
                 })(s);
 
@@ -114,7 +114,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     ) {
         switch (a.type) {
             case CreatePermittedDangerousGoodElementAction.TYPE:
-                return [...s, a.name];
+                return [...s, a.payload.content];
 
             case RemovePermittedDangerousGoodElementAction.TYPE:
                 return s.filter(i => i !== a.name);
@@ -132,7 +132,7 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
     ) {
         switch (a.type) {
             case CreateGuidanceNoteElementAction.TYPE:
-                return [...s, a.name];
+                return [...s, a.payload.content];
 
             case RemoveGuidanceNoteElementAction.TYPE:
                 return s.filter(i => i !== a.name);
