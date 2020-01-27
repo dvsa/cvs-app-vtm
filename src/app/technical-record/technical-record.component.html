@@ -896,7 +896,7 @@
                       <dt class="govuk-summary-list__key"> Substances permitted</dt>
                       <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
                         <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
-                          {{ (activeRecord.adrDetails.tank.tankStatement.substancesPermitted == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.substancesPermitted }}
+                          <span>{{ (activeRecord.adrDetails.tank.tankStatement.substancesPermitted == null) ? "-" : activeRecord.adrDetails.tank.tankStatement.substancesPermitted }}</span>
                         </ng-container>
                       </dd>
                       <dd class="govuk-summary-list__value"></dd>
