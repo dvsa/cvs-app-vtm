@@ -1011,7 +1011,7 @@
                     <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.documents) else noDoc">
                       <div class="govuk-summary-list__row"
                            *ngFor="let doc of activeRecord.adrDetails.documents; let i = index; trackBy: trackByFn">
-                        <dt class="govuk-summary-list__key">Document {{i + 1}} </dt>
+                        <dt class="govuk-summary-list__value">Document {{i + 1}} </dt>
                         <dd class="govuk-summary-list__value"></dd>
                         <dd class="govuk-summary-list__value">
                           <a class="govuk-link" (click)="downloadDocument(doc)">Download</a>
