@@ -4,6 +4,7 @@ import {initialVehicleTestResultModelState} from '../state/VehicleTestResultMode
 import {
   GetVehicleTestResultModel,
   GetVehicleTestResultModelSuccess,
+  GetVehicleTestResultModelFailure
 } from '../actions/VehicleTestResultModel.actions';
 
 describe('VehicleTestResultModel Reducer', () => {
@@ -36,6 +37,18 @@ describe('VehicleTestResultModel Reducer', () => {
         ...initialVehicleTestResultModelState,
         selectedTestResultModel: vehicleTestResult,
 
+      });
+    });
+  });
+
+  describe('[TestResultModel] Get TestResultModel Failure', () => {
+    test('should update the error state with the payload when called', () => {
+      const action = new GetVehicleTestResultModelFailure('error');
+      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+
+      expect(result).toMatchObject({
+        ...initialVehicleTestResultModelState,
+        error: 'error'
       });
     });
   });

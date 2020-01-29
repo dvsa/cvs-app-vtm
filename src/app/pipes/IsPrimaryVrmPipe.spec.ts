@@ -11,7 +11,13 @@ const techRecords = [{
 ];
 
 describe('IsPrimaryVrmPipe', () => {
+
   const pipe = new IsPrimaryVrmPipe();
+
+  it('create an instance', () => {
+    expect(pipe).toBeTruthy();
+  });
+
   it('should return only primary vrm', () => {
     const expectedRes = [{
       vrm: '1234THF',

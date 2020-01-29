@@ -1,6 +1,6 @@
 import {async, ComponentFixture, getTestBed, inject, TestBed} from '@angular/core/testing';
 
-import { HeaderComponent } from './header.component';
+import {HeaderComponent} from './header.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {MatDialogModule} from '@angular/material/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -21,10 +21,11 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   const authenticationGuardMock = new AuthenticationGuardMock();
   const unsubscribe = new Subject<void>();
+  let adal: MsAdalAngular6Service;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ],
+      declarations: [HeaderComponent],
       imports: [
         HttpClientTestingModule,
         MatDialogModule,
@@ -54,17 +55,26 @@ describe('HeaderComponent', () => {
         },
         {provide: AuthenticationGuard, useValue: authenticationGuardMock},
         {provide: APP_BASE_HREF, useValue: '/'},
+        {
+          provide: MsAdalAngular6Service,
+          useValue: {
+            userInfo: {profile: {name: 'test'}},
+            isAuthenticated: false
+          }
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     injector = getTestBed();
+    adal = TestBed.get(MsAdalAngular6Service);
     httpMock = injector.get(HttpTestingController);
     component = fixture.componentInstance;
+    component.menuOpen = false;
     fixture.detectChanges();
   });
 
@@ -74,7 +84,24 @@ describe('HeaderComponent', () => {
     unsubscribe.complete();
   });
 
-  it('should create',  inject([HttpTestingController, MsAdalAngular6Service], () => {
+  it('should create', inject([HttpTestingController, MsAdalAngular6Service], () => {
     expect(component).toBeTruthy();
   }));
+
+  it('test ngOnInit having adal username not null', () => {
+    component.ngOnInit();
+    expect(component.userName).toEqual(adal.userInfo.profile.name);
+  });
+
+  it('should change value of menuOpen on click event', () => {
+    const event = {currentTarget: {checked: false}};
+    component.onClick(event);
+    expect(component.menuOpen).toBeTruthy();
+  });
+
+  it('should check if user authenticated', () => {
+    expect(component.logOut()).toBeFalsy();
+  });
+
+
 });

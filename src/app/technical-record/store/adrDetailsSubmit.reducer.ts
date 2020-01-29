@@ -1,7 +1,7 @@
 import { initialAdrDetailsSubmitState, IAdrDetailsSubmitState } from "./adrDetailsSubmit.state";
 import { SubmitAdrAction, SubmitAdrActionFailure, SubmitAdrActionSuccess } from "./adrDetailsSubmit.actions";
 
-export function AdrDetailsSubmitReducer(state = initialAdrDetailsSubmitState, 
+export function AdrDetailsSubmitReducer(state = initialAdrDetailsSubmitState,
     action: SubmitAdrAction | SubmitAdrActionSuccess | SubmitAdrActionFailure): IAdrDetailsSubmitState {
   switch (action.type) {
     case SubmitAdrAction.TYPE: {
@@ -24,7 +24,7 @@ export function AdrDetailsSubmitReducer(state = initialAdrDetailsSubmitState,
       return {
         ...state,
         error: action.payload  // capture error message
-      }
+      };
     }
 
     default:
