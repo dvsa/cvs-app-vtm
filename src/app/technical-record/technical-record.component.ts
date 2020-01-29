@@ -68,7 +68,7 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
       .pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.permittedDangerousGoodsFe));
     this.guidanceNotesFe$ = this._store
       .pipe(select( s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.additionalNotes.guidanceNotesFe));
-    this.testResultJson$ = this._store.select(selectSelectedVehicleTestResultModel);
+    this.testResultJson$ = this._store.pipe(select(selectSelectedVehicleTestResultModel));
   }
 
   ngOnInit() {
@@ -89,9 +89,9 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     this.allOpened = !this.allOpened;
   }
 
-  // public isNullOrEmpty(str) {
-  //   return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
-  // }
+  public isNullOrEmpty(str) {
+    return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
+  }
 
   public isEmptyObject(obj) {
     return (obj && (Object.keys(obj).length === 0));

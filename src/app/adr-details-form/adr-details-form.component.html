@@ -421,7 +421,7 @@
             </fieldset>
           </div>
 
-          <div class="govuk-inset-text" *ngIf="isBatteryApplicable">
+          <div class="govuk-inset-text" *ngIf="isBatteryApplicable || (formState$ | async).controls.listStatementApplicable.value ==='applicable'">
             <div class="govuk-form-group">
               <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
                 Reference number

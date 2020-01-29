@@ -8,7 +8,7 @@
   "homepage": "",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o",
+    "start": "ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "test": "jest --coverage",
     "lint": "ng lint",
