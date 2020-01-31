@@ -17,6 +17,7 @@ export class TechnicalRecordService {
       techRecords: (searchIdentifier: string) => `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records`,
       techRecordsAllStatuses: (searchIdentifier: string) => `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
       getDocumentBlob: (vin: string) => `${this._apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file`,
+      updateTechRecords: (vin: string) => `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${vin}`,
     };
   }
 
@@ -24,6 +25,12 @@ export class TechnicalRecordService {
     console.log(`getTechnicalRecordsAllStatuses url => ${this.routes.techRecordsAllStatuses(searchIdentifier)}`);
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return this.httpClient.get<any[]>(this.routes.techRecordsAllStatuses(searchIdentifier), { headers });
+  }
+
+  updateTechnicalRecords(techRecordDto: any, vin: string): Observable<any> {
+    console.log(`updateTechRecords url => ${this.routes.updateTechRecords(vin)}`);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.put<any[]>(this.routes.updateTechRecords(vin), techRecordDto, { headers });
   }
 
   uploadDocuments(submitData: any): Observable<any> {

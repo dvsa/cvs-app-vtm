@@ -35,9 +35,9 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
         tap((_) => {
           console.log(`payload of this._store$.select((s: IAdrState) => ) => ${JSON.stringify(_)}`)
         }),
-        map(fs => this.createSubmitState(fs.value,payload.activeRecord)),
+        map(fs => this.createSubmitState(fs.value, payload.activeRecord)),
       ).pipe(
-        switchMap((submitValue) => this._technicalRecordService.uploadDocuments(submitValue)
+        switchMap((submitValue) => this._technicalRecordService.updateTechnicalRecords(submitValue, payload.vin)
           .pipe(
             switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin)
               .pipe(
@@ -52,7 +52,7 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
               )),
             catchError((error) =>
               of(new SubmitAdrActionFailure(error))
-            ))))
+            ))));
     })
   );
 
@@ -73,71 +73,79 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
   ) { }
 
   private createSubmitState = (adrDetails: any, techRecord: any) => {
-    return {
-      vehicleDetails: {
-        type: adrDetails.type,
-        approvalDate: adrDetails.approvalDate.year + '-' + adrDetails.approvalDate.month + '-' + adrDetails.approvalDate.day
-      },
-      listStatementApplicable: adrDetails.listStatementApplicable === 'applicable',
-      batteryListNumber: adrDetails.batteryListNumber,
-      declarationSeen: adrDetails.declarationsSeen === 'true', // boolean
-      brakeDeclarationsSeen: adrDetails.brakeDeclarationsSeen,
-      brakeDeclarationIssuer: adrDetails.brakeDeclarationIssuer,
-      brakeEndurance: adrDetails.brakeEndurance, // boolean
-      weight: adrDetails.weight,
-      compatibilityGroupJ: adrDetails.compatibilityGroupJ,
-      permittedDangerousGoods: [
-        adrDetails.permittedDangerousGoods
-      ],
-      additionalExaminerNotes: adrDetails.additionalNotes,
-      applicantDetails: {
-        name: adrDetails.name,
-        street: adrDetails.street,
-        town: adrDetails.town,
-        city: adrDetails.city,
-        postcode: adrDetails.postcode
-      },
-      memosApply: [
-        adrDetails.memosApply
-      ],
-      additionalNotes: {
-        guidanceNotes: [
-          adrDetails.guidanceNotes
-        ]
-      },
-      adrTypeApprovalNo: adrDetails.adrTypeApprovalNo,
-      tank: {
-        tankDetails: {
-          tankManufacturer: adrDetails.tankManufacturer,
-          yearOfManufacture: adrDetails.yearOfManufacture,
-          tankCode: adrDetails.tankCode,
-          specialProvisions: adrDetails.specialProvisions,
-          tankManufacturerSerialNo: adrDetails.tankManufacturerSerialNo,
-          tankTypeAppNo: adrDetails.tankTypeAppNo,
-          tc2Details: {
-            tc2Type: adrDetails.tc2Type,
-            tc2IntermediateApprovalNo: adrDetails.tc2IntermediateApprovalNo,
-            // tslint:disable-next-line:max-line-length
-            tc2IntermediateExpiryDate: adrDetails.tc2IntermediateExpiryDate.year + '-' + adrDetails.tc2IntermediateExpiryDate.month + '-' + adrDetails.tc2IntermediateExpiryDate.day
-          },
-          tc3Details: [
-            {
-              tc3Type: adrDetails.tc3Type,
-              tc3PeriodicNumber: adrDetails.tc3PeriodicNumber,
-              // tslint:disable-next-line:max-line-length
-              tc3PeriodicExpiryDate: adrDetails.tc3PeriodicExpiryDate.year + '-' + adrDetails.tc3PeriodicExpiryDate.month + '-' + adrDetails.tc3PeriodicExpiryDate.day
-            }
-          ]
-
+    const techRecordDTO: any = {};
+    techRecord.files = [];
+    techRecordDTO.msUserDetails = {'msUser': 'catalin' , 'msOid': '123243424-234234245'};
+    techRecordDTO.techRecord = [];
+    techRecord.reasonForCreation = 'Update ADR TYPE';
+    techRecord.adrDetails = {
+        vehicleDetails: {
+          type: adrDetails.type,
+          approvalDate: adrDetails.approvalDate.year + '-' + adrDetails.approvalDate.month + '-' + adrDetails.approvalDate.day
         },
-        tankStatement: {
-          substancesPermitted: adrDetails.substancesPermitted,
-          statement: adrDetails.statement,
-          productListRefNo: adrDetails.productListRefNo,
-          productListUnNo: adrDetails.productListUnNo,
-          productList: adrDetails.productList
+        listStatementApplicable: adrDetails.listStatementApplicable === 'applicable',
+        batteryListNumber: adrDetails.batteryListNumber,
+        declarationSeen: adrDetails.declarationsSeen === 'true', // boolean
+        brakeDeclarationsSeen: adrDetails.brakeDeclarationsSeen,
+        brakeDeclarationIssuer: adrDetails.brakeDeclarationIssuer,
+        brakeEndurance: adrDetails.brakeEndurance, // boolean
+        weight: adrDetails.weight,
+        compatibilityGroupJ: adrDetails.compatibilityGroupJ,
+        permittedDangerousGoods: [
+          adrDetails.permittedDangerousGoods
+        ],
+        additionalExaminerNotes: adrDetails.additionalNotes,
+        applicantDetails: {
+          name: adrDetails.name,
+          street: adrDetails.street,
+          town: adrDetails.town,
+          city: adrDetails.city,
+          postcode: adrDetails.postcode
+        },
+        memosApply: [
+          adrDetails.memosApply
+        ],
+        additionalNotes: {
+          guidanceNotes: [
+            adrDetails.guidanceNotes
+          ]
+        },
+        adrTypeApprovalNo: adrDetails.adrTypeApprovalNo,
+        tank: {
+          tankDetails: {
+            tankManufacturer: adrDetails.tankManufacturer,
+            yearOfManufacture: adrDetails.yearOfManufacture,
+            tankCode: adrDetails.tankCode,
+            specialProvisions: adrDetails.specialProvisions,
+            tankManufacturerSerialNo: adrDetails.tankManufacturerSerialNo,
+            tankTypeAppNo: adrDetails.tankTypeAppNo,
+            tc2Details: {
+              tc2Type: adrDetails.tc2Type,
+              tc2IntermediateApprovalNo: adrDetails.tc2IntermediateApprovalNo,
+              // tslint:disable-next-line:max-line-length
+              tc2IntermediateExpiryDate: adrDetails.tc2IntermediateExpiryDate.year + '-' + adrDetails.tc2IntermediateExpiryDate.month + '-' + adrDetails.tc2IntermediateExpiryDate.day
+            },
+            tc3Details: [
+              {
+                tc3Type: adrDetails.tc3Type,
+                tc3PeriodicNumber: adrDetails.tc3PeriodicNumber,
+                // tslint:disable-next-line:max-line-length
+                tc3PeriodicExpiryDate: adrDetails.tc3PeriodicExpiryDate.year + '-' + adrDetails.tc3PeriodicExpiryDate.month + '-' + adrDetails.tc3PeriodicExpiryDate.day
+              }
+            ]
+
+          },
+          tankStatement: {
+            substancesPermitted: adrDetails.substancesPermitted,
+            statement: adrDetails.statement,
+            productListRefNo: adrDetails.productListRefNo,
+            productListUnNo: adrDetails.productListUnNo,
+            productList: adrDetails.productList
+          }
         }
-      }
-    };
+      };
+
+      techRecordDTO.techRecord.push(techRecord);
+      return techRecordDTO;
   }
 }

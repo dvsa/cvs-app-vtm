@@ -1,15 +1,15 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, getTestBed} from '@angular/core/testing';
-import {TechnicalRecordComponent} from './technical-record.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {APP_BASE_HREF} from '@angular/common';
-import {AuthenticationGuard} from 'microsoft-adal-angular6';
-import {MatDialogModule} from '@angular/material/dialog';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Store, StoreModule} from '@ngrx/store';
-import {RouterTestingModule} from '@angular/router/testing';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {Subject} from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { TechnicalRecordComponent } from './technical-record.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { APP_BASE_HREF } from '@angular/common';
+import { AuthenticationGuard } from 'microsoft-adal-angular6';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Store, StoreModule } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
 // import { IAppState, INITIAL_STATE } from '@app/store/state/adrDetailsForm.state';
 import { appReducers } from '@app/store/reducers/app.reducers';
 // import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
@@ -18,7 +18,7 @@ import { NgrxFormsModule } from 'ngrx-forms';
 import { hot } from 'jasmine-marbles';
 import { MaterialModule } from '@app/material.module';
 import { SharedModule } from '@app/shared/shared.module';
-import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
+import { AuthenticationGuardMock } from '../../../testconfig/services-mocks/authentication-guard.mock';
 import { IAppState } from '@app/store/state/app.state';
 import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
 import { INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
@@ -32,10 +32,14 @@ describe('TechnicalRecordComponent', () => {
   let injector: TestBed;
   let store: Store<IAppState>;
   const axles = [
-    { 'parkingBrakeMrk': false,
-      'axleNumber': 1 },
-    { 'parkingBrakeMrk': true,
-      'axleNumber': 2 }
+    {
+      'parkingBrakeMrk': false,
+      'axleNumber': 1
+    },
+    {
+      'parkingBrakeMrk': true,
+      'axleNumber': 2
+    }
   ];
 
   beforeEach(() => {
@@ -65,17 +69,17 @@ describe('TechnicalRecordComponent', () => {
             select: jest.fn()
           }
         },
-        {provide: AuthenticationGuard, useValue: authenticationGuardMock},
-        {provide: APP_BASE_HREF, useValue: '/'},
+        { provide: AuthenticationGuard, useValue: authenticationGuardMock },
+        { provide: APP_BASE_HREF, useValue: '/' },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
-      store = TestBed.get(Store);
-      spyOn(store, 'dispatch').and.callThrough();
-      fixture = TestBed.createComponent(TechnicalRecordComponent);
-      injector = getTestBed();
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+    store = TestBed.get(Store);
+    spyOn(store, 'dispatch').and.callThrough();
+    fixture = TestBed.createComponent(TechnicalRecordComponent);
+    injector = getTestBed();
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   afterEach(() => {
@@ -88,6 +92,36 @@ describe('TechnicalRecordComponent', () => {
     store = TestBed.get(Store);
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  describe('isNullOrEmpty', () => {
+    test('should check for empty string', () => {
+      const customObject = '';
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(true);
+    });
+
+    test('should check for null', () => {
+      const customObject = null;
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(true);
+    });
+
+    test('should check for non empty string', () => {
+      const customObject = 'one';
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(false);
+    });
+
+    it('should check for non empty number', () => {
+      const customObject = 123;
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(false);
+    });
   });
 
   it('should toggle panel open state', () => {
@@ -111,7 +145,7 @@ describe('TechnicalRecordComponent', () => {
     expect(component.isSubmit).toEqual(true);
     expect(component.adrData).toEqual(false);
     expect(component.showCheck).toEqual(true);
-    expect(component.numberFee).toEqual(['1A', '1B', '2C' ]);
+    expect(component.numberFee).toEqual(['1A', '1B', '2C']);
     // expect(component.dangerousGoods).toEqual(['Hydrogen', 'Expl (type 2)', 'Expl (type 3)']);
     expect(component.isAdrNull).toEqual(false);
   });
@@ -135,7 +169,7 @@ describe('TechnicalRecordComponent', () => {
   });
 
   it('should switch ADR display conditionally', () => {
-    const customObject =  { 'currentTarget' : {'value': 'true'} };
+    const customObject = { 'currentTarget': { 'value': 'true' } };
     component.switchAdrDisplay(customObject as any);
 
     expect(component.adrData).toEqual(false);
