@@ -445,6 +445,16 @@ dd {
 
   dd {
     white-space: nowrap !important;
+    @media (max-width: 1313px) {
+      &#test-ADR-substancesPermitted {
+        height: 3rem!important;
+        & span {
+          position: absolute;
+          white-space: normal !important;
+          width: 55vw;
+        }
+      }
+    }
   }
 
   ::ng-deep .table-tank thead tr th:nth-child(1), .table-tank tbody tr td:nth-child(1) {
