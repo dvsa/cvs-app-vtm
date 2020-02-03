@@ -1,3 +1,4 @@
+
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
@@ -81,6 +82,36 @@ describe('TechnicalRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('isNullOrEmpty', () => {
+    test('should check for empty string', () => {
+      const customObject = '';
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(true);
+    });
+
+    test('should check for null', () => {
+      const customObject = null;
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(true);
+    });
+
+    test('should check for non empty string', () => {
+      const customObject = 'one';
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(false);
+    });
+
+    it('should check for non empty number', () => {
+      const customObject = 123;
+      const result = component.isNullOrEmpty(customObject);
+
+      expect(result).toEqual(false);
+    });
   });
 
   it('should toggle panel open state', () => {
