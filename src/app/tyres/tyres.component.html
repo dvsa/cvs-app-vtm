@@ -1,0 +1,38 @@
+<table class="govuk-table table-details">
+  <thead class="govuk-table__head">
+  <tr class="govuk-table__row">
+    <th class="govuk-table__cell govuk-!-font-weight-bold">Tyre use code</th>
+    <td id="test-tyreUseCode" class="govuk-table__cell">
+      {{ techRecHelpers.isNullOrEmpty(activeRecord.tyreUseCode) ? "-" : activeRecord.tyreUseCode }}
+    </td>
+    <th class="govuk-table__cell"></th>
+    <th class="govuk-table__cell"></th>
+    <th class="govuk-table__cell"></th>
+    <th class="govuk-table__cell"></th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  <tr class="govuk-table__row">
+    <th scope="col" class="govuk-table__header"></th>
+    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre code</td>
+    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre size</td>
+    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Ply rating</td>
+    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Fitment code</td>
+    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Load index</td>
+  </tr>
+  <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
+    <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
+      {{ techRecHelpers.isNullOrEmpty(axelNo.axleNumber ) ? "-" : axelNo.axleNumber }}</th>
+    <td id="{{ 'test-tyreCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
+      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.tyreCode) ? "-" : axelNo.tyres.tyreCode }}</td>
+    <td id="{{ 'test-tyreSize-' + axelNo.axleNumber }}" class="govuk-table__cell">
+      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.tyreSize) ? "-" : axelNo.tyres.tyreSize }}</td>
+    <td id="{{ 'test-plyRating-' + axelNo.axleNumber }}" class="govuk-table__cell">
+      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.plyRating) ? "-" : axelNo.tyres.plyRating }}</td>
+    <td id="{{ 'test-fitmentCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
+      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.fitmentCode) ? "-" : axelNo.tyres.fitmentCode }}</td>
+    <td id="{{ 'test-dataTrAxles-' + axelNo.axleNumber }}" class="govuk-table__cell">
+      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.dataTrAxles) ? "-" : axelNo.tyres.dataTrAxles }}</td>
+  </tr>
+  </tbody>
+</table>

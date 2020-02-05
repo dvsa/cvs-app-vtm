@@ -1,0 +1,410 @@
+<dl class="technical-record-sub-details govuk-summary-list adr-details">
+  <div class="govuk-summary-list__row">
+
+    <dt class="govuk-summary-list__key">
+      Able to carry dangerous goods
+      <span *ngIf="showCheck">
+        <div class="govuk-radios govuk-radios--inline" id="radioADR">
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="hasADR" name="hasADR" type="radio" [checked]="!isAdrNull"
+                   value="true" (change)="switchAdrDisplay($event)">
+            <label class="govuk-label govuk-radios__label" for="hasADR">
+              Yes
+            </label>
+          </div>
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="hasNotADR" name="hasADR" type="radio"
+                   [checked]="isAdrNull" value="false" (change)="switchAdrDisplay($event)">
+            <label class="govuk-label govuk-radios__label" for="hasNotADR">
+              No
+            </label>
+          </div>
+        </div>
+      </span>
+    </dt>
+
+    <dd id="test-ableToCarry" class="govuk-summary-list__value">
+      <div *ngIf="!showCheck">
+                    <span>
+                      {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails) ? "No" : "Yes" }}
+                    </span>
+      </div>
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <ng-template #adrForm>
+    <div *ngIf="!hideForm">
+      <vtm-adr-details-form [vehicletypes$]="vehicletypes$"
+                            [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$"
+                            [guidanceNotesFe$]="guidanceNotesFe$"
+                            [initialAdrDetails]="activeRecord?.adrDetails">
+      </vtm-adr-details-form>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="adrData else adrForm">
+    <ng-container *ngIf="!(activeRecord.adrDetails == null)">
+      <ng-container *ngIf="!hideForm">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            <h2 class="govuk-heading-m">Applicant details</h2>
+          </dt>
+          <dd class="govuk-summary-list__value"></dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Name</dt>
+          <dd id="test-aplicantDetails-name" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.applicantDetails.name) ? "-" : activeRecord.adrDetails.applicantDetails.name }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Street</dt>
+          <dd id="test-aplicantDetails-street" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.applicantDetails.street) ? "-" : activeRecord.adrDetails.applicantDetails.street }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Town</dt>
+          <dd id="test-aplicantDetails-town" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.applicantDetails.town) ? "-" : activeRecord.adrDetails.applicantDetails.town }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> City</dt>
+          <dd id="test-aplicantDetails-city" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.applicantDetails.city) ? "-" : activeRecord.adrDetails.applicantDetails.city }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Postcode</dt>
+          <dd id="test-aplicantDetails-postcode" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.applicantDetails.postcode) ? "-" : activeRecord.adrDetails.applicantDetails.postcode }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">ADR details</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Vehicle type</dt>
+          <dd id="test-ADR-type" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.vehicleDetails.type) ? "-" : activeRecord.adrDetails.vehicleDetails.type }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Date processed</dt>
+          <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.vehicleDetails.approvalDate) ? "-" : activeRecord.adrDetails.vehicleDetails.approvalDate | date :'dd/MM/y' }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Permitted dangerous goods</dt>
+          <dd id="test-ADR-permittedDangerousGoods" class="govuk-summary-list__value">
+            <div *ngIf="!(activeRecord.adrDetails == null) else hyphen">
+              <div *ngFor="let perGood of activeRecord.adrDetails.permittedDangerousGoods">
+                <p>{{perGood}}</p>
+              </div>
+            </div>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Compatibility group J</dt>
+          <dd id="test-ADR-compatibilityGroupJ" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.compatibilityGroupJ) ? "-" : activeRecord.adrDetails.compatibilityGroupJ }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Guidance notes</dt>
+          <dd id="test-ADR-additionalNotes-number" class="govuk-summary-list__value">
+            <div *ngIf="!(activeRecord.adrDetails.additionalNotes.number == null) else hyphen">
+              <div *ngFor="let number of activeRecord.adrDetails.additionalNotes.number">
+                <p>{{number}}</p>
+              </div>
+            </div>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> ADR type approval number</dt>
+          <dd id="test-ADR-adrTypeApprovalNo" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.adrTypeApprovalNo) ? "-" : activeRecord.adrDetails.adrTypeApprovalNo }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Tank details</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Make</dt>
+          <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankManufacturer) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturer }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Year of manufacture</dt>
+          <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.yearOfManufacture) ? "-" : activeRecord.adrDetails.tank.tankDetails.yearOfManufacture }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Manufacturer serial number</dt>
+          <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Tank type approval number</dt>
+          <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Code</dt>
+          <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankCode) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankCode }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Substances permitted</dt>
+          <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              <span>{{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.substancesPermitted) ? "-" : activeRecord.adrDetails.tank.tankStatement.substancesPermitted }}</span>
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Statement reference number</dt>
+          <dd id="test-ADR-statement" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.statement) ? "-" : activeRecord.adrDetails.tank.tankStatement.statement }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Product list reference number</dt>
+          <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListRefNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListRefNo }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> UN number</dt>
+          <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListUnNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListUnNo }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Additional product list details</dt>
+          <dd id="test-ADR-productList" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productList) ? "-" : activeRecord.adrDetails.tank.tankStatement.productList }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Special provisions</dt>
+          <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
+            <ng-container *ngIf="!(activeRecord.adrDetails.tank == null) else hyphen">
+              {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.specialProvisions) ? "-" : activeRecord.adrDetails.tank.tankDetails.specialProvisions }}
+            </ng-container>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Tank inspections</h2>
+          <table class="govuk-table table-tank">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Inspection type</th>
+              <th scope="col" class="govuk-table__header">Certificate number</th>
+              <th scope="col" class="govuk-table__header">Expiry date</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body"
+                   *ngIf="(activeRecord.adrDetails.vehicleDetails.type.includes('tank') || activeRecord.adrDetails.vehicleDetails.type.includes('battery')) else noTankHistory">
+            <tr class="govuk-table__row">
+              <td id="test-tc2Type" class="govuk-table__cell">
+                {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type }}
+              </td>
+              <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+                {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
+              </td>
+              <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+                {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
+              </td>
+            </tr>
+            <tr class="govuk-table__row"
+                *ngFor="let tc3Details of activeRecord.adrDetails.tank.tankDetails.tc3Details">
+              <td id="test-tc3Type" class="govuk-table__cell">
+                {{ techRecHelpers.isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
+              </td>
+              <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
+                {{ techRecHelpers.isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
+              </td>
+              <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
+                {{ techRecHelpers.isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
+              </td>
+            </tr>
+            </tbody>
+            <ng-template #noTankHistory>
+              <tbody class="govuk-table__body">
+              <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+              </tbody>
+            </ng-template>
+          </table>
+        </div>
+
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Applied</dt>
+          <dd id="test-memosApply" class="govuk-summary-list__value">
+            <div *ngIf="!(activeRecord.adrDetails.memosApply == null) else hyphen">
+              {{ activeRecord.adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
+            </div>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Tank documents</h2>
+        </div>
+        <ng-container *ngIf="!techRecHelpers.isEmptyObject(activeRecord.adrDetails.documents) else noDoc">
+          <div class="govuk-summary-list__row"
+               *ngFor="let doc of activeRecord.adrDetails.documents; let i = index; trackBy: trackByFn">
+            <dt class="govuk-summary-list__value">Document {{i + 1}} </dt>
+            <dd class="govuk-summary-list__value"></dd>
+            <dd class="govuk-summary-list__value">
+              <a class="govuk-link" (click)="downloadDocument(doc)">Download</a>
+            </dd>
+          </div>
+        </ng-container>
+        <ng-template #noDoc>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__value">-</dt>
+            <dd class="govuk-summary-list__value"></dd>
+            <dd class="govuk-summary-list__value"></dd>
+          </div>
+        </ng-template>
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Battery list</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Applicable</dt>
+          <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.listStatementApplicable) ? "-" : activeRecord.adrDetails.listStatementApplicable ? "Yes" : "No" }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Reference number</dt>
+          <dd id="test-batteryListNumber" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.batteryListNumber) ? "-" : activeRecord.adrDetails.batteryListNumber }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Declarations seen</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Manufacturer brake declaration</dt>
+          <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.brakeDeclarationsSeen) ? "-" : activeRecord.adrDetails.brakeDeclarationsSeen ? "Yes" : "No" }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Issuer</dt>
+          <dd id="test-brakeDeclarationIssuer" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.brakeDeclarationIssuer) ? "-" : activeRecord.adrDetails.brakeDeclarationIssuer }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Brake endurance</dt>
+          <dd id="test-brakeEndurance" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.brakeEndurance) ? "-" : activeRecord.adrDetails.brakeEndurance ? "Yes" : "No" }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Brake endurance weight (kg)</dt>
+          <dd id="test-weight" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.weight) ? "-" : activeRecord.adrDetails.weight * 1000 }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Owner/operator declaration</dt>
+          <dd id="test-declarationsSeen" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.declarationsSeen) ? "-" : activeRecord.adrDetails.declarationsSeen ? "Yes" : "No" }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Certificate</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key"> Required</dt>
+          <dd id="test-guidanceNotes" class="govuk-summary-list__value">
+            {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.additionalNotes.guidanceNotes) ? "-" : activeRecord.adrDetails.additionalNotes.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <h2 class="govuk-heading-m">Additional ADR details</h2>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+                        <span id="test-additionalExaminerNotes"
+                              class="notes-section">{{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails.additionalExaminerNotes) ? "-" : activeRecord.adrDetails.additionalExaminerNotes}}</span>
+          </dt>
+          <dd class="govuk-summary-list__value"></dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</dl>
+
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>

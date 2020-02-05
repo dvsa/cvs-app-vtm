@@ -20,6 +20,15 @@ import { AdrDetailsFormModule } from '@app/adr-details-form/adr-details-form.mod
 import { AdrDetailsSubmitEffects } from '@app/technical-record/store/adr-details-submit-effects';
 import { StoreModule } from '@ngrx/store';
 import { AdrDetailsSubmitReducer } from './store/adrDetailsSubmit.reducer';
+import { VehicleSummaryComponent } from '../vehicle-summary/vehicle-summary.component';
+import { BodyComponent } from '../body/body.component';
+import { WeightsComponent } from '../weights/weights.component';
+import { TyresComponent } from '../tyres/tyres.component';
+import { DimensionsComponent } from '../dimensions/dimensions.component';
+import { NotesComponent } from '../notes/notes.component';
+import { TestHistoryComponent } from '../test-history/test-history.component';
+import { TechRecHistoryComponent } from '../tech-rec-history/tech-rec-history.component';
+import { AdrDetailsViewComponent } from '../adr-details-view/adr-details-view.component';
 
 @NgModule({
   imports: [
@@ -41,7 +50,16 @@ import { AdrDetailsSubmitReducer } from './store/adrDetailsSubmit.reducer';
     AdrDetailsFormModule
   ],
   declarations: [
-    TechnicalRecordComponent
+    TechnicalRecordComponent,
+    VehicleSummaryComponent,
+    BodyComponent,
+    WeightsComponent,
+    TyresComponent,
+    DimensionsComponent,
+    NotesComponent,
+    TestHistoryComponent,
+    TechRecHistoryComponent,
+    AdrDetailsViewComponent
   ],
   exports: [
     TechnicalRecordComponent

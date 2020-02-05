@@ -12,10 +12,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { IAppState } from '../adr-details-form/store/adrDetailsForm.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
-import { DownloadDocumentFileAction } from '@app/adr-details-form/store/adrDetails.actions';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
+import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -24,13 +24,13 @@ import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechnicalRecordComponent implements OnInit , OnDestroy {
-  submitData: string;
+
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
 
   @HostBinding('@.disabled')
   public animationsDisabled = true;
-  isLoading: boolean;
+
   searchIdentifier = '{none searched}';
   panels: { panel: string, isOpened: boolean }[] = [{ panel: 'panel1', isOpened: false }, { panel: 'panel2', isOpened: false },
     { panel: 'panel3', isOpened: false }, { panel: 'panel4', isOpened: false },
@@ -45,12 +45,9 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   showCheck = false;
   numberFee: any;
   isAdrNull: any;
-  vehicleTypes$: Observable<string[]>;
-  permittedDangerousGoodsFe$: Observable<string[]>;
-  guidanceNotesFe$: Observable<string[]>;
   navigationSubscription;
 
-  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router,) {
+  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router, public techRecHelpers: TechRecordHelpersService) {
     this.initializeTechnicalRecord();
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       if (e instanceof NavigationEnd) {
@@ -62,12 +59,6 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   initializeTechnicalRecord() {
     this.cancelAddrEdit();
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
-    this.vehicleTypes$ = this._store
-      .pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.vehicleDetails.typeFe));
-    this.permittedDangerousGoodsFe$ = this._store
-      .pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.permittedDangerousGoodsFe));
-    this.guidanceNotesFe$ = this._store
-      .pipe(select( s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.additionalNotes.guidanceNotesFe));
     this.testResultJson$ = this._store.pipe(select(selectSelectedVehicleTestResultModel));
   }
 
@@ -76,35 +67,16 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.navigationSubscription) {  
+    if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
    }
   }
-
 
   public togglePanel() {
     for (const panel of this.panels) {
       panel.isOpened = !this.allOpened;
     }
     this.allOpened = !this.allOpened;
-  }
-
-  public isNullOrEmpty(str) {
-    return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
-  }
-
-  public isEmptyObject(obj) {
-    return (obj && (Object.keys(obj).length === 0));
-  }
-
-  public axlesHasNoParkingBrakeMrk(axles) {
-    let baxlesHasNoParkingBrakeMrk = true;
-    axles.forEach(axle => {
-      if (axle.parkingBrakeMrk === true) {
-        baxlesHasNoParkingBrakeMrk = false;
-      }
-    });
-    return baxlesHasNoParkingBrakeMrk;
   }
 
   public hasSecondaryVrms(vrms) {
@@ -129,18 +101,7 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     this.hideForm = false;
   }
 
-  public switchAdrDisplay($event) {
-    this.adrData = !($event.currentTarget.value === 'true');
-    this.hideForm = $event.currentTarget.value === 'false';
-  }
-
-
-  downloadDocument(doc) {
-    this._store.dispatch(new DownloadDocumentFileAction(doc));
-  }
-
   onSaveChanges() {
-
     let reasonForChanges = '';
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
@@ -154,15 +115,4 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     });
   }
 
-  trackByIndex(index: number) {
-    return index;
-  }
-
-  trackById(_: number, id: string) {
-    return id;
-  }
-
-  trackByFn(index, item) {
-    return item.id;
-  }
 }
