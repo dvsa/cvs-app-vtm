@@ -11,8 +11,8 @@ import { GetVehicleTechRecordModelHavingStatusAllSuccess } from '@app/store/acti
 import { GetVehicleTestResultModel } from '@app/store/actions/VehicleTestResultModel.actions';
 import { IAppState } from '@app/store/state/app.state';
 import { SetValueAction, ResetAction } from 'ngrx-forms';
-import { INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
-import { IAppState as IAdrState } from '@app/adr-details-form/store/adrDetailsForm.state'
+import { INITIAL_STATE } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
+import { IAppState as IAdrState } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state'
 import { FilterRecordPipe } from '@app/pipes/FilterRecordPipe';
 
 @Injectable()

@@ -9,11 +9,11 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { MaterialModule } from '@app/material.module';
 import { AdrDetailsFormComponent } from './adr-details-form.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { InspectionDetailsModule } from '@app/inspection-details/inspection-details.module';
+import { InspectionDetailsModule } from '@app/technical-record/inspection-details/inspection-details.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
-import { DownloadDocumentsEffects } from '@app/adr-details-form/store/download-documents.effects';
+import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
+import { DownloadDocumentsEffects } from '@app/technical-record/adr-details/adr-details-form/store/download-documents.effects';
 
 @NgModule({
   imports: [

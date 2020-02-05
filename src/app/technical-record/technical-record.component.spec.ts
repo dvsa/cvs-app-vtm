@@ -6,9 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DownloadDocumentFileAction } from '@app/adr-details-form/store/adrDetails.actions';
-import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
-import { INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
+import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
+import { INITIAL_STATE } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
 import { MaterialModule } from '@app/material.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { appReducers } from '@app/store/reducers/app.reducers';
@@ -26,16 +25,6 @@ describe('TechnicalRecordComponent', () => {
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
   let store: Store<IAppState>;
-  const axles = [
-    {
-      'parkingBrakeMrk': false,
-      'axleNumber': 1
-    },
-    {
-      'parkingBrakeMrk': true,
-      'axleNumber': 2
-    }
-  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -84,61 +73,11 @@ describe('TechnicalRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('isNullOrEmpty', () => {
-    test('should check for empty string', () => {
-      const customObject = '';
-      const result = component.isNullOrEmpty(customObject);
-
-      expect(result).toEqual(true);
-    });
-
-    test('should check for null', () => {
-      const customObject = null;
-      const result = component.isNullOrEmpty(customObject);
-
-      expect(result).toEqual(true);
-    });
-
-    test('should check for non empty string', () => {
-      const customObject = 'one';
-      const result = component.isNullOrEmpty(customObject);
-
-      expect(result).toEqual(false);
-    });
-
-    it('should check for non empty number', () => {
-      const customObject = 123;
-      const result = component.isNullOrEmpty(customObject);
-
-      expect(result).toEqual(false);
-    });
-  });
-
   it('should toggle panel open state', () => {
     component.togglePanel();
     for (const panel of component.panels) {
       expect(panel.isOpened).toEqual(true);
     }
-  });
-
-  it('should check if object is empty', () => {
-    expect(component.isEmptyObject({})).toBeTruthy();
-  });
-
-  it('should check if object is empty', () => {
-    expect(component.isEmptyObject({})).toBeTruthy();
-  });
-
-  describe('axlesHasNoParkingBrakeMrk', () => {
-    const axles = [{parkingBrakeMrk: true}, { parkingBrakeMrk: true}, { parkingBrakeMrk: false }];
-
-    test('should return true if the axles has no parking brake when called', () => {
-      expect(component.axlesHasNoParkingBrakeMrk( [] )).toBe(true);
-    });
-
-    test('should return false if one of the axles have parking brake when called', () => {
-      expect(component.axlesHasNoParkingBrakeMrk(axles)).toBe(false);
-    });
   });
 
   describe('hasSecondaryVrms', () => {
@@ -164,15 +103,6 @@ describe('TechnicalRecordComponent', () => {
     expect(component.isAdrNull).toEqual(false);
   });
 
-  it('should check if axles has no parking brake mrk', () => {
-    component.axlesHasNoParkingBrakeMrk(axles);
-    for (const axle of axles) {
-      if (axle.parkingBrakeMrk === true) {
-        expect(component.axlesHasNoParkingBrakeMrk(axles)).toBeFalsy();
-      }
-    }
-  });
-
   it('should check if cancel action updates variables properly', () => {
     component.cancelAddrEdit();
     expect(component.changeLabel).toEqual('Change technical record');
@@ -180,38 +110,6 @@ describe('TechnicalRecordComponent', () => {
     expect(component.showCheck).toEqual(false);
     expect(component.isSubmit).toEqual(false);
     expect(component.hideForm).toEqual(false);
-  });
-
-  it('should switch ADR display conditionally', () => {
-    const customObject = { 'currentTarget': { 'value': 'true' } };
-    component.switchAdrDisplay(customObject as any);
-
-    expect(component.adrData).toEqual(false);
-    expect(component.hideForm).toEqual(false);
-  });
-
-  describe('downloadDocument', () => {
-    test('should dispatch download document action when called', () => {
-      jest.spyOn(store, 'dispatch');
-      const doc = 'test';
-
-      component.downloadDocument(doc);
-      expect(store.dispatch).toHaveBeenCalledWith(new DownloadDocumentFileAction(doc));
-    });
-  });
-
-  describe('trackByIndex', () => {
-    test('should return the index passed as an argument when called', () => { expect(component.trackByIndex(23)).toBe(23); })
-  });
-
-  describe('trackById', () => {
-    test('should return the id passed as an argument when called', () => { expect(component.trackById(24, '123')).toBe('123'); })
-  });
-
-  describe('trackByFn', () => {
-    test('should return the id of the argument when called', () => {
-      expect(component.trackByFn(23, { id: 3 })).toBe(3);
-    });
   });
 
   describe('onSaveChages', () => {
@@ -223,7 +121,6 @@ describe('TechnicalRecordComponent', () => {
       expect(store.dispatch).toHaveBeenCalled();
     });
   });
-
 
   afterAll(() => {
     TestBed.resetTestingModule();

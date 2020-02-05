@@ -1,6 +1,6 @@
 import { createFormGroupState, FormGroupState, box } from 'ngrx-forms';
 import { adrDetailsFormModel } from './adrDetailsForm.model';
-import { IAppState as RootState } from '../../store/state/app.state';
+import { IAppState as RootState } from '../../../../store/state/app.state';
 
 export interface IAppState extends RootState {
   adrDetails: {
@@ -125,11 +125,11 @@ export function createInitialState(initialAdrDetails: any): any {
     tc2Type: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankDetails.tc2Details.tc2Type : '',
     tc2IntermediateApprovalNo: initialAdrDetails.hasOwnProperty('tank') ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo : '',
     tc2IntermediateExpiryDate: {
-      day: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate 
+      day: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate
         ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[2] : '') : '',
-      month: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate 
+      month: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate
         ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[1] : '') : '',
-      year: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate 
+      year: initialAdrDetails.hasOwnProperty('tank') ? (initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate
         ? initialAdrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate.split('-')[0] : '') : ''
     },
     tc3Type: [],
@@ -143,7 +143,7 @@ export function createInitialState(initialAdrDetails: any): any {
     brakeDeclarationsSeen: initialAdrDetails.brakeDeclarationsSeen,
     declarationsSeen: initialAdrDetails.declarationsSeen, // boolean in DB
     weight: initialAdrDetails.weight,
-    certificateReq: initialAdrDetails.additionalNotes.guidanceNotes ? initialAdrDetails.additionalNotes.guidanceNotes.includes('New certificate requested') 
+    certificateReq: initialAdrDetails.additionalNotes.guidanceNotes ? initialAdrDetails.additionalNotes.guidanceNotes.includes('New certificate requested')
     ? 'New certificate requested' : '' : '',
     adrMoreDetail: initialAdrDetails.additionalExaminerNotes
   };
@@ -194,14 +194,14 @@ export function createSubmitState(adrDetails: any, techRecord: any): any {
         tc2Details: {
           tc2Type: adrDetails.tc2Type,
           tc2IntermediateApprovalNo: adrDetails.tc2IntermediateApprovalNo,
-          tc2IntermediateExpiryDate: adrDetails.tc2IntermediateExpiryDate.year + '-' + adrDetails.tc2IntermediateExpiryDate.month + 
+          tc2IntermediateExpiryDate: adrDetails.tc2IntermediateExpiryDate.year + '-' + adrDetails.tc2IntermediateExpiryDate.month +
           '-' + adrDetails.tc2IntermediateExpiryDate.day
         },
         tc3Details: [
           {
             tc3Type: adrDetails.tc3Type,
             tc3PeriodicNumber: adrDetails.tc3PeriodicNumber,
-            tc3PeriodicExpiryDate: adrDetails.tc3PeriodicExpiryDate.year + '-' + adrDetails.tc3PeriodicExpiryDate.month + '-' 
+            tc3PeriodicExpiryDate: adrDetails.tc3PeriodicExpiryDate.year + '-' + adrDetails.tc3PeriodicExpiryDate.month + '-'
             + adrDetails.tc3PeriodicExpiryDate.day
           }
         ]

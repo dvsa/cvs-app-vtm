@@ -1,0 +1,28 @@
+<table class="govuk-table t-history">
+  <thead class="govuk-table__head">
+  <tr class="govuk-table__row">
+    <th scope="col" class="govuk-table__header">Status</th>
+    <th scope="col" class="govuk-table__header">Reason for creation</th>
+    <th scope="col" class="govuk-table__header">Created by</th>
+    <th scope="col" class="govuk-table__header">Created at</th>
+    <th scope="col" class="govuk-table__header"></th>
+    <th scope="col" class="govuk-table__header"></th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  <tr class="govuk-table__row"
+      *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index">
+    <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
+      {{  (techRec.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (techRec.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()}}
+    </td>
+    <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
+      {{ (techRec.reasonForCreation | DefaultNullOrEmpty) | titlecase}}</td>
+    <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
+      {{ (techRec.createdByName | DefaultNullOrEmpty) | titlecase}}</td>
+    <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
+      {{ techRec.createdAt | DefaultNullOrEmpty }}</td>
+    <td class="govuk-table__cell"></td>
+    <td class="govuk-table__cell"></td>
+  </tr>
+  </tbody>
+</table>
