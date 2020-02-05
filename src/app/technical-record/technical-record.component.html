@@ -196,7 +196,7 @@
                   Load sensing valve
                 </dt>
                 <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-                  <div *ngIf="(activeRecord.brakes == null) else hyphen">
+                  <div *ngIf="!(activeRecord.brakes == null) else hyphen">
                     {{ isNullOrEmpty(activeRecord.brakes.loadSensingValve) ? "-" : activeRecord.brakes.loadSensingValve ? "YES" : "NO" }}
                   </div>
                 </dd>
