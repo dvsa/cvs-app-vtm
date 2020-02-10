@@ -433,6 +433,7 @@ dd {
     float: left;
   }
 
+
   ::ng-deep h2 {
     margin-top: 2rem !important;
     width: 23rem;
@@ -441,10 +442,11 @@ dd {
   dd {
     white-space: nowrap !important;
 
+
   ::ng-deep &#test-ADR-substancesPermitted.govuk-summary-list__value {
       width: 70% !important;
     }
-
+    
     @media (max-width: 1313px) {
       &#test-ADR-substancesPermitted {
         height: 3rem!important;
@@ -550,5 +552,6 @@ a#cancel1, a#cancel2 {
 
 ::ng-deep vtm-adr-details-view > div:nth-child(27) {
   display: block !important;
+
 }
 
