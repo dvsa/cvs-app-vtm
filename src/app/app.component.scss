@@ -1,0 +1,545 @@
+@import "node_modules/govuk-frontend/govuk/all";
+
+.un-number {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.form-state {
+  margin: 20px 20px 20px 10px;
+  overflow: auto;
+  min-width: 500px;
+  max-width: 1248px;
+}
+
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+
+#hide input[type=file] {
+  display:none;
+  margin:10px;
+}
+#hide input[type=file] + label {
+  display:inline-block;
+  margin:20px;
+  padding: 4px 32px;
+  background-color: #FFFFFF;
+  border:solid 1px #666F77;
+  border-radius: 6px;
+  color:#666F77;
+}
+#hide input[type=file]:active + label {
+  background-image: none;
+  background-color:#2D6C7A;
+  color:#FFFFFF;
+}
+
+.fileContainer {
+  overflow: hidden;
+  position: relative;
+}
+
+.fileContainer [type=file] {
+  color: #0b0c0c;
+  background-color: #f3f2f1;
+  box-shadow: 0 2px 0 #929191;
+  width: auto;
+  font-family: "GDS Transport", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  margin-top: 0;
+  padding: 8px 10px 7px;
+  border: 4px solid transparent;
+  border-radius: 0;
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
+  -webkit-appearance: none;
+
+  @media (min-width: 40.0625em) {
+    margin-bottom: 32px;
+    font-size: 1.1875rem;
+    line-height: 1;
+  }
+}
+
+.fileContainer {
+  background: red;
+  border-radius: .5em;
+  float: left;
+  padding: .5em;
+}
+
+.fileContainer [type=file] {
+  cursor: pointer;
+}
+
+$font-stack: GDSTransportWebsite;
+.expander-icon {
+  color: #0B0C0C;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: -0.21px;
+  line-height: 55px;
+  width: 20.8px;
+  text-align: center;
+}
+
+.ng-animating mat-card mat-expansion-panel-header {
+  height: 80px;
+}
+.ng-animating mat-card div.mat-expansion-panel-content {
+  height: 0px;
+  visibility: hidden;
+}
+
+.no-animate {
+  -webkit-transition: none !important;
+  transition: none !important;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+dd {
+  & ul {
+    padding-left: 0%;
+  }
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+::ng-deep .auto-pad .mat-expansion-panel-spacing {
+  margin: 0 !important;
+}
+.custom-header .mat-expansion-panel-header-title,
+.custom-header .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.custom-header .mat-expansion-panel-header {
+  padding: 0;
+  //height: 80px !important; //ripple
+}
+
+.custom-header, .open-close-all {
+  border-bottom-color: $govuk-border-colour;
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+}
+
+.custom-header .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: end;
+  flex-direction: row-reverse;
+  margin-right: 0%;
+}
+
+.disable_ripple:hover{
+  background: #fff !important;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: blue;
+}
+
+.rotate_90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+::ng-deep .custom-header > .mat-expansion-indicator:after {
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.expansion-icon {
+  color: $govuk-text-colour;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: -0.21px;
+  line-height: 55px;
+  width: 20.8px;
+  text-align: center;
+}
+
+.item-technical-record {
+  color: $govuk-brand-colour;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.11px;
+  line-height: 43px;
+  width: 284.96px;
+  text-align: left;
+  margin-top: 2%;
+  white-space: nowrap;
+}
+
+.accordion {
+  background-color: #eee;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  border-bottom-color: #a5acbd;
+  border-top-color: #a5acbd;
+  border-top-width: thin;
+}
+
+.active, .accordion:hover {
+  background-color: #54fa50;
+}
+
+.accordion:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+  border-bottom-color: #a5acbd;
+  border-top-color: #a5acbd;
+  border-top-width: thin;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+.title {
+  color: $govuk-text-colour;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.09px;
+  line-height: 58px;
+  width: 379px;
+  text-align: left;
+}
+
+.left-pad {
+  margin-left: 5%;
+
+  .rectangle {
+    background-color: $govuk-border-colour;
+    width: 10px;
+    height: 60px;
+  }
+
+  .grid-container-technical-record-status {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: 10px 80px 100px auto;
+    width: 50%;
+  }
+
+  .grid-item-technical-record-status {
+    text-align: left;
+    padding-top: 25%;
+    font-family: "GDS Transport", Arial, sans-serif;
+  }
+
+  .grid-item-technical-record-status-value {
+    text-align: left;
+    padding-top: 20%;
+    margin-left: -17%;
+    font-family: "GDS Transport", Arial, sans-serif;
+  }
+}
+
+.auto-pad {
+  margin-left: 5%;
+  margin-right: 5%;
+
+  &.technical-record-details {
+    margin-top: 5%;
+  }
+}
+
+.records-container {
+  width: 100%;
+  overflow-x: scroll;
+  border: 1px solid rgba(0, 0, 0, .03);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
+  margin: 4px;
+
+  & .records-container-title {
+    align-content: center;
+    align-items: center;
+    display: block;
+    justify-content: center;
+    padding: 8px 20px;
+    color: rgba(0, 0, 0, .54);
+    background: rgba(0, 0, 0, .03);
+
+    & .records-container-title-spacer {
+      display: flex;
+      flex-wrap: wrap;
+      color: rgba(0, 0, 0, .54);
+
+      > div {
+        flex: 0 50%;
+      }
+
+      & .record-search-title-text {
+        padding-top: 1%;
+      }
+
+    }
+  }
+
+  & .records-container-body {
+    padding: 30px;
+    display: flex;
+
+    & ngx-data-table {
+      min-width: 130%;
+
+      table {
+        width: 100%;
+        table-layout: fixed;
+      }
+
+      th, td {
+        overflow: hidden;
+        width: 200px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.mat-expanded {
+  border: none !important;
+}
+
+.open-close-all {
+  display: flex;
+  justify-content: flex-end;
+
+  ::ng-deep a {
+    color: $govuk-link-colour;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.09px;
+    line-height: 45px;
+    width: 73px;
+    text-align: right;
+    flex: 1;
+    text-align: right;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+::ng-deep .item-technical-record:hover, .mat-expansion-panel-header:hover {
+  color: $govuk-link-colour;
+  background: none !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.notes-section {
+  font-weight: 100 !important;
+}
+
+::ng-deep .govuk-summary-list__key {
+  width: 355px !important;
+}
+::ng-deep .main-details {
+  padding: 1.5% 0 1.5% 0 !important;
+}
+::ng-deep .govuk-summary-list__key {
+  white-space: nowrap;
+}
+
+.t-history:nth-child(1) {
+  th:nth-last-child(1), td:nth-last-child(1){
+    width: 50% !important;
+  }
+}
+
+.t-history:nth-child(2) {
+  th:nth-last-child(1), td:nth-last-child(1){
+    width: 60% !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .item-technical-record {
+    white-space: normal !important;
+    font-size: 24px !important;
+  }
+}
+
+::ng-deep .table-details thead tr th:nth-child(1), .table-details tbody tr th:nth-child(1) {
+  width: 312px !important;
+}
+
+::ng-deep .table-details tbody tr > *:not(:first-child) {
+  width: 200px !important;
+}
+
+.adr-details {
+  .grid-container-row {
+    display: grid;
+    grid-template-columns: auto;
+    margin-bottom: 2em;
+  }
+
+  .remove-a-un-number {
+    float: left;
+  }
+
+  .grid-item {
+    float: left;
+  }
+
+  h2 {
+    margin-top: 2rem;
+    width: 23rem;
+  }
+
+  dd {
+    white-space: nowrap !important;
+    @media (max-width: 1313px) {
+      &#test-ADR-substancesPermitted {
+        height: 3rem!important;
+        & span {
+          position: absolute;
+          white-space: normal !important;
+          width: 55vw;
+        }
+      }
+    }
+  }
+
+  ::ng-deep .table-tank thead tr th:nth-child(1), .table-tank tbody tr td:nth-child(1) {
+    width: 23rem !important;
+  }
+
+  ::ng-deep .table-tank tbody tr td:nth-child(2) {
+    width: 20rem !important;
+  }
+
+  ::ng-deep a {
+    float: right;
+    color: #005EA5;
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 23px;
+    width: 102px;
+    text-align: right;
+    flex: 1;
+    text-align: right;
+    text-decoration: underline;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  #radioADR {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  #type {
+    width: 20rem;
+  }
+
+  #permittedDangerousGoods {
+    width: 30rem;
+  }
+
+  .multiselect {
+    height: 13rem;
+  }
+
+  .additionalNotes {
+    height: 10rem;
+  }
+
+  .add-a-guidance-note, .add-a-un-number {
+    font-weight: 300 !important;
+    line-height: 23px !important;
+    float: initial !important;
+  }
+
+  #adr-more-detail {
+    width: 30rem;
+  }
+
+  fieldset {
+    border: none !important;
+  }
+}
+
+a#cancel1, a#cancel2 {
+  color:  $govuk-link-colour !important;
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -0.09px;
+  line-height: 40px;
+  text-align: right;
+  padding-left: 1.5rem;
+  cursor: pointer;
+
+  span {
+    border-bottom: solid;
+    border-bottom-width: 2px;
+  }
+}
+
+#test-ableToCarry {
+  width: 6rem;
+}
+
+.govuk-inset-text {
+  padding-top: 0!important;
+}
+
+::ng-deep #cdk-accordion-child-5 > div > vtm-adr-details-view > dl > div:nth-child(27) {
+  display: block !important;
+  width: 89vw;
+}
+

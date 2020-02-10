@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { createInitialState, IAppState, INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
+import { createInitialState, IAppState, INITIAL_STATE } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction } from 'ngrx-forms';
 import { Observable, combineLatest, of } from 'rxjs';
-import { adrDetailsFormModel } from '@app/adr-details-form/store/adrDetailsForm.model';
+import { adrDetailsFormModel } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.model';
 import { filter, catchError, map, withLatestFrom, take } from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,
@@ -45,12 +45,8 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
   isBatteryApplicable: boolean;
   isBrakeDeclarationsSeen: boolean;
   isBrakeEndurance: boolean;
-  // msUserDetails: {
-  //   msUser: string,
-  //   msOid: string
-  // };
 
-  constructor(private _store: Store<IAppState>/*, private adal: MsAdalAngular6Service*/) {
+  constructor(private _store: Store<IAppState>) {
     this.adrDetails$ = this._store.select(s => s.adrDetails);
     this.formState$ = this._store.pipe(select(s => s.adrDetails.formState));
     this.permittedDangerousGoodsOptions$ = this._store.pipe(select(s => s.adrDetails.permittedDangerousGoodsOptions));
@@ -113,11 +109,6 @@ export class AdrDetailsFormComponent implements OnInit, OnDestroy {
           this.initialAdrDetails && this.initialAdrDetails.additionalNotes.guidanceNotes.includes(note)));
       });
     });
-
-    // this.msUserDetails.msOid  =  this.adal.userInfo != null ? this.adal.userInfo.profile.name : '';
-    // this.msUserDetails.msUser =  this.adal.userInfo != null ? this.adal.userInfo.profile.oid : '';
-    // this._store.dispatch(new SetMsUserDetailsAction(this.msUserDetails));
-
   }
 
   ngOnDestroy(): void {

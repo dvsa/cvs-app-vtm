@@ -17,8 +17,8 @@
   "adalConfig": {
     "clientId": "",
     "tenant": "",
-    "redirectUri": "",
-    "cacheLocation": "",
+    "redirectUri": "http://localhost:4200",
+    "cacheLocation": "localStorage",
     "endpoints": {
       "api": ""
     }
