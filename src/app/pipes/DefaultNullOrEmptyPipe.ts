@@ -23,7 +23,7 @@ export class DefaultNullOrEmpty implements PipeTransform {
         }
         break;
       case 'boolean':
-        return (value == null) ? '-' : (value ? 'YES' : 'NO');
+        return (value == null) ? '-' : (value ? 'Yes' : 'No');
         break;
       default:
         return (value == null) ? '-' : value;

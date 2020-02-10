@@ -142,7 +142,6 @@ dd {
 
 .custom-header .mat-expansion-panel-header {
   padding: 0;
-  //height: 80px !important; //ripple
 }
 
 .custom-header, .open-close-all {
@@ -385,12 +384,10 @@ dd {
 
 ::ng-deep .govuk-summary-list__key {
   width: 355px !important;
+  white-space: nowrap;
 }
 ::ng-deep .main-details {
   padding: 1.5% 0 1.5% 0 !important;
-}
-::ng-deep .govuk-summary-list__key {
-  white-space: nowrap;
 }
 
 .t-history:nth-child(1) {
@@ -421,6 +418,7 @@ dd {
 }
 
 .adr-details {
+
   .grid-container-row {
     display: grid;
     grid-template-columns: auto;
@@ -435,13 +433,20 @@ dd {
     float: left;
   }
 
-  h2 {
-    margin-top: 2rem;
+
+  ::ng-deep h2 {
+    margin-top: 2rem !important;
     width: 23rem;
   }
 
   dd {
     white-space: nowrap !important;
+
+
+  ::ng-deep &#test-ADR-substancesPermitted.govuk-summary-list__value {
+      width: 70% !important;
+    }
+    
     @media (max-width: 1313px) {
       &#test-ADR-substancesPermitted {
         height: 3rem!important;
@@ -511,6 +516,13 @@ dd {
   fieldset {
     border: none !important;
   }
+
+  .govuk-summary-list__row:first-child .govuk-summary-list__value:last-child {
+    width: 72%;
+  }
+
+  display: flow-root !important;
+
 }
 
 a#cancel1, a#cancel2 {
@@ -535,11 +547,11 @@ a#cancel1, a#cancel2 {
 }
 
 .govuk-inset-text {
-  padding-top: 0!important;
+  padding-top: 0 !important;
 }
 
-::ng-deep #cdk-accordion-child-5 > div > vtm-adr-details-view > dl > div:nth-child(27) {
+::ng-deep vtm-adr-details-view > div:nth-child(27) {
   display: block !important;
-  width: 89vw;
+
 }
 
