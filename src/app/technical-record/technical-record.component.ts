@@ -10,7 +10,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
-import { IAppState } from './adr-details-form/store/adrDetailsForm.state';
+import { IAppState } from './adr-details/adr-details-form/store/adrDetailsForm.state';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { Router, NavigationEnd } from '@angular/router';

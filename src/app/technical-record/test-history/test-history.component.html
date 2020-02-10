@@ -11,20 +11,20 @@
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
   <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
     <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
+      {{ (testRes.testTypes[0].testCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (testRes.testTypes[0].testCode | DefaultNullOrEmpty).substr(1).toLowerCase() }}
     </td>
     <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(testRes.testEndTimestamp) ? "-" : testRes.testEndTimestamp | date :'dd/MM/y'}}
+      {{ testRes.testEndTimestamp | DefaultNullOrEmpty }}
     </td>
     <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(testRes.testExpiryDate) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
+      {{ testRes.testExpiryDate | DefaultNullOrEmpty }}
     </td>
     <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(testRes.testTypes[0].certificateNumber) ? "-" : testRes.testTypes[0].certificateNumber }}
+      {{ testRes.testTypes[0].certificateNumber | DefaultNullOrEmpty }}
     </td>
     <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
         [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'#00703C' } : testRes.testTypes[0].testResult=='prs' ? {color: '#1D70B8'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
-      {{ techRecHelpers.isNullOrEmpty(testRes.testTypes[0].testResult) ? "-" : testRes.testTypes[0].testResult | uppercase }}
+      {{ (testRes.testTypes[0].testResult | DefaultNullOrEmpty) | uppercase }}
     </td>
   </tr>
   </tbody>

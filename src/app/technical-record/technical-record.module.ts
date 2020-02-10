@@ -16,7 +16,7 @@ import {RouterModule} from '@angular/router';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
 import { EffectsModule } from '@ngrx/effects';
-import { AdrDetailsFormModule } from '@app/technical-record/adr-details-form/adr-details-form.module';
+import { AdrDetailsFormModule } from '@app/technical-record/adr-details/adr-details-form/adr-details-form.module';
 import { AdrDetailsSubmitEffects } from '@app/technical-record/store/adr-details-submit-effects';
 import { StoreModule } from '@ngrx/store';
 import { AdrDetailsSubmitReducer } from './store/adrDetailsSubmit.reducer';
@@ -28,7 +28,8 @@ import { DimensionsComponent } from './dimensions/dimensions.component';
 import { NotesComponent } from './notes/notes.component';
 import { TestHistoryComponent } from './test-history/test-history.component';
 import { TechRecHistoryComponent } from './tech-rec-history/tech-rec-history.component';
-import { AdrDetailsViewComponent } from './adr-details-view/adr-details-view.component';
+import { AdrDetailsViewComponent } from './adr-details/adr-details-view/adr-details-view.component';
+import { AdrDetailsComponent } from './adr-details/adr-details.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { AdrDetailsViewComponent } from './adr-details-view/adr-details-view.com
     NotesComponent,
     TestHistoryComponent,
     TechRecHistoryComponent,
-    AdrDetailsViewComponent
+    AdrDetailsViewComponent,
+    AdrDetailsComponent
   ],
   exports: [
     TechnicalRecordComponent

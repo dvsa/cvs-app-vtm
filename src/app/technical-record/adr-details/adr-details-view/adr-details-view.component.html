@@ -1,46 +1,4 @@
-<dl class="technical-record-sub-details govuk-summary-list adr-details">
-  <div class="govuk-summary-list__row">
 
-    <dt class="govuk-summary-list__key">
-      Able to carry dangerous goods
-      <span *ngIf="showCheck">
-        <div class="govuk-radios govuk-radios--inline" id="radioADR">
-          <div class="govuk-radios__item">
-            <input class="govuk-radios__input" id="hasADR" name="hasADR" type="radio" [checked]="!isAdrNull"
-                   value="true" (change)="switchAdrDisplay($event)">
-            <label class="govuk-label govuk-radios__label" for="hasADR">
-              Yes
-            </label>
-          </div>
-          <div class="govuk-radios__item">
-            <input class="govuk-radios__input" id="hasNotADR" name="hasADR" type="radio"
-                   [checked]="isAdrNull" value="false" (change)="switchAdrDisplay($event)">
-            <label class="govuk-label govuk-radios__label" for="hasNotADR">
-              No
-            </label>
-          </div>
-        </div>
-      </span>
-    </dt>
-
-    <dd id="test-ableToCarry" class="govuk-summary-list__value">
-      <div *ngIf="!showCheck">
-        <span> {{ techRecHelpers.isNullOrEmpty(activeRecord.adrDetails) ? "No" : "Yes" }}</span>
-      </div>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <ng-template #adrForm>
-    <div *ngIf="!hideForm">
-      <vtm-adr-details-form [vehicletypes$]="vehicletypes$"
-                            [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$"
-                            [guidanceNotesFe$]="guidanceNotesFe$"
-                            [initialAdrDetails]="activeRecord?.adrDetails">
-      </vtm-adr-details-form>
-    </div>
-  </ng-template>
-
-  <ng-container *ngIf="adrData else adrForm">
     <ng-container *ngIf="!(activeRecord.adrDetails == null)">
       <ng-container *ngIf="!hideForm">
         <div class="govuk-summary-list__row">
@@ -399,9 +357,4 @@
         </div>
       </ng-container>
     </ng-container>
-  </ng-container>
-</dl>
-
-<ng-template #hyphen>
-  <span>-</span>
-</ng-template>
+    <ng-template #hyphen><span>-</span></ng-template>

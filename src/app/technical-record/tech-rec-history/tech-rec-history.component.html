@@ -13,14 +13,14 @@
   <tr class="govuk-table__row"
       *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index">
     <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(techRec.statusCode) ? "-" : techRec.statusCode.charAt(0).toUpperCase() + techRec.statusCode.substr(1).toLowerCase()}}
+      {{  (techRec.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (techRec.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()}}
     </td>
     <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(techRec.reasonForCreation) ? "-" : techRec.reasonForCreation | titlecase}}</td>
+      {{ (techRec.reasonForCreation | DefaultNullOrEmpty) | titlecase}}</td>
     <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(techRec.createdByName) ? "-" : techRec.createdByName | titlecase}}</td>
+      {{ (techRec.createdByName | DefaultNullOrEmpty) | titlecase}}</td>
     <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(techRec.createdAt) ? "-" : techRec.createdAt | date :'dd/MM/y' }}</td>
+      {{ techRec.createdAt | DefaultNullOrEmpty }}</td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>

@@ -16,13 +16,13 @@ import {cold, hot} from 'jasmine-marbles';
 import {IAppState} from '@app/store/state/app.state';
 import {MaterialModule} from '@app/material.module';
 import {SharedModule} from '@app/shared/shared.module';
-import {AuthenticationGuardMock} from '../../../../testconfig/services-mocks/authentication-guard.mock';
-import {adrDetailsReducer} from '@app/technical-record/adr-details-form/store/adrDetails.reducer';
+import {AuthenticationGuardMock} from '../../../../../testconfig/services-mocks/authentication-guard.mock';
+import {adrDetailsReducer} from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
 import {
   CreateGuidanceNoteElementAction,
   CreatePermittedDangerousGoodElementAction,
   DownloadDocumentFileAction
-} from '@app/technical-record/adr-details-form/store/adrDetails.actions';
+} from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.actions';
 
 describe('TechnicalRecordSearchComponent', () => {
 

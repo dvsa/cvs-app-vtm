@@ -3,7 +3,7 @@
   <tr class="govuk-table__row">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Tyre use code</th>
     <td id="test-tyreUseCode" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(activeRecord.tyreUseCode) ? "-" : activeRecord.tyreUseCode }}
+      {{ activeRecord.tyreUseCode | DefaultNullOrEmpty }}
     </td>
     <th class="govuk-table__cell"></th>
     <th class="govuk-table__cell"></th>
@@ -22,17 +22,17 @@
   </tr>
   <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
-      {{ techRecHelpers.isNullOrEmpty(axelNo.axleNumber ) ? "-" : axelNo.axleNumber }}</th>
+      {{ axelNo.axleNumber | DefaultNullOrEmpty }}</th>
     <td id="{{ 'test-tyreCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.tyreCode) ? "-" : axelNo.tyres.tyreCode }}</td>
+      {{ axelNo.tyres.tyreCode | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-tyreSize-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.tyreSize) ? "-" : axelNo.tyres.tyreSize }}</td>
+      {{ axelNo.tyres.tyreSize | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-plyRating-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.plyRating) ? "-" : axelNo.tyres.plyRating }}</td>
+      {{ axelNo.tyres.plyRating | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-fitmentCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.fitmentCode) ? "-" : axelNo.tyres.fitmentCode }}</td>
+      {{ axelNo.tyres.fitmentCode | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-dataTrAxles-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ techRecHelpers.isNullOrEmpty(axelNo.tyres.dataTrAxles) ? "-" : axelNo.tyres.dataTrAxles }}</td>
+      {{ axelNo.tyres.dataTrAxles | DefaultNullOrEmpty }}</td>
   </tr>
   </tbody>
 </table>

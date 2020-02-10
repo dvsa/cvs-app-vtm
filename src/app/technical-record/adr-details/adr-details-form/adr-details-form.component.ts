@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { createInitialState, IAppState, INITIAL_STATE } from '@app/technical-record/adr-details-form/store/adrDetailsForm.state';
+import { createInitialState, IAppState, INITIAL_STATE } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
 import { FormGroupState, AddArrayControlAction, RemoveArrayControlAction, SetValueAction, ResetAction } from 'ngrx-forms';
 import { Observable, combineLatest, of } from 'rxjs';
-import { adrDetailsFormModel } from '@app/technical-record/adr-details-form/store/adrDetailsForm.model';
+import { adrDetailsFormModel } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.model';
 import { filter, catchError, map, withLatestFrom, take } from 'rxjs/operators';
 import {
   DownloadDocumentFileAction, CreateGuidanceNoteElementAction, CreatePermittedDangerousGoodElementAction, CreateTc3TypeElementAction,

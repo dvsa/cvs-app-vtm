@@ -13,15 +13,14 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
-import {DownloadDocumentFileAction} from '@app/technical-record/adr-details-form/store/adrDetails.actions';
-import {AdrDetailsViewComponent} from '@app/technical-record/adr-details-view/adr-details-view.component';
 import {IAppState} from '@app/store/state/app.state';
 import {hot} from 'jasmine-marbles';
+import {AdrDetailsComponent} from '@app/technical-record/adr-details/adr-details.component';
 
 describe('AdrDetailsViewComponent', () => {
 
-  let component: AdrDetailsViewComponent;
-  let fixture: ComponentFixture<AdrDetailsViewComponent>;
+  let component: AdrDetailsComponent;
+  let fixture: ComponentFixture<AdrDetailsComponent>;
   let injector: TestBed;
   let store: Store<IAppState>;
 
@@ -42,16 +41,16 @@ describe('AdrDetailsViewComponent', () => {
         ReactiveFormsModule,
         NgrxFormsModule
       ],
-      declarations: [AdrDetailsViewComponent, TechnicalRecordComponent],
+      declarations: [AdrDetailsComponent, TechnicalRecordComponent],
       providers: [
         TechRecordHelpersService,
         {
           provide: Store,
-            useValue: {
+          useValue: {
             dispatch: jest.fn(),
-              pipe: jest.fn(() => hot('-a', {a: INITIAL_STATE})),
-              filter: jest.fn(),
-              select: jest.fn()
+            pipe: jest.fn(() => hot('-a', {a: INITIAL_STATE})),
+            filter: jest.fn(),
+            select: jest.fn()
           }
         }
       ],
@@ -61,7 +60,7 @@ describe('AdrDetailsViewComponent', () => {
 
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
-    fixture = TestBed.createComponent(AdrDetailsViewComponent);
+    fixture = TestBed.createComponent(AdrDetailsComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
     component.activeRecord = {
@@ -90,22 +89,6 @@ describe('AdrDetailsViewComponent', () => {
 
     expect(component.adrData).toEqual(false);
     expect(component.hideForm).toEqual(false);
-  });
-
-  describe('downloadDocument', () => {
-    test('should dispatch download document action when called', () => {
-      jest.spyOn(store, 'dispatch');
-      const doc = 'test';
-
-      component.downloadDocument(doc);
-      expect(store.dispatch).toHaveBeenCalledWith(new DownloadDocumentFileAction(doc));
-    });
-  });
-
-  describe('trackByFn', () => {
-    test('should return the id of the argument when called', () => {
-      expect(component.trackByFn(23, { id: 3 })).toBe(3);
-    });
   });
 
   afterAll(() => {

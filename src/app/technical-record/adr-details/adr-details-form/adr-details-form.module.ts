@@ -12,8 +12,8 @@ import { SharedModule } from '@app/shared/shared.module';
 import { InspectionDetailsModule } from '@app/technical-record/inspection-details/inspection-details.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { adrDetailsReducer } from '@app/technical-record/adr-details-form/store/adrDetails.reducer';
-import { DownloadDocumentsEffects } from '@app/technical-record/adr-details-form/store/download-documents.effects';
+import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
+import { DownloadDocumentsEffects } from '@app/technical-record/adr-details/adr-details-form/store/download-documents.effects';
 
 @NgModule({
   imports: [
