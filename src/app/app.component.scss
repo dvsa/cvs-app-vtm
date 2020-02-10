@@ -502,7 +502,6 @@ dd {
     font-weight: 300 !important;
     line-height: 23px !important;
     float: initial !important;
-    // cursor: not-allowed;
   }
 
   #adr-more-detail {
@@ -538,3 +537,9 @@ a#cancel1, a#cancel2 {
 .govuk-inset-text {
   padding-top: 0!important;
 }
+
+::ng-deep #cdk-accordion-child-5 > div > vtm-adr-details-view > dl > div:nth-child(27) {
+  display: block !important;
+  width: 89vw;
+}
+
