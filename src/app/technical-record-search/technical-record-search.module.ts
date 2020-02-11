@@ -6,7 +6,6 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {SharedModule} from '../shared/shared.module';
 import {NgrxFormsModule} from 'ngrx-forms';
-import {StoreModule} from '@ngrx/store';
 import {NgxJsonViewerModule} from 'ngx-json-viewer';
 import {MaterialModule} from '@app/material.module';
 import {TechnicalRecordSearchComponent} from './technical-record-search.component';
@@ -27,11 +26,7 @@ import { VehicleTechRecordModelEffects } from '@app/store/effects/VehicleTechRec
     HttpClientModule,
     RouterModule.forChild([
       {path: '', component: TechnicalRecordSearchComponent, canActivate: [AuthenticationGuard]},
-      {
-        path: 'technical-record',
-        loadChildren: '../technical-record/technical-record.module#TechnicalRecordModule',
-        canActivate: [AuthenticationGuard]
-      }
+
     ]),
     EffectsModule.forFeature([VehicleTechRecordModelEffects, VehicleTestResultModelEffects]),
     FormsModule,
