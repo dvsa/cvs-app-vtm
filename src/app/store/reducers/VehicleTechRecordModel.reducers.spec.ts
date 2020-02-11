@@ -2,7 +2,7 @@ import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 import { VehicleTechRecordModelReducers } from '@app/store/reducers/VehicleTechRecordModel.reducers';
 import {
   GetVehicleTechRecordModel, GetVehicleTechRecordModelHavingStatusAll, GetVehicleTechRecordModelHavingStatusAllFailure,
-  GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelSuccess
+  GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelSuccess, SetVehicleTechRecordModelVinOnCreate
 } from '../actions/VehicleTechRecordModel.actions';
 import { initialVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 
@@ -94,4 +94,16 @@ describe('VehicleTechRecordModel Reducer', () => {
       });
     });
   });
+
+  describe('[SetVehicleTechRecordModelVinOnCreate] SetVehicleTechRecordModelVinOnCreate', () => {
+    it('should update state with first tech record creating details', () => {
+      const action = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV' });
+      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
+      expect(result).toEqual({
+        ...initialVehicleTechRecordModelState,
+        vehicleTechRecordModel: { vin: 'aaa', vrm: 'bbb', vType: 'PSV' }
+      });
+    });
+  });
+
 });

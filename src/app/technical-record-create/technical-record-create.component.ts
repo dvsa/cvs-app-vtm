@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {forkJoin, Observable, of} from 'rxjs';
+import {
+  SetVehicleTechRecordModelVinOnCreate
+} from '@app/store/actions/VehicleTechRecordModel.actions';
+import {Store} from '@ngrx/store';
+import {IAppState} from '@app/store/state/app.state';
 
 @Component({
   selector: 'vtm-technical-record-create',
@@ -7,10 +14,37 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechnicalRecordCreateComponent implements OnInit {
+  vehicleTypes = ['PSV', 'HGV', 'Trailer'];
+  createTechRecordForm: FormGroup;
 
-  constructor() { }
+  constructor(private _store: Store<IAppState>) {
+  }
 
   ngOnInit() {
+    this.createTechRecordForm = new FormGroup({
+      'vehicleType': new FormControl('PSV', Validators.required),
+      'vin': new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(21)]),
+      'vrm': new FormControl('')
+    });
+  }
+
+  setVrmValidators($event): void {
+    const vrmControl = this.createTechRecordForm.get('vrm');
+
+    if ($event.currentTarget.value === 'PSV' || $event.currentTarget.value === 'HGV') {
+      vrmControl.setValidators([Validators.required, Validators.minLength(1), Validators.maxLength(8)]);
+    } else {
+      vrmControl.setValidators([Validators.minLength(1), Validators.maxLength(8)]);
+    }
+    vrmControl.updateValueAndValidity();
+  }
+
+  onSubmit() {
+    this._store.dispatch(new SetVehicleTechRecordModelVinOnCreate({
+      vin: this.createTechRecordForm.get('vin').value,
+      vrm: this.createTechRecordForm.get('vrm').value,
+      vType: this.createTechRecordForm.get('vehicleType').value
+    }));
   }
 
 }

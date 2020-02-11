@@ -14,9 +14,9 @@ import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {TechnicalRecordService} from './technical-record.service';
 import {TestResultService} from './test-result.service';
 import {AdrReasonModalComponent} from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { EffectsModule } from '@ngrx/effects';
-import { VehicleTestResultModelEffects } from '@app/store/effects/VehicleTestResultModel.effects';
-import { VehicleTechRecordModelEffects } from '@app/store/effects/VehicleTechRecordModel.effects';
+import {EffectsModule} from '@ngrx/effects';
+import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
+import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecordModel.effects';
 
 @NgModule({
   imports: [

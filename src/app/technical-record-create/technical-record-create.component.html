@@ -1,1 +1,59 @@
+<div class="govuk-width-container create-tech-record">
+  <a href="#" class="govuk-back-link">Back</a>
+  <main class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">
+          Create new technical record
+        </h1>
+      </div>
+    </div>
 
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <form [formGroup]="createTechRecordForm" (ngSubmit)="onSubmit()">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold">
+              Vehicle type
+            </label>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-full">
+                <div class="govuk-radios">
+                  <div class="govuk-radios__item" *ngFor="let vType of vehicleTypes">
+                    <input class="govuk-radios__input" id="{{ 'test-radio-'+vType }}" type="radio" formControlName="vehicleType" [value]="vType" (change)="setVrmValidators($event)">
+                    <label class="govuk-label govuk-radios__label" for="{{ 'test-radio-'+vType }}">
+                      {{ vType }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-full">
+                <label class="govuk-label govuk-!-font-weight-bold" for="test-vin">
+                  Vehicle identification number (VIN)
+                </label>
+                <input class="govuk-input govuk-input--width-20" id="test-vin" type="text" formControlName="vin">
+              </div>
+            </div>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-full">
+                <label class="govuk-label govuk-!-font-weight-bold" for="test-vrm">
+                  Vehicle registration mark (VRM)
+                </label>
+                <input class="govuk-input govuk-input--width-20" id="test-vrm" type="text" formControlName="vrm">
+              </div>
+            </div>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-full">
+                <button class="govuk-button" data-module="govuk-button" id="test-continue-btn" type="submit">
+                  Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>

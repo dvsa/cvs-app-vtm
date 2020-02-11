@@ -27,6 +27,14 @@ IVehicleTechRecordModelState {
       };
     }
 
+    case EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate: {
+      return {
+        ...state,
+        vehicleTechRecordModel: action.payload,
+        error: null
+      };
+    }
+
     default:
       return state;
   }
