@@ -1,1 +1,93 @@
+<div class="govuk-width-container create-tech-record">
+  <a routerLink="" class="govuk-back-link">Back</a>
+  <main class="govuk-main-wrapper">
 
+    <div class="govuk-grid-row" *ngIf="hasErrors">
+      <div class="govuk-grid-column-full">
+        <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+          <h2 class="govuk-error-summary__title govuk-!-font-weight-bold" id="error-summary-title">
+            There is a problem
+          </h2>
+          <span *ngIf="formErrors.vinErr" class="govuk-error-message govuk-!-font-weight-bold"> {{ formErrors.vinErr }} </span>
+          <span *ngIf="formErrors.vrmErr" class="govuk-error-message govuk-!-font-weight-bold"> {{ formErrors.vrmErr }} </span>
+          <span *ngIf="formErrors.vTypeErr" class="govuk-error-message govuk-!-font-weight-bold"> {{ formErrors.vTypeErr }} </span>
+          <ng-container *ngIf="hasVinReqErrors || hasVrmReqErrors">
+            <span *ngFor="let reqErr of formErrors.requestErr" class="govuk-error-message govuk-!-font-weight-bold">
+              {{ reqErr }}
+            </span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">
+          Create new technical record
+        </h1>
+      </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <form [formGroup]="createTechRecordForm" (ngSubmit)="onSubmit()">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold">
+              Vehicle type
+            </label>
+            <span *ngIf="hasErrors && formErrors.vTypeErr" id="vType-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span>
+              <span>Select a vehicle type</span>
+            </span>
+            <div class="govuk-grid-row" [class.govuk-form-group--error]="formErrors.vTypeErr">
+              <div class="govuk-grid-column-full">
+                <div class="govuk-radios">
+                  <div class="govuk-radios__item" *ngFor="let vType of vehicleTypes">
+                    <input class="govuk-radios__input" id="{{ 'test-radio-'+vType }}" type="radio"
+                           formControlName="vehicleType" value="{{vType}}" (change)="setVrmValidators($event)">
+                    <label class="govuk-label govuk-radios__label" for="{{ 'test-radio-'+vType }}">
+                      {{ vType }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="govuk-grid-row"  [class.govuk-form-group--error]="formErrors.vinErr || hasVinReqErrors">
+              <div class="govuk-grid-column-full">
+                <label class="govuk-label govuk-!-font-weight-bold" for="test-vin">
+                  Vehicle identification number (VIN)
+                </label>
+                <span *ngIf="formErrors.vinErr || hasVinReqErrors" id="vin-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span>
+                  <span>{{formErrors.vinErr}}</span>
+                  <span>{{formErrors.requestErr[0]}}</span>
+                </span>
+                <input class="govuk-input govuk-input--width-20" [class.govuk-input--error]="formErrors.vinErr || hasVinReqErrors" id="test-vin" type="text" formControlName="vin" maxlength="21">
+              </div>
+            </div>
+            <div class="govuk-grid-row" [class.govuk-form-group--error]="formErrors.vrmErr || hasVrmReqErrors">
+              <div class="govuk-grid-column-full">
+                <label class="govuk-label govuk-!-font-weight-bold" for="test-vrm">
+                  Vehicle registration mark (VRM)
+                </label>
+                <span *ngIf="formErrors.vrmErr || hasVrmReqErrors" id="vrm-error" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span>
+                    <span>{{formErrors.vrmErr}}</span>
+                    <span>{{formErrors.requestErr[1]}}</span>
+                </span>
+                <input class="govuk-input govuk-input--width-20" [class.govuk-input--error]="formErrors.vrmErr || hasVrmReqErrors" id="test-vrm" type="text" formControlName="vrm" maxlength="8">
+              </div>
+            </div>
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-full">
+                <button class="govuk-button" data-module="govuk-button" id="test-continue-btn" type="submit">
+                  Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
