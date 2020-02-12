@@ -7,6 +7,7 @@ import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.com
 import {OrderByStatusPipe} from '@app/pipes/OrderByStatusPipe';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import {DefaultNullOrEmpty} from '@app/pipes/DefaultNullOrEmptyPipe';
 
 
 export const PIPES_AND_COMPONENTS = [
@@ -15,7 +16,8 @@ export const PIPES_AND_COMPONENTS = [
   FilterRecordPipe,
   PageNotFoundComponentComponent,
   AdrReasonModalComponent,
-  OrderByStatusPipe
+  OrderByStatusPipe,
+  DefaultNullOrEmpty
 ];
 
 @NgModule({
@@ -26,5 +28,6 @@ export const PIPES_AND_COMPONENTS = [
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
   entryComponents: [ AdrReasonModalComponent ],
+  providers: [FilterRecordPipe],
 })
 export class SharedModule {}

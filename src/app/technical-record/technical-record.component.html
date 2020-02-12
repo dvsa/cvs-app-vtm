@@ -8,7 +8,7 @@
               <h1 class="govuk-heading-xl title">Technical record</h1>
               <div *ngIf="!isSubmit">
                 <button id="test-change-btn" class="govuk-button" data-module="govuk-button"
-                        (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, isNullOrEmpty(techRecordsJson.metadata.adrDetails))">
+                  (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, activeRecord.adrDetails)">
                   {{ changeLabel }}
                 </button>
                 <a id="cancel1" *ngIf="showCheck" (click)="cancelAddrEdit()">
@@ -28,7 +28,7 @@
                 <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status
                 </div>
                 <div id="test-status"
-                     class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
+                  class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
                   {{activeRecord.statusCode | titlecase}}
                 </div>
                 <div class="grid-item-technical-record-status"></div>
@@ -43,7 +43,7 @@
             <dt class="govuk-summary-list__key main-details">
               Vehicle identification number (VIN)
             </dt>
-            <dd id="test-vin" class="govuk-summary-list__value">
+            <dd class="govuk-summary-list__value">
               {{techRecordsJson.vin}}
             </dd>
             <dd class="govuk-summary-list__value"></dd>
@@ -53,7 +53,7 @@
               Vehicle registration mark (VRM)
             </dt>
             <dd id="test-vrm" class="govuk-summary-list__value">
-              <div *ngIf="!isEmptyObject(techRecordsJson.vrms) else hyphen">
+              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson.vrms) else hyphen">
                 <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true">
                   {{vrmItem.vrm}}
                 </ul>
@@ -66,7 +66,7 @@
               Previous VRM
             </dt>
             <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-              <div *ngIf="!isEmptyObject(techRecordsJson.vrms) && hasSecondaryVrms(techRecordsJson.vrms); else hyphen">
+              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson.vrms) && hasSecondaryVrms(techRecordsJson.vrms); else hyphen">
                 <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
                   <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
                 </ul>
@@ -90,9 +90,9 @@
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #summary
-                               [(expanded)]="panels[0].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[0].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple no-animate" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   Vehicle summary
@@ -101,251 +101,23 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!summary.expanded" id="test-fa-plus-summary" [icon]="['fa', 'plus'] " size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="summary.expanded" id="test-fa-minus-summary" [icon]="['fa', 'minus'] " size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <dl class="technical-record-sub-details govuk-summary-list">
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Vehicle type
-                </dt>
-                <dd id="test-vehicleType" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.vehicleType) ? "-" : activeRecord.vehicleType | uppercase }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  National type approval number
-                </dt>
-                <dd id="test-ntaNumber" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.ntaNumber) ? "-" : activeRecord.ntaNumber}}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <dt class="govuk-summary-list__key">
-                  Date of first registration
-                </dt>
-                <dd id="test-regnDate" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.regnDate) ? "-" : activeRecord.regnDate | date:'dd/MM/y' }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Year of manufacture
-                </dt>
-                <dd id="test-manufactureYear" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.manufactureYear) ? "-" : activeRecord.manufactureYear }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  First use date
-                </dt>
-                <dd id="test-firstUseDate" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.firstUseDate) ? "-" : activeRecord.firstUseDate | date :'dd/MM/y' }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Number of axles
-                </dt>
-                <dd id="test-noOfaxles" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.noOfAxles) ? "-" : activeRecord.noOfAxles }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  DTp number
-                </dt>
-                <dd id="test-dtpNumber" class="govuk-summary-list__value">
-                  <div *ngIf="!isNullOrEmpty(activeRecord.brakes) else hyphen">
-                    {{ isNullOrEmpty(activeRecord.brakes.dtpNumber) ? "-" : activeRecord.brakes.dtpNumber }}
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Parking brake fitted
-                </dt>
-                <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk">
-                  <div *ngIf="!isEmptyObject(activeRecord.axles) &&
-                            !axlesHasNoParkingBrakeMrk(activeRecord.axles) else hyphen">
-                    <div *ngFor="let axel of activeRecord.axles">
-                      <div *ngIf="axel.hasOwnProperty('parkingBrakeMrk') && axel.parkingBrakeMrk === true">
-                        <div *ngIf="axel.parkingBrakeMrk">
-                          <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Load sensing valve
-                </dt>
-                <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-                  <div *ngIf="!isNullOrEmpty(activeRecord.brakes) else hyphen">
-                    {{ isNullOrEmpty(activeRecord.brakes.loadSensingValve) ? "-" : activeRecord.brakes.loadSensingValve ? "YES" : "NO" }}
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Antilock braking system
-                </dt>
-                <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
-                  <div *ngIf="!isNullOrEmpty(activeRecord.brakes) else hyphen">
-                    {{ isNullOrEmpty(activeRecord.brakes.antilockBrakingSystem) ? "-" : activeRecord.brakes.antilockBrakingSystem ? "YES" : "NO" }}
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Brake actuator
-                </dt>
-                <dd id="test-brakeActuator" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.axles.slice(-1)[0].brakes.brakeActuator) ? "-" : activeRecord.axles.slice(-1)[0].brakes.brakeActuator }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Lever length
-                </dt>
-                <dd id="test-leverLength" class="govuk-summary-list__value">
-                  <div *ngIf="activeRecord.axles[1] != null; else hyphen">
-                    <span>{{ isNullOrEmpty(activeRecord.axles[1].brakes.leverLength) ? "-" : activeRecord.axles[1].brakes.leverLength }}</span>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Spring brake parking
-                </dt>
-                <dd id="test-springBrakeParking" class="govuk-summary-list__value">
-                  <div *ngIf="activeRecord.axles[1] != null; else hyphen">
-                    <span>{{ isNullOrEmpty(activeRecord.axles[1].brakes.springBrakeParking) ? "-" : activeRecord.axles[1].brakes.springBrakeParking ? "YES" : "NO" }}</span>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <dt class="govuk-summary-list__key">
-                  Speed limiter exempt
-                </dt>
-                <dd id="test-speedLimiterMrk" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.speedLimiterMrk) ? "-" : activeRecord.speedLimiterMrk == true ? "YES" : "NO" }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <dt class="govuk-summary-list__key">
-                  Tacho exempt
-                </dt>
-                <dd id="test-tachoExemptMrk" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.tachoExemptMrk) ? "-" : activeRecord.tachoExemptMrk == true ? "YES" : "NO" }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <dt class="govuk-summary-list__key">
-                  Euro standard
-                </dt>
-                <dd id="test-euroStandard" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.euroStandard) ? "-" : activeRecord.euroStandard }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Suspension type
-                </dt>
-                <dd id="test-suspensionType" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.suspensionType) ? "-" : activeRecord.suspensionType }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Road friendly suspension
-                </dt>
-                <dd id="test-roadFriendly" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.roadFriendly) ? "-" : activeRecord.roadFriendly == true ? "YES" : "NO" }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <dt class="govuk-summary-list__key">
-                  Drawbar coupling fitted
-                </dt>
-                <dd id="test-drawbarCouplingFitted" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.drawbarCouplingFitted) ? "-" : activeRecord.drawbarCouplingFitted == true ? "YES" : "NO" }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Vehicle class
-                </dt>
-                <dd id="test-vehicleClassDescription" class="govuk-summary-list__value">
-                  {{ activeRecord.vehicleClass == null ? "-" :
-                  isNullOrEmpty(activeRecord.vehicleClass.description) ? "-" :
-                    activeRecord.vehicleClass.description.charAt(0).toUpperCase() + activeRecord.vehicleClass.description.substr(1).toLowerCase() }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Vehicle configuration
-                </dt>
-                <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.vehicleConfiguration) ? "-" : activeRecord.vehicleConfiguration.charAt(0).toUpperCase() + activeRecord.vehicleConfiguration.substr(1).toLowerCase()}}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Coupling type
-                </dt>
-                <dd id="test-couplingType" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.couplingType) ? "-" : activeRecord.couplingType }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <dt class="govuk-summary-list__key">
-                  Max load on coupling
-                </dt>
-                <dd id="test-maxLoadOnCoupling" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.maxLoadOnCoupling) ? "-" : activeRecord.maxLoadOnCoupling }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-            </dl>
+
+            <vtm-vehicle-summary [activeRecord]="activeRecord"></vtm-vehicle-summary>
+
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #body
-                               [(expanded)]="panels[1].isOpened" [@.disabled]="true"
-                               [class.mat-expansion-panel-spacing]="false">
+            [(expanded)]="panels[1].isOpened" [@.disabled]="true" [class.mat-expansion-panel-spacing]="false">
             <mat-expansion-panel-header class="disable_ripple no-animate" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title [@.disabled]="true" class="no-animate mat-elevation-z0">
                 <div class="item-technical-record govuk-!-font-weight-bold no-animate" [@.disabled]="true">
                   Body
@@ -354,67 +126,23 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!body.expanded" id="test-fa-plus-body" [icon]="['fa', 'plus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="body.expanded" id="test-fa-minus-body" [icon]="['fa', 'minus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <dl class="technical-record-sub-details govuk-summary-list ">
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Make
-                </dt>
-                <dd id="test-make" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.make) ? "-" : activeRecord.make}}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Model
-                </dt>
-                <dd id="test-model" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.model) ? "-" : activeRecord.model}}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Body type
-                </dt>
-                <dd id="test-bodyTypeDescription" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.bodyType.description) ? "-" : activeRecord.bodyType.description | titlecase}}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <dt class="govuk-summary-list__key">
-                  Function
-                </dt>
-                <dd id="test-functionCode" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.functionCode) ? "-" : activeRecord.functionCode }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Conversion reference number
-                </dt>
-                <dd id="test-conversionRefNo" class="govuk-summary-list__value">
-                  {{ isNullOrEmpty(activeRecord.conversionRefNo) ? "-" : activeRecord.conversionRefNo }}
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-            </dl>
+
+            <vtm-body [activeRecord]="activeRecord"></vtm-body>
+
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #weights
-                               [(expanded)]="panels[2].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[2].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple no-animate" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold no-animate">
                   Weights
@@ -423,82 +151,23 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!weights.expanded" id="test-fa-plus-weights" [icon]="['fa', 'plus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="weights.expanded" id="test-fa-minus-weights" [icon]="['fa', 'minus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <table class="govuk-table table-details">
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header"></th>
-                <th scope="col" class="govuk-table__header">GB weight (kg)</th>
-                <th scope="col" class="govuk-table__header">Design weight (kg)</th>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              <tr class="govuk-table__row">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Gross</th>
-                <td id="test-grossGbWeight" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.grossGbWeight) ? "-" : activeRecord.grossGbWeight }}
-                </td>
-                <td id="test-grossDesignWeight" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.grossDesignWeight) ? "-" : activeRecord.grossDesignWeight }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
-                <td id="test-trainGbWeight" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.trainGbWeight) ? "-" : activeRecord.trainGbWeight }}
-                </td>
-                <td id="test-trainDesignWeight" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.trainDesignWeight) ? "-" : activeRecord.trainDesignWeight }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
-                <td id="test-maxTrainGbWeight" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.maxTrainGbWeight) ? "-" : activeRecord.maxTrainGbWeight }}
-                </td>
-                <td id="test-minTrainGbWeight" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.maxTrainDesignWeight) ? "-" : activeRecord.maxTrainDesignWeight }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
-                  {{ isNullOrEmpty(axelNo.axleNumber) ? "-" : axelNo.axleNumber }}</th>
-                <td id="{{ 'test-gbWeight-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.weights.gbWeight) ? "-" : axelNo.weights.gbWeight }}</td>
-                <td id="{{ 'test-designWeight-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.weights.designWeight) ? "-" : axelNo.weights.designWeight}}</td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              </tbody>
-            </table>
+            <vtm-weights [activeRecord]="activeRecord"></vtm-weights>
+
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #tyres
-                               [(expanded)]="panels[3].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[3].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   Tyres
@@ -507,60 +176,23 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!tyres.expanded" id="test-fa-plus-tyres" [icon]="['fa', 'plus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="tyres.expanded" id="test-fa-minus-tyres" [icon]="['fa', 'minus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <table class="govuk-table table-details">
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Tyre use code</th>
-                <td id="test-tyreUseCode" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.tyreUseCode) ? "-" : activeRecord.tyreUseCode }}
-                </td>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header"></th>
-                <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre code</td>
-                <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre size</td>
-                <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Ply rating</td>
-                <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Fitment code</td>
-                <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Load index</td>
-              </tr>
-              <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
-                  {{ isNullOrEmpty(axelNo.axleNumber) ? "-" : axelNo.axleNumber }}</th>
-                <td id="{{ 'test-tyreCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.tyres.tyreCode) ? "-" : axelNo.tyres.tyreCode }}</td>
-                <td id="{{ 'test-tyreSize-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.tyres.tyreSize) ? "-" : axelNo.tyres.tyreSize }}</td>
-                <td id="{{ 'test-plyRating-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.tyres.plyRating) ? "-" : axelNo.tyres.plyRating }}</td>
-                <td id="{{ 'test-fitmentCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.tyres.fitmentCode) ? "-" : axelNo.tyres.fitmentCode }}</td>
-                <td id="{{ 'test-dataTrAxles-' + axelNo.axleNumber }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(axelNo.tyres.dataTrAxles) ? "-" : axelNo.tyres.dataTrAxles }}</td>
-              </tr>
-              </tbody>
-            </table>
+            <vtm-tyres [activeRecord]="activeRecord"></vtm-tyres>
 
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #dimensions
-                               [(expanded)]="panels[4].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[4].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   Dimensions
@@ -569,123 +201,23 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!dimensions.expanded" id="test-fa-plus-dimensions" [icon]="['fa', 'plus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="dimensions.expanded" id="test-fa-minus-dimensions" [icon]="['fa', 'minus']" size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <table class="govuk-table table-details">
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Length (mm)</th>
-                <td id="test-length" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.dimensions.length) ? "-" : activeRecord.dimensions.length}}
-                </td>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-                <th class="govuk-table__cell"></th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              <tr class="govuk-table__row">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Width (mm)</th>
-                <td id="test-width" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.dimensions.width) ? "-" : activeRecord.dimensions.width}}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to rear axle</th>
-                <td id="test-frontAxleToRearAxle" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.frontAxleToRearAxle) ? "-" : activeRecord.frontAxleToRearAxle }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Rear axle to rear trailer</th>
-                <td id="test-rearAxleToRearTrl" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.rearAxleToRearTrl) ? "-" : activeRecord.rearAxleToRearTrl }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row">
-                <th class="govuk-table__cell"></th>
-                <td class="govuk-table__cell govuk-!-font-weight-bold">Minimum (mm)</td>
-                <td class="govuk-table__cell govuk-!-font-weight-bold">Maximum (mm)</td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold"> Front of vehicle to 5th wheel coupling</th>
-                <td id="test-frontAxleTo5thWheelCouplingMin" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.frontAxleTo5thWheelCouplingMin) ? "-" : activeRecord.frontAxleTo5thWheelCouplingMin }}
-                </td>
-                <td id="test-frontAxleTo5thWheelCouplingMax" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.frontAxleTo5thWheelCouplingMax) ? "-" : activeRecord.frontAxleTo5thWheelCouplingMax }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold"> Front axle to 5th wheel</th>
-                <td id="test-frontAxleTo5thWheelMin" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.frontAxleTo5thWheelMin) ? "-" : activeRecord.frontAxleTo5thWheelMin }}
-                </td>
-                <td id="test-frontAxleTo5thWheelMax" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.frontAxleTo5thWheelMax) ? "-" : activeRecord.frontAxleTo5thWheelMax }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold"> Coupling center to rear axle</th>
-                <td id="test-couplingCenterToRearAxleMin" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.couplingCenterToRearAxleMin) ? "-" : activeRecord.couplingCenterToRearAxleMin}}
-                </td>
-                <td id="test-couplingCenterToRearAxleMax" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.couplingCenterToRearAxleMax) ? "-" : activeRecord.couplingCenterToRearAxleMax}}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-                <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear trailer</th>
-                <td id="test-couplingCenterToRearTrlMin" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.couplingCenterToRearTrlMin) ? "-" : activeRecord.couplingCenterToRearTrlMin }}
-                </td>
-                <td id="test-couplingCenterToRearTrlMax" class="govuk-table__cell">
-                  {{ isNullOrEmpty(activeRecord.couplingCenterToRearTrlMax) ? "-" : activeRecord.couplingCenterToRearTrlMax }}
-                </td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              </tbody>
-            </table>
+            <vtm-dimensions [activeRecord]="activeRecord"></vtm-dimensions>
+
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #adr
-                               [(expanded)]="panels[5].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[5].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   ADR
@@ -694,427 +226,29 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!adr.expanded" id="test-fa-plus-adr" [icon]="['fa', 'plus'] " size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="adr.expanded" id="test-fa-minus-adr" [icon]="['fa', 'minus'] " size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <dl class="technical-record-sub-details govuk-summary-list adr-details">
-              <div class="govuk-summary-list__row">
+            <vtm-adr-details [activeRecord]="activeRecord"
+                             [techRecordsJson]="techRecordsJson"
+                             [showCheck]="showCheck"
+                             [adrData]="adrData"
+                             [hideForm]="hideForm"
+                             [isAdrNull]="isAdrNull">
+            </vtm-adr-details>
 
-                <dt class="govuk-summary-list__key">
-                  Able to carry dangerous goods
-
-                  <span *ngIf="showCheck">
-                    <div class="govuk-radios govuk-radios--inline" id="radioADR">
-                      <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="hasADR" name="hasADR" type="radio" [checked]="!isAdrNull"
-                               value="true" (change)="switchAdrDisplay($event)">
-                        <label class="govuk-label govuk-radios__label" for="hasADR">
-                          Yes
-                        </label>
-                      </div>
-                      <div class="govuk-radios__item">
-                        <input class="govuk-radios__input" id="hasNotADR" name="hasADR" type="radio"
-                               [checked]="isAdrNull" value="false" (change)="switchAdrDisplay($event)">
-                        <label class="govuk-label govuk-radios__label" for="hasNotADR">
-                          No
-                        </label>
-                      </div>
-                    </div>
-                  </span>
-
-                </dt>
-                <dd id="test-ableToCarry" class="govuk-summary-list__value">
-                  <div *ngIf="!showCheck">
-                    <span>
-                      {{ isNullOrEmpty(activeRecord.adrDetails) ? "No" : "Yes" }}
-                    </span>
-                  </div>
-                </dd>
-                <dd class="govuk-summary-list__value"></dd>
-              </div>
-              <ng-template #adrForm>
-                <div *ngIf="!hideForm">
-                  <vtm-adr-details-form [vehicletypes$]="vehicleTypes$"
-                                        [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$"
-                                        [guidanceNotesFe$]="guidanceNotesFe$"
-                                        [initialAdrDetails]="activeRecord?.adrDetails"
-                                        [submitData]="submitData" >
-                  </vtm-adr-details-form>
-                </div>
-              </ng-template>
-
-              <ng-container *ngIf="adrData else adrForm">
-                <ng-container *ngIf="!isNullOrEmpty(activeRecord.adrDetails)">
-                  <ng-container *ngIf="!hideForm">
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">
-                        <h2 class="govuk-heading-m">Applicant details</h2>
-                      </dt>
-                      <dd class="govuk-summary-list__value"></dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Name</dt>
-                      <dd id="test-aplicantDetails-name" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.name) ? "-" : activeRecord.adrDetails.applicantDetails.name }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Street</dt>
-                      <dd id="test-aplicantDetails-street" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.street) ? "-" : activeRecord.adrDetails.applicantDetails.street }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Town</dt>
-                      <dd id="test-aplicantDetails-town" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.town) ? "-" : activeRecord.adrDetails.applicantDetails.town }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> City</dt>
-                      <dd id="test-aplicantDetails-city" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.city) ? "-" : activeRecord.adrDetails.applicantDetails.city }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Postcode</dt>
-                      <dd id="test-aplicantDetails-postcode" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.applicantDetails.postcode) ? "-" : activeRecord.adrDetails.applicantDetails.postcode }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">ADR details</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Vehicle type</dt>
-                      <dd id="test-ADR-type" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.vehicleDetails.type) ? "-" : activeRecord.adrDetails.vehicleDetails.type }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Date processed</dt>
-                      <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.vehicleDetails.approvalDate) ? "-" : activeRecord.adrDetails.vehicleDetails.approvalDate | date :'dd/MM/y' }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Permitted dangerous goods</dt>
-                      <dd id="test-ADR-permittedDangerousGoods" class="govuk-summary-list__value">
-                        <div *ngIf="!isNullOrEmpty(activeRecord.adrDetails) else hyphen">
-                          <div *ngFor="let perGood of activeRecord.adrDetails.permittedDangerousGoods">
-                            <p>{{perGood}}</p>
-                          </div>
-                        </div>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Compatibility group J</dt>
-                      <dd id="test-ADR-compatibilityGroupJ" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.compatibilityGroupJ) ? "-" : activeRecord.adrDetails.compatibilityGroupJ }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Guidance notes</dt>
-                      <dd id="test-ADR-additionalNotes-number" class="govuk-summary-list__value">
-                        <div *ngIf="!isNullOrEmpty(activeRecord.adrDetails.additionalNotes.number) else hyphen">
-                          <div *ngFor="let number of activeRecord.adrDetails.additionalNotes.number">
-                            <p>{{number}}</p>
-                          </div>
-                        </div>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> ADR type approval number</dt>
-                      <dd id="test-ADR-adrTypeApprovalNo" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.adrTypeApprovalNo) ? "-" : activeRecord.adrDetails.adrTypeApprovalNo }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Tank details</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Make </dt>
-                      <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankManufacturer) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturer }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Year of manufacture</dt>
-                      <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.yearOfManufacture) ? "-" : activeRecord.adrDetails.tank.tankDetails.yearOfManufacture }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Manufacturer serial number</dt>
-                      <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankManufacturerSerialNo }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Tank type approval number</dt>
-                      <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankTypeAppNo }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Code</dt>
-                      <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tankCode) ? "-" : activeRecord.adrDetails.tank.tankDetails.tankCode }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Substances permitted</dt>
-                      <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.substancesPermitted) ? "-" : activeRecord.adrDetails.tank.tankStatement.substancesPermitted }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">Statement reference number</dt>
-                      <dd id="test-ADR-statement" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                          {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.statement) ? "-" : activeRecord.adrDetails.tank.tankStatement.statement }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">Product list reference number</dt>
-                      <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListRefNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListRefNo }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> UN number</dt>
-                      <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productListUnNo) ? "-" : activeRecord.adrDetails.tank.tankStatement.productListUnNo }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Additional product list details</dt>
-                      <dd id="test-ADR-productList" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankStatement.productList) ? "-" : activeRecord.adrDetails.tank.tankStatement.productList }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Special provisions</dt>
-                      <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
-                        <ng-container *ngIf="isEmptyObject(activeRecord.adrDetails.tank) else hyphen">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.specialProvisions) ? "-" : activeRecord.adrDetails.tank.tankDetails.specialProvisions }}
-                        </ng-container>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Tank inspections</h2>
-                      <table class="govuk-table table-tank">
-                        <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                          <th scope="col" class="govuk-table__header">Inspection type </th>
-                          <th scope="col" class="govuk-table__header">Certificate number</th>
-                          <th scope="col" class="govuk-table__header">Expiry date</th>
-                        </tr>
-                        </thead>
-                          <tbody class="govuk-table__body" *ngIf="(activeRecord.adrDetails.vehicleDetails.type.includes('tank') || activeRecord.adrDetails.vehicleDetails.type.includes('battery')) else noTankHistory">
-                            <tr class="govuk-table__row">
-                              <td id="test-tc2Type" class="govuk-table__cell">
-                                {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2Type }}
-                              </td>
-                              <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
-                                {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateApprovalNo }}
-                              </td>
-                              <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
-                                {{ isNullOrEmpty(activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate) ? "-" : activeRecord.adrDetails.tank.tankDetails.tc2Details.tc2IntermediateExpiryDate | date : 'dd/MM/y' }}
-                              </td>
-                            </tr>
-                            <tr class="govuk-table__row" *ngFor="let tc3Details of activeRecord.adrDetails.tank.tankDetails.tc3Details">
-                              <td id="test-tc3Type" class="govuk-table__cell">
-                                {{ isNullOrEmpty(tc3Details.tc3Type) ? "-" : tc3Details.tc3Type }}
-                              </td>
-                              <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
-                                {{ isNullOrEmpty(tc3Details.tc3PeriodicNumber) ? "-" : tc3Details.tc3PeriodicNumber }}
-                              </td>
-                              <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
-                                {{ isNullOrEmpty(tc3Details.tc3PeriodicExpiryDate) ? "-" : tc3Details.tc3PeriodicExpiryDate | date : 'dd/MM/y' }}
-                              </td>
-                            </tr>
-                        </tbody>
-                        <ng-template #noTankHistory>
-                          <tbody class="govuk-table__body">
-                            <tr>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
-                          </tbody>
-                        </ng-template>
-                      </table>
-                    </div>
-
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Memo 07/09 (3 month extension)</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">Applied</dt>
-                      <dd id="test-memosApply" class="govuk-summary-list__value">
-                        <div *ngIf="!isNullOrEmpty(activeRecord.adrDetails.memosApply) else hyphen">
-                          {{ activeRecord.adrDetails.memosApply.includes('07/09 3mth leak ext') ? "Yes" : "-" }}
-                        </div>
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Tank documents</h2>
-                    </div>
-                    <ng-container *ngIf="!isEmptyObject(activeRecord.adrDetails.documents) else noDoc">
-                      <div class="govuk-summary-list__row"
-                           *ngFor="let doc of activeRecord.adrDetails.documents; let i = index; trackBy: trackByFn">
-                        <dt class="govuk-summary-list__key">Document {{i + 1}} </dt>
-                        <dd class="govuk-summary-list__value"></dd>
-                        <dd class="govuk-summary-list__value">
-                          <a class="govuk-link" (click)="downloadDocument(doc)">Download</a>
-                        </dd>
-                      </div>
-                    </ng-container>
-                    <ng-template #noDoc>
-                      <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__value">-</dt>
-                        <dd class="govuk-summary-list__value"></dd>
-                        <dd class="govuk-summary-list__value"></dd>
-                      </div>
-                    </ng-template>
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Battery list</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">Applicable</dt>
-                      <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.listStatementApplicable) ? "-" : activeRecord.adrDetails.listStatementApplicable ? "Yes" : "No" }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Reference number</dt>
-                      <dd id="test-batteryListNumber" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.batteryListNumber) ? "-" : activeRecord.adrDetails.batteryListNumber }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Declarations seen</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Manufacturer brake declaration</dt>
-                      <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.brakeDeclarationsSeen) ? "-" : activeRecord.adrDetails.brakeDeclarationsSeen ? "Yes" : "No" }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Issuer</dt>
-                      <dd id="test-brakeDeclarationIssuer" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.brakeDeclarationIssuer) ? "-" : activeRecord.adrDetails.brakeDeclarationIssuer }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Brake endurance</dt>
-                      <dd id="test-brakeEndurance" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.brakeEndurance) ? "-" : activeRecord.adrDetails.brakeEndurance ? "Yes" : "No" }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Break endurance weight (kg)</dt>
-                      <dd id="test-weight" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.weight) ? "-" : activeRecord.adrDetails.weight * 1000 }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Owner/operator declaration</dt>
-                      <dd id="test-declarationsSeen" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.declarationsSeen) ? "-" : activeRecord.adrDetails.declarationsSeen ? "Yes" : "No" }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Certificate</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key"> Required</dt>
-                      <dd id="test-guidanceNotes" class="govuk-summary-list__value">
-                        {{ isNullOrEmpty(activeRecord.adrDetails.additionalNotes.guidanceNotes) ? "-" : activeRecord.adrDetails.additionalNotes.guidanceNotes.includes('New certificate requested') ? "Yes" : "-" }}
-                      </dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <h2 class="govuk-heading-m">Additional ADR details</h2>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                      <dt class="govuk-summary-list__key">
-                        <span id="test-additionalExaminerNotes"
-                              class="notes-section">{{ isNullOrEmpty(activeRecord.adrDetails.additionalExaminerNotes) ? "-" : activeRecord.adrDetails.additionalExaminerNotes}}</span>
-                      </dt>
-                      <dd class="govuk-summary-list__value"></dd>
-                      <dd class="govuk-summary-list__value"></dd>
-                    </div>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-            </dl>
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes
-                               [(expanded)]="panels[6].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[6].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   Notes
@@ -1123,29 +257,23 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!notes.expanded" id="test-fa-plus-notes" [icon]="['fa', 'plus'] " size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                   <fa-icon *ngIf="notes.expanded" id="test-fa-minus-notes" [icon]="['fa', 'minus'] " size="lg"
-                           class="expander-icon"></fa-icon>
+                    class="expander-icon"></fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <dl class="technical-record-sub-details govuk-summary-list">
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  <span id="test-notes"
-                        class="notes-section">{{ isNullOrEmpty(activeRecord.notes) ? "-" : activeRecord.notes}}</span>
-                </dt>
-              </div>
-            </dl>
+            <vtm-notes [activeRecord]="activeRecord"></vtm-notes>
+
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #testHistory
-                               [(expanded)]="panels[7].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[7].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   Test history
@@ -1154,65 +282,25 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!testHistory.expanded" id="test-fa-plus-testHistory" [icon]="['fa', 'plus'] "
-                           size="lg" class="expander-icon">
+                    size="lg" class="expander-icon">
                   </fa-icon>
                   <fa-icon *ngIf="testHistory.expanded" id="test-fa-minus-testHistory" [icon]="['fa', 'minus'] "
-                           size="lg" class="expander-icon">
+                    size="lg" class="expander-icon">
                   </fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <table class="govuk-table t-history">
-              <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                  <th scope="col" class="govuk-table__header">Test type</th>
-                  <th scope="col" class="govuk-table__header">Test date</th>
-                  <th scope="col" class="govuk-table__header">Expiry date</th>
-                  <th scope="col" class="govuk-table__header">Certificate number</th>
-                  <th scope="col" class="govuk-table__header">Result</th>
-                </tr>
-              </thead>
-              <tbody class="govuk-table__body" *ngIf="(testResultJson$ | async) as testResultJson; else noTestHistory">
-                <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
-                  <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypes[0].testCode) ? "-" : testRes.testTypes[0].testCode.charAt(0).toUpperCase() + testRes.testTypes[0].testCode.substr(1).toLowerCase() }}
-                  </td>
-                  <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testEndTimestamp) ? "-" : testRes.testEndTimestamp | date :'dd/MM/y'}}
-                  </td>
-                  <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testExpiryDate) ? "-" : testRes.testExpiryDate | date :'dd/MM/y'}}
-                  </td>
-                  <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
-                    {{ isNullOrEmpty(testRes.testTypes[0].certificateNumber) ? "-" : testRes.testTypes[0].certificateNumber }}
-                  </td>
-                  <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
-                      [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'#00703C' } : testRes.testTypes[0].testResult=='prs' ? {color: '#1D70B8'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
-                    {{ isNullOrEmpty(testRes.testTypes[0].testResult) ? "-" : testRes.testTypes[0].testResult | uppercase }}
-                  </td>
-                </tr>
-              </tbody>
-              <ng-template #noTestHistory>
-                <tbody class="govuk-table__body">
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                </tbody>
-              </ng-template>
-            </table>
+            <vtm-test-history [testResultJson] = "testResultJson$ | async"></vtm-test-history>
+
           </mat-expansion-panel>
         </div>
 
         <div class="auto-pad" [@.disabled]="true">
           <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #techRecHistory
-                               [(expanded)]="panels[8].isOpened" [@.disabled]="true">
+            [(expanded)]="panels[8].isOpened" [@.disabled]="true">
             <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-                                        collapsedHeight="80px">
+              collapsedHeight="80px">
               <mat-panel-title>
                 <div class="item-technical-record govuk-!-font-weight-bold">
                   Technical record history
@@ -1221,42 +309,17 @@
               <mat-panel-description>
                 <div class="expansion-icon">
                   <fa-icon *ngIf="!techRecHistory.expanded" id="test-fa-plus-techRecHistory" [icon]="['fa', 'plus'] "
-                           size="lg" class="expander-icon">
+                    size="lg" class="expander-icon">
                   </fa-icon>
                   <fa-icon *ngIf="techRecHistory.expanded" id="test-fa-minus-techRecHistory" [icon]="['fa', 'minus'] "
-                           size="lg" class="expander-icon">
+                    size="lg" class="expander-icon">
                   </fa-icon>
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <table class="govuk-table t-history">
-              <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">Status</th>
-                <th scope="col" class="govuk-table__header">Reason for creation</th>
-                <th scope="col" class="govuk-table__header">Created by</th>
-                <th scope="col" class="govuk-table__header">Created at</th>
-                <th scope="col" class="govuk-table__header"></th>
-                <th scope="col" class="govuk-table__header"></th>
-              </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-              <tr class="govuk-table__row"
-                  *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index">
-                <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(techRec.statusCode) ? "-" : techRec.statusCode.charAt(0).toUpperCase() + techRec.statusCode.substr(1).toLowerCase()}}
-                </td>
-                <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(techRec.reasonForCreation) ? "-" : techRec.reasonForCreation | titlecase}}</td>
-                <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(techRec.createdByName) ? "-" : techRec.createdByName | titlecase}}</td>
-                <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-                  {{ isNullOrEmpty(techRec.createdAt) ? "-" : techRec.createdAt | date :'dd/MM/y' }}</td>
-                <td class="govuk-table__cell"></td>
-                <td class="govuk-table__cell"></td>
-              </tr>
-              </tbody>
-            </table>
+
+            <vtm-tech-rec-history [techRecordsJson]="techRecordsJson$ | async"></vtm-tech-rec-history>
+
           </mat-expansion-panel>
         </div>
       </mat-accordion>
@@ -1269,7 +332,7 @@
 </ng-template>
 
 <ng-template #loading>
-  Loading stuff...
+  Loading...
 </ng-template>
 
 <ng-template #ifPSV>

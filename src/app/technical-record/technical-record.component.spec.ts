@@ -1,42 +1,30 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, getTestBed} from '@angular/core/testing';
-import {TechnicalRecordComponent} from './technical-record.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {APP_BASE_HREF} from '@angular/common';
-import {AuthenticationGuard} from 'microsoft-adal-angular6';
-import {MatDialogModule} from '@angular/material/dialog';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Store, StoreModule} from '@ngrx/store';
-import {RouterTestingModule} from '@angular/router/testing';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {Subject} from 'rxjs';
-// import { IAppState, INITIAL_STATE } from '@app/store/state/adrDetailsForm.state';
-import { appReducers } from '@app/store/reducers/app.reducers';
-// import { adrDetailsReducer } from '@app/store/reducers/adrDetailsForm.reducer';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgrxFormsModule } from 'ngrx-forms';
-import { hot } from 'jasmine-marbles';
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
+import { INITIAL_STATE } from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
 import { MaterialModule } from '@app/material.module';
 import { SharedModule } from '@app/shared/shared.module';
-import {AuthenticationGuardMock} from '../../../testconfig/services-mocks/authentication-guard.mock';
+import { appReducers } from '@app/store/reducers/app.reducers';
 import { IAppState } from '@app/store/state/app.state';
-import { adrDetailsReducer } from '@app/adr-details-form/store/adrDetails.reducer';
-import { INITIAL_STATE } from '@app/adr-details-form/store/adrDetailsForm.state';
+import { Store, StoreModule } from '@ngrx/store';
+import { hot } from 'jasmine-marbles';
+import { of, Subject } from 'rxjs';
+import { TechnicalRecordComponent } from './technical-record.component';
 
 describe('TechnicalRecordComponent', () => {
 
   let component: TechnicalRecordComponent;
   let fixture: ComponentFixture<TechnicalRecordComponent>;
-  const authenticationGuardMock = new AuthenticationGuardMock();
+  let dialog: MatDialog;
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
   let store: Store<IAppState>;
-  let axles = [
-    { "parkingBrakeMrk": false,
-      "axleNumber": 1 },
-    { "parkingBrakeMrk": true,
-      "axleNumber": 2 }
-  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -51,9 +39,7 @@ describe('TechnicalRecordComponent', () => {
         SharedModule,
         RouterTestingModule,
         StoreModule.forFeature('adrDetails', adrDetailsReducer),
-        FontAwesomeModule,
         ReactiveFormsModule,
-        NgrxFormsModule,
       ],
       declarations: [TechnicalRecordComponent],
       providers: [
@@ -65,17 +51,16 @@ describe('TechnicalRecordComponent', () => {
             select: jest.fn()
           }
         },
-        {provide: AuthenticationGuard, useValue: authenticationGuardMock},
-        {provide: APP_BASE_HREF, useValue: '/'},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
-      store = TestBed.get(Store);
-      spyOn(store, 'dispatch').and.callThrough();
-      fixture = TestBed.createComponent(TechnicalRecordComponent);
-      injector = getTestBed();
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+    store = TestBed.get(Store);
+    spyOn(store, 'dispatch').and.callThrough();
+    fixture = TestBed.createComponent(TechnicalRecordComponent);
+    dialog = fixture.debugElement.injector.get(MatDialog);
+    injector = getTestBed();
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   afterEach(() => {
@@ -85,8 +70,6 @@ describe('TechnicalRecordComponent', () => {
   });
 
   it('should create', () => {
-    store = TestBed.get(Store);
-    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
@@ -97,68 +80,47 @@ describe('TechnicalRecordComponent', () => {
     }
   });
 
-  it('should check if string empty', () => {
-    expect(component.isNullOrEmpty('')).toBeTruthy();
-  });
+  describe('hasSecondaryVrms', () => {
+    const vrms = [{ isPrimary: false }, { isPrimary: false }];
 
-  it('should check if string null', () => {
-    expect(component.isNullOrEmpty(null)).toBeTruthy();
-  });
+    test('should return false when passed less than 2 vrms', () => {
+      expect(component.hasSecondaryVrms([vrms[0]])).toBe(false);
+    });
 
-  it('should check if string is not empty', () => {
-    expect(component.isNullOrEmpty('aaa')).toBeFalsy();
-  });
-
-  it('should check if string is not empty', () => {
-    expect(component.isNullOrEmpty('aaa')).toBeFalsy();
-  });
-
-  it('should check if object is empty', () => {
-    expect(component.isEmptyObject({})).toBeTruthy();
-  });
-
-  it('should check if object is empty', () => {
-    expect(component.isEmptyObject({})).toBeTruthy();
+    test('should return true when provided with more vrms that are not primary', () => {
+      expect(component.hasSecondaryVrms(vrms)).toBe(true);
+    });
   });
 
   it('should check if edit action updates variables properly', () => {
-    component.adrEdit({},["1A", "1B", "2C" ], ["Hydrogen", "Expl (type 2)", "Expl (type 3)"], false);
-    expect(component.changeLabel).toEqual("Save technical record");
+    component.adrEdit({}, ['1A', '1B', '2C'], ['Hydrogen', 'Expl (type 2)', 'Expl (type 3)'], false);
+    expect(component.changeLabel).toEqual('Save technical record');
     expect(component.isSubmit).toEqual(true);
     expect(component.adrData).toEqual(false);
     expect(component.showCheck).toEqual(true);
-    expect(component.numberFee).toEqual(["1A", "1B", "2C" ]);
-    // expect(component.dangerousGoods).toEqual(["Hydrogen", "Expl (type 2)", "Expl (type 3)"]);
+    expect(component.numberFee).toEqual(['1A', '1B', '2C']);
+    // expect(component.dangerousGoods).toEqual(['Hydrogen', 'Expl (type 2)', 'Expl (type 3)']);
     expect(component.isAdrNull).toEqual(false);
-  });
-
-  it('should check if axles has no parking brake mrk', () => {
-    component.axlesHasNoParkingBrakeMrk(axles);
-    for (const axle of axles) {
-      if (axle.parkingBrakeMrk === true){
-        expect(component.axlesHasNoParkingBrakeMrk(axles)).toBeFalsy();
-      }
-    }
   });
 
   it('should check if cancel action updates variables properly', () => {
     component.cancelAddrEdit();
-    expect(component.changeLabel).toEqual("Change technical record");
+    expect(component.changeLabel).toEqual('Change technical record');
     expect(component.adrData).toEqual(true);
     expect(component.showCheck).toEqual(false);
     expect(component.isSubmit).toEqual(false);
     expect(component.hideForm).toEqual(false);
   });
 
-  it('should switch ADR display conditionally', () => {
-    let customObject =  { 'currentTarget' : {'value': 'true'} };
-    component.switchAdrDisplay(customObject as any);
+  describe('onSaveChages', () => {
+    test('should open modal and dispatch action with user input', () => {
+      spyOn(dialog, 'open').and.returnValue({afterClosed: () => of(true)});
 
-    expect(component.adrData).toEqual(false);
-    expect(component.hideForm).toEqual(false);
+      component.onSaveChanges();
+      expect(dialog.open).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalled();
+    });
   });
-
-
 
   afterAll(() => {
     TestBed.resetTestingModule();
