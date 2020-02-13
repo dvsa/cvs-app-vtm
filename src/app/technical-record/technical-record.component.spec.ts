@@ -57,8 +57,8 @@ describe('TechnicalRecordComponent', () => {
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
     fixture = TestBed.createComponent(TechnicalRecordComponent);
-    dialog = fixture.debugElement.injector.get(MatDialog);
     injector = getTestBed();
+    dialog = injector.get(MatDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

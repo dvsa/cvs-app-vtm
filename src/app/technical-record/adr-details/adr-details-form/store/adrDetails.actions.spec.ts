@@ -1,6 +1,5 @@
-import { Action } from '@ngrx/store';
-import { adrDetailsFormModelState, adrDetailsState } from './adrDetailsMockObjects';
 import * as adrDetailsActions from './adrDetails.actions';
+import { adrDetailsFormModelState } from './adrDetailsMockObjects';
 
 describe('adrDetailsAction', () => {
   test('LoadAction', () => {

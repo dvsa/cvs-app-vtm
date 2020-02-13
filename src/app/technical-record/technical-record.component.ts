@@ -1,21 +1,18 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
-import { initAll } from 'govuk-frontend';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
-import { IAppState } from './adr-details/adr-details-form/store/adrDetailsForm.state';
-import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import { NavigationEnd, Router } from '@angular/router';
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { Router, NavigationEnd } from '@angular/router';
+import { ComponentCanDeactivate } from '@app/shared/pending-changes-guard/pending-changes.guard';
+import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
+import { select, Store } from '@ngrx/store';
+import { initAll } from 'govuk-frontend';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IAppState } from './adr-details/adr-details-form/store/adrDetailsForm.state';
 import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { PendingChangesService } from '@app/shared/pending-changes-service/pending-changes.service';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -23,19 +20,45 @@ import {TechRecordHelpersService} from '@app/technical-record/tech-record-helper
   styleUrls: ['../app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TechnicalRecordComponent implements OnInit , OnDestroy {
+export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
-  techRecordsJson$: Observable<any>;
-  testResultJson$: Observable<any>;
+  constructor(
+    private _store: Store<IAppState>,
+    public dialog: MatDialog,
+    private router: Router,
+    public techRecHelpers: TechRecordHelpersService,
+    public pendingChangesService: PendingChangesService) {
+
+    this.initializeTechnicalRecord();
+    this.navigationSubscription = this.router.events
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.initializeTechnicalRecord();
+        }
+      });
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    if (this.isFormDirty) {
+      return false;
+    } else { return true; }
+  }
 
   @HostBinding('@.disabled')
   public animationsDisabled = true;
 
+  ngDestroyed$ = new Subject();
+  techRecordsJson$: Observable<any>;
+  testResultJson$: Observable<any>;
+  isFormDirty: boolean;
+
   searchIdentifier = '{none searched}';
   panels: { panel: string, isOpened: boolean }[] = [{ panel: 'panel1', isOpened: false }, { panel: 'panel2', isOpened: false },
-    { panel: 'panel3', isOpened: false }, { panel: 'panel4', isOpened: false },
-    { panel: 'panel5', isOpened: false }, { panel: 'panel6', isOpened: false }, { panel: 'panel7', isOpened: false },
-    { panel: 'panel8', isOpened: false }, { panel: 'panel9', isOpened: false }, { panel: 'panel10', isOpened: false }];
+  { panel: 'panel3', isOpened: false }, { panel: 'panel4', isOpened: false },
+  { panel: 'panel5', isOpened: false }, { panel: 'panel6', isOpened: false }, { panel: 'panel7', isOpened: false },
+  { panel: 'panel8', isOpened: false }, { panel: 'panel9', isOpened: false }, { panel: 'panel10', isOpened: false }];
   allOpened = false;
   color = 'red';
   changeLabel = 'Change technical record';
@@ -47,15 +70,6 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
   isAdrNull: any;
   navigationSubscription;
 
-  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router, public techRecHelpers: TechRecordHelpersService) {
-    this.initializeTechnicalRecord();
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      if (e instanceof NavigationEnd) {
-        this.initializeTechnicalRecord();
-      }
-    });
-  }
-
   initializeTechnicalRecord() {
     this.cancelAddrEdit();
     this.techRecordsJson$ = this._store.select(selectVehicleTechRecordModelHavingStatusAll);
@@ -64,12 +78,15 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
 
   ngOnInit() {
     initAll();
+    this._store.pipe(select(state => state.adrDetails.formState.isDirty))
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe(isFormDirty => {
+        this.isFormDirty = isFormDirty;
+      });
   }
 
   ngOnDestroy(): void {
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-   }
+    this.ngDestroyed$.next();
   }
 
   public togglePanel() {
@@ -105,7 +122,7 @@ export class TechnicalRecordComponent implements OnInit , OnDestroy {
     let reasonForChanges = '';
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
-      data: {context: 'Enter reason for changing technical record', response: reasonForChanges }
+      data: { context: 'Enter reason for changing technical record', response: reasonForChanges }
     });
 
     dialogRef.afterClosed().subscribe(result => {
