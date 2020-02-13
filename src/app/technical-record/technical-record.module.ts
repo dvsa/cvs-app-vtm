@@ -38,7 +38,7 @@ import { AdrDetailsComponent } from './adr-details/adr-details.component';
     MatFormFieldModule,
     HttpClientModule,
     RouterModule.forChild([
-      {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard], runGuardsAndResolvers: "always"}
+      {path: '', component: TechnicalRecordComponent,  canActivate: [AuthenticationGuard], runGuardsAndResolvers: 'always'}
     ]),
     StoreModule.forFeature('adrDetailsSubmit', AdrDetailsSubmitReducer),
     EffectsModule.forFeature([AdrDetailsSubmitEffects]),

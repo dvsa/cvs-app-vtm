@@ -6,8 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ShellPageModule } from '@app/shell/shell.page.module';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSquare, faCheckSquare, faCoffee, faBars } from '@fortawesome/free-solid-svg-icons';
@@ -19,13 +18,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { environment } from '@environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { TechnicalRecordSearchModule } from './technical-record-search/technical-record-search.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppConfig } from '@app/app.config';
 import { AuthTokenInterceptor } from '@app/technical-record-search/auth-token-interceptor';
 import { CustomSerializer } from '@app/store/reducers';
+import {Router} from '@angular/router';
+import {ShellPage} from '@app/shell/shell.page';
+import {LandingPageComponent} from '@app/landing-page/landing-page.component';
+import {HeaderComponent} from '@app/shell/header/header.component';
+import {FooterComponent} from '@app/shell/footer/footer.component';
+import {TechnicalRecordCreateComponent} from '@app/technical-record-create/technical-record-create.component';
 
 let adalConfig: any; // will be initialized by APP_INITIALIZER
 export function msAdalAngular6ConfigFactory() {
@@ -48,20 +52,24 @@ export function initializeApp(appConfig: AppConfig) {
 }
 
 export const COMPONENTS = [
-  AppComponent
+  AppComponent,
+  ShellPage,
+  LandingPageComponent,
+  HeaderComponent,
+  FooterComponent,
+  TechnicalRecordCreateComponent
 ];
 
 @NgModule({
   imports: [
     MsAdalAngular6Module,
+    HttpClientModule,
     CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
     MaterialModule,
     SharedModule,
-    TechnicalRecordSearchModule,
-    ShellPageModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
