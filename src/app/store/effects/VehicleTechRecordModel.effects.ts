@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
+import { SetErrorMessage, ClearErrorMessage } from '../actions/Error.actions';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -25,10 +26,13 @@ export class VehicleTechRecordModelEffects {
       switchMap((techRecordJson: any) => of(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordJson))),
       tap((_) => {
         this._store.dispatch(new GetVehicleTestResultModel(_.payload.vin));
+        this._store.dispatch(new ClearErrorMessage());
         this.router.navigate([`/technical-record`]);
       }),
-      catchError((error) =>
-        of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
+      catchError((error) => {
+        this._store.dispatch(new SetErrorMessage(error))
+        return of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
+      }
       ))));
 
   @Effect({ dispatch : false })

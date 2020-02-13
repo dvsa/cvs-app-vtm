@@ -4,6 +4,9 @@ import { AppConfig } from '@app/app.config';
 import { environment } from '@environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
 import { HttpParams } from '@angular/common/http';
+import { Store, INITIAL_STATE } from '@ngrx/store';
+import { IAppState } from '@app/store/state/app.state';
+import { hot } from 'jasmine-marbles';
 
 const appConfigMock = {
   get settings() {
@@ -20,6 +23,7 @@ describe('TechnicalRecordService', () => {
   let httpMock: HttpTestingController;
   let injector: TestBed;
   let service: TechnicalRecordService;
+  let store: Store<IAppState>
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,9 +33,17 @@ describe('TechnicalRecordService', () => {
       providers: [
         TechnicalRecordService,
         { provide: AppConfig, useValue: appConfigMock },
+        {
+          provide: Store, useValue: {
+            dispatch: jest.fn(),
+            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
+            select: jest.fn()
+          }
+        }
       ]
     }).compileComponents();
     injector = getTestBed();
+    store = injector.get(Store);
     service = injector.get(TechnicalRecordService);
     httpMock = injector.get(HttpTestingController);
   });
@@ -81,7 +93,7 @@ describe('TechnicalRecordService', () => {
       const req = httpMock.expectOne(req => req.url.includes('http://localhost:3005/vehicles/123456/download-file'));
       expect(req.request.method).toBe('GET');
       expect(req.request.responseType).toBe('json');
-      req.flush({ fileBuffer : { data: ['1', '2', '3']}, contentType: 'json'});
+      req.flush({ fileBuffer: { data: ['1', '2', '3'] }, contentType: 'json' });
     });
   });
 
