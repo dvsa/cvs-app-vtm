@@ -12,6 +12,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IAppState } from './adr-details/adr-details-form/store/adrDetailsForm.state';
 import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
+import { PendingChangesService } from '@app/shared/pending-changes-service/pending-changes.service';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -21,14 +22,26 @@ import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
 })
 export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
+  constructor(
+    private _store: Store<IAppState>,
+    public dialog: MatDialog,
+    private router: Router,
+    public techRecHelpers: TechRecordHelpersService,
+    public pendingChangesService: PendingChangesService) {
+
+    this.initializeTechnicalRecord();
+    this.navigationSubscription = this.router.events
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((e: any) => {
+        if (e instanceof NavigationEnd) {
+          this.initializeTechnicalRecord();
+        }
+      });
+  }
+
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
     if (this.isFormDirty) {
-      const destinationLink = window.location.href;
-      setTimeout(() => {
-        window.history.replaceState({}, '', destinationLink);
-        window.history.pushState({}, '', this.router.url);
-      });
       return false;
     } else { return true; }
   }
@@ -56,17 +69,6 @@ export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCan
   numberFee: any;
   isAdrNull: any;
   navigationSubscription;
-
-  constructor(private _store: Store<IAppState>, public dialog: MatDialog, private router: Router, public techRecHelpers: TechRecordHelpersService) {
-    this.initializeTechnicalRecord();
-    this.navigationSubscription = this.router.events
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe((e: any) => {
-        if (e instanceof NavigationEnd) {
-          this.initializeTechnicalRecord();
-        }
-      });
-  }
 
   initializeTechnicalRecord() {
     this.cancelAddrEdit();

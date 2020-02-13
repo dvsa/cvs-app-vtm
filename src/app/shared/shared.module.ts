@@ -1,13 +1,15 @@
-import {IsPrimaryVrmPipe} from '../pipes/IsPrimaryVrmPipe';
-import {NgModule} from '@angular/core';
+import { IsPrimaryVrmPipe } from '../pipes/IsPrimaryVrmPipe';
+import { NgModule } from '@angular/core';
 import { PageNotFoundComponentComponent } from './page-not-found-component/page-not-found-component.component';
-import {KeysPipe} from '@app/pipes/keysPipe';
-import {FilterRecordPipe} from '@app/pipes/FilterRecordPipe';
+import { KeysPipe } from '@app/pipes/keysPipe';
+import { FilterRecordPipe } from '@app/pipes/FilterRecordPipe';
 import { AdrReasonModalComponent } from './adr-reason-modal/adr-reason-modal.component';
-import {OrderByStatusPipe} from '@app/pipes/OrderByStatusPipe';
+import { OrderByStatusPipe } from '@app/pipes/OrderByStatusPipe';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-import {DefaultNullOrEmpty} from '@app/pipes/DefaultNullOrEmptyPipe';
+import { DefaultNullOrEmpty } from '@app/pipes/DefaultNullOrEmptyPipe';
+import { PreventLeavePageModalComponent } from './prevent-page-leave-modal/prevent-leave-page-modal.component';
+import { PendingChangesService } from './pending-changes-service/pending-changes.service';
 
 
 export const PIPES_AND_COMPONENTS = [
@@ -16,6 +18,7 @@ export const PIPES_AND_COMPONENTS = [
   FilterRecordPipe,
   PageNotFoundComponentComponent,
   AdrReasonModalComponent,
+  PreventLeavePageModalComponent,
   OrderByStatusPipe,
   DefaultNullOrEmpty
 ];
@@ -27,7 +30,7 @@ export const PIPES_AND_COMPONENTS = [
   ],
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
-  entryComponents: [ AdrReasonModalComponent ],
-  providers: [FilterRecordPipe],
+  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent],
+  providers: [FilterRecordPipe, PendingChangesService],
 })
-export class SharedModule {}
+export class SharedModule { }
