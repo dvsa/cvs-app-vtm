@@ -21,14 +21,14 @@ import { addMatchers, initTestScheduler } from 'jasmine-marbles';
 
 const techRecordModel: VehicleTechRecordModel = {
   vrms: null,
-  vin: '1234',
+  vin: 'ABCDEFGH777777',
   techRecord: [],
   metadata: { adrDetails: undefined },
   error: null,
 };
 
 describe('VehicleTechRecordModelEffects', () => {
-  let actions$: Observable<any>;
+  let actions: Observable<any>;
   let effects: VehicleTechRecordModelEffects;
   let technicalRecordService: TechnicalRecordService;
 
@@ -37,7 +37,7 @@ describe('VehicleTechRecordModelEffects', () => {
       imports: [RouterTestingModule],
       providers: [
         VehicleTechRecordModelEffects,
-        provideMockActions(() => actions$),
+        provideMockActions(() => actions),
         { provide: TechnicalRecordService, useValue: TechnicalRecordServiceMock },
         {
           provide: Store,
@@ -60,25 +60,37 @@ describe('VehicleTechRecordModelEffects', () => {
     expect(effects).toBeTruthy();
   });
 
-  // describe('getTechnicalRecords$', () => {
-  //   it('should return an GetVehicleTechRecordModelHavingStatusAll action', () => {
-  //
-  //     const action = new GetVehicleTechRecordModelHavingStatusAll('1234');
-  //     const outcome = new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordModel);
-  //
-  //     actions$ = hot('-a', {a: action});
-  //     const expected = cold('--b', {b: outcome});
-  //
-  //     expect(effects.getTechnicalRecords$).toBeObservable(expected);
-  //   });
-  // });
+
+  it(' getTechnicalRecords$ - should call the technicalRecordService service method info with a payload', () => {
+    actions = cold('a', { a: new GetVehicleTechRecordModelHavingStatusAll('ABCDEFGH777777') });
+    effects.getTechnicalRecords$.subscribe(() => {
+      try {
+        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith('ABCDEFGH777777');
+      } catch (error) {
+        fail('setVinOnCreate$: ' + error);
+      }
+    });
+  });
+
 
   it('should return an GetVehicleTechRecordModelHavingStatusAllSucess action', () => {
-    const actions = new ReplaySubject(1);
-    actions.next(new GetVehicleTechRecordModelHavingStatusAll('1234'));
+    const action = new ReplaySubject(1);
+    action.next(new GetVehicleTechRecordModelHavingStatusAll('1234'));
 
     effects.getTechnicalRecords$.subscribe(result => {
       expect(result).toEqual(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordModel));
+    });
+  });
+
+  it(' setVinOnCreate$ - should call the technicalRecordService  service method info with a payload', () => {
+    const valuePayload = { vin: 'aaa', vrm: 'bbb', vType: 'PSV' };
+    actions = cold('a', { a: new SetVehicleTechRecordModelVinOnCreate(valuePayload) });
+    effects.setVinOnCreate$.subscribe(() => {
+      try {
+        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(valuePayload.vin);
+      } catch (error) {
+        fail('setVinOnCreate$: ' + error);
+      }
     });
   });
 

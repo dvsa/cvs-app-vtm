@@ -1,11 +1,11 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {forkJoin, Observable, of} from 'rxjs';
 import {
   SetVehicleTechRecordModelVinOnCreate
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {Store} from '@ngrx/store';
 import {IAppState} from '@app/store/state/app.state';
+import {CreateTechRecordVM} from '@app/store/state/VehicleTechRecordModel.state';
 
 @Component({
   selector: 'vtm-technical-record-create',
@@ -40,11 +40,13 @@ export class TechnicalRecordCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    this._store.dispatch(new SetVehicleTechRecordModelVinOnCreate({
+    const createDetails: CreateTechRecordVM = {
       vin: this.createTechRecordForm.get('vin').value,
       vrm: this.createTechRecordForm.get('vrm').value,
       vType: this.createTechRecordForm.get('vehicleType').value
-    }));
+    };
+
+    this._store.dispatch(new SetVehicleTechRecordModelVinOnCreate(createDetails));
   }
 
 }

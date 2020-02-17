@@ -7,13 +7,12 @@ import {
   GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {Action, Store} from '@ngrx/store';
-import {map, switchMap, tap, catchError, mergeMap} from 'rxjs/operators';
+import {map, switchMap, tap, catchError} from 'rxjs/operators';
 import {forkJoin, Observable, of} from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
-import * as RouterActions from '@app/store/actions/router';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {

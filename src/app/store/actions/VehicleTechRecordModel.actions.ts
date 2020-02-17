@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
+import {CreateTechRecordVM} from '@app/store/state/VehicleTechRecordModel.state';
 
 export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
@@ -42,7 +43,7 @@ export class GetVehicleTechRecordModelHavingStatusAllFailure implements Action {
 
 export class SetVehicleTechRecordModelVinOnCreate implements Action {
   public readonly type = EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate;
-  constructor(public payload: any) {
+  constructor(public payload: CreateTechRecordVM) {
   }
 }
 

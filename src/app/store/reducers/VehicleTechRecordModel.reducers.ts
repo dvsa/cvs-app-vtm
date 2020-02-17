@@ -30,7 +30,7 @@ IVehicleTechRecordModelState {
     case EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate: {
       return {
         ...state,
-        vehicleTechRecordModel: action.payload,
+        initialDetails: action.payload,
         error: null
       };
     }
