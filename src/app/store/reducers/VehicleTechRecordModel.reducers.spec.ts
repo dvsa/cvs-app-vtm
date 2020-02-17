@@ -6,6 +6,7 @@ import {
 } from '../actions/VehicleTechRecordModel.actions';
 import { initialVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 
+
 describe('VehicleTechRecordModel Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state', () => {
@@ -101,7 +102,7 @@ describe('VehicleTechRecordModel Reducer', () => {
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
-        vehicleTechRecordModel: { vin: 'aaa', vrm: 'bbb', vType: 'PSV' }
+        initialDetails: { vin: 'aaa', vrm: 'bbb', vType: 'PSV' }
       });
     });
   });
