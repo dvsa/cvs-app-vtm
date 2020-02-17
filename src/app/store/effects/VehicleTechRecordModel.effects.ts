@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
+import * as RouterActions from '@app/store/actions/router';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -30,11 +31,11 @@ export class VehicleTechRecordModelEffects {
         of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
       ))));
 
-  @Effect()
-  setVinOnCreate$: Observable<Action> = this._actions$.pipe(
+  @Effect({ dispatch : false })
+  setVinOnCreate$ = this._actions$.pipe(
     ofType<SetVehicleTechRecordModelVinOnCreate>(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate),
     map(action => action.payload),
-    mergeMap(payload => {
+    switchMap(payload => {
       const requests: Observable<any>[] = [];
 
       if (payload.vType === 'PSV' || payload.vType === 'HGV') {
@@ -63,6 +64,7 @@ export class VehicleTechRecordModelEffects {
       }
 
       return of(payload);
+
     })
   );
 
