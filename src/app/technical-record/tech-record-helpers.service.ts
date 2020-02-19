@@ -4,19 +4,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TechRecordHelpersService {
-
-  constructor() { }
+  constructor() {}
 
   isNullOrEmpty(str) {
-    return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
+    return typeof str === 'string' || str === null || str === undefined
+      ? !str || !str.trim()
+      : false;
   }
 
   isEmptyObject(obj) {
-    return (obj && (Object.keys(obj).length === 0));
+    return obj && Object.keys(obj).length === 0;
   }
 
   capitalizeWord(word: string) {
     return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
   }
-
 }

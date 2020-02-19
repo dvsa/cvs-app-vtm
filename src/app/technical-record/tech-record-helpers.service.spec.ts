@@ -1,4 +1,4 @@
-import {TestBed, inject, getTestBed} from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import { TechRecordHelpersService } from './tech-record-helpers.service';
 
 describe('TechRecordHelpersService', () => {
@@ -30,6 +30,13 @@ describe('TechRecordHelpersService', () => {
 
   it('should check for null', () => {
     const customObject = null;
+    const result = service.isNullOrEmpty(customObject);
+
+    expect(result).toEqual(true);
+  });
+
+  it('should check for undefinded', () => {
+    const customObject = undefined;
     const result = service.isNullOrEmpty(customObject);
 
     expect(result).toEqual(true);

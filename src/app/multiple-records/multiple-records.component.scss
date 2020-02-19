@@ -1,0 +1,11 @@
+.govuk-width-container {
+   & a.govuk-link {
+     float: right;
+     color: #1d70b8;
+     cursor: pointer;
+     text-decoration: underline;
+   }
+  & a.govuk-back-link {
+    text-decoration: underline;
+  }
+}

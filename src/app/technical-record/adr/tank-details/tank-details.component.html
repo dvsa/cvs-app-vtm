@@ -1,0 +1,123 @@
+<ng-container *ngIf="!edit">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <h2 class="govuk-heading-m">Tank details</h2>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Make</dt>
+      <dd id="test-ADR-tankManufacturer" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankDetails; else hyphen">
+          {{ tank.tankDetails.tankManufacturer | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Year of manufacture</dt>
+      <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankDetails; else hyphen">
+          {{ tank.tankDetails.yearOfManufacture | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Manufacturer serial number</dt>
+      <dd id="test-ADR-tankManufacturerSerialNo" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankDetails; else hyphen">
+          {{ tank.tankDetails.tankManufacturerSerialNo | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Tank type approval number</dt>
+      <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankDetails; else hyphen">
+          {{ tank.tankDetails.tankTypeAppNo | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Code</dt>
+      <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankDetails; else hyphen">
+          {{ tank.tankDetails.tankCode | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Substances permitted</dt>
+      <dd id="test-ADR-substancesPermitted" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankStatement; else hyphen">
+          {{ tank.tankStatement.substancesPermitted | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Statement reference number</dt>
+      <dd id="test-ADR-statement" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankStatement; else hyphen">
+          {{ tank.tankStatement.statement | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Product list reference number</dt>
+      <dd id="test-ADR-productListRefNo" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankStatement; else hyphen">
+          {{ tank.tankStatement.productListRefNo | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">UN number</dt>
+      <dd id="test-ADR-productListUnNo" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankStatement; else hyphen">
+          {{ tank.tankStatement.productListUnNo | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Additional product list details</dt>
+      <dd id="test-ADR-productList" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankStatement; else hyphen">
+          {{ tank.tankStatement.productList | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Special provisions</dt>
+      <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
+        <span *ngIf="tank && tank.tankDetails; else hyphen">
+          {{ tank.tankDetails.specialProvisions | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-template #hyphen><span>-</span></ng-template>
+
+<ng-container *ngIf="edit">
+  <vtm-tank-details-edit [tank]="tank"></vtm-tank-details-edit>
+</ng-container>

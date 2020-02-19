@@ -10,58 +10,55 @@ import {
 } from './VehicleTechRecordModel.actions';
 import {VehicleTechRecordModel} from '../../models/vehicle-tech-record.model';
 import {CreateTechRecordVM} from '../state/VehicleTechRecordModel.state';
+import {TechRecord} from '@app/models/tech-record.model';
+import {SearchParams} from '@app/models/search-params';
 
-const techRecordModelExample: VehicleTechRecordModel = {
-  systemNumber: '1231243',
-  vrms: null,
-  vin: '1234',
-  techRecord: [],
-  metadata: {adrDetails: undefined},
-  error: null,
-};
+const vehicleTechRecordModel: VehicleTechRecordModel = {} as VehicleTechRecordModel;
+const techRecord: TechRecord = {} as TechRecord;
 
 describe('GetVehicleTechRecordModel', () => {
   test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModel(techRecordModelExample);
+    const actionInstance = new GetVehicleTechRecordModel(techRecord);
 
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModel);
-    expect(actionInstance.payload).toBe(techRecordModelExample);
+    expect(actionInstance.payload).toBe(techRecord);
   });
 });
 
 describe('GetVehicleTechRecordModelSuccess', () => {
   test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelSuccess(techRecordModelExample);
+    const actionInstance = new GetVehicleTechRecordModelSuccess([vehicleTechRecordModel]);
 
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess);
-    expect(actionInstance.payload).toBe(techRecordModelExample);
+    expect(actionInstance.payload).toStrictEqual([vehicleTechRecordModel]);
   });
 });
 
 describe('GetVehicleTechRecordModelHavingStatusAll', () => {
   test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelHavingStatusAll(techRecordModelExample);
+    const searchParams: SearchParams = { searchIdentifier: '1234', searchCriteria: 'all'};
+    const actionInstance = new GetVehicleTechRecordModelHavingStatusAll(searchParams);
 
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll);
-    expect(actionInstance.payload).toBe(techRecordModelExample);
+    expect(actionInstance.payload).toStrictEqual({ searchIdentifier: '1234', searchCriteria: 'all'});
   });
 });
 
 describe('GetVehicleTechRecordModelHavingStatusAllSuccess', () => {
   test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordModelExample);
+    const actionInstance = new GetVehicleTechRecordModelHavingStatusAllSuccess([vehicleTechRecordModel]);
 
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess);
-    expect(actionInstance.payload).toBe(techRecordModelExample);
+    expect(actionInstance.payload).toStrictEqual([vehicleTechRecordModel]);
   });
 });
 
 describe('GetVehicleTechRecordModelHavingStatusAllFailure', () => {
   test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelHavingStatusAllFailure(techRecordModelExample);
+    const actionInstance = new GetVehicleTechRecordModelHavingStatusAllFailure([vehicleTechRecordModel]);
 
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure);
-    expect(actionInstance.payload).toBe(techRecordModelExample);
+    expect(actionInstance.payload).toStrictEqual([vehicleTechRecordModel]);
   });
 });
 

@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MemoComponent should create view only with populated data 1`] = `
+<vtm-memo
+  adrDetails={[Function Object]}
+  edit="false"
+  isMemosApplied={[Function Boolean]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <h2
+        class="govuk-heading-m"
+      >
+        Memo 07/09 (3 month extension)
+      </h2>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Applied
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-memosApply"
+      >
+        
+        <div>
+           Yes 
+        </div>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-memo>
+`;
+
+exports[`MemoComponent should render the editable component if edit is true 1`] = `
+<vtm-memo
+  adrDetails={[Function Object]}
+  edit={[Function Boolean]}
+  isMemosApplied={[Function Boolean]}
+>
+  <vtm-memo-edit
+    ng-reflect-has-memos-applied="true"
+  >
+    <div>
+      Value of Memos Applied is true
+    </div>
+  </vtm-memo-edit>
+</vtm-memo>
+`;
