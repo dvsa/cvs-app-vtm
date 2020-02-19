@@ -1,80 +1,100 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {AppConfig} from '@app/app.config';
-import {Observable, of} from 'rxjs';
-import {switchMap, tap, shareReplay, catchError, finalize} from 'rxjs/operators';
-import {delayedRetry} from '@app/shared/delayed-retry/delayed-retry';
-import {Store} from '@ngrx/store';
-import {IAppState} from '@app/store/state/app.state';
-import {LoadingTrue, LoadingFalse} from '@app/store/actions/Loader.actions';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { shareReplay, finalize } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+import { AppConfig } from '@app/app.config';
+import { delayedRetry } from '@app/shared/delayed-retry/delayed-retry';
+import { IAppState } from '@app/store/state/app.state';
+import { LoadingTrue, LoadingFalse } from '@app/store/actions/Loader.actions';
+import { DocumentInfo } from '@app/models/document-meta-data';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
+
+@Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
   private _apiServer = this._appConfig.settings.apiServer;
   private readonly routes;
 
-  constructor(private httpClient: HttpClient,
-              private _appConfig: AppConfig,
-              private _store: Store<IAppState>) {
+  constructor(
+    private httpClient: HttpClient,
+    private _appConfig: AppConfig,
+    private _store: Store<IAppState>
+  ) {
     this.routes = {
       techRecordsAllStatuses: (searchIdentifier: string, searchCriteria: string) =>
-        `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true&searchCriteria=${searchCriteria}`,
-      getDocumentBlob: (vin: string) => `${this._apiServer.APIDocumentsServerUri}/vehicles/${vin}/download-file`,
-      updateTechRecords: (vin: string) => `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${vin}`,
+        `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
+
+      updateTechRecords: (vin: string) =>
+        `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${vin}`
     };
   }
 
-  getTechnicalRecordsAllStatuses(searchIdentifier: string, searchCriteria: string): Observable<any> {
-    console.log(`getTechnicalRecordsAllStatuses url => ${this.routes.techRecordsAllStatuses(searchIdentifier, searchCriteria)}`);
+  getTechnicalRecordsAllStatuses(
+    searchIdentifier: string,
+    searchCriteria: string
+  ): Observable<VehicleTechRecordModel[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+
     this._store.dispatch(new LoadingTrue());
-    return this.httpClient.get<any[]>(this.routes.techRecordsAllStatuses(searchIdentifier, searchCriteria), {headers}).pipe(
-      delayedRetry(),
-      shareReplay(),
-      finalize(() => this._store.dispatch(new LoadingFalse()))
-    );
+
+    return this.httpClient
+      .get<VehicleTechRecordModel[]>(
+        this.routes.techRecordsAllStatuses(searchIdentifier, searchCriteria),
+        { headers }
+      )
+      .pipe(
+        delayedRetry(),
+        shareReplay(),
+        finalize(() => this._store.dispatch(new LoadingFalse()))
+      );
   }
 
-  updateTechnicalRecords(techRecordDto: any, vin: string): Observable<any> {
-    console.log(`updateTechRecords url => ${this.routes.updateTechRecords(vin)}`);
+  updateTechnicalRecords(
+    techRecordDto: VehicleTechRecordUpdate,
+    vin: string
+  ): Observable<VehicleTechRecordModel> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+
     this._store.dispatch(new LoadingTrue());
-    return this.httpClient.put<any[]>(this.routes.updateTechRecords(vin), techRecordDto, {headers}).pipe(
-      delayedRetry(),
-      shareReplay(),
-      finalize(() => this._store.dispatch(new LoadingFalse()))
-    );
+
+    return this.httpClient
+      .put<any[]>(this.routes.updateTechRecords(vin), techRecordDto, { headers })
+      .pipe(
+        delayedRetry(),
+        shareReplay(),
+        finalize(() => this._store.dispatch(new LoadingFalse()))
+      );
   }
 
-  uploadDocuments(submitData: any): Observable<any> {
-    console.log(`inside uploadDocuments received submiData => ${JSON.stringify(submitData)}`);
-    return of<any>('succeeded');
+  uploadDocument(params: DocumentInfo) {
+    const { metaName, file } = params;
+    const fileData = new FormData();
+    fileData.append(metaName, file);
+    const headers = new HttpHeaders().set('Content-Type', 'application/pdf');
+    this._store.dispatch(new LoadingTrue());
+    return this.httpClient
+      .put(`${this._apiServer.APIDocumentBlobUri}${metaName}`, fileData, { headers })
+      .toPromise()
+      .catch((error) => error)
+      .finally(() => this._store.dispatch(new LoadingFalse()));
   }
 
-  getDocumentBlob(vin: string, fileName: string): Observable<{ buffer: ArrayBuffer, contentType: string, fileName?: string }> {
-    console.log(`getDocumentBlob vin => ${this.routes.getDocumentBlob(vin)}`);
+  downloadDocument(params: DocumentInfo) {
+    const { metaName } = params;
+    const headers = new HttpHeaders().set('Accept', '*/*');
     this._store.dispatch(new LoadingTrue());
-    return this.httpClient.get<{
-      fileBuffer: {
-        type: string,
-        data: Array<number>
-      },
-      contentType: string
-    }>(this.routes.getDocumentBlob(vin), {params: {filename: fileName}, responseType: 'json'}).pipe(
-      switchMap(response => {
-        const ab = new ArrayBuffer(response.fileBuffer.data.length);
-        const view = new Uint8Array(ab);
-        for (let i = 0; i < response.fileBuffer.data.length; i++) {
-          view[i] = response.fileBuffer.data[i];
-        }
-        return of({buffer: ab, contentType: response.contentType, fileName: fileName});
-      }),
-      tap(_ => console.log(`getDocumentBlob => ${JSON.stringify(_)}`)),
-      delayedRetry(),
-      shareReplay(),
-      finalize(() => this._store.dispatch(new LoadingFalse()))
-    );
+    return this.httpClient
+      .get(`${this._apiServer.APIDocumentBlobUri}${metaName}`, {
+        headers,
+        responseType: 'arraybuffer'
+      })
+      .toPromise()
+      .then((response: ArrayBuffer) => {
+        return new Blob([response], { type: 'application/pdf' });
+      })
+      .catch((error) => error)
+      .finally(() => this._store.dispatch(new LoadingFalse()));
   }
 }

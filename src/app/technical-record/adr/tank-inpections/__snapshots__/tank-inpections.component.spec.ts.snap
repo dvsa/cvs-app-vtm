@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TankInpectionsComponent should create view only with populated data 1`] = `
+<test-vtm-tank-inpections
+  adrDetails={[Function Object]}
+  edit="false"
+>
+  <vtm-tank-inpections
+    ng-reflect-adr-details="[object Object]"
+    ng-reflect-edit="false"
+  >
+    
+    
+    <div
+      class="govuk-grid-row"
+    >
+      <div
+        class="govuk-grid-column-full"
+      >
+        <h2
+          class="govuk-heading-m"
+        >
+          Tank inspections
+        </h2>
+        <table
+          class="govuk-table"
+        >
+          <thead
+            class="govuk-table__head"
+          >
+            <tr
+              class="govuk-table__row"
+            >
+              <th
+                class="govuk-table__header"
+                scope="col"
+              >
+                Inspection type
+              </th>
+              <th
+                class="govuk-table__header"
+                scope="col"
+              >
+                Certificate number
+              </th>
+              <th
+                class="govuk-table__header"
+                scope="col"
+              >
+                Expiry date
+              </th>
+            </tr>
+          </thead>
+          
+          <tbody
+            class="govuk-table__body"
+          >
+            <tr
+              class="govuk-table__row"
+            >
+              <td
+                class="govuk-table__cell"
+                id="test-tc2Type"
+              >
+                 initial 
+              </td>
+              <td
+                class="govuk-table__cell"
+                id="test-tc2IntermediateApprovalNo"
+              >
+                 tank123 
+              </td>
+              <td
+                class="govuk-table__cell"
+                id="test-tc2IntermediateExpiryDate"
+              >
+                 18/03/2020 
+              </td>
+            </tr>
+            
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+    
+  </vtm-tank-inpections>
+</test-vtm-tank-inpections>
+`;
+
+exports[`TankInpectionsComponent should render the editable component if edit is true 1`] = `
+<test-vtm-tank-inpections
+  adrDetails={[Function Object]}
+  edit={[Function Boolean]}
+>
+  <vtm-tank-inpections
+    ng-reflect-adr-details="[object Object]"
+    ng-reflect-edit="true"
+  >
+    
+    
+    
+    <vtm-tank-inspections-edit
+      ng-reflect-tank-details-data="[object Object]"
+    >
+      <div>
+        {
+    "tc2Details": {
+      "tc2IntermediateApprovalNo": "tank123",
+      "tc2IntermediateExpiryDate": "2020-03-18",
+      "tc2Type": "initial"
+    }
+  }
+      </div>
+    </vtm-tank-inspections-edit>
+  </vtm-tank-inpections>
+</test-vtm-tank-inpections>
+`;
