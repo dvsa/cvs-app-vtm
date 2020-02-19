@@ -1,5 +1,5 @@
-import {VehicleClass} from '../models/vehicle.class';
-import {TestType} from '../models/test.type';
+import { TestType } from '../models/test.type';
+import { BodyType } from './body-type';
 
 export interface TestResultModel {
   testerStaffId: string;
@@ -8,7 +8,7 @@ export interface TestResultModel {
   testEndTimestamp: Date;
   testStatus: string;
   testTypes: TestType[];
-  vehicleClass: VehicleClass;
+  vehicleClass: BodyType;
   vin: string;
   vehicleSize: string;
   testStationName: string;
@@ -29,5 +29,3 @@ export interface TestResultModel {
   testerEmailAddress: string;
   euVehicleCategory: string;
 }
-
-

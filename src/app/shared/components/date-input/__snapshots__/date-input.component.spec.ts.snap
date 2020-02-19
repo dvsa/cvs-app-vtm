@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateInputComponent should create 1`] = `
+<test-date-input
+  testDateControl={[Function FormControl]}
+>
+  <form
+    class="ng-untouched ng-pristine ng-valid"
+    novalidate=""
+  >
+    <vtm-date-input
+      aria-describedby="identifier"
+      class="ng-untouched ng-pristine ng-valid"
+      name="date"
+      ng-reflect-aria-described-by="identifier"
+      ng-reflect-form="[object Object]"
+      ng-reflect-id="testDate"
+    >
+      
+      <div
+        class="govuk-date-input"
+      >
+        <div
+          class="govuk-date-input__item"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-date-input__label"
+              for="testDate-1-day"
+            >
+               Day 
+            </label>
+            <input
+              aria-describedby="identifier"
+              autocomplete="off"
+              class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+              formcontrolname="day"
+              id="testDate-1-day"
+              maxlength="2"
+              name="dateDay"
+              ng-reflect-maxlength="2"
+              ng-reflect-name="day"
+              ng-reflect-pattern="[0-9]*"
+              pattern="[0-9]*"
+              type="number"
+            />
+          </div>
+        </div>
+        <div
+          class="govuk-date-input__item"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-date-input__label"
+              for="testDate-1-month"
+            >
+               Month 
+            </label>
+            <input
+              autocomplete="off"
+              class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+              formcontrolname="month"
+              id="testDate-1-month"
+              maxlength="2"
+              name="dateMonth"
+              ng-reflect-maxlength="2"
+              ng-reflect-name="month"
+              ng-reflect-pattern="[0-9]*"
+              pattern="[0-9]*"
+              type="number"
+            />
+          </div>
+        </div>
+        <div
+          class="govuk-date-input__item"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-date-input__label"
+              for="testDate-1-year"
+            >
+               Year 
+            </label>
+            <input
+              autocomplete="off"
+              class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+              formcontrolname="year"
+              id="testDate-1-year"
+              maxlength="4"
+              minlength="4"
+              name="dateYear"
+              ng-reflect-maxlength="4"
+              ng-reflect-minlength="4"
+              ng-reflect-name="year"
+              ng-reflect-pattern="[0-9]*"
+              pattern="[0-9]*"
+              type="number"
+            />
+          </div>
+        </div>
+      </div>
+    </vtm-date-input>
+  </form>
+</test-date-input>
+`;

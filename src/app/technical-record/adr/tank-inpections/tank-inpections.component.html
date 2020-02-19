@@ -1,0 +1,65 @@
+<ng-container *ngIf="!edit">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m">Tank inspections</h2>
+
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Inspection type</th>
+            <th scope="col" class="govuk-table__header">Certificate number</th>
+            <th scope="col" class="govuk-table__header">Expiry date</th>
+          </tr>
+        </thead>
+
+        <tbody class="govuk-table__body" *ngIf="showTankHistory; else noTankHistory">
+          <tr class="govuk-table__row">
+            <td id="test-tc2Type" class="govuk-table__cell">
+              {{ tankDetails?.tc2Details?.tc2Type | DefaultNullOrEmpty }}
+            </td>
+
+            <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+              {{ tankDetails?.tc2Details?.tc2IntermediateApprovalNo | DefaultNullOrEmpty }}
+            </td>
+            <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+              {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | DefaultNullOrEmpty }}
+            </td>
+          </tr>
+
+          <tr
+            class="govuk-table__row"
+            *ngFor="let tc3Details of tankDetails.tc3Details; let i = index"
+          >
+            <td id="test-tc3Type-{{ i }}" class="govuk-table__cell">
+              {{ tc3Details.tc3Type | DefaultNullOrEmpty }}
+            </td>
+            <td id="test-tc3PeriodicNumber-{{ i }}" class="govuk-table__cell">
+              {{ tc3Details.tc3PeriodicNumber | DefaultNullOrEmpty }}
+            </td>
+            <td id="test-tc3PeriodicExpiryDate-{{ i }}" class="govuk-table__cell">
+              {{ tc3Details.tc3PeriodicExpiryDate | DefaultNullOrEmpty }}
+            </td>
+          </tr>
+        </tbody>
+
+        <ng-template #noTankHistory>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">-</td>
+              <td class="govuk-table__cell">-</td>
+              <td class="govuk-table__cell">-</td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Edit TANK Inspections -->
+<ng-container *ngIf="edit">
+  <vtm-tank-inspections-edit
+    [tankDetailsData]="tankDetails"
+    [vehicleType]="vehicleType"
+  ></vtm-tank-inspections-edit>
+</ng-container>

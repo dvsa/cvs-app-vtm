@@ -12,7 +12,7 @@ import { FooterComponent } from '@app/shell/footer/footer.component';
 import { HeaderComponent } from '@app/shell/header/header.component';
 import { ShellPage } from '@app/shell/shell.page';
 import { VehicleTechRecordModelEffects } from '@app/store/effects/VehicleTechRecordModel.effects';
-import { CustomSerializer } from '@app/store/reducers';
+import { CustomSerializer } from '@app/store';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { TechnicalRecordCreateComponent } from '@app/technical-record-create/technical-record-create.component';
 import { AuthTokenInterceptor } from '@app/technical-record-search/auth-token-interceptor';
@@ -20,18 +20,27 @@ import { environment } from '@environments/environment';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGithub, faMedium, faStackOverflow } from '@fortawesome/free-brands-svg-icons';
-import { faCheckSquare as farCheckSquare, faSquare as farSquare } from '@fortawesome/free-regular-svg-icons';
+import {
+  faCheckSquare as farCheckSquare,
+  faSquare as farSquare
+} from '@fortawesome/free-regular-svg-icons';
 import { faBars, faCheckSquare, faCoffee, faSquare } from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AuthenticationGuard, MsAdalAngular6Module, MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import {
+  AuthenticationGuard,
+  MsAdalAngular6Module,
+  MsAdalAngular6Service
+} from 'microsoft-adal-angular6';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { PendingChangesGuard } from './shared/pending-changes-guard/pending-changes.guard';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerLoaderComponent } from './shared/spinner-loader/spinner-loader.component';
+import { MultipleRecordsContainer } from '@app/multiple-records/multiple-records.container';
+import { MultipleRecordsComponent } from '@app/multiple-records/multiple-records.component';
 import { TestRecordComponent } from '@app/test-record/test-record.component';
 import { LogoutModalComponent } from './shell/header/logout-modal/logout-modal.component';
 
@@ -63,12 +72,15 @@ export const COMPONENTS = [
   FooterComponent,
   TechnicalRecordCreateComponent,
   SpinnerLoaderComponent,
+  MultipleRecordsContainer,
+  MultipleRecordsComponent,
   TestRecordComponent,
-  LogoutModalComponent,
+  LogoutModalComponent
 ];
 
 @NgModule({
   imports: [
+    AppRoutingModule,
     MsAdalAngular6Module,
     HttpClientModule,
     CommonModule,
@@ -84,8 +96,7 @@ export const COMPONENTS = [
     StoreModule.forRoot(appReducers),
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     !(environment.name === 'deploy') ? StoreDevtoolsModule.instrument() : [],
-    AppRoutingModule,
-    EffectsModule.forRoot([VehicleTechRecordModelEffects]),
+    EffectsModule.forRoot([VehicleTechRecordModelEffects])
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,
@@ -107,14 +118,23 @@ export const COMPONENTS = [
     },
     AuthenticationGuard,
     PendingChangesGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor() {
     // Add an icon to the library for convenient access in other components
-    library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium, faBars);
+    library.add(
+      faCoffee,
+      faSquare,
+      faCheckSquare,
+      farSquare,
+      farCheckSquare,
+      faStackOverflow,
+      faGithub,
+      faMedium,
+      faBars
+    );
   }
 }
-
