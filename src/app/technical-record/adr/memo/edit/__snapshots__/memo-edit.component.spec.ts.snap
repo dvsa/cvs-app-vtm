@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MemoEditComponent handleFormChanges should hide section when vehicle type dispatches HIDDEN 1`] = `
+<vtm-memo-edit
+  adrForm={[Function FormGroup]}
+  detectChange={[Function ViewRef_]}
+  displayOptions={[Function Object]}
+  fb={[Function FormBuilder]}
+  hasMemosApplied={[Function Boolean]}
+  memoValidationState$={[Function Observable]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  removeAdrControl={[Function EventEmitter]}
+  showMemoEdit="false"
+  validationMapper={[Function ValidationMapper]}
+>
+  
+</vtm-memo-edit>
+`;
+
+exports[`MemoEditComponent should create with initialized form controls 1`] = `
+<vtm-memo-edit
+  adrForm={[Function FormGroup]}
+  detectChange={[Function ViewRef_]}
+  displayOptions={[Function Object]}
+  fb={[Function FormBuilder]}
+  hasMemosApplied={[Function Boolean]}
+  memoValidationState$={[Function Observable]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  removeAdrControl={[Function EventEmitter]}
+  showMemoEdit={[Function Boolean]}
+  validationMapper={[Function ValidationMapper]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-full"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Memo 07/09 (3 month extension) applied
+            </h2>
+            <div
+              class="govuk-radios govuk-radios--inline"
+            >
+              
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="memosApply"
+                  id="memosApply-Yes"
+                  name="memosApply"
+                  ng-reflect-form-control-name="memosApply"
+                  ng-reflect-name="memosApply"
+                  ng-reflect-value="true"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="memosApply-Yes"
+                >
+                   Yes 
+                </label>
+              </div>
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="memosApply"
+                  id="memosApply-No"
+                  name="memosApply"
+                  ng-reflect-form-control-name="memosApply"
+                  ng-reflect-name="memosApply"
+                  ng-reflect-value="false"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="memosApply-No"
+                >
+                   No 
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-memo-edit>
+`;

@@ -1,0 +1,301 @@
+<div class="govuk-grid-row" *ngIf="showTankDetails">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="adrForm">
+          <h2 class="govuk-heading-m">Tank details</h2>
+
+          <ng-container [formGroup]="tankDetails">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="tankManufacturer">
+                Make
+              </label>
+              <input
+                id="tankManufacturer"
+                type="text"
+                name="tankManufacturer"
+                formControlName="tankManufacturer"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label for="vehicleType" class="govuk-label govuk-!-font-weight-bold">
+                Year of manufacture
+              </label>
+              <input
+                id="yearOfManfacture"
+                type="number"
+                name="yearOfManfacture"
+                formControlName="yearOfManufacture"
+                pattern="[0-9]*"
+                class="govuk-input govuk-input--width-4"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="tankManufacturerSerialNo">
+                Manufacturer serial number
+              </label>
+              <input
+                id="tankManufacturerSerialNo"
+                type="text"
+                name="tankManufacturerSerialNo"
+                formControlName="tankManufacturerSerialNo"
+                class="govuk-input govuk-input--width-10"
+              />
+            </div>
+
+            <!-- Tank Type Approval Number -->
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="tankTypeAppNo">
+                Tank type approval number
+              </label>
+              <input
+                id="tankTypeAppNo"
+                type="text"
+                name="tankTypeAppNo"
+                formControlName="tankTypeAppNo"
+                class="govuk-input govuk-input--width-10"
+              />
+            </div>
+
+            <!-- Tank Code -->
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="tankCode">
+                Code
+              </label>
+              <input
+                id="tankCode"
+                type="text"
+                name="tankCode"
+                formControlName="tankCode"
+                class="govuk-input govuk-input--width-10"
+              />
+            </div>
+          </ng-container>
+
+          <!-- Substance Permitted -->
+          <ng-container [formGroup]="tankStatement">
+            <label class="govuk-label govuk-!-font-weight-bold">Substances permitted</label>
+            <div class="govuk-radios govuk-radios--conditional">
+              <div class="govuk-radios__item">
+                <input
+                  id="substancesPermitted_permitted"
+                  type="radio"
+                  value="{{ permittedSubstance }}"
+                  name="substancesPermitted"
+                  formControlName="substancesPermitted"
+                  class="govuk-radios__input"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="substancesPermitted_permitted"
+                >
+                  Substances permitted under the tank code and any special provisions specified in
+                  9 may be carried
+                </label>
+              </div>
+              <div class="govuk-radios__item">
+                <input
+                  id="substancesPermitted_classNumber"
+                  type="radio"
+                  value="{{ classNumberSubstance }}"
+                  name="substancesPermitted"
+                  formControlName="substancesPermitted"
+                  class="govuk-radios__input"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="substancesPermitted_classNumber"
+                >
+                  Substances (class UN number and if necessary packing group and proper shipping
+                  name) may be carried
+                </label>
+              </div>
+              <div
+                id="conditional-substancesPermitted_classNumber"
+                class="govuk-inset-text govuk-!-margin-top-0"
+                [class.govuk-radios__conditional--hidden]="
+                  substancesPermitted.value !== classNumberSubstance
+                "
+              >
+                <ng-container *ngTemplateOutlet="substancePermittedSelected"></ng-container>
+              </div>
+            </div>
+
+            <!-- Select: -->
+            <ng-template #substancePermittedSelected>
+              <div class="govuk-form-group govuk-!-margin-left-3">
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="substancesPermitted_CLASSNUMBER"
+                >
+                  Select:
+                </label>
+                <div class="govuk-radios">
+                  <!-- Statement -->
+                  <div class="govuk-radios__item">
+                    <input
+                      id="select_statement_Y"
+                      type="radio"
+                      value="{{ substanceStatementSelect }}"
+                      formControlName="substanceReferenceSelect"
+                      class="govuk-radios__input"
+                    />
+                    <label class="govuk-label govuk-radios__label">
+                      Statement
+                    </label>
+                  </div>
+                  <div
+                    id="conditional-selectStatement"
+                    class="govuk-inset-text govuk-!-margin-top-0"
+                    [class.govuk-radios__conditional--hidden]="
+                      substanceReferenceSelect.value !== substanceStatementSelect
+                    "
+                  >
+                    <div class="govuk-form-group govuk-!-margin-left-3">
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="statementRefNumber"
+                      >
+                        Reference number
+                      </label>
+                      <input
+                        id="statementRefNumber"
+                        type="text"
+                        name="statementRefNumber"
+                        formControlName="statement"
+                        class="govuk-input govuk-input--width-10"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Product List -->
+                  <div class="govuk-radios__item">
+                    <input
+                      id="select_productlist_N"
+                      type="radio"
+                      value="{{ substanceProductSelect }}"
+                      formControlName="substanceReferenceSelect"
+                      class="govuk-radios__input"
+                    />
+                    <label class="govuk-label govuk-radios__label">
+                      Product list
+                    </label>
+                  </div>
+                  <div
+                    id="conditional-select_productlist_N"
+                    class="govuk-inset-text govuk-!-margin-top-0"
+                    [class.govuk-radios__conditional--hidden]="
+                      substanceReferenceSelect.value !== substanceProductSelect
+                    "
+                  >
+                    <div class="govuk-form-group govuk-!-margin-left-3">
+                      <!-- Product - Reference number -->
+                      <div class="govuk-form-group">
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="productListRefNumber"
+                        >
+                          Reference number
+                        </label>
+                        <input
+                          id="productListRefNumber"
+                          type="text"
+                          name="productListRefNumber"
+                          formControlName="productListRefNo"
+                          class="govuk-input govuk-input--width-10"
+                        />
+                      </div>
+
+                      <!-- UN number -LIST -->
+                      <div class="govuk-form-group" formArrayName="productListUnNo">
+                        <ng-container
+                          *ngFor="let unNumberInput of productListUnNo.controls; let i = index"
+                        >
+                          <div class="govuk-form-group">
+                            <label
+                              *ngIf="i === 0"
+                              for="productListUnNumber_{{ i }}"
+                              class="govuk-label govuk-!-font-weight-bold"
+                            >
+                              UN number
+                            </label>
+                            <input
+                              id="productListUnNumber_{{ i }}"
+                              type="text"
+                              name="productListUnNumber_{{ i }}"
+                              [formControl]="unNumberInput"
+                              class="govuk-input govuk-input--width-5"
+                            />
+                            <span
+                              *ngIf="i > 0"
+                              class="govuk-!-font-weight-bold govuk-!-margin-left-2"
+                            >
+                              <a
+                                href="javascript:void(0)"
+                                class="govuk-link govuk-link--no-visited-state"
+                                (click)="removeUNNumberControl(i)"
+                              >
+                                Remove
+                              </a>
+                            </span>
+                          </div>
+                        </ng-container>
+                      </div>
+
+                      <div class="govuk-label govuk-!-margin-top-0 govuk-!-margin-bottom-5">
+                        <a
+                          href="javascript:void(0)"
+                          class="govuk-link govuk-link--no-visited-state"
+                          (click)="addUNNumberControl()"
+                        >
+                          Add a UN number
+                        </a>
+                      </div>
+
+                      <!-- Additional details -->
+                      <div class="govuk-form-group">
+                        <label class="govuk-label govuk-!-font-weight-bold" for="productList">
+                          Additional details
+                        </label>
+                        <textarea
+                          id="productList"
+                          aria-describedby="productList"
+                          name="productList"
+                          formControlName="productList"
+                          rows="8"
+                          class="govuk-textarea"
+                        >
+                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ng-container>
+
+          <!-- Special Provision -->
+          <ng-container [formGroup]="tankDetails">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="specialProvisions">
+                Special provisions
+              </label>
+              <textarea
+                id="specialProvisions"
+                aria-describedby="specialProvisions"
+                name="specialProvisions"
+                formControlName="specialProvisions"
+                rows="8"
+                class="govuk-textarea govuk-!-margin-bottom-0"
+              >
+              </textarea>
+            </div>
+          </ng-container>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

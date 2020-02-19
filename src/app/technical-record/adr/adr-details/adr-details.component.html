@@ -1,0 +1,73 @@
+<ng-container *ngIf="!edit">
+  <h2 class="govuk-heading-m">ADR details</h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle type</dt>
+      <dd id="test-ADR-type" class="govuk-summary-list__value">
+        {{ adrDetails.vehicleDetails.type | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Date processed</dt>
+      <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
+        {{ adrDetails.vehicleDetails.approvalDate | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Permitted dangerous goods</dt>
+      <dd id="test-ADR-permittedDangerousGoods" class="govuk-summary-list__value">
+        <div *ngIf="adrDetails.permittedDangerousGoods; else hyphen">
+          <div *ngFor="let perGood of adrDetails.permittedDangerousGoods">
+            <p>{{ perGood }}</p>
+          </div>
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Compatibility group J</dt>
+      <dd id="test-ADR-compatibilityGroupJ" class="govuk-summary-list__value">
+        {{ adrDetails?.compatibilityGroupJ | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Guidance notes</dt>
+      <dd id="test-ADR-additionalNotes-number" class="govuk-summary-list__value">
+        <div
+          *ngIf="
+            this.adrDetails.additionalNotes && adrDetails.additionalNotes.number[0];
+            else hyphen
+          "
+        >
+          <div *ngFor="let number of adrDetails.additionalNotes.number">
+            <p>{{ number }}</p>
+          </div>
+        </div>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">ADR type approval number</dt>
+      <dd id="test-ADR-adrTypeApprovalNo" class="govuk-summary-list__value">
+        {{ adrDetails.adrTypeApprovalNo | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-template #hyphen><span>-</span></ng-template>
+
+<!-- Edit Applicant Details -->
+<ng-container *ngIf="edit">
+  <vtm-adr-details-edit [adrDetails]="adrDetails" [metaData]="metaData"></vtm-adr-details-edit>
+</ng-container>
