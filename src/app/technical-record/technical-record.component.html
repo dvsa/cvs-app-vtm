@@ -1,345 +1,540 @@
-<div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
-  <div *ngIf="(techRecordsJson[0].techRecord | FilterRecord) as activeRecord ">
-    <div *ngIf="activeRecord.vehicleType =='hgv' || activeRecord.vehicleType =='trl'  else ifPSV">
-      <div class="govuk-width-container left-pad">
-        <main class="govuk-main-wrapper">
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-thirds float-left">
-              <h1 class="govuk-heading-xl title">Technical record</h1>
-              <div *ngIf="!isSubmit">
-                <button id="test-change-btn" class="govuk-button" data-module="govuk-button"
-                  (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, activeRecord.adrDetails)">
-                  {{ changeLabel }}
-                </button>
-                <a id="cancel1" *ngIf="showCheck" (click)="cancelAddrEdit()">
-                  <span>Cancel</span>
-                </a>
-              </div>
-              <div *ngIf="isSubmit">
-                <button id="test-save-btn" class="govuk-button" data-module="govuk-button" (click)="onSaveChanges()">
-                  Save technical record
-                </button>
-                <a id="cancel2" *ngIf="showCheck" (click)="cancelAddrEdit()">
-                  <span>Cancel</span>
-                </a>
-              </div>
-              <div class="grid-container-technical-record-status">
-                <div class="grid-item-technical-record-status rectangle"></div>
-                <div class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 ">Status
+<div class="govuk-width-container">
+  <a class="govuk-back-link" vtmBackButton>Back</a>
+  <main class="govuk-main-wrapper">
+    <div
+      *ngIf="activeRecord.vehicleType == 'hgv' || activeRecord.vehicleType == 'trl'; else ifPSV"
+    >
+      <form
+        [formGroup]="techRecord"
+        (ngSubmit)="onSaveChanges(techRecord)"
+        vtmFormConnector="techRecordForm"
+      >
+        <div class="govuk-width-container left-pad">
+          <main class="govuk-main-wrapper">
+            <div class="govuk-grid-row">
+              <div class="govuk-grid-column-one-thirds float-left">
+                <h1 class="govuk-heading-xl title">Technical record</h1>
+
+                <div *ngIf="!editRecord">
+                  <!-- Change Technical record -->
+                  <button id="test-change-btn" class="govuk-button" (click)="editTechRecord()">
+                    Change technical record
+                  </button>
                 </div>
-                <div id="test-status"
-                  class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value">
-                  {{activeRecord.statusCode | titlecase}}
+
+                <div *ngIf="editRecord">
+                  <button id="test-save-btn" class="govuk-button" type="submit">
+                    Save technical record
+                  </button>
+                  <a id="cancel2" (click)="cancelTechRecordEdit()">
+                    <span>Cancel</span>
+                  </a>
                 </div>
-                <div class="grid-item-technical-record-status"></div>
+
+                <div class="grid-container-technical-record-status">
+                  <div class="grid-item-technical-record-status rectangle"></div>
+                  <div
+                    class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 "
+                  >
+                    Status
+                  </div>
+                  <div
+                    id="test-status"
+                    class="grid-item-technical-record-status
+                    govuk-!-font-weight-regular govuk-body
+                    govuk-!-font-size-19
+                    grid-item-technical-record-status-value"
+                  >
+                    {{ activeRecord.statusCode | titlecase }}
+                  </div>
+                  <div class="grid-item-technical-record-status"></div>
+                </div>
               </div>
             </div>
+          </main>
+        </div>
+        <div class="auto-pad">
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key main-details">
+                Vehicle identification number (VIN)
+              </dt>
+              <dd id="test-vin" class="govuk-summary-list__value">
+                {{ vehicleTechRecord.vin }}
+              </dd>
+              <dd class="govuk-summary-list__value"></dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key main-details">
+                Vehicle registration mark (VRM)
+              </dt>
+              <dd id="test-vrm" class="govuk-summary-list__value">
+                <div *ngIf="!techRecHelpers.isEmptyObject(vehicleTechRecord.vrms); else hyphen">
+                  <span *ngFor="let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: true">
+                    {{ vrmItem.vrm }}
+                  </span>
+                </div>
+              </dd>
+              <dd class="govuk-summary-list__value"></dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key main-details">
+                Previous VRM
+              </dt>
+              <dd id="test-secondaryVrms" class="govuk-summary-list__value">
+                <div
+                  *ngIf="
+                    !techRecHelpers.isEmptyObject(vehicleTechRecord.vrms) &&
+                      hasSecondaryVrms(vehicleTechRecord.vrms);
+                    else hyphen
+                  "
+                >
+                  <span
+                    *ngFor="
+                      let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: false;
+                      let i = index
+                    "
+                  >
+                    <span id="{{ 'test-vrm-' + i }}">{{ vrmItem.vrm }}</span>
+                  </span>
+                </div>
+              </dd>
+              <dd class="govuk-summary-list__value"></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="auto-pad">
+          <div class="open-close-all">
+            <div></div>
+            <div>
+              <a class="govuk-link" (click)="togglePanel()"
+                >{{ allOpened ? 'Close' : 'Open' }} all</a
+              >
+            </div>
           </div>
-        </main>
-      </div>
-      <div class="auto-pad">
-        <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key main-details">
-              Vehicle identification number (VIN)
-            </dt>
-            <dd id="test-vin" class="govuk-summary-list__value">
-              {{techRecordsJson[0].vin}}
-            </dd>
-            <dd class="govuk-summary-list__value"></dd>
+        </div>
+
+        <mat-accordion multi="true" [@.disabled]="true">
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0 "
+              hideToggle="true"
+              #summary
+              [(expanded)]="panels[0].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple no-animate"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Vehicle summary
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!summary.expanded"
+                      id="test-fa-plus-summary"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="summary.expanded"
+                      id="test-fa-minus-summary"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <vtm-vehicle-summary [activeRecord]="activeRecord"></vtm-vehicle-summary>
+            </mat-expansion-panel>
           </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key main-details">
-              Vehicle registration mark (VRM)
-            </dt>
-            <dd id="test-vrm" class="govuk-summary-list__value">
-              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson[0].vrms) else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson[0].vrms | IsPrimaryVrm: true">
-                  {{vrmItem.vrm}}
-                </ul>
-              </div>
-            </dd>
-            <dd class="govuk-summary-list__value"></dd>
+
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0"
+              hideToggle="true"
+              #body
+              [(expanded)]="panels[1].isOpened"
+              [@.disabled]="true"
+              [class.mat-expansion-panel-spacing]="false"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple no-animate"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title [@.disabled]="true" class="no-animate mat-elevation-z0">
+                  <div
+                    class="item-technical-record govuk-!-font-weight-bold no-animate"
+                    [@.disabled]="true"
+                  >
+                    Body
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!body.expanded"
+                      id="test-fa-plus-body"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="body.expanded"
+                      id="test-fa-minus-body"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <vtm-body [activeRecord]="activeRecord"></vtm-body>
+            </mat-expansion-panel>
           </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key main-details">
-              Previous VRM
-            </dt>
-            <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson[0].vrms) && hasSecondaryVrms(techRecordsJson[0].vrms); else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson[0].vrms | IsPrimaryVrm: false; let i = index">
-                  <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
-                </ul>
-              </div>
-            </dd>
-            <dd class="govuk-summary-list__value"></dd>
+
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0"
+              hideToggle="true"
+              #weights
+              [(expanded)]="panels[2].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple no-animate"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold no-animate">
+                    Weights
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!weights.expanded"
+                      id="test-fa-plus-weights"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="weights.expanded"
+                      id="test-fa-minus-weights"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <vtm-weights [activeRecord]="activeRecord"></vtm-weights>
+            </mat-expansion-panel>
           </div>
-        </dl>
-      </div>
 
-      <div class="auto-pad">
-        <div class="open-close-all">
-          <div></div>
-          <div>
-            <a class="govuk-link" (click)='togglePanel()'>{{allOpened ? 'Close' : 'Open'}} all</a>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0"
+              hideToggle="true"
+              #tyres
+              [(expanded)]="panels[3].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Tyres
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!tyres.expanded"
+                      id="test-fa-plus-tyres"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="tyres.expanded"
+                      id="test-fa-minus-tyres"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <vtm-tyres [activeRecord]="activeRecord"></vtm-tyres>
+            </mat-expansion-panel>
           </div>
-        </div>
-      </div>
 
-      <mat-accordion multi="true" [@.disabled]="true">
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0"
+              hideToggle="true"
+              #dimensions
+              [(expanded)]="panels[4].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Dimensions
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!dimensions.expanded"
+                      id="test-fa-plus-dimensions"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="dimensions.expanded"
+                      id="test-fa-minus-dimensions"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
 
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #summary
-            [(expanded)]="panels[0].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple no-animate" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Vehicle summary
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!summary.expanded" id="test-fa-plus-summary" [icon]="['fa', 'plus'] " size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="summary.expanded" id="test-fa-minus-summary" [icon]="['fa', 'minus'] " size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
+              <vtm-dimensions [activeRecord]="activeRecord"></vtm-dimensions>
+            </mat-expansion-panel>
+          </div>
 
-            <vtm-vehicle-summary [activeRecord]="activeRecord"></vtm-vehicle-summary>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0 "
+              hideToggle="true"
+              #adr
+              [(expanded)]="panels[5].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    ADR
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!adr.expanded"
+                      id="test-fa-plus-adr"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="adr.expanded"
+                      id="test-fa-minus-adr"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
 
-          </mat-expansion-panel>
-        </div>
+              <!-- ADR -->
+              <vtm-adr
+                [params]="adrDisplayParams"
+                [editAdrDetails]="editRecord"
+                [activeRecord]="activeRecord"
+                [vehicleMetaData]="metaData"
+                (removeAdrControl)="removeControl($event)"
+              >
+              </vtm-adr>
+            </mat-expansion-panel>
+          </div>
 
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #body
-            [(expanded)]="panels[1].isOpened" [@.disabled]="true" [class.mat-expansion-panel-spacing]="false">
-            <mat-expansion-panel-header class="disable_ripple no-animate" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title [@.disabled]="true" class="no-animate mat-elevation-z0">
-                <div class="item-technical-record govuk-!-font-weight-bold no-animate" [@.disabled]="true">
-                  Body
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!body.expanded" id="test-fa-plus-body" [icon]="['fa', 'plus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="body.expanded" id="test-fa-minus-body" [icon]="['fa', 'minus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0 "
+              hideToggle="true"
+              #notes
+              [(expanded)]="panels[6].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Notes
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!notes.expanded"
+                      id="test-fa-plus-notes"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                    <fa-icon
+                      *ngIf="notes.expanded"
+                      id="test-fa-minus-notes"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    ></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
 
-            <vtm-body [activeRecord]="activeRecord"></vtm-body>
+              <vtm-notes [activeRecord]="activeRecord"></vtm-notes>
+            </mat-expansion-panel>
+          </div>
 
-          </mat-expansion-panel>
-        </div>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0 "
+              hideToggle="true"
+              #testHistory
+              [(expanded)]="panels[7].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Test history
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!testHistory.expanded"
+                      id="test-fa-plus-testHistory"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    >
+                    </fa-icon>
+                    <fa-icon
+                      *ngIf="testHistory.expanded"
+                      id="test-fa-minus-testHistory"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    >
+                    </fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
 
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #weights
-            [(expanded)]="panels[2].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple no-animate" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold no-animate">
-                  Weights
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!weights.expanded" id="test-fa-plus-weights" [icon]="['fa', 'plus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="weights.expanded" id="test-fa-minus-weights" [icon]="['fa', 'minus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
+              <vtm-test-history [testResultJson]="testResultJson"></vtm-test-history>
+            </mat-expansion-panel>
+          </div>
 
-            <vtm-weights [activeRecord]="activeRecord"></vtm-weights>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel
+              class="custom-header mat-elevation-z0 "
+              hideToggle="true"
+              #techRecHistory
+              [(expanded)]="panels[8].isOpened"
+              [@.disabled]="true"
+            >
+              <mat-expansion-panel-header
+                class="disable_ripple"
+                [@.disabled]="true"
+                expandedHeight="80px"
+                collapsedHeight="80px"
+              >
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Technical record history
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon
+                      *ngIf="!techRecHistory.expanded"
+                      id="test-fa-plus-techRecHistory"
+                      [icon]="['fa', 'plus']"
+                      size="lg"
+                      class="expander-icon"
+                    >
+                    </fa-icon>
+                    <fa-icon
+                      *ngIf="techRecHistory.expanded"
+                      id="test-fa-minus-techRecHistory"
+                      [icon]="['fa', 'minus']"
+                      size="lg"
+                      class="expander-icon"
+                    >
+                    </fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
 
-          </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #tyres
-            [(expanded)]="panels[3].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Tyres
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!tyres.expanded" id="test-fa-plus-tyres" [icon]="['fa', 'plus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="tyres.expanded" id="test-fa-minus-tyres" [icon]="['fa', 'minus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <vtm-tyres [activeRecord]="activeRecord"></vtm-tyres>
-
-          </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0" hideToggle="true" #dimensions
-            [(expanded)]="panels[4].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Dimensions
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!dimensions.expanded" id="test-fa-plus-dimensions" [icon]="['fa', 'plus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="dimensions.expanded" id="test-fa-minus-dimensions" [icon]="['fa', 'minus']" size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <vtm-dimensions [activeRecord]="activeRecord"></vtm-dimensions>
-
-          </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #adr
-            [(expanded)]="panels[5].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  ADR
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!adr.expanded" id="test-fa-plus-adr" [icon]="['fa', 'plus'] " size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="adr.expanded" id="test-fa-minus-adr" [icon]="['fa', 'minus'] " size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <vtm-adr-details [activeRecord]="activeRecord"
-                             [techRecordsJson]="techRecordsJson"
-                             [showCheck]="showCheck"
-                             [adrData]="adrData"
-                             [hideForm]="hideForm"
-                             [isAdrNull]="isAdrNull">
-            </vtm-adr-details>
-
-          </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #notes
-            [(expanded)]="panels[6].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Notes
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!notes.expanded" id="test-fa-plus-notes" [icon]="['fa', 'plus'] " size="lg"
-                    class="expander-icon"></fa-icon>
-                  <fa-icon *ngIf="notes.expanded" id="test-fa-minus-notes" [icon]="['fa', 'minus'] " size="lg"
-                    class="expander-icon"></fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <vtm-notes [activeRecord]="activeRecord"></vtm-notes>
-
-          </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #testHistory
-            [(expanded)]="panels[7].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Test history
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!testHistory.expanded" id="test-fa-plus-testHistory" [icon]="['fa', 'plus'] "
-                    size="lg" class="expander-icon">
-                  </fa-icon>
-                  <fa-icon *ngIf="testHistory.expanded" id="test-fa-minus-testHistory" [icon]="['fa', 'minus'] "
-                    size="lg" class="expander-icon">
-                  </fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <vtm-test-history [testResultJson] = "testResultJson$ | async"></vtm-test-history>
-
-          </mat-expansion-panel>
-        </div>
-
-        <div class="auto-pad" [@.disabled]="true">
-          <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #techRecHistory
-            [(expanded)]="panels[8].isOpened" [@.disabled]="true">
-            <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
-              collapsedHeight="80px">
-              <mat-panel-title>
-                <div class="item-technical-record govuk-!-font-weight-bold">
-                  Technical record history
-                </div>
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="expansion-icon">
-                  <fa-icon *ngIf="!techRecHistory.expanded" id="test-fa-plus-techRecHistory" [icon]="['fa', 'plus'] "
-                    size="lg" class="expander-icon">
-                  </fa-icon>
-                  <fa-icon *ngIf="techRecHistory.expanded" id="test-fa-minus-techRecHistory" [icon]="['fa', 'minus'] "
-                    size="lg" class="expander-icon">
-                  </fa-icon>
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <vtm-tech-rec-history [techRecordsJson]="techRecordsJson$ | async"></vtm-tech-rec-history>
-
-          </mat-expansion-panel>
-        </div>
-      </mat-accordion>
+              <vtm-tech-rec-history [techRecordsJson]="vehicleTechRecord"></vtm-tech-rec-history>
+            </mat-expansion-panel>
+          </div>
+        </mat-accordion>
+      </form>
     </div>
-  </div>
+  </main>
 </div>
 
 <ng-template #hyphen>
   <span>-</span>
 </ng-template>
 
-<ng-template #loading>
-  Loading...
-</ng-template>
-
 <ng-template #ifPSV>
   <div class="govuk-width-container left-pad">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row">
-        <h2 class="govuk-heading-l">Currenly only HGV/TRL is supported please try HGV/TRL only!</h2>
+        <h2 class="govuk-heading-l">
+          Currenly only HGV/TRL is supported please try HGV/TRL only!
+        </h2>
       </div>
     </main>
   </div>
