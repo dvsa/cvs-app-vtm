@@ -1,0 +1,50 @@
+<ng-container *ngIf="!edit">
+  <h2 class="govuk-heading-m">Declarations seen</h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Manufacturer brake declaration</dt>
+      <dd id="test-brakeDeclarationsSeen" class="govuk-summary-list__value">
+        {{ adrDetails.brakeDeclarationsSeen | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Issuer</dt>
+      <dd id="test-brakeDeclarationIssuer" class="govuk-summary-list__value">
+        {{ adrDetails.brakeDeclarationIssuer | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Brake endurance</dt>
+      <dd id="test-brakeEndurance" class="govuk-summary-list__value">
+        {{ adrDetails.brakeEndurance | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Brake endurance weight (kg)</dt>
+      <dd id="test-weight" class="govuk-summary-list__value">
+        <span *ngIf="hasNullEmptyWeight">-</span>
+        <span *ngIf="!hasNullEmptyWeight">{{ weight }}</span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Owner/operator declaration</dt>
+      <dd id="test-declarationsSeen" class="govuk-summary-list__value">
+        {{ adrDetails.declarationsSeen | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-container *ngIf="edit">
+  <vtm-declaration-seen-edit [adrDetails]="adrDetails"></vtm-declaration-seen-edit>
+</ng-container>
