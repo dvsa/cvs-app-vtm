@@ -10,9 +10,7 @@ import { AdrDetailsFormComponent } from './adr-details-form.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { InspectionDetailsModule } from '@app/technical-record/inspection-details/inspection-details.module';
 import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
-import { DownloadDocumentsEffects } from '@app/technical-record/adr-details/adr-details-form/store/download-documents.effects';
 
 @NgModule({
   imports: [
@@ -20,7 +18,6 @@ import { DownloadDocumentsEffects } from '@app/technical-record/adr-details/adr-
     MaterialModule,
     MatFormFieldModule,
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
-    EffectsModule.forFeature([DownloadDocumentsEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
@@ -29,13 +26,8 @@ import { DownloadDocumentsEffects } from '@app/technical-record/adr-details/adr-
     NgxJsonViewerModule,
     InspectionDetailsModule
   ],
-  declarations: [
-    AdrDetailsFormComponent
-  ],
-  exports: [
-    AdrDetailsFormComponent
-  ],
-  entryComponents: [AdrDetailsFormComponent],
+  declarations: [AdrDetailsFormComponent],
+  exports: [AdrDetailsFormComponent],
+  entryComponents: [AdrDetailsFormComponent]
 })
-export class AdrDetailsFormModule {
-}
+export class AdrDetailsFormModule {}
