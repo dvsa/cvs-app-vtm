@@ -1,46 +1,39 @@
-import {OrderByStatusPipe} from '@app/pipes/OrderByStatusPipe';
+import { OrderByStatusPipe } from '@app/pipes/OrderByStatusPipe';
+import { TechRecord } from '@app/models/tech-record.model';
 
-const techRecordList1 = [
+const techRecordList1: TechRecord[] = [
   {
-    vin: '1234568',
     statusCode: 'current'
   },
   {
-    vin: '1234567',
     statusCode: 'provisional'
   },
   {
-    vin: '1234569',
-    statusCode: 'archived',
-    createdAt: '2019-06-25T10:26:54.903Z'
-  },
-];
-
-const techRecordList2 = [
-  {
-    vin: '1234567',
-    statusCode: 'provisional'
-  },
-  {
-    vin: '1234569',
     statusCode: 'archived',
     createdAt: '2019-06-25T10:26:54.903Z'
   }
-];
+] as TechRecord[];
 
-const techRecordList3 = [
+const techRecordList2: TechRecord[] = [
   {
-    vin: '1234569',
+    statusCode: 'provisional'
+  },
+  {
+    statusCode: 'archived',
+    createdAt: '2019-06-25T10:26:54.903Z'
+  }
+] as TechRecord[];
+
+const techRecordList3: TechRecord[] = [
+  {
     statusCode: 'archived',
     createdAt: '2019-06-25T10:26:54.903Z'
   },
   {
-    vin: '1234566',
     statusCode: 'archived',
     createdAt: '2019-06-26T08:26:54.903Z'
   }
-];
-
+] as TechRecord[];
 
 describe('OrderByStatusPipe', () => {
   const pipe = new OrderByStatusPipe();
@@ -68,20 +61,14 @@ describe('OrderByStatusPipe', () => {
     expect(orderedTechRec[0].statusCode).toEqual('provisional');
   });
 
-  it('should order technical records having the one with status ARCHIVED first', () => {
-    const orderedTechRec = pipe.transform(techRecordList3);
-    expect(orderedTechRec).toBeDefined();
-    expect(orderedTechRec[0]).toBeDefined();
-    expect(orderedTechRec[0].statusCode).toEqual('archived');
-  });
-
   it('should order ARCHIVED records by date', () => {
     const orderedTechRec = pipe.transform(techRecordList3);
     expect(orderedTechRec).toBeDefined();
     for (let i; i < orderedTechRec.length; i++) {
-      const date = new Date(orderedTechRec[i + 1].createdAt).getTime() - new Date(orderedTechRec[i].createdAt).getTime();
+      const date =
+        new Date(orderedTechRec[i + 1].createdAt).getTime() -
+        new Date(orderedTechRec[i].createdAt).getTime();
       expect(date).toBeTruthy();
     }
   });
-
 });

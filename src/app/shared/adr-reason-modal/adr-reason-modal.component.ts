@@ -14,9 +14,14 @@ export interface DialogData {
 export class AdrReasonModalComponent {
   constructor(
     public dialogRef: MatDialogRef<AdrReasonModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {}
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  save(modalData: string): void {
+    this.dialogRef.close({ isSave: true, data: modalData });
   }
 }
