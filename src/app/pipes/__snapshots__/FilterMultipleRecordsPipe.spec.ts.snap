@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterMultipleRecordsPipe should return a vehicle tech record list sorted by make or manufacturer Year 1`] = `
+Array [
+  Object {
+    "techRecord": Array [
+      Object {
+        "make": "AIsuzu",
+        "manufactureYear": 2019,
+        "statusCode": "provisional",
+      },
+      Object {
+        "make": "AIsuzu",
+        "manufactureYear": 2019,
+        "statusCode": "provisional",
+      },
+    ],
+  },
+  Object {
+    "techRecord": Array [
+      Object {
+        "make": "Isuzu",
+        "manufactureYear": 2018,
+        "statusCode": "current",
+      },
+      Object {
+        "make": "Isuzu",
+        "manufactureYear": 2018,
+        "statusCode": "current",
+      },
+    ],
+  },
+  Object {
+    "techRecord": Array [
+      Object {
+        "createdAt": "2019-06-25T10:26:54.903Z",
+        "make": "AIsuzu",
+        "manufactureYear": 2020,
+        "statusCode": "archived",
+      },
+      Object {
+        "createdAt": "2019-06-26T08:26:54.903Z",
+        "statusCode": "archived",
+      },
+      Object {
+        "createdAt": "2019-06-26T08:26:54.903Z",
+        "statusCode": "archived",
+      },
+    ],
+  },
+]
+`;
