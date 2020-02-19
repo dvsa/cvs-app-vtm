@@ -1,0 +1,24 @@
+# Add files here to ignore them from prettier formatting
+/dist
+/coverage
+**/.idea
+**/.ng_pkg_build
+**/.vscode
+dist
+e2e
+node_modules
+package.json
+package-lock.json
+angular-cli.json
+angular.json
+nx.json
+tsconfig*
+tslint*
+jest.config.js
+protractor.conf.js
+
+# This below to be removed once ADR is completed - reduce conflict
+src/app/technical-record/technical-record.component.html
+src/app/technical-record/tech-rec-history/tech-rec-history.component.html
+src/app/store/effects/VehicleTechRecordModel.effects.ts
+src/app/technical-record-search/technical-record.service.ts

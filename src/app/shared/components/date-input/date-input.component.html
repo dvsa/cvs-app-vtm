@@ -1,0 +1,62 @@
+<ng-container [formGroup]="dateInputs">
+  <div class="govuk-date-input">
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="{{ id }}-day">
+          Day
+        </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          [class.govuk-input--error]="false"
+          formControlName="day"
+          id="{{ id }}-day"
+          name="dateDay"
+          type="number"
+          [attr.aria-describedby]="ariaDescribedBy"
+          pattern="[0-9]*"
+          maxlength="2"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="{{ id }}-month">
+          Month
+        </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          [class.govuk-input--error]="false"
+          formControlName="month"
+          id="{{ id }}-month"
+          name="dateMonth"
+          type="number"
+          pattern="[0-9]*"
+          maxlength="2"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="{{ id }}-year">
+          Year
+        </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-4"
+          [class.govuk-input--error]="false"
+          formControlName="year"
+          id="{{ id }}-year"
+          name="dateYear"
+          type="number"
+          pattern="[0-9]*"
+          minlength="4"
+          maxlength="4"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+  </div>
+</ng-container>

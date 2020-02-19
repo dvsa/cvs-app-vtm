@@ -18,7 +18,7 @@ export class DownloadDocumentsEffects {
     ofType<DownloadDocumentFileAction>(DownloadDocumentFileAction.TYPE),
     withLatestFrom(this._store$.select(selectVehicleTechRecordModelHavingStatusAll)
       .pipe(
-        map(s => s.vin)
+        map(s => s[0].vin)
       )),
     switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
       .pipe(

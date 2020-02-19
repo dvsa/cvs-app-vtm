@@ -50,7 +50,7 @@ describe('FilterRecordPipe', () => {
 
   it('should return undefined if technical record list is null', () => {
     const record = pipe.transform(null);
-    expect(record).toBeUndefined();
+    expect(record).toBeNull();
   });
 
   it('should return the technical record having status CURRENT', () => {

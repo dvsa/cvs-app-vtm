@@ -10,19 +10,19 @@
   </tr>
   </thead>
   <tbody class="govuk-table__body">
-  <tr class="govuk-table__row"
-      *ngFor="let techRec of techRecordsJson[0].techRecord | OrderByStatusPipe; let i = index">
-    <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
-      {{  (techRec.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (techRec.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()}}
-    </td>
-    <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
-      {{ (techRec.reasonForCreation | DefaultNullOrEmpty) | titlecase}}</td>
-    <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
-      {{ (techRec.createdByName | DefaultNullOrEmpty) | titlecase}}</td>
-    <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-      {{ techRec.createdAt | DefaultNullOrEmpty }}</td>
-    <td class="govuk-table__cell"></td>
-    <td class="govuk-table__cell"></td>
-  </tr>
+    <tr class="govuk-table__row"
+      *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index">
+      <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
+        {{  (techRec.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (techRec.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()}}
+      </td>
+      <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
+        {{ (techRec.reasonForCreation | DefaultNullOrEmpty) | titlecase}}</td>
+      <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
+        {{ (techRec.createdByName | DefaultNullOrEmpty) | titlecase}}</td>
+      <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
+        {{ techRec.createdAt | DefaultNullOrEmpty }}</td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+    </tr>
   </tbody>
 </table>

@@ -1,8 +1,8 @@
-import { initialAdrDetailsSubmitState, IAdrDetailsSubmitState } from "./adrDetailsSubmit.state";
-import { SubmitAdrAction, SubmitAdrActionFailure, SubmitAdrActionSuccess } from "./adrDetailsSubmit.actions";
+import { initialAdrDetailsSubmitState, IAdrDetailsSubmitState } from './adrDetailsSubmit.state';
+import { SubmitAdrAction, SubmitAdrActionFailure, SubmitAdrActionSuccess } from './adrDetailsSubmit.actions';
 
 export function AdrDetailsSubmitReducer(state = initialAdrDetailsSubmitState,
-    action: SubmitAdrAction | SubmitAdrActionSuccess | SubmitAdrActionFailure): IAdrDetailsSubmitState {
+  action: SubmitAdrAction | SubmitAdrActionSuccess | SubmitAdrActionFailure): IAdrDetailsSubmitState {
   switch (action.type) {
     case SubmitAdrAction.TYPE: {
       return {

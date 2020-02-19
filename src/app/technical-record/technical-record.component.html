@@ -1,25 +1,24 @@
-<div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
-  <div *ngIf="(techRecordsJson[0].techRecord | FilterRecord) as activeRecord ">
+<div class="govuk-width-container">
+  <a [routerLink]="['/']" class="govuk-back-link">Back</a>
+  <main class="govuk-main-wrapper">
     <div *ngIf="activeRecord.vehicleType =='hgv' || activeRecord.vehicleType =='trl'  else ifPSV">
+    <form [formGroup]="techRecord" (ngSubmit)="onSaveChanges(techRecord)" vtmFormConnector="techRecordForm">
       <div class="govuk-width-container left-pad">
         <main class="govuk-main-wrapper">
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-thirds float-left">
               <h1 class="govuk-heading-xl title">Technical record</h1>
-              <div *ngIf="!isSubmit">
-                <button id="test-change-btn" class="govuk-button" data-module="govuk-button"
-                  (click)="adrEdit(techRecordsJson, techRecordsJson.metadata.adrDetails.additionalNotes.numberFe,techRecordsJson.metadata.adrDetails.permittedDangerousGoodsFe, activeRecord.adrDetails)">
-                  {{ changeLabel }}
+              <div *ngIf="!editRecord">
+                <button id="test-change-btn" class="govuk-button"
+                  (click)="editTechRecord()">
+                  Change technical record
                 </button>
-                <a id="cancel1" *ngIf="showCheck" (click)="cancelAddrEdit()">
-                  <span>Cancel</span>
-                </a>
               </div>
-              <div *ngIf="isSubmit">
-                <button id="test-save-btn" class="govuk-button" data-module="govuk-button" (click)="onSaveChanges()">
+              <div *ngIf="editRecord">
+                <button id="test-save-btn" class="govuk-button" type="submit">
                   Save technical record
                 </button>
-                <a id="cancel2" *ngIf="showCheck" (click)="cancelAddrEdit()">
+                <a id="cancel2" (click)="cancelTechRecordEdit()">
                   <span>Cancel</span>
                 </a>
               </div>
@@ -43,8 +42,8 @@
             <dt class="govuk-summary-list__key main-details">
               Vehicle identification number (VIN)
             </dt>
-            <dd id="test-vin" class="govuk-summary-list__value">
-              {{techRecordsJson[0].vin}}
+            <dd class="govuk-summary-list__value">
+              {{vehicleTechRecord.vin}}
             </dd>
             <dd class="govuk-summary-list__value"></dd>
           </div>
@@ -53,10 +52,10 @@
               Vehicle registration mark (VRM)
             </dt>
             <dd id="test-vrm" class="govuk-summary-list__value">
-              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson[0].vrms) else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson[0].vrms | IsPrimaryVrm: true">
+              <div *ngIf="!techRecHelpers.isEmptyObject(vehicleTechRecord.vrms) else hyphen">
+                <span *ngFor="let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: true">
                   {{vrmItem.vrm}}
-                </ul>
+                </span>
               </div>
             </dd>
             <dd class="govuk-summary-list__value"></dd>
@@ -66,10 +65,10 @@
               Previous VRM
             </dt>
             <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson[0].vrms) && hasSecondaryVrms(techRecordsJson[0].vrms); else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson[0].vrms | IsPrimaryVrm: false; let i = index">
+              <div *ngIf="!techRecHelpers.isEmptyObject(vehicleTechRecord.vrms) && hasSecondaryVrms(vehicleTechRecord.vrms); else hyphen">
+                <span *ngFor="let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: false; let i = index">
                   <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
-                </ul>
+                </span>
               </div>
             </dd>
             <dd class="govuk-summary-list__value"></dd>
@@ -233,13 +232,17 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <vtm-adr-details [activeRecord]="activeRecord"
-                             [techRecordsJson]="techRecordsJson"
-                             [showCheck]="showCheck"
-                             [adrData]="adrData"
-                             [hideForm]="hideForm"
-                             [isAdrNull]="isAdrNull">
-            </vtm-adr-details>
+            <vtm-adr
+              [params]="adrDisplayParams"
+              [editAdrDetails]="editRecord"
+              [activeRecord]="activeRecord"
+              [vehicleMetaData]="metaData"
+              (removeAdrControl)="removeControl($event)">
+            </vtm-adr>
+
+            <!-- <vtm-adr-details [activeRecord]="activeRecord" [techRecordsJson]="vehicleTechRecord" [showCheck]="showCheck"
+              [adrData]="adrData" [hideForm]="hideForm" [isAdrNull]="isAdrNull">
+            </vtm-adr-details> -->
 
           </mat-expansion-panel>
         </div>
@@ -291,7 +294,7 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <vtm-test-history [testResultJson] = "testResultJson$ | async"></vtm-test-history>
+            <vtm-test-history [testResultJson]="testResultJson"></vtm-test-history>
 
           </mat-expansion-panel>
         </div>
@@ -318,22 +321,23 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <vtm-tech-rec-history [techRecordsJson]="techRecordsJson$ | async"></vtm-tech-rec-history>
+            <vtm-tech-rec-history [techRecordsJson]="vehicleTechRecord"></vtm-tech-rec-history>
 
           </mat-expansion-panel>
         </div>
       </mat-accordion>
+      </form>
     </div>
-  </div>
+  </main>
 </div>
 
 <ng-template #hyphen>
   <span>-</span>
 </ng-template>
 
-<ng-template #loading>
+<!-- <ng-template #loading>
   Loading...
-</ng-template>
+</ng-template> -->
 
 <ng-template #ifPSV>
   <div class="govuk-width-container left-pad">

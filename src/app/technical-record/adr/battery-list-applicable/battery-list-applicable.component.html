@@ -1,0 +1,26 @@
+<ng-container *ngIf="!edit">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <h2 class="govuk-heading-m">Battery list</h2>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Applicable</dt>
+      <dd id="test-listStatementApplicable" class="govuk-summary-list__value">
+        {{ adrDetails.listStatementApplicable | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Reference number</dt>
+      <dd id="test-batteryListNumber" class="govuk-summary-list__value">
+        {{ adrDetails.batteryListNumber | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<!-- Edit Battery List -->
+<ng-container *ngIf="edit">
+  <vtm-battery-list-applicable-edit [adrDetails]="adrDetails"></vtm-battery-list-applicable-edit>
+</ng-container>

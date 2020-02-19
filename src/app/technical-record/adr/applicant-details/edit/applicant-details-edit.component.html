@@ -1,0 +1,73 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-half">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="adrForm">
+          <h2 class="govuk-heading-m">Applicant details</h2>
+
+          <div class="govuk-form-group" formGroupName="applicantDetails">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="name">
+                Name
+              </label>
+              <input
+                id="name"
+                formControlName="name"
+                type="text"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="street">
+                Street
+              </label>
+              <input
+                id="street"
+                type="text"
+                formControlName="street"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="town">
+                Town
+              </label>
+              <input
+                id="town"
+                type="text"
+                formControlName="town"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="city">
+                City
+              </label>
+              <input
+                id="city"
+                type="text"
+                formControlName="city"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="postcode">
+                Postcode
+              </label>
+              <input
+                id="postcode"
+                formControlName="postcode"
+                class="govuk-input govuk-input--width-10"
+                type="text"
+              />
+            </div>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

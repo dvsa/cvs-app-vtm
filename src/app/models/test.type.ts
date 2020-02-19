@@ -1,4 +1,4 @@
-import {Defect} from '@app/models/defect';
+import { Defect } from '@app/models/defect';
 
 export interface TestType {
   prohibitionIssued: boolean;

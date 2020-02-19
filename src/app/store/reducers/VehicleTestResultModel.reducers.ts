@@ -1,5 +1,5 @@
-import {initialVehicleTestResultModelState} from '../../store/state/VehicleTestResultModel.state';
-import {EVehicleTestResultModelActions, VehicleTestResultModelActions} from '../actions/VehicleTestResultModel.actions';
+import { initialVehicleTestResultModelState } from '../../store/state/VehicleTestResultModel.state';
+import { EVehicleTestResultModelActions, VehicleTestResultModelActions } from '../actions/VehicleTestResultModel.actions';
 
 export function VehicleTestResultModelReducers(state = initialVehicleTestResultModelState, action: VehicleTestResultModelActions) {
   switch (action.type) {

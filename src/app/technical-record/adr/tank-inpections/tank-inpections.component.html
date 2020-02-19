@@ -1,0 +1,61 @@
+<ng-container *ngIf="!edit">
+  <dl class="govuk-summary-list adr-details">
+    <div class="govuk-summary-list__row">
+      <h2 class="govuk-heading-m">Tank inspections</h2>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <table class="govuk-table table-tank">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Inspection type</th>
+            <th scope="col" class="govuk-table__header">Certificate number</th>
+            <th scope="col" class="govuk-table__header">Expiry date</th>
+          </tr>
+        </thead>
+
+        <tbody class="govuk-table__body" *ngIf="showTankHistory; else noTankHistory">
+          <tr class="govuk-table__row">
+            <td id="test-tc2Type" class="govuk-table__cell">
+              {{ tankDetails?.tc2Details?.tc2Type | DefaultNullOrEmpty }}
+            </td>
+
+            <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+              {{ tankDetails?.tc2Details?.tc2IntermediateApprovalNo | DefaultNullOrEmpty }}
+            </td>
+            <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+              {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | DefaultNullOrEmpty }}
+            </td>
+          </tr>
+
+          <tr class="govuk-table__row" *ngFor="let tc3Details of tankDetails.tc3Details">
+            <td id="test-tc3Type" class="govuk-table__cell">
+              {{ tc3Details.tc3Type | DefaultNullOrEmpty }}
+            </td>
+            <td id="test-tc3PeriodicNumber" class="govuk-table__cell">
+              {{ tc3Details.tc3PeriodicNumber | DefaultNullOrEmpty }}
+            </td>
+            <td id="test-tc3PeriodicExpiryDate" class="govuk-table__cell">
+              {{ tc3Details.tc3PeriodicExpiryDate | DefaultNullOrEmpty }}
+            </td>
+          </tr>
+        </tbody>
+
+        <ng-template #noTankHistory>
+          <tbody class="govuk-table__body">
+            <tr>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+    </div>
+  </dl>
+</ng-container>
+
+<!-- Edit TANK Inspections -->
+<ng-container *ngIf="edit">
+  <vtm-tank-inspections-edit [tankDetailsData]="tankDetails"></vtm-tank-inspections-edit>
+</ng-container>

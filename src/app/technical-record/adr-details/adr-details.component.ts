@@ -25,9 +25,9 @@ export class AdrDetailsComponent implements OnInit {
   constructor(private _store: Store<IAppState>) { }
 
   ngOnInit() {
-    this.vehicletypes$ = this._store.pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.vehicleDetails.typeFe));
-    this.permittedDangerousGoodsFe$ = this._store.pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.permittedDangerousGoodsFe));
-    this.guidanceNotesFe$ = this._store.pipe(select( s => s.vehicleTechRecordModel.vehicleTechRecordModel.metadata.adrDetails.additionalNotes.guidanceNotesFe));
+    this.vehicletypes$ = this._store.pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel[0].metadata.adrDetails.vehicleDetails.typeFe));
+    this.permittedDangerousGoodsFe$ = this._store.pipe(select(s => s.vehicleTechRecordModel.vehicleTechRecordModel[0].metadata.adrDetails.permittedDangerousGoodsFe));
+    this.guidanceNotesFe$ = this._store.pipe(select( s => s.vehicleTechRecordModel.vehicleTechRecordModel[0].metadata.adrDetails.additionalNotes.guidanceNotesFe));
   }
 
   switchAdrDisplay($event): void {
