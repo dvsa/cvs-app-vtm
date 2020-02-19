@@ -11,8 +11,17 @@ import { TechnicalRecordComponent } from '@app/technical-record/technical-record
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGithub, faMedium, faStackOverflow } from '@fortawesome/free-brands-svg-icons';
-import { faCheckSquare as farCheckSquare, faSquare as farSquare } from '@fortawesome/free-regular-svg-icons';
-import { faCheckSquare, faCoffee, faMinus, faPlus, faSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckSquare as farCheckSquare,
+  faSquare as farSquare
+} from '@fortawesome/free-regular-svg-icons';
+import {
+  faCheckSquare,
+  faCoffee,
+  faMinus,
+  faPlus,
+  faSquare
+} from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
@@ -31,25 +40,44 @@ import { TyresComponent } from './tyres/tyres.component';
 import { VehicleSummaryComponent } from './vehicle-summary/vehicle-summary.component';
 import { WeightsComponent } from './weights/weights.component';
 
+import { AdrModule } from './adr/adr.module';
+import { TechnicalRecordsContainer } from './technical-record.container';
+
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     MatFormFieldModule,
+    // RouterModule.forChild([
+    //   {
+    //     path: '',
+    //     component: TechnicalRecordComponent,
+    //     canActivate: [AuthenticationGuard],
+    //     runGuardsAndResolvers: 'always',
+    //     canDeactivate: [PendingChangesGuard]
+    //   }
+    // ]),
+    // StoreModule.forFeature('adrDetailsSubmit', AdrDetailsSubmitReducer),
+    // EffectsModule.forFeature([AdrDetailsSubmitEffects]),
     RouterModule.forChild([
-      { path: '', component: TechnicalRecordComponent, canActivate: [AuthenticationGuard], runGuardsAndResolvers: "always", canDeactivate: [PendingChangesGuard] }
+      {
+        path: '',
+        component: TechnicalRecordsContainer,
+        canActivate: [AuthenticationGuard],
+        runGuardsAndResolvers: 'always'
+      }
     ]),
-    StoreModule.forFeature('adrDetailsSubmit', AdrDetailsSubmitReducer),
-    EffectsModule.forFeature([AdrDetailsSubmitEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,
     ReactiveFormsModule,
     NgrxFormsModule,
     NgxJsonViewerModule,
-    AdrDetailsFormModule
+    AdrDetailsFormModule,
+    AdrModule
   ],
   declarations: [
+    TechnicalRecordsContainer,
     TechnicalRecordComponent,
     VehicleSummaryComponent,
     BodyComponent,
@@ -62,13 +90,22 @@ import { WeightsComponent } from './weights/weights.component';
     AdrDetailsViewComponent,
     AdrDetailsComponent
   ],
-  exports: [
-    TechnicalRecordComponent
-  ]
+  exports: [TechnicalRecordsContainer, TechnicalRecordComponent]
 })
 export class TechnicalRecordModule {
   constructor() {
     // Add an icon to the library for convenient access in other components
-    library.add(faCoffee, faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium, faPlus, faMinus);
+    library.add(
+      faCoffee,
+      faSquare,
+      faCheckSquare,
+      farSquare,
+      farCheckSquare,
+      faStackOverflow,
+      faGithub,
+      faMedium,
+      faPlus,
+      faMinus
+    );
   }
 }

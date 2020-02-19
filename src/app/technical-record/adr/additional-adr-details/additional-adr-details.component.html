@@ -1,0 +1,20 @@
+<ng-container *ngIf="!edit">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <h2 class="govuk-heading-m">Additional ADR details</h2>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <span id="test-additionalExaminerNotes" class="notes-section">
+          {{ adrDetails.additionalExaminerNotes | DefaultNullOrEmpty }}
+        </span>
+      </dt>
+      <dd class="govuk-summary-list__value"></dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-container *ngIf="edit">
+  <vtm-additional-adr-detail-edit [adrDetails]="adrDetails"></vtm-additional-adr-detail-edit>
+</ng-container>

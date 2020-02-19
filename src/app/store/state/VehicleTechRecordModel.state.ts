@@ -3,6 +3,7 @@ import {VehicleTechRecordModel} from '../../models/vehicle-tech-record.model';
 export interface IVehicleTechRecordModelState {
   initialDetails: CreateTechRecordVM;
   vehicleTechRecordModel: VehicleTechRecordModel;
+  selectedTechRecordIdentifier: string;
   selectedVehicleTechRecordModel: VehicleTechRecordModel;
   error?: any;
 }
@@ -22,6 +23,7 @@ export const initialVehicleTechRecordModelState: IVehicleTechRecordModelState = 
     error: []
   },
   vehicleTechRecordModel: null,
+  selectedTechRecordIdentifier: null,
   selectedVehicleTechRecordModel: null,
   error: null
 };

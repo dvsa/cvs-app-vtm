@@ -11,6 +11,7 @@
     "start": "ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "test": "jest --coverage",
+    "test:dev": "jest --watch",
     "lint": "ng lint",
     "e2e": "cypress open",
     "sonar-scanner": "npm run test && sonar-scanner",
@@ -100,7 +101,7 @@
       "<rootDir>/setupJest.ts"
     ],
     "coverageDirectory": "./coverage",
-    "collectCoverage": true,
+    "collectCoverage": false,
     "testResultsProcessor": "jest-sonar-reporter",
     "testURL": "http://localhost",
     "testPathIgnorePatterns": [
@@ -147,7 +148,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prepush",
       "pre-push": "npm run prepush"
     }
   },

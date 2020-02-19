@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestComponent should create 1`] = `
+<test-applicant-details
+  applicantDetails={[Function Object]}
+  edit="false"
+>
+  <vtm-applicant-details
+    ng-reflect-applicant-details="[object Object]"
+    ng-reflect-edit="false"
+  >
+    
+    
+    <dl
+      class="govuk-summary-list"
+    >
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          <h2
+            class="govuk-heading-m"
+          >
+            Applicant details
+          </h2>
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+        />
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Name
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-name"
+        >
+           - 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Street
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-street"
+        >
+           - 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Town
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-town"
+        >
+           - 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          City
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-city"
+        >
+           - 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Postcode
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-postcode"
+        >
+           - 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+    </dl>
+    
+  </vtm-applicant-details>
+</test-applicant-details>
+`;
+
+exports[`TestComponent should create view only with populated data 1`] = `
+<test-applicant-details
+  applicantDetails={[Function Object]}
+  edit="false"
+>
+  <vtm-applicant-details
+    ng-reflect-applicant-details="[object Object]"
+    ng-reflect-edit="false"
+  >
+    
+    
+    <dl
+      class="govuk-summary-list"
+    >
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          <h2
+            class="govuk-heading-m"
+          >
+            Applicant details
+          </h2>
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+        />
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Name
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-name"
+        >
+           Ben 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Street
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-street"
+        >
+           Robert green 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Town
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-town"
+        >
+           lala land 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          City
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-city"
+        >
+           Birmingham 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Postcode
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-aplicantDetails-postcode"
+        >
+           NG4 12Z 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+    </dl>
+    
+  </vtm-applicant-details>
+</test-applicant-details>
+`;
+
+exports[`TestComponent should render the editable component if edit is true 1`] = `
+<test-applicant-details
+  applicantDetails={[Function Object]}
+  edit={[Function Boolean]}
+>
+  <vtm-applicant-details
+    ng-reflect-applicant-details="[object Object]"
+    ng-reflect-edit="true"
+  >
+    
+    
+    
+    <vtm-applicant-details-edit />
+  </vtm-applicant-details>
+</test-applicant-details>
+`;

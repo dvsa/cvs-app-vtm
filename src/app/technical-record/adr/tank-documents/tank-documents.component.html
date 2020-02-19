@@ -1,0 +1,33 @@
+<ng-container *ngIf="!edit">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <h2 class="govuk-heading-m">Tank documents</h2>
+    </div>
+
+    <ng-container *ngIf="documentListMetaData.length; else noDoc">
+      <div class="govuk-summary-list__row" *ngFor="let doc of documentListMetaData">
+        <dt class="govuk-summary-list__value">{{ doc.fileName }}</dt>
+        <dd class="govuk-summary-list__value"></dd>
+        <dd class="govuk-summary-list__value">
+          <a href="javascript:void(0)" class="govuk-link" (click)="downloadDocument(doc)">
+            View
+          </a>
+        </dd>
+      </div>
+    </ng-container>
+
+    <ng-template #noDoc>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__value">-</dt>
+        <dd class="govuk-summary-list__value"></dd>
+        <dd class="govuk-summary-list__value"></dd>
+      </div>
+    </ng-template>
+  </dl>
+</ng-container>
+
+<ng-container *ngIf="edit">
+  <p>
+    Edit UPLOAD Document
+  </p>
+</ng-container>

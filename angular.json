@@ -35,15 +35,10 @@
               }
             ],
             "styles": [
-              {
-                "input": "src/theme/variables.scss"
-              },
-              {
-                "input": "src/global.scss"
-              },
-              {
-                "input": "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
-              }
+              "src/theme/variables.scss",
+              "src/global.scss",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/govuk-frontend/govuk/all.scss"
             ],
             "scripts": [
               { "input": "node_modules/govuk-frontend/govuk/all.js", "bundleName": "govuk-module" }

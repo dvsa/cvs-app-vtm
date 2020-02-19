@@ -1,0 +1,82 @@
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  OnDestroy,
+  EventEmitter,
+  Output,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import { FormGroup, ControlContainer, FormGroupDirective, FormBuilder } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+
+import { TechRecord } from '@app/models/tech-record.model';
+import { MetaData } from '@app/models/meta-data';
+import { RADIOOPTIONS } from './adr.constants';
+
+@Component({
+  selector: 'vtm-adr',
+  templateUrl: './adr.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useExisting: FormGroupDirective
+    }
+  ]
+})
+export class AdrComponent implements OnChanges, OnInit, OnDestroy {
+  showAdrView: boolean;
+  metaData$: Observable<MetaData>;
+  protected onDestroy$ = new Subject();
+
+  @Input() params: { [key: string]: boolean };
+  @Input() editAdrDetails: boolean;
+  @Input() activeRecord: TechRecord;
+  @Input() vehicleMetaData: MetaData;
+  @Output() removeAdrControl = new EventEmitter<string>();
+
+  constructor(private parent: FormGroupDirective, protected fb: FormBuilder) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { params } = changes;
+    if (params) {
+      this.showAdrView = params.currentValue.showAdrDetails;
+    }
+  }
+
+  ngOnInit() {}
+
+  protected setUp(): FormGroup {
+    const group = this.parent.form.get('adrDetails') as FormGroup;
+    if (!group) {
+      this.parent.form.addControl('adrDetails', new FormGroup({}));
+      return this.parent.form.get('adrDetails') as FormGroup;
+    }
+
+    return group;
+  }
+
+  switchAdrDisplay($event): void {
+    this.showAdrView = $event.currentTarget.value === 'true';
+    if (!this.showAdrView) {
+      // remove ADR structure/record that was setup for editing
+      this.removeAdrControl.emit('adrDetails');
+    }
+  }
+
+  radioOptions() {
+    return RADIOOPTIONS;
+  }
+
+  unsorted(): number {
+    return 0;
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+}

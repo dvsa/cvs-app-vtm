@@ -1,12 +1,16 @@
 import {
   EVehicleTechRecordModelActions,
-  SetVehicleTechRecordModelVinOnCreateSucess,
   VehicleTechRecordModelActions
 } from '../actions/VehicleTechRecordModel.actions';
-import { initialVehicleTechRecordModelState, IVehicleTechRecordModelState } from '@app/store/state/VehicleTechRecordModel.state';
+import {
+  initialVehicleTechRecordModelState,
+  IVehicleTechRecordModelState
+} from '@app/store/state/VehicleTechRecordModel.state';
 
-export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions):
-IVehicleTechRecordModelState {
+export function VehicleTechRecordModelReducers(
+  state = initialVehicleTechRecordModelState,
+  action: VehicleTechRecordModelActions
+): IVehicleTechRecordModelState {
   switch (action.type) {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
       return {
@@ -27,7 +31,7 @@ IVehicleTechRecordModelState {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure: {
       return {
         ...state,
-        error: action.payload  // capture error message
+        error: action.payload // capture error message
       };
     }
 
@@ -46,6 +50,21 @@ IVehicleTechRecordModelState {
         error: null
       };
     }
+
+    case EVehicleTechRecordModelActions.SetVehicleTechRecordIdentifier: {
+      return {
+        ...state,
+        selectedTechRecordIdentifier: action.techRecordIdentifier
+      };
+    }
+
+    // case EVehicleTechRecordModelActions.UpdateVehicleTechRecordSuccess: {
+    //   return {
+    //     ...state,
+    //     ...state.vehicleTechRecordModel,
+    //     vehicleTechRecordModel: action.vehicleTechRecord
+    //   };
+    // }
 
     default:
       return state;
