@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,7 +19,6 @@ import { DownloadDocumentsEffects } from '@app/technical-record/adr-details/adr-
     CommonModule,
     MaterialModule,
     MatFormFieldModule,
-    HttpClientModule,
     StoreModule.forFeature('adrDetails', adrDetailsReducer),
     EffectsModule.forFeature([DownloadDocumentsEffects]),
     FormsModule,
