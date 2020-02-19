@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApplicantDetailsComponent should create view only with populated data 1`] = `
+<vtm-applicant-details
+  applicantDetails={[Function Object]}
+  edit="false"
+>
+  <h2
+    class="govuk-heading-m"
+  >
+    Applicant details
+  </h2><dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Name
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="applicantDetails-name"
+      >
+         Ben 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Street
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="applicantDetails-street"
+      >
+         Robert green 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Town
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="applicantDetails-town"
+      >
+         lala land 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        City
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="applicantDetails-city"
+      >
+         Birmingham 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Postcode
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="applicantDetails-postcode"
+      >
+         NG4 12Z 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-applicant-details>
+`;
+
+exports[`ApplicantDetailsComponent should render the editable component if edit is true 1`] = `
+<vtm-applicant-details
+  applicantDetails={[Function Object]}
+  edit={[Function Boolean]}
+>
+  <vtm-applicant-details-edit
+    ng-reflect-applicant-details="[object Object]"
+  >
+    <div>
+      {
+    "name": "Robert Greenn"
+  }
+    </div>
+  </vtm-applicant-details-edit>
+</vtm-applicant-details>
+`;

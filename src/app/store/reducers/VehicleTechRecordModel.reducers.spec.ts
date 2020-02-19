@@ -5,7 +5,11 @@ import {
   GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelSuccess, SetVehicleTechRecordModelVinOnCreate
 } from '../actions/VehicleTechRecordModel.actions';
 import {initialVehicleTechRecordModelState} from '../state/VehicleTechRecordModel.state';
+import {TechRecord} from '@app/models/tech-record.model';
+import {SearchParams} from '@app/models/search-params';
 
+const techRecord: TechRecord = {} as TechRecord;
+const vehicleTechRecord: VehicleTechRecordModel = {} as VehicleTechRecordModel;
 
 describe('VehicleTechRecordModel Reducer', () => {
   describe('undefined action', () => {
@@ -19,7 +23,7 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModel', () => {
     it('should toggle loading state', () => {
-      const action = new GetVehicleTechRecordModel({techRecord: []});
+      const action = new GetVehicleTechRecordModel(techRecord);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState
@@ -29,32 +33,19 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModel Success', () => {
     it('should update the state with the payload', () => {
-      const vehicleTechRecord: VehicleTechRecordModel = {
-        systemNumber: '1231243',
-        vrms: [
-          {
-            vrm: '53654645',
-            isPrimary: true
-          }],
-        vin: '1234566',
-        techRecord: [],
-        metadata: {
-          adrDetails: undefined
-        },
-        error: null
-      };
-      const action = new GetVehicleTechRecordModelSuccess(vehicleTechRecord);
+      const action = new GetVehicleTechRecordModelSuccess([vehicleTechRecord]);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
-        selectedVehicleTechRecordModel: vehicleTechRecord
+        selectedVehicleTechRecordModel: [vehicleTechRecord]
       });
     });
   });
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll', () => {
     it('should toggle loading state', () => {
-      const action = new GetVehicleTechRecordModelHavingStatusAll({techRecord: []});
+      const searchParams: SearchParams = {searchIdentifier: '1234', searchCriteria: 'all'};
+      const action = new GetVehicleTechRecordModelHavingStatusAll(searchParams);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState
@@ -64,24 +55,11 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success', () => {
     it('should update the state with the payload', () => {
-      const vehicleTechRecord: VehicleTechRecordModel = {
-        systemNumber: '1231243',
-        vrms: [
-          {
-            vrm: '53654645',
-            isPrimary: true
-          }],
-        vin: '1234566',
-        techRecord: [],
-        metadata: {
-          adrDetails: undefined
-        }
-      };
-      const action = new GetVehicleTechRecordModelHavingStatusAllSuccess(vehicleTechRecord);
+      const action = new GetVehicleTechRecordModelHavingStatusAllSuccess([vehicleTechRecord]);
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
-        vehicleTechRecordModel: vehicleTechRecord
+        vehicleTechRecordModel: [vehicleTechRecord]
       });
     });
   });
