@@ -4,7 +4,7 @@
       Vehicle type
     </dt>
     <dd id="test-vehicleType" class="govuk-summary-list__value">
-      {{ (activeRecord.vehicleType| DefaultNullOrEmpty) | uppercase }}
+      {{ activeRecord.vehicleType | DefaultNullOrEmpty | uppercase }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -58,7 +58,7 @@
       DTp number
     </dt>
     <dd id="test-dtpNumber" class="govuk-summary-list__value">
-      <div *ngIf="!(activeRecord.brakes == null) else hyphen">
+      <div *ngIf="!(activeRecord.brakes == null); else hyphen">
         {{ activeRecord.brakes.dtpNumber | DefaultNullOrEmpty }}
       </div>
     </dd>
@@ -69,12 +69,19 @@
       Parking brake fitted
     </dt>
     <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk">
-      <div *ngIf="!techRecHelpers.isEmptyObject(activeRecord.axles) &&
-                            !axlesHasNoParkingBrakeMrk(activeRecord.axles) else hyphen">
+      <div
+        *ngIf="
+          !techRecHelpers.isEmptyObject(activeRecord.axles) &&
+            !axlesHasNoParkingBrakeMrk(activeRecord.axles);
+          else hyphen
+        "
+      >
         <div *ngFor="let axel of activeRecord.axles">
           <div *ngIf="axel.hasOwnProperty('parkingBrakeMrk') && axel.parkingBrakeMrk === true">
             <div *ngIf="axel.parkingBrakeMrk">
-              <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{axel.axleNumber}}</span>
+              <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}"
+                >Axle {{ axel.axleNumber }}</span
+              >
             </div>
           </div>
         </div>
@@ -87,7 +94,7 @@
       Load sensing valve
     </dt>
     <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-      <div *ngIf="(activeRecord.brakes == null) else hyphen">
+      <div *ngIf="!!activeRecord.brakes; else hyphen">
         {{ activeRecord.brakes.loadSensingValve | DefaultNullOrEmpty }}
       </div>
     </dd>
@@ -98,7 +105,7 @@
       Antilock braking system
     </dt>
     <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
-      <div *ngIf="!(activeRecord.brakes == null) else hyphen">
+      <div *ngIf="!(activeRecord.brakes == null); else hyphen">
         {{ activeRecord.brakes.antilockBrakingSystem | DefaultNullOrEmpty }}
       </div>
     </dd>
@@ -194,8 +201,12 @@
       Vehicle class
     </dt>
     <dd id="test-vehicleClassDescription" class="govuk-summary-list__value">
-      {{ techRecHelpers.isNullOrEmpty(activeRecord.vehicleClass) ? "-" :
-            (activeRecord.vehicleClass.description | DefaultNullOrEmpty).charAt(0).toUpperCase() + (activeRecord.vehicleClass.description | DefaultNullOrEmpty).substr(1).toLowerCase() }}
+      {{
+        techRecHelpers.isNullOrEmpty(activeRecord.vehicleClass)
+          ? '-'
+          : (activeRecord.vehicleClass.description | DefaultNullOrEmpty).charAt(0).toUpperCase() +
+            (activeRecord.vehicleClass.description | DefaultNullOrEmpty).substr(1).toLowerCase()
+      }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -204,7 +215,10 @@
       Vehicle configuration
     </dt>
     <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
-      {{ (activeRecord.vehicleConfiguration | DefaultNullOrEmpty).charAt(0).toUpperCase() + (activeRecord.vehicleConfiguration | DefaultNullOrEmpty).substr(1).toLowerCase()}}
+      {{
+        (activeRecord.vehicleConfiguration | DefaultNullOrEmpty).charAt(0).toUpperCase() +
+          (activeRecord.vehicleConfiguration | DefaultNullOrEmpty).substr(1).toLowerCase()
+      }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>

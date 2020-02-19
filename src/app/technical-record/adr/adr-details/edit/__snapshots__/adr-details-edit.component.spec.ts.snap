@@ -1,0 +1,410 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdrDetailsEditComponent should create with initialized form controls 1`] = `
+<vtm-adr-details-edit
+  adrDetails={[Function Object]}
+  adrForm={[Function FormGroup]}
+  approvalDate={[Function String]}
+  detectChange={[Function ViewRef_]}
+  explosive_types={[Function Array]}
+  fb={[Function FormBuilder]}
+  guidanceNotesOptions={[Function Array]}
+  metaData={[Function Object]}
+  onDestroy$={[Function Subject]}
+  options={[Function Object]}
+  parent={[Function FormGroupDirective]}
+  permittedDangerousGoodsOptions={[Function Array]}
+  removeAdrControl={[Function EventEmitter]}
+  showCompatibilityGroupJ="false"
+  validationMapper={[Function ValidationMapper]}
+  vehicleTypeDefault={[Function String]}
+  vehicleTypeOptions={[Function Array]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-full"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              ADR details
+            </h2>
+            <div
+              class="ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="vehicleType"
+                >
+                   Vehicle type 
+                </label>
+                <select
+                  class="govuk-select ng-untouched ng-pristine ng-valid"
+                  formcontrolname="type"
+                  id="vehicleType"
+                  ng-reflect-name="type"
+                >
+                  
+                  <option
+                    ng-reflect-ng-value="artic tractor"
+                    value="0: artic tractor"
+                  >
+                     Artic tractor 
+                  </option>
+                  <option
+                    ng-reflect-ng-value="semi trailer battery"
+                    value="1: semi trailer battery"
+                  >
+                     Semi trailer battery 
+                  </option>
+                  <option
+                    ng-reflect-ng-value="centre axle tank"
+                    value="2: centre axle tank"
+                  >
+                     Centre axle tank 
+                  </option>
+                  <option
+                    ng-reflect-ng-value="centre axle battery"
+                    value="3: centre axle battery"
+                  >
+                     Centre axle battery 
+                  </option>
+                </select>
+              </div>
+              <div
+                class="govuk-form-group"
+              >
+                <fieldset
+                  aria-describedby="approval-date"
+                  class="govuk-fieldset"
+                  role="group"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                  >
+                     Date processed 
+                  </label>
+                  <vtm-date-input
+                    ariadescribedby="approvalDate"
+                    class="ng-untouched ng-pristine ng-valid"
+                    formcontrolname="approvalDate"
+                    ng-reflect-id="approvalDate"
+                    ng-reflect-name="approvalDate"
+                  >
+                    
+                    <div
+                      class="govuk-date-input"
+                    >
+                      <div
+                        class="govuk-date-input__item"
+                      >
+                        <div
+                          class="govuk-form-group"
+                        >
+                          <label
+                            class="govuk-label govuk-date-input__label"
+                            for="approvalDate-1-day"
+                          >
+                             Day 
+                          </label>
+                          <input
+                            autocomplete="off"
+                            class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                            formcontrolname="day"
+                            id="approvalDate-1-day"
+                            maxlength="2"
+                            name="dateDay"
+                            ng-reflect-maxlength="2"
+                            ng-reflect-name="day"
+                            ng-reflect-pattern="[0-9]*"
+                            pattern="[0-9]*"
+                            type="number"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="govuk-date-input__item"
+                      >
+                        <div
+                          class="govuk-form-group"
+                        >
+                          <label
+                            class="govuk-label govuk-date-input__label"
+                            for="approvalDate-1-month"
+                          >
+                             Month 
+                          </label>
+                          <input
+                            autocomplete="off"
+                            class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                            formcontrolname="month"
+                            id="approvalDate-1-month"
+                            maxlength="2"
+                            name="dateMonth"
+                            ng-reflect-maxlength="2"
+                            ng-reflect-name="month"
+                            ng-reflect-pattern="[0-9]*"
+                            pattern="[0-9]*"
+                            type="number"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="govuk-date-input__item"
+                      >
+                        <div
+                          class="govuk-form-group"
+                        >
+                          <label
+                            class="govuk-label govuk-date-input__label"
+                            for="approvalDate-1-year"
+                          >
+                             Year 
+                          </label>
+                          <input
+                            autocomplete="off"
+                            class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                            formcontrolname="year"
+                            id="approvalDate-1-year"
+                            maxlength="4"
+                            minlength="4"
+                            name="dateYear"
+                            ng-reflect-maxlength="4"
+                            ng-reflect-minlength="4"
+                            ng-reflect-name="year"
+                            ng-reflect-pattern="[0-9]*"
+                            pattern="[0-9]*"
+                            type="number"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </vtm-date-input>
+                </fieldset>
+              </div>
+            </div>
+            <div
+              class="govuk-form-group govuk-!-margin-top-6"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Permitted dangerous goods 
+              </label>
+              <div
+                class="govuk-checkboxes ng-untouched ng-pristine ng-valid"
+                formarrayname="permittedDangerousGoods"
+                ng-reflect-name="permittedDangerousGoods"
+              >
+                
+                
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    id="permittedGood_0"
+                    ng-reflect-form="[object Object]"
+                    type="checkbox"
+                    value="false"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="permittedGood_0"
+                  >
+                     FP &lt;61 (FL) 
+                  </label>
+                </div>
+                
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    id="permittedGood_1"
+                    ng-reflect-form="[object Object]"
+                    type="checkbox"
+                    value="true"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="permittedGood_1"
+                  >
+                     AT 
+                  </label>
+                </div>
+                
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    id="permittedGood_2"
+                    ng-reflect-form="[object Object]"
+                    type="checkbox"
+                    value="false"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="permittedGood_2"
+                  >
+                     Explosives (type 2) 
+                  </label>
+                </div>
+                <div
+                  class="govuk-inset-text govuk-!-margin-top-0 govuk-checkboxes__conditional--hidden"
+                  id="conditional-permittedGood"
+                >
+                  
+                  <div
+                    class="govuk-form-group govuk-!-margin-left-3"
+                  >
+                    <h4
+                      class="govuk-heading-m"
+                    >
+                      Compatibility group J
+                    </h4>
+                    <div
+                      class="govuk-radios govuk-radios--inline"
+                    >
+                      
+                      <div
+                        class="govuk-radios__item"
+                      >
+                        <input
+                          class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                          formcontrolname="compatibilityGroupJ"
+                          id="compatibilityGroupJ-Yes"
+                          name="compatibilityGroupJ"
+                          ng-reflect-form-control-name="compatibilityGroupJ"
+                          ng-reflect-name="compatibilityGroupJ"
+                          ng-reflect-value="true"
+                          type="radio"
+                        />
+                        <label
+                          class="govuk-label govuk-radios__label"
+                          for="compatibilityGroupJ-Yes"
+                        >
+                           Yes 
+                        </label>
+                      </div>
+                      <div
+                        class="govuk-radios__item"
+                      >
+                        <input
+                          class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                          formcontrolname="compatibilityGroupJ"
+                          id="compatibilityGroupJ-No"
+                          name="compatibilityGroupJ"
+                          ng-reflect-form-control-name="compatibilityGroupJ"
+                          ng-reflect-name="compatibilityGroupJ"
+                          ng-reflect-value="false"
+                          type="radio"
+                        />
+                        <label
+                          class="govuk-label govuk-radios__label"
+                          for="compatibilityGroupJ-No"
+                        >
+                           No 
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="adrTypeApprovalNo"
+              >
+                 ADR type approval number 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                formcontrolname="adrTypeApprovalNo"
+                id="adrTypeApprovalNo"
+                ng-reflect-name="adrTypeApprovalNo"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Guidance notes 
+              </label>
+              <div
+                class="govuk-checkboxes ng-untouched ng-pristine ng-valid"
+                formarrayname="number"
+                ng-reflect-name="number"
+              >
+                
+                
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    id="note_0"
+                    ng-reflect-form="[object Object]"
+                    type="checkbox"
+                    value="false"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="permittedGood_0"
+                  >
+                     V1B 
+                  </label>
+                </div>
+                
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    id="note_1"
+                    ng-reflect-form="[object Object]"
+                    type="checkbox"
+                    value="false"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="permittedGood_1"
+                  >
+                     T1B 
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-adr-details-edit>
+`;
