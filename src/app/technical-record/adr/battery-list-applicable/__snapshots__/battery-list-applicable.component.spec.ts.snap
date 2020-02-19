@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BatteryListApplicableComponent should create view only with populated data 1`] = `
+<vtm-battery-list-applicable
+  adrDetails={[Function Object]}
+  edit="false"
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <h2
+        class="govuk-heading-m"
+      >
+        Battery list
+      </h2>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Applicable
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-listStatementApplicable"
+      >
+         NO 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Reference number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-batteryListNumber"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-battery-list-applicable>
+`;
+
+exports[`BatteryListApplicableComponent should render the editable component if edit is true 1`] = `
+<vtm-battery-list-applicable
+  adrDetails={[Function Object]}
+  edit={[Function Boolean]}
+>
+  <vtm-battery-list-applicable-edit
+    ng-reflect-adr-details="[object Object]"
+  >
+    <div>
+      {
+    "listStatementApplicable": false,
+    "batteryListNumber": "refref2"
+  }
+    </div>
+  </vtm-battery-list-applicable-edit>
+</vtm-battery-list-applicable>
+`;

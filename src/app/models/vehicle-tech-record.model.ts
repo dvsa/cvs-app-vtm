@@ -1,12 +1,12 @@
-import {VrmModel} from '@app/models/vrm.model';
-import {TechRecordModel} from '@app/models/tech-record.model';
-import { MetaData } from './MetaData';
+import { VrmModel } from '@app/models/vrm.model';
+import { TechRecord } from '@app/models/tech-record.model';
+import { MetaData } from './meta-data';
 
 export interface VehicleTechRecordModel {
   vrms: VrmModel[];
   vin: string;
   systemNumber: string;
-  techRecord: TechRecordModel[];
+  techRecord: TechRecord[];
   metadata: MetaData;
   error?: any | null | undefined;
 }

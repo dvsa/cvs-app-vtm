@@ -1,0 +1,51 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div [formGroup]="adrForm">
+          <!-- Battery list applicable -->
+          <h2 class="govuk-heading-m">Battery list applicable</h2>
+
+          <div class="govuk-radios govuk-radios--inline">
+            <div class="govuk-radios__item" *ngFor="let option of options | keyvalue: unsorted">
+              <input
+                class="govuk-radios__input"
+                id="listStatementApplicable-{{ option.key }}"
+                name="listStatementApplicable"
+                formControlName="listStatementApplicable"
+                type="radio"
+                [value]="option.value"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="listStatementApplicable-{{ option.key }}"
+              >
+                {{ option.key }}
+              </label>
+            </div>
+            <div
+              id="conditional-battery-list-applicable"
+              class="govuk-inset-text govuk-!-margin-top-0"
+              [class.govuk-radios__conditional--hidden]="
+                !adrForm.get('listStatementApplicable').value
+              "
+            >
+              <div class="govuk-form-group govuk-!-margin-left-3">
+                <label class="govuk-label govuk-!-font-weight-bold" for="batteryListNumber">
+                  Reference number
+                </label>
+                <input
+                  id="batteryListNumber"
+                  type="text"
+                  name="batteryListNumber"
+                  formControlName="batteryListNumber"
+                  class="govuk-input govuk-input--width-10"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
