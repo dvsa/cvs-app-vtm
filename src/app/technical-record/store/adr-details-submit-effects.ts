@@ -26,8 +26,8 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
       .pipe(
         map(s => {
           return {
-            vin: s.vin,
-            activeRecord: this._filterRecordPipe.transform(s.techRecord)
+            vin: s[0].vin,
+            activeRecord: this._filterRecordPipe.transform(s[0].techRecord)
           };
         }),
       )),

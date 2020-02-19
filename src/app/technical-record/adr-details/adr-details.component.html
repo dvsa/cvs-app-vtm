@@ -1,5 +1,5 @@
-  <dl class="technical-record-sub-details govuk-summary-list adr-details">
-    <div class="govuk-summary-list__row">
+<dl class="technical-record-sub-details govuk-summary-list adr-details">
+  <!-- <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
         Able to carry dangerous goods
         <span *ngIf="showCheck">
@@ -28,21 +28,24 @@
         </div>
       </dd>
       <dd class="govuk-summary-list__value"></dd>
-    </div>
+    </div> -->
 
-    <vtm-adr-details-view *ngIf="adrData else adrForm"
-        [activeRecord]="activeRecord"
-        [techRecordsJson]="techRecordsJson"
-        [hideForm]="hideForm">
-    </vtm-adr-details-view>
+  <!-- <vtm-adr-details-view
+    *ngIf="adrData; else adrForm"
+    [activeRecord]="activeRecord"
+    [techRecordsJson]="techRecordsJson"
+    [hideForm]="hideForm"
+  >
+  </vtm-adr-details-view> -->
 
-    <ng-template #adrForm>
-        <vtm-adr-details-form *ngIf="!hideForm"
-          [vehicletypes$]="vehicletypes$"
-          [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$"
-          [guidanceNotesFe$]="guidanceNotesFe$"
-          [initialAdrDetails]="activeRecord?.adrDetails">
-        </vtm-adr-details-form>
-    </ng-template>
-
-  </dl>
+  <!-- <ng-template #adrForm>
+    <vtm-adr-details-form
+      *ngIf="!hideForm"
+      [vehicletypes$]="vehicletypes$"
+      [permittedDangerousGoodsFe$]="permittedDangerousGoodsFe$"
+      [guidanceNotesFe$]="guidanceNotesFe$"
+      [initialAdrDetails]="activeRecord?.adrDetails"
+    >
+    </vtm-adr-details-form>
+  </ng-template> -->
+</dl>

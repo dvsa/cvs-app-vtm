@@ -17,15 +17,15 @@
   "adalConfig": {
     "clientId": "",
     "tenant": "",
-    "redirectUri": "http://localhost:4200",
-    "cacheLocation": "localStorage",
+    "redirectUri": "",
+    "cacheLocation": "",
     "endpoints": {
       "api": ""
     }
   },
   "apiServer": {
-    "APITechnicalRecordServerUri": "http://localhost:3005",
-    "APITestResultServerUri": "http://localhost:3006",
+    "APITechnicalRecordServerUri": "",
+    "APITestResultServerUri": "",
     "APIDocumentsServerUri": "assets/files",
     "APIDocumentBlobUri": ""
   }

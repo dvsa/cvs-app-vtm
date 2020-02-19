@@ -1,0 +1,23 @@
+<ng-container *ngIf="!edit">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <h2 class="govuk-heading-m">Certificate</h2>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Required</dt>
+      <dd id="test-guidanceNotes" class="govuk-summary-list__value">
+        <ng-container *ngIf="isCertificateRequested; else hyphen">
+          Yes
+        </ng-container>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-template #hyphen><span>-</span></ng-template>
+
+<!-- Edit Certificate required -->
+<ng-container *ngIf="edit">
+  <vtm-certificate-edit [hasCertificateRequested]="isCertificateRequested"></vtm-certificate-edit>
+</ng-container>

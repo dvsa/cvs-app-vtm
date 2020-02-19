@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TankInspectionsEditComponent should create with initialized form controls 1`] = `
+<vtm-tank-inspections-edit
+  adrForm={[Function FormGroup]}
+  fb={[Function FormBuilder]}
+  inspectionTypeOptions={[Function Array]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  removeAdrControl={[Function EventEmitter]}
+  tankDetailsData={[Function Object]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-full"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <h2
+              class="govuk-heading-m govuk-!-margin-bottom-2"
+            >
+              Tank inspections
+            </h2>
+            <div
+              class="ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <h4
+                class="govuk-heading-s"
+              >
+                Initial
+              </h4>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-0 ng-untouched ng-pristine ng-valid"
+                ng-reflect-form="[object Object]"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="tc2IntermediateApprovalNo-"
+                  >
+                     Certificate number 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                    id="tc2IntermediateApprovalNo-"
+                    name="tc2IntermediateApprovalNo-"
+                    ng-reflect-name="tc2IntermediateApprovalNo"
+                    type="text"
+                  />
+                </div>
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <fieldset
+                    aria-describedby="approval-date"
+                    class="govuk-fieldset"
+                    role="group"
+                  >
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
+                       Expiry date 
+                    </label>
+                    <vtm-date-input
+                      ariadescribedby="tcDetail.expiryDate"
+                      class="ng-untouched ng-pristine ng-valid"
+                      ng-reflect-id="tc2IntermediateExpiryDate"
+                      ng-reflect-name="tc2IntermediateExpiryDate"
+                    >
+                      
+                      <div
+                        class="govuk-date-input"
+                      >
+                        <div
+                          class="govuk-date-input__item"
+                        >
+                          <div
+                            class="govuk-form-group"
+                          >
+                            <label
+                              class="govuk-label govuk-date-input__label"
+                              for="tc2IntermediateExpiryDate-1-day"
+                            >
+                               Day 
+                            </label>
+                            <input
+                              autocomplete="off"
+                              class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                              formcontrolname="day"
+                              id="tc2IntermediateExpiryDate-1-day"
+                              maxlength="2"
+                              name="dateDay"
+                              ng-reflect-maxlength="2"
+                              ng-reflect-name="day"
+                              ng-reflect-pattern="[0-9]*"
+                              pattern="[0-9]*"
+                              type="number"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="govuk-date-input__item"
+                        >
+                          <div
+                            class="govuk-form-group"
+                          >
+                            <label
+                              class="govuk-label govuk-date-input__label"
+                              for="tc2IntermediateExpiryDate-1-month"
+                            >
+                               Month 
+                            </label>
+                            <input
+                              autocomplete="off"
+                              class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                              formcontrolname="month"
+                              id="tc2IntermediateExpiryDate-1-month"
+                              maxlength="2"
+                              name="dateMonth"
+                              ng-reflect-maxlength="2"
+                              ng-reflect-name="month"
+                              ng-reflect-pattern="[0-9]*"
+                              pattern="[0-9]*"
+                              type="number"
+                            />
+                          </div>
+                        </div>
+                        <div
+                          class="govuk-date-input__item"
+                        >
+                          <div
+                            class="govuk-form-group"
+                          >
+                            <label
+                              class="govuk-label govuk-date-input__label"
+                              for="tc2IntermediateExpiryDate-1-year"
+                            >
+                               Year 
+                            </label>
+                            <input
+                              autocomplete="off"
+                              class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                              formcontrolname="year"
+                              id="tc2IntermediateExpiryDate-1-year"
+                              maxlength="4"
+                              minlength="4"
+                              name="dateYear"
+                              ng-reflect-maxlength="4"
+                              ng-reflect-minlength="4"
+                              ng-reflect-name="year"
+                              ng-reflect-pattern="[0-9]*"
+                              pattern="[0-9]*"
+                              type="number"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </vtm-date-input>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="ng-untouched ng-pristine ng-valid"
+                formarrayname="tc3Details"
+                ng-reflect-name="tc3Details"
+              >
+                
+              </div>
+              <div
+                class="govuk-label govuk-!-margin-top-0 govuk-!-margin-bottom-5"
+              >
+                <a
+                  class="govuk-link govuk-link--no-visited-state"
+                  href="javascript:void(0)"
+                >
+                   Add a subsequent inspection 
+                </a>
+              </div>
+            </div>
+            
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-tank-inspections-edit>
+`;

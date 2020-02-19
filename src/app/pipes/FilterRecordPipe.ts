@@ -3,7 +3,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterRecordPipe implements PipeTransform {
 
   transform(techRecordList: any): any {
-    if (techRecordList) {
+
+    if (techRecordList && Array.isArray(techRecordList)) {
       let records = techRecordList.find((record: any) => record.statusCode === 'current');
       if (records !== undefined) { return records; }
 
@@ -13,6 +14,8 @@ export class FilterRecordPipe implements PipeTransform {
       records = techRecordList.filter((record: any) => record.statusCode === 'archived');
       records.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       if (records !== undefined) { return records[0]; }
+    } else {
+      return techRecordList;
     }
   }
 }

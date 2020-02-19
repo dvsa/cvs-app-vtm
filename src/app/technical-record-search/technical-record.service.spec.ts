@@ -23,18 +23,17 @@ describe('TechnicalRecordService', () => {
   let httpMock: HttpTestingController;
   let injector: TestBed;
   let service: TechnicalRecordService;
-  let store: Store<IAppState>
+  let store: Store<IAppState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         TechnicalRecordService,
         { provide: AppConfig, useValue: appConfigMock },
         {
-          provide: Store, useValue: {
+          provide: Store,
+          useValue: {
             dispatch: jest.fn(),
             pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
             select: jest.fn()
@@ -64,45 +63,53 @@ describe('TechnicalRecordService', () => {
       done();
     });
 
-    const req = httpMock.expectOne(req => req.url.includes(`/vehicles/1234567/tech-records?status=all&metadata=true`));
+    const req = httpMock.expectOne((req) =>
+      req.url.includes(`/vehicles/1234567/tech-records?status=all&metadata=true`)
+    );
     req.flush(mock);
   });
 
   it('updateTechnicalRecords should update entry', (done) => {
     const mock = { mockObject: 'mock' };
-    service.updateTechnicalRecords('techRec','1234567').subscribe((res) => {
+    service.updateTechnicalRecords('techRec', '1234567').subscribe((res) => {
       expect(res).toBeDefined();
       expect(res).toEqual(mock);
       done();
     });
 
-    const req = httpMock.expectOne(req => req.url.includes(`/vehicles/1234567`));
+    const req = httpMock.expectOne((req) => req.url.includes(`/vehicles/1234567`));
     req.flush(mock);
   });
 
-  describe('uploadDocuments', () => {
-    it('should return observable of success mesage when the argument can be transformed into json', (done) => {
-      const submitData = { test: 'test' };
-      spyOn(console, 'log');
-      const expectedMessage = 'succeeded';
-      service.uploadDocuments(submitData).subscribe(res => {
-        expect(res).toBe(expectedMessage);
-        expect(console.log).toHaveBeenCalledWith(`inside uploadDocuments received submiData => ${JSON.stringify(submitData)}`);
-        done();
-      });
-    });
-  });
+  // describe('uploadDocuments', () => {
+  //   it('should return observable of success mesage when the argument can be transformed into json', (done) => {
+  //     const submitData = { test: 'test' };
+  //     spyOn(console, 'log');
+  //     const expectedMessage = 'succeeded';
+  //     service.uploadDocuments(submitData).subscribe(res => {
+  //       expect(res).toBe(expectedMessage);
+  //       expect(console.log).toHaveBeenCalledWith(`inside uploadDocuments received submiData => ${JSON.stringify(submitData)}`);
+  //       done();
+  //     });
+  //   });
+  // });
 
   describe('getDocumentBlob', () => {
     it('should transform the document into a blob file when passed a vin number', (done) => {
       const vin = '123456';
       const fileName = 'test';
-      service.getDocumentBlob(vin, fileName).subscribe(res => {
-        expect(res).toMatchObject({ buffer: new ArrayBuffer(3), contentType: 'json', fileName: 'test' });
+      service.getDocumentBlob(vin, fileName).subscribe((res) => {
+        expect(res).toMatchObject({
+          buffer: new ArrayBuffer(3),
+          contentType: 'json',
+          fileName: 'test'
+        });
         done();
       });
 
-      const req = httpMock.expectOne(req => req.url.includes('http://localhost:3005/vehicles/123456/download-file'));
+      const req = httpMock.expectOne((req) =>
+        req.url.includes('http://localhost:3005/vehicles/123456/download-file')
+      );
       expect(req.request.method).toBe('GET');
       expect(req.request.responseType).toBe('json');
       req.flush({ fileBuffer: { data: ['1', '2', '3'] }, contentType: 'json' });
@@ -112,5 +119,4 @@ describe('TechnicalRecordService', () => {
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-
 });

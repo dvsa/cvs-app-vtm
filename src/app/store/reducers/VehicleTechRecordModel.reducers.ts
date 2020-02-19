@@ -1,12 +1,11 @@
-import {
-  EVehicleTechRecordModelActions,
-  SetVehicleTechRecordModelVinOnCreateSucess,
-  VehicleTechRecordModelActions
-} from '../actions/VehicleTechRecordModel.actions';
-import { initialVehicleTechRecordModelState, IVehicleTechRecordModelState } from '@app/store/state/VehicleTechRecordModel.state';
+import {EVehicleTechRecordModelActions, VehicleTechRecordModelActions} from '../actions/VehicleTechRecordModel.actions';
+import {initialVehicleTechRecordModelState, IVehicleTechRecordModelState} from '@app/store/state/VehicleTechRecordModel.state';
+import {a} from '@angular/core/src/render3';
 
-export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions):
-IVehicleTechRecordModelState {
+export function VehicleTechRecordModelReducers(
+  state = initialVehicleTechRecordModelState,
+  action: VehicleTechRecordModelActions
+): IVehicleTechRecordModelState {
   switch (action.type) {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
       return {
@@ -27,7 +26,7 @@ IVehicleTechRecordModelState {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure: {
       return {
         ...state,
-        error: action.payload  // capture error message
+        error: action.payload // capture error message
       };
     }
 
@@ -44,6 +43,34 @@ IVehicleTechRecordModelState {
         ...state,
         initialDetails: action.payload,
         error: null
+      };
+    }
+
+    case EVehicleTechRecordModelActions.SetVehicleTechRecordIdentifier: {
+      return {
+        ...state,
+        selectedTechRecordIdentifier: action.techRecordIdentifier
+      };
+    }
+
+    case EVehicleTechRecordModelActions.UpdateVehicleTechRecordsSuccess: {
+      return {
+        ...state,
+        vehicleTechRecordModel: action.vehicleTechRecords
+      };
+    }
+
+    case EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecordSucess: {
+      return {
+        ...state,
+        selectedVehicleTechRecord: action.vehicleTechRecord
+      };
+    }
+
+    case EVehicleTechRecordModelActions.SetViewState: {
+      return {
+        ...state,
+        viewState: action.viewState
       };
     }
 

@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CertificateEditComponent should create with initialized form controls 1`] = `
+<vtm-certificate-edit
+  adrForm={[Function FormGroup]}
+  fb={[Function FormBuilder]}
+  hasCertificateRequested={[Function Boolean]}
+  onDestroy$={[Function Subject]}
+  options={[Function Object]}
+  parent={[Function FormGroupDirective]}
+  removeAdrControl={[Function EventEmitter]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-full"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Certificate required
+            </h2>
+            <div
+              class="govuk-radios govuk-radios--inline ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="guidanceNotes"
+                  id="guidanceNotes-Yes"
+                  name="guidanceNotes"
+                  ng-reflect-form-control-name="guidanceNotes"
+                  ng-reflect-name="guidanceNotes"
+                  ng-reflect-value="true"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="guidanceNotes-Yes"
+                >
+                   Yes 
+                </label>
+              </div>
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="guidanceNotes"
+                  id="guidanceNotes-No"
+                  name="guidanceNotes"
+                  ng-reflect-form-control-name="guidanceNotes"
+                  ng-reflect-name="guidanceNotes"
+                  ng-reflect-value="false"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="guidanceNotes-No"
+                >
+                   No 
+                </label>
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-certificate-edit>
+`;
