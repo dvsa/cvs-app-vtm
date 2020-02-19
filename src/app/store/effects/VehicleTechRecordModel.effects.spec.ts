@@ -8,18 +8,16 @@ import { INITIAL_STATE, Store } from '@ngrx/store';
 import { cold, hot } from 'jasmine-marbles';
 import { provideMockActions } from '@ngrx/effects/testing';
 import {
-  EVehicleTechRecordModelActions,
-  GetVehicleTechRecordModel,
-  GetVehicleTechRecordModelSuccess,
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  GetVehicleTechRecordModelHavingStatusAllFailure,
-  SetVehicleTechRecordModelVinOnCreate, SetVehicleTechRecordModelVinOnCreateSucess
+  SetVehicleTechRecordModelVinOnCreate,
+  SetVehicleTechRecordModelVinOnCreateSucess
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
-import { addMatchers, initTestScheduler } from 'jasmine-marbles';
+import { addMatchers } from 'jasmine-marbles';
 import { IAppState } from '@app/store/state/app.state';
 import { VEHICLE_TECH_RECORD_SEARCH_ERRORS } from '@app/app.enums';
+import { SearchParams } from '@app/models/search-params';
 
 const techRecordModel: VehicleTechRecordModel = {
   systemNumber: '1231243',
@@ -27,7 +25,7 @@ const techRecordModel: VehicleTechRecordModel = {
   vin: 'ABCDEFGH777777',
   techRecord: [],
   metadata: { adrDetails: undefined },
-  error: null,
+  error: null
 };
 
 describe('VehicleTechRecordModelEffects', () => {
@@ -64,25 +62,32 @@ describe('VehicleTechRecordModelEffects', () => {
     expect(effects).toBeTruthy();
   });
 
-
   it(' getTechnicalRecords$ - should call the technicalRecordService service method info with a payload', () => {
-    actions = cold('a', { a: new GetVehicleTechRecordModelHavingStatusAll('ABCDEFGH777777') });
+    const searchParams: SearchParams = {
+      searchIdentifier: 'ABCDEFGH777777',
+      searchCriteria: 'all'
+    };
+    actions = cold('a', { a: new GetVehicleTechRecordModelHavingStatusAll(searchParams) });
     effects.getTechnicalRecords$.subscribe(() => {
       try {
-        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith('ABCDEFGH777777');
+        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
+          'ABCDEFGH777777'
+        );
       } catch (error) {
         fail('setVinOnCreate$: ' + error);
       }
     });
   });
 
-
   it('should return an GetVehicleTechRecordModelHavingStatusAllSucess action', () => {
     const action = new ReplaySubject(1);
-    action.next(new GetVehicleTechRecordModelHavingStatusAll('1234'));
+    const searchParams: SearchParams = { searchIdentifier: '1234', searchCriteria: 'all' };
+    action.next(new GetVehicleTechRecordModelHavingStatusAll(searchParams));
 
-    effects.getTechnicalRecords$.subscribe(result => {
-      expect(result).toEqual(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordModel));
+    effects.getTechnicalRecords$.subscribe((result) => {
+      expect(result).toEqual(
+        new GetVehicleTechRecordModelHavingStatusAllSuccess([techRecordModel])
+      );
     });
   });
 
@@ -105,15 +110,21 @@ describe('VehicleTechRecordModelEffects', () => {
     effects.setVinOnCreate$.subscribe(() => {
       try {
         spyOn(store, 'dispatch');
-        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(valuePayload.vin);
-        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(valuePayload.vrm);
+        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
+          valuePayload.vin
+        );
+        expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
+          valuePayload.vrm
+        );
         expect(requestErrors).toEqual([]);
-        expect(store.dispatch).toHaveBeenCalledWith(new SetVehicleTechRecordModelVinOnCreateSucess({
-          vin: 'aaa',
-          vrm: 'bbb',
-          vType: 'PSV',
-          error: requestErrors
-        }));
+        expect(store.dispatch).toHaveBeenCalledWith(
+          new SetVehicleTechRecordModelVinOnCreateSucess({
+            vin: 'aaa',
+            vrm: 'bbb',
+            vType: 'PSV',
+            error: requestErrors
+          })
+        );
       } catch (error) {
         fail('setVinOnCreate$: ' + error);
       }
@@ -125,11 +136,16 @@ describe('VehicleTechRecordModelEffects', () => {
 
     effects.setVinOnCreate$.subscribe(() => {
       spyOn(store, 'dispatch');
-      expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(valuePayload.vin);
-      expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(valuePayload.vrm);
-      expect(store.dispatch).toHaveBeenCalledWith(new SetVehicleTechRecordModelVinOnCreateSucess(valuePayload));
+      expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
+        valuePayload.vin
+      );
+      expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
+        valuePayload.vrm
+      );
+      expect(store.dispatch).toHaveBeenCalledWith(
+        new SetVehicleTechRecordModelVinOnCreateSucess(valuePayload)
+      );
     });
-
   });
 
   it('setVinOnCreate$ - should return errors for existing VIN & VRM', () => {
@@ -137,31 +153,38 @@ describe('VehicleTechRecordModelEffects', () => {
 
     effects.setVinOnCreate$.subscribe(() => {
       spyOn(store, 'dispatch');
-      expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith('P012301230001');
-      expect(store.dispatch).toHaveBeenCalledWith(new SetVehicleTechRecordModelVinOnCreateSucess(valuePayload));
+      expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
+        'P012301230001'
+      );
+      expect(store.dispatch).toHaveBeenCalledWith(
+        new SetVehicleTechRecordModelVinOnCreateSucess(valuePayload)
+      );
     });
-
   });
 
   describe('getSearchResultError', () => {
     test('should return not found error', () => {
-      expect(effects.getSearchResultError({ error: 'No resources match the search criteria.' }))
-        .toBe(VEHICLE_TECH_RECORD_SEARCH_ERRORS.NOT_FOUND);
+      expect(
+        effects.getSearchResultError({ error: 'No resources match the search criteria.' })
+      ).toBe(VEHICLE_TECH_RECORD_SEARCH_ERRORS.NOT_FOUND);
     });
 
     test('should return multiple found error', () => {
-      expect(effects.getSearchResultError({ error: 'The provided partial VIN returned more than one match.' }))
-        .toBe(VEHICLE_TECH_RECORD_SEARCH_ERRORS.MULTIPLE_FOUND);
+      expect(
+        effects.getSearchResultError({
+          error: 'The provided partial VIN returned more than one match.'
+        })
+      ).toBe(VEHICLE_TECH_RECORD_SEARCH_ERRORS.MULTIPLE_FOUND);
     });
 
     test('should return no input from the user', () => {
-      expect(effects.getSearchResultError({ error: { error: 'test' } }))
-        .toBe(VEHICLE_TECH_RECORD_SEARCH_ERRORS.NO_INPUT);
+      expect(effects.getSearchResultError({ error: { error: 'test' } })).toBe(
+        VEHICLE_TECH_RECORD_SEARCH_ERRORS.NO_INPUT
+      );
     });
 
-    test('should return error from backend when no case is applicable', () =>{
-      expect(effects.getSearchResultError({error: 'Random issue'})).toBe('Random issue');
+    test('should return error from backend when no case is applicable', () => {
+      expect(effects.getSearchResultError({ error: 'Random issue' })).toBe('Random issue');
     });
   });
-
 });

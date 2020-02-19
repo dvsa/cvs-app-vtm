@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CertificateComponent should create view only with populated data 1`] = `
+<test-vtm-certificate
+  adrDetails={[Function Object]}
+  edit="false"
+>
+  <vtm-certificate
+    ng-reflect-adr-details="[object Object]"
+    ng-reflect-edit="false"
+  >
+    
+    
+    <h2
+      class="govuk-heading-m"
+    >
+      Certificate
+    </h2>
+    <dl
+      class="govuk-summary-list"
+    >
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Required
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-guidanceNotes"
+        >
+          
+          <span>
+            -
+          </span>
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+    </dl>
+    
+    
+  </vtm-certificate>
+</test-vtm-certificate>
+`;
+
+exports[`CertificateComponent should render the editable component if edit is true 1`] = `
+<test-vtm-certificate
+  adrDetails={[Function Object]}
+  edit={[Function Boolean]}
+>
+  <vtm-certificate
+    ng-reflect-adr-details="[object Object]"
+    ng-reflect-edit="true"
+  >
+    
+    
+    
+    
+    <vtm-certificate-edit
+      ng-reflect-has-certificate-requested="true"
+    >
+      <div>
+        Value of Certificate Request is true
+      </div>
+    </vtm-certificate-edit>
+  </vtm-certificate>
+</test-vtm-certificate>
+`;

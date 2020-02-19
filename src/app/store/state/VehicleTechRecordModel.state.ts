@@ -1,9 +1,12 @@
-import {VehicleTechRecordModel} from '../../models/vehicle-tech-record.model';
+import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
+import { VIEW_STATE } from '@app/app.enums';
 
 export interface IVehicleTechRecordModelState {
   initialDetails: CreateTechRecordVM;
-  vehicleTechRecordModel: VehicleTechRecordModel;
-  selectedVehicleTechRecordModel: VehicleTechRecordModel;
+  vehicleTechRecordModel: VehicleTechRecordModel[];
+  selectedVehicleTechRecordModel: VehicleTechRecordModel[];
+  selectedVehicleTechRecord: VehicleTechRecordModel;
+  viewState: VIEW_STATE;
   error?: any;
 }
 
@@ -23,7 +26,7 @@ export const initialVehicleTechRecordModelState: IVehicleTechRecordModelState = 
   },
   vehicleTechRecordModel: null,
   selectedVehicleTechRecordModel: null,
+  selectedVehicleTechRecord: null,
+  viewState: VIEW_STATE.VIEW_ONLY,
   error: null
 };
-
-
