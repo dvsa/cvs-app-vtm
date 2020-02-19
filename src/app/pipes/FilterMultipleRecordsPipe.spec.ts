@@ -43,32 +43,27 @@ describe('FilterMultipleRecordsPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should return undefined if technical record list is null', () => {
-    const vTechRecordList = pipe.transform(null);
-    expect(vTechRecordList).toBeUndefined();
-  });
-
   it('should return a vehicle tech record list sorted by make or manufacturer Year', () => {
     const vTechRecordList = pipe.transform(vehicleTechRecordList);
     expect(vTechRecordList).toBeDefined();
     expect(vTechRecordList).toMatchSnapshot();
   });
 
-  it('if it CURRENT techRec it should set the technical record having status CURRENT for sorting', () => {
+  it('should return a technical record having status PROVISIONAL', () => {
     const vTechRecordList = pipe.transform(vehicleTechRecordList);
     expect(vTechRecordList).toBeDefined();
-    expect(vTechRecordList[0].techRecord[1].statusCode).toEqual('provisional');
+    expect(vTechRecordList[0].techRecord[0].statusCode).toEqual('provisional');
   });
 
-  it('if it hasn;t CURRENT techRec it should set the technical record having status PROVISIONAL for sorting', () => {
+  it('should return a technical record having status CURRENT', () => {
     const vTechRecordList = pipe.transform(vehicleTechRecordList);
     expect(vTechRecordList).toBeDefined();
-    expect(vTechRecordList[1].techRecord[1].statusCode).toEqual('current');
+    expect(vTechRecordList[1].techRecord[0].statusCode).toEqual('current');
   });
 
-  it('if it hasn;t CURRENT/PROVISIONAL techRec it should set the technical record having status ARCHIVED for sorting', () => {
+  it('should return a technical record having status ARCHIVED', () => {
     const vTechRecordList = pipe.transform(vehicleTechRecordList);
     expect(vTechRecordList).toBeDefined();
-    expect(vTechRecordList[2].techRecord[1].statusCode).toEqual('archived');
+    expect(vTechRecordList[2].techRecord[0].statusCode).toEqual('archived');
   });
 });
