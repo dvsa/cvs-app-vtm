@@ -1,0 +1,111 @@
+<div class="govuk-width-container">
+  <a class="govuk-back-link" vtmBackButton>Back</a>
+  <main class="govuk-main-wrapper">
+    <div class="govuk-grid-row govuk-!-margin-bottom-3">
+      <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-5">
+          Select a technical record
+        </h1>
+        <p class="govuk-body govuk-!-font-size-19">
+          Multiple technical records found matching this search
+        </p>
+      </div>
+    </div>
+
+    <ng-container
+      *ngFor="let vTechRecord of vehicleTechRecords | FilterMultipleRecords; let i = index"
+    >
+      <ng-container *ngIf="vTechRecord.techRecord[1] as activeRecord">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-half">
+            <h3 class="govuk-heading-m">Technical record {{ i + 1 }}</h3>
+          </div>
+          <div class="govuk-grid-column-one-half">
+            <a
+              id="test-selectTechnicalRecord-{{ i }}"
+              class="govuk-link govuk-!-font-size-19"
+              (click)="setSelectedVehicleTechRecord(vTechRecord)"
+            >
+              Select technical record
+            </a>
+          </div>
+        </div>
+
+        <div class="govuk-grid-row govuk-!-margin-bottom-5">
+          <div class="govuk-grid-column-full">
+            <dl class="govuk-summary-list">
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Vehicle identification number (VIN)
+                </dt>
+                <dd id="test-vin-{{ i }}" class="govuk-summary-list__value">
+                  {{ vTechRecord.vin | DefaultNullOrEmpty }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Vehicle registration mark (VRM)
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  <div *ngIf="!techRecHelpers.isEmptyObject(vTechRecord.vrms); else hyphen">
+                    <div
+                      *ngFor="
+                        let vrmItem of vTechRecord.vrms | IsPrimaryVrm: true;
+                        let vi = index
+                      "
+                    >
+                      <p id="test-vrm-{{ vi }}-tech-{{ i }}">
+                        {{ vrmItem.vrm }}
+                      </p>
+                    </div>
+                  </div>
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Vehicle type
+                </dt>
+                <dd id="test-vehicleType-{{ i }}" class="govuk-summary-list__value">
+                  {{ activeRecord.vehicleType | DefaultNullOrEmpty | uppercase }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Year of manufacture
+                </dt>
+                <dd id="test-manufactureYear-{{ i }}" class="govuk-summary-list__value">
+                  {{ activeRecord.manufactureYear | DefaultNullOrEmpty }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Make
+                </dt>
+                <dd id="test-make-{{ i }}" class="govuk-summary-list__value">
+                  {{
+                    activeRecord.vehicleType === 'psv'
+                      ? (activeRecord.chassisMake | DefaultNullOrEmpty)
+                      : (activeRecord.make | DefaultNullOrEmpty)
+                  }}
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Model
+                </dt>
+                <dd id="test-model-{{ i }}" class="govuk-summary-list__value">
+                  {{
+                    activeRecord.vehicleType === 'psv'
+                      ? (activeRecord.chassisModel | DefaultNullOrEmpty)
+                      : (activeRecord.model | DefaultNullOrEmpty)
+                  }}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </main>
+</div>
+<ng-template #hyphen><span>-</span></ng-template>

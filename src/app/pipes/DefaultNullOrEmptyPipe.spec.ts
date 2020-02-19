@@ -1,7 +1,6 @@
-import {DefaultNullOrEmpty} from './DefaultNullOrEmptyPipe';
+import { DefaultNullOrEmpty } from './DefaultNullOrEmptyPipe';
 
 describe('DefaultNullOrEmptyPipe', () => {
-
   const pipe = new DefaultNullOrEmpty();
 
   it('create an instance', () => {
@@ -9,13 +8,13 @@ describe('DefaultNullOrEmptyPipe', () => {
   });
 
   it('should return Yes if value is boolean', () => {
-    const expectedRes = 'YES';
+    const expectedRes = 'Yes';
     const res = pipe.transform(true);
     expect(res).toEqual(expectedRes);
   });
 
   it('should return No if value is false', () => {
-    const expectedRes = 'NO';
+    const expectedRes = 'No';
     const res = pipe.transform(false);
     expect(res).toEqual(expectedRes);
   });
@@ -58,5 +57,4 @@ describe('DefaultNullOrEmptyPipe', () => {
     const res = pipe.transform(stringToCheck);
     expect(res).toEqual('24/06/2020');
   });
-
 });
