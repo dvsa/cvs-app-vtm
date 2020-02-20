@@ -1,6 +1,6 @@
 import {
   EVehicleTechRecordModelActions, GetVehicleTechRecordModel, GetVehicleTechRecordModelSuccess, GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelHavingStatusAllFailure
+  GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate
 } from './VehicleTechRecordModel.actions';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 
@@ -51,8 +51,17 @@ describe('GetVehicleTechRecordModelHavingStatusAllSuccess', () => {
 describe('GetVehicleTechRecordModelHavingStatusAllFailure', () => {
   test('the action should have the right type and payload', () => {
     const actionInstance = new GetVehicleTechRecordModelHavingStatusAllFailure(techRecordModelExample);
-    
+
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure);
     expect(actionInstance.payload).toBe(techRecordModelExample);
+  });
+});
+
+describe('SetVehicleTechRecordModelVinOnCreate', () => {
+  test('the action should have the right type and payload', () => {
+    const actionInstance = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV' });
+
+    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate);
+    expect(actionInstance.payload).toEqual({ vin: 'aaa', vrm: 'bbb', vType: 'PSV' });
   });
 });

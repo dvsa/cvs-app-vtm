@@ -4,11 +4,11 @@ import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  GetVehicleTechRecordModelHavingStatusAllFailure
+  GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { Store } from '@ngrx/store';
-import { map, switchMap, tap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {Action, Store} from '@ngrx/store';
+import {map, switchMap, tap, catchError} from 'rxjs/operators';
+import {forkJoin, Observable, of} from 'rxjs';
 import { Router } from '@angular/router';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
@@ -29,6 +29,43 @@ export class VehicleTechRecordModelEffects {
       catchError((error) =>
         of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
       ))));
+
+  @Effect({ dispatch : false })
+  setVinOnCreate$ = this._actions$.pipe(
+    ofType<SetVehicleTechRecordModelVinOnCreate>(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate),
+    map(action => action.payload),
+    switchMap(payload => {
+      const requests: Observable<any>[] = [];
+
+      if (payload.vType === 'PSV' || payload.vType === 'HGV') {
+        requests.push(
+          this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin).
+          pipe(catchError( error => of(undefined)))
+        );
+        requests.push(
+          this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vrm).
+          pipe(catchError( error => of(undefined)))
+        );
+
+        forkJoin(requests).subscribe(result => {
+          if ( result[0] === undefined && result[1] === undefined) {
+            this.router.navigate([`/technical-record`]);
+          }
+          requests.length = 0;
+        });
+      } else if (payload.vType === 'Trailer') {
+        this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin).subscribe(
+          result => false,
+          error => {
+            this.router.navigate([`/technical-record`]);
+          }
+        );
+      }
+
+      return of(payload);
+
+    })
+  );
 
   constructor(
     private _technicalRecordService: TechnicalRecordService,

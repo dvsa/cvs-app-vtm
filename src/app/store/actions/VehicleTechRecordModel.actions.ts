@@ -1,12 +1,14 @@
 import { Action } from '@ngrx/store';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
+import {CreateTechRecordVM} from '@app/store/state/VehicleTechRecordModel.state';
 
 export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
   GetVehicleTechRecordModelSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModel Success',
   GetVehicleTechRecordModelHavingStatusAll = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll',
   GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success',
-  GetVehicleTechRecordModelHavingStatusAllFailure = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Failure'
+  GetVehicleTechRecordModelHavingStatusAllFailure = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Failure',
+  SetVehicleTechRecordModelVinOnCreate = '[VehicleTechRecordModel] SetVehicleTechRecordModelVinOnCreate'
 }
 
 export class GetVehicleTechRecordModel implements Action {
@@ -39,8 +41,12 @@ export class GetVehicleTechRecordModelHavingStatusAllFailure implements Action {
   }
 }
 
-
+export class SetVehicleTechRecordModelVinOnCreate implements Action {
+  public readonly type = EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate;
+  constructor(public payload: CreateTechRecordVM) {
+  }
+}
 
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
   GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
-  GetVehicleTechRecordModelHavingStatusAllFailure ;
+  GetVehicleTechRecordModelHavingStatusAllFailure | SetVehicleTechRecordModelVinOnCreate;

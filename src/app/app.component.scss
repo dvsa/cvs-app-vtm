@@ -21,22 +21,24 @@
 
 
 #hide input[type=file] {
-  display:none;
-  margin:10px;
+  display: none;
+  margin: 10px;
 }
+
 #hide input[type=file] + label {
-  display:inline-block;
-  margin:20px;
+  display: inline-block;
+  margin: 20px;
   padding: 4px 32px;
   background-color: #FFFFFF;
-  border:solid 1px #666F77;
+  border: solid 1px #666F77;
   border-radius: 6px;
-  color:#666F77;
+  color: #666F77;
 }
+
 #hide input[type=file]:active + label {
   background-image: none;
-  background-color:#2D6C7A;
-  color:#FFFFFF;
+  background-color: #2D6C7A;
+  color: #FFFFFF;
 }
 
 .fileContainer {
@@ -96,6 +98,7 @@ $font-stack: GDSTransportWebsite;
 .ng-animating mat-card mat-expansion-panel-header {
   height: 80px;
 }
+
 .ng-animating mat-card div.mat-expansion-panel-content {
   height: 0px;
   visibility: hidden;
@@ -135,6 +138,7 @@ dd {
 ::ng-deep .auto-pad .mat-expansion-panel-spacing {
   margin: 0 !important;
 }
+
 .custom-header .mat-expansion-panel-header-title,
 .custom-header .mat-expansion-panel-header-description {
   flex-basis: 0;
@@ -157,7 +161,7 @@ dd {
   margin-right: 0%;
 }
 
-.disable_ripple:hover{
+.disable_ripple:hover {
   background: #fff !important;
   text-decoration-line: underline;
   text-decoration-style: solid;
@@ -386,18 +390,19 @@ dd {
   width: 355px !important;
   white-space: nowrap;
 }
+
 ::ng-deep .main-details {
   padding: 1.5% 0 1.5% 0 !important;
 }
 
 .t-history:nth-child(1) {
-  th:nth-last-child(1), td:nth-last-child(1){
+  th:nth-last-child(1), td:nth-last-child(1) {
     width: 50% !important;
   }
 }
 
 .t-history:nth-child(2) {
-  th:nth-last-child(1), td:nth-last-child(1){
+  th:nth-last-child(1), td:nth-last-child(1) {
     width: 60% !important;
   }
 }
@@ -443,13 +448,14 @@ dd {
     white-space: nowrap !important;
 
 
-  ::ng-deep &#test-ADR-substancesPermitted.govuk-summary-list__value {
+    ::ng-deep &#test-ADR-substancesPermitted.govuk-summary-list__value {
       width: 70% !important;
     }
 
     @media (max-width: 1313px) {
       &#test-ADR-substancesPermitted {
-        height: 3rem!important;
+        height: 3rem !important;
+
         & span {
           position: absolute;
           white-space: normal !important;
@@ -526,7 +532,7 @@ dd {
 }
 
 a#cancel1, a#cancel2 {
-  color:  $govuk-link-colour !important;
+  color: $govuk-link-colour !important;
   font-family: "GDS Transport", Arial, sans-serif;
   font-size: 19px;
   font-weight: 400;
@@ -552,5 +558,5 @@ a#cancel1, a#cancel2 {
 
 ::ng-deep vtm-adr-details-view > div:nth-child(27) {
   display: block !important;
-
 }
+
