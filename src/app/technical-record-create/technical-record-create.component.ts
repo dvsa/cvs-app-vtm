@@ -16,6 +16,7 @@ import {CreateTechRecordVM} from '@app/store/state/VehicleTechRecordModel.state'
 export class TechnicalRecordCreateComponent implements OnInit {
   vehicleTypes = ['PSV', 'HGV', 'Trailer'];
   createTechRecordForm: FormGroup;
+  vrmLabel = 'Vehicle registration mark (VRM)';
 
   constructor(private _store: Store<IAppState>) {
   }
@@ -31,9 +32,11 @@ export class TechnicalRecordCreateComponent implements OnInit {
   setVrmValidators($event): void {
     const vrmControl = this.createTechRecordForm.get('vrm');
 
-    if ($event.currentTarget.value === 'PSV' || $event.currentTarget.value === 'HGV') {
+    if ($event.currentTarget.id === 'test-radio-PSV' || $event.currentTarget.id === 'test-radio-HGV') {
+      this.vrmLabel = 'Vehicle registration mark (VRM)';
       vrmControl.setValidators([Validators.required, Validators.minLength(1), Validators.maxLength(8)]);
     } else {
+      this.vrmLabel = 'Vehicle registration mark (VRM - optional)';
       vrmControl.setValidators([Validators.minLength(1), Validators.maxLength(8)]);
     }
     vrmControl.updateValueAndValidity();
