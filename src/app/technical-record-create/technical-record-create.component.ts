@@ -22,7 +22,8 @@ export class TechnicalRecordCreateComponent implements OnInit {
   formErrors: { vinErr: string, vrmErr: string, vTypeErr: string, requestErr: string[] } = { vinErr: '', vrmErr: '', vTypeErr: '', requestErr: [''] };
   hasErrors = false;
   hasVinReqErrors;
-  hasVrmReqErrors ;
+  hasVrmReqErrors;
+  vrmLabel = 'Vehicle registration mark (VRM)';
 
   constructor(private _store: Store<IAppState>) {
     this.formError$ = this._store.select(s => s.vehicleTechRecordModel.initialDetails.error);
@@ -56,7 +57,7 @@ export class TechnicalRecordCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    
+
     this.formErrors.vinErr   = !this.createTechRecordForm.get('vin').valid ? 'Enter a VIN' : '';
     this.formErrors.vrmErr   = !this.createTechRecordForm.get('vrm').valid ? 'Enter a VRM' : '';
     this.formErrors.vTypeErr = !this.createTechRecordForm.get('vehicleType').valid ? 'Select a vehicle type' : '';
