@@ -84,6 +84,7 @@ describe('VehicleTechRecordModelEffects', () => {
 
   it(' setVinOnCreate$ - should call the technicalRecordService  service method info with a payload', () => {
     const valuePayload = { vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] };
+
     actions = cold('a', { a: new SetVehicleTechRecordModelVinOnCreate(valuePayload) });
     effects.setVinOnCreate$.subscribe(() => {
       try {

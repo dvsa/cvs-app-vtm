@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -15,7 +14,6 @@ import {InspectionDetailsComponent} from '@app/technical-record/inspection-detai
     CommonModule,
     MaterialModule,
     MatFormFieldModule,
-    HttpClientModule,
     FormsModule,
     SharedModule,
     FontAwesomeModule,

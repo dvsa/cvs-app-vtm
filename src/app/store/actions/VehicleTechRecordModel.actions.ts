@@ -57,3 +57,4 @@ export class SetVehicleTechRecordModelVinOnCreateSucess implements Action {
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
   GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
   GetVehicleTechRecordModelHavingStatusAllFailure | SetVehicleTechRecordModelVinOnCreate | SetVehicleTechRecordModelVinOnCreateSucess;
+

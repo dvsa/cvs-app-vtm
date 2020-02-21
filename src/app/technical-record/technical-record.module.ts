@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,7 +36,6 @@ import { WeightsComponent } from './weights/weights.component';
     CommonModule,
     MaterialModule,
     MatFormFieldModule,
-    HttpClientModule,
     RouterModule.forChild([
       { path: '', component: TechnicalRecordComponent, canActivate: [AuthenticationGuard], runGuardsAndResolvers: "always", canDeactivate: [PendingChangesGuard] }
     ]),

@@ -103,6 +103,7 @@ describe('VehicleTechRecordModel Reducer', () => {
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
         initialDetails: { vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] }
+        
       });
     });
   });

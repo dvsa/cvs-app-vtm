@@ -8,6 +8,7 @@ import {IAppState} from '@app/store/state/app.state';
 import {CreateTechRecordVM} from '@app/store/state/VehicleTechRecordModel.state';
 import {Observable} from 'rxjs';
 
+
 @Component({
   selector: 'vtm-technical-record-create',
   templateUrl: './technical-record-create.component.html',
@@ -45,15 +46,17 @@ export class TechnicalRecordCreateComponent implements OnInit {
     const vrmControl = this.createTechRecordForm.get('vrm');
 
     if ($event.currentTarget.id === 'test-radio-PSV' || $event.currentTarget.id === 'test-radio-HGV') {
+      this.vrmLabel = 'Vehicle registration mark (VRM)';
       vrmControl.setValidators([Validators.required, Validators.minLength(1), Validators.maxLength(8)]);
     } else {
+      this.vrmLabel = 'Vehicle registration mark (VRM - optional)';
       vrmControl.setValidators([Validators.minLength(1), Validators.maxLength(8)]);
     }
     vrmControl.updateValueAndValidity();
   }
 
   onSubmit() {
-
+    
     this.formErrors.vinErr   = !this.createTechRecordForm.get('vin').valid ? 'Enter a VIN' : '';
     this.formErrors.vrmErr   = !this.createTechRecordForm.get('vrm').valid ? 'Enter a VRM' : '';
     this.formErrors.vTypeErr = !this.createTechRecordForm.get('vehicleType').valid ? 'Select a vehicle type' : '';
@@ -74,7 +77,6 @@ export class TechnicalRecordCreateComponent implements OnInit {
       document.getElementById('test-vin').focus();
       document.getElementById('test-vrm').focus();
     }, 1000);
-
   }
 
 }

@@ -5,6 +5,7 @@ import {
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
   GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate, SetVehicleTechRecordModelVinOnCreateSucess
+
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {Action, Store} from '@ngrx/store';
 import {map, switchMap, tap, catchError} from 'rxjs/operators';
@@ -30,7 +31,7 @@ export class VehicleTechRecordModelEffects {
         of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
       ))));
 
-  @Effect( {dispatch: false})
+  @Effect({ dispatch : false })
   setVinOnCreate$ = this._actions$.pipe(
     ofType<SetVehicleTechRecordModelVinOnCreate>(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate),
     map(action => action.payload),
@@ -73,7 +74,9 @@ export class VehicleTechRecordModelEffects {
           }
         );
       }
+
       return of(payload);
+
     })
   );
 
