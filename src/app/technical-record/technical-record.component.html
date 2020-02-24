@@ -32,24 +32,26 @@
                   </a>
                 </div>
 
-                <div class="grid-container-technical-record-status">
-                  <div class="grid-item-technical-record-status rectangle"></div>
-                  <div
-                    class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 "
-                  >
-                    Status
+                <div class="govuk-grid-row tech-rec-status">
+                  <div class="govuk-grid-column-full">
+                    <div class="govuk-inset-text">
+                      <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-one-quarter">
+                          <p class="govuk-!-font-weight-bold govuk-!-font-size-19">Status</p>
+                        </div>
+                        <div class="govuk-grid-column-one-quarter">
+                          <p class="govuk-!-font-size-19">{{activeRecord.statusCode | titlecase}}</p>
+                        </div>
+                      </div>
+                      <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-one-half">
+                          <a class="govuk-link" (click)="scrollDownTo(8)">Technical record history</a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    id="test-status"
-                    class="grid-item-technical-record-status
-                    govuk-!-font-weight-regular govuk-body
-                    govuk-!-font-size-19
-                    grid-item-technical-record-status-value"
-                  >
-                    {{ activeRecord.statusCode | titlecase }}
-                  </div>
-                  <div class="grid-item-technical-record-status"></div>
                 </div>
+
               </div>
             </div>
           </main>

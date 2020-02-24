@@ -12,13 +12,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {VehicleSummaryComponent} from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import {TestHistoryComponent} from '@app/technical-record/test-history/test-history.component';
 
 describe('VehicleSummaryComponent', () => {
 
-  let component: VehicleSummaryComponent;
-  let fixture: ComponentFixture<VehicleSummaryComponent>;
+  let component: TestHistoryComponent;
+  let fixture: ComponentFixture<TestHistoryComponent>;
   let injector: TestBed;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('VehicleSummaryComponent', () => {
         ReactiveFormsModule,
         NgrxFormsModule
       ],
-      declarations: [VehicleSummaryComponent, TechnicalRecordComponent],
+      declarations: [TestHistoryComponent, TechnicalRecordComponent],
       providers: [
         TechRecordHelpersService
       ],
@@ -46,21 +46,9 @@ describe('VehicleSummaryComponent', () => {
 
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VehicleSummaryComponent);
+    fixture = TestBed.createComponent(TestHistoryComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
-    component.activeRecord = {
-      'vin': 'XMGDE02FS0H012345',
-      'vehicleSize': 'small',
-      'testStationName': 'Rowe, Wunsch and Wisoky',
-      'vehicleId': 'JY58FPP',
-      'vehicleType': 'psv',
-      'axles': [
-        { 'parkingBrakeMrk': false, 'axleNumber': 1 },
-        { 'parkingBrakeMrk': true, 'axleNumber': 2 },
-        { 'parkingBrakeMrk': false, 'axleNumber': 3 }
-      ]
-    };
 
     fixture.detectChanges();
   });

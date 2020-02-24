@@ -12,13 +12,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {VehicleSummaryComponent} from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import {TyresComponent} from '@app/technical-record/tyres/tyres.component';
 
-describe('VehicleSummaryComponent', () => {
+describe('TyresComponent', () => {
 
-  let component: VehicleSummaryComponent;
-  let fixture: ComponentFixture<VehicleSummaryComponent>;
+  let component: TyresComponent;
+  let fixture: ComponentFixture<TyresComponent>;
   let injector: TestBed;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('VehicleSummaryComponent', () => {
         ReactiveFormsModule,
         NgrxFormsModule
       ],
-      declarations: [VehicleSummaryComponent, TechnicalRecordComponent],
+      declarations: [TyresComponent, TechnicalRecordComponent],
       providers: [
         TechRecordHelpersService
       ],
@@ -46,7 +46,7 @@ describe('VehicleSummaryComponent', () => {
 
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VehicleSummaryComponent);
+    fixture = TestBed.createComponent(TyresComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
     component.activeRecord = {
@@ -55,10 +55,11 @@ describe('VehicleSummaryComponent', () => {
       'testStationName': 'Rowe, Wunsch and Wisoky',
       'vehicleId': 'JY58FPP',
       'vehicleType': 'psv',
+      'tyreUseCode': 'aaa',
       'axles': [
-        { 'parkingBrakeMrk': false, 'axleNumber': 1 },
-        { 'parkingBrakeMrk': true, 'axleNumber': 2 },
-        { 'parkingBrakeMrk': false, 'axleNumber': 3 }
+        { 'parkingBrakeMrk': false, 'axleNumber': 1, tyres : {'tyreCode': 'test', 'tyreSize': 'test', 'plyRating': 'test', 'fitmentCode': 'test', 'dataTrAxles': 'test'} },
+        { 'parkingBrakeMrk': true, 'axleNumber': 2, tyres : {'tyreCode': 'test', 'tyreSize': 'test', 'plyRating': 'test', 'fitmentCode': 'test', 'dataTrAxles': 'test'} },
+        { 'parkingBrakeMrk': false, 'axleNumber': 3, tyres : {'tyreCode': 'test', 'tyreSize': 'test', 'plyRating': 'test', 'fitmentCode': 'test', 'dataTrAxles': 'test'} }
       ]
     };
 

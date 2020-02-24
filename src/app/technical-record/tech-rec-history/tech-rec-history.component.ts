@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'vtm-tech-rec-history',
@@ -11,9 +11,21 @@ export class TechRecHistoryComponent implements OnInit {
 
   @Input() techRecordsJson: any;
 
-  constructor(public techRecHelpers: TechRecordHelpersService) { }
+  constructor(private router: Router) {}
 
   ngOnInit() {
   }
+
+  switchTechRecord(techRecNumber): void {
+
+    const elems = document.querySelectorAll('.t-history a');
+
+    Array.prototype.slice.call(elems).forEach(function(value) {
+        value.hidden = (value.id === 'tech-rec-' + techRecNumber);
+    });
+
+    this.router.navigate(['/technical-record', { id: techRecNumber }]);
+  }
+
 
 }

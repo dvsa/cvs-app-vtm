@@ -12,13 +12,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {VehicleSummaryComponent} from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import {WeightsComponent} from '@app/technical-record/weights/weights.component';
 
-describe('VehicleSummaryComponent', () => {
+describe('WeightsComponent', () => {
 
-  let component: VehicleSummaryComponent;
-  let fixture: ComponentFixture<VehicleSummaryComponent>;
+  let component: WeightsComponent;
+  let fixture: ComponentFixture<WeightsComponent>;
   let injector: TestBed;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('VehicleSummaryComponent', () => {
         ReactiveFormsModule,
         NgrxFormsModule
       ],
-      declarations: [VehicleSummaryComponent, TechnicalRecordComponent],
+      declarations: [WeightsComponent, TechnicalRecordComponent],
       providers: [
         TechRecordHelpersService
       ],
@@ -46,7 +46,7 @@ describe('VehicleSummaryComponent', () => {
 
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VehicleSummaryComponent);
+    fixture = TestBed.createComponent(WeightsComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
     component.activeRecord = {
@@ -55,10 +55,16 @@ describe('VehicleSummaryComponent', () => {
       'testStationName': 'Rowe, Wunsch and Wisoky',
       'vehicleId': 'JY58FPP',
       'vehicleType': 'psv',
+      'grossGbWeight': 100,
+      'grossDesignWeight': 100,
+      'trainGbWeight': 100,
+      'trainDesignWeight': 100,
+      'maxTrainGbWeight': 100,
+      'maxTrainDesignWeight': 100,
       'axles': [
-        { 'parkingBrakeMrk': false, 'axleNumber': 1 },
-        { 'parkingBrakeMrk': true, 'axleNumber': 2 },
-        { 'parkingBrakeMrk': false, 'axleNumber': 3 }
+        { 'parkingBrakeMrk': false, 'axleNumber': 1, 'weights': { 'gbWeight' : 100 , 'designWeight': 100} },
+        { 'parkingBrakeMrk': true, 'axleNumber': 2, 'weights': { 'gbWeight' : 100 , 'designWeight': 100 } },
+        { 'parkingBrakeMrk': false, 'axleNumber': 3, 'weights': { 'gbWeight' : 100 , 'designWeight': 100 } }
       ]
     };
 

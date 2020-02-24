@@ -18,6 +18,8 @@ import { MetaData } from '@app/models/meta-data';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -29,6 +31,9 @@ export class TechnicalRecordComponent implements OnInit {
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
   techRecord: FormGroup;
+  queryParamsSubscription: Subscription;
+  queryParamId = 0;
+  activeRecord: TechRecord;
 
   allOpened = false;
   panels: { panel: string; isOpened: boolean }[] = [
@@ -45,7 +50,7 @@ export class TechnicalRecordComponent implements OnInit {
   ];
 
   @Input() vehicleTechRecord: VehicleTechRecordModel;
-  @Input() activeRecord: TechRecord;
+  @Input() currentRecords: TechRecord[];
   @Input() metaData: MetaData;
   @Input() editState: VIEW_STATE;
   @Input() testResultJson: TestResultModel;
@@ -55,10 +60,15 @@ export class TechnicalRecordComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private allowedValues: TechnicalRecordValuesMapper,
-    public techRecHelpers: TechRecordHelpersService
+    public techRecHelpers: TechRecordHelpersService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.queryParamsSubscription  = this.route.params.subscribe(params => {
+      this.queryParamId = isNaN(params['id']) ? 0 : +params['id'];
+    });
+    this.activeRecord = this.currentRecords[this.queryParamId];
     this.techRecord = new FormGroup({});
     this.adrDisplayParams = { showAdrDetails: !!this.activeRecord.adrDetails };
   }
@@ -113,4 +123,10 @@ export class TechnicalRecordComponent implements OnInit {
     });
     // }
   }
+
+  scrollDownTo(panelNumber) {
+    this.techRecHelpers.scrollDown();
+    this.panels[panelNumber].isOpened = true;
+  }
+
 }

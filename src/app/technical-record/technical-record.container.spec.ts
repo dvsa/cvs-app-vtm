@@ -135,14 +135,15 @@ describe('TechnicalRecordsContainer', () => {
   selector: 'vtm-technical-record',
   template: `
     <div>Current or Selected Vehicle Tech Record: {{ vehicleTechRecord | json }}</div>
-    <div>Active record based on Statuscode: {{ activeRecord | json }}</div>
+<!--    <div>Active record based on Statuscode: {{ activeRecord | json }}</div>-->
+    <div>Active record array on Statuscode: {{ currentRecords | json }}</div>
     <div>MetaData: {{ metaData | json }}</div>
     <div>View state is: {{ editState ? 'EDIT' : 'VIEW ONLY' }}</div>
   `
 })
 class TestTechnicalRecordsComponent {
   @Input() vehicleTechRecord: VehicleTechRecordModel;
-  @Input() activeRecord: TechRecord;
+  @Input() currentRecords: TechRecord[];
   @Input() metaData: MetaData;
   @Input() testResultJson: TestResultModel;
   @Input() editState: VIEW_STATE;

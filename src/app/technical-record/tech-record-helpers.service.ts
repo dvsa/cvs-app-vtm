@@ -19,4 +19,9 @@ export class TechRecordHelpersService {
   capitalizeWord(word: string) {
     return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
   }
+
+  scrollDown() {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
 }

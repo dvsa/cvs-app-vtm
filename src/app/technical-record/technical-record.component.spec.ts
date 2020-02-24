@@ -13,6 +13,7 @@ import { Store, StoreModule, INITIAL_STATE } from '@ngrx/store';
 import { hot } from 'jasmine-marbles';
 import { of, Subject } from 'rxjs';
 import { TechnicalRecordComponent } from './technical-record.component';
+import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
 
 describe('TechnicalRecordComponent', () => {
   let component: TechnicalRecordComponent;
@@ -21,6 +22,10 @@ describe('TechnicalRecordComponent', () => {
   const unsubscribe = new Subject<void>();
   let injector: TestBed;
   let store: Store<IAppState>;
+  const techRecHelpersServiceMock = {
+    scrollDown: jasmine.createSpy('scrollDown')
+  };
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,6 +43,7 @@ describe('TechnicalRecordComponent', () => {
       ],
       declarations: [TechnicalRecordComponent],
       providers: [
+        { provide: TechRecordHelpersService, useValue: techRecHelpersServiceMock},
         {
           provide: Store,
           useValue: {
@@ -120,6 +126,12 @@ describe('TechnicalRecordComponent', () => {
   //     expect(dialog.open).toHaveBeenCalled();
   //     expect(store.dispatch).toHaveBeenCalled();
   //   });
+  // });
+
+  // it('scrollDownTo', () => {
+  //   component.scrollDownTo(8);
+  //   expect(component.panels[8].isOpened).toBeTruthy();
+  //   expect(techRecHelpersServiceMock.scrollDown).toHaveBeenCalled();
   // });
 
   // afterAll(() => {

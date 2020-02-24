@@ -485,6 +485,12 @@ a#cancel2 {
   display: block !important;
 }
 
+.tech-rec-status {
+  & .govuk-grid-column-one-quarter {
+    width: 5rem;
+  }
+}
+
 .govuk-link,
 .govuk-link:visited {
   color: $govuk-link-colour !important;

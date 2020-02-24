@@ -23,10 +23,11 @@ import { VIEW_STATE } from '@app/app.enums';
   selector: 'vtm-technical-record-container',
   template: `
     <ng-container *ngIf="vehicleTechnicalRecord$ | async as vehicleTechRecord">
-      <ng-container *ngIf="vehicleTechRecord.techRecord | FilterRecord as currentRecord">
+<!--      <ng-container *ngIf="vehicleTechRecord.techRecord | FilterRecord as currentRecord">-->
+        <ng-container *ngIf="(vehicleTechRecord.techRecord | OrderByStatusPipe) as currentRecords">
         <vtm-technical-record
           [vehicleTechRecord]="vehicleTechRecord"
-          [activeRecord]="currentRecord"
+          [currentRecords]="currentRecords"
           [metaData]="metaData$ | async"
           [editState]="viewState$ | async"
           [testResultJson]="testResults$ | async"

@@ -12,13 +12,13 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgrxFormsModule} from 'ngrx-forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {VehicleSummaryComponent} from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import {DimensionsComponent} from '@app/technical-record/dimensions/dimensions.component';
 
-describe('VehicleSummaryComponent', () => {
+describe('DimensionsComponent', () => {
 
-  let component: VehicleSummaryComponent;
-  let fixture: ComponentFixture<VehicleSummaryComponent>;
+  let component: DimensionsComponent;
+  let fixture: ComponentFixture<DimensionsComponent>;
   let injector: TestBed;
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('VehicleSummaryComponent', () => {
         ReactiveFormsModule,
         NgrxFormsModule
       ],
-      declarations: [VehicleSummaryComponent, TechnicalRecordComponent],
+      declarations: [DimensionsComponent, TechnicalRecordComponent],
       providers: [
         TechRecordHelpersService
       ],
@@ -46,7 +46,7 @@ describe('VehicleSummaryComponent', () => {
 
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VehicleSummaryComponent);
+    fixture = TestBed.createComponent(DimensionsComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
     component.activeRecord = {
@@ -55,6 +55,17 @@ describe('VehicleSummaryComponent', () => {
       'testStationName': 'Rowe, Wunsch and Wisoky',
       'vehicleId': 'JY58FPP',
       'vehicleType': 'psv',
+      'dimensions': { 'length': 100, 'width': 100},
+      'frontAxleToRearAxle': 100,
+      'rearAxleToRearTrl': 100,
+      'frontAxleTo5thWheelCouplingMin': 100,
+      'frontAxleTo5thWheelCouplingMax': 100,
+      'frontAxleTo5thWheelMin': 100,
+      'frontAxleTo5thWheelMax': 100,
+      'couplingCenterToRearAxleMin': 100,
+      'couplingCenterToRearAxleMax': 100,
+      'couplingCenterToRearTrlMin': 100,
+      'couplingCenterToRearTrlMax': 100,
       'axles': [
         { 'parkingBrakeMrk': false, 'axleNumber': 1 },
         { 'parkingBrakeMrk': true, 'axleNumber': 2 },
