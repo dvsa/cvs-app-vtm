@@ -41,7 +41,7 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
       ).pipe(
         switchMap((submitValue) => this._technicalRecordService.updateTechnicalRecords(submitValue, payload.vin)
           .pipe(
-            switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin)
+            switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin, 'all')
               .pipe(
                 switchMap((techRecordJson: any) => of(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordJson))),
                 tap((_) => {

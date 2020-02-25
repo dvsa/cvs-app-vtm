@@ -22,4 +22,18 @@
     font-weight: bolder;
   }
 
+  .govuk-error-summary {
+    .govuk-error-message {
+      text-decoration: underline;
+    }
+  }
+
+  & .govuk-select {
+    width: 589px;
+  }
+
+  & .govuk-form-group:nth-child(3) {
+    margin-top: 2rem;
+  }
+
 }

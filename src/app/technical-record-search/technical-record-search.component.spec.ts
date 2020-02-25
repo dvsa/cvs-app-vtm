@@ -61,13 +61,67 @@ describe('TechnicalRecordSearchComponent', () => {
 
   describe('searchTechRecords', () => {
     it('should dispatch get action when the button is pressed', () => {
-      const searchTerm = 'test';
-      component.searchTechRecords(searchTerm);
+      const searchIdentifier = 'test';
+      const searchCriteria   = 'Vehicle registration mark, trailer ID or vehicle identification number';
+      component.searchTechRecords(searchIdentifier, searchCriteria);
 
       expect(component.isLoading).toBe(true);
-      expect(component.searchIdentifier).toBe(searchTerm);
-      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll(searchTerm));
+      expect(component.searchIdentifier).toBe(searchIdentifier);
+      expect(component.searchCriteria).toBe('all');
+
+      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll([component.searchIdentifier, component.searchCriteria]));
     });
+
+    it('should have correct behaviour for VRM', () => {
+      const searchIdentifier = 'test';
+      const searchCriteria   = 'Vehicle registration mark (VRM)';
+      component.searchTechRecords(searchIdentifier, searchCriteria);
+
+      expect(component.searchCriteria).toBe('vrm');
+
+      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll([component.searchIdentifier, component.searchCriteria]));
+    });
+
+    it('should have correct behaviour for FULL VIN', () => {
+      const searchIdentifier = 'test';
+      const searchCriteria   = 'Full vehicle identification number (VIN)';
+      component.searchTechRecords(searchIdentifier, searchCriteria);
+
+      expect(component.searchCriteria).toBe('vin');
+
+      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll([component.searchIdentifier, component.searchCriteria]));
+    });
+
+    it('should have correct behaviour for PARTIAL VIN', () => {
+      const searchIdentifier = 'test';
+      const searchCriteria   = 'Partial VIN (last 6 characters)';
+      component.searchTechRecords(searchIdentifier, searchCriteria);
+
+      expect(component.searchCriteria).toBe('partialVin');
+
+      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll([component.searchIdentifier, component.searchCriteria]));
+    });
+
+    it('should have correct behaviour for TRAILER ID', () => {
+      const searchIdentifier = 'test';
+      const searchCriteria   = 'Trailer ID';
+      component.searchTechRecords(searchIdentifier, searchCriteria);
+
+      expect(component.searchCriteria).toBe('trailerId');
+
+      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll([component.searchIdentifier, component.searchCriteria]));
+    });
+
+    it('should have correct behaviour for default', () => {
+      const searchIdentifier = 'test';
+      const searchCriteria   = 'testing';
+      component.searchTechRecords(searchIdentifier, searchCriteria);
+
+      expect(component.searchCriteria).toBe('all');
+
+      expect(store.dispatch).toHaveBeenCalledWith(new GetVehicleTechRecordModelHavingStatusAll([component.searchIdentifier, component.searchCriteria]));
+    });
+
   });
 
 });
