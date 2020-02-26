@@ -55,7 +55,7 @@
             <div class="govuk-grid-row"  [class.govuk-form-group--error]="formErrors.vinErr || hasVinReqErrors">
               <div class="govuk-grid-column-full">
                 <label class="govuk-label govuk-!-font-weight-bold" for="test-vin">
-                  Vehicle registration mark (VRM)
+                  Vehicle identification number (VIN)
                 </label>
                 <span *ngIf="formErrors.vinErr || hasVinReqErrors" id="vin-error" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span>
@@ -73,6 +73,7 @@
                 <span *ngIf="formErrors.vrmErr || hasVrmReqErrors" id="vrm-error" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span>
                     <span>{{formErrors.vrmErr}}</span>
+                    <span *ngIf="formErrors.requestErr[1]==undefined">{{formErrors.requestErr[0]}}</span>
                     <span>{{formErrors.requestErr[1]}}</span>
                 </span>
                 <input class="govuk-input govuk-input--width-20" [class.govuk-input--error]="formErrors.vrmErr || hasVrmReqErrors" id="test-vrm" type="text" formControlName="vrm" maxlength="8">
