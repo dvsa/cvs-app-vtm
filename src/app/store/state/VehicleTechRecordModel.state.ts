@@ -11,10 +11,16 @@ export interface CreateTechRecordVM {
   vin: string;
   vrm: string;
   vType: string;
+  error: string[];
 }
 
 export const initialVehicleTechRecordModelState: IVehicleTechRecordModelState = {
-  initialDetails: null,
+  initialDetails: {
+    vin: '',
+    vrm: '',
+    vType: '',
+    error: []
+  },
   vehicleTechRecordModel: null,
   selectedVehicleTechRecordModel: null,
   error: null

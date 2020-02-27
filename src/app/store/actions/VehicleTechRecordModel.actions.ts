@@ -8,7 +8,8 @@ export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModelHavingStatusAll = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll',
   GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success',
   GetVehicleTechRecordModelHavingStatusAllFailure = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Failure',
-  SetVehicleTechRecordModelVinOnCreate = '[VehicleTechRecordModel] SetVehicleTechRecordModelVinOnCreate'
+  SetVehicleTechRecordModelVinOnCreate = '[VehicleTechRecordModel] SetVehicleTechRecordModelVinOnCreate',
+  SetVehicleTechRecordModelVinOnCreateSucess = '[VehicleTechRecordModel] SetVehicleTechRecordModelVinOnCreateSucess'
 }
 
 export class GetVehicleTechRecordModel implements Action {
@@ -47,6 +48,13 @@ export class SetVehicleTechRecordModelVinOnCreate implements Action {
   }
 }
 
+export class SetVehicleTechRecordModelVinOnCreateSucess implements Action {
+  public readonly type = EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreateSucess;
+  constructor(public payload: CreateTechRecordVM) {
+  }
+}
+
 export type VehicleTechRecordModelActions = GetVehicleTechRecordModel | GetVehicleTechRecordModelSuccess |
   GetVehicleTechRecordModelHavingStatusAll | GetVehicleTechRecordModelHavingStatusAllSuccess |
-  GetVehicleTechRecordModelHavingStatusAllFailure | SetVehicleTechRecordModelVinOnCreate;
+  GetVehicleTechRecordModelHavingStatusAllFailure | SetVehicleTechRecordModelVinOnCreate | SetVehicleTechRecordModelVinOnCreateSucess;
+

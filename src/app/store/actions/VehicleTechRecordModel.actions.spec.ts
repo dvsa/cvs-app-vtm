@@ -59,9 +59,11 @@ describe('GetVehicleTechRecordModelHavingStatusAllFailure', () => {
 
 describe('SetVehicleTechRecordModelVinOnCreate', () => {
   test('the action should have the right type and payload', () => {
-    const actionInstance = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV' });
+
+    const actionInstance = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] });
 
     expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate);
-    expect(actionInstance.payload).toEqual({ vin: 'aaa', vrm: 'bbb', vType: 'PSV' });
+    expect(actionInstance.payload).toEqual({ vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] });
+
   });
 });

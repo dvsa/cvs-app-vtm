@@ -98,11 +98,12 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[SetVehicleTechRecordModelVinOnCreate] SetVehicleTechRecordModelVinOnCreate', () => {
     it('should update state with first tech record creating details', () => {
-      const action = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV' });
+      const action = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] });
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
-        initialDetails: { vin: 'aaa', vrm: 'bbb', vType: 'PSV' }
+        initialDetails: { vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] }
+        
       });
     });
   });

@@ -4,7 +4,8 @@ import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate
+  GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate, SetVehicleTechRecordModelVinOnCreateSucess
+
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {Action, Store} from '@ngrx/store';
 import {map, switchMap, tap, catchError} from 'rxjs/operators';
@@ -36,6 +37,7 @@ export class VehicleTechRecordModelEffects {
     map(action => action.payload),
     switchMap(payload => {
       const requests: Observable<any>[] = [];
+      const requestErrors = [];
 
       if (payload.vType === 'PSV' || payload.vType === 'HGV') {
         requests.push(
@@ -48,14 +50,25 @@ export class VehicleTechRecordModelEffects {
         );
 
         forkJoin(requests).subscribe(result => {
-          if ( result[0] === undefined && result[1] === undefined) {
+          if (result[0] !== undefined) {
+            requestErrors.push('A technical record with this VIN already exists, check the VIN or change the existing technical record');
+          }
+          if (result[1] !== undefined) {
+            requestErrors.push('A technical record with this VRM already exists, check the VRM or change the existing technical record');
+          }
+          if (result[0] === undefined && result[1] === undefined) {
             this.router.navigate([`/technical-record`]);
           }
           requests.length = 0;
+          this._store.dispatch(new SetVehicleTechRecordModelVinOnCreateSucess({vin: payload.vin, vrm: payload.vrm, vType: payload.vType, error: requestErrors}));
         });
+
       } else if (payload.vType === 'Trailer') {
         this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin).subscribe(
-          result => false,
+          result => {
+            requestErrors.push('A technical record with this VIN already exists, check the VIN or change the existing technical record');
+            this._store.dispatch(new SetVehicleTechRecordModelVinOnCreateSucess({vin: payload.vin, vrm: payload.vrm, vType: payload.vType, error: requestErrors}));
+          },
           error => {
             this.router.navigate([`/technical-record`]);
           }
