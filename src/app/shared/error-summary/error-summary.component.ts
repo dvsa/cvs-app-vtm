@@ -10,9 +10,9 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ErrorSummaryComponent {
-  errorMessage$: Observable<string>;
+  errorList$: Observable<string[]>;
   constructor(private _store: Store<IAppState>) {
-    this.errorMessage$ = this._store.pipe(select('error'));
+    this.errorList$ = this._store.pipe(select('error'));
   }
 
 }

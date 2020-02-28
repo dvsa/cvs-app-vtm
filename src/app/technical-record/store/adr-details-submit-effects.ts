@@ -54,7 +54,7 @@ export class AdrDetailsSubmitEffects implements OnRunEffects {
                 })
               )),
             catchError((error) => {
-              this._store$.dispatch(new SetErrorMessage(error))
+              this._store$.dispatch(new SetErrorMessage([error.error]))
               return of(new SubmitAdrActionFailure(error))
             }
             ))));

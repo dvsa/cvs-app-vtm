@@ -1,4 +1,4 @@
-<div *ngIf="(errorMessage$ | async) as errorMessage" class="govuk-width-container">
+<div *ngIf="(errorList$ | async) as errorList" class="govuk-width-container">
   <main class="govuk-main-wrapper" id="errorBox">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
@@ -9,8 +9,9 @@
             There is a problem
           </h2>
           <span class="govuk-error-message govuk-!-font-weight-bold">
-            <div *ngIf="errorMessage.error.error; else messageFromState">Invalid values</div>
-            <ng-template #messageFromState>{{errorMessage.error}}</ng-template>
+            <div *ngFor="let errorMessage of errorList">
+              <div>{{errorMessage}}</div>
+            </div>
           </span>
         </div>
       </div>

@@ -29,7 +29,7 @@ export class DownloadDocumentsEffects {
           return of(new DownloadDocumentFileActionSuccess({ blob: fileblob, fileName: response.fileName }));
         }),
         catchError((error) => {
-          this._store$.dispatch(new SetErrorMessage(error));
+          this._store$.dispatch(new SetErrorMessage([error.error]));
           return of(new DownloadDocumentFileActionFailure(error))
         }
         ))));

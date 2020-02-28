@@ -22,7 +22,7 @@ export class VehicleTestResultModelEffects {
     switchMap((testResultJson: any) => { 
       this._store$.dispatch(new ClearErrorMessage())
       return of(new GetVehicleTestResultModelSuccess(testResultJson)) }),
-    catchError((error) => of(this._store$.dispatch(new SetErrorMessage(error))))
+    catchError((error) => of(this._store$.dispatch(new SetErrorMessage([error.error]))))
   );
 
   constructor(

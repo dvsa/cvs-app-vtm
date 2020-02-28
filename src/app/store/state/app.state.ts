@@ -7,7 +7,7 @@ export interface IAppState {
   loader: ILoaderState,
   vehicleTechRecordModel: IVehicleTechRecordModelState;
   vehicleTestResultModel: IVehicleTestResultModelState;
-  error?: string | null; // track errors
+  error?: [string] | null;
 }
 
 export const initialAppState: IAppState = {
