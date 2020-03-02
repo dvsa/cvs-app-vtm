@@ -1,0 +1,7 @@
+.govuk-summary-list {
+  & .govuk-summary-list__row:last-child {
+    & .govuk-summary-list__value, .govuk-summary-list__key {
+      border-bottom: none !important;
+    }
+  }
+}

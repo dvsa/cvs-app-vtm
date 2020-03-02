@@ -1,0 +1,38 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group" formGroupName="testType">
+      <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group">
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="
+              formErrors?.includes('Enter the additionalNotesRecorded')
+            "
+          >
+            <div class="govuk-grid-column-one-half">
+              <span id="more-detail-hint" class="govuk-hint">
+                Will not be present in the certificate
+              </span>
+              <span
+                *ngIf="formErrors?.includes('Enter the additionalNotesRecorded')"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the carried out during test</span>
+              </span>
+              <textarea
+                class="govuk-textarea"
+                id="test-additionalNotesRecorded"
+                formControlName="additionalNotesRecorded"
+                rows="5"
+                [class.govuk-textarea--error]="
+                  formErrors?.includes('Enter the additionalNotesRecorded')
+                "
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

@@ -54,7 +54,7 @@ describe('VehicleTechRecordModelEffects', () => {
     const action = new ReplaySubject(1);
     action.next(new GetVehicleTestResultModel('1234'));
     const eff = effects.getTestResults$;
-    const sucess = new GetVehicleTestResultModelSuccess(testResult);
+    const sucess = new GetVehicleTestResultModelSuccess([testResult]);
     eff.subscribe((result) => {
       expect(result).toEqual(sucess);
     });

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input} from '@angular/core';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import {IAppState} from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
+import {IAppState} from '@app/store/state/app.state';
 
 @Component({
   selector: 'vtm-adr-details',

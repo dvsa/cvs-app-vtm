@@ -1,0 +1,111 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group" formGroupName="testType">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-three-quarters">
+              <div
+                [class.govuk-form-group--error]="
+                  formErrors?.includes('Enter the seatbeltInstallationCheckDate')
+                "
+              >
+                <label class="govuk-label govuk-!-font-weight-bold">
+                  Carried out during test
+                </label>
+                <span
+                  *ngIf="formErrors?.includes('Enter the seatbeltInstallationCheckDate')"
+                  class="govuk-error-message"
+                >
+                  <span class="govuk-visually-hidden">Error:</span>
+                  <span>Enter the carried out during test</span>
+                </span>
+                <div class="govuk-radios govuk-radios--inline">
+                  <div
+                    *ngFor="let option of seatbeltInstallationCheckDateOptions"
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      id="test-seatbelt-{{ option.id }}"
+                      formControlName="seatbeltInstallationCheckDate"
+                      type="radio"
+                      value="{{ option.selected }}"
+                      [checked]="option.selected"
+                      [class.govuk-input--error]="
+                        formErrors?.includes('Enter the seatbeltInstallationCheckDate')
+                      "
+                    />
+                    <label class="govuk-label govuk-radios__label">
+                      {{ option.name }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                [class.govuk-form-group--error]="
+                  formErrors?.includes('Enter the numberOfSeatbeltsFitted')
+                "
+              >
+                <div class="govuk-grid-row govuk-!-margin-bottom-3">
+                  <div class="govuk-grid-column-three-quarters">
+                    <label class="govuk-label govuk-!-font-weight-bold">
+                      Number of seatbelts fitted
+                    </label>
+                  </div>
+                </div>
+                <div class="govuk-grid-row govuk-!-margin-bottom-3">
+                  <div class="govuk-grid-column-one-third">
+                    <span
+                      *ngIf="formErrors?.includes('Enter the numberOfSeatbeltsFitted')"
+                      class="govuk-error-message"
+                    >
+                      <span class="govuk-visually-hidden">Error:</span>
+                      <span>Enter the carried out during test</span>
+                    </span>
+                    <input
+                      class="govuk-input"
+                      id="test-numberOfSeatbeltsFitted"
+                      formControlName="numberOfSeatbeltsFitted"
+                      type="text"
+                      [class.govuk-input--error]="
+                        formErrors?.includes('Enter the numberOfSeatbeltsFitted')
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="govuk-grid-row govuk-!-margin-bottom-3"
+                [class.govuk-form-group--error]="
+                  formErrors?.includes('Enter the lastSeatbeltInstallationCheckDate')
+                "
+              >
+                <div class="govuk-grid-column-three-quarters">
+                  <label class="govuk-label govuk-!-font-weight-bold">
+                    Most recent installation check
+                  </label>
+                  <span
+                    *ngIf="formErrors?.includes('Enter the lastSeatbeltInstallationCheckDate')"
+                    class="govuk-error-message"
+                  >
+                    <span class="govuk-visually-hidden">Error:</span>
+                    <span>Enter the VIN</span>
+                  </span>
+                  <vtm-date-input
+                    id="test-lastSeatbeltInstallationCheckDate"
+                    ariaDescribedBy="lastSeatbeltInstallationCheckDate"
+                    formControlName="lastSeatbeltInstallationCheckDate"
+                  >
+                  </vtm-date-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

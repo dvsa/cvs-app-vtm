@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
-import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
+import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { IAppState } from '@app/store/state/app.state';
 import { INITIAL_STATE, Store, StoreModule } from '@ngrx/store';
@@ -22,7 +21,6 @@ describe('TechnicalRecordSearchComponent', () => {
       declarations: [TechnicalRecordSearchComponent],
       imports: [
         StoreModule.forRoot(appReducers),
-        StoreModule.forFeature('adrDetails', adrDetailsReducer),
       ],
       providers: [
         {

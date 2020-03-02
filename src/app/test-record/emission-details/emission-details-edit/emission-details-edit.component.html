@@ -1,0 +1,203 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group" formGroupName="testType">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div
+              class="govuk-grid-column-three-quarters"
+              [class.govuk-form-group--error]="formErrors?.includes('Enter the emissionStandard')"
+            >
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Emission standard
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the emissionStandard')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the emission standard</span>
+              </span>
+              <div class="govuk-radios">
+                <div
+                  class="govuk-radios__item"
+                  *ngFor="let eOption of emissionStandardOptions; let i = index"
+                >
+                  <input
+                    class="govuk-radios__input"
+                    id="{{ 'test-emissionStandard-' + i }}"
+                    type="radio"
+                    formControlName="emissionStandard"
+                    value="{{ eOption | lowercase }}"
+                    [class.govuk-input--error]="formErrors?.includes('Enter the emissionStandard')"
+                  />
+                  <label class="govuk-label govuk-radios__label">
+                    {{ eOption }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the smokeTestKLimitApplied')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Smoke test "K" limit applied (m <sup>1</sup>)
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the smokeTestKLimitApplied')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the smoke Test K Limit Applied</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-smokeTestKLimitApplied"
+                formControlName="smokeTestKLimitApplied"
+                type="text"
+                maxlength="100"
+                [class.govuk-input--error]="formErrors?.includes('Enter the smokeTestKLimitApplied')"
+              />
+            </div>
+          </div>
+
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the fuelType')"
+          >
+            <div class="govuk-grid-column-three-quarters">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Fuel type
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the fuelType')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the fuel type</span>
+              </span>
+              <div class="govuk-radios">
+                <div
+                  class="govuk-radios__item"
+                  *ngFor="let fuelOption of fuelTypeOptions; let i = index"
+                >
+                  <input
+                    class="govuk-radios__input"
+                    id="{{ 'test-fuelType-' + i }}"
+                    type="radio"
+                    formControlName="fuelType"
+                    value="{{ fuelOption | lowercase }}"
+                    [class.govuk-input--error]="formErrors?.includes('Enter the fuelType')"
+                  />
+                  <label class="govuk-label govuk-radios__label">
+                    {{ fuelOption }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the modType')"
+          >
+            <div class="govuk-grid-column-three-quarters">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Modification type
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the modType')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the modification type</span>
+              </span>
+              <div class="govuk-radios">
+                <div
+                  class="govuk-radios__item"
+                  *ngFor="let modOption of modTypeOptions; let i = index"
+                >
+                  <input
+                    class="govuk-radios__input"
+                    id="{{ 'test-modType-' + i }}"
+                    type="radio"
+                    formControlName="modType"
+                    value="{{ modOption | lowercase }}"
+                    [class.govuk-input--error]="formErrors?.includes('Enter the modType')"
+                  />
+                  <label class="govuk-label govuk-radios__label">
+                    {{ modOption }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="editModTypeUsed"
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the modificationTypeUsed')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Modification type used
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the modificationTypeUsed')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the modification type used</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-modificationTypeUsed"
+                formControlName="modificationTypeUsed"
+                type="text"
+                maxlength="100"
+                [class.govuk-input--error]="formErrors?.includes('Enter the modificationTypeUsed')"
+              />
+            </div>
+          </div>
+
+          <div
+            *ngIf="editParticulate"
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the particulateTrapFitted')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Particulate trap fitted
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the particulateTrapFitted')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the particulate trap fitted</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-particulateTrapFitted"
+                formControlName="particulateTrapFitted"
+                type="text"
+                maxlength="100"
+                [class.govuk-input--error]="formErrors?.includes('Enter the particulateTrapFitted')"
+              />
+            </div>
+          </div>
+
+          <div
+            *ngIf="editParticulate"
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the particulateTrapSerialNumber')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Particulate trap serial number
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the particulateTrapSerialNumber')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the particulate trap serial number</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-particulateTrapSerialNumber"
+                formControlName="particulateTrapSerialNumber"
+                type="text"
+                maxlength="100"
+                [class.govuk-input--error]="formErrors?.includes('Enter the particulateTrapSerialNumber')"
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

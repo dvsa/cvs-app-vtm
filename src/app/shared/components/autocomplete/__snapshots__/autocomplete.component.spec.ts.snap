@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutocompleteComponent should create 1`] = `
+<test-autocomplete
+  testAutocompleteControl={[Function FormControl]}
+>
+  <form
+    class="ng-untouched ng-pristine ng-valid"
+    novalidate=""
+  >
+    <vtm-date-input
+      aria-describedby="identifier"
+      class="ng-untouched ng-pristine ng-valid"
+      id="testAutocomplete"
+      name="testAutocomplete"
+      ng-reflect-form="[object Object]"
+      ngdefaultcontrol=""
+    />
+  </form>
+</test-autocomplete>
+`;

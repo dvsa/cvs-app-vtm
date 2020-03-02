@@ -1,0 +1,25 @@
+
+.govuk-summary-list {
+
+  .tag-custom {
+    padding: 1px 10px 1px 10px;
+    vertical-align: middle;
+  }
+
+  & .tag--black {
+    background-color: #0b0c0c !important;
+    @extend .tag-custom;
+  }
+
+  & .tag--red {
+    background-color: #d4351c !important;
+    @extend .tag-custom;
+  }
+
+  & .govuk-summary-list__row:last-child {
+    & .govuk-summary-list__value, .govuk-summary-list__key {
+      border-bottom: none !important;
+    }
+  }
+}
+

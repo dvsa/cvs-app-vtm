@@ -8,6 +8,7 @@ import { TestResultService } from './test-result.service';
 import { Store, INITIAL_STATE } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { hot } from 'jasmine-marbles';
+import {VehicleTestResultUpdate} from '@app/models/vehicle-test-result-update';
 
 const routes = {
   testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
@@ -72,6 +73,18 @@ describe('TestResultService', () => {
     const req = httpMock.expectOne(routes.testResults('1234567'));
     expect(req.request.method).toBe('GET');
     req.flush({ mockObject: 'mock' });
+  });
+
+  it('updateTestResults should update', (done) => {
+    const mock = { mockObject: 'mock' };
+    service.updateTestResults('123', {} as VehicleTestResultUpdate).subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+
+    const req = httpMock.expectOne(req => req.url.includes(`/test-results/123`));
+    req.flush(mock);
   });
 
   afterAll(() => {

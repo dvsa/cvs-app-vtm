@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'vtm-prevent-leave-page-modal',
@@ -10,15 +10,15 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class PreventLeavePageModalComponent {
 
   constructor(
-    public dialogRef: MatDialogRef<PreventLeavePageModalComponent>,
-  ) { }
+    public dialogRef: MatDialogRef<PreventLeavePageModalComponent>
+  ) {
+  }
 
   close(): void {
     this.dialogRef.close(false);
   }
 
-  save(): void {
+  action(): void {
     this.dialogRef.close(true);
   }
-
 }

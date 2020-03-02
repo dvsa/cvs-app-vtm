@@ -10,9 +10,8 @@ import { select, Store } from '@ngrx/store';
 import { initAll } from 'govuk-frontend';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IAppState } from './adr-details/adr-details-form/store/adrDetailsForm.state';
-import { SubmitAdrAction } from './store/adrDetailsSubmit.actions';
 import { PendingChangesService } from '@app/shared/pending-changes-service/pending-changes.service';
+import {IAppState} from '@app/store/state/app.state';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -39,7 +38,7 @@ export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCan
       });
   }
 
-  @HostListener('window:beforeunload')
+  // @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {
     if (this.isFormDirty) {
       return false;
@@ -52,7 +51,7 @@ export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCan
   ngDestroyed$ = new Subject();
   techRecordsJson$: Observable<any>;
   testResultJson$: Observable<any>;
-  isFormDirty: boolean;
+  isFormDirty = false;
 
   searchIdentifier = '{none searched}';
   panels: { panel: string, isOpened: boolean }[] = [{ panel: 'panel1', isOpened: false }, { panel: 'panel2', isOpened: false },
@@ -78,11 +77,6 @@ export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCan
 
   ngOnInit() {
     initAll();
-    this._store.pipe(select(state => state.adrDetails.formState.isDirty))
-      .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe(isFormDirty => {
-        this.isFormDirty = isFormDirty;
-      });
   }
 
   ngOnDestroy(): void {
@@ -128,7 +122,7 @@ export class TechnicalRecordComponent implements OnInit, OnDestroy, ComponentCan
     dialogRef.afterClosed().subscribe(result => {
       reasonForChanges = result;
       console.log(`The dialog was closed with response ${reasonForChanges}`);
-      this._store.dispatch(new SubmitAdrAction(reasonForChanges));
+      // this._store.dispatch(new SubmitAdrAction(reasonForChanges));
     });
   }
 

@@ -1,0 +1,107 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group">
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="
+              formErrors?.includes('Enter the testStationNameNumber')
+            "
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Test facility name/number
+              </label>
+              <span
+                *ngIf="formErrors?.includes('Enter the testStationNameNumber')"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the Test facility name/number</span>
+              </span>
+              <vtm-autocomplete
+                [autocompleteData]="testStationsOptions"
+                id="testStationNameNumber"
+                ariaDescribedBy="testStationNameNumber"
+                formControlName="testStationNameNumber"
+                ngDefaultControl
+              ></vtm-autocomplete>
+            </div>
+          </div>
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-full">
+              <div class="govuk-inset-text govuk-!-padding-bottom-0">
+                <div class="govuk-grid-row">
+                  <div
+                    class="govuk-grid-column-one-third govuk-!-font-weight-bold govuk-!-padding-right-0"
+                  >
+                    Type of test facility
+                  </div>
+                  <div class="govuk-grid-column-one-half govuk-!-padding-left-0">
+                    <input
+                      class="govuk-input govuk-!-padding-bottom-5"
+                      id="test-testStationType"
+                      formControlName="testStationType"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the testerName')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Tester name
+              </label>
+              <span
+                *ngIf="formErrors?.includes('Enter the testerName')"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the tester name</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-testerName"
+                formControlName="testerName"
+                type="text"
+                [class.govuk-input--error]="formErrors?.includes('Enter the testerName')"
+              />
+            </div>
+          </div>
+
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the testerEmailAddress')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Email address
+              </label>
+              <span
+                *ngIf="formErrors?.includes('Enter the testerEmailAddress')"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the email address</span>
+              </span>
+                <input
+                  class="govuk-input"
+                  id="test-testerEmailAddress"
+                  formControlName="testerEmailAddress"
+                  [class.govuk-input--error]="
+                    formErrors?.includes('Enter the testerEmailAddress')
+                  "
+                />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

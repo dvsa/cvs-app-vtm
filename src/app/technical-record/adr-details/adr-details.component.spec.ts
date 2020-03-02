@@ -41,7 +41,7 @@ describe('AdrDetailsViewComponent', () => {
         ReactiveFormsModule,
         NgrxFormsModule
       ],
-      declarations: [AdrDetailsComponent, TechnicalRecordComponent],
+      declarations: [AdrDetailsComponent],
       providers: [
         TechRecordHelpersService,
         {

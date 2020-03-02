@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmissionDetailsComponent should create 1`] = `
+<vtm-emission-details
+  testType={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Emission standard 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Smoke test "K" limit applied (m 
+        <sup>
+          1
+        </sup>
+        )
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Fuel type 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Modification type 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+        
+        <span>
+          -
+        </span>
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Modification type used 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Particulate trap fitted 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Particulate trap serial number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-emission-details>
+`;

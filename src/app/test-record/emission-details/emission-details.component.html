@@ -1,0 +1,73 @@
+<dl *ngIf="!editState" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Emission standard
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.emissionStandard | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Smoke test "K" limit applied (m <sup>1</sup>)</dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.smokeTestKLimitApplied | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Fuel type
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.fuelType | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Modification type
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <ng-container *ngIf="testType.modType; else hyphen">
+        {{
+          (testType.modType.code ? testType.modType.code : '') +
+            ' ' +
+            (testType.modType.description ? testType.modType.description : '')
+            | DefaultNullOrEmpty
+        }}
+      </ng-container>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Modification type used
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.modificationTypeUsed | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Particulate trap fitted
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.particulateTrapFitted | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Particulate trap serial number
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.particulateTrapSerialNumber | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+</dl>
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>
+
+<ng-container *ngIf="editState && testRecord.testResult == 'pass'">
+  <vtm-emission-details-edit
+    [testType]="testType"
+    [formErrors]="formErrors"
+  ></vtm-emission-details-edit>
+</ng-container>

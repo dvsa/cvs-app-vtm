@@ -1,0 +1,36 @@
+<table *ngIf="!editState" class="govuk-table t-history">
+  <thead class="govuk-table__head">
+  <tr class="govuk-table__row">
+    <th scope="col" class="govuk-table__header">Status</th>
+    <th scope="col" class="govuk-table__header">Reason for creation</th>
+    <th scope="col" class="govuk-table__header">Created by</th>
+    <th scope="col" class="govuk-table__header">Created at</th>
+    <th scope="col" class="govuk-table__header">Last updated by</th>
+    <th scope="col" class="govuk-table__header">Last updated at</th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  <ng-container *ngFor="let testType of (testRecord.testTypes | SortByDatePipe :'createdAt'); let i = index">
+    <tr class="govuk-table__row">
+      <td id="{{ 'test-testVersion-' + i}}" class="govuk-table__cell">
+        {{ (testRecord.testVersion | titlecase) | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
+        {{ testType.reasonForCreation | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
+        {{ testType.createdByName | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
+        {{ testType.createdAt | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-lastUpdatedByName-' + i }}" class="govuk-table__cell">
+        {{ testType.lastUpdatedByName | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-lastUpdatedAt-' + i }}" class="govuk-table__cell">
+        {{ testType.lastUpdatedAt | DefaultNullOrEmpty }}
+      </td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>

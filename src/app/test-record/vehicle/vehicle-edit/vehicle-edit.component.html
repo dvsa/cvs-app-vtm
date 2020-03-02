@@ -1,0 +1,184 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the vin')">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Vehicle identification number (VIN)
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the vin')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the VIN</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-vin"
+                formControlName="vin"
+                type="text"
+                minLength="1"
+                maxlength="21"
+                [class.govuk-input--error]="formErrors?.includes('Enter the vin')"
+              />
+            </div>
+          </div>
+
+          <div [class.govuk-form-group--error]="formErrors?.includes('Enter the vrm')">
+            <div class="govuk-grid-row govuk-!-margin-bottom-3">
+              <div class="govuk-grid-column-one-half">
+                <label class="govuk-label govuk-!-font-weight-bold">
+                  Vehicle registration mark (VRM)
+                </label>
+              </div>
+            </div>
+            <div class="govuk-grid-row govuk-!-margin-bottom-3">
+              <div class="govuk-grid-column-one-third">
+              <span *ngIf="formErrors?.includes('Enter the vrm')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the VRM</span>
+              </span>
+                <input
+                  class="govuk-input"
+                  id="test-vrm"
+                  formControlName="vrm"
+                  type="text"
+                  minLength="1"
+                  maxlength="8"
+                  [class.govuk-input--error]="formErrors?.includes('Enter the vrm')"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="testRecord.vehicleType == 'trl'"
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="formErrors?.includes('Enter the trailerId')"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Trailer ID
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the trailerId')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the trailer ID</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-trl-id"
+                formControlName="trailerId"
+                type="text"
+                [class.govuk-input--error]="formErrors?.includes('Enter the trailerId')"
+              />
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the countryOfRegistration')">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Country of registration
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the countryOfRegistration')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the country of registration</span>
+              </span>
+              <vtm-autocomplete
+                [autocompleteData]="countryOfRegistrationOptions"
+                id="countryOfRegistration"
+                ariaDescribedBy="countryOfRegistration"
+                formControlName="countryOfRegistration"
+                ngDefaultControl
+              ></vtm-autocomplete>
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the euVehicleCategory')">
+            <div class="govuk-grid-column-three-quarters">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                EU vehicle category
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the euVehicleCategory')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the country of EU vehicle category</span>
+              </span>
+              <div class="govuk-radios">
+                <div class="govuk-radios__item" *ngFor="let euCategory of euVehicleCategories">
+                  <input
+                    class="govuk-radios__input"
+                    id="{{ 'test-euVehicleCategory-' + euCategory }}"
+                    type="radio"
+                    formControlName="euVehicleCategory"
+                    value="{{ euCategory | lowercase }}"
+                    [checked]="(testRecord.euVehicleCategory | titlecase) == euCategory"
+                    [class.govuk-input--error]="formErrors?.includes('Enter the euVehicleCategory')"
+                  />
+                  <label class="govuk-label govuk-radios__label">
+                    {{ euCategory }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the odometerReading')">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Odometer reading
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the odometerReading')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the odometer reading</span>
+              </span>
+              <input
+                class="govuk-input"
+                id="test-odometerReading"
+                formControlName="odometerReading"
+                type="text"
+                [class.govuk-input--error]="formErrors?.includes('Enter the odometerReading')"
+              />
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the odometerReadingUnit')">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Odometer reading unit
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the odometerReadingUnit')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the odometer reading unit</span>
+              </span>
+              <select class="govuk-select" id="test-odometerReadingUnit">
+                <option
+                  *ngFor="let unit of odometerReadingUnits"
+                  [selected]="testRecord.odometerReadingUnits == unit"
+                  >{{ unit }}</option
+                >
+              </select>
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the preparer')">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Preparer
+              </label>
+              <span *ngIf="formErrors?.includes('Enter the preparer')" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the preparer</span>
+              </span>
+              <vtm-autocomplete
+                [autocompleteData]="preparersOptions"
+                id="preparer"
+                ariaDescribedBy="preparer"
+                formControlName="preparer"
+                ngDefaultControl
+              ></vtm-autocomplete>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
