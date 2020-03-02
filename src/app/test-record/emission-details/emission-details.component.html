@@ -65,6 +65,9 @@
   <span>-</span>
 </ng-template>
 
-<ng-container *ngIf="editState && testRecord.testResult == 'pass'">
-  <vtm-emission-details-edit [testType]="testType"></vtm-emission-details-edit>
+<ng-container *ngIf="editState && testRecord.testResult == 'pass' && !hidden">
+  <vtm-emission-details-edit
+    [testType]="testType"
+    [isSubmitted]="isSubmitted"
+  ></vtm-emission-details-edit>
 </ng-container>

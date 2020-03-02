@@ -12,6 +12,7 @@ export class NotesComponent implements OnInit {
 
   @Input() testType: TestType;
   @Input() editState: VIEW_STATE;
+  @Input() isSubmitted: boolean;
 
   constructor() { }
 

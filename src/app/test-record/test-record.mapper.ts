@@ -228,7 +228,7 @@ export class TestRecordMapper {
       (!(testResultMapped.vehicleType === 'psv') ||
         !(testResultMapped.vehicleType.valueOf() === 'hgv'))
     ) {
-      delete testTypeMapped.emissionStandard;
+      delete testTypeMapped.emissionStandard; // TODO: try setting it to undefined
       delete testTypeMapped.smokeTestKLimitApplied;
       delete testTypeMapped.fuelType;
       delete testTypeMapped.modType;

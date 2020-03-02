@@ -1,9 +1,9 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {SeatbeltInstallationCheckComponent} from './seatbelt-installation-check.component';
-import {SharedModule} from '@app/shared/shared.module';
-import {TestType} from '@app/models/test.type';
-import {VIEW_STATE} from '@app/app.enums';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SeatbeltInstallationCheckComponent } from './seatbelt-installation-check.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { TestType } from '@app/models/test.type';
+import { VIEW_STATE } from '@app/app.enums';
+import { Component, Input } from '@angular/core';
 
 describe('SeatbeltInstallationCheckComponent', () => {
   let component: SeatbeltInstallationCheckComponent;
@@ -13,8 +13,7 @@ describe('SeatbeltInstallationCheckComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [SeatbeltInstallationCheckComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      declarations: [SeatbeltInstallationCheckComponent, TestSeatbeltInstallationCheckComponent]
     }).compileComponents();
   }));
 
@@ -31,3 +30,12 @@ describe('SeatbeltInstallationCheckComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 });
+
+@Component({
+  selector: 'vtm-seatbelt-installation-check-edit',
+  template: `<div>{{ testType | json }}</div> `
+})
+class TestSeatbeltInstallationCheckComponent {
+  @Input() testType: TestType;
+  @Input() isSubmitted: boolean;
+}

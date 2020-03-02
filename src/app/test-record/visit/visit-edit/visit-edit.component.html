@@ -3,13 +3,28 @@
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <div class="govuk-form-group">
-          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="
+              isSubmitted && testResultChildForm.form.get('testStationNameNumber')?.invalid
+            "
+          >
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Test facility name/number
               </label>
+              <span
+                *ngIf="
+                  isSubmitted && testResultChildForm.form.get('testStationNameNumber')?.invalid
+                "
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Select the test facility name/number</span>
+              </span>
               <vtm-autocomplete
                 [autocompleteData]="testStationsOptions"
+                [hasError]="isSubmitted && testResultChildForm.form.get('testStationNameNumber')?.invalid"
                 id="testStationNameNumber"
                 ariaDescribedBy="testStationNameNumber"
                 formControlName="testStationNameNumber"
@@ -38,29 +53,59 @@
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="
+              isSubmitted && testResultChildForm.form.get('testerName')?.invalid
+            "
+          >
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Tester name
               </label>
+              <span
+                *ngIf="isSubmitted && testResultChildForm.form.get('testerName')?.invalid"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the tester name</span>
+              </span>
               <input
                 class="govuk-input"
                 id="test-testerName"
                 formControlName="testerName"
                 type="text"
+                [class.govuk-input--error]="
+                  isSubmitted && testResultChildForm.form.get('testerName')?.invalid
+                "
               />
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="
+              isSubmitted && testResultChildForm.form.get('testerEmailAddress')?.invalid
+            "
+          >
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Email address
               </label>
+              <span
+                *ngIf="isSubmitted && testResultChildForm.form.get('testerEmailAddress')?.invalid"
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the email address</span>
+              </span>
               <input
                 class="govuk-input"
                 id="test-testerEmailAddress"
                 formControlName="testerEmailAddress"
+                [class.govuk-input--error]="
+                  isSubmitted && testResultChildForm.form.get('testerEmailAddress')?.invalid
+                "
               />
             </div>
           </div>

@@ -17,9 +17,8 @@
     </dt>
     <dd class="govuk-summary-list__value" id="test-imNumber-imDescription">
       {{
-        (defect.imNumber ? defect.imNumber : '') +
-          ' ' +
-          (defect.imDescription ? defect.imDescription : '') | DefaultNullOrEmpty
+        concatStrings([defect.imNumber, defect.imDescription], ' ')
+            | DefaultNullOrEmpty
       }}
     </dd>
   </div>
@@ -29,9 +28,8 @@
     </dt>
     <dd class="govuk-summary-list__value" id="test-itemNumber-itemDescription">
       {{
-        (defect.itemNumber ? defect.itemNumber : '') +
-          ' ' +
-          (defect.itemDescription ? defect.itemDescription : '') | DefaultNullOrEmpty
+        concatStrings([defect.itemNumber, defect.itemDescription], ' ')
+            | DefaultNullOrEmpty
       }}
     </dd>
   </div>
@@ -41,11 +39,8 @@
     </dt>
     <dd class="govuk-summary-list__value" id="test-deficencyId">
       {{
-        (defect.deficiencyId ? defect.deficiencyId : '') +
-          ' ' +
-          (defect.deficiencySubId ? defect.deficiencySubId : '') +
-          ' ' +
-          (defect.deficiencyText ? defect.deficiencyText : '') | DefaultNullOrEmpty
+        concatStrings([defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText], ' ')
+            | DefaultNullOrEmpty
       }}
     </dd>
   </div>
@@ -55,27 +50,18 @@
     </dt>
     <dd class="govuk-summary-list__value" id="test-location">
       {{
-        (defect.additionalInformation.location.vertical
-          ? (defect.additionalInformation.location.vertical | titlecase)
-          : '') +
-          (defect.additionalInformation.location.horizontal
-            ? '/' + (defect.additionalInformation.location.horizontal | titlecase)
-            : '') +
-          (defect.additionalInformation.location.lateral
-            ? '/' + (defect.additionalInformation.location.lateral | titlecase)
-            : '') +
-          (defect.additionalInformation.location.longitudinal
-            ? '/' + (defect.additionalInformation.location.longitudinal | titlecase)
-            : '') +
-          (defect.additionalInformation.location.rowNumber
-            ? '/' + (defect.additionalInformation.location.rowNumber.toString() | titlecase)
-            : '') +
-          (defect.additionalInformation.location.seatNumber
-            ? '/' + (defect.additionalInformation.location.seatNumber.toString() | titlecase)
-            : '') +
-          (defect.additionalInformation.location.axleNumber
-            ? '/' + (defect.additionalInformation.location.axleNumber | titlecase)
-            : '') | DefaultNullOrEmpty
+        concatStrings(
+            [
+                defect.additionalInformation.location.vertical | titlecase,
+                defect.additionalInformation.location.horizontal | titlecase,
+                defect.additionalInformation.location.lateral | titlecase,
+                defect.additionalInformation.location.longitudinal | titlecase,
+                defect.additionalInformation.location.rowNumber,
+                defect.additionalInformation.location.seatNumber,
+                defect.additionalInformation.location.axleNumber | titlecase
+            ],
+            '/'
+        )
       }}
     </dd>
   </div>

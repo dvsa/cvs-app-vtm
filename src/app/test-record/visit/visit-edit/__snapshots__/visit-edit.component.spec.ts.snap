@@ -35,14 +35,20 @@ exports[`VisitEditComponent should create 1`] = `
                 >
                    Test facility name/number 
                 </label>
+                
                 <vtm-autocomplete
                   ariadescribedby="testStationNameNumber"
                   class="ng-untouched ng-pristine ng-valid"
                   formcontrolname="testStationNameNumber"
                   id="testStationNameNumber"
+                  ng-reflect-autocomplete-data="undefined (1)"
                   ng-reflect-name="testStationNameNumber"
                   ngdefaultcontrol=""
-                />
+                >
+                  <div>
+                    undefined (1)
+                  </div>
+                </vtm-autocomplete>
               </div>
             </div>
             <div
@@ -88,6 +94,7 @@ exports[`VisitEditComponent should create 1`] = `
                 >
                    Tester name 
                 </label>
+                
                 <input
                   class="govuk-input ng-untouched ng-pristine ng-invalid"
                   formcontrolname="testerName"
@@ -108,6 +115,7 @@ exports[`VisitEditComponent should create 1`] = `
                 >
                    Email address 
                 </label>
+                
                 <input
                   class="govuk-input ng-untouched ng-pristine ng-invalid"
                   formcontrolname="testerEmailAddress"

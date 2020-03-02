@@ -1,6 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AutocompleteComponent should create 1`] = `
+<vtm-autocomplete
+  _value={[Function String]}
+  autocompleteData={[Function Array]}
+  autocompleteInput={[Function FormControl]}
+  controlType={[Function String]}
+  externalId=""
+  injector={[Function Injector_]}
+  internalId=""
+  multi={[Function Boolean]}
+  onDestroy$={[Function Subject]}
+  onchange={[Function Function]}
+>
+  <input
+    class="govuk-input"
+    type="text"
+  /><datalist>
+    
+  </datalist>
+</vtm-autocomplete>
+`;
+
+exports[`AutocompleteComponent should populate the internal input when an external value is provided 1`] = `
 <test-autocomplete
   testAutocompleteControl={[Function FormControl]}
 >
@@ -8,13 +30,13 @@ exports[`AutocompleteComponent should create 1`] = `
     class="ng-untouched ng-pristine ng-valid"
     novalidate=""
   >
-    <vtm-date-input
-      aria-describedby="identifier"
+    <input
       class="ng-untouched ng-pristine ng-valid"
       id="testAutocomplete"
       name="testAutocomplete"
       ng-reflect-form="[object Object]"
       ngdefaultcontrol=""
+      value="testing value"
     />
   </form>
 </test-autocomplete>

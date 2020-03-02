@@ -1,6 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TestType} from '@app/models/test.type';
-import {TestResultModel} from '@app/models/test-result.model';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { TestType } from '@app/models/test.type';
+import { TestResultModel } from '@app/models/test-result.model';
 
 @Component({
   selector: 'vtm-defects',
@@ -9,14 +9,15 @@ import {TestResultModel} from '@app/models/test-result.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefectsComponent implements OnInit {
-
   @Input() testType: TestType;
   @Input() testRecord: TestResultModel;
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
+  concatStrings(strings, concatBy): string {
+    const stringsToJoin = strings.length > 1 ? strings.filter(item => item) : [''];
+    return stringsToJoin.join(concatBy);
+  }
 }

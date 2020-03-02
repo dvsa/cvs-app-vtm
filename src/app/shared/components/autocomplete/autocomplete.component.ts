@@ -11,7 +11,6 @@ import {
 import {
   ControlValueAccessor,
   FormControl,
-  FormGroup,
   NG_VALUE_ACCESSOR,
   NgControl
 } from '@angular/forms';
@@ -38,7 +37,9 @@ import { takeUntil, tap } from 'rxjs/operators';
 export class AutocompleteComponent
   implements ControlValueAccessor, FormFieldControl, OnInit, OnDestroy {
   @Input() autocompleteData;
+  @Input() hasError: boolean;
   @Input('aria-describedby') ariaDescribedBy: string | null;
+
   autocompleteInput: FormControl;
   errorMessages?: { rule: string; message: string }[];
   controlType = 'text';

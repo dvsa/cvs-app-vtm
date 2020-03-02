@@ -34,5 +34,9 @@
 </dl>
 
 <ng-container *ngIf="editState">
-  <vtm-visit-edit [testStations]="testStations" [testRecord]="testRecord"></vtm-visit-edit>
+  <vtm-visit-edit
+    [testStations]="testStations"
+    [testRecord]="testRecord"
+    [isSubmitted]="isSubmitted"
+  ></vtm-visit-edit>
 </ng-container>

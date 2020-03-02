@@ -1,5 +1,7 @@
 import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
+import { TestRecordTestType } from '@app/models/test-record-test-type';
+import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 
 describe('TestRecordMapper', () => {
   const mapper = new TestRecordMapper();
@@ -49,16 +51,16 @@ describe('TestRecordMapper', () => {
     expect(countryCode).toEqual('gba');
   });
 
-  // it('should map form values', () => {
-  //   const testType = {}  as TestType;
-  //   const testRecord = {} as TestResultModel;
-  //   const testResultObject = {
-  //     testRecord: testRecord,
-  //     testType: testType
-  //   } as TestRecordTestType;
-  //
-  //   const testResultMapped = mapper.mapFormValues({} as TestResultModel, testResultObject);
-  //   expect(testResultMapped).toBe('');
-  // });
+  it('should map form values for PSV', () => {
+    const testResultObject = {
+      testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
+      testType: TESTING_TEST_MODELS_UTILS.mockTestType()
+    } as TestRecordTestType;
 
+    const testResultMapped = mapper.mapFormValues(
+      { testType: { testTypeId: '1', seatbeltInstallationCheckDate: true } },
+      testResultObject
+    );
+    expect(Object.values(testResultMapped).length).toEqual(15);
+  });
 });

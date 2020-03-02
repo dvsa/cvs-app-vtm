@@ -3,12 +3,34 @@
     <div class="govuk-form-group" formGroupName="testType">
       <fieldset class="govuk-fieldset">
         <div class="govuk-form-group">
-          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+          <div
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+            [class.govuk-form-group--error]="
+              isSubmitted && testResultChildForm.form.get('additionalNotesRecorded')?.invalid
+            "
+          >
             <div class="govuk-grid-column-one-half">
               <span id="more-detail-hint" class="govuk-hint">
-               Will not be present in the certificate
+                Will not be present in the certificate
               </span>
-              <textarea class="govuk-textarea" id="test-additionalNotesRecorded" formControlName="additionalNotesRecorded" rows="5"></textarea>
+              <span
+                *ngIf="
+                  isSubmitted && testResultChildForm.form.get('additionalNotesRecorded')?.invalid
+                "
+                class="govuk-error-message"
+              >
+                <span class="govuk-visually-hidden">Error:</span>
+                <span>Enter the carried out during test</span>
+              </span>
+              <textarea
+                class="govuk-textarea"
+                id="test-additionalNotesRecorded"
+                formControlName="additionalNotesRecorded"
+                rows="5"
+                [class.govuk-textarea--error]="
+                  isSubmitted && testResultChildForm.form.get('additionalNotesRecorded')?.invalid
+                "
+              ></textarea>
             </div>
           </div>
         </div>

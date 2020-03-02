@@ -36,43 +36,53 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                    Vehicle identification number (VIN) 
                 </label>
+                
                 <input
                   class="govuk-input ng-untouched ng-pristine"
                   disabled=""
                   formcontrolname="vin"
                   id="test-vin"
+                  maxlength="21"
+                  minlength="1"
+                  ng-reflect-maxlength="21"
                   ng-reflect-name="vin"
                   type="text"
                 />
               </div>
             </div>
-            <div
-              class="govuk-grid-row govuk-!-margin-bottom-3"
-            >
+            <div>
               <div
-                class="govuk-grid-column-one-half"
+                class="govuk-grid-row govuk-!-margin-bottom-3"
               >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
+                <div
+                  class="govuk-grid-column-one-half"
                 >
-                   Vehicle registration mark (VRM) 
-                </label>
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                  >
+                     Vehicle registration mark (VRM) 
+                  </label>
+                </div>
               </div>
-            </div>
-            <div
-              class="govuk-grid-row govuk-!-margin-bottom-3"
-            >
               <div
-                class="govuk-grid-column-one-third"
+                class="govuk-grid-row govuk-!-margin-bottom-3"
               >
-                <input
-                  class="govuk-input ng-untouched ng-pristine"
-                  disabled=""
-                  formcontrolname="vrm"
-                  id="test-vrm"
-                  ng-reflect-name="vrm"
-                  type="text"
-                />
+                <div
+                  class="govuk-grid-column-one-third"
+                >
+                  
+                  <input
+                    class="govuk-input ng-untouched ng-pristine"
+                    disabled=""
+                    formcontrolname="vrm"
+                    id="test-vrm"
+                    maxlength="8"
+                    minlength="1"
+                    ng-reflect-maxlength="8"
+                    ng-reflect-name="vrm"
+                    type="text"
+                  />
+                </div>
               </div>
             </div>
             
@@ -87,14 +97,20 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                    Country of registration 
                 </label>
+                
                 <vtm-autocomplete
                   ariadescribedby="countryOfRegistration"
-                  class="ng-untouched ng-pristine ng-valid"
+                  class="ng-untouched ng-pristine ng-invalid"
                   formcontrolname="countryOfRegistration"
                   id="countryOfRegistration"
+                  ng-reflect-autocomplete-data="Great Britain and Northern Ire"
                   ng-reflect-name="countryOfRegistration"
                   ngdefaultcontrol=""
-                />
+                >
+                  <div>
+                    Great Britain and Northern Ireland - GB,Alderney - GBA,Guernsey - GBG,Jersey - GBJ,Isle of Man - GBM,Gibraltar - GBZ,Austria - A,Belgium - B,Bosnia and Herzegovina - BIH,Bulgaria - BG,Croatia - HR,Cyprus - CY,Czech Republic - CZ,Denmark - DK,Estonia - EST,Finland - FIN,France - F,Germany - D,Greece - GR,Hungary - H,Ireland - IRL,Italy - I,Latvia - LV,Lithuania - LT,Luxembourg - L,Malta - M,Netherlands - NL,Norway - N,Poland - PL,Portugal - P,Romania - RO,Slovakia - SK,Slovenia - SLO,Spain - E,Sweden - S,Switzerland - CH,Non EU,Country Not Known
+                  </div>
+                </vtm-autocomplete>
               </div>
             </div>
             <div
@@ -108,6 +124,7 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                    EU vehicle category 
                 </label>
+                
                 <div
                   class="govuk-radios"
                 >
@@ -116,7 +133,7 @@ exports[`VehicleEditComponent should create 1`] = `
                     class="govuk-radios__item"
                   >
                     <input
-                      class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
                       formcontrolname="euVehicleCategory"
                       id="test-euVehicleCategory-M1"
                       ng-reflect-form-control-name="euVehicleCategory"
@@ -134,7 +151,7 @@ exports[`VehicleEditComponent should create 1`] = `
                     class="govuk-radios__item"
                   >
                     <input
-                      class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
                       formcontrolname="euVehicleCategory"
                       id="test-euVehicleCategory-M2"
                       ng-reflect-form-control-name="euVehicleCategory"
@@ -152,7 +169,7 @@ exports[`VehicleEditComponent should create 1`] = `
                     class="govuk-radios__item"
                   >
                     <input
-                      class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
                       formcontrolname="euVehicleCategory"
                       id="test-euVehicleCategory-M3"
                       ng-reflect-form-control-name="euVehicleCategory"
@@ -180,12 +197,14 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                    Odometer reading 
                 </label>
+                
                 <input
-                  class="govuk-input ng-untouched ng-pristine ng-valid"
+                  class="govuk-input ng-untouched ng-pristine ng-invalid"
                   formcontrolname="odometerReading"
                   id="test-odometerReading"
                   ng-reflect-name="odometerReading"
                   type="text"
+                  vtmdigitonly=""
                 />
               </div>
             </div>
@@ -200,6 +219,7 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                    Odometer reading unit 
                 </label>
+                
                 <select
                   class="govuk-select"
                   id="test-odometerReadingUnit"
@@ -230,9 +250,14 @@ exports[`VehicleEditComponent should create 1`] = `
                   class="ng-untouched ng-pristine ng-valid"
                   formcontrolname="preparer"
                   id="preparer"
+                  ng-reflect-autocomplete-data="undefined(undefined)"
                   ng-reflect-name="preparer"
                   ngdefaultcontrol=""
-                />
+                >
+                  <div>
+                    undefined(undefined)
+                  </div>
+                </vtm-autocomplete>
               </div>
             </div>
           </div>

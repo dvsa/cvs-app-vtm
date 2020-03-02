@@ -6,11 +6,11 @@ import {
 } from './VehicleTechRecordModel.state';
 import {
   initialVehicleTestResultModelState,
-  IVehicleTestResultModelState
+  VehicleTestResultModelState
 } from './VehicleTestResultModel.state';
 import {
   initialReferenceDataState,
-  IReferenceDataState
+  ReferenceDataState
 } from '@app/store/state/ReferenceDataState.state';
 import { initialLoaderState, ILoaderState } from './Loader.state';
 import { VehicleTechRecordModelEffects } from '../effects/VehicleTechRecordModel.effects';
@@ -21,8 +21,8 @@ export interface IAppState {
   router?: RouterReducerState;
   loader: ILoaderState;
   vehicleTechRecordModel: IVehicleTechRecordModelState;
-  vehicleTestResultModel: IVehicleTestResultModelState;
-  referenceData: IReferenceDataState;
+  vehicleTestResultModel: VehicleTestResultModelState;
+  referenceData: ReferenceDataState;
   error?: [string] | null;
 }
 

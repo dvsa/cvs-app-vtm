@@ -14,6 +14,7 @@ export class VisitComponent implements OnInit {
   @Input() testRecord: TestResultModel;
   @Input() editState: VIEW_STATE;
   @Input() testStations: TestStation[];
+  @Input() isSubmitted: boolean;
 
   constructor() { }
 

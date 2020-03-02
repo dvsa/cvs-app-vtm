@@ -7,7 +7,7 @@
       {{testRecord.vin | DefaultNullOrEmpty}}
     </dd>
   </div>
-  <div *ngIf="testRecord.vehicleType!='trl'" class="govuk-summary-list__row">
+  <div *ngIf="testRecord.vehicleType != 'trl'" class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Vehicle registration mark (VRM)
     </dt>
@@ -15,7 +15,7 @@
       {{testRecord.vrm | DefaultNullOrEmpty}}
     </dd>
   </div>
-  <div *ngIf="testRecord.vehicleType=='trl'" class="govuk-summary-list__row">
+  <div *ngIf="testRecord.vehicleType == 'trl'" class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Trailer ID
     </dt>
@@ -39,12 +39,16 @@
       {{(testRecord.euVehicleCategory |  DefaultNullOrEmpty) | titlecase}}
     </dd>
   </div>
-  <div *ngIf="testRecord.vehicleType!='trl'" class="govuk-summary-list__row">
+  <div *ngIf="testRecord.vehicleType != 'trl'" class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Odometer reading
     </dt>
     <dd class="govuk-summary-list__value" id="test-odometerReading">
-      {{!!testRecord.odometerReading && !!testRecord.odometerReadingUnits ? testRecord.odometerReading + ' ' + testRecord.odometerReadingUnits : '-'}}
+      {{
+        !!testRecord.odometerReading && !!testRecord.odometerReadingUnits
+            ? testRecord.odometerReading + ' ' + testRecord.odometerReadingUnits
+            : '-'
+      }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -52,10 +56,18 @@
       Preparer
     </dt>
     <dd class="govuk-summary-list__value" id="test-preparer">
-      {{!!testRecord.preparerName && !!testRecord.preparerId ? testRecord.preparerName + ' - ' + testRecord.preparerId : '-'}}
+      {{
+        !!testRecord.preparerName && !!testRecord.preparerId
+            ? testRecord.preparerName + ' - ' + testRecord.preparerId
+            : '-'
+      }}
     </dd>
   </div>
 </dl>
 <ng-container *ngIf="editState">
-  <vtm-vehicle-edit [testRecord]="testRecord" [preparers]="preparers"></vtm-vehicle-edit>
+  <vtm-vehicle-edit
+    [testRecord]="testRecord"
+    [preparers]="preparers"
+    [isSubmitted]="isSubmitted"
+  ></vtm-vehicle-edit>
 </ng-container>
