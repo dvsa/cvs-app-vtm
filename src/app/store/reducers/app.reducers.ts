@@ -5,11 +5,13 @@ import { VehicleTechRecordModelReducers } from './VehicleTechRecordModel.reducer
 import { VehicleTestResultModelReducers } from './VehicleTestResultModel.reducers';
 import { LoaderReducer } from './Loader.reducers';
 import { ErrorReducer } from './Error.reducers';
+import { ReferenceDataReducers } from '@app/store/reducers/ReferenceData.reducers';
 
 export const appReducers: ActionReducerMap<IAppState, any> = {
   router: routerReducer,
   loader: LoaderReducer,
   vehicleTechRecordModel: VehicleTechRecordModelReducers,
   vehicleTestResultModel: VehicleTestResultModelReducers,
-  error: ErrorReducer,
+  referenceData: ReferenceDataReducers,
+  error: ErrorReducer
 };

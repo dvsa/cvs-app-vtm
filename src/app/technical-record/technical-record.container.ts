@@ -41,7 +41,7 @@ import { VIEW_STATE } from '@app/app.enums';
 })
 export class TechnicalRecordsContainer implements OnInit {
   vehicleTechnicalRecord$: Observable<VehicleTechRecordModel>;
-  testResults$: Observable<TestResultModel>;
+  testResults$: Observable<TestResultModel[]>;
   metaData$: Observable<MetaData>;
   viewState$: Observable<VIEW_STATE>;
 

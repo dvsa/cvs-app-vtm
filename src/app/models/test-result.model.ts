@@ -1,19 +1,21 @@
 import { TestType } from '../models/test.type';
-import { BodyType } from './body-type';
+import { BodyType } from '@app/models/body-type';
 
 export interface TestResultModel {
+  reasonForCreation: string;
+  testResultId: string;
   testerStaffId: string;
   testStartTimestamp: Date;
   odometerReadingUnits: string;
   testEndTimestamp: Date;
   testStatus: string;
+  numberOfWheelsDriven: number;
   testTypes: TestType[];
   vehicleClass: BodyType;
   vin: string;
   vehicleSize: string;
   testStationName: string;
   vehicleId: string;
-  noOfAxles: number;
   vehicleType: string;
   countryOfRegistration: string;
   preparerId: string;
@@ -26,6 +28,15 @@ export interface TestResultModel {
   vrm: string;
   testStationPNumber: string;
   numberOfSeats: number;
+  noOfAxles: number;
   testerEmailAddress: string;
   euVehicleCategory: string;
+  trailerId: string;
+  testResult: string;
+  systemNumber: string;
+  regnDate: string;
+  firstUseDate: string;
+  deletionFlag: boolean;
+  testExpiryDate: string;
+  testVersion: string;
 }

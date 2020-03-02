@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VisitComponent should create 1`] = `
+<vtm-visit
+  editState="0"
+  testRecord={[Function Object]}
+  testStations={[Function Array]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test facility name/number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Type of test facility 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Tester name 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Email address 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-visit>
+`;
