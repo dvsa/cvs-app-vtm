@@ -42,7 +42,10 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-approvalDate"
       >
-         10/03/2020 
+        
+        <span>
+           10/03/2020 
+        </span>
       </dd>
       <dd
         class="govuk-summary-list__value"

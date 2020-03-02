@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestHistoryComponent should create 1`] = `
+<vtm-test-history>
+  
+</vtm-test-history>
+`;
