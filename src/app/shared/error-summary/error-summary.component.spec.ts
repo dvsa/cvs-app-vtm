@@ -3,10 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject } from 'rxjs';
 
-import MockStore from '../../utils/mockStore';
 import { ErrorSummaryComponent } from './error-summary.component';
-
-
+import { MockStore } from '@app/utils/mockStore';
 
 const mockSelector = new BehaviorSubject<any>(undefined);
 

@@ -2,6 +2,7 @@
 
 exports[`SeatbeltInstallationCheckComponent should create 1`] = `
 <vtm-seatbelt-installation-check
+  editState="0"
   testType={[Function Object]}
 >
   <dl
@@ -19,7 +20,127 @@ exports[`SeatbeltInstallationCheckComponent should create 1`] = `
         class="govuk-summary-list__value"
         id="test-seatbeltInstallationCheckDate"
       >
+         Yes 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Number of seatbelts fitted 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-numberOfSeatbeltsFitted"
+      >
          - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Most recent installation check 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-lastSeatbeltInstallationCheckDate"
+      >
+        
+        <span>
+          -
+        </span>
+      </dd>
+    </div>
+  </dl>
+</vtm-seatbelt-installation-check>
+`;
+
+exports[`SeatbeltInstallationCheckComponent should render edit template if editState is EDIT 1`] = `
+<vtm-seatbelt-installation-check
+  editState={[Function Number]}
+  testType={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Carried out during test 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-seatbeltInstallationCheckDate"
+      >
+         Yes 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Number of seatbelts fitted 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-numberOfSeatbeltsFitted"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Most recent installation check 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-lastSeatbeltInstallationCheckDate"
+      >
+        
+        <span>
+          -
+        </span>
+      </dd>
+    </div>
+  </dl>
+</vtm-seatbelt-installation-check>
+`;
+
+exports[`SeatbeltInstallationCheckComponent should render view template if editState is VIEW_ONLY 1`] = `
+<vtm-seatbelt-installation-check
+  editState="0"
+  testType={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Carried out during test 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-seatbeltInstallationCheckDate"
+      >
+         Yes 
       </dd>
     </div>
     <div

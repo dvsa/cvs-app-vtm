@@ -1,4 +1,4 @@
-<table class="govuk-table">
+<table class="govuk-table govuk-!-margin-bottom-0">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Test type</th>
@@ -46,7 +46,11 @@
         <td
           id="{{ 'test-testResult-tRes-' + i + '-' + ii }}"
           class="govuk-table__cell govuk-!-font-weight-bold"
-          [ngStyle]="setResultColor(testType.testResult)"
+          [class.font--green]="testType.testResult === 'pass'"
+          [class.font--blue]="testType.testResult === 'prs'"
+          [class.font--red]="
+            testType.testResult === 'fail' || testType.testResult === 'abandoned'
+          "
         >
           {{ testType.testResult | DefaultNullOrEmpty | uppercase }}
         </td>
@@ -58,6 +62,10 @@
             class="govuk-link govuk-link--no-visited-state"
             id="{{ 'test-view-' + testType.testNumber }}"
             [routerLink]="['/test-record', testType.testNumber]"
+            [queryParams]="{
+              testResultId: testRes.testResultId,
+              systemNumber: testRes.systemNumber
+            }"
             >View</a
           >
         </td>

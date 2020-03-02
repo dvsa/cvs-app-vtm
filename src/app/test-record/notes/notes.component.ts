@@ -1,5 +1,6 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TestType} from '@app/models/test.type';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { TestType } from '@app/models/test.type';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-notes',
@@ -9,6 +10,7 @@ import {TestType} from '@app/models/test.type';
 export class NotesComponent implements OnInit {
 
   @Input() testType: TestType;
+  @Input() editState: VIEW_STATE;
 
   constructor() { }
 
