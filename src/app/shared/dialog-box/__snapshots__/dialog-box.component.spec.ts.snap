@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DialogBoxComponent should create 1`] = `
+<vtm-dialog-box
+  data={[Function Object]}
+  dialogRef={[Function Object]}
+>
+  <div
+    class="mat-dialog-content"
+    mat-dialog-content=""
+  >
+    <h2
+      class="govuk-heading-l"
+    >
+      
+    </h2>
+    <textarea
+      aria-describedby="reasonForCreation"
+      class="govuk-textarea govuk-grid-column-two-thirds ng-untouched ng-pristine ng-valid"
+      id="reasonForCreation"
+      rows="8"
+    >
+        
+    </textarea>
+  </div><button
+    cdkfocusinitial=""
+    class="govuk-button"
+    data-module="govuk-button"
+  >
+     
+  
+  </button><a
+    class="cancel"
+  >
+    <span>
+      Cancel
+    </span>
+  </a>
+</vtm-dialog-box>
+`;

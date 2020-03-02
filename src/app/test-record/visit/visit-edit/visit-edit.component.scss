@@ -1,0 +1,13 @@
+.govuk-grid-row {
+  input:nth-child(1) {
+    border: none;
+  }
+  input:nth-child(1):focus{
+    outline: none;
+    box-shadow: none;
+  }
+  input:disabled{
+    color: 	#0b0c0c;
+  }
+}
+

@@ -1,11 +1,26 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {IAppState} from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
-import {selectSelectedVehicleTestResultModel} from '@app/store/selectors/VehicleTestResultModel.selectors';
-import {Observable} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
-import {TestResultModel} from '@app/models/test-result.model';
-import {TestType} from '@app/models/test.type';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  EventEmitter,
+  Output, SimpleChanges, OnChanges
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormGroupDirective,
+} from '@angular/forms';
+import { initAll } from 'govuk-frontend';
+import { TestRecordTestType } from '@app/models/test-record-test-type';
+import { TestResultModel } from '@app/models/test-result.model';
+import { VIEW_STATE } from '@app/app.enums';
+import { MatDialog } from '@angular/material/dialog';
+import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
+import { Preparer } from '@app/models/preparer';
+import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
+import { TestStation } from '@app/models/test-station';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'vtm-test-record',
@@ -13,33 +28,71 @@ import {TestType} from '@app/models/test.type';
   styleUrls: ['./test-record.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordComponent implements OnInit {
+export class TestRecordComponent implements OnInit, OnChanges {
+  @Input() editState: VIEW_STATE;
+  @Input() preparers: Preparer[];
+  @Input() testResultObj: TestRecordTestType;
+  @Input() testStations: TestStation[];
+  @Input() testTypesApplicable: TestTypesApplicable;
+  @Output() submitTest = new EventEmitter<TestResultModel>();
+  @Output() switchState = new EventEmitter<VIEW_STATE>();
+  @Output() isFormDirty = new EventEmitter<boolean>();
+  testResultParentForm: FormGroup;
 
-  testResultObservable$: Observable<TestResultModel>;
-  testType: TestType;
-  testTypeNumber: string;
+  constructor(
+    private parent: FormGroupDirective,
+    protected fb: FormBuilder,
+    private dialog: MatDialog,
+    private testRecordMapper: TestRecordMapper,
+    private location: Location
+  ) {}
 
-  constructor(private _store: Store<IAppState>, private route: ActivatedRoute) {
+  ngOnInit(): void {
+    initAll();
+    this.switchState.emit(VIEW_STATE.VIEW_ONLY);
+    this.testResultParentForm = new FormGroup({ testType: new FormGroup({}) });
+    this.onFormChanges();
   }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.testTypeNumber = params.get('id');
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes) {
+      this.testResultObj.testType = changes.testResultObj.currentValue.testType;
+      this.testResultObj.testRecord = changes.testResultObj.currentValue.testRecord;
+    } else {
+      this.testResultObj = {} as TestRecordTestType;
+    }
+  }
+
+  switchCurrentState(state: string) {
+    if (state === 'view') {
+      this.switchState.emit(VIEW_STATE.VIEW_ONLY);
+    } else {
+      this.switchState.emit(VIEW_STATE.EDIT);
+    }
+  }
+
+  onSaveTestResult(testResultParentForm) {
+    const testResultUpdated: TestResultModel = this.testRecordMapper.mapFormValues(
+      this.testResultParentForm.getRawValue(),
+      this.testResultObj
+    );
+
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      width: '45vw',
+      data: { context: 'Enter reason for changing test record', actionName: 'Save test record' }
     });
-    this.testResultObservable$ = this._store.pipe(select(selectSelectedVehicleTestResultModel));
-    this.testResultObservable$.subscribe(testResults => {
-      let tType;
-      const tTypeNumber = this.testTypeNumber;
-      Object.keys(testResults).forEach(function (tRIndex) {
-        testResults[tRIndex].testTypes.some(res => {
-          if (res.testNumber === tTypeNumber) {
-            tType = res;
-            return res;
-          }
-        });
-      });
-      this.testType = tType;
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.isSave) {
+        testResultUpdated.reasonForCreation = result.data;
+        this.submitTest.emit(testResultUpdated);
+      }
     });
   }
 
+  onFormChanges(): void {
+    this.testResultParentForm.valueChanges.subscribe((val) => {
+      this.isFormDirty.emit(true);
+    });
+  }
 }

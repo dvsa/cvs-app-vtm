@@ -1,14 +1,14 @@
-import {BrakeModel} from '@app/models/brake.model';
-import {AxelsModel} from '@app/models/axels.model';
-import {BodyTypeModel} from '@app/models/body-type.model';
-import {VehicleClassModel} from '@app/models/vehicle-class.model';
+import { BrakeModel } from '@app/models/brake.model';
+import { AxelsModel } from '@app/models/axels.model';
+import { VehicleClassModel } from '@app/models/vehicle-class.model';
+import { BodyType } from '@app/models/body-type';
 
 export interface TechRecordModel {
   chassisMake: string;
   chassisModel: string;
   bodyMake: string;
   bodyModel: string;
-  bodyType: BodyTypeModel;
+  bodyType: BodyType;
   manufactureYear: number;
   regnDate: string;
   coifDate: string;
@@ -39,7 +39,3 @@ export interface TechRecordModel {
   brakes: BrakeModel;
   axles: AxelsModel[];
 }
-
-
-
-

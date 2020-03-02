@@ -24,3 +24,50 @@ export enum VEHICLE_TECH_RECORD_SEARCH_ERRORS {
   MULTIPLE_FOUND = 'Multiple vehicles found, search using the full vehicle identification number',
   NO_INPUT = 'Enter a vehicle registration mark, trailer ID or vehicle identification number',
 }
+
+export enum VIEW_STATE {
+  VIEW_ONLY = 0,
+  EDIT = 1
+}
+
+export enum COUNTRY_OF_REGISTRATION {
+  gb = 'Great Britain and Northern Ireland - GB',
+  gba = 'Alderney - GBA',
+  gbg = 'Guernsey - GBG',
+  gbj = 'Jersey - GBJ',
+  gbm = 'Isle of Man - GBM',
+  gbz = 'Gibraltar - GBZ',
+  a = 'Austria - A',
+  b = 'Belgium - B',
+  bih = 'Bosnia and Herzegovina - BIH',
+  bg = 'Bulgaria - BG',
+  hr = 'Croatia - HR',
+  cy = 'Cyprus - CY',
+  cz = 'Czech Republic - CZ',
+  dk = 'Denmark - DK',
+  est = 'Estonia - EST',
+  fin = 'Finland - FIN',
+  f = 'France - F',
+  d = 'Germany - D',
+  gr = 'Greece - GR',
+  h = 'Hungary - H',
+  irl = 'Ireland - IRL',
+  i = 'Italy - I',
+  lv = 'Latvia - LV',
+  lt = 'Lithuania - LT',
+  l = 'Luxembourg - L',
+  m = 'Malta - M',
+  nl = 'Netherlands - NL',
+  n = 'Norway - N',
+  pl = 'Poland - PL',
+  p = 'Portugal - P',
+  ro = 'Romania - RO',
+  sk = 'Slovakia - SK',
+  slo = 'Slovenia - SLO',
+  e = 'Spain - E',
+  s = 'Sweden - S',
+  ch = 'Switzerland - CH',
+  'non-eu' = 'Non EU',
+  'not-known' = 'Country Not Known'
+}
+
