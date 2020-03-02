@@ -55,7 +55,7 @@ export class TechnicalRecordComponent implements OnInit {
   @Input() activeRecord: TechRecord;
   @Input() metaData: MetaData;
   @Input() editState: VIEW_STATE;
-  @Input() testResultJson: TestResultModel;
+  @Input() testResultJson: TestResultModel[];
   @Output() submitTechRecord = new EventEmitter<TechRecord>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 

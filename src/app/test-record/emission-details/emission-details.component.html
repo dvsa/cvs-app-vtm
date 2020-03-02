@@ -1,4 +1,4 @@
-<dl class="govuk-summary-list">
+<dl *ngIf="!editState" class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Emission standard
@@ -66,3 +66,7 @@
 <ng-template #hyphen>
   <span>-</span>
 </ng-template>
+
+<ng-container *ngIf="editState && !hasEmissionApplicable">
+  <vtm-emission-details-edit [testType]="testType"></vtm-emission-details-edit>
+</ng-container>

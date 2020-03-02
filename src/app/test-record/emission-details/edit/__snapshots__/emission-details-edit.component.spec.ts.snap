@@ -1,0 +1,447 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmissionDetailsEditComponent should create 1`] = `
+<vtm-emission-details-edit
+  editModTypeUsed={[Function Boolean]}
+  editParticulate={[Function Boolean]}
+  emissionStandardOptions={[Function Array]}
+  fuelTypeOptions={[Function Array]}
+  modTypeOptions={[Function Array]}
+  modTypeSubscription={[Function Subscriber]}
+  modTypeValue=""
+  testResultChildForm={[Function FormGroupDirective]}
+  testType={[Function Object]}
+  testTypeGroup={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="govuk-form-group"
+            formgroupname="testType"
+          >
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-three-quarters"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Emission standard 
+                </label>
+                <div
+                  class="govuk-radios"
+                >
+                  
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-0"
+                      type="radio"
+                      value="0.10 g/kwh euro 3 pm"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       0.10 g/kWh Euro 3 PM 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-1"
+                      type="radio"
+                      value="0.03 g/kwh euro iv pm"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       0.03 g/kWh Euro IV PM 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-2"
+                      type="radio"
+                      value="euro 3"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Euro 3 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-3"
+                      type="radio"
+                      value="euro 4"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Euro 4 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-4"
+                      type="radio"
+                      value="euro 6"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Euro 6 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-5"
+                      type="radio"
+                      value="euro vi"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Euro VI 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="emissionStandard"
+                      id="test-emissionStandard-6"
+                      type="radio"
+                      value="full electric"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Full Electric 
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Smoke test "K" limit applied (m 
+                  <sup>
+                    1
+                  </sup>
+                  ) 
+                </label>
+                <input
+                  class="govuk-input"
+                  formcontrolname="smokeTestKLimitApplied"
+                  id="test-smokeTestKLimitApplied"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-three-quarters"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Fuel type 
+                </label>
+                <div
+                  class="govuk-radios"
+                >
+                  
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-0"
+                      type="radio"
+                      value="diesel"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Diesel 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-1"
+                      type="radio"
+                      value="gas-cng"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Gas-cng 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-2"
+                      type="radio"
+                      value="gas-lng"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Gas-lng 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-3"
+                      type="radio"
+                      value="gas-lpg"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Gas-lpg 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-4"
+                      type="radio"
+                      value="fuel cell"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Fuel cell 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-5"
+                      type="radio"
+                      value="petrol"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Petrol 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="fuelType"
+                      id="test-fuelType-6"
+                      type="radio"
+                      value="full electric"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Full electric 
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-three-quarters"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Modification type 
+                </label>
+                <div
+                  class="govuk-radios"
+                >
+                  
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="modType"
+                      id="test-modType-0"
+                      type="radio"
+                      value="p - particulate trap"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       P - Particulate trap 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="modType"
+                      id="test-modType-1"
+                      type="radio"
+                      value="m - modification or change of engine"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       M - Modification or change of engine 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="modType"
+                      id="test-modType-2"
+                      type="radio"
+                      value="g - gas engine"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       G - Gas engine 
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Modification type used 
+                </label>
+                <input
+                  class="govuk-input"
+                  formcontrolname="modificationTypeUsed"
+                  id="test-modificationTypeUsed"
+                  type="text"
+                />
+              </div>
+            </div>
+            
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Particulate trap fitted 
+                </label>
+                <input
+                  class="govuk-input"
+                  formcontrolname="particulateTrapFitted"
+                  id="test-particulateTrapFitted"
+                  type="text"
+                />
+              </div>
+            </div>
+            
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-5"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Particulate trap serial number 
+                </label>
+                <input
+                  class="govuk-input"
+                  formcontrolname="particulateTrapSerialNumber"
+                  id="test-particulateTrapSerialNumber"
+                  type="text"
+                />
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-emission-details-edit>
+`;

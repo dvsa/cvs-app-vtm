@@ -9,3 +9,13 @@ exports[`AccordionComponent should create 1`] = `
   />
 </vtm-accordion>
 `;
+
+exports[`AccordionComponent should populate the accordion with provided content 1`] = `
+<test-accordion>
+  <p
+    name="testAccordion"
+  >
+    Test
+  </p>
+</test-accordion>
+`;

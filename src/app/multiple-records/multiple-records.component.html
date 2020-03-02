@@ -17,14 +17,15 @@
     >
       <ng-container *ngIf="vTechRecord.techRecord | FilterRecord as activeRecord">
         <div class="govuk-grid-row">
-          <div class="govuk-grid-column-one-half">
+          <div class="govuk-grid-column-three-quarters">
             <h3 class="govuk-heading-m">Technical record {{ i + 1 }}</h3>
           </div>
-          <div class="govuk-grid-column-one-half">
+          <div class="govuk-grid-column-one-quarter">
             <a
               id="test-selectTechnicalRecord-{{ i }}"
-              class="govuk-link govuk-!-font-size-19"
+              class="govuk-link govuk-!-font-size-19 govuk-!-margin-left-5"
               (click)="setSelectedVehicleTechRecord(vTechRecord)"
+              href="javascript:void(0)"
             >
               Select technical record
             </a>
