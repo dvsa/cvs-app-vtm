@@ -1,0 +1,124 @@
+<dl *ngIf="testType" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test type
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testTypeName">
+      {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test code
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testCode">
+      {{ testType.testCode | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Result
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testResult">
+      {{ testType.testResult | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Reason for abandoning
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-reasonForAbandoning">
+      {{ testType.reasonForAbandoning | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Additional details for abandoning
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-additionalCommentsForAbandon">
+      {{ testType.additionalCommentsForAbandon | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <ng-container *ngIf="applicableTestTypeIds1">
+    <div
+      *ngIf="applicableTestTypeIds1.hasOwnProperty(testType.testTypeId)"
+      class="govuk-summary-list__row"
+    >
+      <dt class="govuk-summary-list__key">
+        Certificate number
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-certificateNumber">
+        {{ testType.certificateNumber | DefaultNullOrEmpty | titlecase }}
+      </dd>
+    </div>
+  </ng-container>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test number
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testNumber">
+      {{ testType.testNumber | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <ng-container *ngIf="applicableTestTypeIds1">
+    <div
+      *ngIf="applicableTestTypeIds1.hasOwnProperty(testType.testTypeId)"
+      class="govuk-summary-list__row"
+    >
+      <dt class="govuk-summary-list__key">
+        Expiry date
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-testExpiryDate">
+        {{ testType.testExpiryDate | DefaultNullOrEmpty }}
+      </dd>
+    </div>
+    <div
+      *ngIf="applicableTestTypeIds1.hasOwnProperty(testType.testTypeId)"
+      class="govuk-summary-list__row"
+    >
+      <dt class="govuk-summary-list__key">
+        Anniversary date
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-testAnniversaryDate">
+        {{ testType.testAnniversaryDate | DefaultNullOrEmpty }}
+      </dd>
+    </div>
+  </ng-container>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test date
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testEndTimestamp">
+      {{ testRecord.testEndTimestamp | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Start time
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testTypeStartTimestamp">
+      {{ testType.testTypeStartTimestamp | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      End time
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testTypeEndTimestamp">
+      {{ testType.testTypeEndTimestamp | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <ng-container *ngIf="applicableTestTypeIds2">
+    <div
+      *ngIf="applicableTestTypeIds2.hasOwnProperty(testType.testTypeId)"
+      class="govuk-summary-list__row"
+    >
+      <dt class="govuk-summary-list__key">
+        Prohibition issued
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-prohibitionIssued">
+        {{ testType.prohibitionIssued | DefaultNullOrEmpty }}
+      </dd>
+    </div>
+  </ng-container>
+</dl>

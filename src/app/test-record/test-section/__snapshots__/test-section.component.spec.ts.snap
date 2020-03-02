@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestSectionComponent should create 1`] = `
+<vtm-test-section
+  testRecord={[Function Object]}
+  testType={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test type 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testTypeName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test code 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testCode"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Result 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testResult"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Reason for abandoning 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-reasonForAbandoning"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Additional details for abandoning 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-additionalCommentsForAbandon"
+      >
+         - 
+      </dd>
+    </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testNumber"
+      >
+         - 
+      </dd>
+    </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test date 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testEndTimestamp"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Start time 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testTypeStartTimestamp"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         End time 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testTypeEndTimestamp"
+      >
+         - 
+      </dd>
+    </div>
+    
+  </dl>
+</vtm-test-section>
+`;

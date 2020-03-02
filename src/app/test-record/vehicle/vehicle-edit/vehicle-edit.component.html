@@ -1,0 +1,126 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div class="govuk-form-group">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Vehicle identification number (VIN)
+              </label>
+              <input class="govuk-input" id="test-vin" formControlName="vin" type="text" />
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Vehicle registration mark (VRM)
+              </label>
+            </div>
+          </div>
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-third">
+              <input class="govuk-input" id="test-vrm" formControlName="vrm" type="text" />
+            </div>
+          </div>
+
+          <div
+            *ngIf="testRecord.vehicleType == 'trl'"
+            class="govuk-grid-row govuk-!-margin-bottom-3"
+          >
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Trailer ID
+              </label>
+              <input
+                class="govuk-input"
+                id="test-trl-id"
+                formControlName="trailerId"
+                type="text"
+              />
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Country of registration
+              </label>
+              <vtm-autocomplete
+                [autocompleteData]="countryOfRegistrationOptions"
+                id="countryOfRegistration"
+                ariaDescribedBy="countryOfRegistration"
+                formControlName="countryOfRegistration"
+                ngDefaultControl
+              ></vtm-autocomplete>
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-three-quarters">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                EU vehicle category
+              </label>
+              <div class="govuk-radios">
+                <div class="govuk-radios__item" *ngFor="let euCategory of euVehicleCategories">
+                  <input
+                    class="govuk-radios__input"
+                    id="{{ 'test-euVehicleCategory-' + euCategory }}"
+                    type="radio"
+                    formControlName="euVehicleCategory"
+                    value="{{ euCategory | lowercase }}"
+                    [checked]="(testRecord.euVehicleCategory | titlecase) == euCategory"
+                  />
+                  <label class="govuk-label govuk-radios__label">
+                    {{ euCategory }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Odometer reading
+              </label>
+              <input
+                class="govuk-input"
+                id="test-odometerReading"
+                formControlName="odometerReading"
+                type="text"
+              />
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Odometer reading unit
+              </label>
+              <select class="govuk-select" id="test-odometerReadingUnit">
+                <option *ngFor="let unit of odometerReadingUnits" [selected]="testRecord.odometerReadingUnits==unit">{{ unit }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
+            <div class="govuk-grid-column-one-half">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Preparer
+              </label>
+              <vtm-autocomplete
+                [autocompleteData]="preparersOptions"
+                id="preparer"
+                ariaDescribedBy="preparer"
+                formControlName="preparer"
+                ngDefaultControl
+              ></vtm-autocomplete>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
