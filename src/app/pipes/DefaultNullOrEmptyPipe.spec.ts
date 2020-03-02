@@ -31,12 +31,6 @@ describe('DefaultNullOrEmptyPipe', () => {
     expect(res).toEqual(expectedRes);
   });
 
-  it('should return date formatted string if value is a date string', () => {
-    const expectedRes = '14/02/2019';
-    const res = pipe.transform('2019-02-14T10:36:33.987Z');
-    expect(res).toEqual(expectedRes);
-  });
-
   it('should return value as default for type number', () => {
     const expectedRes = 3;
     const res = pipe.transform(3);
@@ -44,17 +38,9 @@ describe('DefaultNullOrEmptyPipe', () => {
     expect(res).toEqual(expectedRes);
   });
 
-  it('should check if date formatted string is same as value', () => {
-    const checkDate = new Date('2019-02-14T10:36:33.987Z');
-    const stringToCheck = '2019-02-14T10:36:33.987Z';
-    const res = pipe.transform(stringToCheck);
-    expect(checkDate.toISOString()).toEqual(stringToCheck);
-    expect(res).toEqual('14/02/2019');
-  });
-
-  it('a string of 2020-06-24 should be displayed in proper format', () => {
-    const stringToCheck = '2020-06-24';
-    const res = pipe.transform(stringToCheck);
-    expect(res).toEqual('24/06/2020');
+  it('should return expected string', () => {
+    const expectedRes = 'testing string';
+    const res = pipe.transform(expectedRes);
+    expect(res).toEqual('testing string');
   });
 });
