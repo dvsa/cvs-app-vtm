@@ -30,73 +30,80 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
               <div
                 class="govuk-grid-column-three-quarters"
               >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
-                >
-                   Carried out during test 
-                </label>
-                <div
-                  class="govuk-radios govuk-radios--inline"
-                >
+                <div>
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                  >
+                     Carried out during test 
+                  </label>
                   
                   <div
-                    class="govuk-radios__item"
+                    class="govuk-radios govuk-radios--inline"
                   >
-                    <input
-                      class="govuk-radios__input"
-                      formcontrolname="seatbeltInstallationCheckDate"
-                      id="test-seatbelt-0"
-                      type="radio"
-                      value="false"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
+                    
+                    <div
+                      class="govuk-radios__item"
                     >
-                       Yes 
-                    </label>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      class="govuk-radios__input"
-                      formcontrolname="seatbeltInstallationCheckDate"
-                      id="test-seatbelt-1"
-                      type="radio"
-                      value="true"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
+                      <input
+                        class="govuk-radios__input"
+                        formcontrolname="seatbeltInstallationCheckDate"
+                        id="test-seatbelt-0"
+                        type="radio"
+                        value="true"
+                      />
+                      <label
+                        class="govuk-label govuk-radios__label"
+                      >
+                         Yes 
+                      </label>
+                    </div>
+                    <div
+                      class="govuk-radios__item"
                     >
-                       No 
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="govuk-grid-row govuk-!-margin-bottom-3"
-                >
-                  <div
-                    class="govuk-grid-column-three-quarters"
-                  >
-                    <label
-                      class="govuk-label govuk-!-font-weight-bold"
-                    >
-                       Number of seatbelts fitted 
-                    </label>
+                      <input
+                        class="govuk-radios__input"
+                        formcontrolname="seatbeltInstallationCheckDate"
+                        id="test-seatbelt-1"
+                        type="radio"
+                        value="false"
+                      />
+                      <label
+                        class="govuk-label govuk-radios__label"
+                      >
+                         No 
+                      </label>
+                    </div>
                   </div>
                 </div>
-                <div
-                  class="govuk-grid-row govuk-!-margin-bottom-3"
-                >
+                <div>
                   <div
-                    class="govuk-grid-column-one-third"
+                    class="govuk-grid-row govuk-!-margin-bottom-3"
                   >
-                    <input
-                      class="govuk-input"
-                      formcontrolname="numberOfSeatbeltsFitted"
-                      id="test-numberOfSeatbeltsFitted"
-                      type="text"
-                    />
+                    <div
+                      class="govuk-grid-column-three-quarters"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                      >
+                         Number of seatbelts fitted 
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-grid-row govuk-!-margin-bottom-3"
+                  >
+                    <div
+                      class="govuk-grid-column-one-third"
+                    >
+                      
+                      <input
+                        class="govuk-input"
+                        formcontrolname="numberOfSeatbeltsFitted"
+                        id="test-numberOfSeatbeltsFitted"
+                        type="text"
+                        vtmdigitonly=""
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -110,6 +117,7 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                     >
                        Most recent installation check 
                     </label>
+                    
                     <vtm-date-input
                       ariadescribedby="lastSeatbeltInstallationCheckDate"
                       formcontrolname="lastSeatbeltInstallationCheckDate"

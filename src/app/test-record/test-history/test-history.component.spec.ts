@@ -1,8 +1,8 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {TestHistoryComponent} from './test-history.component';
-import {SharedModule} from '@app/shared/shared.module';
-import {TestResultModel} from '@app/models/test-result.model';
-import {VIEW_STATE} from '@app/app.enums';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestHistoryComponent } from './test-history.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { TestResultModel } from '@app/models/test-result.model';
+import { VIEW_STATE } from '@app/app.enums';
 
 describe('TestHistoryComponent', () => {
   let component: TestHistoryComponent;

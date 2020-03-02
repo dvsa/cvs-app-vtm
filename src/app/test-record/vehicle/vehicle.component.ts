@@ -13,6 +13,8 @@ export class VehicleComponent implements OnInit {
   @Input() testRecord: TestResultModel;
   @Input() preparers: Preparer[];
   @Input() editState: VIEW_STATE;
+  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
 
   constructor() {}
 

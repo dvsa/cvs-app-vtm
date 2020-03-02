@@ -36,7 +36,6 @@ describe('DialogBoxComponent', () => {
     it('should close the modal when called', () => {
       spyOn(component.dialogRef, 'close');
       component.close();
-      expect(component.dialogRef.close).toHaveBeenCalled();
       expect(component.dialogRef.close).toHaveBeenCalledWith(false);
 
     });
@@ -47,7 +46,6 @@ describe('DialogBoxComponent', () => {
       const modalData = { isSave: true, data: 'test data' };
       spyOn(component.dialogRef, 'close');
       component.save('test data');
-      expect(component.dialogRef.close).toHaveBeenCalled();
       expect(component.dialogRef.close).toHaveBeenCalledWith(modalData);
 
     });

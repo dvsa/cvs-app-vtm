@@ -14,7 +14,7 @@ import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 export class VisitEditComponent implements OnInit {
   @Input() testRecord: TestResultModel;
   @Input() testStations: TestStation[];
-  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
 
   testStationsOptions: string[];
   testStationType = '';
@@ -44,7 +44,6 @@ export class VisitEditComponent implements OnInit {
         Validators.required
       )
     );
-
     this.testResultChildForm.form.addControl(
       'testerName',
       new FormControl(this.testRecord.testerName, Validators.required)

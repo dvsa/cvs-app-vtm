@@ -1,20 +1,20 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { IVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
+import { VehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestType } from '@app/models/test.type';
 import { TestResultModel } from '@app/models/test-result.model';
 
-export const selectFeature = createFeatureSelector<IVehicleTestResultModelState>(
+export const selectFeature = createFeatureSelector<VehicleTestResultModelState>(
   'vehicleTestResultModel'
 );
 
 export const selectSelectedVehicleTestResultModel = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.vehicleTestResultModel
+  (state: VehicleTestResultModelState) => state.vehicleTestResultModel
 );
 
 export const selectTestTypeById = (id: string) =>
-  createSelector(selectFeature, (state: IVehicleTestResultModelState) => {
+  createSelector(selectFeature, (state: VehicleTestResultModelState) => {
     let testType: TestType;
     let testRecord: TestResultModel;
 
@@ -35,6 +35,6 @@ export const selectTestTypeById = (id: string) =>
 
 export const getCurrentState = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.editState
+  (state: VehicleTestResultModelState) => state.editState
 );
 

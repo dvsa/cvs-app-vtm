@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotesEditComponent } from './notes-edit.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { VIEW_STATE } from '@app/app.enums';
 import { FormGroupDirective } from '@angular/forms';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import {TestType} from '@app/models/test.type';
+import { TestType } from '@app/models/test.type';
 
 describe('NotesEditComponent', () => {
   let component: NotesEditComponent;
@@ -14,7 +13,6 @@ describe('NotesEditComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NotesEditComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         FormGroupDirective,
         {

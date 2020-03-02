@@ -27,11 +27,11 @@ exports[`EmissionDetailsComponent should create 1`] = `
       <dt
         class="govuk-summary-list__key"
       >
-         Smoke test "K" limit applied (m 
+        Smoke test "K" limit applied (m 
         <sup>
           1
         </sup>
-        ) 
+        )
       </dt>
       <dd
         class="govuk-summary-list__value"

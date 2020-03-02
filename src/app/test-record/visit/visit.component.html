@@ -4,7 +4,11 @@
       Test facility name/number
     </dt>
     <dd class="govuk-summary-list__value">
-      {{((testRecord.testStationName ? testRecord.testStationName : '') + (testRecord.testStationPNumber ? ' - ' + testRecord.testStationPNumber : '')) | DefaultNullOrEmpty}}
+      {{
+        (testRecord.testStationName ? testRecord.testStationName : '') +
+          (testRecord.testStationPNumber ? ' - ' + testRecord.testStationPNumber : '')
+          | DefaultNullOrEmpty
+      }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -12,7 +16,7 @@
       Type of test facility
     </dt>
     <dd class="govuk-summary-list__value">
-      {{(testRecord.testStationType | DefaultNullOrEmpty) | titlecase}}
+      {{ testRecord.testStationType | DefaultNullOrEmpty | titlecase }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -20,7 +24,7 @@
       Tester name
     </dt>
     <dd class="govuk-summary-list__value">
-      {{(testRecord.testerName | DefaultNullOrEmpty) | titlecase}}
+      {{ testRecord.testerName | DefaultNullOrEmpty | titlecase }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -28,11 +32,15 @@
       Email address
     </dt>
     <dd class="govuk-summary-list__value">
-      {{(testRecord.testerEmailAddress | DefaultNullOrEmpty) | titlecase}}
+      {{ testRecord.testerEmailAddress | DefaultNullOrEmpty | titlecase }}
     </dd>
   </div>
 </dl>
 
 <ng-container *ngIf="editState">
-  <vtm-visit-edit [testStations]="testStations" [testRecord]="testRecord"></vtm-visit-edit>
+  <vtm-visit-edit
+    [testStations]="testStations"
+    [testRecord]="testRecord"
+    [isSubmitted]="isSubmitted"
+  ></vtm-visit-edit>
 </ng-container>

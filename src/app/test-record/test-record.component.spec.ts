@@ -4,36 +4,36 @@ import { INITIAL_STATE, Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { hot } from 'jasmine-marbles';
 import { SharedModule } from '@app/shared/shared.module';
-import { TestType } from '@app/models/test.type';
-import { TestResultModel } from '@app/models/test-result.model';
-import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
-import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
 import { VIEW_STATE } from '@app/app.enums';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
-import { Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
   let fixture: ComponentFixture<TestRecordComponent>;
   let store: Store<IAppState>;
   let injector: TestBed;
-  let location;
-  let changes: SimpleChanges;
   let dialog: MatDialog;
   let testRecordMapper;
-  const testRecord = { vehicleType: 'psv' } as TestResultModel;
-  const testType = {} as TestType;
-  const testObject: TestRecordTestType = { testRecord: testRecord, testType: testType };
-  const testResultParentForm = new FormGroup({ testType: new FormGroup({}) });
+  const testObject: TestRecordTestType = {
+    testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
+    testType: TESTING_TEST_MODELS_UTILS.mockTestType()
+  };
+  const testResultParentForm = new FormGroup({
+    testTypes: new FormGroup({ testTypeId: new FormControl('1') })
+  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ReactiveFormsModule, MatDialogModule],
+      imports: [SharedModule, ReactiveFormsModule, MatDialogModule, BrowserAnimationsModule],
       declarations: [TestRecordComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -56,7 +56,6 @@ describe('TestRecordComponent', () => {
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
     fixture = TestBed.createComponent(TestRecordComponent);
-    location = TestBed.get(Location);
     injector = getTestBed();
     dialog = injector.get(MatDialog);
     testRecordMapper = TestBed.get(TestRecordMapper);
@@ -74,29 +73,15 @@ describe('TestRecordComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 
-  it('test ngOnInit()', () => {
-    spyOn(component, 'onFormChanges');
-    component.ngOnInit();
-    expect(component.onFormChanges).toHaveBeenCalled();
-  });
-
-  it('test ngOnChanges()', () => {
-    component.ngOnChanges(changes);
-    fixture.detectChanges();
-    expect(component.testResultObj).toEqual({} as TestRecordTestType);
-  });
-
   it('should switch current state to view', () => {
     spyOn(component.switchState, 'emit');
     component.switchCurrentState('view');
-    expect(component.switchState.emit).toHaveBeenCalled();
     expect(component.switchState.emit).toHaveBeenCalledWith(VIEW_STATE.VIEW_ONLY);
   });
 
   it('should switch current state to edit', () => {
     spyOn(component.switchState, 'emit');
     component.switchCurrentState('edit');
-    expect(component.switchState.emit).toHaveBeenCalled();
     expect(component.switchState.emit).toHaveBeenCalledWith(VIEW_STATE.EDIT);
   });
 
@@ -109,5 +94,21 @@ describe('TestRecordComponent', () => {
     });
 
     expect(component.testResultObj).toEqual(testObject);
+  });
+
+  it('should make the call to save test results', () => {
+    const formRawValue = testResultParentForm.getRawValue();
+    component.onSaveTestResult(testResultParentForm);
+    expect(formRawValue).toMatchObject({ testTypes: { testTypeId: '1' } });
+  });
+
+  it('should split string by uppercase', () => {
+    const string = component.splitStringByUppercase('stringToSplit');
+    expect(string).toEqual('string to split');
+  });
+
+  it('should return an array for getting invalid controls', () => {
+    const invalidControls = component.getInvalidControls(testResultParentForm);
+    expect(invalidControls).toEqual([]);
   });
 });

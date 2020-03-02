@@ -38,6 +38,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                 >
                    Emission standard 
                 </label>
+                
                 <div
                   class="govuk-radios"
                 >
@@ -172,10 +173,12 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                   </sup>
                   ) 
                 </label>
+                
                 <input
                   class="govuk-input"
                   formcontrolname="smokeTestKLimitApplied"
                   id="test-smokeTestKLimitApplied"
+                  maxlength="100"
                   type="text"
                 />
               </div>
@@ -191,6 +194,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                 >
                    Fuel type 
                 </label>
+                
                 <div
                   class="govuk-radios"
                 >
@@ -321,6 +325,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                 >
                    Modification type 
                 </label>
+                
                 <div
                   class="govuk-radios"
                 >
@@ -388,10 +393,12 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                 >
                    Modification type used 
                 </label>
+                
                 <input
                   class="govuk-input"
                   formcontrolname="modificationTypeUsed"
                   id="test-modificationTypeUsed"
+                  maxlength="100"
                   type="text"
                 />
               </div>
@@ -408,10 +415,12 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                 >
                    Particulate trap fitted 
                 </label>
+                
                 <input
                   class="govuk-input"
                   formcontrolname="particulateTrapFitted"
                   id="test-particulateTrapFitted"
+                  maxlength="100"
                   type="text"
                 />
               </div>
@@ -428,10 +437,12 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                 >
                    Particulate trap serial number 
                 </label>
+                
                 <input
                   class="govuk-input"
                   formcontrolname="particulateTrapSerialNumber"
                   id="test-particulateTrapSerialNumber"
+                  maxlength="100"
                   type="text"
                 />
               </div>

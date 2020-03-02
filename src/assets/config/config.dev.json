@@ -2,7 +2,7 @@
   "name": "dev"
 },
   "appInsights": {
-    "instrumentationKey": ""
+    "instrumentationKey": "#{appInsightsKey}"
   },
   "logging": {
     "console": true,
@@ -17,7 +17,7 @@
     "clientId": "",
     "tenant": "",
     "redirectUri": "http://localhost:4200",
-    "cacheLocation": "",
+    "cacheLocation": "localStorage",
     "endpoints": {
       "api": ""
     }

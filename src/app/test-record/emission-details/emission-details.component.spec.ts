@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { EmissionDetailsComponent } from './emission-details.component';
-import {SharedModule} from '@app/shared/shared.module';
-import {TestType} from '@app/models/test.type';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { SharedModule } from '@app/shared/shared.module';
+import { TestType } from '@app/models/test.type';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('EmissionDetailsComponent', () => {
   let component: EmissionDetailsComponent;
@@ -11,11 +11,10 @@ describe('EmissionDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ SharedModule ],
-      declarations: [ EmissionDetailsComponent ],
+      imports: [SharedModule],
+      declarations: [EmissionDetailsComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

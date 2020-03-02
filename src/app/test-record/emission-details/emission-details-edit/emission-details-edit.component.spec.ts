@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmissionDetailsEditComponent } from './emission-details-edit.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestType } from '@app/models/test.type';
 import { EMISSION_STANDARD, FUEL_TYPE, MOD_TYPE } from '@app/test-record/test-record.enums';
-import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 
 describe('EmissionDetailsEditComponent', () => {
@@ -15,7 +14,6 @@ describe('EmissionDetailsEditComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EmissionDetailsEditComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
           provide: FormGroupDirective,

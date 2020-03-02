@@ -4,15 +4,13 @@
       Emission standard
     </dt>
     <dd class="govuk-summary-list__value">
-      {{testType.emissionStandard | DefaultNullOrEmpty}}
+      {{ testType.emissionStandard | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Smoke test "K" limit applied (m <sup>1</sup>)
-    </dt>
+    <dt class="govuk-summary-list__key">Smoke test "K" limit applied (m <sup>1</sup>)</dt>
     <dd class="govuk-summary-list__value">
-      {{testType.smokeTestKLimitApplied | DefaultNullOrEmpty}}
+      {{ testType.smokeTestKLimitApplied | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -20,7 +18,7 @@
       Fuel type
     </dt>
     <dd class="govuk-summary-list__value">
-      {{testType.fuelType | DefaultNullOrEmpty}}
+      {{ testType.fuelType | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -28,8 +26,13 @@
       Modification type
     </dt>
     <dd class="govuk-summary-list__value">
-      <ng-container *ngIf="testType.modType else hyphen">
-        {{(testType.modType.code ? testType.modType.code : '') + ' ' + (testType.modType.description ? testType.modType.description : '') | DefaultNullOrEmpty}}
+      <ng-container *ngIf="testType.modType; else hyphen">
+        {{
+          (testType.modType.code ? testType.modType.code : '') +
+            ' ' +
+            (testType.modType.description ? testType.modType.description : '')
+            | DefaultNullOrEmpty
+        }}
       </ng-container>
     </dd>
   </div>
@@ -38,7 +41,7 @@
       Modification type used
     </dt>
     <dd class="govuk-summary-list__value">
-      {{testType.modificationTypeUsed | DefaultNullOrEmpty}}
+      {{ testType.modificationTypeUsed | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -46,7 +49,7 @@
       Particulate trap fitted
     </dt>
     <dd class="govuk-summary-list__value">
-      {{testType.particulateTrapFitted | DefaultNullOrEmpty}}
+      {{ testType.particulateTrapFitted | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -54,7 +57,7 @@
       Particulate trap serial number
     </dt>
     <dd class="govuk-summary-list__value">
-      {{testType.particulateTrapSerialNumber | DefaultNullOrEmpty}}
+      {{ testType.particulateTrapSerialNumber | DefaultNullOrEmpty }}
     </dd>
   </div>
 </dl>
@@ -62,6 +65,9 @@
   <span>-</span>
 </ng-template>
 
-<ng-container *ngIf="editState && testRecord.testResult=='pass'">
-  <vtm-emission-details-edit [testType]="testType"></vtm-emission-details-edit>
+<ng-container *ngIf="editState && testRecord.testResult == 'pass' && !hidden">
+  <vtm-emission-details-edit
+    [testType]="testType"
+    [isSubmitted]="isSubmitted"
+  ></vtm-emission-details-edit>
 </ng-container>
