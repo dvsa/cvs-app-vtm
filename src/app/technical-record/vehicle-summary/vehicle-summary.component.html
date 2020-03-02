@@ -22,7 +22,9 @@
       Date of first registration
     </dt>
     <dd id="test-regnDate" class="govuk-summary-list__value">
-      {{ activeRecord.regnDate | DefaultNullOrEmpty }}
+      <span *ngIf="activeRecord.regnDate; else hyphen">
+        {{ activeRecord.regnDate | date: 'dd/MM/yyyy' }}
+      </span>
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -40,7 +42,9 @@
       First use date
     </dt>
     <dd id="test-firstUseDate" class="govuk-summary-list__value">
-      {{ activeRecord.firstUseDate | DefaultNullOrEmpty }}
+      <span *ngIf="activeRecord.firstUseDate; else hyphen">
+        {{ activeRecord.firstUseDate | date: 'dd/MM/yyyy' }}
+      </span>
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
