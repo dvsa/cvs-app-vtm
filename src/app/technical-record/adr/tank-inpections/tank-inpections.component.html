@@ -22,7 +22,9 @@
               {{ tankDetails?.tc2Details?.tc2IntermediateApprovalNo | DefaultNullOrEmpty }}
             </td>
             <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
-              {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | DefaultNullOrEmpty }}
+              <span *ngIf="tankDetails?.tc2Details?.tc2IntermediateExpiryDate; else hyphen">
+                {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | date:'dd/MM/yyyy' }}
+              </span>
             </td>
           </tr>
 
@@ -37,7 +39,9 @@
               {{ tc3Details.tc3PeriodicNumber | DefaultNullOrEmpty }}
             </td>
             <td id="test-tc3PeriodicExpiryDate-{{ i }}" class="govuk-table__cell">
-              {{ tc3Details.tc3PeriodicExpiryDate | DefaultNullOrEmpty }}
+              <span *ngIf="tc3Details.tc3PeriodicExpiryDate; else hyphen">
+                {{ tc3Details.tc3PeriodicExpiryDate | date:'dd/MM/yyyy' }}
+              </span>
             </td>
           </tr>
         </tbody>
@@ -55,6 +59,9 @@
     </div>
   </div>
 </ng-container>
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>
 
 <!-- Edit TANK Inspections -->
 <ng-container *ngIf="edit">

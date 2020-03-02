@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefectsComponent should create 1`] = `
+<vtm-defects
+  testRecord={[Function Object]}
+  testType={[Function Object]}
+>
+  
+</vtm-defects>
+`;

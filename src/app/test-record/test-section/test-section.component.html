@@ -1,0 +1,132 @@
+<dl *ngIf="testType" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test type
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testTypeName">
+      {{ testType.testTypeName | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test code
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testCode">
+      {{ testType.testCode | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Result
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testResult">
+      {{ testType.testResult | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Reason for abandoning
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-reasonForAbandoning">
+      {{ testType.reasonForAbandoning | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Additional details for abandoning
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-additionalCommentsForAbandon">
+      {{ testType.additionalCommentsForAbandon | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <ng-container *ngIf="applicableTestTypeIds1">
+    <div *ngIf="applicableTestTypeIds1[testType.testTypeId]" class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Certificate number
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-certificateNumber">
+        {{ testType.certificateNumber | DefaultNullOrEmpty | titlecase }}
+      </dd>
+    </div>
+  </ng-container>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test number
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testNumber">
+      {{ testType.testNumber | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <ng-container *ngIf="applicableTestTypeIds1">
+    <div *ngIf="applicableTestTypeIds1[testType.testTypeId]" class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Expiry date
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-testExpiryDate">
+        <span *ngIf="testType.testExpiryDate; else hyphen">
+          {{ testType.testExpiryDate | date: 'dd/MM/yyyy' }}
+        </span>
+      </dd>
+    </div>
+    <div *ngIf="applicableTestTypeIds1[testType.testTypeId]" class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Anniversary date
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-testAnniversaryDate">
+        <span *ngIf="testType.testAnniversaryDate; else hyphen">
+          {{ testType.testAnniversaryDate | date: 'dd/MM/yyyy' }}
+        </span>
+      </dd>
+    </div>
+  </ng-container>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test date
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testEndTimestamp">
+      <span *ngIf="testRecord.testEndTimestamp; else hyphen">
+        {{ testRecord.testEndTimestamp | date: 'dd/MM/yyyy' }}
+      </span>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Start time
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testTypeStartTimestamp">
+      <span *ngIf="testType.testTypeStartTimestamp; else hyphen">
+        {{ testType.testTypeStartTimestamp | date: 'shortTime':'UTC' }}
+      </span>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt
+      class="govuk-summary-list__key"
+      [class.border--bottom-none]="!applicableTestTypeIds2[testType.testTypeId]"
+    >
+      End time
+    </dt>
+    <dd
+      class="govuk-summary-list__value"
+      [class.border--bottom-none]="!applicableTestTypeIds2[testType.testTypeId]"
+      id="test-testTypeEndTimestamp"
+    >
+      <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
+        {{ testType.testTypeEndTimestamp | date: 'shortTime':'UTC' }}
+      </span>
+    </dd>
+  </div>
+  <ng-container *ngIf="applicableTestTypeIds2">
+    <div *ngIf="applicableTestTypeIds2[testType.testTypeId]" class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key border--bottom-none">
+        Prohibition issued
+      </dt>
+      <dd class="govuk-summary-list__value border--bottom-none" id="test-prohibitionIssued">
+        {{ testType.prohibitionIssued | DefaultNullOrEmpty }}
+      </dd>
+    </div>
+  </ng-container>
+</dl>
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>
