@@ -2,8 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestSectionComponent } from './test-section.component';
 import { SharedModule } from '@app/shared/shared.module';
+import { TestType } from '@app/models/test.type';
+import { TestResultModel } from '@app/models/test-result.model';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+
 
 describe('TestSectionComponent', () => {
   let component: TestSectionComponent;

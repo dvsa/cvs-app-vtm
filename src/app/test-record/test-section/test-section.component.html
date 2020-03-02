@@ -1,4 +1,4 @@
-<dl *ngIf="testType" class="govuk-summary-list">
+<dl *ngIf="!editState" class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Test type
@@ -130,3 +130,13 @@
 <ng-template #hyphen>
   <span>-</span>
 </ng-template>
+
+<ng-container *ngIf="editState">
+  <vtm-test-section-edit
+    [testRecord]="testRecord"
+    [testType]="testType"
+    [applicableTestTypeIds1]="applicableTestTypeIds1"
+    [applicableTestTypeIds2]="applicableTestTypeIds2"
+  ></vtm-test-section-edit>
+</ng-container>
+

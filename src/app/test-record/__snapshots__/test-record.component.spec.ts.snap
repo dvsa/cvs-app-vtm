@@ -38,7 +38,7 @@ exports[`TestRecordComponent should create 1`] = `
           class="govuk-grid-column-full"
         >
           <h1
-            class="govuk-heading-xl test-heading"
+            class="govuk-heading-xl"
             id="test-heading"
           >
             Test record

@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TestResultModel } from '@app/models/test-result.model';
-import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
+import {
+  REASON_FOR_ABANDONING_HGV_TRL,
+  REASON_FOR_ABANDONING_PSV,
+  REASON_FOR_ABANDONING_TIR,
+  TEST_STATION_TYPE
+} from '@app/test-record/test-record.enums';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestType } from '@app/models/test.type';
 import { COUNTRY_OF_REGISTRATION } from '@app/app.enums';
@@ -26,6 +31,23 @@ export class TestRecordMapper {
       case 'hq':
         return TEST_STATION_TYPE.HQ;
         break;
+    }
+  }
+
+  getReasonsForAbandoning(vehicleType: string, testTypeId: string) {
+    const tirTestTypeIds = { 49: 'TIR test', 56: 'Paid TIR retest', 57: 'Free TIR retest' };
+
+    if (Object.keys(tirTestTypeIds).includes(testTypeId)) {
+      return Object.values(REASON_FOR_ABANDONING_TIR);
+    } else {
+      switch (vehicleType) {
+        case 'hgv' || 'trl':
+          return Object.values(REASON_FOR_ABANDONING_HGV_TRL);
+          break;
+        case 'psv':
+          return Object.values(REASON_FOR_ABANDONING_PSV);
+          break;
+      }
     }
   }
 

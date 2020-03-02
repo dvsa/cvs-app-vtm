@@ -48,6 +48,9 @@ import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
 import { BodyPsvComponent } from './body/body-psv/body-psv.component';
 import { WeightsPsvComponent } from './weights/weights-psv/weights-psv.component';
 import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-psv/vehicle-summary-psv.component';
+import { DirectivesModule } from '@app/shared/directives/directives.module';
+
+
 
 @NgModule({
   imports: [
@@ -68,7 +71,8 @@ import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-ps
     ReactiveFormsModule,
     NgrxFormsModule,
     NgxJsonViewerModule,
-    AdrModule
+    AdrModule,
+    DirectivesModule
   ],
   declarations: [
     TechnicalRecordsContainer,

@@ -22,6 +22,7 @@ import { DisplayByDelimiter } from '@app/pipes/display-by-delimiter';
 import { CapitalizeString } from '@app/pipes/capitalize-string';
 import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
 import { DirectivesModule } from '@app/shared/directives/directives.module';
+import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
 
 export const PIPES_AND_COMPONENTS = [
   AdrReasonModalComponent,
@@ -31,6 +32,7 @@ export const PIPES_AND_COMPONENTS = [
   ErrorSummaryComponent,
   FormConnectorDirective,
   DialogBoxComponent,
+  DialogBoxConfirmationComponent,
 
   IsPrimaryVrmPipe,
   FilterRecordPipe,
@@ -47,7 +49,7 @@ export const PIPES_AND_COMPONENTS = [
   imports: [FormsModule, CommonModule, ReactiveFormsModule, MatDialogModule, DirectivesModule],
   declarations: PIPES_AND_COMPONENTS,
   exports: [PIPES_AND_COMPONENTS, DirectivesModule],
-  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent],
+  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent, DialogBoxConfirmationComponent],
   providers: [FilterRecordPipe, PendingChangesService]
 })
 export class SharedModule {}

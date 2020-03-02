@@ -1,0 +1,14 @@
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div mat-dialog-content [innerHtml]="data.context"></div>
+  </div>
+</div>
+
+<button class="govuk-button" data-module="govuk-button" (click)="save()" cdkFocusInitial>
+  {{ data.actionName }}
+</button>
+
+<a class="cancel" (click)="close()">
+  <span>Cancel</span>
+</a>
