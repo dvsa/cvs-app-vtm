@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { DownloadDocumentFileAction, DownloadDocumentFileActionSuccess, DownloadDocumentFileActionFailure } from './adrDetails.actions';
 import { selectVehicleTechRecordModelHavingStatusAll } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { IAppState } from '@app/store/state/app.state';
+import { SetErrorMessage, ClearErrorMessage } from '@app/store/actions/Error.actions';
 
 
 @Injectable()
@@ -22,12 +23,15 @@ export class DownloadDocumentsEffects {
     switchMap(([action, vin]) => this._technicalRecordService.getDocumentBlob(vin, action.filename)
       .pipe(
         switchMap((response: { buffer: ArrayBuffer, contentType: string, fileName?: string }) => {
+          this._store$.dispatch(new ClearErrorMessage())
           const fileblob = new Blob([response.buffer], { type: response.contentType });
           this._FileSaverService.save(fileblob, response.fileName);
           return of(new DownloadDocumentFileActionSuccess({ blob: fileblob, fileName: response.fileName }));
         }),
-        catchError((error) =>
-          of(new DownloadDocumentFileActionFailure(error))
+        catchError((error) => {
+          this._store$.dispatch(new SetErrorMessage([error.error]));
+          return of(new DownloadDocumentFileActionFailure(error))
+        }
         ))));
 
   constructor(

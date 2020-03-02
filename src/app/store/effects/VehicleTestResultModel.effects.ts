@@ -1,13 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {map, switchMap} from 'rxjs/operators';
-import {of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { map, switchMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import {
   EVehicleTestResultModelActions,
   GetVehicleTestResultModel,
   GetVehicleTestResultModelSuccess
 } from '@app/store/actions/VehicleTestResultModel.actions';
-import {TestResultService} from '@app/technical-record-search/test-result.service';
+import { TestResultService } from '@app/technical-record-search/test-result.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../state/app.state';
+import { ClearErrorMessage, SetErrorMessage } from '../actions/Error.actions';
 
 @Injectable()
 export class VehicleTestResultModelEffects {
@@ -16,11 +19,15 @@ export class VehicleTestResultModelEffects {
     ofType<GetVehicleTestResultModel>(EVehicleTestResultModelActions.GetVehicleTestResultModel),
     map(action => action.payload),
     switchMap((searchIdentifier: string) => this._testResultService.getTestResults(searchIdentifier)),
-    switchMap( (testResultJson: any) => of( new GetVehicleTestResultModelSuccess(testResultJson)))
+    switchMap((testResultJson: any) => { 
+      this._store$.dispatch(new ClearErrorMessage())
+      return of(new GetVehicleTestResultModelSuccess(testResultJson)) }),
+    catchError((error) => of(this._store$.dispatch(new SetErrorMessage([error.error]))))
   );
 
   constructor(
     private _testResultService: TestResultService,
-    private _actions$: Actions  ) {
+    private _store$: Store<IAppState>,
+    private _actions$: Actions) {
   }
 }

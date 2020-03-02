@@ -7,6 +7,8 @@ import {environment} from '@environments/environment';
 import {TestResultService} from '@app/technical-record-search/test-result.service';
 import {AppConfig} from '@app/app.config';
 import {inject} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { IAppState } from '@app/store/state/app.state';
 
 describe('AuthTokenInterceptor', () => {
 
@@ -28,6 +30,7 @@ describe('AuthTokenInterceptor', () => {
   let injector: TestBed;
   let service: TestResultService;
   let adal: MsAdalAngular6Service;
+  let store: Store<IAppState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -51,6 +54,13 @@ describe('AuthTokenInterceptor', () => {
           useClass: AuthTokenInterceptor,
           multi: true,
         },
+        {
+          provide: Store,
+          useValue: {
+            select: jest.fn(),
+            dispatch: jest.fn(),
+          }
+        },
         {provide: AppConfig, useValue: appConfigMock},
 
       ]
@@ -59,6 +69,7 @@ describe('AuthTokenInterceptor', () => {
     injector = getTestBed();
     httpMock = TestBed.get(HttpTestingController);
     service = injector.get(TestResultService);
+    store= injector.get(Store);
     adal = TestBed.get(MsAdalAngular6Service);
 
   });

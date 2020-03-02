@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {Store} from '@ngrx/store';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { IAppState } from '@app/store/state/app.state';
 import { GetVehicleTechRecordModelHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
@@ -17,7 +17,7 @@ export class TechnicalRecordSearchComponent {
   searchError$: Observable<any>;
 
   constructor(private _store: Store<IAppState>) {
-    this.searchError$ = this._store.select( s => s.vehicleTechRecordModel.error);
+    this.searchError$ = this._store.select(s => s.vehicleTechRecordModel.error);
   }
 
   public searchTechRecords(q: string) {

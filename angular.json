@@ -153,14 +153,9 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "viewEncapsulation": "Emulated",
       "changeDetection": "OnPush",
-      "spec": false,
-      "prefix": "vtm",
+      "spec": true,
       "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "vtm"
     }
   }
 }

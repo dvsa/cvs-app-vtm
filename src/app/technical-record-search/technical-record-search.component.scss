@@ -17,19 +17,9 @@
     border: 4px solid $govuk-error-colour !important;
   }
 
-  .govuk-error-summary {
-    width: 57rem;
-  }
-
   .govuk-error-message {
     white-space: nowrap;
     font-weight: bolder;
-  }
-
-  .govuk-error-summary {
-    .govuk-error-message {
-      text-decoration: underline;
-    }
   }
 
 }
