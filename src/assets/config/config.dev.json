@@ -1,7 +1,6 @@
-{
-  "env": {
-    "name": "dev"
-  },
+{  "env": {
+  "name": "dev"
+},
   "appInsights": {
     "instrumentationKey": "#{appInsightsKey}"
   },
@@ -18,7 +17,7 @@
     "clientId": "",
     "tenant": "",
     "redirectUri": "http://localhost:4200",
-    "cacheLocation": "localStorage",
+    "cacheLocation": "",
     "endpoints": {
       "api": ""
     }

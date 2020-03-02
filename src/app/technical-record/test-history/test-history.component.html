@@ -7,7 +7,7 @@
     <th scope="col" class="govuk-table__header">Certificate number</th>
     <th scope="col" class="govuk-table__header">Result</th>
     <th scope="col" class="govuk-table__header">Tester name</th>
-    <th scope="col" class="govuk-table__header"> </th>
+    <th scope="col" class="govuk-table__header"></th>
   </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
@@ -29,11 +29,12 @@
           [ngStyle]="setResultColor(testType.testResult)">
         {{ (testType.testResult | DefaultNullOrEmpty) | uppercase }}
       </td>
-      <td id="{{ 'test-testerName-' + i }}" class="govuk-table__cell">
+      <td id="{{ 'test-testerName-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
         {{ testRes.testerName | DefaultNullOrEmpty }}
       </td>
-      <td id="{{ 'test-view-' + i }}" class="govuk-table__cell">
-        <a class="govuk-link" id="{{'test-view-'+ testType.testNumber}}" [routerLink]="['/test-record', testType.testNumber]">View</a>
+      <td id="{{ 'test-view-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+        <a class="govuk-link" id="{{'test-view-'+ testType.testNumber}}"
+           [routerLink]="['/test-record', testType.testNumber]">View</a>
       </td>
     </tr>
   </ng-container>

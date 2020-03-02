@@ -74,7 +74,7 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
                 class="govuk-table__cell"
                 id="test-tc2IntermediateExpiryDate"
               >
-                 18/03/2020 
+                 2020-03-18 
               </td>
             </tr>
             

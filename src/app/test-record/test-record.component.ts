@@ -1,43 +1,44 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-
-import { IAppState } from '@app/store/state/app.state';
-import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestType } from '@app/models/test.type';
+import { initAll } from 'govuk-frontend';
 
 @Component({
   selector: 'vtm-test-record',
   templateUrl: './test-record.component.html',
-  styleUrls: ['./test-record.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordComponent implements OnInit {
-  testResultObservable$: Observable<TestResultModel>;
-  testType: TestType;
-  testTypeNumber: string;
+  @Input() testRecord: TestResultModel;
+  @Input() testType: TestType;
+  @Input() testTypeNumber: string;
+  @Input() seatBeltApplicable: {};
+  @Input() emissionDetailsApplicable: {};
+  @Input() defectsApplicable: {};
+  @Input() testSectionApplicable1: {};
+  @Input() testSectionApplicable2: {};
 
-  constructor(private _store: Store<IAppState>, private route: ActivatedRoute) {}
+  hasDefectsApplicable: boolean;
+  hasEmissionApplicable: boolean;
+  hasSeatBeltApplicable: boolean;
 
-  ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      this.testTypeNumber = params.get('id');
-    });
-    this.testResultObservable$ = this._store.pipe(select(selectSelectedVehicleTestResultModel));
-    this.testResultObservable$.subscribe((testResults) => {
-      let tType;
-      const tTypeNumber = this.testTypeNumber;
-      Object.keys(testResults).forEach(function(tRIndex) {
-        testResults[tRIndex].testTypes.some((res) => {
-          if (res.testNumber === tTypeNumber) {
-            tType = res;
-            return res;
-          }
-        });
-      });
-      this.testType = tType;
-    });
+  constructor() {}
+
+  ngOnInit(): void {
+    this.hasDefectsApplicable = this.defectsApplicable[this.testType.testTypeId];
+    this.hasSeatBeltApplicable =
+      !this.seatBeltApplicable[this.testType.testTypeId] &&
+      !(this.testRecord.vehicleType === 'psv');
+    this.hasEmissionApplicable =
+      !this.emissionDetailsApplicable[this.testType.testTypeId] &&
+      (!(this.testRecord.vehicleType === 'psv') ||
+        !(this.testRecord.vehicleType.toString() === 'hgv')) &&
+      this.testType.testResult !== 'pass';
+
+    initAll();
+  }
+
+  goBack() {
+    window.history.back();
   }
 }
