@@ -32,7 +32,7 @@ import { MaterialModule } from './material.module';
 import { PendingChangesGuard } from './shared/pending-changes-guard/pending-changes.guard';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerLoaderComponent } from './shared/spinner-loader/spinner-loader.component';
-import { TestRecordComponent } from '@app/test-record/test-record.component';
+import { TestRecordModule } from '@app/test-record/test-record.module';
 import { LogoutModalComponent } from './shell/header/logout-modal/logout-modal.component';
 
 let adalConfig: any; // will be initialized by APP_INITIALIZER
@@ -63,8 +63,7 @@ export const COMPONENTS = [
   FooterComponent,
   TechnicalRecordCreateComponent,
   SpinnerLoaderComponent,
-  TestRecordComponent,
-  LogoutModalComponent,
+  LogoutModalComponent
 ];
 
 @NgModule({
@@ -82,10 +81,11 @@ export const COMPONENTS = [
     ReactiveFormsModule,
     MatDialogModule,
     StoreModule.forRoot(appReducers),
-    StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     !(environment.name === 'deploy') ? StoreDevtoolsModule.instrument() : [],
     AppRoutingModule,
     EffectsModule.forRoot([VehicleTechRecordModelEffects]),
+    TestRecordModule,
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,

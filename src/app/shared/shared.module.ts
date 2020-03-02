@@ -12,8 +12,9 @@ import { ErrorSummaryComponent } from './error-summary/error-summary.component';
 import { PageNotFoundComponentComponent } from './page-not-found-component/page-not-found-component.component';
 import { PendingChangesService } from './pending-changes-service/pending-changes.service';
 import { PreventLeavePageModalComponent } from './prevent-page-leave-modal/prevent-leave-page-modal.component';
-import {SortByDatePipe} from '@app/pipes/SortByDatePipe';
-
+import { SortByDatePipe } from '@app/pipes/SortByDatePipe';
+import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
+import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 
 export const PIPES_AND_COMPONENTS = [
   IsPrimaryVrmPipe,
@@ -25,18 +26,16 @@ export const PIPES_AND_COMPONENTS = [
   OrderByStatusPipe,
   DefaultNullOrEmpty,
   ErrorSummaryComponent,
-  SortByDatePipe
+  SortByDatePipe,
+  DialogBoxComponent,
+  DisplayOptionsPipe
 ];
 
 @NgModule({
-  imports: [
-    FormsModule,
-    MatDialogModule,
-    CommonModule,
-  ],
+  imports: [FormsModule, MatDialogModule, CommonModule],
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
-  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent],
-  providers: [FilterRecordPipe, PendingChangesService],
+  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent],
+  providers: [FilterRecordPipe, PendingChangesService]
 })
-export class SharedModule { }
+export class SharedModule {}

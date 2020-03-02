@@ -1,0 +1,38 @@
+<dl *ngIf="!editState" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test facility name/number
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{((testRecord.testStationName ? testRecord.testStationName : '') + (testRecord.testStationPNumber ? ' - ' + testRecord.testStationPNumber : '')) | DefaultNullOrEmpty}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Type of test facility
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{(testRecord.testStationType | DefaultNullOrEmpty) | titlecase}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Tester name
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{(testRecord.testerName | DefaultNullOrEmpty) | titlecase}}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Email address
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{(testRecord.testerEmailAddress | DefaultNullOrEmpty) | titlecase}}
+    </dd>
+  </div>
+</dl>
+
+<ng-container *ngIf="editState">
+  <vtm-visit-edit [testStations]="testStations" [testRecord]="testRecord"></vtm-visit-edit>
+</ng-container>

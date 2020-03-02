@@ -1,0 +1,13 @@
+.govuk-link,
+.govuk-link:visited {
+  color: #1d70b8 !important;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  line-height: 2rem;
+}
+
+a.govuk-back-link {
+  text-decoration: underline;
+  cursor: pointer;
+}

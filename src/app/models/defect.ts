@@ -1,4 +1,4 @@
-import {AdditionalInformation} from '@app/models/additional.information';
+import { AdditionalInformation } from '@app/models/additional.information';
 
 export interface Defect {
   prohibitionIssued: boolean;

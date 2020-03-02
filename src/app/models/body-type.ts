@@ -1,4 +1,4 @@
-export interface BodyTypeModel {
+export interface BodyType {
   code: string;
   description: string;
 }

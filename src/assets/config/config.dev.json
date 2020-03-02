@@ -1,7 +1,6 @@
-{
-  "env": {
-    "name": "dev"
-  },
+{  "env": {
+  "name": "dev"
+},
   "appInsights": {
     "instrumentationKey": "#{appInsightsKey}"
   },
@@ -18,7 +17,7 @@
     "clientId": "",
     "tenant": "",
     "redirectUri": "http://localhost:4200",
-    "cacheLocation": "localStorage",
+    "cacheLocation": "",
     "endpoints": {
       "api": ""
     }
@@ -27,6 +26,8 @@
     "APITechnicalRecordServerUri": "http://localhost:3005",
     "APITestResultServerUri": "http://localhost:3006",
     "APIDocumentsServerUri": "assets/files",
+    "APIPreparersServerUri": "http://localhost:3003",
+    "APITestStationsServerUri": "http://localhost:3004",
     "APIDocumentBlobUri": ""
   }
 }

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestHistoryComponent should create 1`] = `
+<vtm-test-history
+  editState="0"
+  testRecord={[Function Object]}
+>
+  <table
+    class="govuk-table t-history"
+  >
+    <thead
+      class="govuk-table__head"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Status
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Reason for creation
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Created by
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Created at
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Last updated by
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Last updated at
+        </th>
+      </tr>
+    </thead>
+    <tbody
+      class="govuk-table__body"
+    >
+      
+    </tbody>
+  </table>
+</vtm-test-history>
+`;
