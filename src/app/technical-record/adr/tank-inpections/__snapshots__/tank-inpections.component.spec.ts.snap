@@ -74,7 +74,10 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
                 class="govuk-table__cell"
                 id="test-tc2IntermediateExpiryDate"
               >
-                 18/03/2020 
+                
+                <span>
+                   18/03/2020 
+                </span>
               </td>
             </tr>
             
@@ -83,6 +86,7 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
         </table>
       </div>
     </div>
+    
     
   </vtm-tank-inpections>
 </test-vtm-tank-inpections>
@@ -97,6 +101,7 @@ exports[`TankInpectionsComponent should render the editable component if edit is
     ng-reflect-adr-details="[object Object]"
     ng-reflect-edit="true"
   >
+    
     
     
     

@@ -40,7 +40,7 @@ import { SharedModule } from './shared/shared.module';
 import { SpinnerLoaderComponent } from './shared/spinner-loader/spinner-loader.component';
 import { MultipleRecordsContainer } from '@app/multiple-records/multiple-records.container';
 import { MultipleRecordsComponent } from '@app/multiple-records/multiple-records.component';
-import { TestRecordComponent } from '@app/test-record/test-record.component';
+import { TestRecordModule } from '@app/test-record/test-record.module';
 import { LogoutModalComponent } from './shell/header/logout-modal/logout-modal.component';
 import { ROOT_EFFECTS } from './store/state/app.state';
 
@@ -73,7 +73,6 @@ export const COMPONENTS = [
   SpinnerLoaderComponent,
   MultipleRecordsContainer,
   MultipleRecordsComponent,
-  TestRecordComponent,
   LogoutModalComponent
 ];
 
@@ -95,7 +94,8 @@ export const COMPONENTS = [
     StoreModule.forRoot(appReducers),
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     !(environment.name === 'deploy') ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot(ROOT_EFFECTS)
+    EffectsModule.forRoot(ROOT_EFFECTS),
+    TestRecordModule
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,

@@ -13,7 +13,9 @@
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Date processed</dt>
       <dd id="test-ADR-approvalDate" class="govuk-summary-list__value">
-        {{ adrDetails.vehicleDetails?.approvalDate | DefaultNullOrEmpty }}
+        <span *ngIf="adrDetails.vehicleDetails?.approvalDate; else hyphen">
+          {{ adrDetails.vehicleDetails?.approvalDate | date: 'dd/MM/yyyy' }}
+        </span>
       </dd>
       <dd class="govuk-summary-list__value"></dd>
     </div>
