@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {AuthenticationGuard} from 'microsoft-adal-angular6';
 import {LandingPageComponent} from '@app/landing-page/landing-page.component';
 import {TechnicalRecordCreateComponent} from '@app/technical-record-create/technical-record-create.component';
-import {TestRecordComponent} from '@app/test-record/test-record.component';
+import { TestRecordComponent } from '@app/test-record/test-record.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent, canActivate: [AuthenticationGuard]},
@@ -18,7 +18,11 @@ const routes: Routes = [
     loadChildren: './technical-record/technical-record.module#TechnicalRecordModule',
     canActivate: [AuthenticationGuard]
   },
-  {path: 'test-record/:id', component: TestRecordComponent, canActivate: [AuthenticationGuard]},
+  {
+    path: 'test-record/:id',
+    loadChildren: './test-record/test-record.module#TestRecordModule',
+    canActivate: [AuthenticationGuard]
+  },
 
 ];
 

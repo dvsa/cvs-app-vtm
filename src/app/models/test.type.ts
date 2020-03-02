@@ -1,5 +1,10 @@
 import {Defect} from '@app/models/defect';
 
+export interface ModType {
+  code: string;
+  description: string;
+}
+
 export interface TestType {
   prohibitionIssued: boolean;
   testCode: string;
@@ -21,4 +26,13 @@ export interface TestType {
   name: string;
   certificateLink: string;
   testResult: string;
+  testExpiryDate: Date;
+  testAnniversaryDate: Date;
+  modType: ModType;
+  emissionStandard: string;
+  smokeTestKLimitApplied: string;
+  fuelType: string;
+  modificationTypeUsed: string;
+  particulateTrapFitted: string;
+  particulateTrapSerialNumber: string;
 }

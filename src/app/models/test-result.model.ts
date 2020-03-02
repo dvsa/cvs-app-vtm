@@ -28,6 +28,7 @@ export interface TestResultModel {
   numberOfSeats: number;
   testerEmailAddress: string;
   euVehicleCategory: string;
+  trailerId: string;
 }
 
 

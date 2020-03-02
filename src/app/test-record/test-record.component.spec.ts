@@ -6,16 +6,24 @@ import {IAppState} from '@app/store/state/app.state';
 import {hot} from 'jasmine-marbles';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
 import {Observable, of} from 'rxjs';
+import {SharedModule} from '@app/shared/shared.module';
+import {TestType} from '@app/models/test.type';
+import {TestResultModel} from '@app/models/test-result.model';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
   let fixture: ComponentFixture<TestRecordComponent>;
   let store: Store<IAppState>;
   let injector: TestBed;
+  const testType = {} as TestType;
+  const testRecord = {} as TestResultModel;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ SharedModule ],
       declarations: [TestRecordComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
           provide: Store,
@@ -44,7 +52,12 @@ describe('TestRecordComponent', () => {
     injector = getTestBed();
     component = fixture.componentInstance;
     component.testTypeNumber = 'W01A34247';
-
+    component.testType = testType;
+    component.testRecord = testRecord;
+    component.testResultObservable$ = of({} as TestResultModel);
+    component.seatBeltApplicable = ['11'];
+    component.emissionDetailsApplicable = ['22'];
+    component.defectsApplicable = ['33'];
     fixture.detectChanges();
   });
 
