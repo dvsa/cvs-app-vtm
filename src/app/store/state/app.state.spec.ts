@@ -1,4 +1,4 @@
-import {getInitialState, initialAppState} from './app.state';
+import { getInitialState, initialAppState } from './app.state';
 
 describe('VehicleTechRecordModel Reducer', () => {
   it('should return the initial state', () => {

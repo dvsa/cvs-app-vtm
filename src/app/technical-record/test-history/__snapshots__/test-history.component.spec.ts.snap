@@ -5,7 +5,7 @@ exports[`TestHistoryComponent should create view only with populated data 1`] = 
   testResultJson={[Function Array]}
 >
   <table
-    class="govuk-table"
+    class="govuk-table govuk-!-margin-bottom-0"
   >
     <thead
       class="govuk-table__head"
@@ -98,7 +98,6 @@ exports[`TestHistoryComponent should create view only with populated data 1`] = 
         <td
           class="govuk-table__cell govuk-!-font-weight-bold"
           id="test-testResult-tRes-0-0"
-          ng-reflect-ng-style="[object Object]"
         >
            - 
         </td>
@@ -116,6 +115,7 @@ exports[`TestHistoryComponent should create view only with populated data 1`] = 
             class="govuk-link govuk-link--no-visited-state"
             href="/test-record/123123"
             id="test-view-123123"
+            ng-reflect-query-params="[object Object]"
             ng-reflect-router-link="/test-record,123123"
           >
             View

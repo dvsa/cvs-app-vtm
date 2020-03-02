@@ -2,21 +2,28 @@
 
 exports[`TestRecordComponent should create 1`] = `
 <vtm-test-record
-  defectsApplicable={[Function Array]}
-  emissionDetailsApplicable={[Function Array]}
-  hasDefectsApplicable="undefined"
+  dialog={[Function MatDialog]}
+  editState="0"
+  fb={[Function FormBuilder]}
+  hasDefectsApplicable={[Function String]}
   hasEmissionApplicable={[Function Boolean]}
-  hasSeatBeltApplicable="false"
-  seatBeltApplicable={[Function Array]}
-  testRecord={[Function Object]}
-  testType={[Function Object]}
-  testTypeNumber={[Function String]}
+  hasSeatBeltApplicable={[Function Boolean]}
+  parent={[Function FormGroupDirective]}
+  preparers={[Function Array]}
+  submitTest={[Function EventEmitter]}
+  switchState={[Function EventEmitter]}
+  testRecordMapper={[Function TestRecordMapper]}
+  testResultObj={[Function Object]}
+  testResultParentForm={[Function FormGroup]}
+  testStations={[Function Array]}
+  testTypesApplicable={[Function Object]}
 >
   <div
     class="govuk-width-container"
   >
     <a
       class="govuk-back-link"
+      id="test-back-button"
       vtmbackbutton=""
     >
       Back
@@ -31,7 +38,8 @@ exports[`TestRecordComponent should create 1`] = `
           class="govuk-grid-column-full"
         >
           <h1
-            class="govuk-heading-xl"
+            class="govuk-heading-xl test-heading"
+            id="test-heading"
           >
             Test record
           </h1>
@@ -40,99 +48,103 @@ exports[`TestRecordComponent should create 1`] = `
       <div
         class="govuk-grid-row"
       >
+        
+        
         <div
-          class="govuk-grid-column-one-quarter"
+          class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0"
         >
           <button
             class="govuk-button govuk-button--secondary"
             data-module="govuk-button"
+            id="test-change-test-record"
           >
              Change test record 
           </button>
         </div>
+        
+        
         <div
-          class="govuk-grid-column-one-quarter"
+          class="govuk-grid-column-one-quarter govuk-!-margin-left-0 govuk-!-padding-left-0"
         >
           <button
             class="govuk-button govuk-button--secondary"
             data-module="govuk-button"
+            id="test-view-certificate"
           >
              View certificate 
           </button>
         </div>
       </div>
-      <div
-        class="govuk-grid-row"
+      <form
+        class="ng-untouched ng-pristine ng-valid"
+        ng-reflect-form="[object Object]"
+        novalidate=""
       >
         <div
-          class="govuk-grid-column-full"
+          class="govuk-grid-row"
         >
-          <vtm-accordion>
-            <vtm-accordion-item
-              title="Vehicle"
-            >
-              <vtm-vehicle />
-            </vtm-accordion-item>
-            <vtm-accordion-item
-              title="Test"
-            >
-              <vtm-test-section />
-            </vtm-accordion-item>
-            <span>
-              <vtm-accordion-item
-                title="Defects"
-              >
-                <vtm-defects />
-              </vtm-accordion-item>
-            </span>
-            <span>
-              <vtm-accordion-item
-                title="Seatbelt installation check"
-              >
-                <vtm-seatbelt-installation-check />
-              </vtm-accordion-item>
-            </span>
-            <span
-              hidden=""
-            >
-              <vtm-accordion-item
-                title="Emission details"
-              >
-                <vtm-emission-details />
-              </vtm-accordion-item>
-            </span>
-            <vtm-accordion-item
-              title="Visit"
-            >
-              <vtm-visit />
-            </vtm-accordion-item>
-            <vtm-accordion-item
-              title="Notes"
-            >
-              <vtm-notes />
-            </vtm-accordion-item>
-            <vtm-accordion-item
-              title="Test record history"
-            >
-              <vtm-test-history />
-            </vtm-accordion-item>
-          </vtm-accordion>
-        </div>
-      </div>
-      <div
-        class="govuk-grid-row"
-      >
-        <div
-          class="govuk-grid-column-one-quarter"
-        >
-          <button
-            class="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
+          <div
+            class="govuk-grid-column-full"
           >
-             Change test record 
-          </button>
+            <vtm-accordion>
+              <vtm-accordion-item
+                title="Vehicle"
+              >
+                <vtm-vehicle />
+              </vtm-accordion-item>
+              <vtm-accordion-item
+                title="Test"
+              >
+                <vtm-test-section />
+              </vtm-accordion-item>
+              <span
+                hidden=""
+              >
+                <vtm-accordion-item
+                  title="Defects"
+                >
+                  <vtm-defects />
+                </vtm-accordion-item>
+              </span>
+              <span
+                hidden=""
+              >
+                <vtm-accordion-item
+                  title="Seatbelt installation check"
+                >
+                  <vtm-seatbelt-installation-check />
+                </vtm-accordion-item>
+              </span>
+              <span
+                hidden=""
+              >
+                <vtm-accordion-item
+                  title="Emission details"
+                >
+                  <vtm-emission-details />
+                </vtm-accordion-item>
+              </span>
+              <vtm-accordion-item
+                title="Visit"
+              >
+                <vtm-visit />
+              </vtm-accordion-item>
+              <vtm-accordion-item
+                title="Notes"
+              >
+                <vtm-notes />
+              </vtm-accordion-item>
+              <span>
+                <vtm-accordion-item
+                  title="Test record history"
+                >
+                  <vtm-test-history />
+                </vtm-accordion-item>
+              </span>
+            </vtm-accordion>
+          </div>
         </div>
-      </div>
+      </form>
     </main>
   </div>
 </vtm-test-record>

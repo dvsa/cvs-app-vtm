@@ -31,6 +31,18 @@
 
 // Typography
 
+.font--green {
+  color: govuk-colour("green");
+}
+
+.font--blue {
+  color: $govuk-brand-colour;
+}
+
+.font--red {
+  color:  $govuk-error-colour;
+}
+
 
 /**************/
 // COMPONENTS //
@@ -60,6 +72,10 @@
   color: $govuk-text-colour;
 }
 
+.border--none {
+  border: none;
+}
+
 .border--bottom-none {
   border-bottom: none;
 }
@@ -67,6 +83,12 @@
 .white-space--normal {
   white-space: normal;
 }
+
+.autocomplete-input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+
 
 /*********/
 // PAGES //

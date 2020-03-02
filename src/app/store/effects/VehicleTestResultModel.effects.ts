@@ -3,16 +3,24 @@ import {
   EVehicleTestResultModelActions,
   GetVehicleTestResultModel,
   GetVehicleTestResultModelFailure,
-  GetVehicleTestResultModelSuccess
+  GetVehicleTestResultModelSuccess,
+  SetTestViewState,
+  UpdateTestResult,
+  UpdateTestResultSuccess
 } from '@app/store/actions/VehicleTestResultModel.actions';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { ClearErrorMessage } from '../actions/Error.actions';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { ClearErrorMessage, SetErrorMessage } from '../actions/Error.actions';
 import { IAppState } from '../state/app.state';
 import { TestResultModel } from '@app/models/test-result.model';
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
+import { VIEW_STATE } from '@app/app.enums';
+import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
+import { UserService } from '@app/app-user.service';
+import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 
 @Injectable()
 export class VehicleTestResultModelEffects {
@@ -22,20 +30,79 @@ export class VehicleTestResultModelEffects {
     map((action) => action.payload),
     switchMap((searchIdentifier: string) =>
       this._testResultService.getTestResults(searchIdentifier).pipe(
-        switchMap((testResultJson: TestResultModel) => {
-          this._store$.dispatch(new ClearErrorMessage());
-          return of(new GetVehicleTestResultModelSuccess(testResultJson));
+        switchMap((testResults: TestResultModel[]) => {
+          this._store.dispatch(new ClearErrorMessage());
+          return of(new GetVehicleTestResultModelSuccess(testResults));
         }),
         catchError((error) => {
-          return of(new GetVehicleTestResultModelFailure(error));
+          return [new GetVehicleTestResultModelFailure(error)];
         })
       )
     )
   );
 
+  @Effect()
+  updateTestResult$ = this._actions$.pipe(
+    ofType<UpdateTestResult>(EVehicleTestResultModelActions.UpdateTestResult),
+    withLatestFrom(this._store.select(getVehicleTestResultModel)),
+    map(([{ testResultTestTypeNumber }, testResultsInState]): [
+      TestResultTestTypeNumber,
+      TestResultModel[]
+    ] => [testResultTestTypeNumber, testResultsInState]),
+    switchMap(([testResultTestTypeNumber, testResultsInState]) => {
+      const testResultTestTypeNumberObject = testResultTestTypeNumber;
+      let testResultObject: VehicleTestResultUpdate = {} as VehicleTestResultUpdate;
+      const { testResultUpdated } = testResultTestTypeNumber;
+
+      testResultObject = {
+        msUserDetails: { ...this.loggedUser.getUser() },
+        testResult: testResultUpdated
+      };
+
+      return this._testResultService
+        .updateTestResults(testResultObject.testResult.systemNumber, testResultObject)
+        .pipe(
+          switchMap((testRecordResult) => {
+            testResultTestTypeNumberObject.testResultUpdated = testRecordResult;
+            testResultTestTypeNumberObject.testResultsUpdated = this.updateTestResultsInState(
+              testResultsInState,
+              testResultTestTypeNumberObject
+            );
+            return [
+              new SetTestViewState(VIEW_STATE.VIEW_ONLY),
+              new UpdateTestResultSuccess(testResultTestTypeNumberObject),
+              new ClearErrorMessage()
+            ];
+          }),
+          catchError(({ error }) => {
+            const errorMessage = error.errors;
+            return [new SetErrorMessage(errorMessage)];
+          })
+        );
+    })
+  );
+
   constructor(
     private _testResultService: TestResultService,
-    private _store$: Store<IAppState>,
-    private _actions$: Actions
+    private _store: Store<IAppState>,
+    private _actions$: Actions,
+    private loggedUser: UserService
   ) {}
+
+  updateTestResultsInState(
+    testResultsInState: TestResultModel[],
+    testResultTestTypeNumberObject: TestResultTestTypeNumber
+  ): TestResultModel[] {
+    return testResultsInState.map((testResult) => {
+      if (
+        testResult.testTypes.some(
+          (testType) => testType.testNumber === testResultTestTypeNumberObject.testTypeNumber
+        )
+      ) {
+        return testResultTestTypeNumberObject.testResultUpdated;
+      } else {
+        return testResult;
+      }
+    });
+  }
 }
