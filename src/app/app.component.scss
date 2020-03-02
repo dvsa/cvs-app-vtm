@@ -395,18 +395,6 @@ dd {
   padding: 1.5% 0 1.5% 0 !important;
 }
 
-.t-history:nth-child(1) {
-  th:nth-last-child(1), td:nth-last-child(1) {
-    width: 50% !important;
-  }
-}
-
-.t-history:nth-child(2) {
-  th:nth-last-child(1), td:nth-last-child(1) {
-    width: 60% !important;
-  }
-}
-
 @media only screen and (max-width: 600px) {
   .item-technical-record {
     white-space: normal !important;
@@ -560,3 +548,9 @@ a#cancel1, a#cancel2 {
   display: block !important;
 }
 
+.govuk-link, .govuk-link:visited {
+  color: $govuk-link-colour !important;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+}

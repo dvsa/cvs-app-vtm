@@ -32,6 +32,7 @@ import { MaterialModule } from './material.module';
 import { PendingChangesGuard } from './shared/pending-changes-guard/pending-changes.guard';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerLoaderComponent } from './shared/spinner-loader/spinner-loader.component';
+import { TestRecordComponent } from '@app/test-record/test-record.component';
 
 let adalConfig: any; // will be initialized by APP_INITIALIZER
 export function msAdalAngular6ConfigFactory() {
@@ -61,6 +62,7 @@ export const COMPONENTS = [
   FooterComponent,
   TechnicalRecordCreateComponent,
   SpinnerLoaderComponent,
+  TestRecordComponent
 ];
 
 @NgModule({
