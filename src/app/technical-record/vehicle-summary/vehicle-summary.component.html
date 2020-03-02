@@ -22,7 +22,7 @@
       Date of first registration
     </dt>
     <dd id="test-regnDate" class="govuk-summary-list__value">
-      {{ activeRecord.regnDate | DefaultNullOrEmpty }}
+      {{ activeRecord.regnDate ? (activeRecord.regnDate | date: 'dd/MM/yyyy') : '-' }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -40,7 +40,7 @@
       First use date
     </dt>
     <dd id="test-firstUseDate" class="govuk-summary-list__value">
-      {{ activeRecord.firstUseDate | DefaultNullOrEmpty }}
+      {{ activeRecord.firstUseDate ? (activeRecord.firstUseDate | date: 'dd/MM/yyyy') : '-' }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>

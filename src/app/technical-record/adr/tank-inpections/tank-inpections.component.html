@@ -22,7 +22,7 @@
               {{ tankDetails?.tc2Details?.tc2IntermediateApprovalNo | DefaultNullOrEmpty }}
             </td>
             <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
-              {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | DefaultNullOrEmpty }}
+              {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate ? (tankDetails?.tc2Details?.tc2IntermediateExpiryDate | date:'dd/MM/yyyy') : '-' }}
             </td>
           </tr>
 
@@ -37,7 +37,7 @@
               {{ tc3Details.tc3PeriodicNumber | DefaultNullOrEmpty }}
             </td>
             <td id="test-tc3PeriodicExpiryDate-{{ i }}" class="govuk-table__cell">
-              {{ tc3Details.tc3PeriodicExpiryDate | DefaultNullOrEmpty }}
+              {{ tc3Details.tc3PeriodicExpiryDate ? (tc3Details.tc3PeriodicExpiryDate | date: 'dd/MM/yyyy') : '-' }}
             </td>
           </tr>
         </tbody>

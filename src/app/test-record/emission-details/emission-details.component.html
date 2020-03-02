@@ -1,0 +1,68 @@
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Emission standard
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-emissionStandard">
+      {{ testType.emissionStandard | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Smoke test "K" limit applied (m <sup>1</sup>)</dt>
+    <dd class="govuk-summary-list__value" id="test-smokeTestKLimitApplied">
+      {{ testType.smokeTestKLimitApplied | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Fuel type
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-fuelType">
+      {{ testType.fuelType | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Modification type
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-modType">
+      <ng-container *ngIf="testType.modType; else hyphen">
+        {{
+          [testType.modType.code | titlecase, testType.modType.description | CapitalizeString]
+            | DisplayByDelimiter: ' - '
+            | DefaultNullOrEmpty
+        }}
+      </ng-container>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Modification type used
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-modificationTypeUsed">
+      {{ testType.modificationTypeUsed | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Particulate trap fitted
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-particulateTrapFitted">
+      {{ testType.particulateTrapFitted | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key border--bottom-none">
+      Particulate trap serial number
+    </dt>
+    <dd
+      class="govuk-summary-list__value border--bottom-none"
+      id="test-particulateTrapSerialNumber"
+    >
+      {{ testType.particulateTrapSerialNumber | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+</dl>
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>

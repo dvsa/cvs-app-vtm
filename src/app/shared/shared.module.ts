@@ -19,6 +19,8 @@ import { SortByDatePipe } from '@app/pipes/SortByDatePipe';
 import { FormConnectorDirective } from '@app/directives/form-connector/form-connector.directive';
 import { FilterMultipleRecordsPipe } from '@app/pipes/FilterMultipleRecordsPipe';
 import { BackButtonDirective } from '@app/shared/directives/back-button.directive';
+import { DisplayByDelimiter } from '@app/pipes/display-by-delimiter';
+import { CapitalizeString } from '@app/pipes/capitalize-string';
 
 export const PIPES_AND_COMPONENTS = [
   AdrReasonModalComponent,
@@ -35,7 +37,9 @@ export const PIPES_AND_COMPONENTS = [
   DefaultNullOrEmpty,
   SortByDatePipe,
   FilterMultipleRecordsPipe,
-  BackButtonDirective
+  BackButtonDirective,
+  DisplayByDelimiter,
+  CapitalizeString
 ];
 
 @NgModule({

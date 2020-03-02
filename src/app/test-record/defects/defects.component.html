@@ -1,0 +1,89 @@
+<dl *ngFor="let defect of testType.defects" class="govuk-summary-list">
+  <h2 class="govuk-heading-l">
+    <span class="govuk-!-margin-top-3" id="test-deficiencyRef"> {{ defect.deficiencyRef }}</span>
+    -
+    <span
+      class="govuk-tag govuk-!-font-size-24 govuk-!-padding-top-0 govuk-!-padding-bottom-0 govuk-!-padding-left-1 govuk-!-padding-right-1"
+      [class.tag--black]="defect.deficiencyCategory === 'dangerous'"
+      [class.tag--red]="defect.deficiencyCategory === 'major'"
+      [class.tag--yellow]="defect.deficiencyCategory === 'minor'"
+      [class.tag--white]="defect.deficiencyCategory === 'advisory'"
+    >
+      {{ defect.deficiencyCategory }}
+    </span>
+  </h2>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Category
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-imNumber-imDescription">
+      {{ [defect.imNumber, defect.imDescription] | DisplayByDelimiter: ' ' | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Item
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-itemNumber-itemDescription">
+      {{
+        [defect.itemNumber, defect.itemDescription] | DisplayByDelimiter: ' ' | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Description
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-deficencyId">
+      {{
+        [defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText]
+          | DisplayByDelimiter: ' '
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Location
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-location">
+      {{
+        [
+          defect?.additionalInformation?.location?.vertical | titlecase,
+          defect?.additionalInformation?.location?.horizontal | titlecase,
+          defect?.additionalInformation?.location?.lateral | titlecase,
+          defect?.additionalInformation?.location?.longitudinal | titlecase,
+          defect?.additionalInformation?.location?.rowNumber,
+          defect?.additionalInformation?.location?.seatNumber,
+          defect?.additionalInformation?.location?.axleNumber | titlecase
+        ]
+          | DisplayByDelimiter: '/'
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Repaired during test
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-defect-prs">
+      {{ defect.prs | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Prohibition issued
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-prohibition">
+      {{ defect.prohibitionIssued | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key border--bottom-none">
+      Additional defect details
+    </dt>
+    <dd class="govuk-summary-list__value border--bottom-none" id="test-additionalInfo">
+      {{ defect?.additionalInformation?.notes | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+</dl>

@@ -7,20 +7,20 @@
     <th scope="col" class="govuk-table__header">Certificate number</th>
     <th scope="col" class="govuk-table__header">Result</th>
     <th scope="col" class="govuk-table__header">Tester name</th>
-    <th scope="col" class="govuk-table__header"> </th>
+    <th scope="col" class="govuk-table__header"></th>
   </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
   <ng-container *ngFor="let testRes of (testResultJson | SortByDatePipe :'testEndTimestamp'); let i = index">
     <tr class="govuk-table__row" *ngFor="let testType of (testRes.testTypes | SortByDatePipe :'testTypeEndTimestamp'); let ii = index">
       <td id="{{ 'test-testCode-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        {{ techRecHelpers.capitalizeWord(testType.testCode | DefaultNullOrEmpty) }}
+        {{ (testType.testCode | CapitalizeString) | DefaultNullOrEmpty }}
       </td>
       <td id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        {{ testType.testTypeEndTimestamp | DefaultNullOrEmpty }}
+        {{ testType.testTypeEndTimestamp ? (testType.testTypeEndTimestamp | date: 'dd/MM/yyyy') : '-' }}
       </td>
       <td id="{{ 'test-expiryDate-tRes-' + i + '-tType-' + ii}}" class="govuk-table__cell">
-        {{ testRes.testExpiryDate | DefaultNullOrEmpty }}
+        {{ testRes.testExpiryDate ? (testRes.testExpiryDate | date: 'dd/MM/yyyy') : '-' }}
       </td>
       <td id="{{ 'test-certificateNumber-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
         {{ testType.certificateNumber | DefaultNullOrEmpty }}
@@ -29,11 +29,12 @@
           [ngStyle]="setResultColor(testType.testResult)">
         {{ (testType.testResult | DefaultNullOrEmpty) | uppercase }}
       </td>
-      <td id="{{ 'test-testerName-' + i }}" class="govuk-table__cell">
+      <td id="{{ 'test-testerName-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
         {{ testRes.testerName | DefaultNullOrEmpty }}
       </td>
-      <td id="{{ 'test-view-' + i }}" class="govuk-table__cell">
-        <a class="govuk-link" id="{{'test-view-'+ testType.testNumber}}" [routerLink]="['/test-record', testType.testNumber]">View</a>
+      <td id="{{ 'test-view-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+        <a class="govuk-link" id="{{'test-view-'+ testType.testNumber}}"
+           [routerLink]="['/test-record', testType.testNumber]">View</a>
       </td>
     </tr>
   </ng-container>
