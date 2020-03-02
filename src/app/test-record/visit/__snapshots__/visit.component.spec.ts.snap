@@ -2,7 +2,9 @@
 
 exports[`VisitComponent should create 1`] = `
 <vtm-visit
+  editState="0"
   testRecord={[Function Object]}
+  testStations={[Function Array]}
 >
   <dl
     class="govuk-summary-list"

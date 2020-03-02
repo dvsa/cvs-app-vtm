@@ -2,6 +2,7 @@
 
 exports[`SeatbeltInstallationCheckComponent should create 1`] = `
 <vtm-seatbelt-installation-check
+  editState="0"
   testType={[Function Object]}
 >
   <dl
@@ -19,7 +20,7 @@ exports[`SeatbeltInstallationCheckComponent should create 1`] = `
         class="govuk-summary-list__value"
         id="test-seatbeltInstallationCheckDate"
       >
-         - 
+         01/01/1970 
       </dd>
     </div>
     <div

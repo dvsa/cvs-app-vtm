@@ -1,9 +1,17 @@
 import {
-  EVehicleTestResultModelActions, GetVehicleTestResultModel, GetVehicleTestResultModelSuccess, GetVehicleTestResultModelFailure
+  EVehicleTestResultModelActions,
+  GetVehicleTestResultModel,
+  GetVehicleTestResultModelFailure,
+  GetVehicleTestResultModelSuccess,
+  SetCurrentState,
+  SetSelectedTestResultModel,
+  SetSelectedTestResultModelSuccess,
+  UpdateTestResult
 } from './VehicleTestResultModel.actions';
-import {TestResultModel} from '@app/models/test-result.model';
+import { TestResultModel } from '@app/models/test-result.model';
+import { VIEW_STATE } from '@app/app.enums';
 
-const testResultModelExample = {
+const expectedTestResultModel = {
   vrm: '123',
   testStationPNumber: '123',
   testerEmailAddress: '123@123.com',
@@ -12,28 +20,84 @@ const testResultModelExample = {
 } as TestResultModel;
 
 describe('GetVehicleTestResultModel', () => {
-  test('action should have the right type and payload when used', () => {
-    const actionInstance = new GetVehicleTestResultModel(testResultModelExample);
+  it('action should have the right type and system number payload when the action is instantiated', () => {
+    const actionInstance = new GetVehicleTestResultModel('23434234');
 
-    expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModel);
-    expect(actionInstance.payload).toBe(testResultModelExample);
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.GetVehicleTestResultModel,
+      payload: '23434234'
+    });
   });
 });
 
 describe('GetVehicleTestResultModelSuccess', () => {
-  test('action should have the right type and payload when used', () => {
-    const actionInstance = new GetVehicleTestResultModelSuccess(testResultModelExample);
+  it('action should have the right type and test results array payload when the action is instantiated', () => {
+    const actionInstance = new GetVehicleTestResultModelSuccess([expectedTestResultModel]);
 
-    expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess);
-    expect(actionInstance.payload).toBe(testResultModelExample);
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess,
+      payload: [expectedTestResultModel]
+    });
   });
 });
 
 describe('GetVehicleTestResultModelFailure', () => {
-  test('action should have the right type and payload when used', () => {
-    const actionInstance = new GetVehicleTestResultModelFailure(testResultModelExample);
+  it('action should have the right type and error payload when the action is instantiated', () => {
+    const actionInstance = new GetVehicleTestResultModelFailure('test');
 
-    expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModelFailure);
-    expect(actionInstance.payload).toBe(testResultModelExample);
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.GetVehicleTestResultModelFailure,
+      payload: 'test'
+    });
+  });
+});
+
+describe('SetCurrentState', () => {
+  it('action should have correct type and state value as payload when the action is instantiated', () => {
+    const actionInstance = new SetCurrentState(VIEW_STATE.VIEW_ONLY);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.SetCurrentState,
+      editState: VIEW_STATE.VIEW_ONLY
+    });
+  });
+});
+
+describe('UpdateTestResult', () => {
+  it('action should have correct type and test result updated payload when the action is instantiated', () => {
+    const actionInstance = new UpdateTestResult({
+      testResultUpdated: expectedTestResultModel,
+      testTypeNumber: '1'
+    });
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.UpdateTestResult,
+      testResultTestTypeNumber: {
+        testResultUpdated: expectedTestResultModel,
+        testTypeNumber: '1'
+      }
+    });
+  });
+});
+
+describe('SetSelectedTestResultModel', () => {
+  it('action should have correct type & payload', () => {
+    const actionInstance = new SetSelectedTestResultModel('');
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.SetSelectedTestResultModel,
+      payload: ''
+    });
+  });
+});
+
+describe('SetSelectedTestResultModelSuccess', () => {
+  it('action should have correct type & payload', () => {
+    const actionInstance = new SetSelectedTestResultModelSuccess(expectedTestResultModel);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.SetSelectedTestResultModelSuccess,
+      payload: expectedTestResultModel
+    });
   });
 });

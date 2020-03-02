@@ -9,6 +9,10 @@ import {
   initialVehicleTestResultModelState,
   IVehicleTestResultModelState
 } from './VehicleTestResultModel.state';
+import {
+  initialReferenceDataState,
+  IReferenceDataState
+} from '@app/store/state/ReferenceDataState.state';
 import { initialLoaderState, ILoaderState } from './Loader.state';
 import { VehicleTechRecordModelEffects } from '../effects/VehicleTechRecordModel.effects';
 import { ErrorEffects } from './../effects/error.effects';
@@ -20,6 +24,7 @@ export interface IAppState {
   loader: ILoaderState;
   vehicleTechRecordModel: IVehicleTechRecordModelState;
   vehicleTestResultModel: IVehicleTestResultModelState;
+  referenceData: IReferenceDataState;
   error: ErrorState;
 }
 
@@ -27,6 +32,7 @@ export const initialAppState: IAppState = {
   loader: initialLoaderState,
   vehicleTechRecordModel: initialVehicleTechRecordModelState,
   vehicleTestResultModel: initialVehicleTestResultModelState,
+  referenceData: initialReferenceDataState,
   error: initialErrorState
 };
 

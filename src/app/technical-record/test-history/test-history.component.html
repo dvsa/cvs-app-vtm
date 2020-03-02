@@ -1,54 +1,87 @@
-<table class="govuk-table t-history">
+<table class="govuk-table govuk-!-margin-bottom-0">
   <thead class="govuk-table__head">
-  <tr class="govuk-table__row">
-    <th scope="col" class="govuk-table__header">Test type</th>
-    <th scope="col" class="govuk-table__header">Test date</th>
-    <th scope="col" class="govuk-table__header">Expiry date</th>
-    <th scope="col" class="govuk-table__header">Certificate number</th>
-    <th scope="col" class="govuk-table__header">Result</th>
-    <th scope="col" class="govuk-table__header">Tester name</th>
-    <th scope="col" class="govuk-table__header"></th>
-  </tr>
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Test type</th>
+      <th scope="col" class="govuk-table__header">Test date</th>
+      <th scope="col" class="govuk-table__header">Expiry date</th>
+      <th scope="col" class="govuk-table__header">Certificate number</th>
+      <th scope="col" class="govuk-table__header">Result</th>
+      <th scope="col" class="govuk-table__header">Tester name</th>
+      <th scope="col" class="govuk-table__header"></th>
+    </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
-  <ng-container *ngFor="let testRes of (testResultJson | SortByDatePipe :'testEndTimestamp'); let i = index">
-    <tr class="govuk-table__row" *ngFor="let testType of (testRes.testTypes | SortByDatePipe :'testTypeEndTimestamp'); let ii = index">
-      <td id="{{ 'test-testCode-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        {{ (testType.testCode | CapitalizeString) | DefaultNullOrEmpty }}
-      </td>
-      <td id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        {{ testType.testTypeEndTimestamp ? (testType.testTypeEndTimestamp | date: 'dd/MM/yyyy') : '-' }}
-      </td>
-      <td id="{{ 'test-expiryDate-tRes-' + i + '-tType-' + ii}}" class="govuk-table__cell">
-        {{ testRes.testExpiryDate ? (testRes.testExpiryDate | date: 'dd/MM/yyyy') : '-' }}
-      </td>
-      <td id="{{ 'test-certificateNumber-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        {{ testType.certificateNumber | DefaultNullOrEmpty }}
-      </td>
-      <td id="{{ 'test-testResult-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell govuk-!-font-weight-bold"
-          [ngStyle]="setResultColor(testType.testResult)">
-        {{ (testType.testResult | DefaultNullOrEmpty) | uppercase }}
-      </td>
-      <td id="{{ 'test-testerName-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        {{ testRes.testerName | DefaultNullOrEmpty }}
-      </td>
-      <td id="{{ 'test-view-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-        <a class="govuk-link" id="{{'test-view-'+ testType.testNumber}}"
-           [routerLink]="['/test-record', testType.testNumber]">View</a>
-      </td>
-    </tr>
-  </ng-container>
+    <ng-container
+      *ngFor="let testRes of testResultJson | SortByDatePipe: 'testEndTimestamp'; let i = index"
+    >
+      <tr
+        class="govuk-table__row"
+        *ngFor="
+          let testType of testRes.testTypes | SortByDatePipe: 'testTypeEndTimestamp';
+          let ii = index
+        "
+      >
+        <td id="{{ 'test-testCode-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+          {{ testType.testCode | CapitalizeString | DefaultNullOrEmpty }}
+        </td>
+        <td
+          id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-tType-' + ii }}"
+          class="govuk-table__cell"
+        >
+          {{
+            testType.testTypeEndTimestamp
+              ? (testType.testTypeEndTimestamp | date: 'dd/MM/yyyy')
+              : '-'
+          }}
+        </td>
+        <td id="{{ 'test-expiryDate-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+          {{ testRes.testExpiryDate ? (testRes.testExpiryDate | date: 'dd/MM/yyyy') : '-' }}
+        </td>
+        <td
+          id="{{ 'test-certificateNumber-tRes-' + i + '-tType-' + ii }}"
+          class="govuk-table__cell"
+        >
+          {{ testType.certificateNumber | DefaultNullOrEmpty }}
+        </td>
+        <td
+          id="{{ 'test-testResult-tRes-' + i + '-tType-' + ii }}"
+          class="govuk-table__cell govuk-!-font-weight-bold"
+          [class.font--green]="testType.testResult === 'pass'"
+          [class.font--blue]="testType.testResult === 'prs'"
+          [class.font--red]="
+            testType.testResult === 'fail' || testType.testResult === 'abandoned'
+          "
+        >
+          {{ testType.testResult | DefaultNullOrEmpty | uppercase }}
+        </td>
+        <td id="{{ 'test-testerName-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+          {{ testRes.testerName | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-view-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+          <a
+            class="govuk-link"
+            id="{{ 'test-view-' + testType.testNumber }}"
+            [routerLink]="['/test-record', testType.testNumber]"
+            [queryParams]="{
+              testResultId: testRes.testResultId,
+              systemNumber: testRes.systemNumber
+            }"
+            >View</a
+          >
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
   <ng-template #noTestHistory>
     <tbody class="govuk-table__body">
-    <tr>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
+      <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
     </tbody>
   </ng-template>
 </table>

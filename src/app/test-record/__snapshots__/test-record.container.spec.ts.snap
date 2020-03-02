@@ -2,16 +2,15 @@
 
 exports[`TestRecordContainer should create 1`] = `
 <vtm-test-record-container
-  defectsApplicable={[Function Array]}
-  emissionDetailsApplicable={[Function Array]}
+  editState$={[Function TestHotObservable]}
+  preparers$={[Function TestHotObservable]}
   route={[Function Object]}
-  seatBeltApplicable={[Function Array]}
   store={[Function Object]}
+  testRecord$="undefined"
   testRecordMapper={[Function TestRecordMapper]}
-  testRecordObservable$="undefined"
-  testSectionApplicable1={[Function Object]}
-  testSectionApplicable2={[Function Object]}
+  testStations$={[Function TestHotObservable]}
   testTypeNumber={[Function String]}
+  testTypesApplicable={[Function Object]}
 >
   
 </vtm-test-record-container>

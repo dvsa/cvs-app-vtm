@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleEditComponent should create 1`] = `
+<vtm-vehicle-edit
+  countryOfRegistrationOptions={[Function Array]}
+  euVehicleCategories={[Function Array]}
+  odometerReadingUnits={[Function Array]}
+  preparers={[Function Array]}
+  preparersOptions={[Function Array]}
+  testRecord={[Function Object]}
+  testResultChildForm={[Function FormGroupDirective]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Vehicle identification number (VIN) 
+                </label>
+                <input
+                  class="govuk-input ng-untouched ng-pristine"
+                  disabled=""
+                  formcontrolname="vin"
+                  id="test-vin"
+                  ng-reflect-name="vin"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Vehicle registration mark (VRM) 
+                </label>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-third"
+              >
+                <input
+                  class="govuk-input ng-untouched ng-pristine"
+                  disabled=""
+                  formcontrolname="vrm"
+                  id="test-vrm"
+                  ng-reflect-name="vrm"
+                  type="text"
+                />
+              </div>
+            </div>
+            
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Country of registration 
+                </label>
+                <vtm-autocomplete
+                  ariadescribedby="countryOfRegistration"
+                  class="ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="countryOfRegistration"
+                  id="countryOfRegistration"
+                  ng-reflect-autocomplete-data="Great Britain and Northern Ire"
+                  ng-reflect-name="countryOfRegistration"
+                  ngdefaultcontrol=""
+                >
+                  <div>
+                    Great Britain and Northern Ireland - GB,Alderney - GBA,Guernsey - GBG,Jersey - GBJ,Isle of Man - GBM,Gibraltar - GBZ,Austria - A,Belgium - B,Bosnia and Herzegovina - BIH,Bulgaria - BG,Croatia - HR,Cyprus - CY,Czech Republic - CZ,Denmark - DK,Estonia - EST,Finland - FIN,France - F,Germany - D,Greece - GR,Hungary - H,Ireland - IRL,Italy - I,Latvia - LV,Lithuania - LT,Luxembourg - L,Malta - M,Netherlands - NL,Norway - N,Poland - PL,Portugal - P,Romania - RO,Slovakia - SK,Slovenia - SLO,Spain - E,Sweden - S,Switzerland - CH,Non EU,Country Not Known
+                  </div>
+                </vtm-autocomplete>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-three-quarters"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   EU vehicle category 
+                </label>
+                <div
+                  class="govuk-radios"
+                >
+                  
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
+                      formcontrolname="euVehicleCategory"
+                      id="test-euVehicleCategory-M1"
+                      ng-reflect-form-control-name="euVehicleCategory"
+                      ng-reflect-name="euVehicleCategory"
+                      ng-reflect-value="m1"
+                      type="radio"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       M1 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
+                      formcontrolname="euVehicleCategory"
+                      id="test-euVehicleCategory-M2"
+                      ng-reflect-form-control-name="euVehicleCategory"
+                      ng-reflect-name="euVehicleCategory"
+                      ng-reflect-value="m2"
+                      type="radio"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       M2 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
+                      formcontrolname="euVehicleCategory"
+                      id="test-euVehicleCategory-M3"
+                      ng-reflect-form-control-name="euVehicleCategory"
+                      ng-reflect-name="euVehicleCategory"
+                      ng-reflect-value="m3"
+                      type="radio"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       M3 
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Odometer reading 
+                </label>
+                <input
+                  class="govuk-input ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="odometerReading"
+                  id="test-odometerReading"
+                  ng-reflect-name="odometerReading"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Odometer reading unit 
+                </label>
+                <select
+                  class="govuk-select ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="odometerReadingUnits"
+                  id="test-odometerReadingUnit"
+                  ng-reflect-name="odometerReadingUnits"
+                >
+                  
+                  <option
+                    ng-reflect-value="kilometres"
+                    value="kilometres"
+                  >
+                    kilometres
+                  </option>
+                  <option
+                    ng-reflect-value="miles"
+                    value="miles"
+                  >
+                    miles
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Preparer 
+                </label>
+                <vtm-autocomplete
+                  ariadescribedby="preparer"
+                  class="ng-untouched ng-pristine ng-valid"
+                  formcontrolname="preparer"
+                  id="preparer"
+                  ng-reflect-autocomplete-data="test(123)"
+                  ng-reflect-name="preparer"
+                  ngdefaultcontrol=""
+                >
+                  <div>
+                    test(123)
+                  </div>
+                </vtm-autocomplete>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-vehicle-edit>
+`;

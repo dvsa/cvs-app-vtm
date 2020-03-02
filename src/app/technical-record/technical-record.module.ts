@@ -34,6 +34,7 @@ import { WeightsComponent } from './weights/weights.component';
 
 import { AdrModule } from './adr/adr.module';
 import { TechnicalRecordsContainer } from './technical-record.container';
+import {DirectivesModule} from '@app/shared/directives/directives.module';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { TechnicalRecordsContainer } from './technical-record.container';
     ReactiveFormsModule,
     NgrxFormsModule,
     NgxJsonViewerModule,
-    AdrModule
+    AdrModule,
+    DirectivesModule
   ],
   declarations: [
     TechnicalRecordsContainer,

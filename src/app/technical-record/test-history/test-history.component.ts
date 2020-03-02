@@ -1,5 +1,5 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { TestResultModel } from '@app/models/test-result.model';
 
 @Component({
   selector: 'vtm-test-history',
@@ -8,28 +8,9 @@ import {TechRecordHelpersService} from '@app/technical-record/tech-record-helper
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestHistoryComponent implements OnInit {
+  @Input() testResultJson: TestResultModel[];
 
-  @Input() testResultJson: any;
+  constructor() {}
 
-
-  constructor(public techRecHelpers: TechRecordHelpersService) {
-  }
-
-  ngOnInit() {
-  }
-
-  setResultColor(testResult: string) {
-    switch (testResult) {
-      case 'pass':
-        return {color: '#00703C'};
-      case 'prs':
-        return {color: '#1D70B8'};
-      case 'fail':
-      case 'abandoned':
-        return {color: '#D4351C'};
-      default:
-        return {color: ''};
-    }
-  }
-
+  ngOnInit() {}
 }

@@ -1,0 +1,10 @@
+#test-testStationType {
+  border: none;
+}
+#test-testStationType:focus {
+  outline: none;
+  box-shadow: none;
+}
+#test-testStationType:disabled {
+  color: #0b0c0c;
+}

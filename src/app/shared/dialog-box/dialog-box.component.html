@@ -1,0 +1,24 @@
+<div mat-dialog-content>
+  <h2 class="govuk-heading-l">{{ data.context }}</h2>
+  <textarea
+    class="govuk-textarea govuk-!-width-three-quarters"
+    id="reasonForCreation"
+    rows="8"
+    [(ngModel)]="data.response"
+    aria-describedby="reasonForCreation"
+  >
+  </textarea>
+</div>
+
+<button
+  class="govuk-button"
+  data-module="govuk-button"
+  (click)="save(data.response)"
+  cdkFocusInitial
+>
+  {{data.actionName}}
+</button>
+
+<a class="govuk-link govuk-!-margin-left-2 link--cancel" (click)="close()">
+  <span>Cancel</span>
+</a>
