@@ -1,17 +1,14 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { AppConfig } from '@app/app.config';
-import { environment } from '@environments/environment';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { ReplaySubject } from 'rxjs';
 import { TestResultService } from './test-result.service';
 import { Store, INITIAL_STATE } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { hot } from 'jasmine-marbles';
-
-const routes = {
-  testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
-};
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
+import { LoadingTrue } from '@app/store/actions/Loader.actions';
 
 const appConfigMock = {
   get settings() {
@@ -33,20 +30,19 @@ describe('TestResultService', () => {
   beforeEach(() => {
     actions = new ReplaySubject();
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-      ],
+      imports: [HttpClientTestingModule],
       providers: [
         TestResultService,
         { provide: AppConfig, useValue: appConfigMock },
         {
-          provide: Store, useValue: {
+          provide: Store,
+          useValue: {
             dispatch: jest.fn(),
             pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
             select: jest.fn()
           }
         },
-        provideMockActions(() => actions),
+        provideMockActions(() => actions)
       ]
     }).compileComponents();
     injector = getTestBed();
@@ -63,17 +59,84 @@ describe('TestResultService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('getTechnicalRecords should return data', (done) => {
+  it('getTestResults should return data', (done) => {
+    const mock = { mockObject: 'mock' };
+    spyOn(store, 'dispatch').and.callThrough();
+
     service.getTestResults('1234567').subscribe((res) => {
       expect(res).toBeDefined();
-      expect(res).toEqual({ mockObject: 'mock' });
+      expect(res).toEqual(mock);
+      done();
+    });
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
+
+    const req = httpMock.expectOne((request) => request.url.includes('/test-results/1234567'));
+    expect(req.request.method).toBe('GET');
+    req.flush(mock);
+  });
+
+  it('updateTestResults should update', (done) => {
+    const mock = { mockObject: 'mock' };
+    spyOn(store, 'dispatch').and.callThrough();
+
+    service.updateTestResults('123', {} as VehicleTestResultUpdate).subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
+
+    const req = httpMock.expectOne((result) => result.url.includes(`/test-results/123`));
+    req.flush(mock);
+  });
+
+  it('getPreparers should return preparers data', (done) => {
+    const mock = { mockObject: 'mock' };
+    spyOn(store, 'dispatch').and.callThrough();
+
+    service.getPreparers().subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
       done();
     });
 
-    const req = httpMock.expectOne(routes.testResults('1234567'));
+    const req = httpMock.expectOne((request) => request.url.includes('/preparers'));
     expect(req.request.method).toBe('GET');
-    req.flush({ mockObject: 'mock' });
+    req.flush(mock);
   });
+
+  it('getTestStations should return test stations data', (done) => {
+    const mock = { mockObject: 'mock' };
+    spyOn(store, 'dispatch').and.callThrough();
+
+    service.getTestStations().subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
+
+    const req = httpMock.expectOne((request) => request.url.includes('/test-stations'));
+    expect(req.request.method).toBe('GET');
+    req.flush(mock);
+  });
+
+  it('getTestResultById should return test result data', (done) => {
+    const mock = { mockObject: 'mock' };
+    spyOn(store, 'dispatch').and.callThrough();
+
+    service.getTestResultById('111', '222').subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
+
+    const req = httpMock.expectOne((request) => request.url.includes('/test-results/111?testResultId=222&version=all'));
+    expect(req.request.method).toBe('GET');
+    req.flush(mock);
+  });
+
 
   afterAll(() => {
     TestBed.resetTestingModule();

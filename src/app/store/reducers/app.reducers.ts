@@ -6,11 +6,13 @@ import { VehicleTechRecordModelReducers } from './VehicleTechRecordModel.reducer
 import { VehicleTestResultModelReducers } from './VehicleTestResultModel.reducers';
 import { LoaderReducer } from './Loader.reducers';
 import { ErrorReducer } from './error.reducers';
+import { ReferenceDataReducers } from '@app/store/reducers/ReferenceData.reducers';
 
 export const appReducers: ActionReducerMap<IAppState> = {
   router: routerReducer,
   loader: LoaderReducer,
   vehicleTechRecordModel: VehicleTechRecordModelReducers,
   vehicleTestResultModel: VehicleTestResultModelReducers,
+  referenceData: ReferenceDataReducers,
   error: ErrorReducer
 };
