@@ -2,7 +2,7 @@ import { LoadingActions, ELoadingActions } from './../actions/Loader.actions';
 import { initialLoaderState, ILoaderState } from '../state/Loader.state';
 
 export function LoaderReducer(state = initialLoaderState, action: LoadingActions):
-ILoaderState {
+  ILoaderState {
   switch (action.type) {
     case ELoadingActions.AppIsLoading: {
       return {

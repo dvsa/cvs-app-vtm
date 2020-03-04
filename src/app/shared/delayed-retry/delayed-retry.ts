@@ -1,12 +1,12 @@
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, retryWhen, switchMap } from 'rxjs/operators';
 
-const getErrorMessage = { error: `Unable to load data. Please contact the help desk or refresh the page to try again.`};
+const getErrorMessage = { error: `Unable to load data. Please contact the help desk or refresh the page to try again.` };
 
 const defaultMaxRetry = 3;
 const defaultDelay = 3000;
 
-export function delayedRetry() {
+export function delayedRetry(): ((param: Observable<any>) => Observable<any>) {
   let retries = defaultMaxRetry;
 
   return (source: Observable<any>) => source.pipe(

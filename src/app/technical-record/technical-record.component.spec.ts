@@ -126,4 +126,16 @@ describe('TechnicalRecordComponent', () => {
     TestBed.resetTestingModule();
   });
 
+  describe('canDeactivate', () => {
+    test('return true if component can be deactivated ', () => {
+      expect(component.canDeactivate()).toEqual(true);
+    });
+
+    test('return false if component can not be deactivated', () => {
+      component.isFormDirty = true;
+      
+      expect(component.canDeactivate()).toEqual(false);
+    });
+  });
+
 });
