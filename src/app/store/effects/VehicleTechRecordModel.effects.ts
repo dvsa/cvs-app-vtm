@@ -30,8 +30,7 @@ export class VehicleTechRecordModelEffects {
         this.router.navigate([`/technical-record`]);
       }),
       catchError((error) => {
-        let errorMessage: string;
-        errorMessage = this.getSearchResultError(error, errorMessage);
+        const errorMessage = this.getSearchResultError(error);
 
         this._store.dispatch(new SetErrorMessage([errorMessage]));
         return of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
@@ -95,9 +94,10 @@ export class VehicleTechRecordModelEffects {
   ) {
   }
 
-  private getSearchResultError(error: any, errorMessage: string) {
+  public getSearchResultError(error: any) {
+    let errorMessage: string;
     switch (true) {
-      case error.error === "No resources match the search criteria.":
+      case error.error === 'No resources match the search criteria.':
         errorMessage = VEHICLE_TECH_RECORD_SEARCH_ERRORS.NOT_FOUND;
         break;
       case error.error === 'The provided partial VIN returned more than one match.':

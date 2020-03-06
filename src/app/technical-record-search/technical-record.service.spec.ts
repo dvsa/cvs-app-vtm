@@ -68,6 +68,18 @@ describe('TechnicalRecordService', () => {
     req.flush(mock);
   });
 
+  it('updateTechnicalRecords should update entry', (done) => {
+    const mock = { mockObject: 'mock' };
+    service.updateTechnicalRecords('techRec','1234567').subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+
+    const req = httpMock.expectOne(req => req.url.includes(`/vehicles/1234567`));
+    req.flush(mock);
+  });
+
   describe('uploadDocuments', () => {
     it('should return observable of success mesage when the argument can be transformed into json', (done) => {
       const submitData = { test: 'test' };
@@ -81,7 +93,7 @@ describe('TechnicalRecordService', () => {
     });
   });
 
-  describe('', () => {
+  describe('getDocumentBlob', () => {
     it('should transform the document into a blob file when passed a vin number', (done) => {
       const vin = '123456';
       const fileName = 'test';

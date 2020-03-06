@@ -13,5 +13,5 @@ export function ErrorReducer(state = initialAppState.error, action: ErrorActions
     }
 
     default: return state;
-  };
+  }
 }
