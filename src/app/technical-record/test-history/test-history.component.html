@@ -9,24 +9,26 @@
   </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
-  <tr class="govuk-table__row" *ngFor="let testRes of testResultJson; let i = index">
-    <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
-      {{ (testRes.testTypes[0].testCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (testRes.testTypes[0].testCode | DefaultNullOrEmpty).substr(1).toLowerCase() }}
-    </td>
-    <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-      {{ testRes.testEndTimestamp | DefaultNullOrEmpty }}
-    </td>
-    <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
-      {{ testRes.testExpiryDate | DefaultNullOrEmpty }}
-    </td>
-    <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
-      {{ testRes.testTypes[0].certificateNumber | DefaultNullOrEmpty }}
-    </td>
-    <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
-        [ngStyle]="testRes.testTypes[0].testResult=='pass' ? { color:'#00703C' } : testRes.testTypes[0].testResult=='prs' ? {color: '#1D70B8'} : (testRes.testTypes[0].testResult=='fail' || testRes.testTypes[0].testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
-      {{ (testRes.testTypes[0].testResult | DefaultNullOrEmpty) | uppercase }}
-    </td>
-  </tr>
+  <ng-container *ngFor="let testRes of testResultJson">
+    <tr class="govuk-table__row" *ngFor="let testType of testRes.testTypes; let i = index">
+      <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
+        {{ (testType.testCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (testType.testCode | DefaultNullOrEmpty).substr(1).toLowerCase() }}
+      </td>
+      <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
+        {{ testRes.testEndTimestamp | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
+        {{ testRes.testExpiryDate | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
+        {{ testType.certificateNumber | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
+          [ngStyle]="testType.testResult=='pass' ? { color:'#00703C' } : testType.testResult=='prs' ? {color: '#1D70B8'} : (testType.testResult=='fail' || testType.testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
+        {{ (testType.testResult | DefaultNullOrEmpty) | uppercase }}
+      </td>
+    </tr>
+  </ng-container>
   </tbody>
   <ng-template #noTestHistory>
     <tbody class="govuk-table__body">
