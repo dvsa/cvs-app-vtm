@@ -12,6 +12,7 @@ import { ErrorSummaryComponent } from './error-summary/error-summary.component';
 import { PageNotFoundComponentComponent } from './page-not-found-component/page-not-found-component.component';
 import { PendingChangesService } from './pending-changes-service/pending-changes.service';
 import { PreventLeavePageModalComponent } from './prevent-page-leave-modal/prevent-leave-page-modal.component';
+import {SortByDatePipe} from '@app/pipes/SortByDatePipe';
 
 
 export const PIPES_AND_COMPONENTS = [
@@ -24,6 +25,7 @@ export const PIPES_AND_COMPONENTS = [
   OrderByStatusPipe,
   DefaultNullOrEmpty,
   ErrorSummaryComponent,
+  SortByDatePipe
 ];
 
 @NgModule({

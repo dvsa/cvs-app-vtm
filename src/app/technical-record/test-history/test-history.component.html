@@ -9,10 +9,10 @@
   </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
-  <ng-container *ngFor="let testRes of testResultJson">
-    <tr class="govuk-table__row" *ngFor="let testType of testRes.testTypes; let i = index">
+  <ng-container *ngFor="let testRes of (testResultJson | SortByDatePipe :'testEndTimestamp')">
+    <tr class="govuk-table__row" *ngFor="let testType of (testRes.testTypes | SortByDatePipe :'createdAt'); let i = index">
       <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
-        {{ (testType.testCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (testType.testCode | DefaultNullOrEmpty).substr(1).toLowerCase() }}
+        {{ techRecHelpers.capitalizeWord(testType.testCode | DefaultNullOrEmpty) }}
       </td>
       <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
         {{ testRes.testEndTimestamp | DefaultNullOrEmpty }}

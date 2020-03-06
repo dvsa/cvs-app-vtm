@@ -57,6 +57,10 @@ describe('TechRecordHelpersService', () => {
     expect(service.isEmptyObject({})).toBeTruthy();
   });
 
+  it('should return capitalized word', () => {
+    expect(service.capitalizeWord('test')).toEqual('Test');
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });
