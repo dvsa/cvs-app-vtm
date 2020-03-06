@@ -1,16 +1,16 @@
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
-import { VehicleTechRecordModelReducers } from '@app/store/reducers/VehicleTechRecordModel.reducers';
+import {VehicleTechRecordModel} from '@app/models/vehicle-tech-record.model';
+import {VehicleTechRecordModelReducers} from '@app/store/reducers/VehicleTechRecordModel.reducers';
 import {
   GetVehicleTechRecordModel, GetVehicleTechRecordModelHavingStatusAll, GetVehicleTechRecordModelHavingStatusAllFailure,
   GetVehicleTechRecordModelHavingStatusAllSuccess, GetVehicleTechRecordModelSuccess, SetVehicleTechRecordModelVinOnCreate
 } from '../actions/VehicleTechRecordModel.actions';
-import { initialVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
+import {initialVehicleTechRecordModelState} from '../state/VehicleTechRecordModel.state';
 
 
 describe('VehicleTechRecordModel Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state', () => {
-      const action = { type: 'NOOP' } as any;
+      const action = {type: 'NOOP'} as any;
       const result = VehicleTechRecordModelReducers(undefined, action);
 
       expect(result).toBe(initialVehicleTechRecordModelState);
@@ -19,7 +19,7 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModel', () => {
     it('should toggle loading state', () => {
-      const action = new GetVehicleTechRecordModel({ techRecord: [] });
+      const action = new GetVehicleTechRecordModel({techRecord: []});
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState
@@ -30,6 +30,7 @@ describe('VehicleTechRecordModel Reducer', () => {
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModel Success', () => {
     it('should update the state with the payload', () => {
       const vehicleTechRecord: VehicleTechRecordModel = {
+        systemNumber: '1231243',
         vrms: [
           {
             vrm: '53654645',
@@ -53,7 +54,7 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll', () => {
     it('should toggle loading state', () => {
-      const action = new GetVehicleTechRecordModelHavingStatusAll({ techRecord: [] });
+      const action = new GetVehicleTechRecordModelHavingStatusAll({techRecord: []});
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState
@@ -64,6 +65,7 @@ describe('VehicleTechRecordModel Reducer', () => {
   describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success', () => {
     it('should update the state with the payload', () => {
       const vehicleTechRecord: VehicleTechRecordModel = {
+        systemNumber: '1231243',
         vrms: [
           {
             vrm: '53654645',
@@ -98,12 +100,11 @@ describe('VehicleTechRecordModel Reducer', () => {
 
   describe('[SetVehicleTechRecordModelVinOnCreate] SetVehicleTechRecordModelVinOnCreate', () => {
     it('should update state with first tech record creating details', () => {
-      const action = new SetVehicleTechRecordModelVinOnCreate({ vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] });
+      const action = new SetVehicleTechRecordModelVinOnCreate({vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: []});
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState,
-        initialDetails: { vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] }
-        
+        initialDetails: {vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: []}
       });
     });
   });

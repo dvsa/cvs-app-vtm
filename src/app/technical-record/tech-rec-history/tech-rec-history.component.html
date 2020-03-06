@@ -11,7 +11,7 @@
   </thead>
   <tbody class="govuk-table__body">
   <tr class="govuk-table__row"
-      *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index">
+      *ngFor="let techRec of techRecordsJson[0].techRecord | OrderByStatusPipe; let i = index">
     <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
       {{  (techRec.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() + (techRec.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()}}
     </td>

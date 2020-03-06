@@ -7,12 +7,16 @@ export class TechRecordHelpersService {
 
   constructor() { }
 
-  public isNullOrEmpty(str) {
+  isNullOrEmpty(str) {
     return (typeof str === 'string' || str == null) ? !str || !str.trim() : false;
   }
 
-  public isEmptyObject(obj) {
+  isEmptyObject(obj) {
     return (obj && (Object.keys(obj).length === 0));
+  }
+
+  capitalizeWord(word: string) {
+    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
   }
 
 }
