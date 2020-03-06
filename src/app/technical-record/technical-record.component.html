@@ -1,5 +1,5 @@
 <div *ngIf="(techRecordsJson$ | async) as techRecordsJson; else loading">
-  <div *ngIf="(techRecordsJson.techRecord | FilterRecord) as activeRecord ">
+  <div *ngIf="(techRecordsJson[0].techRecord | FilterRecord) as activeRecord ">
     <div *ngIf="activeRecord.vehicleType =='hgv' || activeRecord.vehicleType =='trl'  else ifPSV">
       <div class="govuk-width-container left-pad">
         <main class="govuk-main-wrapper">
@@ -53,8 +53,8 @@
               Vehicle registration mark (VRM)
             </dt>
             <dd id="test-vrm" class="govuk-summary-list__value">
-              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson.vrms) else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: true">
+              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson[0].vrms) else hyphen">
+                <ul *ngFor="let vrmItem of techRecordsJson[0].vrms | IsPrimaryVrm: true">
                   {{vrmItem.vrm}}
                 </ul>
               </div>
@@ -66,8 +66,8 @@
               Previous VRM
             </dt>
             <dd id="test-secondaryVrms" class="govuk-summary-list__value">
-              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson.vrms) && hasSecondaryVrms(techRecordsJson.vrms); else hyphen">
-                <ul *ngFor="let vrmItem of techRecordsJson.vrms | IsPrimaryVrm: false; let i = index">
+              <div *ngIf="!techRecHelpers.isEmptyObject(techRecordsJson[0].vrms) && hasSecondaryVrms(techRecordsJson[0].vrms); else hyphen">
+                <ul *ngFor="let vrmItem of techRecordsJson[0].vrms | IsPrimaryVrm: false; let i = index">
                   <span id="{{ 'test-vrm-' + i }}">{{vrmItem.vrm}}</span>
                 </ul>
               </div>

@@ -22,6 +22,7 @@ import { IAppState } from '@app/store/state/app.state';
 import { VEHICLE_TECH_RECORD_SEARCH_ERRORS } from '@app/app.enums';
 
 const techRecordModel: VehicleTechRecordModel = {
+  systemNumber: '1231243',
   vrms: null,
   vin: 'ABCDEFGH777777',
   techRecord: [],

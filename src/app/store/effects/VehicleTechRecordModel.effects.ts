@@ -25,7 +25,7 @@ export class VehicleTechRecordModelEffects {
     switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(searchIdentifier).pipe(
       switchMap((techRecordJson: any) => of(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordJson))),
       tap((_) => {
-        this._store.dispatch(new GetVehicleTestResultModel(_.payload.vin));
+        this._store.dispatch(new GetVehicleTestResultModel(_.payload[0].systemNumber));
         this._store.dispatch(new ClearErrorMessage());
         this.router.navigate([`/technical-record`]);
       }),
