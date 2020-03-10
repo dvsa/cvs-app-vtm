@@ -6,7 +6,7 @@ export class SortByDatePipe implements PipeTransform {
 
   transform(testResultList: any, sortBy: any): any {
     if (testResultList) {
-      return testResultList.sort((a, b) => new Date(a[sortBy]).getTime() - new Date(b[sortBy]).getTime());
+      return testResultList.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
     }
   }
 
