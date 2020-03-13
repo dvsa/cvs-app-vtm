@@ -17,8 +17,8 @@ describe('route selector', () => {
   describe('selectSearchPageError', () => {
 
     it('should get router info using reducer state', () => {
-      const reducerState = selectReducerState({ 'router': 'test', 'state': 'test'});
-      expect(reducerState).toEqual('test');
+      const reducerState = { 'router': 'test', 'state': undefined};
+      expect(getRouterInfo(reducerState)).toEqual(undefined);
     });
 
   });

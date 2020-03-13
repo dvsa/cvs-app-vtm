@@ -58,7 +58,7 @@ describe('TechnicalRecordService', () => {
 
   it('getTechnicalRecordsAllStatuses should return data', (done) => {
     const mock = { mockObject: 'mock' };
-    service.getTechnicalRecordsAllStatuses('1234567').subscribe((res) => {
+    service.getTechnicalRecordsAllStatuses('1234567', 'vin').subscribe((res) => {
       expect(res).toBeDefined();
       expect(res).toEqual(mock);
       done();

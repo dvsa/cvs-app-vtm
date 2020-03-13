@@ -46,6 +46,15 @@ describe('adrDetailsReducer', () => {
       expect(result.additionalNotesOptions.length).toBe(1);
       expect(result.additionalNotesOptions[0]).toBe('12');
     });
+
+    test('CreateProductListUnNoElementAction', () => {
+      const action: Action = new AdrDetailsActions.CreateProductListUnNoElementAction('test', 'test');
+      const result = adrDetailsReducer(adrDetailsState, action);
+
+      expect(result.productListUnNo).toBeDefined();
+      expect(result.productListUnNo).toEqual({'maxIndex': 2, 'options': [23, 123, 411]});
+    });
+
   });
 
   describe('tc3Type', () => {
@@ -88,7 +97,7 @@ describe('adrDetailsReducer', () => {
 
       expect(result.productListUnNo.maxIndex).toBe(3);
       expect(result.productListUnNo.options.length).toBe(4);
-      
+
     });
 
     test('RemoveArrayControlAction', () => {
@@ -107,7 +116,7 @@ describe('adrDetailsReducer', () => {
 
       expect(result.tankDocuments.maxIndex).toBe(524);
       expect(result.tankDocuments.options.length).toBe(3);
-      
+
     });
 
     test('RemoveTankDocumentAction', () => {

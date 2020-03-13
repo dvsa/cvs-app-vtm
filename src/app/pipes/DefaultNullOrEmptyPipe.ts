@@ -8,22 +8,23 @@ export class DefaultNullOrEmpty implements PipeTransform {
     switch (typeof value) {
       case 'string':
         if (value.trim().length > 0) {
-
-          if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value)) {
+          if (/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(value) || /(\d{4})-(\d{2})-(\d{2})/.test(value)) {
+            const checkDate = new Date(value);
+            if (checkDate.toISOString() === value) {
+              return checkDate.getDate() + '/' +  ('0' + (checkDate.getMonth() + 1)).slice(-2) + '/' + checkDate.getFullYear();
+            } else {
+              const dateArray = value.split('-');
+              return dateArray[2] + '/' + dateArray[1] + '/' + dateArray[0];
+            }
+          } else {
             return value;
           }
-          const checkDate = new Date(value);
-
-          if (checkDate.toISOString() === value) {
-            return checkDate.getDate() + '/' + checkDate.getMonth() + '/' + checkDate.getFullYear();
-          }
-
         } else {
           return '-';
         }
         break;
       case 'boolean':
-        return (value == null) ? '-' : (value ? 'Yes' : 'No');
+        return value ? 'YES' : 'NO';
         break;
       default:
         return (value == null) ? '-' : value;

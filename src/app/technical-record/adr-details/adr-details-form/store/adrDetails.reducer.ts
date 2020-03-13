@@ -88,11 +88,8 @@ const reducers = combineReducers<IAppState['adrDetails'], any>({
 
       case CreateProductListUnNoElementAction.TYPE:
         return updateGroup<adrDetailsFormModel>({
-          productListUnNo: group => {
-            const newValue = { ...group.value };
-            delete newValue[a.name];
-
-            return setValue(group, newValue);
+          additionalNotes: group => {
+            return addGroupControl(group, a.name, true);
           },
         })(s);
 

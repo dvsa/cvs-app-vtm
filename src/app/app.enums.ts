@@ -4,6 +4,14 @@ export enum VEHICLE_TYPES {
   TRL = 'trl'
 }
 
+export enum SEARCH_CRITERIA {
+  ALL_CRITERIA = 'Vehicle registration mark, trailer ID or vehicle identification number',
+  VRM_CRITERIA = 'Vehicle registration mark (VRM)',
+  FULL_VIN_CRITERIA = 'Full vehicle identification number (VIN)',
+  PARTIAL_VIN_CRITERIA = 'Partial VIN (last 6 characters)',
+  TRL_CRITERIA = 'Trailer ID'
+}
+
 export enum CREATE_PAGE_LABELS {
   CREATE_VRM_LABEL = 'Vehicle registration mark (VRM)',
   CREATE_VRM_LABEL_OPTIONAL = 'Vehicle registration mark (VRM - optional)',

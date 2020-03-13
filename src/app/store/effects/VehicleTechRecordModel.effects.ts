@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@ngrx/effects';
 import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModelHavingStatusAll,
@@ -7,22 +7,23 @@ import {
   GetVehicleTechRecordModelHavingStatusAllFailure, SetVehicleTechRecordModelVinOnCreate, SetVehicleTechRecordModelVinOnCreateSucess
 
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { Store } from '@ngrx/store';
-import { map, switchMap, tap, catchError } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
-import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
-import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
-import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
-import { SetErrorMessage, ClearErrorMessage } from '../actions/Error.actions';
-import { VEHICLE_TECH_RECORD_SEARCH_ERRORS } from '@app/app.enums';
+import {Store} from '@ngrx/store';
+import {map, switchMap, tap, catchError} from 'rxjs/operators';
+import {forkJoin, Observable, of} from 'rxjs';
+import {Router} from '@angular/router';
+import {GetVehicleTestResultModel} from '../actions/VehicleTestResultModel.actions';
+import {TechnicalRecordService} from '@app/technical-record-search/technical-record.service';
+import {IVehicleTechRecordModelState} from '../state/VehicleTechRecordModel.state';
+import {SetErrorMessage, ClearErrorMessage} from '../actions/Error.actions';
+import {VEHICLE_TECH_RECORD_SEARCH_ERRORS} from '@app/app.enums';
+
 @Injectable()
 export class VehicleTechRecordModelEffects {
   @Effect()
   getTechnicalRecords$ = this._actions$.pipe(
     ofType<GetVehicleTechRecordModelHavingStatusAll>(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll),
     map(action => action.payload),
-    switchMap((searchIdentifier: string) => this._technicalRecordService.getTechnicalRecordsAllStatuses(searchIdentifier).pipe(
+    switchMap((payload) => this._technicalRecordService.getTechnicalRecordsAllStatuses(payload[0], payload[1]).pipe(
       switchMap((techRecordJson: any) => of(new GetVehicleTechRecordModelHavingStatusAllSuccess(techRecordJson))),
       tap((_) => {
         this._store.dispatch(new GetVehicleTestResultModel(_.payload[0].systemNumber));
@@ -30,14 +31,14 @@ export class VehicleTechRecordModelEffects {
         this.router.navigate([`/technical-record`]);
       }),
       catchError((error) => {
-        const errorMessage = this.getSearchResultError(error);
+          const errorMessage = this.getSearchResultError(error);
 
-        this._store.dispatch(new SetErrorMessage([errorMessage]));
-        return of(new GetVehicleTechRecordModelHavingStatusAllFailure(error))
-      }
+          this._store.dispatch(new SetErrorMessage([errorMessage]));
+          return of(new GetVehicleTechRecordModelHavingStatusAllFailure(error));
+        }
       ))));
 
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   setVinOnCreate$ = this._actions$.pipe(
     ofType<SetVehicleTechRecordModelVinOnCreate>(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate),
     map(action => action.payload),
@@ -47,12 +48,10 @@ export class VehicleTechRecordModelEffects {
 
       if (payload.vType === 'PSV' || payload.vType === 'HGV') {
         requests.push(
-          this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin).
-            pipe(catchError(error => of(undefined)))
+          this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin, 'all').pipe(catchError(error => of(undefined)))
         );
         requests.push(
-          this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vrm).
-            pipe(catchError(error => of(undefined)))
+          this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vrm, 'all').pipe(catchError(error => of(undefined)))
         );
 
         forkJoin(requests).subscribe(result => {
@@ -66,14 +65,24 @@ export class VehicleTechRecordModelEffects {
             this.router.navigate([`/technical-record`]);
           }
           requests.length = 0;
-          this._store.dispatch(new SetVehicleTechRecordModelVinOnCreateSucess({ vin: payload.vin, vrm: payload.vrm, vType: payload.vType, error: requestErrors }));
+          this._store.dispatch(new SetVehicleTechRecordModelVinOnCreateSucess({
+            vin: payload.vin,
+            vrm: payload.vrm,
+            vType: payload.vType,
+            error: requestErrors
+          }));
         });
 
       } else if (payload.vType === 'Trailer') {
-        this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin).subscribe(
+        this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin, 'all').subscribe(
           result => {
             requestErrors.push('A technical record with this VIN already exists, check the VIN or change the existing technical record');
-            this._store.dispatch(new SetVehicleTechRecordModelVinOnCreateSucess({ vin: payload.vin, vrm: payload.vrm, vType: payload.vType, error: requestErrors }));
+            this._store.dispatch(new SetVehicleTechRecordModelVinOnCreateSucess({
+              vin: payload.vin,
+              vrm: payload.vrm,
+              vType: payload.vType,
+              error: requestErrors
+            }));
           },
           error => {
             this.router.navigate([`/technical-record`]);
@@ -106,7 +115,8 @@ export class VehicleTechRecordModelEffects {
       case error.error.error !== undefined:
         errorMessage = VEHICLE_TECH_RECORD_SEARCH_ERRORS.NO_INPUT;
         break;
-      default: errorMessage = error.error;
+      default:
+        errorMessage = error.error;
     }
     return errorMessage;
   }

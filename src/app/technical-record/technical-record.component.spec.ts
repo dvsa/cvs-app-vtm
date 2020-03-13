@@ -60,6 +60,7 @@ describe('TechnicalRecordComponent', () => {
     injector = getTestBed();
     dialog = injector.get(MatDialog);
     component = fixture.componentInstance;
+    component.isFormDirty = false;
     fixture.detectChanges();
   });
 
@@ -71,6 +72,8 @@ describe('TechnicalRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.isFormDirty).toBeFalsy();
+    expect(component.canDeactivate()).toBe(true);
   });
 
   it('should toggle panel open state', () => {
