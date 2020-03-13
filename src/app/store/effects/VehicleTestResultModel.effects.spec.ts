@@ -15,34 +15,7 @@ import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResul
 import {TestResultService} from '@app/technical-record-search/test-result.service';
 import {TestResultModel} from '@app/models/test-result.model';
 
-const testResult: TestResultModel = {
-  testerStaffId: '1234',
-  testStartTimestamp: new Date('2019-01-14T10:36:33.987Z'),
-  odometerReadingUnits: 'string',
-  testEndTimestamp: new Date('2019-01-14T10:36:33.987Z'),
-  testStatus: 'string',
-  testTypes: [],
-  vehicleClass: null,
-  vin: '1234',
-  vehicleSize: 'string',
-  testStationName: 'string',
-  vehicleId: '3121',
-  noOfAxles: 2,
-  vehicleType: 'string',
-  countryOfRegistration: 'string',
-  preparerId: '2332',
-  preparerName: 'string',
-  odometerReading: 232,
-  vehicleConfiguration: 'string',
-  testStationType: 'string',
-  reasonForCancellation: 'string',
-  testerName: 'Dorel',
-  vrm: '234234',
-  testStationPNumber: 'string',
-  numberOfSeats: 32,
-  testerEmailAddress: 'string',
-  euVehicleCategory: 'string'
-};
+const testResult = {} as TestResultModel;
 
 describe('VehicleTechRecordModelEffects', () => {
   let actions: Observable<any>;
