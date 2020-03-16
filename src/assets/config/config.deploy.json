@@ -18,7 +18,7 @@
     "clientId": "#{aadClientId}",
     "tenant": "#{aadTenant}",
     "cacheLocation": "localStorage",
-    "redirectUri": "https://vtm.nonprod.cvs.dvsacloud.uk/cvsb-9213/index.html",
+    "redirectUri": "",
     "endpoints": {
       "api": "xxx-bae6-4760-b434-xxx"
     }
