@@ -63,3 +63,4 @@ export class TechnicalRecordGuard implements CanActivate {
     );
   }
 }
+
