@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import { LogoutModalComponent } from './logout-modal/logout-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'vtm-header',
@@ -9,7 +11,8 @@ import {MsAdalAngular6Service} from 'microsoft-adal-angular6';
 export class HeaderComponent implements OnInit {
   userName: string;
   menuOpen = false;
-  constructor(private adal: MsAdalAngular6Service) {
+  constructor(private adal: MsAdalAngular6Service,
+    private dialog: MatDialog, ) {
   }
 
   ngOnInit() {
@@ -22,7 +25,15 @@ export class HeaderComponent implements OnInit {
 
   logOut() {
     if (this.adal.isAuthenticated) {
-      this.adal.logout();
+      const dialogRef = this.dialog.open(LogoutModalComponent, {
+        width: '600px',
+        disableClose: true,
+      });
+      return dialogRef.afterClosed().subscribe(res => {
+        if (res) {
+          this.adal.logout();
+        }
+      });
     } else {
       return false;
     }
