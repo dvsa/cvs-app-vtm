@@ -1,26 +1,19 @@
-import { async, ComponentFixture, getTestBed, inject, TestBed } from '@angular/core/testing';
-
-import { HeaderComponent } from './header.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { MatDialogModule } from '@angular/material/dialog';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '../../material.module';
-import { SharedModule } from '../../shared/shared.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Store } from '@ngrx/store';
-import { AuthenticationGuard, MsAdalAngular6Module, MsAdalAngular6Service } from 'microsoft-adal-angular6';
-import { APP_BASE_HREF } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AuthenticationGuardMock } from '../../../../testconfig/services-mocks/authentication-guard.mock';
-import { Subject } from 'rxjs';
+import { ComponentFixture, getTestBed, inject, TestBed } from '@angular/core/testing';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MsAdalAngular6Module, MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import { of } from 'rxjs';
+import { MaterialModule } from '../../material.module';
+import { HeaderComponent } from './header.component';
+
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
-  let httpMock: HttpTestingController;
   let injector: TestBed;
   let fixture: ComponentFixture<HeaderComponent>;
-  const authenticationGuardMock = new AuthenticationGuardMock();
-  const unsubscribe = new Subject<void>();
+  let dialog: MatDialog;
   let adal: MsAdalAngular6Service;
 
   beforeEach((() => {
@@ -29,10 +22,8 @@ describe('HeaderComponent', () => {
       imports: [
         HttpClientTestingModule,
         MatDialogModule,
-        BrowserAnimationsModule,
         MaterialModule,
-        SharedModule,
-        RouterTestingModule,
+        BrowserAnimationsModule,
         MsAdalAngular6Module.forRoot({
           tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
           clientId: '11x111x1-1xx1-1111-1x11-x1xx111x11x1',
@@ -45,16 +36,6 @@ describe('HeaderComponent', () => {
         })
       ],
       providers: [
-        {
-          provide: Store,
-          useValue: {
-            dispatch: jest.fn(),
-            pipe: jest.fn(),
-            select: jest.fn()
-          }
-        },
-        { provide: AuthenticationGuard, useValue: authenticationGuardMock },
-        { provide: APP_BASE_HREF, useValue: '/' },
         {
           provide: MsAdalAngular6Service,
           useValue: {
@@ -72,16 +53,10 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     injector = getTestBed();
-    httpMock = injector.get(HttpTestingController);
     component = fixture.componentInstance;
+    dialog = injector.get(MatDialog);
     component.menuOpen = false;
     fixture.detectChanges();
-  });
-
-  afterEach(() => {
-    fixture.destroy();
-    unsubscribe.next();
-    unsubscribe.complete();
   });
 
   it('should create', inject([HttpTestingController, MsAdalAngular6Service], () => {
@@ -104,16 +79,21 @@ describe('HeaderComponent', () => {
     expect(component.menuOpen).toBeTruthy();
   });
 
-  it('should check if user authenticated', () => {
-    expect(component.logOut()).toBeFalsy();
-  });
-
   describe('logout', () => {
     test('should lougout if user is authenticated', () => {
       adal = injector.get(MsAdalAngular6Service);
       spyOn(adal, 'logout');
+      spyOn(dialog, 'open').and.returnValue({afterClosed: () => of(true)});
       component.logOut();
       expect(adal.logout).toHaveBeenCalled();
+    });
+
+    test('should not logout if user presses no on modal', () => {
+      adal = injector.get(MsAdalAngular6Service);
+      spyOn(adal, 'logout');
+      spyOn(dialog, 'open').and.returnValue({afterClosed: () => of(false)});
+      component.logOut();
+      expect(adal.logout).not.toHaveBeenCalled();
     });
   });
 });
