@@ -11,22 +11,22 @@
   </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
-  <ng-container *ngFor="let testRes of (testResultJson | SortByDatePipe :'testEndTimestamp')">
-    <tr class="govuk-table__row" *ngFor="let testType of (testRes.testTypes | SortByDatePipe :'createdAt'); let i = index">
-      <td id="{{ 'test-testCode-' + i }}" class="govuk-table__cell">
+  <ng-container *ngFor="let testRes of (testResultJson | SortByDatePipe :'testEndTimestamp'); let i = index">
+    <tr class="govuk-table__row" *ngFor="let testType of (testRes.testTypes | SortByDatePipe :'testTypeEndTimestamp'); let ii = index">
+      <td id="{{ 'test-testCode-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
         {{ techRecHelpers.capitalizeWord(testType.testCode | DefaultNullOrEmpty) }}
       </td>
-      <td id="{{ 'test-testEndTimestamp-' + i }}" class="govuk-table__cell">
-        {{ testRes.testEndTimestamp | DefaultNullOrEmpty }}
+      <td id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+        {{ testType.testTypeEndTimestamp | DefaultNullOrEmpty }}
       </td>
-      <td id="{{ 'test-expiryDate-' + i }}" class="govuk-table__cell">
+      <td id="{{ 'test-expiryDate-tRes-' + i + '-tType-' + ii}}" class="govuk-table__cell">
         {{ testRes.testExpiryDate | DefaultNullOrEmpty }}
       </td>
-      <td id="{{ 'test-certificateNumber-' + i }}" class="govuk-table__cell">
+      <td id="{{ 'test-certificateNumber-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
         {{ testType.certificateNumber | DefaultNullOrEmpty }}
       </td>
-      <td id="{{ 'test-testResult-' + i }}" class="govuk-table__cell govuk-!-font-weight-bold"
-          [ngStyle]="testType.testResult=='pass' ? { color:'#00703C' } : testType.testResult=='prs' ? {color: '#1D70B8'} : (testType.testResult=='fail' || testType.testResult=='abandoned') ? {color: '#D4351C'} : {color: ''}">
+      <td id="{{ 'test-testResult-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell govuk-!-font-weight-bold"
+          [ngStyle]="setResultColor(testType.testResult)">
         {{ (testType.testResult | DefaultNullOrEmpty) | uppercase }}
       </td>
       <td id="{{ 'test-testerName-' + i }}" class="govuk-table__cell">
