@@ -1,12 +1,14 @@
 <table class="govuk-table t-history">
   <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Test type</th>
-      <th scope="col" class="govuk-table__header">Test date</th>
-      <th scope="col" class="govuk-table__header">Expiry date</th>
-      <th scope="col" class="govuk-table__header">Certificate number</th>
-      <th scope="col" class="govuk-table__header">Result</th>
-    </tr>
+  <tr class="govuk-table__row">
+    <th scope="col" class="govuk-table__header">Test type</th>
+    <th scope="col" class="govuk-table__header">Test date</th>
+    <th scope="col" class="govuk-table__header">Expiry date</th>
+    <th scope="col" class="govuk-table__header">Certificate number</th>
+    <th scope="col" class="govuk-table__header">Result</th>
+    <th scope="col" class="govuk-table__header">Tester name</th>
+    <th scope="col" class="govuk-table__header"> </th>
+  </tr>
   </thead>
   <tbody class="govuk-table__body" *ngIf="testResultJson; else noTestHistory">
   <ng-container *ngFor="let testRes of (testResultJson | SortByDatePipe :'testEndTimestamp'); let i = index">
@@ -27,12 +29,20 @@
           [ngStyle]="setResultColor(testType.testResult)">
         {{ (testType.testResult | DefaultNullOrEmpty) | uppercase }}
       </td>
+      <td id="{{ 'test-testerName-' + i }}" class="govuk-table__cell">
+        {{ testRes.testerName | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-view-' + i }}" class="govuk-table__cell">
+        <a class="govuk-link" id="{{'test-view-'+ testType.testNumber}}" [routerLink]="['/test-record', testType.testNumber]">View</a>
+      </td>
     </tr>
   </ng-container>
   </tbody>
   <ng-template #noTestHistory>
     <tbody class="govuk-table__body">
     <tr>
+      <td>-</td>
+      <td>-</td>
       <td>-</td>
       <td>-</td>
       <td>-</td>
