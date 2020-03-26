@@ -9,6 +9,7 @@ exports[`CertificateEditComponent should create with initialized form controls 1
   options={[Function Object]}
   parent={[Function FormGroupDirective]}
   removeAdrControl={[Function EventEmitter]}
+  validationMapper={[Function ValidationMapper]}
 >
   <div
     class="govuk-grid-row"

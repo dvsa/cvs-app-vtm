@@ -8,6 +8,7 @@ exports[`AdditionalAdrDetailEditComponent should create with initialized form co
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
   removeAdrControl={[Function EventEmitter]}
+  validationMapper={[Function ValidationMapper]}
 >
   <div
     class="govuk-grid-row"

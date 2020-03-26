@@ -1,16 +1,24 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, OnInit, Output} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
-import {AdrReasonModalComponent} from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
+import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
 
-import {TechnicalRecordValuesMapper} from './technical-record.mapper';
-import {TechRecord} from './../models/tech-record.model';
-import {MetaData} from '@app/models/meta-data';
-import {VehicleTechRecordModel} from '@app/models/vehicle-tech-record.model';
-import {TestResultModel} from '@app/models/test-result.model';
-import {VIEW_STATE} from '@app/app.enums';
+import { TechnicalRecordValuesMapper } from './technical-record.mapper';
+import { TechRecord } from './../models/tech-record.model';
+import { MetaData } from '@app/models/meta-data';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { TestResultModel } from '@app/models/test-result.model';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -22,7 +30,6 @@ export class TechnicalRecordComponent implements OnInit {
   @HostBinding('@.disabled')
   animationsDisabled = true;
 
-  // editRecord: boolean;
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
   techRecord: FormGroup;
@@ -93,7 +100,7 @@ export class TechnicalRecordComponent implements OnInit {
 
   onSaveChanges({ valid }: { valid: boolean }) {
     if (valid) {
-      const editedRecord: TechRecord = this.allowedValues.mapToAllowedValues(
+      const editedRecord: TechRecord = this.allowedValues.mapControlValuesToDataValues(
         this.techRecord.getRawValue()
       );
       const mergedRecord: TechRecord = { ...this.activeRecord, ...editedRecord };

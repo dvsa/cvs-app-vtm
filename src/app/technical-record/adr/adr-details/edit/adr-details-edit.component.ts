@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
-import { tap, takeUntil } from 'rxjs/operators';
+import { FormGroup, FormArray, Validators } from '@angular/forms';
+import { tap, takeUntil, debounceTime } from 'rxjs/operators';
 
 import { AdrComponent } from '@app/technical-record/adr/adr.component';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
@@ -96,14 +96,16 @@ export class AdrDetailsEditComponent extends AdrComponent implements OnInit {
     this.adrForm.addControl(
       'vehicleDetails',
       this.fb.group({
-        type: this.fb.control(this.vehicleTypeDefault),
-        approvalDate: this.fb.control(this.approvalDate)
+        type: this.fb.control(this.vehicleTypeDefault, [Validators.required]),
+        approvalDate: this.fb.control(this.approvalDate, [Validators.required])
       })
     );
 
     this.adrForm.addControl(
       'permittedDangerousGoods',
-      this.mapToCheckBoxArrayGroup(this.permittedDangerousGoodsOptions)
+      this.fb.array(this.mapToFormGroup(this.permittedDangerousGoodsOptions), [
+        Validators.required
+      ])
     );
 
     this.adrForm.addControl(
@@ -119,20 +121,18 @@ export class AdrDetailsEditComponent extends AdrComponent implements OnInit {
     this.adrForm.addControl(
       'additionalNotes',
       this.fb.group({
-        number: this.mapToCheckBoxArrayGroup(this.guidanceNotesOptions)
+        number: this.fb.array(this.mapToFormGroup(this.guidanceNotesOptions))
       })
     );
   }
 
-  mapToCheckBoxArrayGroup(options: SelectOption[]): FormArray {
-    return this.fb.array(
-      options.map((option) => {
-        return this.fb.group({
-          name: option.name,
-          selected: option.selected
-        });
-      })
-    );
+  mapToFormGroup(options: SelectOption[]): FormGroup[] {
+    return options.map((option) => {
+      return this.fb.group({
+        name: option.name,
+        selected: option.selected
+      });
+    });
   }
 
   hasGoodsWithCompatibilityGroupJ(goodsOptions: SelectOption[]): boolean {
@@ -146,6 +146,16 @@ export class AdrDetailsEditComponent extends AdrComponent implements OnInit {
   }
 
   handleFormChanges() {
+    this.vehicleDetails
+      .get('type')
+      .valueChanges.pipe(
+        debounceTime(1000),
+        tap((value) => {
+          super.vehicleTypeChangedHandler(value);
+        })
+      )
+      .subscribe();
+
     this.permittedDangerousGoods.valueChanges
       .pipe(
         tap((items: SelectOption[]) => {

@@ -10,18 +10,19 @@ import { DocumentMetaData } from '../models/document-meta-data';
 export class TechnicalRecordValuesMapper {
   constructor() {}
 
-  mapToAllowedValues(techRecord: TechRecord): TechRecord {
+  mapControlValuesToDataValues(techRecord: TechRecord): TechRecord {
     techRecord.statusCode = undefined;
     techRecord.adrDetails = this.mapToAdrAllowedValues(techRecord);
 
     return techRecord;
   }
 
-  mapToAdrAllowedValues({ adrDetails }: { adrDetails?: AdrDetails }): AdrDetails {
+  private mapToAdrAllowedValues({ adrDetails }: { adrDetails?: AdrDetails }): AdrDetails {
     if (!adrDetails) {
       return null;
     }
 
+    // adr-details component
     const modelDangerousGoods: SelectOption[] = adrDetails.permittedDangerousGoods as any[];
     adrDetails.permittedDangerousGoods = this.getSelectedOptions(modelDangerousGoods);
 
@@ -31,6 +32,11 @@ export class TechnicalRecordValuesMapper {
     const noteRequested: boolean = adrDetails.additionalNotes.guidanceNotes as any;
     adrDetails.additionalNotes.guidanceNotes = noteRequested ? [NOTES.GUIDANCENOTE] : [];
 
+    // tank-details component
+    const { tankStatement } = adrDetails.tank;
+    const { substanceReferenceSelect: _, ...tankStmt } = tankStatement as any;
+    adrDetails.tank.tankStatement = tankStmt;
+
     const substancePermitted =
       adrDetails.tank.tankStatement.substancesPermitted === SUBSTANCES.CLASSNUMBER
         ? SUBSTANCES.CLASSNUMBER_TEXT
@@ -39,20 +45,18 @@ export class TechnicalRecordValuesMapper {
         : '';
     adrDetails.tank.tankStatement.substancesPermitted = substancePermitted;
 
+    // memo component
     const memoApplied: boolean = adrDetails.memosApply as any;
     adrDetails.memosApply = memoApplied ? [MEMOS.MEMOSAPPLY] : [];
 
+    // tank-document component
     const documentMetaData: DocumentMetaData[] = adrDetails.documents as any[];
     adrDetails.documents = documentMetaData.map((doc) => doc.metaName);
-
-    const { tankStatement } = adrDetails.tank;
-    const { substanceReferenceSelect: _, ...tankStmt } = tankStatement as any;
-    adrDetails.tank.tankStatement = tankStmt;
 
     return adrDetails;
   }
 
-  getSelectedOptions(options: SelectOption[]): string[] {
+  private getSelectedOptions(options: SelectOption[]): string[] {
     return options
       .filter((option: SelectOption) => option.selected)
       .map((option: SelectOption) => option.name);

@@ -12,6 +12,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
   substanceProductSelect={[Function String]}
   substanceStatementSelect={[Function String]}
   tank={[Function Object]}
+  validationMapper={[Function ValidationMapper]}
 >
   <div
     class="govuk-grid-row"

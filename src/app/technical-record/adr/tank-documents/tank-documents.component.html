@@ -5,6 +5,7 @@
 
       <table class="govuk-table">
         <tbody class="govuk-table__body">
+        <ng-container *ngIf="documents; else noDoc">
           <ng-container *ngIf="documents.controls.length; else noDoc">
             <ng-container
               *ngFor="let metaData of documents.controls; let i = index"
@@ -31,6 +32,7 @@
               </tr>
             </ng-container>
           </ng-container>
+        </ng-container>
 
           <div class="govuk-!-margin-top-3 file-input" *ngIf="edit">
             <label

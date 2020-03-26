@@ -9,6 +9,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
   parent={[Function FormGroupDirective]}
   removeAdrControl={[Function EventEmitter]}
   tankDetailsData={[Function Object]}
+  validationMapper={[Function ValidationMapper]}
 >
   <div
     class="govuk-grid-row"

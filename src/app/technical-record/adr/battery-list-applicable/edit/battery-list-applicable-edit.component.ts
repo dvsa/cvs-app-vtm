@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AdrComponent } from '@app/technical-record/adr/adr.component';
 import { AdrDetails } from '@app/models/adr-details';
@@ -38,8 +38,13 @@ export class BatteryListApplicableEditComponent extends AdrComponent implements 
       .get('listStatementApplicable')
       .valueChanges.pipe(
         tap((value) => {
+          const batteryListCtrl = this.adrForm.get('batteryListNumber') as FormControl;
+
           if (!value) {
-            this.adrForm.get('batteryListNumber').reset();
+            batteryListCtrl.reset();
+            batteryListCtrl.clearValidators();
+          } else {
+            batteryListCtrl.setValidators([Validators.required]);
           }
         }),
         takeUntil(this.onDestroy$)

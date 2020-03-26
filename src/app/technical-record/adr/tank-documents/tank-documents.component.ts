@@ -15,6 +15,7 @@ import { TechnicalRecordService } from '@app/technical-record-search/technical-r
 import { DocumentMetaData, DocumentInfo } from '@app/models/document-meta-data';
 import { AdrComponent } from '../adr.component';
 import { UUID_REGEX } from '../adr.constants';
+import { ValidationMapper } from '../adr-validation.mapper';
 
 @Component({
   selector: 'vtm-tank-documents',
@@ -28,8 +29,6 @@ export class TankDocumentsComponent extends AdrComponent implements OnChanges, O
   @Input() edit: boolean;
   @Input() documentNames: string[];
 
-  selectedFile: File;
-
   get documents() {
     return this.adrForm.get('documents') as FormArray;
   }
@@ -37,10 +36,11 @@ export class TankDocumentsComponent extends AdrComponent implements OnChanges, O
   constructor(
     protected fdg: FormGroupDirective,
     protected fb: FormBuilder,
+    protected vm: ValidationMapper,
     private ref: ChangeDetectorRef,
     private techRecordService: TechnicalRecordService
   ) {
-    super(fdg, fb);
+    super(fdg, fb, vm);
   }
 
   ngOnInit() {}
@@ -74,13 +74,13 @@ export class TankDocumentsComponent extends AdrComponent implements OnChanges, O
   }
 
   async uploadSelectedFile($event) {
-    this.selectedFile =
+    const selectedFile: File =
       $event.target.files && $event.target.files.length ? $event.target.files[0] : undefined;
 
-    const metaName = `${this.getUUID()}_${this.selectedFile.name}`;
+    const metaName = `${this.getUUID()}_${selectedFile.name}`;
     const docuInfo: DocumentInfo = {
       metaName: metaName,
-      file: this.selectedFile
+      file: selectedFile
     } as DocumentInfo;
 
     const uploaded = await this.techRecordService.uploadDocument(docuInfo);

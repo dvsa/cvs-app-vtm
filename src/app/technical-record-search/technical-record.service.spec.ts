@@ -1,19 +1,19 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { AppConfig } from '@app/app.config';
-import { environment } from '@environments/environment';
 import { TechnicalRecordService } from './technical-record.service';
-import { HttpParams } from '@angular/common/http';
 import { Store, INITIAL_STATE } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { hot } from 'jasmine-marbles';
+import { DocumentInfo } from '@app/models/document-meta-data';
 
 const appConfigMock = {
   get settings() {
     return {
       apiServer: {
         APITechnicalRecordServerUri: `http://localhost:3005`,
-        APIDocumentsServerUri: `http://localhost:3005`
+        APIDocumentsServerUri: `http://localhost:3005`,
+        APIDocumentBlobUri: `/devops-provided-link%2F`
       }
     };
   }
@@ -57,16 +57,16 @@ describe('TechnicalRecordService', () => {
 
   it('getTechnicalRecordsAllStatuses should return data', (done) => {
     const mock = { mockObject: 'mock' };
-    service.getTechnicalRecordsAllStatuses('1234567', 'vin').subscribe((res) => {
+    service.getTechnicalRecordsAllStatuses('1234567').subscribe((res) => {
       expect(res).toBeDefined();
       expect(res).toEqual(mock);
       done();
     });
 
-    const req = httpMock.expectOne((req) =>
+    const request = httpMock.expectOne((req) =>
       req.url.includes(`/vehicles/1234567/tech-records?status=all&metadata=true`)
     );
-    req.flush(mock);
+    request.flush(mock);
   });
 
   it('updateTechnicalRecords should update entry', (done) => {
@@ -77,42 +77,55 @@ describe('TechnicalRecordService', () => {
       done();
     });
 
-    const req = httpMock.expectOne((req) => req.url.includes(`/vehicles/1234567`));
-    req.flush(mock);
+    const request = httpMock.expectOne((req) => req.url.includes(`/vehicles/1234567`));
+    request.flush(mock);
   });
 
-  // describe('uploadDocuments', () => {
-  //   it('should return observable of success mesage when the argument can be transformed into json', (done) => {
-  //     const submitData = { test: 'test' };
-  //     spyOn(console, 'log');
-  //     const expectedMessage = 'succeeded';
-  //     service.uploadDocuments(submitData).subscribe(res => {
-  //       expect(res).toBe(expectedMessage);
-  //       expect(console.log).toHaveBeenCalledWith(`inside uploadDocuments received submiData => ${JSON.stringify(submitData)}`);
-  //       done();
-  //     });
-  //   });
-  // });
+  describe('uploadDocument', () => {
+    it('should upload file document', () => {
+      const params = {
+        metaName: 'fileName',
+        file: new File(['fdd@Fd'], 'something.pdf')
+      } as DocumentInfo;
 
-  describe('getDocumentBlob', () => {
-    it('should transform the document into a blob file when passed a vin number', (done) => {
-      const vin = '123456';
-      const fileName = 'test';
-      service.getDocumentBlob(vin, fileName).subscribe((res) => {
-        expect(res).toMatchObject({
-          buffer: new ArrayBuffer(3),
-          contentType: 'json',
-          fileName: 'test'
-        });
-        done();
-      });
+      const fileData = new FormData();
+      fileData.append(params.metaName, params.file);
 
-      const req = httpMock.expectOne((req) =>
-        req.url.includes('http://localhost:3005/vehicles/123456/download-file')
-      );
-      expect(req.request.method).toBe('GET');
-      expect(req.request.responseType).toBe('json');
-      req.flush({ fileBuffer: { data: ['1', '2', '3'] }, contentType: 'json' });
+      const uri = `${appConfigMock.settings.apiServer.APIDocumentBlobUri}${params.metaName}`;
+
+      // act
+      service.uploadDocument(params);
+
+      // assert
+      const mock = { mockObject: 'mock' };
+      const putRequest = httpMock.expectOne((req) => req.url.includes(uri));
+      expect(putRequest.request.method).toBe('PUT');
+      expect(putRequest.request.url).toEqual(uri);
+      expect(putRequest.request.body).toEqual(fileData);
+      expect(putRequest.request.headers.get('Content-Type')).toEqual('application/pdf');
+
+      putRequest.flush(mock);
+    });
+  });
+
+  describe('downloadDocument', () => {
+    it('should download the document', () => {
+      const params = {
+        metaName: 'fileName'
+      } as DocumentInfo;
+
+      const uri = `${appConfigMock.settings.apiServer.APIDocumentBlobUri}${params.metaName}`;
+
+      // act
+      service.downloadDocument(params);
+
+      // assert
+      const mock = { mockObject: 'mock' };
+      // const mockBlob = new ArrayBuffer(2096);
+      const getRequest = httpMock.expectOne((req) => req.url.includes(uri));
+      expect(getRequest.request.method).toBe('GET');
+      expect(getRequest.request.url).toEqual(uri);
+      expect(getRequest.request.headers.get('Accept')).toEqual('*/*');
     });
   });
 

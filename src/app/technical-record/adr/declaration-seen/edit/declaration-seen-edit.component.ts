@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap, takeUntil } from 'rxjs/operators';
 
 import { AdrComponent } from '@app/technical-record/adr/adr.component';
@@ -60,9 +60,16 @@ export class DeclarationSeenEditComponent extends AdrComponent implements OnInit
       .get('brakeEndurance')
       .valueChanges.pipe(
         tap((value) => {
+          const weightCtrl = this.adrForm.get('weight') as FormControl;
+
           if (!value) {
-            this.adrForm.get('weight').reset();
+            weightCtrl.reset();
+            // weightCtrl.setErrors(null);
+            weightCtrl.clearValidators();
+          } else {
+            weightCtrl.setValidators([Validators.required]);
           }
+          weightCtrl.updateValueAndValidity();
         }),
         takeUntil(this.onDestroy$)
       )

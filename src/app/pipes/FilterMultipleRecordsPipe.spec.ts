@@ -1,10 +1,10 @@
 import { FilterMultipleRecordsPipe } from '@app/pipes/FilterMultipleRecordsPipe';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
-const vehicleTechRecordList = [
+const vehicleTechRecordList: VehicleTechRecordModel[] = [
   {
     techRecord: [
       {
-        vin: '1234568',
         statusCode: 'current',
         make: 'Isuzu',
         manufactureYear: 2018
@@ -14,55 +14,27 @@ const vehicleTechRecordList = [
   {
     techRecord: [
       {
-        vin: '1234567',
         statusCode: 'provisional',
         make: 'AIsuzu',
         manufactureYear: 2019
-      },
+      }
     ]
   },
   {
     techRecord: [
       {
-        vin: '1234569',
         statusCode: 'archived',
         createdAt: '2019-06-25T10:26:54.903Z',
         make: 'AIsuzu',
         manufactureYear: 2020
       },
       {
-        vin: '1234566',
         statusCode: 'archived',
         createdAt: '2019-06-26T08:26:54.903Z'
       }
     ]
   }
-];
-
-const orderedVehicleTechRecordList = [
-  {
-    techRecord: [
-      {
-        vin: '1234568',
-        statusCode: 'current',
-        make: 'Isuzu',
-        manufactureYear: 2018
-      }
-    ]
-  },
-  {
-    techRecord: [
-      {
-        vin: '1234567',
-        statusCode: 'provisional',
-        make: 'AIsuzu',
-        manufactureYear: 2019
-      },
-    ]
-  },
-];
-
-
+] as VehicleTechRecordModel[];
 
 describe('FilterMultipleRecordsPipe', () => {
   const pipe = new FilterMultipleRecordsPipe();
@@ -77,9 +49,9 @@ describe('FilterMultipleRecordsPipe', () => {
   });
 
   it('should return a vehicle tech record list sorted by make or manufacturer Year', () => {
-    const vTechRecordList = pipe.transform(orderedVehicleTechRecordList);
+    const vTechRecordList = pipe.transform(vehicleTechRecordList);
     expect(vTechRecordList).toBeDefined();
-    expect(vTechRecordList).toEqual(orderedVehicleTechRecordList);
+    expect(vTechRecordList).toMatchSnapshot();
   });
 
   it('if it CURRENT techRec it should set the technical record having status CURRENT for sorting', () => {
@@ -99,5 +71,4 @@ describe('FilterMultipleRecordsPipe', () => {
     expect(vTechRecordList).toBeDefined();
     expect(vTechRecordList[2].techRecord[1].statusCode).toEqual('archived');
   });
-
 });

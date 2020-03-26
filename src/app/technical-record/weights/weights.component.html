@@ -50,9 +50,9 @@
     <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
       {{ axelNo.axleNumber | DefaultNullOrEmpty }}</th>
     <td id="{{ 'test-gbWeight-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.weights.gbWeight | DefaultNullOrEmpty }}</td>
+      {{ axelNo.weights ? (axelNo.weights.gbWeight | DefaultNullOrEmpty) : '-' }}</td>
     <td id="{{ 'test-designWeight-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.weights.designWeight | DefaultNullOrEmpty }}</td>
+      {{ axelNo.weights ? (axelNo.weights.designWeight | DefaultNullOrEmpty) : '-' }}</td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>

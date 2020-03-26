@@ -8,6 +8,7 @@ exports[`ApplicantDetailsEditComponent should create with initialized form contr
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
   removeAdrControl={[Function EventEmitter]}
+  validationMapper={[Function ValidationMapper]}
 >
   <div
     class="govuk-grid-row"

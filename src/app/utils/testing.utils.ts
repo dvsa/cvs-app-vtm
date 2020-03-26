@@ -160,7 +160,12 @@ function mockMetaData(): MetaData {
       },
       permittedDangerousGoodsFe: ['FP <61 (FL)', 'AT', 'Explosives (type 2)'],
       vehicleDetails: {
-        typeFe: ['Artic tractor', 'Semi trailer battery', 'Centre axle tank']
+        typeFe: [
+          'Artic tractor',
+          'Semi trailer battery',
+          'Centre axle tank',
+          'Centre axle battery'
+        ]
       }
     }
   };

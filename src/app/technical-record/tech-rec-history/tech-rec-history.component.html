@@ -20,7 +20,7 @@
       <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
         {{ (techRec.createdByName | DefaultNullOrEmpty) | titlecase}}</td>
       <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-        {{ techRec.createdAt | DefaultNullOrEmpty }}</td>
+        {{ techRec.createdAt ? (techRec.createdAt | date: 'dd/MM/yyyy') : '-' }}</td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>
     </tr>

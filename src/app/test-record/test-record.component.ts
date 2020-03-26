@@ -1,11 +1,11 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {IAppState} from '@app/technical-record/adr-details/adr-details-form/store/adrDetailsForm.state';
 import {selectSelectedVehicleTestResultModel} from '@app/store/selectors/VehicleTestResultModel.selectors';
 import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {TestResultModel} from '@app/models/test-result.model';
 import {TestType} from '@app/models/test.type';
+import {IAppState} from '@app/store/state/app.state';
 
 @Component({
   selector: 'vtm-test-record',

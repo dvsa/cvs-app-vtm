@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@app/material.module';
-import { AdrDetailsFormModule } from '@app/technical-record/adr-details/adr-details-form/adr-details-form.module';
 import { TechnicalRecordComponent } from '@app/technical-record/technical-record.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -24,8 +23,6 @@ import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { NgrxFormsModule } from 'ngrx-forms';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { SharedModule } from '../shared/shared.module';
-import { AdrDetailsViewComponent } from './adr-details/adr-details-view/adr-details-view.component';
-import { AdrDetailsComponent } from './adr-details/adr-details.component';
 import { BodyComponent } from './body/body.component';
 import { DimensionsComponent } from './dimensions/dimensions.component';
 import { NotesComponent } from './notes/notes.component';
@@ -57,7 +54,6 @@ import { TechnicalRecordsContainer } from './technical-record.container';
     ReactiveFormsModule,
     NgrxFormsModule,
     NgxJsonViewerModule,
-    AdrDetailsFormModule,
     AdrModule
   ],
   declarations: [
@@ -70,9 +66,7 @@ import { TechnicalRecordsContainer } from './technical-record.container';
     DimensionsComponent,
     NotesComponent,
     TestHistoryComponent,
-    TechRecHistoryComponent,
-    AdrDetailsViewComponent,
-    AdrDetailsComponent
+    TechRecHistoryComponent
   ],
   exports: [TechnicalRecordsContainer, TechnicalRecordComponent]
 })

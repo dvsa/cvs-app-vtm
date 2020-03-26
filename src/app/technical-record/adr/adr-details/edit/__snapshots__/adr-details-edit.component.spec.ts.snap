@@ -15,7 +15,8 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
   permittedDangerousGoodsOptions={[Function Array]}
   removeAdrControl={[Function EventEmitter]}
   showCompatibilityGroupJ="false"
-  vehicleTypeDefault=""
+  validationMapper={[Function ValidationMapper]}
+  vehicleTypeDefault={[Function String]}
   vehicleTypeOptions={[Function Array]}
 >
   <div
@@ -77,6 +78,12 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
                     value="2: centre axle tank"
                   >
                      Centre axle tank 
+                  </option>
+                  <option
+                    ng-reflect-ng-value="centre axle battery"
+                    value="3: centre axle battery"
+                  >
+                     Centre axle battery 
                   </option>
                 </select>
               </div>

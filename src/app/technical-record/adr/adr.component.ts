@@ -16,7 +16,9 @@ import { AdrDetails } from '@app/models/adr-details';
 import { TechRecord } from '@app/models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import { RADIOOPTIONS } from './adr.constants';
-import {VIEW_STATE} from '@app/app.enums';
+import { VIEW_STATE } from '@app/app.enums';
+import { ValidationMapper } from './adr-validation.mapper';
+
 
 @Component({
   selector: 'vtm-adr',
@@ -41,7 +43,11 @@ export class AdrComponent implements OnChanges, OnInit, OnDestroy {
   @Input() vehicleMetaData: MetaData;
   @Output() removeAdrControl = new EventEmitter<string>();
 
-  constructor(private parent: FormGroupDirective, protected fb: FormBuilder) {}
+  constructor(
+    private parent: FormGroupDirective,
+    protected fb: FormBuilder,
+    private validationMapper: ValidationMapper
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { params } = changes;
@@ -80,6 +86,10 @@ export class AdrComponent implements OnChanges, OnInit, OnDestroy {
 
   unsorted(): number {
     return 0;
+  }
+
+  protected vehicleTypeChangedHandler(selectedType: string): void {
+    const val = this.validationMapper.mapVehicleTypeToValidationStatus(selectedType);
   }
 
   ngOnDestroy(): void {

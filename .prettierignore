@@ -21,4 +21,3 @@ protractor.conf.js
 src/app/technical-record/technical-record.component.html
 src/app/technical-record/tech-rec-history/tech-rec-history.component.html
 src/app/store/effects/VehicleTechRecordModel.effects.ts
-src/app/technical-record-search/technical-record.service.ts

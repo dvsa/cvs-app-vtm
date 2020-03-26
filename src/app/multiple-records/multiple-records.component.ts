@@ -14,7 +14,7 @@ export class MultipleRecordsComponent implements OnInit {
   @Output() setVehicleTechRecord = new EventEmitter<VehicleTechRecordModel>();
 
 
-  constructor(public techRecHelpers: TechRecordHelpersService) {}
+  constructor() {}
 
   ngOnInit() {}
 
