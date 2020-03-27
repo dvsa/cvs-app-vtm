@@ -57,7 +57,11 @@ export class TankDocumentsComponent extends AdrComponent implements OnChanges, O
   }
 
   processDocumentList(listMetaNames: string[]): FormArray {
-    return this.fb.array(listMetaNames.map(this.buildDocumentMetaDataGroup.bind(this)));
+    return this.fb.array(
+      listMetaNames
+        .map<FormGroup>(this.buildDocumentMetaDataGroup.bind(this))
+        .filter((group) => Object.keys(group.controls).length > 0)
+    );
   }
 
   buildDocumentMetaDataGroup(metaName: string): FormGroup {
@@ -66,8 +70,14 @@ export class TankDocumentsComponent extends AdrComponent implements OnChanges, O
 
   mapToDocumentMetaData(mapMetaName: string): DocumentMetaData {
     const nameStr = mapMetaName.trim();
+
+    const validUUID = nameStr.match(UUID_REGEX);
+    if (!validUUID) {
+      return {} as DocumentMetaData;
+    }
+
     return {
-      uuid: nameStr.match(UUID_REGEX)[0],
+      uuid: validUUID[0],
       fileName: nameStr.split(UUID_REGEX)[1].replace('_', ''),
       metaName: nameStr
     } as DocumentMetaData;

@@ -3,12 +3,11 @@ import { INITIAL_STATE, Store, StoreModule } from '@ngrx/store';
 
 import { hot } from 'jasmine-marbles';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { adrDetailsReducer } from '@app/technical-record/adr-details/adr-details-form/store/adrDetails.reducer';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { IAppState } from '@app/store/state/app.state';
 import { TechnicalRecordSearchComponent } from './technical-record-search.component';
 import { GetVehicleTechRecordModelHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
-import {SearchParams} from '@app/models/search-params';
+import { SearchParams } from '@app/models/search-params';
 
 describe('TechnicalRecordSearchComponent', () => {
   let component: TechnicalRecordSearchComponent;
@@ -18,9 +17,7 @@ describe('TechnicalRecordSearchComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TechnicalRecordSearchComponent],
-      imports: [
-        StoreModule.forRoot(appReducers)
-      ],
+      imports: [StoreModule.forRoot(appReducers)],
       providers: [
         {
           provide: Store,
@@ -69,7 +66,10 @@ describe('TechnicalRecordSearchComponent', () => {
     });
 
     it('should have correct behaviour for VRM', () => {
-      const searchParams: SearchParams = { searchIdentifier: 'test', searchCriteria: 'Vehicle registration mark (VRM)' };
+      const searchParams: SearchParams = {
+        searchIdentifier: 'test',
+        searchCriteria: 'Vehicle registration mark (VRM)'
+      };
       component.searchTechRecords(searchParams.searchIdentifier, searchParams.searchCriteria);
 
       expect(component.searchParams.searchCriteria).toBe('vrm');
@@ -80,7 +80,10 @@ describe('TechnicalRecordSearchComponent', () => {
     });
 
     it('should have correct behaviour for FULL VIN', () => {
-      const searchParams: SearchParams = { searchIdentifier: 'test', searchCriteria: 'Full vehicle identification number (VIN)' };
+      const searchParams: SearchParams = {
+        searchIdentifier: 'test',
+        searchCriteria: 'Full vehicle identification number (VIN)'
+      };
       component.searchTechRecords(searchParams.searchIdentifier, searchParams.searchCriteria);
 
       expect(component.searchParams.searchCriteria).toBe('vin');
@@ -91,7 +94,10 @@ describe('TechnicalRecordSearchComponent', () => {
     });
 
     it('should have correct behaviour for PARTIAL VIN', () => {
-      const searchParams: SearchParams = { searchIdentifier: 'test', searchCriteria: 'Partial VIN (last 6 characters)' };
+      const searchParams: SearchParams = {
+        searchIdentifier: 'test',
+        searchCriteria: 'Partial VIN (last 6 characters)'
+      };
       component.searchTechRecords(searchParams.searchIdentifier, searchParams.searchCriteria);
 
       expect(component.searchParams.searchCriteria).toBe('partialVin');
@@ -102,7 +108,10 @@ describe('TechnicalRecordSearchComponent', () => {
     });
 
     it('should have correct behaviour for TRAILER ID', () => {
-      const searchParams: SearchParams = { searchIdentifier: 'test', searchCriteria: 'Trailer ID' };
+      const searchParams: SearchParams = {
+        searchIdentifier: 'test',
+        searchCriteria: 'Trailer ID'
+      };
       component.searchTechRecords(searchParams.searchIdentifier, searchParams.searchCriteria);
 
       expect(component.searchParams.searchCriteria).toBe('trailerId');
