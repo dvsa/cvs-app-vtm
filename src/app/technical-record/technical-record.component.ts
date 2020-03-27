@@ -55,7 +55,7 @@ export class TechnicalRecordComponent implements OnInit {
   @Input() editRecord: VIEW_STATE;
   @Input() testResultJson: TestResultModel;
   @Output() submitTechRecord = new EventEmitter<TechRecord>();
-  @Output() changeViewState  = new EventEmitter<VIEW_STATE>();
+  @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 
   constructor(
     private dialog: MatDialog,
@@ -91,11 +91,11 @@ export class TechnicalRecordComponent implements OnInit {
     for (let index = 0; index < controlNames.length; index++) {
       this.removeControl(controlNames[index]);
     }
+    this.techRecord.updateValueAndValidity();
   }
 
   removeControl(name: string): void {
     this.techRecord.removeControl(name);
-    this.techRecord.updateValueAndValidity();
   }
 
   onSaveChanges({ valid }: { valid: boolean }) {

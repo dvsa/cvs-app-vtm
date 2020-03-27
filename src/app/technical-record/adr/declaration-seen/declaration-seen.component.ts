@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
 import { AdrDetails } from '@app/models/adr-details';
 
 @Component({

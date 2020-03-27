@@ -64,11 +64,10 @@ export class TankDetailsEditComponent extends AdrComponent implements OnInit {
       ? this.substanceProductSelect
       : '';
 
-    let { substancesPermitted = '' } = tankDataStmt;
-    substancesPermitted = substancesPermitted
-      .toLowerCase()
-      .trim()
-      .replace(/ /gi, '');
+    let { substancesPermitted } = tankDataStmt;
+    substancesPermitted = !!substancesPermitted
+      ? this.getSubstancesPermittedInCode(substancesPermitted)
+      : '';
 
     this.adrForm.addControl(
       'tank',
@@ -97,6 +96,13 @@ export class TankDetailsEditComponent extends AdrComponent implements OnInit {
         })
       })
     );
+  }
+
+  getSubstancesPermittedInCode(value: string): string {
+    return value
+      .toLowerCase()
+      .trim()
+      .replace(/ /gi, '');
   }
 
   buildUNNumberControl(productList: string[]): AbstractControl[] {

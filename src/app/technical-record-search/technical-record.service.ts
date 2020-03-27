@@ -9,7 +9,8 @@ import { delayedRetry } from '@app/shared/delayed-retry/delayed-retry';
 import { IAppState } from '@app/store/state/app.state';
 import { LoadingTrue, LoadingFalse } from '@app/store/actions/Loader.actions';
 import { DocumentInfo } from '@app/models/document-meta-data';
-import {VehicleTechRecordModel} from '@app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
@@ -30,19 +31,34 @@ export class TechnicalRecordService {
     };
   }
 
-  getTechnicalRecordsAllStatuses(searchIdentifier: string, searchCriteria: string): Observable<VehicleTechRecordModel[]> {
+  getTechnicalRecordsAllStatuses(
+    searchIdentifier: string,
+    searchCriteria: string
+  ): Observable<VehicleTechRecordModel[]> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+
     this._store.dispatch(new LoadingTrue());
-    return this.httpClient.get<VehicleTechRecordModel[]>(this.routes.techRecordsAllStatuses(searchIdentifier, searchCriteria), {headers}).pipe(
-      delayedRetry(),
-      shareReplay(),
-      finalize(() => this._store.dispatch(new LoadingFalse()))
-    );
+
+    return this.httpClient
+      .get<VehicleTechRecordModel[]>(
+        this.routes.techRecordsAllStatuses(searchIdentifier, searchCriteria),
+        { headers }
+      )
+      .pipe(
+        delayedRetry(),
+        shareReplay(),
+        finalize(() => this._store.dispatch(new LoadingFalse()))
+      );
   }
 
-  updateTechnicalRecords(techRecordDto: any, vin: string): Observable<any> {
+  updateTechnicalRecords(
+    techRecordDto: VehicleTechRecordUpdate,
+    vin: string
+  ): Observable<VehicleTechRecordModel> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+
     this._store.dispatch(new LoadingTrue());
+
     return this.httpClient
       .put<any[]>(this.routes.updateTechRecords(vin), techRecordDto, { headers })
       .pipe(
