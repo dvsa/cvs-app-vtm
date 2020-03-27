@@ -5,7 +5,6 @@ import { IAppState } from '@app/store/state/app.state';
 
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import {
-  selectVehicleTechRecordModelHavingStatusAll,
   getVehicleTechRecordAdrMetaData,
   getSelectedVehicleTechRecord,
   getViewState
@@ -24,14 +23,14 @@ import { VIEW_STATE } from '@app/app.enums';
 @Component({
   selector: 'vtm-technical-record-container',
   template: `
-    <ng-container *ngIf="vehicleTechnicalRecord$ | async as vTechRecord">
-      <ng-container *ngIf="vTechRecord.techRecord | FilterRecord as activeRecord">
+    <ng-container *ngIf="vehicleTechnicalRecord$ | async as vehicleTechRecord">
+      <ng-container *ngIf="vehicleTechRecord.techRecord | FilterRecord as currentRecord">
         <vtm-technical-record
-          [vehicleTechRecord]="vTechRecord"
-          [activeRecord]="activeRecord"
+          [vehicleTechRecord]="vehicleTechRecord"
+          [activeRecord]="currentRecord"
           [metaData]="metaData$ | async"
           [editRecord]="viewState$ | async"
-          [testResultJson]="testResultJson$ | async"
+          [testResultJson]="testResults$ | async"
           (submitTechRecord)="onTechRecordSubmission($event)"
           (changeViewState)="viewStateHandler($event)"
         >
@@ -43,14 +42,14 @@ import { VIEW_STATE } from '@app/app.enums';
 })
 export class TechnicalRecordsContainer implements OnInit {
   vehicleTechnicalRecord$: Observable<VehicleTechRecordModel>;
-  testResultJson$: Observable<TestResultModel>;
+  testResults$: Observable<TestResultModel>;
   metaData$: Observable<MetaData>;
   viewState$: Observable<VIEW_STATE>;
   techRecordNumber: string;
 
   constructor(private store: Store<IAppState>, private route: ActivatedRoute) {
     this.vehicleTechnicalRecord$ = this.store.pipe(select(getSelectedVehicleTechRecord));
-    this.testResultJson$ = this.store.pipe(select(selectSelectedVehicleTestResultModel));
+    this.testResults$ = this.store.pipe(select(selectSelectedVehicleTestResultModel));
     this.metaData$ = this.store.pipe(select(getVehicleTechRecordAdrMetaData));
     this.viewState$ = this.store.pipe(select(getViewState));
   }

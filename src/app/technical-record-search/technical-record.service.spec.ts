@@ -6,6 +6,8 @@ import { Store, INITIAL_STATE } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { hot } from 'jasmine-marbles';
 import { DocumentInfo } from '@app/models/document-meta-data';
+import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
 const appConfigMock = {
   get settings() {
@@ -69,9 +71,10 @@ describe('TechnicalRecordService', () => {
     request.flush(mock);
   });
 
-  it('updateTechnicalRecords should update entry', (done) => {
-    const mock = { mockObject: 'mock' };
-    service.updateTechnicalRecords('techRec', '1234567').subscribe((res) => {
+  it('updateTechnicalRecords should update technical record', (done) => {
+    const mock = { techRecord: [] } as VehicleTechRecordModel;
+    const recordUpdate = { techRecord: [] } as VehicleTechRecordUpdate;
+    service.updateTechnicalRecords(recordUpdate, '1234567').subscribe((res) => {
       expect(res).toBeDefined();
       expect(res).toEqual(mock);
       done();
@@ -121,7 +124,6 @@ describe('TechnicalRecordService', () => {
 
       // assert
       const mock = { mockObject: 'mock' };
-      // const mockBlob = new ArrayBuffer(2096);
       const getRequest = httpMock.expectOne((req) => req.url.includes(uri));
       expect(getRequest.request.method).toBe('GET');
       expect(getRequest.request.url).toEqual(uri);
