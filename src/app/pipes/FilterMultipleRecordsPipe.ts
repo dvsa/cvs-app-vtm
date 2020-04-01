@@ -17,15 +17,15 @@ export class FilterMultipleRecordsPipe implements PipeTransform {
             (record: TechRecord) => record.statusCode === 'archived'
           );
 
-          if (isCurrent) {
-            techRecordList.techRecord = [...techRecordList.techRecord, ...isCurrent];
-          } else if (isProvisional) {
-            techRecordList.techRecord = [...techRecordList.techRecord, ...isProvisional];
-          } else if (isArchived) {
+          if (!!isCurrent) {
+            techRecordList.techRecord = [techRecordList.techRecord, isCurrent];
+          } else if (isCurrent === undefined && !!isProvisional) {
+            techRecordList.techRecord = [techRecordList.techRecord, isProvisional];
+          } else if (isCurrent === undefined && isProvisional === undefined && isArchived.length > 0) {
             isArchived.sort(
               (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
             );
-            techRecordList.techRecord = [...techRecordList.techRecord, ...isArchived[0]] ;
+            techRecordList.techRecord = [techRecordList.techRecord, isArchived[0]];
           }
         }
       });
