@@ -15,7 +15,7 @@
     <ng-container
       *ngFor="let vTechRecord of vehicleTechRecords | FilterMultipleRecords; let i = index"
     >
-      <ng-container *ngIf="vTechRecord.techRecord[0] as activeRecord">
+      <ng-container *ngIf="vTechRecord.techRecord[1] as activeRecord">
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-half">
             <h3 class="govuk-heading-m">Technical record {{ i + 1 }}</h3>
