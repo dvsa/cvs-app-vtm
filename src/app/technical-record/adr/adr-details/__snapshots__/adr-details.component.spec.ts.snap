@@ -24,7 +24,7 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-type"
       >
-         Centre Axle Battery
+         Centre Axle Battery 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -42,7 +42,7 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-approvalDate"
       >
-         10/03/2020
+         10/03/2020 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -60,9 +60,9 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-permittedDangerousGoods"
       >
-
+        
         <div>
-
+          
           <div>
             <p>
               <span
@@ -90,7 +90,7 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-compatibilityGroupJ"
       >
-         No
+         No 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -108,7 +108,7 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-additionalNotes-number"
       >
-
+        
         <span>
           -
         </span>
@@ -129,7 +129,7 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-ADR-adrTypeApprovalNo"
       >
-         -
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"

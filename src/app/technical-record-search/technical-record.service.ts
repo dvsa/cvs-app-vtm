@@ -23,9 +23,10 @@ export class TechnicalRecordService {
     private _store: Store<IAppState>
   ) {
     this.routes = {
-      techRecordsAllStatuses: (searchIdentifier: string, searchCriteria: string) =>
-        `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${searchIdentifier}/tech-records?status=all&metadata=true`,
-
+      techRecordsAllStatuses: (searchIdentifier: string, searchCriteria: string) => {
+        const queryStr = `${searchIdentifier}/tech-records?status=all&metadata=true&searchCriteria=${searchCriteria}`;
+        return `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${queryStr}`;
+      },
       updateTechRecords: (vin: string) =>
         `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${vin}`
     };

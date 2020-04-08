@@ -9,8 +9,8 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
     ng-reflect-adr-details="[object Object]"
     ng-reflect-edit="false"
   >
-
-
+    
+    
     <div
       class="govuk-grid-row"
     >
@@ -51,7 +51,7 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
               </th>
             </tr>
           </thead>
-
+          
           <tbody
             class="govuk-table__body"
           >
@@ -62,28 +62,28 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
                 class="govuk-table__cell"
                 id="test-tc2Type"
               >
-                 Initial
+                 Initial 
               </td>
               <td
                 class="govuk-table__cell"
                 id="test-tc2IntermediateApprovalNo"
               >
-                 tank123
+                 tank123 
               </td>
               <td
                 class="govuk-table__cell"
                 id="test-tc2IntermediateExpiryDate"
               >
-                 18/03/2020
+                 18/03/2020 
               </td>
             </tr>
-
+            
           </tbody>
-
+          
         </table>
       </div>
     </div>
-
+    
   </vtm-tank-inpections>
 </test-vtm-tank-inpections>
 `;
@@ -97,9 +97,9 @@ exports[`TankInpectionsComponent should render the editable component if edit is
     ng-reflect-adr-details="[object Object]"
     ng-reflect-edit="true"
   >
-
-
-
+    
+    
+    
     <vtm-tank-inspections-edit
       ng-reflect-tank-details-data="[object Object]"
       ng-reflect-vehicle-type="centre axle battery"

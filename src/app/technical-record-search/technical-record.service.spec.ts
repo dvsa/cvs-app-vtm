@@ -66,7 +66,9 @@ describe('TechnicalRecordService', () => {
     });
 
     const request = httpMock.expectOne((req) =>
-      req.url.includes(`/vehicles/1234567/tech-records?status=all&metadata=true`)
+      req.url.includes(
+        `/vehicles/1234567/tech-records?status=all&metadata=true&searchCriteria=${'vin'}`
+      )
     );
     request.flush(mock);
   });
