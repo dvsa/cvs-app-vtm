@@ -2,21 +2,33 @@
 
 exports[`TechnicalRecordsContainer should render the container 1`] = `
 <vtm-technical-record-container
+  activeVehicleTechRecord$={[Function AnonymousSubject]}
   metaData$={[Function AnonymousSubject]}
   store={[Function MockStore]}
-  testResults$={[Function BehaviorSubject]}
+  testResults$={[Function AnonymousSubject]}
   vehicleTechnicalRecord$={[Function AnonymousSubject]}
   viewState$={[Function AnonymousSubject]}
 >
-  <vtm-technical-record
-    ng-reflect-active-record="[object Object]"
-    ng-reflect-edit-state="0"
-    ng-reflect-meta-data="[object Object]"
-    ng-reflect-test-result-json="[object Object]"
-    ng-reflect-vehicle-tech-record="[object Object]"
+  <div
+    class="govuk-width-container"
   >
-    <div>
-      Current or Selected Vehicle Tech Record: {
+    <a
+      class="govuk-back-link"
+      vtmbackbutton=""
+    >
+      Back
+    </a>
+    <main
+      class="govuk-main-wrapper"
+    >
+      <vtm-technical-record
+        ng-reflect-current-state="0"
+        ng-reflect-meta-data="[object Object]"
+        ng-reflect-test-result-json=""
+        ng-reflect-vehicle-tech-record="[object Object]"
+      >
+        <div>
+          Current or Selected Vehicle Tech Record: {
     "techRecord": [
       {
         "statusCode": "provisional",
@@ -55,46 +67,12 @@ exports[`TechnicalRecordsContainer should render the container 1`] = `
       }
     ]
   }
-    </div>
-    <div>
-      Active record based on Statuscode: {
-    "statusCode": "provisional",
-    "adrDetails": {
-      "vehicleDetails": {
-        "approvalDate": "2020-03-10",
-        "type": "centre axle battery"
-      },
-      "listStatementApplicable": false,
-      "batteryListNumber": "",
-      "declarationsSeen": false,
-      "brakeDeclarationsSeen": false,
-      "brakeDeclarationIssuer": "",
-      "brakeEndurance": false,
-      "weight": "",
-      "compatibilityGroupJ": false,
-      "documents": [],
-      "permittedDangerousGoods": [
-        "AT"
-      ],
-      "additionalExaminerNotes": "",
-      "applicantDetails": {
-        "name": "Ben",
-        "street": "Robert green",
-        "city": "Birmingham",
-        "town": "lala land",
-        "postcode": "NG4 12Z"
-      },
-      "memosApply": [],
-      "additionalNotes": {
-        "number": [],
-        "guidanceNotes": []
-      },
-      "adrTypeApprovalNo": ""
-    }
-  }
-    </div>
-    <div>
-      MetaData: {
+        </div>
+        <div>
+          Active vehicle record: null
+        </div>
+        <div>
+          MetaData: {
     "adrDetails": {
       "memosApplyFe": [
         "07/09 3mth leak ext"
@@ -131,10 +109,12 @@ exports[`TechnicalRecordsContainer should render the container 1`] = `
       }
     }
   }
-    </div>
-    <div>
-      View state is: VIEW ONLY
-    </div>
-  </vtm-technical-record>
+        </div>
+        <div>
+          View state is: VIEW ONLY
+        </div>
+      </vtm-technical-record>
+    </main>
+  </div>
 </vtm-technical-record-container>
 `;

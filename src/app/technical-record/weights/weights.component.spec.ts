@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { WeightsComponent } from './weights.component';
 import { TESTING_UTILS } from '../../utils/testing.utils';
 import { TechRecord } from '../../models/tech-record.model';
@@ -12,13 +12,13 @@ describe('WeightsComponent', () => {
     grossGbWeight: 3,
     grossDesignWeight: 2,
     grossEecWeight: 3,
-    axles: [TESTING_UTILS.mockAxle()],
+    axles: [TESTING_UTILS.mockAxle()]
   } as TechRecord;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [WeightsComponent],
+      declarations: [WeightsComponent, TestWeightsEditComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -52,4 +52,22 @@ describe('WeightsComponent', () => {
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
   });
+
+  it('should render the editable component if editState is true', () => {
+    component.editState = true;
+    component.activeRecord = techRecordWeights;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
 });
+
+@Component({
+  selector: 'vtm-weights-edit',
+  template: `
+    <div>active record is: {{ techRecord | json }}</div>
+  `
+})
+class TestWeightsEditComponent {
+  @Input() techRecord: TechRecord;
+}

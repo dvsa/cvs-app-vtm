@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TyresEditComponent should create with initialized form tyre controls 1`] = `
+<vtm-tyres-edit
+  fb={[Function FormBuilder]}
+  fitmentCodeOptions={[Function Array]}
+  parent={[Function FormGroupDirective]}
+  techAxles={[Function Array]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+          >
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="tyreUseCode"
+              >
+                 Tyre use code (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                formcontrolname="tyreUseCode"
+                id="tyreUseCode"
+                maxlength="2"
+                name="tyreUseCode"
+                ng-reflect-maxlength="2"
+                ng-reflect-name="tyreUseCode"
+                type="text"
+              />
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-tyres-edit>
+`;

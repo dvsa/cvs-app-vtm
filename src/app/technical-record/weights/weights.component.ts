@@ -4,11 +4,11 @@ import { TechRecord } from '../../models/tech-record.model';
 @Component({
   selector: 'vtm-weights',
   templateUrl: './weights.component.html',
-  styleUrls: ['../../app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WeightsComponent implements OnInit {
   @Input() activeRecord: TechRecord;
+  @Input() editState: boolean;
 
   constructor() {}
 

@@ -1,6 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule, FormsModule, FormGroupDirective } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormGroupDirective,
+  FormGroup,
+  AbstractControl
+} from '@angular/forms';
 
 import { SharedModule } from '@app/shared';
 import { ApplicantDetailsEditComponent } from './applicant-details-edit.component';
@@ -19,7 +25,11 @@ describe('ApplicantDetailsEditComponent', () => {
         FormGroupDirective,
         {
           provide: FormGroupDirective,
-          useValue: TESTING_UTILS.mockFormGroupDirective()
+          useValue: TESTING_UTILS.mockFormGroupDirective({
+            techRecord: new FormGroup({
+              adrDetails: new FormGroup({})
+            }) as AbstractControl
+          })
         }
       ]
     }).compileComponents();

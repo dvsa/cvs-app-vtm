@@ -1,53 +1,86 @@
-<table class="govuk-table table-details">
-  <thead class="govuk-table__head">
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
-    <th class="govuk-table__cell govuk-!-font-weight-bold">Tyre use code</th>
-    <td id="test-tyreUseCode" class="govuk-table__cell">
-      {{ activeRecord.tyreUseCode | DefaultNullOrEmpty }}
-    </td>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-  </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'psv'">
-    <th class="govuk-table__cell govuk-!-font-weight-bold">Speed restriction</th>
-    <td id="test-speedRestriction" class="govuk-table__cell">
-      {{ activeRecord.speedRestriction | DefaultNullOrEmpty }}
-    </td>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
-  </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-  <tr class="govuk-table__row">
-    <th scope="col" class="govuk-table__header"></th>
-    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre code</td>
-    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre size</td>
-    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Ply rating</td>
-    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold" *ngIf="activeRecord.vehicleType === 'psv'">Speed category symbol</td>
-    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Fitment code</td>
-    <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Load index</td>
-  </tr>
-  <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
-    <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
-      {{ axelNo.axleNumber | DefaultNullOrEmpty }}</th>
-    <td id="{{ 'test-tyreCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.tyres.tyreCode | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-tyreSize-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.tyres.tyreSize | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-plyRating-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.tyres.plyRating | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-speedCategorySymbol-' + axelNo.axleNumber }}" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'psv'">
-      {{ axelNo.tyres.speedCategorySymbol | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-fitmentCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.tyres.fitmentCode | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-dataTrAxles-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.tyres.dataTrAxles | DefaultNullOrEmpty }}</td>
-  </tr>
-  </tbody>
-</table>
+<ng-container *ngIf="!editState">
+  <table class="govuk-table table-details">
+    <thead class="govuk-table__head">
+      <tr
+        class="govuk-table__row"
+        *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
+      >
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Tyre use code</th>
+        <td id="test-tyreUseCode" class="govuk-table__cell">
+          {{ activeRecord.tyreUseCode | DefaultNullOrEmpty }}
+        </td>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+      </tr>
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'psv'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Speed restriction</th>
+        <td id="test-speedRestriction" class="govuk-table__cell">
+          {{ activeRecord.speedRestriction | DefaultNullOrEmpty }}
+        </td>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre code</td>
+        <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Tyre size</td>
+        <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Ply rating</td>
+        <td
+          scope="col"
+          class="govuk-table__header govuk-!-font-weight-bold"
+          *ngIf="activeRecord.vehicleType === 'psv'"
+        >
+          Speed category symbol
+        </td>
+        <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Fitment code</td>
+        <td scope="col" class="govuk-table__header govuk-!-font-weight-bold">Load index</td>
+      </tr>
+      <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">
+          Axle {{ axelNo.axleNumber | DefaultNullOrEmpty }}
+        </th>
+        <td id="{{ 'test-tyreCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
+          {{ axelNo.tyres.tyreCode | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-tyreSize-' + axelNo.axleNumber }}" class="govuk-table__cell">
+          {{ axelNo.tyres.tyreSize | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-plyRating-' + axelNo.axleNumber }}" class="govuk-table__cell">
+          {{ axelNo.tyres.plyRating | DefaultNullOrEmpty }}
+        </td>
+        <td
+          id="{{ 'test-speedCategorySymbol-' + axelNo.axleNumber }}"
+          class="govuk-table__cell"
+          *ngIf="activeRecord.vehicleType === 'psv'"
+        >
+          {{ axelNo.tyres.speedCategorySymbol | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-fitmentCode-' + axelNo.axleNumber }}" class="govuk-table__cell">
+          {{ axelNo.tyres.fitmentCode | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-dataTrAxles-' + axelNo.axleNumber }}" class="govuk-table__cell">
+          {{ axelNo.tyres.dataTrAxles | DefaultNullOrEmpty }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<!-- Edit Tyres -->
+<ng-container *ngIf="editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-tyres-edit [techRecord]="activeRecord"></vtm-tyres-edit>
+      </dt>
+    </div>
+  </dl>
+</ng-container>
