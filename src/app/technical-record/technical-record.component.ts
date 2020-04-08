@@ -10,8 +10,6 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
-
 import { TechnicalRecordValuesMapper } from './technical-record.mapper';
 import { TechRecord } from './../models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
@@ -29,7 +27,6 @@ export class TechnicalRecordComponent implements OnInit {
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
   techRecord: FormGroup;
-
   allOpened = false;
   panels: { panel: string; isOpened: boolean }[] = [
     { panel: 'panel1', isOpened: false },
@@ -48,15 +45,12 @@ export class TechnicalRecordComponent implements OnInit {
   @Input() activeRecord: TechRecord;
   @Input() metaData: MetaData;
   @Input() editState: VIEW_STATE;
+  @Input() canEdit: boolean;
   @Input() testResultJson: TestResultModel;
   @Output() submitTechRecord = new EventEmitter<TechRecord>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 
-  constructor(
-    private dialog: MatDialog,
-    private allowedValues: TechnicalRecordValuesMapper,
-    public techRecHelpers: TechRecordHelpersService
-  ) {}
+  constructor(private dialog: MatDialog, private allowedValues: TechnicalRecordValuesMapper) {}
 
   ngOnInit() {
     this.techRecord = new FormGroup({});
@@ -68,10 +62,6 @@ export class TechnicalRecordComponent implements OnInit {
       panel.isOpened = !this.allOpened;
     }
     this.allOpened = !this.allOpened;
-  }
-
-  hasSecondaryVrms(vrms) {
-    return vrms && vrms.length > 1 && vrms.filter((vrm) => vrm.isPrimary === false).length > 0;
   }
 
   editTechRecord() {

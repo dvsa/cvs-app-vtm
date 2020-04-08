@@ -1,0 +1,49 @@
+<ng-container *ngIf="!canEdit">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Vehicle identification number (VIN)
+      </dt>
+      <dd id="test-vin" class="govuk-summary-list__value">
+        {{ vehicleModel.vin }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Vehicle registration mark (VRM)
+      </dt>
+      <dd id="test-vrm" class="govuk-summary-list__value">
+        <div *ngIf="vehicleModel.vrms && vehicleModel.vrms.length; else hyphen">
+          <p *ngFor="let vrmItem of vehicleModel.vrms | IsPrimaryVrm: true">
+            {{ vrmItem.vrm }}
+          </p>
+        </div>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Previous VRM
+      </dt>
+      <dd id="test-secondaryVrms" class="govuk-summary-list__value">
+        <div
+          *ngIf="
+            vehicleModel.vrms && vehicleModel.vrms.length && hasSecondaryVrms(vehicleModel.vrms);
+            else hyphen
+          "
+        >
+          <p *ngFor="let vrmItem of vehicleModel.vrms | IsPrimaryVrm: false; let i = index">
+            <span id="{{ 'test-vrm-' + i }}">{{ vrmItem.vrm }}</span>
+          </p>
+        </div>
+      </dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-template #hyphen><span>-</span></ng-template>
+
+<!-- Edit Vehicle Identification -->
+<ng-container *ngIf="canEdit">
+  <!-- TODO: Pass through the necessary object -->
+  <vtm-record-identification-edit></vtm-record-identification-edit>
+</ng-container>

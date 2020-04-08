@@ -8,5 +8,4 @@ export interface VehicleTechRecordModel {
   systemNumber: string;
   techRecord: TechRecord[];
   metadata: MetaData;
-  error?: any | null | undefined;
 }

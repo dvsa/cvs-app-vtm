@@ -1,30 +1,49 @@
-import { EErrorActions, SetErrorMessage, ClearErrorMessage, ErrorActions } from '../actions/Error.actions';
+import { Action } from '@ngrx/store';
+
 import { initialAppState } from '../state/app.state';
-import { ErrorReducer } from './Error.reducers';
+import { SetErrorMessage, ClearErrorMessage } from '../actions/Error.actions';
+import { ErrorReducer, ErrorState } from './error.reducers';
 
 describe('ErrorReducer', () => {
-  describe('SetErrorMessage', () => {
-    test('should set error message ', () => {
-      const action = new SetErrorMessage('message');
-      const result = ErrorReducer(initialAppState.error, action);
+  let state: ErrorState;
+  let resultState: ErrorState;
+  let action: any;
 
-      expect(result).toEqual(action.payload);
+  describe('when initialised', () => {
+    beforeEach(() => {
+      action = {} as Action;
+      const initState = initialAppState.error;
+      resultState = ErrorReducer(initState, action);
+    });
+
+    it('should set the default state', () => {
+      expect(resultState).toMatchSnapshot();
+    });
+  });
+
+  describe('SetErrorMessage', () => {
+    it('should set the error(s) to the state', () => {
+      action = new SetErrorMessage(['error1', 'error2']);
+      state = {
+        errors: []
+      };
+
+      resultState = ErrorReducer(state, action);
+
+      expect(resultState).toMatchSnapshot();
     });
   });
 
   describe('ClearErrorMessage', () => {
-    test('should clear error message ', () => {
-      const action = new ClearErrorMessage();
-      const result = ErrorReducer(initialAppState.error, action);
+    it('should clear error(s) from the state', () => {
+      action = new ClearErrorMessage();
+      state = {
+        errors: ['current error value']
+      };
 
-      expect(result).toEqual(null);
+      resultState = ErrorReducer(state, action);
+
+      expect(resultState).toMatchSnapshot();
     });
-  });
-
-  test('default reducer', () => {
-    const action = <ErrorActions>{ type: <EErrorActions>'EErrorActions' };
-    const result = ErrorReducer(undefined, action);
-
-    expect(result).toEqual(initialAppState['error']);
   });
 });

@@ -8,7 +8,6 @@ import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators'
 import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllFailure,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
   SetSelectedVehicleTechnicalRecord,
   SetSelectedVehicleTechnicalRecordSucess,
@@ -21,7 +20,7 @@ import {
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
-import { ClearErrorMessage, SetErrorMessage } from '../actions/Error.actions';
+import { SetErrorMessage } from '../actions/Error.actions';
 import { VEHICLE_TECH_RECORD_SEARCH_ERRORS, VIEW_STATE } from '@app/app.enums';
 import { getSelectedVehicleTechRecord } from '../selectors/VehicleTechRecordModel.selectors';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
@@ -29,6 +28,7 @@ import { TechRecord } from '@app/models/tech-record.model';
 import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
 import { SearchParams } from '@app/models/search-params';
 import { UserService } from '@app/app-user.service';
+import { VrmModel } from '@app/models/vrm.model';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -54,14 +54,11 @@ export class VehicleTechRecordModelEffects {
             } else {
               this._store.dispatch(new SetSelectedVehicleTechnicalRecord(action.payload[0]));
               this._store.dispatch(new GetVehicleTestResultModel(action.payload[0].systemNumber));
-              this._store.dispatch(new ClearErrorMessage());
             }
           }),
           catchError((error) => {
             const errorMessage = this.getSearchResultError(error);
-
-            this._store.dispatch(new SetErrorMessage([errorMessage]));
-            return of(new GetVehicleTechRecordModelHavingStatusAllFailure(error));
+            return [new SetErrorMessage([errorMessage])];
           })
         )
     )
@@ -112,7 +109,19 @@ export class VehicleTechRecordModelEffects {
             );
           }
           if (result[0] === undefined && result[1] === undefined) {
-            this.router.navigate([`/technical-record`]);
+            this.router.navigate([`/technical-record-create`]);
+
+            // const vehicleTechRecord = {} as VehicleTechRecordModel;
+            // vehicleTechRecord.vin = payload.vin;
+            // vehicleTechRecord.vrms = [{ vrm: payload.vrm, isPrimary: true }] as VrmModel[];
+            // vehicleTechRecord.techRecord = [
+            //   {
+            //     statusCode: 'provisional',
+            //     vehicleType: payload.vType.toLowerCase()
+            //   } as TechRecord
+            // ];
+            // this._store.dispatch(new SetSelectedVehicleTechnicalRecord(vehicleTechRecord));
+            // this._store.dispatch()
           }
           requests.length = 0;
           this._store.dispatch(
@@ -164,7 +173,7 @@ export class VehicleTechRecordModelEffects {
         dataToSave.systemNumber = vehicleTechRecord.systemNumber;
 
         return this._technicalRecordService
-          .updateTechnicalRecords(dataToSave, vehicleTechRecord.vin)
+          .updateTechnicalRecords(dataToSave, vehicleTechRecord.systemNumber)
           .pipe(
             switchMap((updatedVehicleTechRecord: VehicleTechRecordModel) => {
               updatedVehicleTechRecord.metadata = vehicleTechRecord.metadata;

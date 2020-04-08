@@ -12,42 +12,24 @@ export function VehicleTechRecordModelReducers(
   action: VehicleTechRecordModelActions
 ): IVehicleTechRecordModelState {
   switch (action.type) {
-    case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
-      return {
-        ...state,
-        selectedVehicleTechRecordModel: action.payload,
-        error: null // clear error message
-      };
-    }
-
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess: {
       return {
         ...state,
-        vehicleTechRecordModel: action.payload,
-        error: null // clear error message
-      };
-    }
-
-    case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure: {
-      return {
-        ...state,
-        error: action.payload // capture error message
+        vehicleTechRecordModel: action.payload
       };
     }
 
     case EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate: {
       return {
         ...state,
-        initialDetails: action.payload,
-        error: null
+        initialDetails: action.payload
       };
     }
 
     case EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreateSucess: {
       return {
         ...state,
-        initialDetails: action.payload,
-        error: null
+        initialDetails: action.payload
       };
     }
 

@@ -1,18 +1,21 @@
-import {
-  ClearErrorMessage, EErrorActions, SetErrorMessage
-} from './Error.actions';
+import { ClearErrorMessage, EErrorActions, SetErrorMessage } from './Error.actions';
 
 describe('ErrorActions', () => {
-  test('SetErrorMessage', () => {
-    const action = new SetErrorMessage('test');
+  it('should create SetErrorMessage action', () => {
+    const errorMessages = ['error1', 'error2'];
+    const action = new SetErrorMessage(errorMessages);
 
-    expect(action.payload).toBe('test');
-    expect(action.type).toBe(EErrorActions.SetErrorMessage);
+    expect({ ...action }).toEqual({
+      type: EErrorActions.SetErrorMessage,
+      payload: errorMessages
+    });
   });
 
-  test('ClearErrorMessage', () => {
+  it('should create ClearErrorMessage action', () => {
     const action = new ClearErrorMessage();
 
-    expect(action.type).toBe(EErrorActions.ClearErrorMessage);
+    expect({ ...action }).toEqual({
+      type: EErrorActions.ClearErrorMessage
+    });
   });
 });

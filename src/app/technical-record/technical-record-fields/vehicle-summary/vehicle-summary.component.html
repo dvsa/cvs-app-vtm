@@ -1,0 +1,44 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div [formGroup]="technicalRecord">
+          <h2 class="govuk-heading-m">Vehicle summary</h2>
+
+          <div class="govuk-radios govuk-radios--inline">
+            <label for="vehicleType" class="govuk-label govuk-!-font-weight-bold">
+              Vehicle type
+            </label>
+            <div class="govuk-radios__item" *ngFor="let option of options">
+              <input
+                class="govuk-radios__input"
+                id="vehicleType-{{ option.key }}"
+                name="vehicleType"
+                formControlName="vehicleType"
+                type="radio"
+                [value]="option.value"
+              />
+              <label class="govuk-label govuk-radios__label" for="vehicleType-{{ option.key }}">
+                {{ option.key }}
+              </label>
+            </div>
+
+            <div class="govuk-form-group">
+              <label for="manufactureYear" class="govuk-label govuk-!-font-weight-bold">
+                Year of manufacture
+              </label>
+              <input
+                id="manufactureYear"
+                type="number"
+                name="manufactureYear"
+                formControlName="manufactureYear"
+                pattern="[0-9]*"
+                class="govuk-input govuk-input--width-4"
+              />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

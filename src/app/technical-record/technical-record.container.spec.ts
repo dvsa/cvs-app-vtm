@@ -1,16 +1,10 @@
-import {
-  Component,
-  Input,
-  EventEmitter,
-  Output,
-  DebugElement,
-  PipeTransform,
-  Pipe
-} from '@angular/core';
+import { Component, Input, EventEmitter, Output, DebugElement } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SpyLocation } from '@angular/common/testing';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store, Action } from '@ngrx/store';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { TESTING_UTILS } from './../utils/testing.utils';
@@ -18,7 +12,8 @@ import { SharedModule } from '@app/shared';
 import {
   getSelectedVehicleTechRecord,
   getVehicleTechRecordMetaData,
-  getViewState
+  getViewState,
+  getTechRecord
 } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import {
   UpdateVehicleTechRecord,
@@ -42,6 +37,13 @@ class MockStore {
             value && value.hasOwnProperty('getSelectedVehicleTechRecord')
               ? value['getSelectedVehicleTechRecord']
               : {}
+          )
+        );
+
+      case getTechRecord:
+        return mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getTechRecord') ? value['getTechRecord'] : {}
           )
         );
 
@@ -77,13 +79,12 @@ describe('TechnicalRecordsContainer', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule],
-      declarations: [
-        TechnicalRecordsContainer,
-        TestTechnicalRecordsComponent,
-        FilterRecordPipeMock
-      ],
-      providers: [{ provide: Store, useValue: store }]
+      imports: [SharedModule, RouterTestingModule],
+      declarations: [TechnicalRecordsContainer, TestTechnicalRecordsComponent],
+      providers: [
+        { provide: Store, useValue: store },
+        { provide: Location, useClass: SpyLocation }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TechnicalRecordsContainer);
@@ -98,6 +99,7 @@ describe('TechnicalRecordsContainer', () => {
       getSelectedVehicleTechRecord: {
         techRecord: [TESTING_UTILS.mockTechRecord()]
       } as VehicleTechRecordModel,
+      getTechRecord: TESTING_UTILS.mockTechRecord(),
       getVehicleTechRecordMetaData: TESTING_UTILS.mockMetaData(),
       getViewState: VIEW_STATE.VIEW_ONLY
     });
@@ -146,13 +148,7 @@ class TestTechnicalRecordsComponent {
   @Input() metaData: MetaData;
   @Input() testResultJson: TestResultModel;
   @Input() editState: VIEW_STATE;
+  @Input() canEdit: Observable<boolean>;
   @Output() submitTechRecord = new EventEmitter<TechRecord>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
-}
-
-@Pipe({ name: 'FilterRecord' })
-class FilterRecordPipeMock implements PipeTransform {
-  transform(records: TechRecord[]): TechRecord {
-    return records && records.length ? records[0] : ({} as TechRecord);
-  }
 }

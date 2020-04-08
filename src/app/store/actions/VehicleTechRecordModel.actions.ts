@@ -7,10 +7,9 @@ import { VIEW_STATE } from '@app/app.enums';
 
 export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
-  GetVehicleTechRecordModelSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModel Success',
+
   GetVehicleTechRecordModelHavingStatusAll = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll',
   GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success',
-  GetVehicleTechRecordModelHavingStatusAllFailure = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Failure',
 
   SetVehicleTechRecordModelVinOnCreate = '[VehicleTechRecordModel] SetVehicleTechRecordModelVinOnCreate',
   SetVehicleTechRecordModelVinOnCreateSucess = '[VehicleTechRecordModel] SetVehicleTechRecordModelVinOnCreateSucess',
@@ -18,17 +17,12 @@ export enum EVehicleTechRecordModelActions {
   UpdateVehicleTechRecordSuccess = '[TechRecordContainer] Update VehicleTechRecordModel Success',
   SetSelectedVehicleTechnicalRecord = '[MultipleTechRecordContainer] Set Selected Vehicle Technical Record',
   SetSelectedVehicleTechnicalRecordSucess = '[VehicleTechnicalRecordEffect] Set SelectedVehicleTechnicalRecordSucess',
-  SetViewState = '[TechnicalRecordComponent] Set ViewState Variable'
+  SetViewState = '[TechnicalRecordContainer] Set ViewState Variable'
 }
 
 export class GetVehicleTechRecordModel implements Action {
   public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModel;
   constructor(public payload: TechRecord) {}
-}
-
-export class GetVehicleTechRecordModelSuccess implements Action {
-  public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess;
-  constructor(public payload: VehicleTechRecordModel[]) {}
 }
 
 export class GetVehicleTechRecordModelHavingStatusAll implements Action {
@@ -42,13 +36,6 @@ export class GetVehicleTechRecordModelHavingStatusAllSuccess implements Action {
     EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess;
 
   constructor(public payload: VehicleTechRecordModel[]) {}
-}
-
-export class GetVehicleTechRecordModelHavingStatusAllFailure implements Action {
-  public readonly type =
-    EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure;
-
-  constructor(public payload: any) {}
 }
 
 export class SetVehicleTechRecordModelVinOnCreate implements Action {
@@ -88,10 +75,8 @@ export class SetViewState implements Action {
 
 export type VehicleTechRecordModelActions =
   | GetVehicleTechRecordModel
-  | GetVehicleTechRecordModelSuccess
   | GetVehicleTechRecordModelHavingStatusAll
   | GetVehicleTechRecordModelHavingStatusAllSuccess
-  | GetVehicleTechRecordModelHavingStatusAllFailure
   | SetVehicleTechRecordModelVinOnCreate
   | SetVehicleTechRecordModelVinOnCreateSucess
   | UpdateVehicleTechRecord

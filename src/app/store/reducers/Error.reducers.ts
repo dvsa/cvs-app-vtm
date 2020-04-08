@@ -1,17 +1,33 @@
-import { initialAppState, IAppState } from './../state/app.state';
 import { ErrorActions, EErrorActions } from '../actions/Error.actions';
 
-export function ErrorReducer(state = initialAppState.error, action: ErrorActions):
-  IAppState['error'] {
+export interface ErrorState {
+  errors: string[];
+}
+
+export const initialErrorState: ErrorState = {
+  errors: []
+};
+
+export function ErrorReducer(
+  state: ErrorState = initialErrorState,
+  action: ErrorActions
+): ErrorState {
   switch (action.type) {
     case EErrorActions.SetErrorMessage: {
-      return action.payload;
+      return {
+        ...state,
+        errors: [...action.payload]
+      };
     }
 
     case EErrorActions.ClearErrorMessage: {
-      return null
+      return {
+        ...state,
+        errors: []
+      };
     }
 
-    default: return state;
+    default:
+      return state;
   }
 }

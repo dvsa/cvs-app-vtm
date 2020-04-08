@@ -4,10 +4,8 @@ import { VIEW_STATE } from '@app/app.enums';
 export interface IVehicleTechRecordModelState {
   initialDetails: CreateTechRecordVM;
   vehicleTechRecordModel: VehicleTechRecordModel[];
-  selectedVehicleTechRecordModel: VehicleTechRecordModel[];
   selectedVehicleTechRecord: VehicleTechRecordModel;
   viewState: VIEW_STATE;
-  error?: any;
 }
 
 export interface CreateTechRecordVM {
@@ -25,8 +23,6 @@ export const initialVehicleTechRecordModelState: IVehicleTechRecordModelState = 
     error: []
   },
   vehicleTechRecordModel: null,
-  selectedVehicleTechRecordModel: null,
   selectedVehicleTechRecord: null,
-  viewState: VIEW_STATE.VIEW_ONLY,
-  error: null
+  viewState: VIEW_STATE.VIEW_ONLY
 };
