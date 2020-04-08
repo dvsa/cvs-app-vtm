@@ -3,16 +3,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject } from 'rxjs';
 
-import MockStore from '../../utils/mockStore';
 import { ErrorSummaryComponent } from './error-summary.component';
-
-
-
-const mockSelector = new BehaviorSubject<any>(undefined);
+import { MockStore } from '@app/utils/';
 
 describe('ErrorSummaryComponent', () => {
   let component: ErrorSummaryComponent;
   let fixture: ComponentFixture<ErrorSummaryComponent>;
+  const mockSelector = new BehaviorSubject<any>(undefined);
   const store: MockStore = new MockStore(mockSelector);
 
   beforeEach(async(() => {

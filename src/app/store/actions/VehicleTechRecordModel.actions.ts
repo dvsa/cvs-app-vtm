@@ -1,12 +1,17 @@
+import { CREATE_STATE } from './../../app.enums';
 import { Action } from '@ngrx/store';
-import {VehicleIdentifiers, VehicleTechRecordModel} from '@app/models/vehicle-tech-record.model';
+import {
+  VehicleIdentifiers,
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { SearchParams } from '@app/models/search-params';
 import { VIEW_STATE } from '@app/app.enums';
 
 export enum EVehicleTechRecordModelActions {
   GetVehicleTechRecordModel = '[VehicleTechRecordModel] Get VehicleTechRecordModel',
-  GetVehicleTechRecordModelSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModel Success',
+
   GetVehicleTechRecordModelHavingStatusAll = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll',
   GetVehicleTechRecordModelHavingStatusAllSuccess = '[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success',
 
@@ -15,17 +20,13 @@ export enum EVehicleTechRecordModelActions {
   UpdateVehicleTechRecordSuccess = '[TechRecordContainer] Update VehicleTechRecordModel Success',
   SetSelectedVehicleTechnicalRecord = '[MultipleTechRecordContainer] Set Selected Vehicle Technical Record',
   SetSelectedVehicleTechnicalRecordSucess = '[VehicleTechnicalRecordEffect] Set SelectedVehicleTechnicalRecordSucess',
-  SetViewState = '[TechnicalRecordComponent] Set ViewState Variable'
+  SetViewState = '[TechnicalRecordContainer] Set ViewState',
+  SetCreateState = '[Vehicle TechRecord Effect] Set CreatState'
 }
 
 export class GetVehicleTechRecordModel implements Action {
   public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModel;
   constructor(public payload: TechRecord) {}
-}
-
-export class GetVehicleTechRecordModelSuccess implements Action {
-  public readonly type = EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess;
-  constructor(public payload: VehicleTechRecordModel[]) {}
 }
 
 export class GetVehicleTechRecordModelHavingStatusAll implements Action {
@@ -47,8 +48,8 @@ export class SetVehicleTechRecordModelOnCreate implements Action {
 }
 
 export class UpdateVehicleTechRecord implements Action {
-  readonly type = EVehicleTechRecordModelActions.UpdateVehicleTechRecord;
-  constructor(public readonly techRecord: TechRecord) {}
+  public readonly type = EVehicleTechRecordModelActions.UpdateVehicleTechRecord;
+  constructor(public vehicleRecordEdit: VehicleTechRecordEdit) {}
 }
 
 export class UpdateVehicleTechRecordSuccess implements Action {
@@ -60,6 +61,7 @@ export class SetSelectedVehicleTechnicalRecord implements Action {
   readonly type = EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecord;
   constructor(public vehicleTechRecord: VehicleTechRecordModel) {}
 }
+
 export class SetSelectedVehicleTechnicalRecordSucess implements Action {
   readonly type = EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecordSucess;
   constructor(public vehicleTechRecord: VehicleTechRecordModel) {}
@@ -70,9 +72,13 @@ export class SetViewState implements Action {
   constructor(public viewState: VIEW_STATE) {}
 }
 
+export class SetCreateState implements Action {
+  readonly type = EVehicleTechRecordModelActions.SetCreateState;
+  constructor(public createState: CREATE_STATE) {}
+}
+
 export type VehicleTechRecordModelActions =
   | GetVehicleTechRecordModel
-  | GetVehicleTechRecordModelSuccess
   | GetVehicleTechRecordModelHavingStatusAll
   | GetVehicleTechRecordModelHavingStatusAllSuccess
   | SetVehicleTechRecordModelOnCreate
@@ -80,4 +86,5 @@ export type VehicleTechRecordModelActions =
   | UpdateVehicleTechRecordSuccess
   | SetSelectedVehicleTechnicalRecord
   | SetSelectedVehicleTechnicalRecordSucess
-  | SetViewState;
+  | SetViewState
+  | SetCreateState;

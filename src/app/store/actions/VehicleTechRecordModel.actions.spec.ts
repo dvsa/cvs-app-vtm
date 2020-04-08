@@ -1,17 +1,23 @@
 import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModel,
-  GetVehicleTechRecordModelSuccess,
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  SetVehicleTechRecordModelOnCreate
+  SetVehicleTechRecordModelOnCreate,
+  UpdateVehicleTechRecord,
+  UpdateVehicleTechRecordSuccess,
+  SetSelectedVehicleTechnicalRecord,
+  SetViewState,
+  SetCreateState
 } from './VehicleTechRecordModel.actions';
 import {
   VehicleIdentifiers,
-  VehicleTechRecordModel
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
 } from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { SearchParams } from '@app/models/search-params';
+import { RECORD_STATUS, VIEW_STATE, CREATE_STATE } from '@app/app.enums';
 
 const vehicleTechRecordModel: VehicleTechRecordModel = {} as VehicleTechRecordModel;
 const techRecord: TechRecord = {} as TechRecord;
@@ -24,19 +30,6 @@ describe('GetVehicleTechRecordModel', () => {
       type: EVehicleTechRecordModelActions.GetVehicleTechRecordModel,
       payload: techRecord
     });
-
-  });
-});
-
-describe('GetVehicleTechRecordModelSuccess', () => {
-  it('the action should have the right type and payload', () => {
-    const action = new GetVehicleTechRecordModelSuccess([vehicleTechRecordModel]);
-
-    expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess,
-      payload: [vehicleTechRecordModel]
-    });
-
   });
 });
 
@@ -76,6 +69,88 @@ describe('SetVehicleTechRecordModelOnCreate', () => {
     expect({ ...action }).toEqual({
       type: EVehicleTechRecordModelActions.SetVehicleTechRecordModelOnCreate,
       payload: vehicleIdentifiers
+    });
+  });
+});
+
+describe('UpdateVehicleTechRecord', () => {
+  it('should create UpdateVehicleTechRecord action', () => {
+    const vehicleRecordEdit: VehicleTechRecordEdit = {
+      primaryVrm: 'vrm1',
+      techRecord: [
+        {
+          statusCode: RECORD_STATUS.CURRENT
+        }
+      ]
+    } as VehicleTechRecordEdit;
+
+    const action = new UpdateVehicleTechRecord(vehicleRecordEdit);
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.UpdateVehicleTechRecord,
+      vehicleRecordEdit
+    });
+  });
+
+  it('should create UpdateVehicleTechRecordSuccess action', () => {
+    const vehicleTechRecord: VehicleTechRecordModel = {
+      techRecord: [
+        {
+          statusCode: RECORD_STATUS.CURRENT
+        }
+      ]
+    } as VehicleTechRecordModel;
+
+    const action = new UpdateVehicleTechRecordSuccess(vehicleTechRecord);
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.UpdateVehicleTechRecordSuccess,
+      vehicleTechRecord
+    });
+  });
+});
+
+describe('SetSelectedVehicleTechnicalRecord', () => {
+  it('should create SetSelectedVehicleTechnicalRecord action', () => {
+    const vehicleTechRecord: VehicleTechRecordModel = {
+      techRecord: [
+        {
+          statusCode: RECORD_STATUS.ARCHIVED
+        }
+      ]
+    } as VehicleTechRecordModel;
+
+    const action = new SetSelectedVehicleTechnicalRecord(vehicleTechRecord);
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecord,
+      vehicleTechRecord
+    });
+  });
+});
+
+describe('SetViewState', () => {
+  it('should create SetViewState action', () => {
+    const viewState: VIEW_STATE = VIEW_STATE.EDIT;
+
+    const action = new SetViewState(viewState);
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.SetViewState,
+      viewState
+    });
+  });
+});
+
+describe('SetCreateState', () => {
+  it('should create SetCreateState action', () => {
+    const createState: CREATE_STATE = CREATE_STATE.ON;
+
+    const action = new SetCreateState(createState);
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.SetCreateState,
+      createState
     });
   });
 });

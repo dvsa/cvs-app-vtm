@@ -3,6 +3,7 @@
 exports[`CertificateEditComponent should create with initialized form controls 1`] = `
 <vtm-certificate-edit
   adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   hasCertificateRequested={[Function Boolean]}

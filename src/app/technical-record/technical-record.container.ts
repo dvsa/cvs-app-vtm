@@ -1,61 +1,77 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { IAppState } from '@app/store/state/app.state';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { IAppState } from '@app/store/state/app.state';
 import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import {
   getVehicleTechRecordMetaData,
   getSelectedVehicleTechRecord,
-  getViewState
+  getTechViewState,
+  getCreateState,
+  getActiveVehicleTechRecord
 } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { MetaData } from '@app/models/meta-data';
-import { TechRecord } from '@app/models/tech-record.model';
 import {
   SetViewState,
   UpdateVehicleTechRecord
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import {
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
-import { VIEW_STATE } from '@app/app.enums';
+import { VIEW_STATE, CREATE_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-technical-record-container',
   template: `
     <ng-container *ngIf="vehicleTechnicalRecord$ | async as vehicleTechRecord">
-      <ng-container *ngIf="vehicleTechRecord.techRecord | FilterRecord as currentRecord">
-        <vtm-technical-record
-          [vehicleTechRecord]="vehicleTechRecord"
-          [activeRecord]="currentRecord"
-          [metaData]="metaData$ | async"
-          [editState]="viewState$ | async"
-          [testResultJson]="testResults$ | async"
-          (submitTechRecord)="techRecordSubmissionHandler($event)"
-          (changeViewState)="viewStateHandler($event)"
-        >
-        </vtm-technical-record>
-      </ng-container>
+      <div class="govuk-width-container">
+        <a class="govuk-back-link" vtmBackButton>Back</a>
+
+        <main class="govuk-main-wrapper">
+          <vtm-technical-record
+            [activeVehicleTechRecord]="activeVehicleTechRecord$ | async"
+            [vehicleTechRecord]="vehicleTechRecord"
+            [metaData]="metaData$ | async"
+            [editState]="viewState$ | async"
+            [createState]="createState$ | async"
+            [testResultJson]="testResults$ | async"
+            (submitVehicleRecord)="vehicleRecordSubmissionHandler($event)"
+            (changeViewState)="viewStateHandler($event)"
+          >
+          </vtm-technical-record>
+        </main>
+      </div>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechnicalRecordsContainer implements OnInit {
+  activeVehicleTechRecord$: Observable<VehicleTechRecordEdit>;
   vehicleTechnicalRecord$: Observable<VehicleTechRecordModel>;
   testResults$: Observable<TestResultModel>;
   metaData$: Observable<MetaData>;
   viewState$: Observable<VIEW_STATE>;
+  createState$: Observable<CREATE_STATE>;
 
   constructor(private store: Store<IAppState>) {
+    this.activeVehicleTechRecord$ = this.store
+      .select(getActiveVehicleTechRecord)
+      .pipe(map((f) => f()));
     this.vehicleTechnicalRecord$ = this.store.select(getSelectedVehicleTechRecord);
     this.testResults$ = this.store.select(selectSelectedVehicleTestResultModel);
     this.metaData$ = this.store.select(getVehicleTechRecordMetaData);
-    this.viewState$ = this.store.select(getViewState);
+    this.viewState$ = this.store.select(getTechViewState);
+    this.createState$ = this.store.select(getCreateState);
   }
 
   ngOnInit(): void {}
 
-  techRecordSubmissionHandler(editedTechRecord: TechRecord) {
-    this.store.dispatch(new UpdateVehicleTechRecord(editedTechRecord));
+  vehicleRecordSubmissionHandler(editedVehicleRecord: VehicleTechRecordEdit) {
+    this.store.dispatch(new UpdateVehicleTechRecord(editedVehicleRecord));
   }
 
   viewStateHandler(state: VIEW_STATE) {

@@ -4,20 +4,24 @@ import {
   EventEmitter,
   Input,
   OnInit,
-  Output
+  Output,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { merge } from 'lodash';
 
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
-
-import { TechnicalRecordValuesMapper } from './technical-record.mapper';
+import { TechnicalRecordValuesMapper } from './technical-record-value.mapper';
 import { TechRecord } from './../models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import {
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
-import { VIEW_STATE } from '@app/app.enums';
+import { VIEW_STATE, CREATE_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -25,11 +29,11 @@ import { VIEW_STATE } from '@app/app.enums';
   styleUrls: ['../app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TechnicalRecordComponent implements OnInit {
+export class TechnicalRecordComponent implements OnChanges, OnInit {
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
-  techRecord: FormGroup;
-
+  activeRecord: TechRecord;
+  vehicleRecordFg: FormGroup;
   allOpened = false;
   panels: { panel: string; isOpened: boolean }[] = [
     { panel: 'Vehicle summary', isOpened: false },
@@ -51,23 +55,33 @@ export class TechnicalRecordComponent implements OnInit {
     { panel: 'Plates', isOpened: false }
   ];
 
+  @Input() activeVehicleTechRecord: VehicleTechRecordEdit;
   @Input() vehicleTechRecord: VehicleTechRecordModel;
-  @Input() activeRecord: TechRecord;
   @Input() metaData: MetaData;
   @Input() editState: VIEW_STATE;
+  @Input() createState: CREATE_STATE;
   @Input() testResultJson: TestResultModel;
-  @Output() submitTechRecord = new EventEmitter<TechRecord>();
+  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEdit>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 
   constructor(
+    private fb: FormBuilder,
     private dialog: MatDialog,
-    private allowedValues: TechnicalRecordValuesMapper,
-    public techRecHelpers: TechRecordHelpersService
+    private allowedValues: TechnicalRecordValuesMapper
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const { activeVehicleTechRecord } = changes;
+    if (activeVehicleTechRecord) {
+      this.activeRecord = this.activeVehicleTechRecord.techRecord[0];
+      this.adrDisplayParams = { showAdrDetails: !!this.activeRecord.adrDetails };
+    }
+  }
+
   ngOnInit() {
-    this.techRecord = new FormGroup({});
-    this.adrDisplayParams = { showAdrDetails: !!this.activeRecord.adrDetails };
+    this.vehicleRecordFg = this.fb.group({
+      techRecord: this.fb.group({})
+    });
   }
 
   togglePanel() {
@@ -77,33 +91,43 @@ export class TechnicalRecordComponent implements OnInit {
     this.allOpened = !this.allOpened;
   }
 
-  hasSecondaryVrms(vrms) {
-    return vrms && vrms.length > 1 && vrms.filter((vrm) => vrm.isPrimary === false).length > 0;
-  }
-
   editTechRecord() {
     this.changeViewState.emit(VIEW_STATE.EDIT);
   }
 
   cancelTechRecordEdit() {
     this.changeViewState.emit(VIEW_STATE.VIEW_ONLY);
-    this.activeRecord = JSON.parse(JSON.stringify(this.activeRecord));
-    this.adrDisplayParams = { ...{ showAdrDetails: !!this.activeRecord.adrDetails } };
 
-    const controlNames = Object.keys(this.techRecord.controls);
+    this.resetVehicleRecordFg();
+
+    this.activeRecord = JSON.parse(JSON.stringify(this.activeVehicleTechRecord.techRecord[0]));
+    this.adrDisplayParams = {
+      ...{ showAdrDetails: !!this.activeVehicleTechRecord.techRecord[0].adrDetails }
+    };
+  }
+
+  resetVehicleRecordFg() {
+    const techGroup = this.vehicleRecordFg.get('techRecord') as FormGroup;
+    const controlNames = Object.keys(techGroup.controls);
+
     for (let index = 0; index < controlNames.length; index++) {
-      this.techRecord.removeControl(controlNames[index]);
+      techGroup.removeControl(controlNames[index]);
     }
-    this.techRecord.updateValueAndValidity();
+    this.vehicleRecordFg.updateValueAndValidity();
   }
 
   onSaveChanges({ valid, value }: { valid: boolean; value: any }) {
     // if (valid) { TODO: Re-enable during ADR Validation ticket
 
-    const editedRecord: TechRecord = this.allowedValues.mapControlValuesToDataValues(
+    const editedVehicleRecord: VehicleTechRecordEdit = this.allowedValues.mapControlValuesToDataValues(
       JSON.parse(JSON.stringify(value))
     );
-    const mergedRecord: TechRecord = { ...this.activeRecord, ...editedRecord };
+
+    const mergedRecord: VehicleTechRecordEdit = merge(
+      {},
+      this.activeVehicleTechRecord,
+      editedVehicleRecord
+    );
 
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
@@ -114,8 +138,8 @@ export class TechnicalRecordComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.isSave) {
-        mergedRecord.reasonForCreation = result.data;
-        this.submitTechRecord.emit(mergedRecord);
+        mergedRecord.techRecord[0].reasonForCreation = result.data;
+        this.submitVehicleRecord.emit(mergedRecord);
       }
     });
     // }

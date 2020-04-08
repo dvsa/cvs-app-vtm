@@ -1,6 +1,7 @@
 import { VrmModel } from '@app/models/vrm.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { MetaData } from './meta-data';
+import { UserDetails } from './user-details';
 
 export interface VehicleTechRecordModel {
   vrms: VrmModel[];
@@ -15,4 +16,13 @@ export interface VehicleIdentifiers {
   vin: string;
   vrm: string;
   vType: string;
+}
+
+export interface VehicleTechRecordEdit {
+  msUserDetails: UserDetails;
+  vin?: string;
+  primaryVrm: string;
+  secondaryVrms?: string[];
+  trailerId?: string | undefined;
+  techRecord: TechRecord[];
 }

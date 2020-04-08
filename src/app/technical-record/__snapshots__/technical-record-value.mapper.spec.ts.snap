@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TechnicalRecordValuesMapper mapToAllowedValues should map ADR control values in TechRecord to allowed values 1`] = `
+exports[`TechnicalRecordValuesMapper mapControlValuesToDataValues should map ADR control values in TechRecord to allowed values 1`] = `
 Object {
   "additionalNotes": Object {
     "guidanceNotes": Array [

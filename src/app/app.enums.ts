@@ -4,6 +4,12 @@ export enum VEHICLE_TYPES {
   TRL = 'trl'
 }
 
+export enum RECORD_STATUS {
+  CURRENT = 'current',
+  PROVISIONAL = 'provisional',
+  ARCHIVED = 'archived'
+}
+
 export enum SEARCH_CRITERIA {
   ALL_CRITERIA = 'Vehicle registration mark, trailer ID or vehicle identification number',
   VRM_CRITERIA = 'Vehicle registration mark (VRM)',
@@ -96,3 +102,7 @@ export enum COUNTRY_OF_REGISTRATION {
   'not-known' = 'Country Not Known'
 }
 
+export enum CREATE_STATE {
+  OFF = 0,
+  ON = 1
+}

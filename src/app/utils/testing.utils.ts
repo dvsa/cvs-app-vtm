@@ -70,9 +70,9 @@ export const TESTING_UTILS = {
   mockBrakeForceWheelsUpToHalfLocked,
 };
 
-function mockFormGroupDirective(): FormGroupDirective {
+function mockFormGroupDirective(control = {}): FormGroupDirective {
   const fgd: FormGroupDirective = new FormGroupDirective([], []);
-  fgd.form = new FormGroup({});
+  fgd.form = new FormGroup(control);
   return fgd;
 }
 

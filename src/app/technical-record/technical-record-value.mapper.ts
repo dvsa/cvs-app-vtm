@@ -1,7 +1,8 @@
-import { AdrDetails } from './../models/adr-details';
+import { AdrDetails } from '../models/adr-details';
 import { Injectable } from '@angular/core';
 
 import { TechRecord } from '@app/models/tech-record.model';
+import { VehicleTechRecordEdit } from '@app/models/vehicle-tech-record.model';
 import { SelectOption } from '@app/models/select-option';
 import { NOTES, SUBSTANCES, MEMOS } from '@app/app.enums';
 import { DocumentMetaData } from '../models/document-meta-data';
@@ -10,15 +11,19 @@ import { DocumentMetaData } from '../models/document-meta-data';
 export class TechnicalRecordValuesMapper {
   constructor() {}
 
-  mapControlValuesToDataValues(techRecord: TechRecord): TechRecord {
+  mapControlValuesToDataValues(vehicleRecord): VehicleTechRecordEdit {
+    vehicleRecord.techRecord = this.mapToTechRecordAllowedValues(vehicleRecord);
+    return vehicleRecord;
+  }
+
+  private mapToTechRecordAllowedValues({ techRecord }: { techRecord: TechRecord }): TechRecord[] {
     techRecord.updateType = undefined;
     techRecord.adrDetails = this.mapToAdrAllowedValues(techRecord);
-
-    return techRecord;
+    return [techRecord];
   }
 
   private mapToAdrAllowedValues({ adrDetails }: { adrDetails?: AdrDetails }): AdrDetails {
-    if (!adrDetails) {
+    if (!adrDetails || !Object.keys(adrDetails).length) {
       return null;
     }
 

@@ -8,7 +8,10 @@ import { TechRecord } from '@app/models/tech-record.model';
 })
 export class VehicleSummaryComponent implements OnInit {
   @Input() activeRecord: TechRecord;
+  @Input() editState: boolean;
+
   vehicleClassDescription = '-';
+
   constructor() {}
 
   ngOnInit() {
