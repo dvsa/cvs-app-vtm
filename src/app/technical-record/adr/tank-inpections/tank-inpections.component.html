@@ -15,7 +15,7 @@
         <tbody class="govuk-table__body" *ngIf="showTankHistory; else noTankHistory">
           <tr class="govuk-table__row">
             <td id="test-tc2Type" class="govuk-table__cell">
-              {{ tankDetails?.tc2Details?.tc2Type | DefaultNullOrEmpty }}
+              {{ tankDetails?.tc2Details?.tc2Type | DefaultNullOrEmpty | titlecase }}
             </td>
 
             <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
@@ -31,7 +31,7 @@
             *ngFor="let tc3Details of tankDetails.tc3Details; let i = index"
           >
             <td id="test-tc3Type-{{ i }}" class="govuk-table__cell">
-              {{ tc3Details.tc3Type | DefaultNullOrEmpty }}
+              {{ tc3Details.tc3Type | DefaultNullOrEmpty | titlecase }}
             </td>
             <td id="test-tc3PeriodicNumber-{{ i }}" class="govuk-table__cell">
               {{ tc3Details.tc3PeriodicNumber | DefaultNullOrEmpty }}
