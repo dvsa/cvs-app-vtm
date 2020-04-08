@@ -1,11 +1,14 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
+  <div class="govuk-grid-column-three-quarters">
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
-        <div [formGroup]="technicalRecord">
+        <form [formGroup]="techRecordFg">
           <h2 class="govuk-heading-m">Applicant</h2>
 
-          <div class="govuk-form-group" formGroupName="applicant">
+          <ng-container
+            class="govuk-form-group"
+            [formGroup]="applicantDetails"
+          >
 
             <div class="govuk-form-group">
               <label class="govuk-label govuk-!-font-weight-bold" for="Name">
@@ -62,8 +65,10 @@
               </label>
               <input id="emailAddress" type="text" formControlName="emailAddress" class="govuk-input govuk-input--width-20" />
             </div>
-          </div>
-        </div>
+
+          </ng-container>
+
+        </form>
 
       </fieldset>
     </div>

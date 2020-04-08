@@ -27,7 +27,9 @@ import { VehicleSummaryComponent } from './vehicle-summary/vehicle-summary.compo
 import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-psv/vehicle-summary-psv.component';
 import { VehicleSummaryEditComponent } from './vehicle-summary/edit/vehicle-summary-edit.component';
 import { TypeApprovalComponent } from './vehicle-summary/edit/type-approval/type-approval.component';
+import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { BodyComponent } from './body/body.component';
+import { BodyEditComponent } from './body/edit/body-edit.component';
 import { BodyPsvComponent } from './body/body-psv/body-psv.component';
 import { NotesComponent } from './notes/notes.component';
 import { TechRecHistoryComponent } from './tech-rec-history/tech-rec-history.component';
@@ -40,7 +42,9 @@ import { TyresEditComponent } from './tyres/edit/tyres-edit.component';
 import { DimensionsComponent } from './dimensions/dimensions.component';
 import { DimensionsEditComponent } from './dimensions/edit/dimensions-edit.component';
 import { ApplicantComponent } from './applicant/applicant.component';
+import { ApplicantEditComponent } from './applicant/edit/applicant-edit.component';
 import { DocumentsComponent } from './documents/documents.component';
+import { DocumentsEditComponent } from './documents/edit/documents-edit.component';
 import { PlatesComponent } from './plates/plates.component';
 import { BrakesComponent } from './brakes/brakes.component';
 import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
@@ -51,13 +55,6 @@ import { LettersOfAuthorisationComponent } from './letters-of-authorisation/lett
 import { AxleBrakesComponent } from './brakes/axle-brakes/axle-brakes.component';
 import { DdaComponent } from './dda/dda.component';
 import { AdrModule } from './adr/adr.module';
-
-// ++++++++++++CLEAN UP THIS IMPORT AS WE PROGRESS WITH 10202 ticket +++++++++++++++++++++++++++++++++
-import { TechnicalRecordFieldsComponent } from './technical-record-fields/technical-record-fields.component';
-import { BodyFieldsComponent } from './technical-record-fields/body-fields/body-fields.component';
-import { ApplicantFieldsComponent } from './technical-record-fields/applicant-fields/applicant-fields.component';
-import { DocumentsFieldsComponent } from './technical-record-fields/documents-fields/documents-fields.component';
-import { NotesFieldsComponent } from './technical-record-fields/notes-fields/notes-fields.component';
 
 const routes: Routes = [
   {
@@ -75,6 +72,8 @@ const COMPONENTS = [
   VehicleSummaryPsvComponent,
   VehicleSummaryEditComponent,
   TypeApprovalComponent,
+  NotesEditComponent,
+  BodyEditComponent,
   BodyComponent,
   BodyPsvComponent,
   WeightsComponent,
@@ -88,7 +87,9 @@ const COMPONENTS = [
   TestHistoryComponent,
   TechRecHistoryComponent,
   ApplicantComponent,
+  ApplicantEditComponent,
   DocumentsComponent,
+  DocumentsEditComponent,
   PlatesComponent,
   BrakesComponent,
   BrakesPsvComponent,
@@ -97,14 +98,7 @@ const COMPONENTS = [
   AuthorisationIntoServiceComponent,
   LettersOfAuthorisationComponent,
   AxleBrakesComponent,
-  DdaComponent,
-
-  // +++++++ CLEAN UP FROM HERE ++++++++++++++++++
-  TechnicalRecordFieldsComponent,
-  BodyFieldsComponent,
-  ApplicantFieldsComponent,
-  DocumentsFieldsComponent,
-  NotesFieldsComponent
+  DdaComponent
 ];
 
 @NgModule({

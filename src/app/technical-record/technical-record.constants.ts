@@ -2,6 +2,8 @@ export const AXLENUMOPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const BOOLEANRADIOOPTIONS = { ['Yes']: true, ['No']: false };
 
+export const FUNCTIONOPTIONS = { ['Articulated']: 'a', ['Rigid']: 'r' };
+
 export const FUELPROPULSION = [
   'DieselPetrol',
   'Hybrid',
@@ -81,4 +83,75 @@ export const FITMENT_CODE = [
   'n',
   'p',
   'q'
+];
+
+export const BODY_TYPE_DESC = [
+  'articulated',
+  'single decker',
+  'double decker',
+  'other',
+  'petrol/oil tanker',
+  'skeletal',
+  'tipper',
+  'box',
+  'flat',
+  'refuse',
+  'skip loader',
+  'refrigerated'
+];
+
+export const MICROFILM_DOCUMENT_TYPE = [
+  'PSV Miscellaneous',
+  'AAT - Trailer Annual Test',
+  'AIV - HGV International App',
+  'COIF Modification',
+  'Trailer COC + Int Plate',
+  'RCT - Trailer Test Cert paid',
+  'HGV COC + Int Plate',
+  'PSV Carry/Auth, OMO Report',
+  'AIT - Trailer International App',
+  'IPV - HGV EEC Plate/Cert',
+  'XCV - HGV Test Cert free',
+  'AAV - HGV Annual Test',
+  'COIF Master',
+  'Tempo 100 Sp Ord',
+  'Deleted',
+  'PSV N/ALT',
+  'XPT - Tr Plating Cert paid',
+  'FFV - HGV First Test',
+  'Repl Vitesse 100',
+  'TCV - HGV Test Cert',
+  'ZZZ - Miscellaneous',
+  'Test Certificate',
+  'XCT - Trailer Test Cert free',
+  'C52 - COC and VTG52A',
+  'Tempo 100 Report',
+  'Main File Amendment',
+  'PSV Doc',
+  'PSV COC',
+  'PSV Repl COC',
+  'TAV - COC',
+  'NPT - Trailer Alteration',
+  'OMO Certificate',
+  'PSV Repl COIF',
+  'PSV Repl COF',
+  'COIF Application',
+  'XPV - HGV Plating Cert Free',
+  'TCT - Trailer Test Cert',
+  'Tempo 100 App',
+  'PSV Decision on N/ALT',
+  'Special Order PSV',
+  'NPV - HGV Alteration',
+  'No Description Found',
+  'Vitesse 100 Sp Ord',
+  'Brake Test Details',
+  'COIF Productional',
+  'RDT - Test Disc Paid',
+  'RCV - HGV Test Cert',
+  'FFT - Trailer First Test',
+  'IPT - Trailer EEC Plate/Cert',
+  'XDT - Test Disc Free',
+  'PRV - HGV Plating Cert paid',
+  'COF Cert, PRT - Tr Plating Cert paid',
+  'Tempo 100 Permit'
 ];

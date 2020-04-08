@@ -40,10 +40,7 @@
               Record completeness
             </span>
 
-            <span
-              id="test-record-completeness"
-              class="govuk-!-font-weight-regular govuk-!-font-size-19"
-            >
+            <span id="test-status" class="govuk-!-font-weight-regular govuk-!-font-size-19">
               {{ activeRecord.recordCompleteness | titlecase }}
             </span>
           </p>
@@ -154,7 +151,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-body [activeRecord]="activeRecord"></vtm-body>
+          <vtm-body
+            [activeRecord]="activeRecord"
+            [editState]="createState"
+          ></vtm-body>
         </mat-expansion-panel>
       </div>
 
@@ -482,7 +482,11 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-applicant [applicantDetails]="activeRecord.applicantDetails"></vtm-applicant>
+          <vtm-applicant
+            [applicantDetails]="activeRecord.applicantDetails"
+            [editState]="createState"
+          >
+          </vtm-applicant>
         </mat-expansion-panel>
       </div>
 
@@ -701,7 +705,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-documents [microfilm]="activeRecord.microfilm"></vtm-documents>
+          <vtm-documents
+            [microfilm]="activeRecord?.microfilm"
+            [editState]="createState"
+          ></vtm-documents>
         </mat-expansion-panel>
       </div>
 
@@ -744,7 +751,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-notes [activeRecord]="activeRecord"></vtm-notes>
+          <vtm-notes
+            [activeRecord]="activeRecord"
+            [editState]="createState"
+          ></vtm-notes>
         </mat-expansion-panel>
       </div>
 

@@ -137,3 +137,40 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
   </dl>
 </vtm-applicant>
 `;
+
+exports[`ApplicantComponent should render the edit components when editState is true 1`] = `
+<vtm-applicant
+  address1And2={[Function String]}
+  applicantDetails={[Function Object]}
+  editState={[Function Boolean]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-applicant-edit
+          ng-reflect-applicant="[object Object]"
+        >
+          <div>
+            Applicant details is: {
+    "name": "Ben",
+    "address1": "Garrets green",
+    "address2": "Birmingham",
+    "address3": "lala land",
+    "postCode": "NG4 12Z",
+    "postTown": "A town",
+    "telephoneNumber": "123123123",
+    "emailAddress": "test@test.com"
+  }
+          </div>
+        </vtm-applicant-edit>
+      </dt>
+    </div>
+  </dl>
+</vtm-applicant>
+`;

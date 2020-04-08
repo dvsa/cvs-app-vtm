@@ -89,6 +89,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     this.vehicleRecordFg = this.fb.group({
       techRecord: this.fb.group({})
     });
+
   }
 
   togglePanel() {

@@ -48,6 +48,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+     - 
     
     <div
       class="govuk-summary-list__row"
@@ -168,7 +169,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
         id="test-vehicleClassDescription"
       >
-         The first letter should be capital 
+         Motorbikes over 200cc 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -419,7 +420,8 @@ exports[`VehicleSummaryComponent should render the editable component if editSta
     "variantNumber": "123",
     "ntaNumber": "4566",
     "vehicleClass": {
-      "description": "the first letter should be capital"
+      "code": "2",
+      "description": "motorbikes over 200cc"
     },
     "axles": [
       {

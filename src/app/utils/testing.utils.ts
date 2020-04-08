@@ -349,7 +349,8 @@ function mockWeights(args?: Partial<Weights>): Weights {
 
 function mockBodyType(args?: Partial<BodyType>): BodyType {
   const mock: BodyType = {
-    description: 'the first letter should be capital'
+    code: 'a',
+    description: 'articulated'
   } as BodyType;
 
   return { ...mock, ...args };

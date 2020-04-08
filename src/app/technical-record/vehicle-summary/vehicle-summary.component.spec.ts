@@ -1,4 +1,4 @@
-import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 
 import { VehicleSummaryComponent } from '@app/technical-record/vehicle-summary/vehicle-summary.component';
@@ -9,7 +9,6 @@ import { TESTING_UTILS } from '../../utils/testing.utils';
 describe('VehicleSummaryComponent', () => {
   let component: VehicleSummaryComponent;
   let fixture: ComponentFixture<VehicleSummaryComponent>;
-  let injector: TestBed;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
@@ -18,13 +17,15 @@ describe('VehicleSummaryComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(VehicleSummaryComponent);
-    injector = getTestBed();
     component = fixture.componentInstance;
     component.activeRecord = TESTING_UTILS.mockTechRecord({
       approvalType: 'approval',
       variantNumber: '123',
       ntaNumber: '4566',
-      vehicleClass: TESTING_UTILS.mockBodyType()
+      vehicleClass: {
+        code: '2',
+        description: 'motorbikes over 200cc'
+      }
     });
     component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
   });
@@ -41,15 +42,9 @@ describe('VehicleSummaryComponent', () => {
     expect(component.axlesHasParkingBrakeMrk()).toBeTruthy();
   });
 
-  it('should check if axles has no parking brake mrk', () => {
-    expect(component.formatVehicleClassDescription()).toEqual(
-      'The first letter should be capital'
-    );
-  });
-
   it('should create format the vehicle class description', () => {
     fixture.detectChanges();
-    expect(component.vehicleClassDescription).toEqual('The first letter should be capital');
+    expect(component.vehicleClassDescription).toEqual('Motorbikes over 200cc');
   });
 
   it('should render the editable component if editState is true', () => {

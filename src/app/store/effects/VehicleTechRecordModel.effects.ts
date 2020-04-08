@@ -46,6 +46,8 @@ export class VehicleTechRecordModelEffects {
       EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll
     ),
     map((action) => action.payload),
+    // TODO: Needs refactoring with forkJoin or mergeMap to avoid nesting switchMap
+    // We make 2 calls to return vehicleTechRecord & the ones having all statuses
     switchMap((searchParams: SearchParams) =>
       this._technicalRecordService
         .getTechnicalRecordsAllStatuses(
