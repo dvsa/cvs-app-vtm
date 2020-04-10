@@ -3,7 +3,7 @@
   <tr class="govuk-table__row">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Length (mm)</th>
     <td id="test-length" class="govuk-table__cell">
-      {{ activeRecord.dimensions.length | DefaultNullOrEmpty }}
+      {{ activeRecord?.dimensions.length | DefaultNullOrEmpty }}
     </td>
     <th class="govuk-table__cell"></th>
     <th class="govuk-table__cell"></th>
@@ -15,14 +15,14 @@
   <tr class="govuk-table__row">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Width (mm)</th>
     <td id="test-width" class="govuk-table__cell">
-      {{ activeRecord.dimensions.width | DefaultNullOrEmpty }}
+      {{ activeRecord?.dimensions.width | DefaultNullOrEmpty }}
     </td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl' || activeRecord.vehicleType == 'hgv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to rear axle</th>
     <td id="test-frontAxleToRearAxle" class="govuk-table__cell">
       {{ activeRecord.frontAxleToRearAxle | DefaultNullOrEmpty }}
@@ -74,6 +74,22 @@
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
+  <!-- <ng-container *ngIf="activeRecord.vehicleType === 'hgv'">
+    <ng-container *ngFor="let item of axleSpacing;  let i = index;">
+      <ng-container *ngIf="index < axleSpacing.length">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__cell govuk-!-font-weight-bold"> Axle {{ axleSpacing[i].axles }} to {{ axleSpacing[i+1].axles }} (mm)</th>
+        <td id="test-axleSpacingItem-i" class="govuk-table__cell">
+          {{ item.value | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+      </ng-container>    
+    </ng-container>
+  </ng-container> -->
   <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
     <th class="govuk-table__cell govuk-!-font-weight-bold"> Coupling center to rear axle</th>
     <td id="test-couplingCenterToRearAxleMin" class="govuk-table__cell">

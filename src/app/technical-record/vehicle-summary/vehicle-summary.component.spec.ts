@@ -19,7 +19,7 @@ describe('VehicleSummaryComponent', () => {
   let component: VehicleSummaryComponent;
   let fixture: ComponentFixture<VehicleSummaryComponent>;
   let injector: TestBed;
-  let axles = [
+  const axles = [
     {
       parkingBrakeMrk: false,
       axleNumber: 1
@@ -64,7 +64,19 @@ describe('VehicleSummaryComponent', () => {
         { parkingBrakeMrk: false, axleNumber: 1 },
         { parkingBrakeMrk: true, axleNumber: 2 },
         { parkingBrakeMrk: false, axleNumber: 3 }
-      ]
+      ],
+      approvalType: 'NTA',
+      approvalTypeNumber: 'string',
+      ntaNumber: 'string',
+      variantNumber: '22',
+      variantVersionNumber: '3435',
+      fuelpropulsionsystem: 'DieselPetrol',
+      offRoad: true,
+      numberOfWheelsDriven: 8,
+      euVehicleCategory: 'm2',
+      emissionsLimit: 5,
+      departmentalVehicleMarker: false,
+      alterationMarker: true
     };
     component.axlesHasNoParkingBrakeMrk(axles);
 

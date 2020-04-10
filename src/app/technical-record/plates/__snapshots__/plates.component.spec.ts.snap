@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlatesComponent should create view only with populated data 1`] = `
+<vtm-plates
+  plates={[Function Array]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Serial number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-plate-plateSerialNumber"
+      >
+         123123 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Reason for creation
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-plate-plateReasonForIssue"
+      >
+         5678 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Created by
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-plate-plateIssuer"
+      >
+         Issuer1 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Created at
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-plate-plateIssueDate"
+      >
+         13/12/2019 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-plates>
+`;
