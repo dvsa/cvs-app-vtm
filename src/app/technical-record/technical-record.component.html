@@ -62,7 +62,6 @@
               <dd id="test-vin" class="govuk-summary-list__value">
                 {{ vehicleTechRecord.vin }}
               </dd>
-              <dd class="govuk-summary-list__value"></dd>
             </div>
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key main-details">
@@ -70,12 +69,11 @@
               </dt>
               <dd id="test-vrm" class="govuk-summary-list__value">
                 <div *ngIf="!techRecHelpers.isEmptyObject(vehicleTechRecord.vrms); else hyphen">
-                  <span *ngFor="let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: true">
+                  <p *ngFor="let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: true">
                     {{ vrmItem.vrm }}
-                  </span>
+                  </p>
                 </div>
               </dd>
-              <dd class="govuk-summary-list__value"></dd>
             </div>
             <div class="govuk-summary-list__row">
               <dt class="govuk-summary-list__key main-details">
@@ -89,17 +87,16 @@
                     else hyphen
                   "
                 >
-                  <span
+                  <p
                     *ngFor="
                       let vrmItem of vehicleTechRecord.vrms | IsPrimaryVrm: false;
                       let i = index
                     "
                   >
                     <span id="{{ 'test-vrm-' + i }}">{{ vrmItem.vrm }}</span>
-                  </span>
+                  </p>
                 </div>
               </dd>
-              <dd class="govuk-summary-list__value"></dd>
             </div>
           </dl>
         </div>

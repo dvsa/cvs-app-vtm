@@ -180,8 +180,7 @@ export class VehicleTechRecordModelEffects {
                * error not working properly yet
                */
               const errorMessage = error[0].message;
-              this._store.dispatch(new SetErrorMessage([errorMessage]));
-              return [];
+              return [new SetErrorMessage([errorMessage]), new SetViewState(VIEW_STATE.VIEW_ONLY)];
             })
           );
       }

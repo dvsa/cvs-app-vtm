@@ -109,9 +109,9 @@ export class TechnicalRecordComponent implements OnInit {
         }
       });
 
-      dialogRef.afterClosed().subscribe((reasonForChanges) => {
-        if (reasonForChanges) {
-          mergedRecord.reasonForCreation = reasonForChanges;
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result && result.isSave) {
+          mergedRecord.reasonForCreation = result.data;
           this.submitTechRecord.emit(mergedRecord);
         }
       });
