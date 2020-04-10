@@ -58,7 +58,7 @@ export class TechnicalRecordComponent implements OnInit {
     private dialog: MatDialog,
     private allowedValues: TechnicalRecordValuesMapper,
     public techRecHelpers: TechRecordHelpersService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.techRecord = new FormGroup({});
@@ -110,8 +110,10 @@ export class TechnicalRecordComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((reasonForChanges) => {
-        mergedRecord.reasonForCreation = reasonForChanges;
-        this.submitTechRecord.emit(mergedRecord);
+        if (reasonForChanges) {
+          mergedRecord.reasonForCreation = reasonForChanges;
+          this.submitTechRecord.emit(mergedRecord);
+        }
       });
     }
   }
