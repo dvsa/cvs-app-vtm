@@ -50,6 +50,21 @@
                   </div>
                   <div class="grid-item-technical-record-status"></div>
                 </div>
+                <div class="grid-container-technical-record-status">
+                  <div class="grid-item-technical-record-status rectangle"></div>
+                  <div
+                    class="grid-item-technical-record-status govuk-!-font-weight-bold govuk-!-font-size-19 "
+                  >
+                    Record completeness
+                  </div>
+                  <div
+                    id="record-completeness"
+                    class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value"
+                  >
+                    {{ activeRecord.recordCompleteness | titlecase }}
+                  </div>
+                  <div class="grid-item-technical-record-status"></div>
+                </div>
               </div>
             </div>
           </main>
@@ -384,11 +399,59 @@
           </div>
 
           <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #applicant
+              [(expanded)]="panels[6].isOpened" [@.disabled]="true">
+              <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
+                collapsedHeight="80px">
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Applicant
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon *ngIf="!applicant.expanded" id="test-fa-plus-applicant" [icon]="['fa', 'plus'] " size="lg"
+                      class="expander-icon"></fa-icon>
+                    <fa-icon *ngIf="applicant.expanded" id="test-fa-minus-applicant" [icon]="['fa', 'minus'] " size="lg"
+                      class="expander-icon"></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+  
+              <vtm-applicant [applicantDetails]="activeRecord.applicantDetails"></vtm-applicant>
+  
+            </mat-expansion-panel>
+          </div>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #documents
+              [(expanded)]="panels[7].isOpened" [@.disabled]="true">
+              <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
+                collapsedHeight="80px">
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Documents
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon *ngIf="!documents.expanded" id="test-fa-plus-documents" [icon]="['fa', 'plus'] " size="lg"
+                      class="expander-icon"></fa-icon>
+                    <fa-icon *ngIf="documents.expanded" id="test-fa-minus-documents" [icon]="['fa', 'minus'] " size="lg"
+                      class="expander-icon"></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+  
+              <vtm-documents [microfilm]="activeRecord.microfilm"></vtm-documents>
+  
+            </mat-expansion-panel>
+          </div>
+          <div class="auto-pad" [@.disabled]="true">
             <mat-expansion-panel
               class="custom-header mat-elevation-z0 "
               hideToggle="true"
               #notes
-              [(expanded)]="panels[6].isOpened"
+              [(expanded)]="panels[8].isOpened"
               [@.disabled]="true"
             >
               <mat-expansion-panel-header
@@ -431,7 +494,7 @@
               class="custom-header mat-elevation-z0 "
               hideToggle="true"
               #testHistory
-              [(expanded)]="panels[7].isOpened"
+              [(expanded)]="panels[9].isOpened"
               [@.disabled]="true"
             >
               <mat-expansion-panel-header
@@ -476,7 +539,7 @@
               class="custom-header mat-elevation-z0 "
               hideToggle="true"
               #techRecHistory
-              [(expanded)]="panels[8].isOpened"
+              [(expanded)]="panels[10].isOpened"
               [@.disabled]="true"
             >
               <mat-expansion-panel-header
@@ -513,6 +576,30 @@
               </mat-expansion-panel-header>
 
               <vtm-tech-rec-history [techRecordsJson]="vehicleTechRecord"></vtm-tech-rec-history>
+            </mat-expansion-panel>
+          </div>
+          <div class="auto-pad" [@.disabled]="true">
+            <mat-expansion-panel class="custom-header mat-elevation-z0 " hideToggle="true" #plates
+              [(expanded)]="panels[11].isOpened" [@.disabled]="true">
+              <mat-expansion-panel-header class="disable_ripple" [@.disabled]="true" expandedHeight="80px"
+                collapsedHeight="80px">
+                <mat-panel-title>
+                  <div class="item-technical-record govuk-!-font-weight-bold">
+                    Plates
+                  </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="expansion-icon">
+                    <fa-icon *ngIf="!plates.expanded" id="test-fa-plus-plates" [icon]="['fa', 'plus'] " size="lg"
+                      class="expander-icon"></fa-icon>
+                    <fa-icon *ngIf="plates.expanded" id="test-fa-minus-plates" [icon]="['fa', 'minus'] " size="lg"
+                      class="expander-icon"></fa-icon>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+  
+              <vtm-plates [plates] = "activeRecord.plates"></vtm-plates>
+  
             </mat-expansion-panel>
           </div>
         </mat-accordion>

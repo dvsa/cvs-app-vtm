@@ -1,0 +1,56 @@
+<ng-container>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Name</dt>
+      <dd id="test-applicantDetails-name" class="govuk-summary-list__value">
+        {{  applicantDetails?.name | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Building and street</dt>
+      <dd id="test-applicantDetails-address1And2" class="govuk-summary-list__value">
+        {{ address1And2 | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Town or city</dt>
+      <dd id="test-applicantDetails-postTown" class="govuk-summary-list__value">
+        {{ applicantDetails?.postTown | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">County</dt>
+      <dd id="test-applicantDetails-address3" class="govuk-summary-list__value">
+        {{ applicantDetails?.address3 | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Postcode</dt>
+      <dd id="test-applicantDetails-postCode" class="govuk-summary-list__value">
+        {{ applicantDetails?.postCode | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Telephone number</dt>
+      <dd id="test-applicantDetails-telephonenumber" class="govuk-summary-list__value">
+        {{ applicantDetails?.telephoneNumber | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Email address</dt>
+      <dd id="test-applicantDetails-emailAddress" class="govuk-summary-list__value">
+        {{ applicantDetails?.emailAddress | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>

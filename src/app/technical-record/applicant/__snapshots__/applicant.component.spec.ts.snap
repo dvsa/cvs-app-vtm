@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApplicantComponent should create view only with populated data 1`] = `
+<vtm-applicant
+  address1And2={[Function String]}
+  applicantDetails={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Name
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-name"
+      >
+         Ben 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Building and street
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-address1And2"
+      >
+         Robert green Birmingham 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Town or city
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-postTown"
+      >
+         lala land 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        County
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-address3"
+      >
+         MyCounty 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Postcode
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-postCode"
+      >
+         AC 123 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Telephone number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-telephonenumber"
+      >
+         0207777777 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Email address
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-applicantDetails-emailAddress"
+      >
+         test@test.com 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-applicant>
+`;
