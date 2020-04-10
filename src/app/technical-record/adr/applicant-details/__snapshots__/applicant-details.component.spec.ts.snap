@@ -14,7 +14,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
     <h2
       class="govuk-heading-m"
     >
-      Applicant details
+      Owner/operator details
     </h2>
     <dl
       class="govuk-summary-list"

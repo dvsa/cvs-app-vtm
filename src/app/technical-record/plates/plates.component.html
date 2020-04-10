@@ -1,0 +1,36 @@
+<table class="govuk-table t-history">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Serial number</th>
+        <th scope="col" class="govuk-table__header">Reason for creation</th>
+        <th scope="col" class="govuk-table__header">Created by</th>
+        <th scope="col" class="govuk-table__header">Created at</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body" *ngIf="plates; else noPlates">
+      <tr class="govuk-table__row" *ngFor="let plate of plates | SortByDatePipe: 'plateIssueDate'">
+        <td id="test-plate-plateSerialNumber" class="govuk-table__cell">
+            {{ plate.plateSerialNumber | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-plate-plateReasonForIssue" class="govuk-table__cell">
+            {{ plate.plateReasonForIssue | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-plate-plateIssuer" class="govuk-table__cell">
+            {{ plate.plateIssuer | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-plate-plateIssueDate" class="govuk-table__cell">
+            {{ plate.plateIssueDate | DefaultNullOrEmpty }}
+        </td>
+      </tr>
+    </tbody>
+    <ng-template #noPlates>
+      <tbody class="govuk-table__body">
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </ng-template>
+  </table>
+  

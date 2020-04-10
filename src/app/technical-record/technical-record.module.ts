@@ -31,6 +31,9 @@ import { TestHistoryComponent } from './test-history/test-history.component';
 import { TyresComponent } from './tyres/tyres.component';
 import { VehicleSummaryComponent } from './vehicle-summary/vehicle-summary.component';
 import { WeightsComponent } from './weights/weights.component';
+import { ApplicantComponent } from './applicant/applicant.component';
+import { DocumentsComponent } from './documents/documents.component';
+import { PlatesComponent } from './plates/plates.component';
 
 import { AdrModule } from './adr/adr.module';
 import { TechnicalRecordsContainer } from './technical-record.container';
@@ -66,7 +69,10 @@ import { TechnicalRecordsContainer } from './technical-record.container';
     DimensionsComponent,
     NotesComponent,
     TestHistoryComponent,
-    TechRecHistoryComponent
+    TechRecHistoryComponent,
+    ApplicantComponent,
+    DocumentsComponent,
+    PlatesComponent
   ],
   exports: [TechnicalRecordsContainer, TechnicalRecordComponent]
 })
