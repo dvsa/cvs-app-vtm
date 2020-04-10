@@ -1,4 +1,3 @@
-import { TechRecord } from './../models/tech-record.model';
 import { FormGroupDirective, FormGroup } from '@angular/forms';
 
 import {
@@ -7,6 +6,7 @@ import {
   VehicleDetails,
   AdditionalNotes
 } from './../models/adr-details';
+import { TechRecord, Applicant, Microfilm, Plate } from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
 
@@ -32,7 +32,10 @@ export const TESTING_UTILS = {
   mockTc2Details,
   mockTc3Details,
   mockMetaData,
-  mockTechRecord
+  mockTechRecord,
+  mockApplicant,
+  mockMicrofilm,
+  mockPlates
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -180,4 +183,37 @@ function mockMetaData(): MetaData {
       }
     }
   };
+}
+
+function mockApplicant(args?: Partial<Applicant>): Applicant {
+  const mock: Applicant = {
+    name: 'Ben',
+    address1: 'Robert green',
+    address2: 'Birmingham',
+    postTown: 'lala land',
+    address3: 'MyCounty',
+    postCode: 'AC 123',
+    emailAddress: 'test@test.com',
+    telephoneNumber: '0207777777'
+  };
+  return { ...mock, ...args };
+}
+
+function mockMicrofilm(args?: Partial<Microfilm>): Microfilm {
+  const mock: Microfilm = {
+    microfilmDocumentType: 'PSV Miscellaneous',
+    microfilmRollNumber: '1234',
+    microfilmSerialNumber: '5678'
+  };
+  return { ...mock, ...args };
+}
+
+function mockPlates(args?: Partial<Plate>): Plate {
+  const mock: Plate = {
+    plateSerialNumber: '123123',
+    plateIssueDate: '2019-12-13',
+    plateReasonForIssue: '5678',
+    plateIssuer: 'Issuer1'
+  };
+  return { ...mock, ...args };
 }

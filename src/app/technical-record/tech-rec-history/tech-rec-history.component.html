@@ -5,6 +5,8 @@
       <th scope="col" class="govuk-table__header">Reason for creation</th>
       <th scope="col" class="govuk-table__header">Created by</th>
       <th scope="col" class="govuk-table__header">Created at</th>
+      <th scope="col" class="govuk-table__header">Last updated by</th>
+      <th scope="col" class="govuk-table__header">Last updated at</th>
       <th scope="col" class="govuk-table__header"></th>
       <th scope="col" class="govuk-table__header"></th>
     </tr>
@@ -30,6 +32,12 @@
         <span *ngIf="techRec.createdAt; else hyphen">
           {{ techRec.createdAt | date: 'dd/MM/yyyy' }}
         </span>
+      </td>
+      <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
+        {{ techRec.lastUpdatedByName | DefaultNullOrEmpty | titlecase }}
+      </td>
+      <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
+        {{ techRec.lastUpdatedAt | DefaultNullOrEmpty }}
       </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>

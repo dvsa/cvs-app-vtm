@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlatesComponent should create view only with populated data 1`] = `
+<vtm-plates
+  plates={[Function Array]}
+>
+  <table
+    class="govuk-table t-history"
+  >
+    <thead
+      class="govuk-table__head"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Serial number
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Reason for creation
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Created by
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Created at
+        </th>
+      </tr>
+    </thead>
+    
+    <tbody
+      class="govuk-table__body"
+    >
+      
+      <tr
+        class="govuk-table__row"
+      >
+        <td
+          class="govuk-table__cell"
+          id="test-plate-plateSerialNumber"
+        >
+           123123 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-plate-plateReasonForIssue"
+        >
+           5678 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-plate-plateIssuer"
+        >
+           Issuer1 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-plate-plateIssueDate"
+        >
+           2019-12-13 
+        </td>
+      </tr>
+    </tbody>
+    
+  </table>
+</vtm-plates>
+`;
