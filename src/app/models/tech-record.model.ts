@@ -1,7 +1,7 @@
 import { AdrDetails } from '@app/models/adr-details';
 import { BodyType } from './body-type';
 
-interface ApplicantDetails {
+export interface Applicant {
   name: string;
   address1: string;
   address2: string;
@@ -12,25 +12,25 @@ interface ApplicantDetails {
   telephoneNumber: string;
 }
 
-interface Microfilm {
+export interface Microfilm {
   microfilmDocumentType: string;
   microfilmRollNumber: string;
   microfilmSerialNumber: string;
 }
 
-interface Plate {
+export interface Plate {
   plateSerialNumber: string;
   plateIssueDate: string;
   plateReasonForIssue: string;
   plateIssuer: string;
 }
 
-interface AxleSpacing {
+export interface AxleSpacing {
   axles: string;
   value: number;
 }
 
-interface Dimensions {
+export interface Dimensions {
   length: number;
   width: number;
   axleSpacing: AxleSpacing[];
@@ -97,6 +97,7 @@ interface Axle {
 export interface TechRecord {
   createdAt: string;
   lastUpdatedAt: string;
+  recordCompleteness: string;
   make: string;
   model: string;
   functionCode: string;
@@ -114,7 +115,7 @@ export interface TechRecord {
   grossEecWeight: number;
   trainEecWeight: number;
   maxTrainEecWeight: number;
-  applicantDetails: ApplicantDetails;
+  applicantDetails: Applicant;
   microfilm: Microfilm;
   plates: Plate[];
   chassisMake: string;

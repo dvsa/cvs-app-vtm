@@ -41,7 +41,9 @@ export class TechnicalRecordComponent implements OnInit {
     { panel: 'panel7', isOpened: false },
     { panel: 'panel8', isOpened: false },
     { panel: 'panel9', isOpened: false },
-    { panel: 'panel10', isOpened: false }
+    { panel: 'panel10', isOpened: false },
+    { panel: 'panel11', isOpened: false },
+    { panel: 'panel12', isOpened: false }
   ];
 
   @Input() vehicleTechRecord: VehicleTechRecordModel;
