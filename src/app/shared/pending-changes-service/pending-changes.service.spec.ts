@@ -22,8 +22,8 @@ describe('PendingChangesService', () => {
     dialog = injector.get(MatDialog);
   });
 
-  it('should be created', inject([PendingChangesService], (service: PendingChangesService) => {
-    expect(service).toBeTruthy();
+  it('should be created', inject([PendingChangesService], (pendingChangesService: PendingChangesService) => {
+    expect(pendingChangesService).toBeTruthy();
   }));
 
   describe('confirm', () => {

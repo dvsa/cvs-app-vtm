@@ -23,7 +23,6 @@ describe('TechnicalRecordSearchComponent', () => {
   let fixture: ComponentFixture<TechnicalRecordCreateComponent>;
   let store: Store<IAppState>;
   let injector: TestBed;
-  let timerCallback;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

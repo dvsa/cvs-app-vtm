@@ -12,8 +12,11 @@ export function delayedRetry(): ((param: Observable<any>) => Observable<any>) {
   return (source: Observable<any>) => source.pipe(
     retryWhen((errors: Observable<any>) => errors.pipe(
       switchMap((res: any) => {
-        if (res.status < 500 && res.status !== 0) { return throwError(res) }
-        else { return of(res) }
+        if (res.status < 500 && res.status !== 0) {
+          return throwError(res);
+        } else {
+          return of(res);
+        }
       }),
       delay(defaultDelay),
       mergeMap(error => retries-- > 0 ? of(error) : throwError(getErrorMessage))
