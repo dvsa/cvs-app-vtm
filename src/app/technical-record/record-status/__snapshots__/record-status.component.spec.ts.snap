@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecordStatusComponent should create view only with populated data 1`] = `
+<test-vtm-record-status
+  activeRecord={[Function Object]}
+  editState="false"
+  scrollSectionHandler={[Function Function]}
+>
+  <vtm-record-status
+    ng-reflect-active-record="[object Object]"
+    ng-reflect-edit-state="false"
+  >
+    
+    
+    <div
+      class="govuk-inset-text govuk-!-margin-top-2"
+    >
+      <div
+        class="govuk-!-padding-top-1"
+      >
+        <p>
+          <span
+            class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2"
+          >
+             Status 
+          </span>
+          <span
+            class="govuk-!-font-weight-regular govuk-!-font-size-19"
+            id="test-status"
+          >
+             Current 
+          </span>
+        </p>
+        <p>
+          <a
+            class="govuk-link"
+            href="javascript:void(0)"
+            id="test-scroll-to-section"
+          >
+            Technical record history
+          </a>
+        </p>
+        <p>
+          <span
+            class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2"
+          >
+             Record completeness 
+          </span>
+          <span
+            class="govuk-!-font-weight-regular govuk-!-font-size-19"
+            id="test-record-completeness"
+          >
+             Skeleton - not enough information to perform a vehicle test 
+          </span>
+        </p>
+      </div>
+    </div>
+    
+  </vtm-record-status>
+</test-vtm-record-status>
+`;
+
+exports[`RecordStatusComponent should render the editable component if editState is true 1`] = `
+<test-vtm-record-status
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+  scrollSectionHandler={[Function Function]}
+>
+  <vtm-record-status
+    ng-reflect-active-record="[object Object]"
+    ng-reflect-edit-state="true"
+  >
+    
+    
+    
+    <vtm-record-status-edit
+      ng-reflect-tech-record="[object Object]"
+    >
+      <div>
+        active record {
+    "statusCode": "current",
+    "recordCompleteness": "skeleton"
+  }
+      </div>
+    </vtm-record-status-edit>
+  </vtm-record-status>
+</test-vtm-record-status>
+`;

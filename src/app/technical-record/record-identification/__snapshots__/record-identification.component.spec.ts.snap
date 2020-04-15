@@ -185,9 +185,11 @@ exports[`RecordIdentificationComponent should render the editable component if e
   editState={[Function Boolean]}
   isTrailer="false"
   vehicleTechRecord={[Function Object]}
+  viewState={[Function Number]}
 >
   <vtm-record-identification-edit
     ng-reflect-primary-vrm="LKJH654"
+    ng-reflect-view-state="2"
     ng-reflect-vin="ABCDEFGH654321"
   >
     <div>
@@ -195,6 +197,9 @@ exports[`RecordIdentificationComponent should render the editable component if e
     </div>
     <div>
       Primary Vrm is LKJH654
+    </div>
+    <div>
+      View State is 2 Create state (2)
     </div>
   </vtm-record-identification-edit>
 </vtm-record-identification>
