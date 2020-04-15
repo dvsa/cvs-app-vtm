@@ -1,11 +1,9 @@
 export enum EU_VEHICLE_CATEGORY_PSV {
-  M1 = 'M1',
   M2 = 'M2',
   M3 = 'M3'
 }
 
 export enum EU_VEHICLE_CATEGORY_HGV {
-  N1 = 'N1',
   N2 = 'N2',
   N3 = 'N3'
 }
@@ -15,6 +13,14 @@ export enum EU_VEHICLE_CATEGORY_TRL {
   O2 = 'O2',
   O3 = 'O3',
   O4 = 'O4'
+}
+
+export enum EU_VEHICLE_CATEGORY_CAR {
+  M1 = 'M1'
+}
+
+export enum EU_VEHICLE_CATEGORY_LGV {
+  N1 = 'N1'
 }
 
 export enum ODOMETER_READING_UNITS {

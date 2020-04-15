@@ -14,7 +14,7 @@ exports[`AccordionItemComponent should create 1`] = `
         class="govuk-accordion__section-heading"
       >
         <span
-          class="govuk-link govuk-!-font-size-36"
+          class="govuk-link govuk-!-font-size-36 govuk-!-font-weight-bold"
         >
           
         </span>

@@ -40,12 +40,12 @@ exports[`VisitEditComponent should create 1`] = `
                   class="ng-untouched ng-pristine ng-valid"
                   formcontrolname="testStationNameNumber"
                   id="testStationNameNumber"
-                  ng-reflect-autocomplete-data="undefined (1)"
+                  ng-reflect-autocomplete-data=" (1)"
                   ng-reflect-name="testStationNameNumber"
                   ngdefaultcontrol=""
                 >
                   <div>
-                    undefined (1)
+                     (1)
                   </div>
                 </vtm-autocomplete>
               </div>
