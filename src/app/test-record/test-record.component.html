@@ -4,7 +4,7 @@
   <main class="govuk-main-wrapper">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <h1 class="govuk-heading-xl test-heading" id="test-heading">Test record</h1>
+        <h1 class="govuk-heading-xl" id="test-heading">Test record</h1>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
         <div class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0">
           <button
             id="test-change-test-record"
-            class="govuk-button govuk-button--secondary"
+            class="govuk-button govuk-button--secondary govuk-!-padding-left-3 govuk-!-padding-right-3"
             data-module="govuk-button"
             (click)="switchCurrentState('edit')"
           >
@@ -26,7 +26,7 @@
         <div class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0">
           <button
             id="test-save-test-record"
-            class="govuk-button"
+            class="govuk-button govuk-!-padding-left-3 govuk-!-padding-right-3"
             data-module="govuk-button"
             (click)="onSaveTestResult(testResultParentForm)"
           >
@@ -36,11 +36,11 @@
       </ng-container>
       <div
         *ngIf="editState"
-        class="govuk-grid-column-one-quarter govuk-!-margin-top-2 govuk-!-margin-left-0 govuk-!-padding-left-0"
+        class="govuk-grid-column-one-quarter govuk-!-margin-top-1 govuk-!-margin-left-0 govuk-!-padding-left-0"
       >
         <a
           id="test-cancel-edit"
-          class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-2"
+          class="govuk-link govuk-link--no-visited-state govuk-!-margin-left-2 govuk-!-font-size-19"
           (click)="switchCurrentState('view')"
           href="javascript:void(0)"
           >Cancel</a
@@ -49,7 +49,7 @@
       <div class="govuk-grid-column-one-quarter govuk-!-margin-left-0 govuk-!-padding-left-0">
         <button
           id="test-view-certificate"
-          class="govuk-button govuk-button--secondary"
+          class="govuk-button govuk-button--secondary govuk-!-padding-left-3 govuk-!-padding-right-3"
           data-module="govuk-button"
           (click)="downloadCertificate()"
         >

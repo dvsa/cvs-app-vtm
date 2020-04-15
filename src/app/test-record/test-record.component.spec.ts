@@ -8,7 +8,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
+import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 import { VIEW_STATE } from '@app/app.enums';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
@@ -30,7 +30,10 @@ describe('TestRecordComponent', () => {
     testType: TEST_MODEL_UTILS.mockTestType()
   };
   const testResultParentForm = new FormGroup({
-    testTypes: new FormGroup({ testTypeId: new FormControl('1') })
+    testType: new FormGroup({
+      testTypeId: new FormControl('1'),
+      reasonsForAbandoning: new FormControl(['true'])
+    })
   });
 
   beforeEach(async(() => {
@@ -84,7 +87,7 @@ describe('TestRecordComponent', () => {
   it('should make the call to save test results', () => {
     const formRawValue = testResultParentForm.getRawValue();
     component.onSaveTestResult(testResultParentForm);
-    expect(formRawValue).toMatchObject({ testTypes: { testTypeId: '1' } });
+    expect(formRawValue).toMatchObject({ testType: { testTypeId: '1' } });
   });
 
   it('should emit on download certificate', () => {

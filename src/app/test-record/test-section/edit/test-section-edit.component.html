@@ -1,0 +1,245 @@
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test type
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testTypeName">
+      {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}
+    </dd>
+    <dd class="govuk-summary-list__actions">
+      <a
+        class="govuk-link govuk-!-font-size-19"
+        (click)="onChangeTestType()"
+        href="javascript:void(0)"
+      >
+        <span>Change</span>
+      </a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test code
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testCode">
+      {{ testType.testCode | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test number
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-testNumber">
+      {{ testType.testNumber | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+</dl>
+
+<form formGroupName="testType">
+  <div class="govuk-grid-row govuk-!-margin-bottom-3">
+    <div class="govuk-grid-column-full">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Result
+      </label>
+      <div class="govuk-radios">
+        <div class="govuk-radios__item" *ngFor="let res of resultOptions">
+          <input
+            class="govuk-radios__input"
+            id="{{ 'test-testResult-' + res }}"
+            type="radio"
+            formControlName="testResult"
+            value="{{ res | lowercase }}"
+            [checked]="
+              testType.testResult !== 'prs'
+                ? (testType.testResult | titlecase) === res
+                : (testType.testResult | uppercase) === res
+            "
+          />
+          <label class="govuk-label govuk-radios__label">
+            {{ res }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isAbandoned" class="govuk-grid-row govuk-!-margin-bottom-5">
+    <div class="govuk-grid-column-full">
+      <div class="govuk-inset-text govuk-!-margin-bottom-0 govuk-!-padding-bottom-0">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <h4 class="govuk-heading-s">Reason for abandoning</h4>
+
+            <div class="govuk-checkboxes">
+              <div
+                *ngFor="let reason of reasonForAbandoning.controls; let i = index"
+                class="govuk-checkboxes__item"
+                formGroupName="reasonForAbandoning"
+              >
+                <input
+                  class="govuk-checkboxes__input"
+                  id="test-reason-{{ i }}"
+                  type="checkbox"
+                  [formControl]="reason"
+                  [value]="this.reasonsForAbandoningOptions[i].selected"
+                />
+                <label class="govuk-label govuk-checkboxes__label">
+                  <span>{{ this.reasonsForAbandoningOptions[i].name }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="govuk-grid-row govuk-!-margin-top-7">
+          <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-form-group">
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="additionalCommentsForAbandon"
+              >
+                Additional details for abandoning
+              </label>
+              <span id="additionalCommentsForAbandon" class="govuk-hint">
+                Notes about the reason for abandoning should be displayed here...
+              </span>
+              <textarea
+                class="govuk-textarea"
+                id="more-detail"
+                formControlName="additionalCommentsForAbandon"
+                rows="5"
+                aria-describedby="additionalCommentsForAbandon"
+                >{{ testType.additionalCommentsForAbandon }}</textarea
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="testTypesApplicable.certificateApplicable[testType.testTypeId]"
+    class="govuk-grid-row govuk-!-margin-bottom-7"
+  >
+    <div class="govuk-grid-column-one-half">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Certificate number
+      </label>
+      <input
+        class="govuk-input"
+        id="test-certificateNumber"
+        formControlName="certificateNumber"
+        type="text"
+      />
+    </div>
+  </div>
+
+  <div
+    *ngIf="testTypesApplicable.expiryDateApplicable[testType.testTypeId]"
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Expiry Date
+      </label>
+      <vtm-date-input
+        id="test-testExpiryDate"
+        ariaDescribedBy="testExpiryDate"
+        formControlName="testExpiryDate"
+        ngDefaultControl
+      >
+      </vtm-date-input>
+    </div>
+  </div>
+
+  <div
+    *ngIf="testTypesApplicable.anniversaryDateApplicable[testType.testTypeId]"
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Anniversary Date
+      </label>
+      <vtm-date-input
+        id="test-testAnniversaryDate"
+        ariaDescribedBy="testAnniversaryDate"
+        formControlName="testAnniversaryDate"
+        ngDefaultControl
+      >
+      </vtm-date-input>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-3">
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Test date
+      </label>
+      <vtm-date-input
+        id="test-testTypeEndTimestampDate"
+        ariaDescribedBy="testTypeEndTimestampDate"
+        formControlName="testTypeEndTimestampDate"
+        ngDefaultControl
+      >
+      </vtm-date-input>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-3">
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Start time
+      </label>
+      <vtm-time-input
+        id="test-testTypeStartTimestamp"
+        ariaDescribedBy="testTypeStartTimestamp"
+        formControlName="testTypeStartTimestamp"
+        ngDefaultControl
+      >
+      </vtm-time-input>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-3">
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        End time
+      </label>
+      <vtm-time-input
+        id="test-testTypeEndTimestampTime"
+        ariaDescribedBy="testTypeEndTimestampTime"
+        formControlName="testTypeEndTimestampTime"
+        ngDefaultControl
+      >
+      </vtm-time-input>
+    </div>
+  </div>
+
+  <div
+    *ngIf="testTypesApplicable.defectsApplicable[testType.testTypeId]"
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+  >
+    <div class="govuk-grid-column-full">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Prohibition Issued
+      </label>
+      <div class="govuk-radios">
+        <div class="govuk-radios__item" *ngFor="let option of prohibitionOptions">
+          <input
+            class="govuk-radios__input"
+            id="test-prohibitionIssued-{{ option.id }}"
+            formControlName="prohibitionIssued"
+            type="radio"
+            value="{{ option.selected }}"
+            [checked]="option.selected"
+          />
+          <label class="govuk-label govuk-radios__label">
+            {{ option.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

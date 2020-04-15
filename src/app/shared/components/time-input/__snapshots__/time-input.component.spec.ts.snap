@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimeInputComponent should create 1`] = `
+<test-time-input
+  testTimeControl={[Function FormControl]}
+>
+  <form
+    class="ng-untouched ng-pristine ng-valid"
+    novalidate=""
+  >
+    <vtm-time-input
+      aria-describedby="test"
+      class="ng-untouched ng-pristine ng-valid"
+      name="time"
+      ng-reflect-aria-described-by="test"
+      ng-reflect-form="[object Object]"
+      ng-reflect-id="testTime"
+    >
+      
+      <div
+        class="govuk-date-input"
+      >
+        <div
+          class="govuk-date-input__item"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-date-input__label"
+              for="testTime-1-hour"
+            >
+               Hour 
+            </label>
+            <input
+              aria-describedby="test"
+              autocomplete="off"
+              class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+              formcontrolname="hour"
+              id="testTime-1-hour"
+              maxlength="2"
+              name="hour"
+              ng-reflect-maxlength="2"
+              ng-reflect-name="hour"
+              ng-reflect-pattern="[0-9]*"
+              pattern="[0-9]*"
+              type="number"
+            />
+          </div>
+        </div>
+        <div
+          class="govuk-date-input__item"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-date-input__label"
+              for="testTime-1-minute"
+            >
+               Minute 
+            </label>
+            <input
+              autocomplete="off"
+              class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+              formcontrolname="minute"
+              id="testTime-1-minute"
+              maxlength="2"
+              name="minute"
+              ng-reflect-maxlength="2"
+              ng-reflect-name="minute"
+              ng-reflect-pattern="[0-9]*"
+              pattern="[0-9]*"
+              type="number"
+            />
+          </div>
+        </div>
+      </div>
+    </vtm-time-input>
+  </form>
+</test-time-input>
+`;
