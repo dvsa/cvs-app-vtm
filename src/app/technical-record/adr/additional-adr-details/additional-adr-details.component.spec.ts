@@ -21,12 +21,15 @@ describe('AdditionalAdrDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdditionalAdrDetailsComponent);
     component = fixture.componentInstance;
+    component.adrDetails = {
+      additionalExaminerNotes: 'some notes!!!',
+      adrCertificateNotes: 'some certificate notes!'
+    } as AdrDetails;
+    fixture.detectChanges();
   });
 
   it('should create view only with populated data', () => {
     component.edit = false;
-    component.adrDetails = TESTING_UTILS.mockAdrDetails();
-    fixture.detectChanges();
 
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
@@ -34,8 +37,6 @@ describe('AdditionalAdrDetailsComponent', () => {
 
   it('should render the editable component if edit is true', () => {
     component.edit = true;
-    component.adrDetails = { additionalExaminerNotes: 'some notes!!!' } as AdrDetails;
-    fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
   });

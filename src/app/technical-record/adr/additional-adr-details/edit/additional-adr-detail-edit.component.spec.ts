@@ -28,7 +28,9 @@ describe('AdditionalAdrDetailEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdditionalAdrDetailEditComponent);
     component = fixture.componentInstance;
-    component.adrDetails = TESTING_UTILS.mockAdrDetails();
+    component.adrDetails = TESTING_UTILS.mockAdrDetails({
+      adrCertificateNotes: 'certificate 1'
+    });
     fixture.detectChanges();
   });
 
