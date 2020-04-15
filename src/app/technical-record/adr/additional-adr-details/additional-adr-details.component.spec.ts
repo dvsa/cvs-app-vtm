@@ -25,11 +25,11 @@ describe('AdditionalAdrDetailsComponent', () => {
       additionalExaminerNotes: 'some notes!!!',
       adrCertificateNotes: 'some certificate notes!'
     } as AdrDetails;
-    fixture.detectChanges();
   });
 
   it('should create view only with populated data', () => {
     component.edit = false;
+    fixture.detectChanges();
 
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
@@ -37,6 +37,7 @@ describe('AdditionalAdrDetailsComponent', () => {
 
   it('should render the editable component if edit is true', () => {
     component.edit = true;
+    fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
   });

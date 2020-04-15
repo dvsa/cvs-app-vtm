@@ -31,7 +31,7 @@ exports[`CertificateEditComponent should create with initialized form controls 1
             <h2
               class="govuk-heading-m"
             >
-              Certificate required
+              Certificate required (optional)
             </h2>
             <div
               class="govuk-radios govuk-radios--inline ng-untouched ng-pristine ng-valid"

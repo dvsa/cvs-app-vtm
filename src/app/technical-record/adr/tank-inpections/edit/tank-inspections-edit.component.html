@@ -34,7 +34,7 @@
                   <!-- Inspection type -->
                   <div class="govuk-form-group govuk-!-margin-left-3">
                     <label for="tc3Type-{{ i }}" class="govuk-label govuk-!-font-weight-bold">
-                      Inspection type
+                      Inspection type (optional)
                     </label>
                     <select
                       id="tc3Type-{{ i }}"
@@ -90,7 +90,7 @@
                   class="govuk-label govuk-!-font-weight-bold"
                   for="{{ tcDetail.certificateNumber }}{{ tcDetail.index }}"
                 >
-                  Certificate number
+                  Certificate number (optional)
                 </label>
                 <input
                   id="{{ tcDetail.certificateNumber }}{{ tcDetail.index }}"
@@ -108,7 +108,7 @@
                     class="govuk-label govuk-!-font-weight-bold"
                     for="{{ tcDetail.expiryDate }}{{ tcDetail.index }}"
                   >
-                    Expiry date
+                    Expiry date (optional)
                   </label>
                   <vtm-date-input
                     id="{{ tcDetail.expiryDate }}{{ tcDetail.index }}"

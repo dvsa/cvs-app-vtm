@@ -17,7 +17,7 @@
                   class="govuk-checkboxes__input"
                 />
                 <label for="brakeDeclarationsSeen" class="govuk-label govuk-checkboxes__label">
-                  Manufacturer brake declaration
+                  Manufacturer brake declaration (optional)
                 </label>
               </div>
               <!-- Issuer -->
@@ -31,7 +31,9 @@
                 <ng-container
                   *ngTemplateOutlet="
                     declarationInput;
-                    context: { $implicit: { input: 'brakeDeclarationIssuer', label: 'Issuer' } }
+                    context: {
+                      $implicit: { input: 'brakeDeclarationIssuer', label: 'Issuer (optional)' }
+                    }
                   "
                 ></ng-container>
 
@@ -45,7 +47,7 @@
                     class="govuk-checkboxes__input"
                   />
                   <label for="brakeEndurance" class="govuk-label govuk-checkboxes__label">
-                    Brake endurance
+                    Brake endurance (optional)
                   </label>
                 </div>
                 <!-- Weight(kg) -->
@@ -75,7 +77,7 @@
                   class="govuk-checkboxes__input"
                 />
                 <label for="declarationsSeen" class="govuk-label govuk-checkboxes__label">
-                  Owner/operator declaration
+                  Owner/operator declaration (optional)
                 </label>
               </div>
             </div>

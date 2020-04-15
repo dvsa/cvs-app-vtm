@@ -74,7 +74,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="tc2IntermediateApprovalNo"
                   >
-                     Certificate number 
+                     Certificate number (optional) 
                   </label>
                   <input
                     class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
@@ -96,7 +96,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                       class="govuk-label govuk-!-font-weight-bold"
                       for="tc2IntermediateExpiryDate"
                     >
-                       Expiry date 
+                       Expiry date (optional) 
                     </label>
                     <vtm-date-input
                       ariadescribedby="tcDetail.expiryDate"
@@ -219,7 +219,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                       class="govuk-label govuk-!-font-weight-bold"
                       for="tc3Type-0"
                     >
-                       Inspection type 
+                       Inspection type (optional) 
                     </label>
                     <select
                       class="govuk-select govuk-!-width-one-half ng-untouched ng-pristine ng-valid"
@@ -256,7 +256,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                       class="govuk-label govuk-!-font-weight-bold"
                       for="tc3PeriodicNumber-01"
                     >
-                       Certificate number 
+                       Certificate number (optional) 
                     </label>
                     <input
                       class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
@@ -278,7 +278,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                         class="govuk-label govuk-!-font-weight-bold"
                         for="tc3PeriodicExpiryDate-01"
                       >
-                         Expiry date 
+                         Expiry date (optional) 
                       </label>
                       <vtm-date-input
                         ariadescribedby="tcDetail.expiryDate"
