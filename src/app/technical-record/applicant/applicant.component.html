@@ -1,9 +1,9 @@
-<ng-container>
+<ng-container *ngIf="!editState">
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Name</dt>
       <dd id="test-applicantDetails-name" class="govuk-summary-list__value">
-        {{  applicantDetails?.name | DefaultNullOrEmpty }}
+        {{ applicantDetails?.name | DefaultNullOrEmpty }}
       </dd>
       <dd class="govuk-summary-list__value"></dd>
     </div>
@@ -51,6 +51,16 @@
         {{ applicantDetails?.emailAddress | DefaultNullOrEmpty }}
       </dd>
       <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-container *ngIf="editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-applicant-edit [applicant]="applicantDetails"></vtm-applicant-edit>
+      </dt>
     </div>
   </dl>
 </ng-container>

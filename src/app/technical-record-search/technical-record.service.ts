@@ -10,8 +10,10 @@ import { IAppState } from '@app/store/state/app.state';
 import { LoadingTrue, LoadingFalse } from '@app/store/actions/Loader.actions';
 import { SetErrorMessage, ClearErrorMessage } from './../store/actions/Error.actions';
 import { DocumentInfo, DocumentMetaData } from '@app/models/document-meta-data';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
-import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
+import {
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
@@ -54,7 +56,7 @@ export class TechnicalRecordService {
   }
 
   updateTechnicalRecords(
-    techRecordDto: VehicleTechRecordUpdate,
+    techRecordDto: VehicleTechRecordEdit,
     systemNumber: string
   ): Observable<VehicleTechRecordModel> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');

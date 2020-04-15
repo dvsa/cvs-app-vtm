@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { ValidationMapper, STATUS } from './adr-validation.mapper';
+
+import { ValidationMapper, STATUS, ValidationState } from './adr-validation.mapper';
+import { of } from 'rxjs';
 
 const batteryType = 'semi trailer battery';
 const tankType = 'semi trailer tank';
@@ -16,7 +18,7 @@ describe('ValidationMapper', () => {
     validationMapper = TestBed.get(ValidationMapper);
   });
 
-  describe('getVehicleTypeState', () => {
+  describe('vehicleTypeSelected', () => {
     let nextSpy: jasmine.Spy;
     beforeEach(() => {
       nextSpy = spyOn(validationMapper._state, 'next');
@@ -47,6 +49,18 @@ describe('ValidationMapper', () => {
         memoEdit: STATUS.HIDDEN,
         batteryListApplicableEdit: STATUS.HIDDEN
       });
+    });
+  });
+
+  describe('getCurrentState', () => {
+    it('should get the validation state as observable', () => {
+      spyOn(validationMapper._state, 'asObservable').and.returnValue(
+        of({ tankDetailsEdit: STATUS.MANDATORY })
+      );
+      let result: ValidationState;
+      validationMapper.getCurrentState().subscribe((value) => (result = value));
+
+      expect(result).toEqual({ tankDetailsEdit: STATUS.MANDATORY });
     });
   });
 });

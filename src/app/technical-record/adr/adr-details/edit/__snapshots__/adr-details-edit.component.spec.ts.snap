@@ -5,6 +5,7 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
   adrDetails={[Function Object]}
   adrForm={[Function FormGroup]}
   approvalDate={[Function String]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   explosive_types={[Function Array]}
   fb={[Function FormBuilder]}

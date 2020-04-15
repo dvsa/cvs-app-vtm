@@ -107,38 +107,9 @@ exports[`DimensionsComponent should create view only for hgv with populated data
       >
         <th
           class="govuk-table__cell govuk-!-font-weight-bold"
-          id="test-axleSpacing-axles-0"
-        >
-           Axle 1 to  (mm) 
-        </th>
-        <td
-          class="govuk-table__cell"
-          id="test-axleSpacing-value-0"
-        >
-           100 
-        </td>
-        <td
-          class="govuk-table__cell"
-        />
-        <td
-          class="govuk-table__cell"
-        />
-        <td
-          class="govuk-table__cell"
-        />
-        <td
-          class="govuk-table__cell"
-        />
-      </tr>
-      
-      <tr
-        class="govuk-table__row"
-      >
-        <th
-          class="govuk-table__cell govuk-!-font-weight-bold"
           id="test-axleSpacing-axles-1"
         >
-           Axle 2 to  (mm) 
+           Axle 1 to  (mm) 
         </th>
         <td
           class="govuk-table__cell"
@@ -167,11 +138,40 @@ exports[`DimensionsComponent should create view only for hgv with populated data
           class="govuk-table__cell govuk-!-font-weight-bold"
           id="test-axleSpacing-axles-2"
         >
-           Axle 3 to  (mm) 
+           Axle 2 to  (mm) 
         </th>
         <td
           class="govuk-table__cell"
           id="test-axleSpacing-value-2"
+        >
+           100 
+        </td>
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+      </tr>
+      
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+          id="test-axleSpacing-axles-3"
+        >
+           Axle 3 to  (mm) 
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-axleSpacing-value-3"
         >
            100 
         </td>
@@ -366,7 +366,7 @@ exports[`DimensionsComponent should create view only for other vehicles with pop
           class="govuk-table__cell"
           id="test-height"
         >
-           100 
+           200 
         </td>
         <td
           class="govuk-table__cell"
@@ -418,5 +418,57 @@ exports[`DimensionsComponent should create view only for other vehicles with pop
       
     </tbody>
   </table>
+</vtm-dimensions>
+`;
+
+exports[`DimensionsComponent should render the editable component if editState is true 1`] = `
+<vtm-dimensions
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-dimensions-edit
+          ng-reflect-tech-record="[object Object]"
+        >
+          <div>
+            active record is: {
+    "frontAxleToRearAxle": 450,
+    "frontAxleTo5thWheelMin": 456,
+    "frontAxleTo5thWheelMax": 660,
+    "frontAxleTo5thWheelCouplingMin": 100,
+    "frontAxleTo5thWheelCouplingMax": 150,
+    "dimensions": {
+      "length": 100,
+      "width": 100,
+      "height": 200,
+      "axleSpacing": [
+        {
+          "axles": "1",
+          "value": 100
+        },
+        {
+          "axles": "2",
+          "value": 100
+        },
+        {
+          "axles": "3",
+          "value": 100
+        }
+      ]
+    }
+  }
+          </div>
+        </vtm-dimensions-edit>
+      </dt>
+    </div>
+  </dl>
 </vtm-dimensions>
 `;

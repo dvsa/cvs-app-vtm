@@ -1,0 +1,506 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DimensionsEditComponent should create with initialized form dimensions controls 1`] = `
+<vtm-dimensions-edit
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  numberOfAxles$={[Function Observable]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  techRecHelper={[Function TechRecordHelperService]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-length"
+              >
+                 Length (mm) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                id="test-edit-length"
+                maxlength="5"
+                name="length"
+                ng-reflect-maxlength="5"
+                ng-reflect-name="length"
+                type="number"
+              />
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-width"
+              >
+                 Width (mm) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                id="test-edit-width"
+                maxlength="5"
+                name="width"
+                ng-reflect-maxlength="5"
+                ng-reflect-name="width"
+                type="number"
+              />
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-frontAxleToRearAxle"
+              >
+                 Front axle to rear axle (mm) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                id="test-edit-frontAxleToRearAxle"
+                maxlength="5"
+                name="frontAxleToRearAxle"
+                ng-reflect-maxlength="5"
+                ng-reflect-name="frontAxleToRearAxle"
+                type="number"
+              />
+            </div>
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+               Front of vehicle to 5th wheel coupling 
+            </label>
+            <div
+              class="govuk-inset-text govuk-!-margin-top-3"
+            >
+              
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelCouplingMin"
+                  >
+                     Minimum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelCouplingMin"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelCouplingMin"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelCouplingMin"
+                    type="number"
+                  />
+                </div>
+              </div>
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelCouplingMax"
+                  >
+                     Maximum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelCouplingMax"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelCouplingMax"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelCouplingMax"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+               Front axle to 5th wheel 
+            </label>
+            <div
+              class="govuk-inset-text govuk-!-margin-top-3"
+            >
+              
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelMin"
+                  >
+                     Minimum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelMin"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelMin"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelMin"
+                    type="number"
+                  />
+                </div>
+              </div>
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelMax"
+                  >
+                     Maximum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelMax"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelMax"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelMax"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            
+            
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-dimensions-edit>
+`;
+
+exports[`DimensionsEditComponent should render AXLE SPACING controls on initialization 1`] = `
+<vtm-dimensions-edit
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  numberOfAxles$={[Function Observable]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  techRecHelper={[Function TechRecordHelperService]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-length"
+              >
+                 Length (mm) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                id="test-edit-length"
+                maxlength="5"
+                name="length"
+                ng-reflect-maxlength="5"
+                ng-reflect-name="length"
+                type="number"
+              />
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-width"
+              >
+                 Width (mm) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                id="test-edit-width"
+                maxlength="5"
+                name="width"
+                ng-reflect-maxlength="5"
+                ng-reflect-name="width"
+                type="number"
+              />
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-frontAxleToRearAxle"
+              >
+                 Front axle to rear axle (mm) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                id="test-edit-frontAxleToRearAxle"
+                maxlength="5"
+                name="frontAxleToRearAxle"
+                ng-reflect-maxlength="5"
+                ng-reflect-name="frontAxleToRearAxle"
+                type="number"
+              />
+            </div>
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+               Front of vehicle to 5th wheel coupling 
+            </label>
+            <div
+              class="govuk-inset-text govuk-!-margin-top-3"
+            >
+              
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelCouplingMin"
+                  >
+                     Minimum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelCouplingMin"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelCouplingMin"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelCouplingMin"
+                    type="number"
+                  />
+                </div>
+              </div>
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelCouplingMax"
+                  >
+                     Maximum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelCouplingMax"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelCouplingMax"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelCouplingMax"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+               Front axle to 5th wheel 
+            </label>
+            <div
+              class="govuk-inset-text govuk-!-margin-top-3"
+            >
+              
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelMin"
+                  >
+                     Minimum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelMin"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelMin"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelMin"
+                    type="number"
+                  />
+                </div>
+              </div>
+              
+              <div
+                class="govuk-form-group govuk-!-margin-left-3"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-frontAxleTo5thWheelMax"
+                  >
+                     Maximum (mm) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-frontAxleTo5thWheelMax"
+                    maxlength="5"
+                    name="frontAxleTo5thWheelMax"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="frontAxleTo5thWheelMax"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            
+            <div
+              class="ng-untouched ng-pristine ng-valid"
+              formarrayname="axleSpacing"
+              ng-reflect-name="axleSpacing"
+            >
+              
+              
+              
+              <div
+                class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                ng-reflect-form="[object Object]"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-axleSpacing-value-1"
+                >
+                   Axle 1 to axle 2 (mm) 
+                </label>
+                <input
+                  class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                  id="test-edit-axleSpacing-value-1"
+                  maxlength="5"
+                  name="value"
+                  ng-reflect-maxlength="5"
+                  ng-reflect-name="value"
+                  type="number"
+                />
+              </div>
+              
+              
+              
+              <div
+                class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                ng-reflect-form="[object Object]"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-axleSpacing-value-2"
+                >
+                   Axle 2 to axle 3 (mm) 
+                </label>
+                <input
+                  class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                  id="test-edit-axleSpacing-value-2"
+                  maxlength="5"
+                  name="value"
+                  ng-reflect-maxlength="5"
+                  ng-reflect-name="value"
+                  type="number"
+                />
+              </div>
+              
+            </div>
+            
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-dimensions-edit>
+`;

@@ -12,17 +12,10 @@ export function VehicleTechRecordModelReducers(
   action: VehicleTechRecordModelActions
 ): IVehicleTechRecordModelState {
   switch (action.type) {
-    case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
-      return {
-        ...state,
-        selectedVehicleTechRecordModel: action.payload,
-      };
-    }
-
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess: {
       return {
         ...state,
-        vehicleTechRecordModel: action.payload,
+        vehicleTechRecordModel: action.vehicleTechRecords
       };
     }
 
@@ -44,11 +37,6 @@ export function VehicleTechRecordModelReducers(
       };
     }
 
-    /**
-     * TODO: This reducer as well as corresponding effect and action
-     * should be extracted to an app wide implementation. The implementation should
-     * not be relevant to only TechRecord
-     */
     case EVehicleTechRecordModelActions.SetViewState: {
       return {
         ...state,

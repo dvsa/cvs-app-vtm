@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="!editState">
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Microfilm document type</dt>
@@ -22,6 +22,18 @@
         {{ microfilm?.microfilmSerialNumber | DefaultNullOrEmpty }}
       </dd>
       <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-container *ngIf="editState" >
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-documents-edit
+          [microfilmDetails]="microfilm"
+        ></vtm-documents-edit>
+      </dt>
     </div>
   </dl>
 </ng-container>

@@ -1,0 +1,405 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentsEditComponent component should render with the given properties 1`] = `
+<vtm-documents-edit
+  fb={[Function FormBuilder]}
+  microfilmDetails={[Function Object]}
+  microfilmDocumentTypeOptions={[Function Array]}
+  parent={[Function FormGroupDirective]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <fieldset
+        class="govuk-fieldset"
+      >
+        <form
+          class="ng-untouched ng-pristine ng-valid"
+          ng-reflect-form="[object Object]"
+          novalidate=""
+        >
+          
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+              for="test-edit-microfilmDocumentType"
+            >
+               Microfilm document type (optional) 
+            </label>
+            <select
+              class="govuk-select ng-untouched ng-pristine ng-valid"
+              formcontrolname="microfilmDocumentType"
+              id="test-edit-microfilmDocumentType"
+              ng-reflect-name="microfilmDocumentType"
+            >
+              
+              <option
+                ng-reflect-ng-value="PSV Miscellaneous"
+                value="0: PSV Miscellaneous"
+              >
+                 PSV Miscellaneous 
+              </option>
+              <option
+                ng-reflect-ng-value="AAT - Trailer Annual Test"
+                value="1: AAT - Trailer Annual Test"
+              >
+                 AAT - Trailer Annual Test 
+              </option>
+              <option
+                ng-reflect-ng-value="AIV - HGV International App"
+                value="2: AIV - HGV International App"
+              >
+                 AIV - HGV International App 
+              </option>
+              <option
+                ng-reflect-ng-value="COIF Modification"
+                value="3: COIF Modification"
+              >
+                 COIF Modification 
+              </option>
+              <option
+                ng-reflect-ng-value="Trailer COC + Int Plate"
+                value="4: Trailer COC + Int Plate"
+              >
+                 Trailer COC + Int Plate 
+              </option>
+              <option
+                ng-reflect-ng-value="RCT - Trailer Test Cert paid"
+                value="5: RCT - Trailer Test Cert paid"
+              >
+                 RCT - Trailer Test Cert paid 
+              </option>
+              <option
+                ng-reflect-ng-value="HGV COC + Int Plate"
+                value="6: HGV COC + Int Plate"
+              >
+                 HGV COC + Int Plate 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV Carry/Auth, OMO Report"
+                value="7: PSV Carry/Auth, OMO Report"
+              >
+                 PSV Carry/Auth, OMO Report 
+              </option>
+              <option
+                ng-reflect-ng-value="AIT - Trailer International Ap"
+                value="8: AIT - Trailer International App"
+              >
+                 AIT - Trailer International App 
+              </option>
+              <option
+                ng-reflect-ng-value="IPV - HGV EEC Plate/Cert"
+                value="9: IPV - HGV EEC Plate/Cert"
+              >
+                 IPV - HGV EEC Plate/Cert 
+              </option>
+              <option
+                ng-reflect-ng-value="XCV - HGV Test Cert free"
+                value="10: XCV - HGV Test Cert free"
+              >
+                 XCV - HGV Test Cert free 
+              </option>
+              <option
+                ng-reflect-ng-value="AAV - HGV Annual Test"
+                value="11: AAV - HGV Annual Test"
+              >
+                 AAV - HGV Annual Test 
+              </option>
+              <option
+                ng-reflect-ng-value="COIF Master"
+                value="12: COIF Master"
+              >
+                 COIF Master 
+              </option>
+              <option
+                ng-reflect-ng-value="Tempo 100 Sp Ord"
+                value="13: Tempo 100 Sp Ord"
+              >
+                 Tempo 100 Sp Ord 
+              </option>
+              <option
+                ng-reflect-ng-value="Deleted"
+                value="14: Deleted"
+              >
+                 Deleted 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV N/ALT"
+                value="15: PSV N/ALT"
+              >
+                 PSV N/ALT 
+              </option>
+              <option
+                ng-reflect-ng-value="XPT - Tr Plating Cert paid"
+                value="16: XPT - Tr Plating Cert paid"
+              >
+                 XPT - Tr Plating Cert paid 
+              </option>
+              <option
+                ng-reflect-ng-value="FFV - HGV First Test"
+                value="17: FFV - HGV First Test"
+              >
+                 FFV - HGV First Test 
+              </option>
+              <option
+                ng-reflect-ng-value="Repl Vitesse 100"
+                value="18: Repl Vitesse 100"
+              >
+                 Repl Vitesse 100 
+              </option>
+              <option
+                ng-reflect-ng-value="TCV - HGV Test Cert"
+                value="19: TCV - HGV Test Cert"
+              >
+                 TCV - HGV Test Cert 
+              </option>
+              <option
+                ng-reflect-ng-value="ZZZ - Miscellaneous"
+                value="20: ZZZ - Miscellaneous"
+              >
+                 ZZZ - Miscellaneous 
+              </option>
+              <option
+                ng-reflect-ng-value="Test Certificate"
+                value="21: Test Certificate"
+              >
+                 Test Certificate 
+              </option>
+              <option
+                ng-reflect-ng-value="XCT - Trailer Test Cert free"
+                value="22: XCT - Trailer Test Cert free"
+              >
+                 XCT - Trailer Test Cert free 
+              </option>
+              <option
+                ng-reflect-ng-value="C52 - COC and VTG52A"
+                value="23: C52 - COC and VTG52A"
+              >
+                 C52 - COC and VTG52A 
+              </option>
+              <option
+                ng-reflect-ng-value="Tempo 100 Report"
+                value="24: Tempo 100 Report"
+              >
+                 Tempo 100 Report 
+              </option>
+              <option
+                ng-reflect-ng-value="Main File Amendment"
+                value="25: Main File Amendment"
+              >
+                 Main File Amendment 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV Doc"
+                value="26: PSV Doc"
+              >
+                 PSV Doc 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV COC"
+                value="27: PSV COC"
+              >
+                 PSV COC 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV Repl COC"
+                value="28: PSV Repl COC"
+              >
+                 PSV Repl COC 
+              </option>
+              <option
+                ng-reflect-ng-value="TAV - COC"
+                value="29: TAV - COC"
+              >
+                 TAV - COC 
+              </option>
+              <option
+                ng-reflect-ng-value="NPT - Trailer Alteration"
+                value="30: NPT - Trailer Alteration"
+              >
+                 NPT - Trailer Alteration 
+              </option>
+              <option
+                ng-reflect-ng-value="OMO Certificate"
+                value="31: OMO Certificate"
+              >
+                 OMO Certificate 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV Repl COIF"
+                value="32: PSV Repl COIF"
+              >
+                 PSV Repl COIF 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV Repl COF"
+                value="33: PSV Repl COF"
+              >
+                 PSV Repl COF 
+              </option>
+              <option
+                ng-reflect-ng-value="COIF Application"
+                value="34: COIF Application"
+              >
+                 COIF Application 
+              </option>
+              <option
+                ng-reflect-ng-value="XPV - HGV Plating Cert Free"
+                value="35: XPV - HGV Plating Cert Free"
+              >
+                 XPV - HGV Plating Cert Free 
+              </option>
+              <option
+                ng-reflect-ng-value="TCT - Trailer Test Cert"
+                value="36: TCT - Trailer Test Cert"
+              >
+                 TCT - Trailer Test Cert 
+              </option>
+              <option
+                ng-reflect-ng-value="Tempo 100 App"
+                value="37: Tempo 100 App"
+              >
+                 Tempo 100 App 
+              </option>
+              <option
+                ng-reflect-ng-value="PSV Decision on N/ALT"
+                value="38: PSV Decision on N/ALT"
+              >
+                 PSV Decision on N/ALT 
+              </option>
+              <option
+                ng-reflect-ng-value="Special Order PSV"
+                value="39: Special Order PSV"
+              >
+                 Special Order PSV 
+              </option>
+              <option
+                ng-reflect-ng-value="NPV - HGV Alteration"
+                value="40: NPV - HGV Alteration"
+              >
+                 NPV - HGV Alteration 
+              </option>
+              <option
+                ng-reflect-ng-value="No Description Found"
+                value="41: No Description Found"
+              >
+                 No Description Found 
+              </option>
+              <option
+                ng-reflect-ng-value="Vitesse 100 Sp Ord"
+                value="42: Vitesse 100 Sp Ord"
+              >
+                 Vitesse 100 Sp Ord 
+              </option>
+              <option
+                ng-reflect-ng-value="Brake Test Details"
+                value="43: Brake Test Details"
+              >
+                 Brake Test Details 
+              </option>
+              <option
+                ng-reflect-ng-value="COIF Productional"
+                value="44: COIF Productional"
+              >
+                 COIF Productional 
+              </option>
+              <option
+                ng-reflect-ng-value="RDT - Test Disc Paid"
+                value="45: RDT - Test Disc Paid"
+              >
+                 RDT - Test Disc Paid 
+              </option>
+              <option
+                ng-reflect-ng-value="RCV - HGV Test Cert"
+                value="46: RCV - HGV Test Cert"
+              >
+                 RCV - HGV Test Cert 
+              </option>
+              <option
+                ng-reflect-ng-value="FFT - Trailer First Test"
+                value="47: FFT - Trailer First Test"
+              >
+                 FFT - Trailer First Test 
+              </option>
+              <option
+                ng-reflect-ng-value="IPT - Trailer EEC Plate/Cert"
+                value="48: IPT - Trailer EEC Plate/Cert"
+              >
+                 IPT - Trailer EEC Plate/Cert 
+              </option>
+              <option
+                ng-reflect-ng-value="XDT - Test Disc Free"
+                value="49: XDT - Test Disc Free"
+              >
+                 XDT - Test Disc Free 
+              </option>
+              <option
+                ng-reflect-ng-value="PRV - HGV Plating Cert paid"
+                value="50: PRV - HGV Plating Cert paid"
+              >
+                 PRV - HGV Plating Cert paid 
+              </option>
+              <option
+                ng-reflect-ng-value="COF Cert, PRT - Tr Plating Cer"
+                value="51: COF Cert, PRT - Tr Plating Cert paid"
+              >
+                 COF Cert, PRT - Tr Plating Cert paid 
+              </option>
+              <option
+                ng-reflect-ng-value="Tempo 100 Permit"
+                value="52: Tempo 100 Permit"
+              >
+                 Tempo 100 Permit 
+              </option>
+            </select>
+          </div>
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+              for="test-edit-microfilmRollNumber"
+            >
+               Microfilm roll number (optional) 
+            </label>
+            <input
+              class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+              formcontrolname="microfilmRollNumber"
+              id="test-edit-microfilmRollNumber"
+              maxlength="5"
+              ng-reflect-maxlength="5"
+              ng-reflect-name="microfilmRollNumber"
+              type="text"
+            />
+          </div>
+          <div
+            class="govuk-form-group"
+          >
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+              for="test-edit-microfilmSerialNumber"
+            >
+               Microfilm serial number (optional) 
+            </label>
+            <input
+              class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+              formcontrolname="microfilmSerialNumber"
+              id="test-edit-microfilmSerialNumber"
+              maxlength="4"
+              ng-reflect-maxlength="4"
+              ng-reflect-name="microfilmSerialNumber"
+              type="text"
+            />
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</vtm-documents-edit>
+`;

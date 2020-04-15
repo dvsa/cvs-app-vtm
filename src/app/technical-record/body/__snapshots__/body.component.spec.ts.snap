@@ -3,6 +3,7 @@
 exports[`BodyComponent should create view only with populated data 1`] = `
 <vtm-body
   activeRecord={[Function Object]}
+  body={[Function Object]}
 >
   <dl
     class="govuk-summary-list "
@@ -21,7 +22,7 @@ exports[`BodyComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-bodyTypeDescription"
       >
-         - 
+         Articulated 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -39,7 +40,7 @@ exports[`BodyComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-functionCode"
       >
-         someCode 
+         a 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -57,11 +58,48 @@ exports[`BodyComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-conversionRefNo"
       >
-         - 
+         x239f 
       </dd>
       <dd
         class="govuk-summary-list__value"
       />
+    </div>
+  </dl>
+</vtm-body>
+`;
+
+exports[`BodyComponent should render the edit components when editState is true 1`] = `
+<vtm-body
+  activeRecord={[Function Object]}
+  body={[Function Object]}
+  editState={[Function Boolean]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-body-edit
+          ng-reflect-body-details="[object Object]"
+        >
+          <div>
+            BodyDetails is: {
+    "make": "Marc",
+    "model": "honda",
+    "functionCode": "a",
+    "conversionRefNo": "x239f",
+    "bodyType": {
+      "code": "a",
+      "description": "articulated"
+    }
+  }
+          </div>
+        </vtm-body-edit>
+      </dt>
     </div>
   </dl>
 </vtm-body>

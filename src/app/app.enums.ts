@@ -7,6 +7,12 @@ export enum VEHICLE_TYPES {
   Moto = 'motorcycle'
 }
 
+export enum RECORD_STATUS {
+  CURRENT = 'current',
+  PROVISIONAL = 'provisional',
+  ARCHIVED = 'archived'
+}
+
 export enum SEARCH_CRITERIA {
   ALL_CRITERIA = 'Vehicle registration mark, trailer ID or vehicle identification number',
   VRM_CRITERIA = 'Vehicle registration mark (VRM)',
@@ -55,7 +61,8 @@ export enum MEMOS {
 
 export enum VIEW_STATE {
   VIEW_ONLY = 0,
-  EDIT = 1
+  EDIT = 1,
+  CREATE = 2
 }
 
 export enum COUNTRY_OF_REGISTRATION {

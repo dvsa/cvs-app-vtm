@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TypeApprovalComponent should create with empty control states 1`] = `
+<vtm-type-approval
+  approvalTypeOptions={[Function Array]}
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-form-group"
+  >
+    <fieldset
+      class="govuk-fieldset"
+    >
+      <h2
+        class="govuk-heading-m govuk-!-margin-bottom-2"
+      >
+        Type approval
+      </h2>
+      <form
+        class="ng-untouched ng-pristine ng-valid"
+        ng-reflect-form="[object Object]"
+        novalidate=""
+      >
+        <div
+          class="govuk-form-group"
+        >
+          <label
+            class="govuk-label govuk-!-font-weight-bold"
+            for="test-edit-approvalType"
+          >
+             Approval type 
+          </label>
+          <select
+            class="govuk-select ng-untouched ng-pristine ng-valid"
+            formcontrolname="approvalType"
+            id="test-edit-approvalType"
+            ng-reflect-name="approvalType"
+          >
+            
+            <option
+              ng-reflect-ng-value="NTA"
+              value="0: NTA"
+            >
+               NTA 
+            </option>
+            <option
+              ng-reflect-ng-value="ECTA"
+              value="1: ECTA"
+            >
+               ECTA 
+            </option>
+            <option
+              ng-reflect-ng-value="IVA"
+              value="2: IVA"
+            >
+               IVA 
+            </option>
+            <option
+              ng-reflect-ng-value="NSSTA"
+              value="3: NSSTA"
+            >
+               NSSTA 
+            </option>
+            <option
+              ng-reflect-ng-value="ECSSTA"
+              value="4: ECSSTA"
+            >
+               ECSSTA 
+            </option>
+          </select>
+        </div>
+        <div
+          class="govuk-form-group"
+        >
+          <label
+            class="govuk-label govuk-!-font-weight-bold"
+            for="test-edit-approvalTypeNumber"
+          >
+             Approval type number (optional) 
+          </label>
+          <input
+            class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+            formcontrolname="approvalTypeNumber"
+            id="test-edit-approvalTypeNumber"
+            maxlength="25"
+            name="approvalTypeNumber"
+            ng-reflect-maxlength="25"
+            ng-reflect-name="approvalTypeNumber"
+            type="text"
+          />
+        </div>
+        <div
+          class="govuk-form-group"
+        >
+          <label
+            class="govuk-label govuk-!-font-weight-bold"
+            for="test-edit-ntaNumber"
+          >
+             National type approval number (optional) 
+          </label>
+          <input
+            class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+            formcontrolname="ntaNumber"
+            id="test-edit-ntaNumber"
+            maxlength="40"
+            name="ntaNumber"
+            ng-reflect-maxlength="40"
+            ng-reflect-name="ntaNumber"
+            type="text"
+          />
+        </div>
+        <div
+          class="govuk-form-group"
+        >
+          <label
+            class="govuk-label govuk-!-font-weight-bold"
+            for="test-edit-variantNumber"
+          >
+             Variant number (optional) 
+          </label>
+          <input
+            class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+            formcontrolname="variantNumber"
+            id="test-edit-variantNumber"
+            maxlength="25"
+            name="variantNumber"
+            ng-reflect-maxlength="25"
+            ng-reflect-name="variantNumber"
+            type="text"
+          />
+        </div>
+        <div
+          class="govuk-form-group"
+        >
+          <label
+            class="govuk-label govuk-!-font-weight-bold"
+            for="test-edit-variantVersionNumber"
+          >
+             Variant version number (optional) 
+          </label>
+          <input
+            class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+            formcontrolname="variantVersionNumber"
+            id="test-edit-variantVersionNumber"
+            maxlength="35"
+            name="variantVersionNumber"
+            ng-reflect-maxlength="35"
+            ng-reflect-name="variantVersionNumber"
+            type="text"
+          />
+        </div>
+      </form>
+    </fieldset>
+  </div>
+</vtm-type-approval>
+`;

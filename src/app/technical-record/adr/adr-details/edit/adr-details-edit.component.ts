@@ -8,6 +8,7 @@ import { SelectOption } from '@app/models/select-option';
 import { AdrDetails } from '@app/models/adr-details';
 import { MetaData } from '@app/models/meta-data';
 import { EXPLOSIVE_TYPES } from './../../adr.constants';
+import { BOOLEAN_RADIO_OPTIONS } from '@app/technical-record/technical-record.constants';
 
 @Component({
   selector: 'vtm-adr-details-edit',
@@ -25,7 +26,7 @@ export class AdrDetailsEditComponent extends AdrComponent implements OnInit {
   permittedDangerousGoodsOptions: SelectOption[];
   explosive_types = EXPLOSIVE_TYPES;
   guidanceNotesOptions: SelectOption[];
-  options;
+  options = BOOLEAN_RADIO_OPTIONS;
   adrForm: FormGroup;
 
   @Input() adrDetails: AdrDetails;
@@ -49,7 +50,6 @@ export class AdrDetailsEditComponent extends AdrComponent implements OnInit {
 
   ngOnInit(): void {
     this.adrForm = super.setUp();
-    this.options = super.radioOptions();
 
     this.vehicleTypeOptions = new DisplayOptionsPipe().transform(
       this.metaData.adrDetails.vehicleDetails.typeFe

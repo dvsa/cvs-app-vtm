@@ -1,86 +1,99 @@
-<table
-  class="govuk-table table-details"
-  *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
->
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header"></th>
-      <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">GB weight (kg)</th>
-      <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">EEC weight (kg)</th>
-      <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
-        Design weight (kg)
-      </th>
-      <th class="govuk-table__cell"></th>
-      <th class="govuk-table__cell"></th>
-    </tr>
-  </thead>
+<ng-container *ngIf="!editState">
+  <table
+    class="govuk-table"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
+  >
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">GB weight (kg)</th>
+        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">EEC weight (kg)</th>
+        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+          Design weight (kg)
+        </th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+      </tr>
+    </thead>
 
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Gross</th>
-      <td id="test-grossGbWeight" class="govuk-table__cell">
-        {{ activeRecord.grossGbWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-grossEecWeight" class="govuk-table__cell">
-        {{ activeRecord.grossEecWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-grossDesignWeight" class="govuk-table__cell">
-        {{ activeRecord.grossDesignWeight | DefaultNullOrEmpty }}
-      </td>
-      <th class="govuk-table__cell"></th>
-      <th class="govuk-table__cell"></th>
-    </tr>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Gross</th>
+        <td id="test-grossGbWeight" class="govuk-table__cell">
+          {{ activeRecord.grossGbWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-grossEecWeight" class="govuk-table__cell">
+          {{ activeRecord.grossEecWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-grossDesignWeight" class="govuk-table__cell">
+          {{ activeRecord.grossDesignWeight | DefaultNullOrEmpty }}
+        </td>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+      </tr>
 
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
-      <td id="test-trainGbWeight" class="govuk-table__cell">
-        {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-trainEecWeight" class="govuk-table__cell">
-        {{ activeRecord.trainEecWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-trainDesignWeight" class="govuk-table__cell">
-        {{ activeRecord.trainDesignWeight | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
+        <td id="test-trainGbWeight" class="govuk-table__cell">
+          {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-trainEecWeight" class="govuk-table__cell">
+          {{ activeRecord.trainEecWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-trainDesignWeight" class="govuk-table__cell">
+          {{ activeRecord.trainDesignWeight | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
 
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
-      <td id="test-maxTrainGbWeight" class="govuk-table__cell">
-        {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-maxTrainEecWeight" class="govuk-table__cell">
-        {{ activeRecord.maxTrainEecWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-maxTrainDesignWeight" class="govuk-table__cell">
-        {{ activeRecord.maxTrainDesignWeight | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
+        <td id="test-maxTrainGbWeight" class="govuk-table__cell">
+          {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-maxTrainEecWeight" class="govuk-table__cell">
+          {{ activeRecord.maxTrainEecWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-maxTrainDesignWeight" class="govuk-table__cell">
+          {{ activeRecord.maxTrainDesignWeight | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
 
-    <tr class="govuk-table__row" *ngFor="let axle of activeRecord.axles">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">
-        Axle {{ axle.axleNumber | DefaultNullOrEmpty }}
-      </th>
-      <td id="{{ 'test-gbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
-        {{ axle.weights.gbWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="{{ 'test-eecWeight-' + axle.axleNumber }}" class="govuk-table__cell">
-        {{ axle.weights.eecWeight | DefaultNullOrEmpty }}
-      </td>
-      <td id="{{ 'test-designWeight-' + axle.axleNumber }}" class="govuk-table__cell">
-        {{ axle.weights.designWeight | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-  </tbody>
-</table>
+      <tr class="govuk-table__row" *ngFor="let axle of activeRecord.axles">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">
+          Axle {{ axle.axleNumber | DefaultNullOrEmpty }}
+        </th>
+        <td id="{{ 'test-gbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+          {{ axle.weights.gbWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-eecWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+          {{ axle.weights.eecWeight | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-designWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+          {{ axle.weights.designWeight | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+    </tbody>
+  </table>
 
-<ng-container *ngIf="activeRecord.vehicleType === 'psv'">
-  <vtm-weights-psv [activeRecord]="activeRecord"></vtm-weights-psv>
+  <ng-container *ngIf="activeRecord.vehicleType === 'psv'">
+    <vtm-weights-psv [activeRecord]="activeRecord"></vtm-weights-psv>
+  </ng-container>
+</ng-container>
+
+<!-- Edit Weights -->
+<ng-container *ngIf="editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-weights-edit [techRecord]="activeRecord"></vtm-weights-edit>
+      </dt>
+    </div>
+  </dl>
 </ng-container>
