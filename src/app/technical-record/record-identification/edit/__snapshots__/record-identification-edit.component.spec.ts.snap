@@ -2,6 +2,7 @@
 
 exports[`RecordIdentificationEditComponent should create with initialized form controls 1`] = `
 <vtm-record-identification-edit
+  disableVinEditing="false"
   fb={[Function FormBuilder]}
   parent={[Function FormGroupDirective]}
   primaryVrm={[Function String]}
@@ -26,42 +27,38 @@ exports[`RecordIdentificationEditComponent should create with initialized form c
             novalidate=""
           >
             <div
-              class="govuk-form-group govuk-!-margin-top-7"
+              class="govuk-form-group"
             >
-              <div
-                class="govuk-form-group"
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-vin"
               >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
-                  for="test-edit-vin"
-                >
-                   Vehicle identification number (VIN) 
-                </label>
-                <input
-                  class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
-                  formcontrolname="vin"
-                  id="test-edit-vin"
-                  ng-reflect-name="vin"
-                  type="text"
-                />
-              </div>
-              <div
-                class="govuk-form-group"
+                 Vehicle identification number (VIN) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="vin"
+                id="test-edit-vin"
+                ng-reflect-name="vin"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-vrm"
               >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
-                  for="test-edit-vrm"
-                >
-                   Vehicle registration number (VRM) 
-                </label>
-                <input
-                  class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
-                  formcontrolname="primaryVrm"
-                  id="test-edit-vrm"
-                  ng-reflect-name="primaryVrm"
-                  type="text"
-                />
-              </div>
+                 Vehicle registration number (VRM) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                formcontrolname="primaryVrm"
+                id="test-edit-vrm"
+                ng-reflect-name="primaryVrm"
+                type="text"
+              />
             </div>
           </form>
         </fieldset>

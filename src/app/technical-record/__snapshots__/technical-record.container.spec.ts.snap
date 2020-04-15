@@ -22,6 +22,7 @@ exports[`TechnicalRecordsContainer should render the container 1`] = `
       class="govuk-main-wrapper"
     >
       <vtm-technical-record
+        ng-reflect-active-vehicle-tech-record="[object Object]"
         ng-reflect-current-state="0"
         ng-reflect-meta-data="[object Object]"
         ng-reflect-test-result-json=""
@@ -69,7 +70,15 @@ exports[`TechnicalRecordsContainer should render the container 1`] = `
   }
         </div>
         <div>
-          Active vehicle record: null
+          Active vehicle record: {
+    "vin": "ABENE777",
+    "primaryVrm": "LMEFE",
+    "techRecord": [
+      {
+        "statusCode": "provisional"
+      }
+    ]
+  }
         </div>
         <div>
           MetaData: {

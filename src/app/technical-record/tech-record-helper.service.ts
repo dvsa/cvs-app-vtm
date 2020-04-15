@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { VEHICLE_TYPES } from '@app/app.enums';
 import { Subject, Observable } from 'rxjs';
+
+import { RECORD_STATUS, VEHICLE_TYPES } from '@app/app.enums';
 
 @Injectable({ providedIn: 'root' })
 export class TechRecordHelperService {
@@ -14,6 +15,18 @@ export class TechRecordHelperService {
       VEHICLE_TYPES.TRL === vehicleType ||
       VEHICLE_TYPES.PSV === vehicleType
     );
+  }
+
+  isHgvOrTrlVehicle(vehicleType: string): boolean {
+    return VEHICLE_TYPES.HGV === vehicleType || VEHICLE_TYPES.TRL === vehicleType;
+  }
+
+  isPsvOrTrlVehicle(vehicleType: string): boolean {
+    return VEHICLE_TYPES.PSV === vehicleType || VEHICLE_TYPES.TRL === vehicleType;
+  }
+
+  isArchivedRecord(recordStatus: string): boolean {
+    return RECORD_STATUS.ARCHIVED === recordStatus;
   }
 
   setNumberOfAxles(numOfAxles: number): void {

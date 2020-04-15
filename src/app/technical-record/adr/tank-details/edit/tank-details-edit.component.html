@@ -230,15 +230,16 @@
                               class="govuk-input govuk-input--width-5"
                             />
                             <span
-                              *ngIf="i > 0"
+                              id="test-edit-removeUNNumber_{{ i }}"
                               class="govuk-!-font-weight-bold govuk-!-margin-left-2"
+                              *ngIf="i > 0"
                             >
                               <a
                                 href="javascript:void(0)"
                                 class="govuk-link govuk-link--no-visited-state"
                                 (click)="removeUNNumberControl(i)"
                               >
-                                Remove
+                                <span>Remove</span>
                               </a>
                             </span>
                           </div>

@@ -1,6 +1,5 @@
-import {DebugElement} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
+import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   AbstractControl,
   FormsModule,
@@ -9,11 +8,10 @@ import {
   FormGroup
 } from '@angular/forms';
 
-import {NotesEditComponent} from './notes-edit.component';
+import { NotesEditComponent } from './notes-edit.component';
 import { TESTING_UTILS } from '@app/utils';
 
-
-describe('DocumentsEditComponent component', () => {
+describe('NotesEditComponent', () => {
   let component: NotesEditComponent;
   let fixture: ComponentFixture<NotesEditComponent>;
   let de: DebugElement;
@@ -27,14 +25,11 @@ describe('DocumentsEditComponent component', () => {
         {
           provide: FormGroupDirective,
           useValue: TESTING_UTILS.mockFormGroupDirective({
-            techRecord: new FormGroup({
-            }) as AbstractControl
+            techRecord: new FormGroup({}) as AbstractControl
           })
         }
       ]
-    })
-    .compileComponents();
-
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -46,10 +41,8 @@ describe('DocumentsEditComponent component', () => {
     fixture.detectChanges();
   });
 
-
   it('should render with the given properties ', () => {
     expect(component).toBeTruthy();
     expect(fixture).toMatchSnapshot();
   });
-
 });
