@@ -6,7 +6,11 @@ export class OrderByStatusPipe implements PipeTransform {
 
   transform(techRecordList: any): any {
     if (techRecordList) {
+
+      techRecordList = Array.isArray(techRecordList[0]) ? techRecordList[0] : techRecordList;
+
       const orderedTechRec = [];
+
       let records = techRecordList.find((record: any) => record.statusCode === 'current');
       if (records !== undefined) { orderedTechRec.push(records); }
 

@@ -4,9 +4,11 @@ import { TechRecord } from '@app/models/tech-record.model';
 @Pipe({ name: 'FilterMultipleRecords' })
 export class FilterMultipleRecordsPipe implements PipeTransform {
   transform(multipleRecordsList: any): any {
+
     if (multipleRecordsList) {
       multipleRecordsList.forEach((techRecordList) => {
-        if (techRecordList) {
+
+        if (techRecordList && !Array.isArray(techRecordList.techRecord[0])) {
           const isCurrent = techRecordList.techRecord.find(
             (record: TechRecord) => record.statusCode === 'current'
           );
