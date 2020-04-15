@@ -15,13 +15,36 @@ exports[`AdditionalAdrDetailsComponent should create view only with populated da
     <div
       class="govuk-summary-list__row"
     >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Examiner notes
+      </dt>
       <dd
         class="govuk-summary-list__value"
       >
         <span
           id="test-additionalExaminerNotes"
         >
-           - 
+           examination note 
+        </span>
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        ADR certificate notes
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+      >
+        <span
+          id="test-adrCertificateNotes"
+        >
+            certificate note  
         </span>
       </dd>
     </div>
@@ -39,7 +62,8 @@ exports[`AdditionalAdrDetailsComponent should render the editable component if e
   >
     <div>
       {
-    "additionalExaminerNotes": "some notes!!!"
+    "additionalExaminerNotes": "some notes!!!",
+    "adrCertificateNotes": "some certificate notes!"
   }
     </div>
   </vtm-additional-adr-detail-edit>

@@ -3,9 +3,19 @@
 
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Examiner notes</dt>
       <dd class="govuk-summary-list__value">
         <span id="test-additionalExaminerNotes">
           {{ adrDetails.additionalExaminerNotes | DefaultNullOrEmpty }}
+        </span>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">ADR certificate notes</dt>
+      <dd class="govuk-summary-list__value">
+        <span id="test-adrCertificateNotes">
+          {{ adrDetails.adrCertificateNotes | DefaultNullOrEmpty }}
         </span>
       </dd>
     </div>
