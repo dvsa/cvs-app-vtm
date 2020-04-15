@@ -1,13 +1,7 @@
-<div mat-dialog-content>
-  <h2 class="govuk-heading-l">{{ data.context }}</h2>
-  <textarea
-    class="govuk-textarea govuk-!-width-three-quarters"
-    id="test-reasonForCreation"
-    rows="8"
-    [(ngModel)]="data.response"
-    aria-describedby="reasonForCreation"
-  >
-  </textarea>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div mat-dialog-content [innerHtml]="data.context"></div>
+  </div>
 </div>
 
 <div class="govuk-grid-row">
@@ -16,14 +10,20 @@
       class="govuk-button"
       id="test-{{ data.actionName }}"
       data-module="govuk-button"
-      (click)="save(data.response)"
+      (click)="save()"
       cdkFocusInitial
     >
       {{ data.actionName }}
     </button>
   </div>
+
   <div class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0 govuk-!-padding-top-2">
-    <a class="govuk-link govuk-!-margin-left-2" (click)="close()" href="javascript:void(0)">
+    <a
+      class="govuk-link govuk-link--no-visited-state"
+      id="test-cancel"
+      (click)="close()"
+      href="javascript:void(0)"
+    >
       <span>Cancel</span>
     </a>
   </div>
