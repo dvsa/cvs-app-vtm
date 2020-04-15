@@ -14,34 +14,46 @@
   <tbody class="govuk-table__body">
     <tr
       class="govuk-table__row"
-      *ngFor="let techRec of techRecordsJson.techRecord | OrderByStatusPipe; let i = index"
+      *ngFor="let record of techRecords | OrderByStatusPipe; let i = index"
     >
       <td id="{{ 'test-statusCode-' + i }}" class="govuk-table__cell">
         {{
-          (techRec.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() +
-            (techRec.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()
+          (record.statusCode | DefaultNullOrEmpty).charAt(0).toUpperCase() +
+            (record.statusCode | DefaultNullOrEmpty).substr(1).toLowerCase()
         }}
       </td>
       <td id="{{ 'test-reasonForCreation-' + i }}" class="govuk-table__cell">
-        {{ techRec.reasonForCreation | DefaultNullOrEmpty | titlecase }}
+        {{ record.reasonForCreation | DefaultNullOrEmpty | titlecase }}
       </td>
       <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
-        {{ techRec.createdByName | DefaultNullOrEmpty | titlecase }}
+        {{ record.createdByName | DefaultNullOrEmpty | titlecase }}
       </td>
       <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-        <span *ngIf="techRec.createdAt; else hyphen">
-          {{ techRec.createdAt | date: 'dd/MM/yyyy' }}
+        <span *ngIf="record.createdAt; else hyphen">
+          {{ record.createdAt | date: 'dd/MM/yyyy' }}
         </span>
       </td>
       <td id="{{ 'test-lastUpdatedByName-' + i }}" class="govuk-table__cell">
-        {{ techRec.lastUpdatedByName | DefaultNullOrEmpty | titlecase }}
+        {{ record.lastUpdatedByName | DefaultNullOrEmpty | titlecase }}
       </td>
       <td id="{{ 'test-lastUpdatedAt-' + i }}" class="govuk-table__cell">
-        <span *ngIf="techRec.lastUpdatedAt; else hyphen">
-        {{ techRec.lastUpdatedAt | date: 'dd/MM/yyyy' }}
+        <span *ngIf="record.lastUpdatedAt; else hyphen">
+          {{ record.lastUpdatedAt | date: 'dd/MM/yyyy' }}
         </span>
       </td>
-      <td class="govuk-table__cell"></td>
+      <td
+        id="{{ 'test-view-link-' + i }}"
+        class="govuk-table__cell"
+        *ngIf="hideLinkForSelectedRecord(record, focusedRecord)"
+      >
+        <a
+          class="govuk-link"
+          id="{{ 'test-tech-rec-' + i }}"
+          href="javascript:void(0)"
+          (click)="onViewTechRecord(record)"
+          >View
+        </a>
+      </td>
       <td class="govuk-table__cell"></td>
     </tr>
   </tbody>

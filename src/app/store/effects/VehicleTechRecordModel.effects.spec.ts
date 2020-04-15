@@ -26,7 +26,7 @@ import {
   VehicleTechRecordModel,
   VehicleTechRecordEdit
 } from '@app/models/vehicle-tech-record.model';
-import { VEHICLE_TECH_RECORD_SEARCH_ERRORS, VIEW_STATE } from '@app/app.enums';
+import { VEHICLE_TECH_RECORD_SEARCH_ERRORS, VIEW_STATE, RECORD_STATUS } from '@app/app.enums';
 import { SearchParams } from '@app/models/search-params';
 import { SetErrorMessage } from '@app/store/actions/Error.actions';
 
@@ -35,9 +35,23 @@ const mockVehicleTechRecord = (): VehicleTechRecordModel => {
     systemNumber: '1231243',
     vrms: null,
     vin: 'ABCDEFGH777777',
-    techRecord: [{}] as TechRecord[],
+    techRecord: [
+      {
+        statusCode: RECORD_STATUS.CURRENT
+      }
+    ] as TechRecord[],
     metadata: { adrDetails: undefined }
   };
+};
+
+const mockActiveVehicleTechRecord = () => {
+  return {
+    techRecord: [
+      {
+        statusCode: RECORD_STATUS.PROVISIONAL
+      }
+    ] as TechRecord[]
+  } as VehicleTechRecordEdit;
 };
 
 const mockSearchParams = (): SearchParams => {
@@ -60,7 +74,7 @@ describe('VehicleTechRecordModelEffects', () => {
   let navigate: jest.Mock;
   let getTechnicalRecordsAllStatuses: jest.Mock;
   let createTechnicalRecord: jest.Mock;
-  let updateTechnicalRecords: jest.Mock;
+  let updateVehicleRecord: jest.Mock;
   let getUser: jest.Mock;
 
   const mockSelector = new BehaviorSubject<any>(undefined);
@@ -70,7 +84,7 @@ describe('VehicleTechRecordModelEffects', () => {
     navigate = jest.fn();
     getTechnicalRecordsAllStatuses = jest.fn();
     createTechnicalRecord = jest.fn();
-    updateTechnicalRecords = jest.fn();
+    updateVehicleRecord = jest.fn();
     getUser = jest.fn();
 
     TestBed.configureTestingModule({
@@ -84,7 +98,7 @@ describe('VehicleTechRecordModelEffects', () => {
           useValue: {
             getTechnicalRecordsAllStatuses,
             createTechnicalRecord,
-            updateTechnicalRecords
+            updateVehicleRecord
           }
         },
         {
@@ -219,12 +233,23 @@ describe('VehicleTechRecordModelEffects', () => {
     });
   });
 
-  describe('updateTechnicalRecords$', () => {
+  describe('updateVehicleRecord$', () => {
+    let recordStatusChanged: VehicleTechRecordEdit;
     beforeEach(() => {
-      action = new UpdateVehicleTechRecord(mockVehicleRecordEdit);
+      recordStatusChanged = {
+        ...mockVehicleRecordEdit
+      };
+      recordStatusChanged.techRecord = [
+        {
+          statusCode: RECORD_STATUS.CURRENT
+        }
+      ] as TechRecord[];
+
+      action = new UpdateVehicleTechRecord(recordStatusChanged);
       actions$ = hot('-a--', { a: action });
 
       mockSelector.next({
+        getActiveVehicleTechRecord: () => mockActiveVehicleTechRecord(),
         getSelectedVehicleTechRecord: mockVehicleTechRecord()
       });
     });
@@ -241,9 +266,18 @@ describe('VehicleTechRecordModelEffects', () => {
         d: setTechSuccess,
         e: setViewState
       });
-      updateTechnicalRecords.mockReturnValue(updatedRecord$);
+      updateVehicleRecord.mockReturnValue(updatedRecord$);
 
-      expect(effects.updateTechnicalRecords$).toBeObservable(expected$);
+      expect(effects.updateVehicleRecord$).toBeObservable(expected$);
+      expect(updateVehicleRecord).toHaveBeenCalledWith({
+        vehicleRecord: {
+          vin: 'ABCDR1234',
+          techRecord: [{ statusCode: 'current' }],
+          msUserDetails: {}
+        },
+        systemNumber: '1231243',
+        oldStatusCode: 'provisional'
+      });
     });
 
     it('should dispatch SetErrorMessage when update api call fails', () => {
@@ -252,9 +286,9 @@ describe('VehicleTechRecordModelEffects', () => {
 
       const failed$ = cold('--#', {}, error);
       const expected$ = cold('---e-', { e: setError });
-      updateTechnicalRecords.mockReturnValue(failed$);
+      updateVehicleRecord.mockReturnValue(failed$);
 
-      expect(effects.updateTechnicalRecords$).toBeObservable(expected$);
+      expect(effects.updateVehicleRecord$).toBeObservable(expected$);
     });
   });
 });

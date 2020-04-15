@@ -52,7 +52,7 @@ export class MockStore {
           map((value: any) =>
             value && value.hasOwnProperty('getActiveVehicleTechRecord')
               ? value['getActiveVehicleTechRecord']
-              : {}
+              : () => {}
           )
         );
 
