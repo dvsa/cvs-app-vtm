@@ -223,6 +223,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
                 ng-reflect-maxlength="10"
                 ng-reflect-name="conversionRefNo"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
           </form>

@@ -1,71 +1,105 @@
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
-import { VehicleTechRecordModelReducers } from '@app/store/reducers/VehicleTechRecordModel.reducers';
+import { Action } from '@ngrx/store';
+
 import {
-  GetVehicleTechRecordModel,
-  GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess,
-  SetVehicleTechRecordModelOnCreate
+  GetVehicleTechRecordHavingStatusAllSuccess,
+  SetSelectedVehicleTechRecordSuccess,
+  SetViewState,
+  UpdateVehicleTechRecordSuccess
 } from '../actions/VehicleTechRecordModel.actions';
-import { initialVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
+import { VehicleTechRecordReducers } from '@app/store/reducers/VehicleTechRecordModel.reducers';
+import {
+  VehicleTechRecordState,
+  initialVehicleTechRecordModelState
+} from '../state/VehicleTechRecordModel.state';
 import { TechRecord } from '@app/models/tech-record.model';
-import { SearchParams } from '@app/models/search-params';
+import { RECORD_STATUS, VIEW_STATE } from '@app/app.enums';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
-const techRecord: TechRecord = {} as TechRecord;
-const vehicleTechRecord: VehicleTechRecordModel = {} as VehicleTechRecordModel;
+const mockTechRecord: TechRecord = {
+  statusCode: RECORD_STATUS.CURRENT
+} as TechRecord;
 
-describe('VehicleTechRecordModel Reducer', () => {
-  describe('undefined action', () => {
-    it('should return the default state', () => {
-      const action = { type: 'NOOP' } as any;
-      const result = VehicleTechRecordModelReducers(undefined, action);
+const mockVehicleTechRecord: VehicleTechRecordModel = {
+  systemNumber: '111363',
+  vin: 'ABCD12345',
+  techRecord: [mockTechRecord]
+} as VehicleTechRecordModel;
 
-      expect(result).toBe(initialVehicleTechRecordModelState);
+describe('VehicleTechRecordModelReducers', () => {
+  let state: VehicleTechRecordState;
+  let resultState: VehicleTechRecordState;
+  let action: any;
+
+  describe('when initialised', () => {
+    beforeEach(() => {
+      action = {} as Action;
+      state = initialVehicleTechRecordModelState;
+      resultState = VehicleTechRecordReducers(state, action);
+    });
+
+    it('should set the default state', () => {
+      expect(resultState).toMatchSnapshot();
     });
   });
 
-  describe('[VehicleTechRecordModel] Get VehicleTechRecordModel', () => {
-    it('should toggle loading state', () => {
-      const action = new GetVehicleTechRecordModel(techRecord);
-      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
-      expect(result).toEqual({
-        ...initialVehicleTechRecordModelState
-      });
+  describe('GetVehicleTechRecordHavingStatusAllSuccess', () => {
+    it('should set vehicle record(s) to the store', () => {
+      action = new GetVehicleTechRecordHavingStatusAllSuccess([mockVehicleTechRecord]);
+      state = {
+        vehicleTechRecordModel: null
+      } as VehicleTechRecordState;
+
+      resultState = VehicleTechRecordReducers(state, action);
+
+      expect(resultState).toMatchSnapshot();
     });
   });
 
-  describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll', () => {
-    it('should toggle loading state', () => {
-      const searchParams: SearchParams = { searchIdentifier: '1234', searchCriteria: 'all' };
-      const action = new GetVehicleTechRecordModelHavingStatusAll(searchParams);
-      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
-      expect(result).toEqual({
-        ...initialVehicleTechRecordModelState
-      });
+  describe('UpdateVehicleTechRecordSuccess', () => {
+    it('should update the vehicle record in the store', () => {
+      const recordToUpdate = {
+        ...mockVehicleTechRecord,
+        techRecord: [
+          {
+            createdAt: '2020-06-26T10:26:54.903Z'
+          }
+        ]
+      } as VehicleTechRecordModel;
+
+      action = new UpdateVehicleTechRecordSuccess(recordToUpdate);
+      state = {
+        vehicleTechRecordModel: [mockVehicleTechRecord]
+      } as VehicleTechRecordState;
+
+      resultState = VehicleTechRecordReducers(state, action);
+
+      expect(resultState).toMatchSnapshot();
     });
   });
 
-  describe('[VehicleTechRecordModel] Get VehicleTechRecordModelHavingStatusAll Success', () => {
-    it('should update the state with the payload', () => {
-      const action = new GetVehicleTechRecordModelHavingStatusAllSuccess([vehicleTechRecord]);
-      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
-      expect(result).toEqual({
-        ...initialVehicleTechRecordModelState,
-        vehicleTechRecordModel: [vehicleTechRecord]
-      });
+  describe('SetSelectedVehicleTechRecordSuccess', () => {
+    it('should set selected vehicle record to the store', () => {
+      action = new SetSelectedVehicleTechRecordSuccess(mockVehicleTechRecord);
+      state = {
+        selectedVehicleTechRecord: null
+      } as VehicleTechRecordState;
+
+      resultState = VehicleTechRecordReducers(state, action);
+
+      expect(resultState).toMatchSnapshot();
     });
   });
 
-  describe('[SetVehicleTechRecordModelOnCreate] SetVehicleTechRecordModelVinOnCreate', () => {
-    it('should update state with first tech record creating details', () => {
-      const action = new SetVehicleTechRecordModelOnCreate({
-        vin: 'aaa',
-        vrm: 'bbb',
-        vType: 'PSV'
-      });
-      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
-      expect(result).toEqual({
-        ...initialVehicleTechRecordModelState
-      });
+  describe('SetViewState', () => {
+    it('should set current viewstate to the store', () => {
+      action = new SetViewState(VIEW_STATE.EDIT);
+      state = {
+        viewState: VIEW_STATE.VIEW_ONLY
+      } as VehicleTechRecordState;
+
+      resultState = VehicleTechRecordReducers(state, action);
+
+      expect(resultState).toMatchSnapshot();
     });
   });
 });

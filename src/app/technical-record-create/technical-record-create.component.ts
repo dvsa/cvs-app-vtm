@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { SetVehicleTechRecordModelOnCreate } from '@app/store/actions/VehicleTechRecordModel.actions';
+import { SetVehicleTechRecordOnCreate } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { Observable } from 'rxjs';
@@ -76,7 +76,7 @@ export class TechnicalRecordCreateComponent implements OnInit {
         vType: this.createTechRecordForm.get('vehicleType').value
       };
       this.formErrors.requestErr = [];
-      this._store.dispatch(new SetVehicleTechRecordModelOnCreate(createDetails));
+      this._store.dispatch(new SetVehicleTechRecordOnCreate(createDetails));
     } else {
       const errors = [this.formErrors.vinErr, this.formErrors.vrmErr, this.formErrors.vTypeErr];
       this._store.dispatch(new SetErrorMessage(errors));

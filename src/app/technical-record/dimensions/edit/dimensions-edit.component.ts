@@ -11,6 +11,7 @@ import { tap, takeUntil } from 'rxjs/operators';
 
 import { TechRecord, Dimensions, AxleSpacing } from '@app/models/tech-record.model';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
+import { VEHICLE_TYPES } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-dimensions-edit',
@@ -23,6 +24,7 @@ export class DimensionsEditComponent implements OnInit {
   techRecordFg: FormGroup;
   numberOfAxles$: Observable<number>;
   onDestroy$ = new Subject();
+  isHgvVehicle: boolean;
 
   get axleSpacing() {
     const dimensionsFg = this.techRecordFg.get('dimensions') as FormGroup;
@@ -38,6 +40,7 @@ export class DimensionsEditComponent implements OnInit {
 
   ngOnInit() {
     this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
+    this.isHgvVehicle = this.techRecord.vehicleType === VEHICLE_TYPES.HGV;
 
     const dimensions: Dimensions = this.techRecord.dimensions
       ? this.techRecord.dimensions

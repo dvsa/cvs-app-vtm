@@ -6,7 +6,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import {
   SetViewState,
-  EVehicleTechRecordModelActions
+  EVehicleTechRecordActions
 } from './../actions/VehicleTechRecordModel.actions';
 import { VIEW_STATE } from '@app/app.enums';
 import { ClearErrorMessage } from '../actions/Error.actions';
@@ -15,7 +15,7 @@ import { ClearErrorMessage } from '../actions/Error.actions';
 export class ErrorEffects {
   @Effect()
   clearSummaryErrors$: Observable<Action> = this.actions$.pipe(
-    ofType<SetViewState>(EVehicleTechRecordModelActions.SetViewState),
+    ofType<SetViewState>(EVehicleTechRecordActions.SetViewState),
     filter((action: SetViewState): boolean => action.viewState === VIEW_STATE.VIEW_ONLY),
     map(() => new ClearErrorMessage())
   );

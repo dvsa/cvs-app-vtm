@@ -111,6 +111,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
                 id="test-edit-address3"
                 ng-reflect-name="address3"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
             <div
@@ -128,6 +129,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
                 id="test-edit-postCode"
                 ng-reflect-name="postCode"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
             <div
@@ -145,6 +147,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
                 id="test-edit-telephoneNumber"
                 ng-reflect-name="telephoneNumber"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
             <div
@@ -162,6 +165,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
                 id="test-edit-emailAddress"
                 ng-reflect-name="emailAddress"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
           </form>

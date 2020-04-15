@@ -8,12 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 
 import { SharedModule } from '@app/shared';
 import {
-  UpdateVehicleTechRecord,
-  SetViewState
+  CreateVehicleTechRecord,
+  SetViewState,
+  UpdateVehicleTechRecord
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {
   VehicleTechRecordModel,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  VehicleTechRecordEditState
 } from '@app/models/vehicle-tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import { VIEW_STATE } from '@app/app.enums';
@@ -62,15 +64,33 @@ describe('TechnicalRecordsContainer', () => {
 
   describe('handlers', () => {
     let mockTechComponent: DebugElement;
+    let recordState: VehicleTechRecordEditState;
+
     beforeEach(() => {
       mockTechComponent = fixture.debugElement.query(By.directive(TestTechnicalRecordsComponent));
+      recordState = {
+        vehicleRecordEdit: {} as VehicleTechRecordEdit
+      } as VehicleTechRecordEditState;
     });
 
-    it('should dispatch edited vehicle record', () => {
-      const editedVehicleRecord = {} as VehicleTechRecordEdit;
+    it('should dispatch created vehicle record in create view state', () => {
+      recordState = { ...recordState, viewState: VIEW_STATE.CREATE };
 
-      const updateVehicleTechRecordAction = new UpdateVehicleTechRecord(editedVehicleRecord);
-      mockTechComponent.componentInstance.submitVehicleRecord.emit(editedVehicleRecord);
+      const updateVehicleTechRecordAction = new CreateVehicleTechRecord(
+        recordState.vehicleRecordEdit
+      );
+      mockTechComponent.componentInstance.submitVehicleRecord.emit(recordState);
+
+      expect(store.dispatch).toHaveBeenCalledWith(updateVehicleTechRecordAction);
+    });
+
+    it('should dispatch edited vehicle record in edit view state', () => {
+      recordState = { ...recordState, viewState: VIEW_STATE.EDIT };
+
+      const updateVehicleTechRecordAction = new UpdateVehicleTechRecord(
+        recordState.vehicleRecordEdit
+      );
+      mockTechComponent.componentInstance.submitVehicleRecord.emit(recordState);
 
       expect(store.dispatch).toHaveBeenCalledWith(updateVehicleTechRecordAction);
     });
@@ -99,6 +119,6 @@ class TestTechnicalRecordsComponent {
   @Input() metaData: MetaData;
   @Input() testResultJson: TestResultModel[];
   @Input() currentState: VIEW_STATE;
-  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEdit>();
+  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEditState>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 }

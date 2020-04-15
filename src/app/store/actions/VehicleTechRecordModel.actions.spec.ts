@@ -1,9 +1,8 @@
 import {
-  EVehicleTechRecordModelActions,
-  GetVehicleTechRecordModel,
-  GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess,
-  SetVehicleTechRecordModelOnCreate,
+  EVehicleTechRecordActions,
+  GetVehicleTechRecordHavingStatusAll,
+  GetVehicleTechRecordHavingStatusAllSuccess,
+  SetVehicleTechRecordOnCreate,
   UpdateVehicleTechRecord,
   UpdateVehicleTechRecordSuccess,
   SetSelectedVehicleTechnicalRecord,
@@ -19,93 +18,86 @@ import { TechRecord } from '@app/models/tech-record.model';
 import { SearchParams } from '@app/models/search-params';
 import { RECORD_STATUS, VIEW_STATE } from '@app/app.enums';
 
-const vehicleTechRecordModel: VehicleTechRecordModel = {} as VehicleTechRecordModel;
-const techRecord: TechRecord = {} as TechRecord;
+const mockTechRecord: TechRecord = {
+  statusCode: RECORD_STATUS.CURRENT
+} as TechRecord;
 
-describe('GetVehicleTechRecordModel', () => {
-  it('the action should have the right type and payload', () => {
-    const action = new GetVehicleTechRecordModel(techRecord);
+const mockVehicleTechRecord: VehicleTechRecordModel = {
+  techRecord: [mockTechRecord]
+} as VehicleTechRecordModel;
 
-    expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModel,
-      payload: techRecord
-    });
-  });
-});
+const mockVehicleRecordEdit: VehicleTechRecordEdit = {
+  primaryVrm: 'vrm1',
+  techRecord: [mockTechRecord]
+} as VehicleTechRecordEdit;
 
-describe('GetVehicleTechRecordModelHavingStatusAll', () => {
-  it('the action should have the right type and payload', () => {
+describe('GetVehicleTechRecordHavingStatusAll', () => {
+  it('should create GetVehicleTechRecordHavingStatusAll action', () => {
     const searchParams: SearchParams = { searchIdentifier: '1234', searchCriteria: 'all' };
-    const action = new GetVehicleTechRecordModelHavingStatusAll(searchParams);
+    const action = new GetVehicleTechRecordHavingStatusAll(searchParams);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll,
+      type: EVehicleTechRecordActions.GetVehicleTechRecordHavingStatusAll,
       payload: searchParams
     });
   });
 });
 
-describe('GetVehicleTechRecordModelHavingStatusAllSuccess', () => {
-  it('the action should have the right type and payload', () => {
-    const action = new GetVehicleTechRecordModelHavingStatusAllSuccess([vehicleTechRecordModel]);
+describe('GetVehicleTechRecordHavingStatusAllSuccess', () => {
+  it('should create GetVehicleTechRecordHavingStatusAllSuccess action', () => {
+    const action = new GetVehicleTechRecordHavingStatusAllSuccess([mockVehicleTechRecord]);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess,
-      vehicleTechRecords: [vehicleTechRecordModel]
+      type: EVehicleTechRecordActions.GetVehicleTechRecordHavingStatusAllSuccess,
+      vehicleTechRecords: [mockVehicleTechRecord]
     });
   });
 });
 
-describe('SetVehicleTechRecordModelOnCreate', () => {
-  it('the action should have the right type and payload', () => {
+describe('SetVehicleTechRecordOnCreate', () => {
+  it('should create SetVehicleTechRecordOnCreate action', () => {
     const vehicleIdentifiers: VehicleIdentifiers = {
       vin: 'aaa',
       vrm: 'bbb',
       vType: 'PSV'
     } as VehicleIdentifiers;
 
-    const action = new SetVehicleTechRecordModelOnCreate(vehicleIdentifiers);
+    const action = new SetVehicleTechRecordOnCreate(vehicleIdentifiers);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.SetVehicleTechRecordModelOnCreate,
+      type: EVehicleTechRecordActions.SetVehicleTechRecordOnCreate,
       payload: vehicleIdentifiers
+    });
+  });
+});
+
+describe('CreateVehicleTechRecord', () => {
+  it('should create CreateVehicleTechRecord action', () => {
+    const action = new UpdateVehicleTechRecord(mockVehicleRecordEdit);
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordActions.UpdateVehicleTechRecord,
+      vehicleRecordEdit: mockVehicleRecordEdit
     });
   });
 });
 
 describe('UpdateVehicleTechRecord', () => {
   it('should create UpdateVehicleTechRecord action', () => {
-    const vehicleRecordEdit: VehicleTechRecordEdit = {
-      primaryVrm: 'vrm1',
-      techRecord: [
-        {
-          statusCode: RECORD_STATUS.CURRENT
-        }
-      ]
-    } as VehicleTechRecordEdit;
-
-    const action = new UpdateVehicleTechRecord(vehicleRecordEdit);
+    const action = new UpdateVehicleTechRecord(mockVehicleRecordEdit);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.UpdateVehicleTechRecord,
-      vehicleRecordEdit
+      type: EVehicleTechRecordActions.UpdateVehicleTechRecord,
+      vehicleRecordEdit: mockVehicleRecordEdit
     });
   });
 
   it('should create UpdateVehicleTechRecordSuccess action', () => {
-    const vehicleTechRecord: VehicleTechRecordModel = {
-      techRecord: [
-        {
-          statusCode: RECORD_STATUS.CURRENT
-        }
-      ]
-    } as VehicleTechRecordModel;
-
-    const action = new UpdateVehicleTechRecordSuccess(vehicleTechRecord);
+    const action = new UpdateVehicleTechRecordSuccess(mockVehicleTechRecord);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.UpdateVehicleTechRecordSuccess,
-      vehicleTechRecord
+      type: EVehicleTechRecordActions.UpdateVehicleTechRecordSuccess,
+      vehicleTechRecord: mockVehicleTechRecord
     });
   });
 });
@@ -115,11 +107,7 @@ describe('SetSelectedVehicleTechnicalRecord', () => {
     const vehicleRecordState: VehicleTechRecordState = {
       vehicleRecord: {
         systemNumber: '1232333',
-        techRecord: [
-          {
-            statusCode: RECORD_STATUS.ARCHIVED
-          }
-        ]
+        techRecord: [mockTechRecord]
       },
       viewState: VIEW_STATE.VIEW_ONLY
     } as VehicleTechRecordState;
@@ -127,7 +115,7 @@ describe('SetSelectedVehicleTechnicalRecord', () => {
     const action = new SetSelectedVehicleTechnicalRecord(vehicleRecordState);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecord,
+      type: EVehicleTechRecordActions.SetSelectedVehicleTechnicalRecord,
       vehicleRecordState
     });
   });
@@ -140,7 +128,7 @@ describe('SetViewState', () => {
     const action = new SetViewState(viewState);
 
     expect({ ...action }).toEqual({
-      type: EVehicleTechRecordModelActions.SetViewState,
+      type: EVehicleTechRecordActions.SetViewState,
       viewState
     });
   });

@@ -2,7 +2,7 @@ import { RouterReducerState } from '@ngrx/router-store';
 
 import {
   initialVehicleTechRecordModelState,
-  IVehicleTechRecordModelState
+  VehicleTechRecordState
 } from './VehicleTechRecordModel.state';
 import {
   initialVehicleTestResultModelState,
@@ -21,7 +21,7 @@ import { ErrorState, initialErrorState } from '../reducers/error.reducers';
 export interface IAppState {
   router?: RouterReducerState;
   loader: ILoaderState;
-  vehicleTechRecordModel: IVehicleTechRecordModelState;
+  vehicleTechRecordModel: VehicleTechRecordState;
   vehicleTestResultModel: IVehicleTestResultModelState;
   referenceData: ReferenceDataState;
   error: ErrorState;
