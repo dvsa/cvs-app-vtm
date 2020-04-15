@@ -1,4 +1,4 @@
-<dl *ngIf="testType" class="govuk-summary-list">
+<dl *ngIf="!editState" class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Test type
@@ -93,8 +93,8 @@
       Test date
     </dt>
     <dd class="govuk-summary-list__value" id="test-testEndTimestamp">
-      <span *ngIf="testRecord.testEndTimestamp; else hyphen">
-        {{ testRecord.testEndTimestamp | date: 'dd/MM/yyyy' }}
+      <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
+        {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}
       </span>
     </dd>
   </div>
@@ -142,3 +142,12 @@
 <ng-template #hyphen>
   <span>-</span>
 </ng-template>
+
+<ng-container *ngIf="editState">
+  <vtm-test-section-edit
+    [testRecord]="testRecord"
+    [testType]="testType"
+    [testTypesApplicable]="testTypesApplicable"
+  ></vtm-test-section-edit>
+</ng-container>
+

@@ -1,5 +1,10 @@
 import { TestRecordMapper } from '@app/test-record/test-record.mapper';
-import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
+import {
+  REASON_FOR_ABANDONING_HGV_TRL,
+  REASON_FOR_ABANDONING_PSV,
+  REASON_FOR_ABANDONING_TIR,
+  TEST_STATION_TYPE
+} from '@app/test-record/test-record.enums';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import {
   EMISSION_DETAILS_APPLICABLE,
@@ -52,9 +57,56 @@ describe('TestRecordMapper', () => {
     } as TestRecordTestType;
 
     const testResultMapped = mapper.mapFormValues(
-      { testType: { testTypeId: '1', seatbeltInstallationCheckDate: true } },
+      {
+        testType: {
+          testTypeId: '1',
+          seatbeltInstallationCheckDate: true,
+          testTypeEndTimestampDate: '2121-12-17',
+          testTypeEndTimestampTime: '11:11',
+          testTypeStartTimestamp: '22:11',
+          reasonForAbandoning: ['true', 'true']
+        }
+      },
       testResultObject
     );
     expect(Object.values(testResultMapped).length).toEqual(25);
+  });
+
+  describe('should return reasons for abandoning based on vehicle type & test type id', () => {
+    it('PSV vehicle type', () => {
+      const testTypeId = '22';
+      const reasonsForAbandoning = mapper.getReasonsForAbandoning('psv', testTypeId);
+      expect(reasonsForAbandoning).toEqual(Object.values(REASON_FOR_ABANDONING_PSV));
+    });
+    it('HGV vehicle type', () => {
+      const testTypeId = '22';
+      const reasonsForAbandoning = mapper.getReasonsForAbandoning('hgv', testTypeId);
+      expect(reasonsForAbandoning).toEqual(Object.values(REASON_FOR_ABANDONING_HGV_TRL));
+    });
+    it('TRL vehicle type', () => {
+      const testTypeId = '22';
+      const reasonsForAbandoning = mapper.getReasonsForAbandoning('trl', testTypeId);
+      expect(reasonsForAbandoning).toEqual(Object.values(REASON_FOR_ABANDONING_HGV_TRL));
+    });
+    it('TIR test type', () => {
+      const testTypeId = '49';
+      const reasonsForAbandoning = mapper.getReasonsForAbandoning('trl', testTypeId);
+      expect(reasonsForAbandoning).toEqual(Object.values(REASON_FOR_ABANDONING_TIR));
+    });
+  });
+
+  it('returns proper date value for the time inputs', () => {
+    const dateToISO = mapper.getDateTime('2121-12-17T03:24:00', '1900-11-11T10:11:00');
+    expect(dateToISO).toEqual('2121-12-17T08:26:00.000Z');
+  });
+
+  it('returns string with reasons for abandoning selected by user', () => {
+    const reasonsSelected = mapper.getReasonsForAbandoningValue(
+      ['true', 'true'],
+      Object.values(REASON_FOR_ABANDONING_PSV)
+    );
+    expect(reasonsSelected).toEqual(
+      'The vehicle was not submitted for test at the appointed time,The relevant test fee has not been paid'
+    );
   });
 });

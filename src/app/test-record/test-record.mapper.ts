@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TestResultModel } from '@app/models/test-result.model';
-import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
+import {
+  REASON_FOR_ABANDONING_HGV_TRL,
+  REASON_FOR_ABANDONING_PSV,
+  REASON_FOR_ABANDONING_TIR,
+  TEST_STATION_TYPE
+} from '@app/test-record/test-record.enums';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestType } from '@app/models/test.type';
 import { COUNTRY_OF_REGISTRATION } from '@app/app.enums';
@@ -38,6 +43,24 @@ export class TestRecordMapper {
     }
   }
 
+  getReasonsForAbandoning(vehicleType: string, testTypeId: string) {
+    const tirTestTypeIds = { 49: 'TIR test', 56: 'Paid TIR retest', 57: 'Free TIR retest' };
+
+    if (Object.keys(tirTestTypeIds).includes(testTypeId)) {
+      return Object.values(REASON_FOR_ABANDONING_TIR);
+    } else {
+      switch (vehicleType) {
+        case 'trl':
+        case 'hgv':
+          return Object.values(REASON_FOR_ABANDONING_HGV_TRL);
+          break;
+        case 'psv':
+          return Object.values(REASON_FOR_ABANDONING_PSV);
+          break;
+      }
+    }
+  }
+
   getTestTypeEnums(applicableEnum: string[]) {
     return applicableEnum.reduce(
       (val, testTypeId) => ({ ...val, [testTypeId]: 'applicable' }),
@@ -67,6 +90,23 @@ export class TestRecordMapper {
       Object.values(COUNTRY_OF_REGISTRATION).indexOf(countryName)
     ];
     return !!countryCode ? countryCode : '';
+  }
+
+  getDateTime(dateValue: string, timeValue: string) {
+    const dateToSave = new Date(dateValue);
+    const timeToSave = new Date(timeValue);
+
+    dateToSave.setUTCMinutes(timeToSave.getUTCMinutes());
+    dateToSave.setUTCHours(timeToSave.getUTCHours());
+
+    return !!dateToSave.toJSON() ? dateToSave.toISOString() : '';
+  }
+
+  getReasonsForAbandoningValue(currentValue: string[], reasonsForAbandoning: string[]): string {
+    const selectedReasons = reasonsForAbandoning.map((elem, index) => {
+      return !!currentValue ? (currentValue[index] ? elem : '') : '';
+    });
+    return selectedReasons.length > 1 ? selectedReasons.filter((item) => item).join(',') : '';
   }
 
   mapFormValues(testResultFormData, testResultObject: TestRecordTestType): TestResultModel {
@@ -130,6 +170,28 @@ export class TestRecordMapper {
     testTypeMapped.particulateTrapSerialNumber =
       testResultFormData.testType.particulateTrapSerialNumber;
     testTypeMapped.additionalNotesRecorded = testResultFormData.testType.additionalNotesRecorded;
+    testTypeMapped.testResult = testResultFormData.testType.testResult;
+    testTypeMapped.reasonForAbandoning = this.getReasonsForAbandoningValue(
+      testResultFormData.testType.reasonForAbandoning,
+      this.getReasonsForAbandoning(testResultMapped.vehicleType, testTypeMapped.testTypeId)
+    );
+    testTypeMapped.additionalCommentsForAbandon =
+      testResultFormData.testType.additionalCommentsForAbandon;
+    testTypeMapped.certificateNumber = testResultFormData.testType.certificateNumber;
+    testTypeMapped.testExpiryDate = testResultFormData.testType.testExpiryDate;
+    testTypeMapped.testAnniversaryDate = testResultFormData.testType.testAnniversaryDate;
+    testTypeMapped.testTypeStartTimestamp = this.getDateTime(
+      testResultFormData.testType.testTypeEndTimestampDate,
+      testResultFormData.testType.testTypeStartTimestamp
+    );
+    testTypeMapped.testTypeEndTimestamp = this.getDateTime(
+      testResultFormData.testType.testTypeEndTimestampDate,
+      testResultFormData.testType.testTypeEndTimestampTime
+    );
+
+    if (!!testTypeMapped.prohibitionIssued) {
+      testTypeMapped.prohibitionIssued = testResultFormData.prohibitionIssued;
+    }
 
     if (!testTypesApplicable.seatBeltApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.seatbeltInstallationCheckDate = undefined;
