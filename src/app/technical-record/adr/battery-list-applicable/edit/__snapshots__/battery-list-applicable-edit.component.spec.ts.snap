@@ -49,7 +49,7 @@ exports[`BatteryListApplicableEditComponent should create with initialized form 
             <h2
               class="govuk-heading-m"
             >
-              Battery list applicable
+              Battery list applicable (optional)
             </h2>
             <div
               class="govuk-radios govuk-radios--inline"
