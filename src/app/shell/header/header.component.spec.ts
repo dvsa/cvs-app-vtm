@@ -7,6 +7,8 @@ import { MsAdalAngular6Module, MsAdalAngular6Service } from 'microsoft-adal-angu
 import { of } from 'rxjs';
 import { MaterialModule } from '../../material.module';
 import { HeaderComponent } from './header.component';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 
 describe('HeaderComponent', () => {
@@ -24,6 +26,7 @@ describe('HeaderComponent', () => {
         MatDialogModule,
         MaterialModule,
         BrowserAnimationsModule,
+        RouterTestingModule,
         MsAdalAngular6Module.forRoot({
           tenant: '1x111x11-1xx1-1xxx-xx11-1x1xx11x1111',
           clientId: '11x111x1-1xx1-1111-1x11-x1xx111x11x1',

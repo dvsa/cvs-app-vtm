@@ -1,28 +1,35 @@
 <header class="govuk-header" role="banner" data-module="govuk-header">
   <div class="topnav govuk-header__container govuk-width-container">
-    <a href="" class="active govuk-!-font-weight-bold govuk-!-font-size-19 ">
-      <span>Vehicle testing management</span>
-    </a>
-    <div id="menuLinks" [ngStyle]="{'display': menuOpen ? 'block' : 'none'}">
-      <a href="#1">{{userName}}</a>
+    <div id="menuLinks" [ngStyle]="{ display: menuOpen ? 'block' : 'none' }">
+      <a href="javascript:void(0)">{{ userName }}</a>
       <a (click)="logOut()">Sign out</a>
     </div>
     <a class="icon" (click)="onClick($event)">
-      <fa-icon [icon]="['fa', 'bars'] " size="lg"></fa-icon>
+      <fa-icon [icon]="['fa', 'bars']" size="lg"></fa-icon>
     </a>
   </div>
   <div class="govuk-header__container govuk-width-container">
     <div class="govuk-header__logo">
-      <a href="" id="header-nav-item" class="govuk-header__link govuk-header__link--homepage">
+      <a
+        [routerLink]="['/']"
+        id="header-nav-item"
+        class="govuk-header__link govuk-header__link--homepage"
+      >
         <span>Vehicle testing management</span>
       </a>
-      <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation"
-              aria-label="Show or hide Top Level Navigation">Menu</button>
+      <button
+        type="button"
+        class="govuk-header__menu-button govuk-js-header-toggle"
+        aria-controls="navigation"
+        aria-label="Show or hide Top Level Navigation"
+      >
+        Menu
+      </button>
       <nav>
         <ul id="navigation" class="govuk-header__navigation" aria-label="Top Level Navigation">
           <li class="govuk-header__navigation-item">
             <a class="govuk-header__link" href="#1">
-              {{userName}}
+              {{ userName }}
             </a>
           </li>
           <li class="govuk-header__navigation-item">

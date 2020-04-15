@@ -105,3 +105,12 @@ export enum COUNTRY_OF_REGISTRATION {
   'non-eu' = 'Non EU',
   'not-known' = 'Country Not Known'
 }
+
+export enum APP_MODALS {
+
+  LOSE_CHANGES = 'lose-changes',
+  REASON_FOR_CHANGE = 'reason-for-change',
+  REASON_FOR_DELETED = 'reason-for-delete',
+  LOGOUT = 'logout',
+  NONE = 'none'
+}
