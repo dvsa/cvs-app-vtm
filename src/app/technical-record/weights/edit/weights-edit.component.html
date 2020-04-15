@@ -23,7 +23,7 @@
                       field: 'grossEecWeight'
                     },
                     {
-                      label: 'Design (optional)',
+                      label: 'Design',
                       field: 'grossDesignWeight'
                     }
                   ]
@@ -43,7 +43,7 @@
                   labelHead: 'Gross train weight',
                   weightFields: [
                     {
-                      label: 'GB (optional)',
+                      label: 'GB',
                       field: 'trainGbWeight'
                     },
                     {
@@ -71,7 +71,8 @@
                   labelHead: 'Max train weight',
                   weightFields: [
                     {
-                      label: 'GB (optional)',
+                      label: 'GB',
+                      displayOptional: isPsvVehicle,
                       field: 'maxTrainGbWeight'
                     },
                     {
@@ -142,7 +143,8 @@
                       for="test-edit-{{ item.field }}{{ item.index }}"
                       class="govuk-label govuk-!-font-weight-bold"
                     >
-                      {{ item.label }}
+                      <span>{{ item.label }}</span>
+                      <span *ngIf="item.displayOptional">&nbsp;(optional)</span>
                     </label>
                     <input
                       id="test-edit-{{ item.field }}{{ item.index }}"
@@ -151,6 +153,7 @@
                       name="{{ item.field }}"
                       class="govuk-input govuk-input--width-5"
                       formControlName="{{ item.field }}"
+                      vtmNullValue
                     />
                   </div>
                 </ng-container>

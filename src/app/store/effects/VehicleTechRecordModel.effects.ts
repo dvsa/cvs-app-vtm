@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import {
-  EVehicleTechRecordModelActions,
-  GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess,
+  CreateVehicleTechRecord,
+  EVehicleTechRecordActions,
+  GetVehicleTechRecordHavingStatusAll,
+  GetVehicleTechRecordHavingStatusAllSuccess,
   SetSelectedVehicleTechnicalRecord,
-  SetSelectedVehicleTechnicalRecordSucess,
-  SetVehicleTechRecordModelOnCreate,
+  SetSelectedVehicleTechRecordSuccess,
+  SetVehicleTechRecordOnCreate,
   SetViewState,
   UpdateVehicleTechRecord,
   UpdateVehicleTechRecordSuccess
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
-import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
+import { VehicleTechRecordState } from '../state/VehicleTechRecordModel.state';
 import { SetErrorMessage } from '../actions/Error.actions';
 import {
   CREATE_PAGE_LABELS,
@@ -41,26 +42,26 @@ import { VrmModel } from '@app/models/vrm.model';
 @Injectable()
 export class VehicleTechRecordModelEffects {
   @Effect()
-  getTechnicalRecords$ = this._actions$.pipe(
-    ofType<GetVehicleTechRecordModelHavingStatusAll>(
-      EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll
+  getTechnicalRecords$ = this.actions$.pipe(
+    ofType<GetVehicleTechRecordHavingStatusAll>(
+      EVehicleTechRecordActions.GetVehicleTechRecordHavingStatusAll
     ),
     map((action) => action.payload),
     switchMap((searchParams: SearchParams) =>
-      this._technicalRecordService
+      this.technicalRecordService
         .getTechnicalRecordsAllStatuses(
           searchParams.searchIdentifier,
           searchParams.searchCriteria
         )
         .pipe(
           switchMap((vTechRecords: VehicleTechRecordModel[]) =>
-            of(new GetVehicleTechRecordModelHavingStatusAllSuccess(vTechRecords))
+            of(new GetVehicleTechRecordHavingStatusAllSuccess(vTechRecords))
           ),
           tap(({ vehicleTechRecords }) => {
             if (vehicleTechRecords.length > 1) {
               this.router.navigate(['/multiple-records']);
             } else {
-              this._store.dispatch(
+              this.store.dispatch(
                 new SetSelectedVehicleTechnicalRecord({
                   vehicleRecord: vehicleTechRecords[0],
                   viewState: VIEW_STATE.VIEW_ONLY
@@ -77,19 +78,16 @@ export class VehicleTechRecordModelEffects {
   );
 
   @Effect()
-  setSelectedVehicleTechRecord$ = this._actions$.pipe(
+  setSelectedVehicleTechRecord$ = this.actions$.pipe(
     ofType<SetSelectedVehicleTechnicalRecord>(
-      EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecord
+      EVehicleTechRecordActions.SetSelectedVehicleTechnicalRecord
     ),
     switchMap(({ vehicleRecordState }) => {
       const { vehicleRecord, viewState } = vehicleRecordState;
       const actions = [];
 
       actions.push(
-        ...[
-          new SetSelectedVehicleTechnicalRecordSucess(vehicleRecord),
-          new SetViewState(viewState)
-        ]
+        ...[new SetSelectedVehicleTechRecordSuccess(vehicleRecord), new SetViewState(viewState)]
       );
 
       if (vehicleRecord.systemNumber) {
@@ -102,24 +100,22 @@ export class VehicleTechRecordModelEffects {
   );
 
   @Effect({ dispatch: false })
-  setVinOnCreate$ = this._actions$.pipe(
-    ofType<SetVehicleTechRecordModelOnCreate>(
-      EVehicleTechRecordModelActions.SetVehicleTechRecordModelOnCreate
-    ),
+  setVinOnCreate$ = this.actions$.pipe(
+    ofType<SetVehicleTechRecordOnCreate>(EVehicleTechRecordActions.SetVehicleTechRecordOnCreate),
     map((action) => action.payload),
     switchMap((payload) => {
       let requests: Observable<any>[] = [];
       const requestErrors = [];
 
       requests.push(
-        this._technicalRecordService
+        this.technicalRecordService
           .getTechnicalRecordsAllStatuses(payload.vin, 'all')
           .pipe(catchError((error) => of(undefined)))
       );
 
       if (payload.vType === 'PSV' || payload.vType === 'HGV') {
         requests.push(
-          this._technicalRecordService
+          this.technicalRecordService
             .getTechnicalRecordsAllStatuses(payload.vrm, 'all')
             .pipe(catchError((error) => of(undefined)))
         );
@@ -138,7 +134,7 @@ export class VehicleTechRecordModelEffects {
             vrm: payload.vrm,
             vType: payload.vType
           });
-          this._store.dispatch(
+          this.store.dispatch(
             new SetSelectedVehicleTechnicalRecord({
               vehicleRecord,
               viewState: VIEW_STATE.CREATE
@@ -147,7 +143,7 @@ export class VehicleTechRecordModelEffects {
         }
         requests = [];
         if (requestErrors.length > 0) {
-          this._store.dispatch(new SetErrorMessage(requestErrors));
+          this.store.dispatch(new SetErrorMessage(requestErrors));
         }
       });
 
@@ -156,9 +152,33 @@ export class VehicleTechRecordModelEffects {
   );
 
   @Effect()
-  updateTechnicalRecords$ = this._actions$.pipe(
-    ofType<UpdateVehicleTechRecord>(EVehicleTechRecordModelActions.UpdateVehicleTechRecord),
-    withLatestFrom(this._store.select(getSelectedVehicleTechRecord)),
+  createTechnicalRecord$ = this.actions$.pipe(
+    ofType<CreateVehicleTechRecord>(EVehicleTechRecordActions.CreateVehicleTechRecord),
+    switchMap(({ vehicleRecordEdit }) => {
+      // **************************************
+      // TODO: data should be coming from Store. Retrieve via the selector
+      vehicleRecordEdit.msUserDetails = { ...this.loggedUser.getUser() };
+
+      return this.technicalRecordService.createTechnicalRecord(vehicleRecordEdit).pipe(
+        map(
+          () =>
+            new GetVehicleTechRecordHavingStatusAll({
+              searchIdentifier: vehicleRecordEdit.vin,
+              searchCriteria: 'all'
+            })
+        ),
+        catchError(({ error }) => {
+          const errorMessages = error.errors;
+          return [new SetErrorMessage(errorMessages)];
+        })
+      );
+    })
+  );
+
+  @Effect()
+  updateTechnicalRecords$ = this.actions$.pipe(
+    ofType<UpdateVehicleTechRecord>(EVehicleTechRecordActions.UpdateVehicleTechRecord),
+    withLatestFrom(this.store.select(getSelectedVehicleTechRecord)),
     switchMap(
       ([{ vehicleRecordEdit }, vehicleTechRecord]: [
         { vehicleRecordEdit: VehicleTechRecordEdit },
@@ -167,14 +187,14 @@ export class VehicleTechRecordModelEffects {
         // TODO: data should be coming from Store. Retrieve via the selector
         vehicleRecordEdit.msUserDetails = { ...this.loggedUser.getUser() };
 
-        return this._technicalRecordService
+        return this.technicalRecordService
           .updateTechnicalRecords(vehicleRecordEdit, vehicleTechRecord.systemNumber)
           .pipe(
             switchMap((updatedVehicleTechRecord: VehicleTechRecordModel) => {
               updatedVehicleTechRecord.metadata = vehicleTechRecord.metadata;
               return [
                 new UpdateVehicleTechRecordSuccess(updatedVehicleTechRecord),
-                new SetSelectedVehicleTechnicalRecordSucess(updatedVehicleTechRecord),
+                new SetSelectedVehicleTechRecordSuccess(updatedVehicleTechRecord),
                 new SetViewState(VIEW_STATE.VIEW_ONLY)
               ];
             }),
@@ -221,10 +241,10 @@ export class VehicleTechRecordModelEffects {
   }
 
   constructor(
-    private _actions$: Actions,
-    private _store: Store<IVehicleTechRecordModelState>,
+    private actions$: Actions,
+    private store: Store<VehicleTechRecordState>,
     private router: Router,
-    private _technicalRecordService: TechnicalRecordService,
+    private technicalRecordService: TechnicalRecordService,
     private loggedUser: UserService
   ) {}
 }

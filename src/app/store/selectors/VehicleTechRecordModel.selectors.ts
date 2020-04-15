@@ -6,21 +6,21 @@ import {
 } from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { VrmModel } from '@app/models/vrm.model';
-import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
+import { VehicleTechRecordState } from '../state/VehicleTechRecordModel.state';
 import { RECORD_STATUS } from '@app/app.enums';
 
-export const selectFeature = createFeatureSelector<IVehicleTechRecordModelState>(
+export const selectFeature = createFeatureSelector<VehicleTechRecordState>(
   'vehicleTechRecordModel'
 );
 
 export const selectVehicleTechRecordModelHavingStatusAll = createSelector(
   selectFeature,
-  (state: IVehicleTechRecordModelState) => state.vehicleTechRecordModel
+  (state: VehicleTechRecordState) => state.vehicleTechRecordModel
 );
 
 export const getSelectedVehicleTechRecord = createSelector(
   selectFeature,
-  (state: IVehicleTechRecordModelState) => state.selectedVehicleTechRecord
+  (state: VehicleTechRecordState) => state.selectedVehicleTechRecord
 );
 
 export const getActiveVehicleTechRecord = createSelector(
@@ -49,7 +49,7 @@ export const getVehicleTechRecordMetaData = createSelector(
 
 export const getTechViewState = createSelector(
   selectFeature,
-  (state: IVehicleTechRecordModelState) => state.viewState
+  (state: VehicleTechRecordState) => state.viewState
 );
 
 const getTechRecord = (techRecords: TechRecord[], searchRecord: TechRecord): TechRecord => {

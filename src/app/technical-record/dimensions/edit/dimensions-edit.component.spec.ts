@@ -7,13 +7,13 @@ import {
   FormGroup,
   AbstractControl
 } from '@angular/forms';
+import { of } from 'rxjs';
 
 import { SharedModule } from '@app/shared';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { DimensionsEditComponent } from './dimensions-edit.component';
 import { TechRecord } from '@app/models/tech-record.model';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
-import { of } from 'rxjs';
 
 describe('DimensionsEditComponent', () => {
   let component: DimensionsEditComponent;

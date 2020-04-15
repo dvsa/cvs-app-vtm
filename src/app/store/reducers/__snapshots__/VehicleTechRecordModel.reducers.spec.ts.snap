@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleTechRecordModelReducers GetVehicleTechRecordHavingStatusAllSuccess should set vehicle record(s) to the store 1`] = `
+Object {
+  "vehicleTechRecordModel": Array [
+    Object {
+      "systemNumber": "111363",
+      "techRecord": Array [
+        Object {
+          "statusCode": "current",
+        },
+      ],
+      "vin": "ABCD12345",
+    },
+  ],
+}
+`;
+
+exports[`VehicleTechRecordModelReducers SetSelectedVehicleTechRecordSuccess should set selected vehicle record to the store 1`] = `
+Object {
+  "selectedVehicleTechRecord": Object {
+    "systemNumber": "111363",
+    "techRecord": Array [
+      Object {
+        "statusCode": "current",
+      },
+    ],
+    "vin": "ABCD12345",
+  },
+}
+`;
+
+exports[`VehicleTechRecordModelReducers SetViewState should set current viewstate to the store 1`] = `
+Object {
+  "viewState": 1,
+}
+`;
+
+exports[`VehicleTechRecordModelReducers UpdateVehicleTechRecordSuccess should update the vehicle record in the store 1`] = `
+Object {
+  "vehicleTechRecordModel": Array [
+    Object {
+      "systemNumber": "111363",
+      "techRecord": Array [
+        Object {
+          "createdAt": "2020-06-26T10:26:54.903Z",
+        },
+      ],
+      "vin": "ABCD12345",
+    },
+  ],
+}
+`;
+
+exports[`VehicleTechRecordModelReducers when initialised should set the default state 1`] = `
+Object {
+  "selectedVehicleTechRecord": null,
+  "vehicleTechRecordModel": null,
+  "viewState": 0,
+}
+`;

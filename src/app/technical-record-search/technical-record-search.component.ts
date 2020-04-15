@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { IAppState } from '@app/store/state/app.state';
 import { getErrors } from '@app/store/selectors/error.selectors';
-import { GetVehicleTechRecordModelHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
+import { GetVehicleTechRecordHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { SEARCH_CRITERIA } from '@app/app.enums';
 import { SearchParams } from '@app/models/search-params';
 
@@ -48,6 +48,6 @@ export class TechnicalRecordSearchComponent implements OnInit {
         this.searchParams.searchCriteria = 'all';
     }
 
-    this.store.dispatch(new GetVehicleTechRecordModelHavingStatusAll(this.searchParams));
+    this.store.dispatch(new GetVehicleTechRecordHavingStatusAll(this.searchParams));
   }
 }
