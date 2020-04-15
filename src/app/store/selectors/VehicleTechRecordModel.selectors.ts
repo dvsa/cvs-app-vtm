@@ -27,18 +27,20 @@ export const getActiveVehicleTechRecord = createSelector(
   // getUserDetails,
   getSelectedVehicleTechRecord,
   (vehicleTechRecord) => (searchRecord: TechRecord = null): VehicleTechRecordEdit => {
-    const primaryVrm: VrmModel = vehicleTechRecord.vrms.find((vrm) => vrm.isPrimary);
+    if (vehicleTechRecord) {
+      const primaryVrm: VrmModel = vehicleTechRecord.vrms.find((vrm) => vrm.isPrimary);
 
-    return {
-      msUserDetails: null,
-      vin: vehicleTechRecord.vin,
-      primaryVrm: primaryVrm ? primaryVrm.vrm : '',
-      secondaryVrms: vehicleTechRecord.vrms
-        .filter((vrm) => !vrm.isPrimary)
-        .map((secondaryVrm) => secondaryVrm.vrm),
-      trailerId: vehicleTechRecord.trailerId,
-      techRecord: [getTechRecord(vehicleTechRecord.techRecord, searchRecord)]
-    };
+      return {
+        msUserDetails: null,
+        vin: vehicleTechRecord.vin,
+        primaryVrm: primaryVrm ? primaryVrm.vrm : '',
+        secondaryVrms: vehicleTechRecord.vrms
+          .filter((vrm) => !vrm.isPrimary)
+          .map((secondaryVrm) => secondaryVrm.vrm),
+        trailerId: vehicleTechRecord.trailerId,
+        techRecord: [getTechRecord(vehicleTechRecord.techRecord, searchRecord)]
+      };
+    }
   }
 );
 

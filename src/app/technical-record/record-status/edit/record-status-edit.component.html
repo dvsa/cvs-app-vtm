@@ -1,0 +1,43 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- Vehicle record status -->
+          <div class="govuk-radios govuk-!-margin-bottom-0">
+            <label for="test-edit-statusCode" class="govuk-label govuk-!-font-weight-bold">
+              Status
+            </label>
+
+            <div class="govuk-radios__item" *ngFor="let option of recordOptions | keyvalue">
+              <input
+                class="govuk-radios__input"
+                id="test-edit-statusCode-{{ option.key }}"
+                name="statusCode"
+                formControlName="statusCode"
+                type="radio"
+                [value]="option.value"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="test-edit-statusCode-{{ option.key }}"
+              >
+                {{ option.key }}
+              </label>
+            </div>
+          </div>
+
+          <p class="govuk-body govuk-!-margin-top-4">
+            <span class="govuk-!-font-weight-bold govuk-!-padding-right-2">
+              Record completeness
+            </span>
+
+            <span id="test-edit-record-completeness" class="govuk-!-font-weight-regular">
+              {{ recordCompleteness }}
+            </span>
+          </p>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

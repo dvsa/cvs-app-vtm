@@ -37,3 +37,9 @@ export interface VehicleTechRecordEditState {
   vehicleRecordEdit: VehicleTechRecordEdit;
   viewState: VIEW_STATE;
 }
+
+export interface UpdateRecordInfo {
+  vehicleRecord: VehicleTechRecordEdit;
+  systemNumber: string;
+  oldStatusCode?: string;
+}
