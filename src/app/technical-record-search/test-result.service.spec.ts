@@ -156,6 +156,22 @@ describe('TestResultService', () => {
     });
   });
 
+  it('getTestTypeCategories should return test type taxonomy data', (done) => {
+    const mock = { mockObject: 'mock' };
+    spyOn(store, 'dispatch').and.callThrough();
+
+    service.getTestTypeCategories().subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
+
+    const req = httpMock.expectOne((request) => request.url.includes('/test-types'));
+    expect(req.request.method).toBe('GET');
+    req.flush(mock);
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });

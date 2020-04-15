@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Action, Store } from '@ngrx/store';
@@ -7,6 +7,8 @@ import {
   GetVehicleTestResultModel,
   GetVehicleTestResultModelSuccess,
   SetTestViewState,
+  UpdateSelectedTestResultModel,
+  UpdateSelectedTestResultModelSuccess,
   UpdateTestResult,
   UpdateTestResultSuccess
 } from '@app/store/actions/VehicleTestResultModel.actions';
@@ -22,14 +24,18 @@ import { MockStore } from '@app/utils/mockStore';
 import { DownloadCertificate } from '../actions/VehicleTestResultModel.actions';
 import * as FileSaver from 'file-saver';
 import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
+import { Router } from '@angular/router';
+import { TestType } from '@app/models/test.type';
+import { KeyValue } from '@angular/common';
 
 const testResult = [TEST_MODEL_UTILS.mockTestRecord()];
-const mockSelector = new BehaviorSubject<any>(undefined);
 
 describe('VehicleTestResultModelEffects', () => {
   let effects: VehicleTestResultModelEffects;
   let testResultService: TestResultService;
+  const mockSelector = new BehaviorSubject<any>(undefined);
   const store: MockStore = new MockStore(mockSelector);
+
 
   let actions$: Observable<Action>;
   let action: Action;
@@ -37,12 +43,16 @@ describe('VehicleTestResultModelEffects', () => {
   let getTestResults: jest.Mock;
   let getUser: jest.Mock;
   let downloadCertificate: jest.Mock;
+  let navigate: jest.Mock;
+  let getRouterParams: jest.Mock;
 
   beforeEach(() => {
     updateTestResults = jest.fn();
     getTestResults = jest.fn();
     getUser = jest.fn();
     downloadCertificate = jest.fn();
+    navigate = jest.fn();
+    getRouterParams = jest.fn();
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -59,6 +69,10 @@ describe('VehicleTestResultModelEffects', () => {
         {
           provide: UserService,
           useValue: { getUser }
+        },
+        {
+          provide: Router,
+          useValue: { navigate }
         }
       ]
     });
@@ -171,6 +185,37 @@ describe('VehicleTestResultModelEffects', () => {
       downloadCertificate.mockReturnValue(failed$);
 
       expect(effects.downloadCertificate$).toBeObservable(expected$);
+    });
+  });
+
+  describe('updateSelectedTestResult$', () => {
+    const testTreeNode = {
+      key: '1',
+      value: 'test'
+    } as KeyValue<string, string>;
+
+    beforeEach(() => {
+      mockSelector.next({
+        getSelectedVehicleTestResultModel: TEST_MODEL_UTILS.mockTestRecord(),
+        getRouterParams: { params: { id: '12345' } }
+      });
+      action = new UpdateSelectedTestResultModel(testTreeNode);
+      actions$ = hot('-a--', { a: action });
+    });
+
+    it('should return updated selected test result', () => {
+      const testType = TEST_MODEL_UTILS.mockTestType({ testTypeName: 'first test' } as TestType);
+      const updateSuccessAction = new UpdateSelectedTestResultModelSuccess(
+        TEST_MODEL_UTILS.mockTestRecord({
+          testTypes: [testType]
+        })
+      );
+
+      const expected$ = cold('-(b)-', { b: updateSuccessAction });
+      expect(effects.updateSelectedTestResult$).toBeObservable(expected$);
+      expect(navigate).toHaveBeenCalledWith(['/test-record', '12345'], {
+        queryParams: { systemNumber: '123', testResultId: '123' }
+      });
     });
   });
 });

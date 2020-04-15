@@ -1,12 +1,14 @@
 import { Action } from '@ngrx/store';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
+import { TestTypeCategory } from '@app/models/test-type-category';
 
 export enum EReferenceDataActions {
   LoadPreparers = 'LoadPreparers',
   LoadPreparersSuccess = '[Preparers Guard] LoadPreparersSuccess',
   LoadTestStations = 'LoadTestStations',
-  LoadTestStationsSuccess = '[TestStation Guard] LoadTestStationsSuccess'
+  LoadTestStationsSuccess = '[TestStation Guard] LoadTestStationsSuccess',
+  LoadTestTypeCategoriesSuccess = '[TestTypeCategories Guard LoadTestTypeCategoriesSuccess]'
 }
 
 export class LoadPreparers implements Action {
@@ -27,8 +29,14 @@ export class LoadTestStationsSuccess implements Action {
   constructor(public testStations: TestStation[]) {}
 }
 
+export class LoadTestTypeCategoriesSuccess implements Action {
+  readonly type = EReferenceDataActions.LoadTestTypeCategoriesSuccess;
+  constructor(public testTypeCategories: TestTypeCategory[]) {}
+}
+
 export type ReferenceDataActions =
   | LoadPreparers
   | LoadTestStations
   | LoadPreparersSuccess
-  | LoadTestStationsSuccess;
+  | LoadTestStationsSuccess
+  | LoadTestTypeCategoriesSuccess;

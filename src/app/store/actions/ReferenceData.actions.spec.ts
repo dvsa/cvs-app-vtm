@@ -5,11 +5,13 @@ import {
   LoadPreparers,
   LoadPreparersSuccess,
   LoadTestStations,
-  LoadTestStationsSuccess
+  LoadTestStationsSuccess,
+  LoadTestTypeCategoriesSuccess
 } from '@app/store/actions/ReferenceData.actions';
+import { TestTypeCategory } from '@app/models/test-type-category';
 
 describe('LoadPreparers', () => {
-  it('should have the correct action type when LoadPreparers() action is instantiated', () => {
+  it('should create LoadPreparers action', () => {
     const actionInstance = new LoadPreparers();
     expect({ ...actionInstance }).toEqual({
       type: EReferenceDataActions.LoadPreparers
@@ -18,7 +20,7 @@ describe('LoadPreparers', () => {
 });
 
 describe('LoadTestStations', () => {
-  it('should have the correct action type & payload when LoadTestStations() action is instantiated', () => {
+  it('should create LoadTestStations action', () => {
     const actionInstance = new LoadTestStations();
     expect({ ...actionInstance }).toEqual({
       type: EReferenceDataActions.LoadTestStations
@@ -27,7 +29,7 @@ describe('LoadTestStations', () => {
 });
 
 describe('LoadPreparersSuccess', () => {
-  it('should have the correct action type & preparers payload when LoadPreparersSuccess() action is instantiated', () => {
+  it('should create LoadPreparersSuccess action', () => {
     const actionInstance = new LoadPreparersSuccess({} as Preparer[]);
     expect({ ...actionInstance }).toEqual({
       type: EReferenceDataActions.LoadPreparersSuccess,
@@ -37,11 +39,21 @@ describe('LoadPreparersSuccess', () => {
 });
 
 describe('LoadTestStationsSuccess', () => {
-  it('should have the correct action type & test stations payload when LoadTestStationsSuccess() action is instantiated', () => {
+  it('should create LoadTestStationsSuccess action', () => {
     const actionInstance = new LoadTestStationsSuccess({} as TestStation[]);
     expect({ ...actionInstance }).toEqual({
       type: EReferenceDataActions.LoadTestStationsSuccess,
       testStations: {} as TestStation[]
+    });
+  });
+});
+
+describe('LoadTestTypeCategoriesSuccess', () => {
+  it('should create LoadTestTypeCategoriesSuccess action', () => {
+    const actionInstance = new LoadTestTypeCategoriesSuccess({} as TestTypeCategory[]);
+    expect({ ...actionInstance }).toEqual({
+      type: EReferenceDataActions.LoadTestTypeCategoriesSuccess,
+      testTypeCategories: {} as TestTypeCategory[]
     });
   });
 });

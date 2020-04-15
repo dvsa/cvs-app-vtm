@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TreeComponent should convert Tree Data to TreeNodes 1`] = `
+Array [
+  TreeNode {
+    "children": BehaviorSubject {
+      "_isScalar": false,
+      "_value": Array [],
+      "closed": false,
+      "hasError": false,
+      "isStopped": false,
+      "observers": Array [],
+      "thrownError": null,
+    },
+    "id": "97",
+    "nodeName": "Annual test",
+  },
+  TreeNode {
+    "children": BehaviorSubject {
+      "_isScalar": false,
+      "_value": Array [
+        TreeNode {
+          "children": BehaviorSubject {
+            "_isScalar": false,
+            "_value": Array [],
+            "closed": false,
+            "hasError": false,
+            "isStopped": false,
+            "observers": Array [],
+            "thrownError": null,
+          },
+          "id": "103",
+          "nodeName": "Paid",
+        },
+        TreeNode {
+          "children": BehaviorSubject {
+            "_isScalar": false,
+            "_value": Array [],
+            "closed": false,
+            "hasError": false,
+            "isStopped": false,
+            "observers": Array [],
+            "thrownError": null,
+          },
+          "id": "104",
+          "nodeName": "Part paid",
+        },
+      ],
+      "closed": false,
+      "hasError": false,
+      "isStopped": false,
+      "observers": Array [],
+      "thrownError": null,
+    },
+    "id": "102",
+    "nodeName": "First test retest",
+  },
+]
+`;
+
+exports[`TreeComponent should create 1`] = `
+<vtm-tree-component
+  dataSource={[Function MatTreeFlatDataSource]}
+  levels={[Function Map]}
+  sendTreeData={[Function EventEmitter]}
+  treeControl={[Function FlatTreeControl]}
+  treeFlattener={[Function MatTreeFlattener]}
+>
+  <mat-tree
+    class="govuk-!-margin-bottom-6 mat-tree"
+    ng-reflect-data-source="[object Object]"
+    ng-reflect-tree-control="[object Object]"
+    role="tree"
+  >
+    
+  </mat-tree>
+</vtm-tree-component>
+`;
