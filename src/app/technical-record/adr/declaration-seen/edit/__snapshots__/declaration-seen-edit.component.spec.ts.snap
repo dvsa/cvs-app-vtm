@@ -52,7 +52,7 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                     class="govuk-label govuk-checkboxes__label"
                     for="brakeDeclarationsSeen"
                   >
-                     Manufacturer brake declaration 
+                     Manufacturer brake declaration (optional) 
                   </label>
                 </div>
                 <div
@@ -67,7 +67,7 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                       class="govuk-label govuk-!-font-weight-bold"
                       for="brakeDeclarationIssuer"
                     >
-                       Issuer 
+                       Issuer (optional) 
                     </label>
                     <input
                       class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
@@ -92,7 +92,7 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                       class="govuk-label govuk-checkboxes__label"
                       for="brakeEndurance"
                     >
-                       Brake endurance 
+                       Brake endurance (optional) 
                     </label>
                   </div>
                   <div
@@ -134,7 +134,7 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                     class="govuk-label govuk-checkboxes__label"
                     for="declarationsSeen"
                   >
-                     Owner/operator declaration 
+                     Owner/operator declaration (optional) 
                   </label>
                 </div>
               </div>

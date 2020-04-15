@@ -18,7 +18,7 @@ exports[`AdditionalAdrDetailsComponent should create view only with populated da
       <dt
         class="govuk-summary-list__key"
       >
-        Examiner notes
+        Additional ADR notes
       </dt>
       <dd
         class="govuk-summary-list__value"
@@ -26,7 +26,7 @@ exports[`AdditionalAdrDetailsComponent should create view only with populated da
         <span
           id="test-additionalExaminerNotes"
         >
-           examination note 
+           some notes!!! 
         </span>
       </dd>
     </div>
@@ -44,7 +44,7 @@ exports[`AdditionalAdrDetailsComponent should create view only with populated da
         <span
           id="test-adrCertificateNotes"
         >
-            certificate note  
+           some certificate notes! 
         </span>
       </dd>
     </div>
