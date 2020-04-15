@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 import { FormGroup } from '@angular/forms';
 
 import { AdrComponent } from '@app/technical-record/adr/adr.component';
+import { BOOLEAN_RADIO_OPTIONS } from '@app/technical-record/technical-record.constants';
 
 @Component({
   selector: 'vtm-certificate-edit',
@@ -16,7 +17,7 @@ export class CertificateEditComponent extends AdrComponent implements OnInit {
 
   ngOnInit() {
     this.adrForm = super.setUp();
-    this.options = super.radioOptions();
+    this.options = BOOLEAN_RADIO_OPTIONS;
 
     const group: FormGroup = this.adrForm.get('additionalNotes') as FormGroup;
 

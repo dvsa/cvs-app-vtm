@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultipleRecordsContainer should render the container 1`] = `
+<vtm-multiple-records-container
+  store={[Function MockStore]}
+  vehicleTechRecords$={[Function AnonymousSubject]}
+>
+  <vtm-multiple-records
+    ng-reflect-vehicle-tech-records="[object Object]"
+  >
+    <div>
+      Vehicle records: [
+    {
+      "systemNumber": "16228",
+      "techRecord": [
+        {
+          "statusCode": "provisional"
+        }
+      ]
+    }
+  ]
+    </div>
+  </vtm-multiple-records>
+</vtm-multiple-records-container>
+`;

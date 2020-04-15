@@ -1,89 +1,40 @@
-import {
-  Component,
-  Input,
-  EventEmitter,
-  Output,
-  DebugElement,
-  PipeTransform,
-  Pipe
-} from '@angular/core';
+import { Component, Input, EventEmitter, Output, DebugElement } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SpyLocation } from '@angular/common/testing';
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { TESTING_UTILS } from './../utils/testing.utils';
 import { SharedModule } from '@app/shared';
-import {
-  getSelectedVehicleTechRecord,
-  getVehicleTechRecordMetaData,
-  getViewState
-} from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import {
   UpdateVehicleTechRecord,
   SetViewState
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { TechRecord } from '@app/models/tech-record.model';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import {
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import { VIEW_STATE } from '@app/app.enums';
 import { TechnicalRecordsContainer } from './technical-record.container';
 import { TestResultModel } from '@app/models/test-result.model';
-
-const mockSelector = new BehaviorSubject<any>(undefined);
-
-class MockStore {
-  select(selector: any) {
-    switch (selector) {
-      case getSelectedVehicleTechRecord:
-        return mockSelector.pipe(
-          map((value: any) =>
-            value && value.hasOwnProperty('getSelectedVehicleTechRecord')
-              ? value['getSelectedVehicleTechRecord']
-              : {}
-          )
-        );
-
-      case getVehicleTechRecordMetaData:
-        return mockSelector.pipe(
-          map((value: any) =>
-            value && value.hasOwnProperty('getVehicleTechRecordMetaData')
-              ? value['getVehicleTechRecordMetaData']
-              : {}
-          )
-        );
-
-      case getViewState:
-        return mockSelector.pipe(
-          map((value: any) =>
-            value && value.hasOwnProperty('getViewState') ? value['getViewState'] : {}
-          )
-        );
-      default:
-        return mockSelector;
-    }
-  }
-
-  dispatch(action: Action) {
-    return [];
-  }
-}
+import { TESTING_UTILS, MockStore } from '@app/utils/';
 
 describe('TechnicalRecordsContainer', () => {
   let fixture: ComponentFixture<TechnicalRecordsContainer>;
   let component: TechnicalRecordsContainer;
-  const store: MockStore = new MockStore();
+  const mockSelector = new BehaviorSubject<any>(undefined);
+  const store: MockStore = new MockStore(mockSelector);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule],
-      declarations: [
-        TechnicalRecordsContainer,
-        TestTechnicalRecordsComponent,
-        FilterRecordPipeMock
-      ],
-      providers: [{ provide: Store, useValue: store }]
+      imports: [SharedModule, RouterTestingModule],
+      declarations: [TechnicalRecordsContainer, TestTechnicalRecordsComponent],
+      providers: [
+        { provide: Store, useValue: store },
+        { provide: Location, useClass: SpyLocation }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TechnicalRecordsContainer);
@@ -98,8 +49,10 @@ describe('TechnicalRecordsContainer', () => {
       getSelectedVehicleTechRecord: {
         techRecord: [TESTING_UTILS.mockTechRecord()]
       } as VehicleTechRecordModel,
+      getActiveVehicleTechRecord: null,
+      getVehicleTestResultModel: [] as TestResultModel[],
       getVehicleTechRecordMetaData: TESTING_UTILS.mockMetaData(),
-      getViewState: VIEW_STATE.VIEW_ONLY
+      getTechViewState: VIEW_STATE.VIEW_ONLY
     });
 
     fixture.detectChanges();
@@ -107,22 +60,22 @@ describe('TechnicalRecordsContainer', () => {
     expect(fixture).toMatchSnapshot();
   });
 
-  describe('action', () => {
+  describe('handlers', () => {
     let mockTechComponent: DebugElement;
     beforeEach(() => {
       mockTechComponent = fixture.debugElement.query(By.directive(TestTechnicalRecordsComponent));
     });
 
-    it('should dispatch for the edited techRecord', () => {
-      const editedTechRecord = { statusCode: 'current' } as TechRecord;
+    it('should dispatch edited vehicle record', () => {
+      const editedVehicleRecord = {} as VehicleTechRecordEdit;
 
-      const updateVehicleTechRecordAction = new UpdateVehicleTechRecord(editedTechRecord);
-      mockTechComponent.componentInstance.submitTechRecord.emit(editedTechRecord);
+      const updateVehicleTechRecordAction = new UpdateVehicleTechRecord(editedVehicleRecord);
+      mockTechComponent.componentInstance.submitVehicleRecord.emit(editedVehicleRecord);
 
       expect(store.dispatch).toHaveBeenCalledWith(updateVehicleTechRecordAction);
     });
 
-    it('should dispatch for the view state', () => {
+    it('should dispatch the view state', () => {
       const viewStateAction = new SetViewState(VIEW_STATE.EDIT);
       mockTechComponent.componentInstance.changeViewState.emit(VIEW_STATE.EDIT);
 
@@ -135,24 +88,17 @@ describe('TechnicalRecordsContainer', () => {
   selector: 'vtm-technical-record',
   template: `
     <div>Current or Selected Vehicle Tech Record: {{ vehicleTechRecord | json }}</div>
-    <div>Active record based on Statuscode: {{ activeRecord | json }}</div>
+    <div>Active vehicle record: {{ activeVehicleTechRecord | json }}</div>
     <div>MetaData: {{ metaData | json }}</div>
-    <div>View state is: {{ editState ? 'EDIT' : 'VIEW ONLY' }}</div>
+    <div>View state is: {{ currentState ? 'EDIT' : 'VIEW ONLY' }}</div>
   `
 })
 class TestTechnicalRecordsComponent {
+  @Input() activeVehicleTechRecord: VehicleTechRecordEdit;
   @Input() vehicleTechRecord: VehicleTechRecordModel;
-  @Input() activeRecord: TechRecord;
   @Input() metaData: MetaData;
-  @Input() testResultJson: TestResultModel;
-  @Input() editState: VIEW_STATE;
-  @Output() submitTechRecord = new EventEmitter<TechRecord>();
+  @Input() testResultJson: TestResultModel[];
+  @Input() currentState: VIEW_STATE;
+  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEdit>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
-}
-
-@Pipe({ name: 'FilterRecord' })
-class FilterRecordPipeMock implements PipeTransform {
-  transform(records: TechRecord[]): TechRecord {
-    return records && records.length ? records[0] : ({} as TechRecord);
-  }
 }

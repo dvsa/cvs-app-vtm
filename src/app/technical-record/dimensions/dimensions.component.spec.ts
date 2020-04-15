@@ -1,10 +1,10 @@
-import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 
 import { DimensionsComponent } from './dimensions.component';
 import { TechRecord } from '@app/models/tech-record.model';
-import { TESTING_UTILS } from '@app/utils/testing.utils';
+import { TESTING_UTILS } from '@app/utils';
 import { VEHICLE_TYPES } from '../../app.enums';
 
 describe('DimensionsComponent', () => {
@@ -31,7 +31,7 @@ describe('DimensionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [DimensionsComponent],
+      declarations: [DimensionsComponent, TestDimensionsEditComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -63,7 +63,21 @@ describe('DimensionsComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 
-  afterAll(() => {
-    TestBed.resetTestingModule();
+  it('should render the editable component if editState is true', () => {
+    component.activeRecord = getTechRecord();
+    component.editState = true;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
   });
 });
+
+@Component({
+  selector: 'vtm-dimensions-edit',
+  template: `
+    <div>active record is: {{ techRecord | json }}</div>
+  `
+})
+class TestDimensionsEditComponent {
+  @Input() techRecord: TechRecord;
+}

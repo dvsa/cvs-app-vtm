@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApplicantEditComponent component should render with the given properties  1`] = `
+<vtm-applicant-edit
+  applicant={[Function Object]}
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Applicant
+            </h2>
+            
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-name"
+              >
+                 Name 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="name"
+                id="test-edit-name"
+                ng-reflect-name="name"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-address1"
+              >
+                 Building and street 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="address1"
+                id="test-edit-address1"
+                ng-reflect-name="address1"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-address2"
+              />
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="address2"
+                id="test-edit-address2"
+                ng-reflect-name="address2"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-postTown"
+              >
+                 Town or city 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="postTown"
+                id="test-edit-postTown"
+                ng-reflect-name="postTown"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-address3"
+              >
+                 County (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="address3"
+                id="test-edit-address3"
+                ng-reflect-name="address3"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-psotCode"
+              >
+                 Postcode (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="postCode"
+                id="test-edit-postCode"
+                ng-reflect-name="postCode"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-telephoneNumber"
+              >
+                 Telephone number (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="telephoneNumber"
+                id="test-edit-telephoneNumber"
+                ng-reflect-name="telephoneNumber"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-emailAddress"
+              >
+                 Email address (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="emailAddress"
+                id="test-edit-emailAddress"
+                ng-reflect-name="emailAddress"
+                type="text"
+              />
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-applicant-edit>
+`;

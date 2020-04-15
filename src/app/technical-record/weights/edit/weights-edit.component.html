@@ -1,0 +1,164 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div [formGroup]="techRecordFg">
+          <h2 class="govuk-heading-m">Vehicle weight (kg)</h2>
+
+          <!-- Gross vehicle weight -->
+          <ng-container
+            *ngTemplateOutlet="
+              weightTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg,
+                  labelHead: 'Gross vehicle weight',
+                  weightFields: [
+                    {
+                      label: 'GB',
+                      field: 'grossGbWeight'
+                    },
+                    {
+                      label: 'EEC (optional)',
+                      field: 'grossEecWeight'
+                    },
+                    {
+                      label: 'Design (optional)',
+                      field: 'grossDesignWeight'
+                    }
+                  ]
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Gross train weight -->
+          <ng-container
+            *ngTemplateOutlet="
+              weightTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg,
+                  labelHead: 'Gross train weight',
+                  weightFields: [
+                    {
+                      label: 'GB (optional)',
+                      field: 'trainGbWeight'
+                    },
+                    {
+                      label: 'EEC (optional)',
+                      field: 'trainEecWeight'
+                    },
+                    {
+                      label: 'Design (optional)',
+                      field: 'trainDesignWeight'
+                    }
+                  ]
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Max train weight -->
+          <ng-container
+            *ngTemplateOutlet="
+              weightTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg,
+                  labelHead: 'Max train weight',
+                  weightFields: [
+                    {
+                      label: 'GB (optional)',
+                      field: 'maxTrainGbWeight'
+                    },
+                    {
+                      label: 'EEC (optional)',
+                      field: 'maxTrainEecWeight'
+                    },
+                    {
+                      label: 'Design (optional)',
+                      field: 'maxTrainDesignWeight'
+                    }
+                  ]
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Axle weights -->
+          <ng-container *ngIf="axlesWeigths.length">
+            <h2 class="govuk-heading-m">Axle weight (kg)</h2>
+
+            <div formArrayName="axlesWeights">
+              <div
+                *ngFor="let axleWeight of axlesWeigths.controls; let i = index"
+                [formGroup]="axleWeight"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    weightTemplate;
+                    context: {
+                      $implicit: {
+                        group: axleWeight.get('weights'),
+                        labelHead: 'Axle ' + axleWeight.get('axleNumber').value,
+                        weightFields: [
+                          {
+                            index: '-' + (i + 1),
+                            label: 'GB',
+                            field: 'gbWeight'
+                          },
+                          {
+                            index: '-' + (i + 1),
+                            label: 'EEC (optional)',
+                            field: 'eecWeight'
+                          },
+                          {
+                            index: '-' + (i + 1),
+                            label: 'Design',
+                            field: 'designWeight'
+                          }
+                        ]
+                      }
+                    }
+                  "
+                ></ng-container>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template let-weightTemplate #weightTemplate>
+            <div class="govuk-form-group" [formGroup]="weightTemplate.group">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                {{ weightTemplate.labelHead }}
+              </label>
+              <div class="govuk-inset-text govuk-!-margin-top-3">
+                <ng-container *ngFor="let item of weightTemplate.weightFields">
+                  <div class="govuk-form-group govuk-!-margin-left-3">
+                    <label
+                      for="test-edit-{{ item.field }}{{ item.index }}"
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
+                      {{ item.label }}
+                    </label>
+                    <input
+                      id="test-edit-{{ item.field }}{{ item.index }}"
+                      type="number"
+                      maxlength="5"
+                      name="{{ item.field }}"
+                      class="govuk-input govuk-input--width-5"
+                      formControlName="{{ item.field }}"
+                    />
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

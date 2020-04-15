@@ -1,61 +1,73 @@
-<ng-container *ngIf="activeRecord.vehicleType === 'psv'">
-  <vtm-body-psv [activeRecord]="activeRecord"></vtm-body-psv>
+<ng-container *ngIf="!editState">
+  <dl class="govuk-summary-list ">
+    <!-- Make and model have different keys for psv -->
+    <div
+      class="govuk-summary-list__row"
+      *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
+    >
+      <dt class="govuk-summary-list__key">
+        Make
+      </dt>
+      <dd id="test-make" class="govuk-summary-list__value">
+        {{ activeRecord.make | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+      *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
+    >
+      <dt class="govuk-summary-list__key">
+        Model
+      </dt>
+      <dd id="test-model" class="govuk-summary-list__value">
+        {{ activeRecord.model | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Body type
+      </dt>
+      <dd id="test-bodyTypeDescription" class="govuk-summary-list__value">
+        {{ activeRecord.bodyType?.description | DefaultNullOrEmpty | titlecase }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Function
+      </dt>
+      <dd id="test-functionCode" class="govuk-summary-list__value">
+        {{ activeRecord.functionCode | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Conversion reference number
+      </dt>
+      <dd id="test-conversionRefNo" class="govuk-summary-list__value">
+        {{ activeRecord.conversionRefNo | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+
+  <ng-container *ngIf="activeRecord.vehicleType === 'psv'">
+    <vtm-body-psv [activeRecord]="activeRecord"></vtm-body-psv>
+  </ng-container>
 </ng-container>
 
-<dl class="govuk-summary-list ">
-  <!-- Make and model have different keys for psv -->
-  <div
-    class="govuk-summary-list__row"
-    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
-  >
-    <dt class="govuk-summary-list__key">
-      Make
-    </dt>
-    <dd id="test-make" class="govuk-summary-list__value">
-      {{ activeRecord.make | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div
-    class="govuk-summary-list__row"
-    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
-  >
-    <dt class="govuk-summary-list__key">
-      Model
-    </dt>
-    <dd id="test-model" class="govuk-summary-list__value">
-      {{ activeRecord.model | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Body type
-    </dt>
-    <dd id="test-bodyTypeDescription" class="govuk-summary-list__value">
-      {{ activeRecord.bodyType?.description | DefaultNullOrEmpty | titlecase }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Function
-    </dt>
-    <dd id="test-functionCode" class="govuk-summary-list__value">
-      {{ activeRecord.functionCode | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Conversion reference number
-    </dt>
-    <dd id="test-conversionRefNo" class="govuk-summary-list__value">
-      {{ activeRecord.conversionRefNo | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-</dl>
+<ng-container *ngIf="editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-body-edit [bodyDetails]="body"></vtm-body-edit>
+      </dt>
+    </div>
+  </dl>
+</ng-container>

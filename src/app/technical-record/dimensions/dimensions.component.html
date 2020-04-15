@@ -1,153 +1,180 @@
-<table class="govuk-table table-details">
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Length (mm)</th>
-      <td id="test-length" class="govuk-table__cell">
-        {{ activeRecord?.dimensions?.length | DefaultNullOrEmpty }}
-      </td>
-      <th class="govuk-table__cell"></th>
-      <th class="govuk-table__cell"></th>
-      <th class="govuk-table__cell"></th>
-      <th class="govuk-table__cell"></th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Width (mm)</th>
-      <td id="test-width" class="govuk-table__cell">
-        {{ activeRecord?.dimensions?.width | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'psv'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Height (mm)</th>
-      <td id="test-height" class="govuk-table__cell">
-        {{ activeRecord?.dimensions?.height | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr
-      class="govuk-table__row"
-    >
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to rear axle (mm)</th>
-      <td id="test-frontAxleToRearAxle" class="govuk-table__cell">
-        {{ activeRecord.frontAxleToRearAxle | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Rear axle to rear trailer</th>
-      <td id="test-rearAxleToRearTrl" class="govuk-table__cell">
-        {{ activeRecord.rearAxleToRearTrl | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'trl'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">
-        Centre of rearmost axle to rear of trailer
-      </th>
-      <td id="test-centreOfRearmostAxleToRearOfTrl" class="govuk-table__cell">
-        {{ activeRecord.centreOfRearmostAxleToRearOfTrl | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <ng-container
-      *ngIf="
-        (activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl') &&
-        activeRecord?.dimensions?.axleSpacing && activeRecord?.dimensions?.axleSpacing.length
-      "
-    >
+<ng-container *ngIf="!editState">
+  <table class="govuk-table table-details">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Length (mm)</th>
+        <td id="test-length" class="govuk-table__cell">
+          {{ activeRecord?.dimensions?.length | DefaultNullOrEmpty }}
+        </td>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+        <th class="govuk-table__cell"></th>
+      </tr>
+    </thead>
+
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Width (mm)</th>
+        <td id="test-width" class="govuk-table__cell">
+          {{ activeRecord?.dimensions?.width | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'psv'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Height (mm)</th>
+        <td id="test-height" class="govuk-table__cell">
+          {{ activeRecord?.dimensions?.height | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to rear axle (mm)</th>
+        <td id="test-frontAxleToRearAxle" class="govuk-table__cell">
+          {{ activeRecord.frontAxleToRearAxle | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Rear axle to rear trailer</th>
+        <td id="test-rearAxleToRearTrl" class="govuk-table__cell">
+          {{ activeRecord.rearAxleToRearTrl | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'trl'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">
+          Centre of rearmost axle to rear of trailer
+        </th>
+        <td id="test-centreOfRearmostAxleToRearOfTrl" class="govuk-table__cell">
+          {{ activeRecord.centreOfRearmostAxleToRearOfTrl | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
       <ng-container
-        *ngFor="
-          let item of activeRecord?.dimensions.axleSpacing; let i = index
+        *ngIf="
+          (activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl') &&
+          activeRecord?.dimensions?.axleSpacing &&
+          activeRecord?.dimensions?.axleSpacing.length
         "
       >
-        <tr class="govuk-table__row">
-          <th id="test-axleSpacing-axles-{{i}}" class="govuk-table__cell govuk-!-font-weight-bold">
-            Axle {{ item.axles.split('-')[0] }} to {{ item.axles.split('-')[1] }} (mm)
-          </th>
-          <td id="test-axleSpacing-value-{{i}}" class="govuk-table__cell">
-            {{ item.value | DefaultNullOrEmpty }}
-          </td>
-          <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell"></td>
-        </tr>
+        <ng-container *ngFor="let item of activeRecord?.dimensions.axleSpacing; let i = index">
+          <tr class="govuk-table__row">
+            <th
+              id="test-axleSpacing-axles-{{ i + 1 }}"
+              class="govuk-table__cell govuk-!-font-weight-bold"
+            >
+              Axle {{ item.axles.split('-')[0] }} to {{ item.axles.split('-')[1] }} (mm)
+            </th>
+            <td id="test-axleSpacing-value-{{ i + 1 }}" class="govuk-table__cell">
+              {{ item.value | DefaultNullOrEmpty }}
+            </td>
+            <td class="govuk-table__cell"></td>
+            <td class="govuk-table__cell"></td>
+            <td class="govuk-table__cell"></td>
+            <td class="govuk-table__cell"></td>
+          </tr>
+        </ng-container>
       </ng-container>
-    </ng-container>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
-      <th class="govuk-table__cell"></th>
-      <td class="govuk-table__cell govuk-!-font-weight-bold">Minimum (mm)</td>
-      <td class="govuk-table__cell govuk-!-font-weight-bold">Maximum (mm)</td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">
-        Front of vehicle to 5th wheel coupling
-      </th>
-      <td id="test-frontAxleTo5thWheelCouplingMin" class="govuk-table__cell">
-        {{ activeRecord.frontAxleTo5thWheelCouplingMin | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-frontAxleTo5thWheelCouplingMax" class="govuk-table__cell">
-        {{ activeRecord.frontAxleTo5thWheelCouplingMax | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to 5th wheel</th>
-      <td id="test-frontAxleTo5thWheelMin" class="govuk-table__cell">
-        {{ activeRecord.frontAxleTo5thWheelMin | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-frontAxleTo5thWheelMax" class="govuk-table__cell">
-        {{ activeRecord.frontAxleTo5thWheelMax | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear axle</th>
-      <td id="test-couplingCenterToRearAxleMin" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearAxleMin | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-couplingCenterToRearAxleMax" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearAxleMax | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear trailer</th>
-      <td id="test-couplingCenterToRearTrlMin" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearTrlMin | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-couplingCenterToRearTrlMax" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearTrlMax | DefaultNullOrEmpty }}
-      </td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-  </tbody>
-</table>
+
+      <tr
+        class="govuk-table__row"
+        *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
+      >
+        <th class="govuk-table__cell"></th>
+        <td class="govuk-table__cell govuk-!-font-weight-bold">Minimum (mm)</td>
+        <td class="govuk-table__cell govuk-!-font-weight-bold">Maximum (mm)</td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">
+          Front of vehicle to 5th wheel coupling
+        </th>
+        <td id="test-frontAxleTo5thWheelCouplingMin" class="govuk-table__cell">
+          {{ activeRecord.frontAxleTo5thWheelCouplingMin | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-frontAxleTo5thWheelCouplingMax" class="govuk-table__cell">
+          {{ activeRecord.frontAxleTo5thWheelCouplingMax | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to 5th wheel</th>
+        <td id="test-frontAxleTo5thWheelMin" class="govuk-table__cell">
+          {{ activeRecord.frontAxleTo5thWheelMin | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-frontAxleTo5thWheelMax" class="govuk-table__cell">
+          {{ activeRecord.frontAxleTo5thWheelMax | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear axle</th>
+        <td id="test-couplingCenterToRearAxleMin" class="govuk-table__cell">
+          {{ activeRecord.couplingCenterToRearAxleMin | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-couplingCenterToRearAxleMax" class="govuk-table__cell">
+          {{ activeRecord.couplingCenterToRearAxleMax | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+
+      <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+        <th class="govuk-table__cell govuk-!-font-weight-bold">
+          Coupling center to rear trailer
+        </th>
+        <td id="test-couplingCenterToRearTrlMin" class="govuk-table__cell">
+          {{ activeRecord.couplingCenterToRearTrlMin | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-couplingCenterToRearTrlMax" class="govuk-table__cell">
+          {{ activeRecord.couplingCenterToRearTrlMax | DefaultNullOrEmpty }}
+        </td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<!-- Edit Dimensions -->
+<ng-container *ngIf="editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-dimensions-edit [techRecord]="activeRecord"></vtm-dimensions-edit>
+      </dt>
+    </div>
+  </dl>
+</ng-container>

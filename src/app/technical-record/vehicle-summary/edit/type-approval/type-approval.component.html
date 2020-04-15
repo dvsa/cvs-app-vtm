@@ -1,0 +1,83 @@
+<ng-container>
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Type approval</h2>
+      <form [formGroup]="techRecordFg">
+        <!-- Approval type -->
+        <div class="govuk-form-group">
+          <label for="test-edit-approvalType" class="govuk-label govuk-!-font-weight-bold">
+            Approval type
+          </label>
+          <select id="test-edit-approvalType" formControlName="approvalType" class="govuk-select">
+            <option *ngFor="let type of approvalTypeOptions" [ngValue]="type.name">
+              {{ type.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Approval type number -->
+        <div class="govuk-form-group">
+          <label for="test-edit-approvalTypeNumber" class="govuk-label govuk-!-font-weight-bold">
+            Approval type number (optional)
+          </label>
+          <input
+            id="test-edit-approvalTypeNumber"
+            type="text"
+            name="approvalTypeNumber"
+            maxlength="25"
+            formControlName="approvalTypeNumber"
+            class="govuk-input govuk-input govuk-input--width-20"
+          />
+        </div>
+
+        <!-- National type approval -->
+        <div class="govuk-form-group">
+          <label for="test-edit-ntaNumber" class="govuk-label govuk-!-font-weight-bold">
+            National type approval number (optional)
+          </label>
+          <input
+            id="test-edit-ntaNumber"
+            type="text"
+            name="ntaNumber"
+            maxlength="40"
+            formControlName="ntaNumber"
+            class="govuk-input govuk-input govuk-input--width-20"
+          />
+        </div>
+
+        <!-- Variant number -->
+        <div class="govuk-form-group">
+          <label for="test-edit-variantNumber" class="govuk-label govuk-!-font-weight-bold">
+            Variant number (optional)
+          </label>
+          <input
+            id="test-edit-variantNumber"
+            type="text"
+            name="variantNumber"
+            maxlength="25"
+            formControlName="variantNumber"
+            class="govuk-input govuk-input govuk-input--width-20"
+          />
+        </div>
+
+        <!-- Variant version number -->
+        <div class="govuk-form-group">
+          <label
+            for="test-edit-variantVersionNumber"
+            class="govuk-label govuk-!-font-weight-bold"
+          >
+            Variant version number (optional)
+          </label>
+          <input
+            id="test-edit-variantVersionNumber"
+            type="text"
+            name="variantVersionNumber"
+            maxlength="35"
+            formControlName="variantVersionNumber"
+            class="govuk-input govuk-input govuk-input--width-20"
+          />
+        </div>
+      </form>
+    </fieldset>
+  </div>
+</ng-container>

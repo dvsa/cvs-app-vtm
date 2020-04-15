@@ -4,6 +4,7 @@ exports[`AdditionalAdrDetailEditComponent should create with initialized form co
 <vtm-additional-adr-detail-edit
   adrDetails={[Function Object]}
   adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   onDestroy$={[Function Subject]}
