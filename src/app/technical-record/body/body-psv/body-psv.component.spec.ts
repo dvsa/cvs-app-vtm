@@ -2,7 +2,7 @@ import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { SharedModule } from '@app/shared/shared.module';
-import { TESTING_UTILS } from '../../../utils/testing.utils';
+import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { BodyPsvComponent } from './body-psv.component';
 
 describe('PsvBodyComponent', () => {
@@ -35,9 +35,5 @@ describe('PsvBodyComponent', () => {
   it('should create view only with populated data', () => {
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
-  });
-
-  afterAll(() => {
-    TestBed.resetTestingModule();
   });
 });

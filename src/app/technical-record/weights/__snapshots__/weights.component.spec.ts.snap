@@ -5,7 +5,7 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
   activeRecord={[Function Object]}
 >
   <table
-    class="govuk-table table-details"
+    class="govuk-table"
   >
     <thead
       class="govuk-table__head"
@@ -194,7 +194,7 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
   activeRecord={[Function Object]}
 >
   <table
-    class="govuk-table table-details"
+    class="govuk-table"
   >
     <thead
       class="govuk-table__head"
@@ -306,5 +306,59 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
       </tr>
     </tbody>
   </table>
+</vtm-weights>
+`;
+
+exports[`WeightsComponent should render the editable component if editState is true 1`] = `
+<vtm-weights
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-weights-edit
+          ng-reflect-tech-record="[object Object]"
+        >
+          <div>
+            active record is: {
+    "grossGbWeight": 3,
+    "grossDesignWeight": 2,
+    "grossEecWeight": 3,
+    "axles": [
+      {
+        "parkingBrakeMrk": true,
+        "axleNumber": 1,
+        "brakes": {
+          "brakeActuator": 123,
+          "leverLength": 123,
+          "springBrakeParking": true
+        },
+        "tyres": {
+          "tyreSize": "16",
+          "plyRating": "12S",
+          "fitmentCode": "12313",
+          "dataTrAxles": 1234
+        },
+        "weights": {
+          "gbWeight": 100,
+          "kerbWeight": 150,
+          "designWeight": 250,
+          "eecWeight": 150
+        }
+      }
+    ]
+  }
+          </div>
+        </vtm-weights-edit>
+      </dt>
+    </div>
+  </dl>
 </vtm-weights>
 `;

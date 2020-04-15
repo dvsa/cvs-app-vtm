@@ -19,16 +19,21 @@ import {
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
-import { ClearErrorMessage, SetErrorMessage } from '../actions/Error.actions';
+import { SetErrorMessage } from '../actions/Error.actions';
 import {
   CREATE_PAGE_LABELS,
   VEHICLE_TECH_RECORD_SEARCH_ERRORS,
-  VIEW_STATE
+  VIEW_STATE,
+  RECORD_STATUS,
+  VEHICLE_TYPES
 } from '@app/app.enums';
 import { getSelectedVehicleTechRecord } from '../selectors/VehicleTechRecordModel.selectors';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import {
+  VehicleTechRecordModel,
+  VehicleIdentifiers,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
-import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
 import { SearchParams } from '@app/models/search-params';
 import { UserService } from '@app/app-user.service';
 import { VrmModel } from '@app/models/vrm.model';
@@ -41,6 +46,8 @@ export class VehicleTechRecordModelEffects {
       EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll
     ),
     map((action) => action.payload),
+    // TODO: Needs refactoring with forkJoin or mergeMap to avoid nesting switchMap
+    // We make 2 calls to return vehicleTechRecord & the ones having all statuses
     switchMap((searchParams: SearchParams) =>
       this._technicalRecordService
         .getTechnicalRecordsAllStatuses(
@@ -55,8 +62,12 @@ export class VehicleTechRecordModelEffects {
             if (action.payload.length > 1) {
               this.router.navigate(['/multiple-records']);
             } else {
-              this._store.dispatch(new SetSelectedVehicleTechnicalRecord(action.payload[0]));
-              this._store.dispatch(new ClearErrorMessage());
+              this._store.dispatch(
+                new SetSelectedVehicleTechnicalRecord({
+                  vehicleRecord: action.payload[0],
+                  viewState: VIEW_STATE.VIEW_ONLY
+                })
+              );
             }
           }),
           catchError((error) => {
@@ -72,13 +83,24 @@ export class VehicleTechRecordModelEffects {
     ofType<SetSelectedVehicleTechnicalRecord>(
       EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecord
     ),
-    switchMap((action) => {
-      this.router.navigate(['/technical-record']);
-      return [
-        new GetVehicleTestResultModel(action.vehicleTechRecord.systemNumber),
-        new SetSelectedVehicleTechnicalRecordSucess(action.vehicleTechRecord)
-      ];
-    })
+    switchMap(({ vehicleRecordState }) => {
+      const { vehicleRecord, viewState } = vehicleRecordState;
+      const actions = [];
+
+      actions.push(
+        ...[
+          new SetSelectedVehicleTechnicalRecordSucess(vehicleRecord),
+          new SetViewState(viewState)
+        ]
+      );
+
+      if (vehicleRecord.systemNumber) {
+        actions.push(new GetVehicleTestResultModel(vehicleRecord.systemNumber));
+      }
+
+      return actions;
+    }),
+    tap(() => this.router.navigate(['/technical-record']))
   );
 
   @Effect({ dispatch: false })
@@ -113,13 +135,17 @@ export class VehicleTechRecordModelEffects {
           requestErrors.push(CREATE_PAGE_LABELS.CREATE_VRM_LABEL_ERROR);
         }
         if (!res1 && !res2) {
-          const vehicleTechRecord = {} as VehicleTechRecordModel;
-          vehicleTechRecord.vin = payload.vin;
-          vehicleTechRecord.vrms = [{ vrm: payload.vrm, isPrimary: true }] as VrmModel[];
-          vehicleTechRecord.techRecord = [
-            { statusCode: 'provisional', vehicleType: payload.vType } as TechRecord
-          ];
-
+          const vehicleRecord = this.getVehicleTechRecordOnCreate({
+            vin: payload.vin,
+            vrm: payload.vrm,
+            vType: payload.vType
+          });
+          this._store.dispatch(
+            new SetSelectedVehicleTechnicalRecord({
+              vehicleRecord,
+              viewState: VIEW_STATE.CREATE
+            })
+          );
         }
         requests = [];
         if (requestErrors.length > 0) {
@@ -136,17 +162,15 @@ export class VehicleTechRecordModelEffects {
     ofType<UpdateVehicleTechRecord>(EVehicleTechRecordModelActions.UpdateVehicleTechRecord),
     withLatestFrom(this._store.pipe(select(getSelectedVehicleTechRecord))),
     switchMap(
-      ([{ techRecord }, vehicleTechRecord]: [
-        { techRecord: TechRecord },
+      ([{ vehicleRecordEdit }, vehicleTechRecord]: [
+        { vehicleRecordEdit: VehicleTechRecordEdit },
         VehicleTechRecordModel
       ]) => {
-        const dataToSave: VehicleTechRecordUpdate = {} as VehicleTechRecordUpdate;
-        dataToSave.msUserDetails = { ...this.loggedUser.getUser() };
-        dataToSave.techRecord = [techRecord];
-        dataToSave.systemNumber = vehicleTechRecord.systemNumber;
+        // TODO: data should be coming from Store. Retrieve via the selector
+        vehicleRecordEdit.msUserDetails = { ...this.loggedUser.getUser() };
 
         return this._technicalRecordService
-          .updateTechnicalRecords(dataToSave, vehicleTechRecord.systemNumber)
+          .updateTechnicalRecords(vehicleRecordEdit, vehicleTechRecord.systemNumber)
           .pipe(
             switchMap((updatedVehicleTechRecord: VehicleTechRecordModel) => {
               updatedVehicleTechRecord.metadata = vehicleTechRecord.metadata;
@@ -164,6 +188,20 @@ export class VehicleTechRecordModelEffects {
       }
     )
   );
+
+  getVehicleTechRecordOnCreate(identifier: VehicleIdentifiers): VehicleTechRecordModel {
+    const { vin, vrm, vType } = identifier;
+    return {
+      vin,
+      vrms: [{ vrm, isPrimary: true }] as VrmModel[],
+      techRecord: [
+        {
+          statusCode: RECORD_STATUS.PROVISIONAL,
+          vehicleType: VEHICLE_TYPES[vType]
+        }
+      ] as TechRecord[]
+    } as VehicleTechRecordModel;
+  }
 
   constructor(
     private _actions$: Actions,

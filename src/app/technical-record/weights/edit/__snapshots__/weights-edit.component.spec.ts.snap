@@ -1,0 +1,629 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WeightsEditComponent should create with initialized form AXLE weights controls 1`] = `
+<vtm-weights-edit
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  techAxles={[Function Array]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Vehicle weight (kg)
+            </h2>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Gross vehicle weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="grossGbWeight"
+                  >
+                     GB 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="grossGbWeight"
+                    maxlength="5"
+                    name="grossGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossGbWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="grossEecWeight"
+                  >
+                     EEC (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="grossEecWeight"
+                    maxlength="5"
+                    name="grossEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossEecWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="grossDesignWeight"
+                  >
+                     Design (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="grossDesignWeight"
+                    maxlength="5"
+                    name="grossDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossDesignWeight"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Gross train weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="trainGbWeight"
+                  >
+                     GB (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="trainGbWeight"
+                    maxlength="5"
+                    name="trainGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="trainGbWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="trainEecWeight"
+                  >
+                     EEC (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="trainEecWeight"
+                    maxlength="5"
+                    name="trainEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="trainEecWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="trainDesignWeight"
+                  >
+                     Design (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="trainDesignWeight"
+                    maxlength="5"
+                    name="trainDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="trainDesignWeight"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Max train weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="maxTrainGbWeight"
+                  >
+                     GB (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="maxTrainGbWeight"
+                    maxlength="5"
+                    name="maxTrainGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="maxTrainGbWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="maxTrainEecWeight"
+                  >
+                     EEC (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="maxTrainEecWeight"
+                    maxlength="5"
+                    name="maxTrainEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="maxTrainEecWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="maxTrainDesignWeight"
+                  >
+                     Design (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="maxTrainDesignWeight"
+                    maxlength="5"
+                    name="maxTrainDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="maxTrainDesignWeight"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            
+            <h2
+              class="govuk-heading-m"
+            >
+              Axle weight (kg)
+            </h2>
+            <div
+              class="ng-untouched ng-pristine ng-valid"
+              formarrayname="axles"
+              ng-reflect-name="axles"
+            >
+              
+              <div
+                class="ng-untouched ng-pristine ng-valid"
+                ng-reflect-form="[object Object]"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                  >
+                     Axle 1 
+                  </label>
+                  <div
+                    class="govuk-inset-text govuk-!-margin-top-3"
+                  >
+                    
+                    
+                    <div
+                      class="govuk-form-group govuk-!-margin-left-3"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="gbWeight"
+                      >
+                         GB 
+                      </label>
+                      <input
+                        class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                        id="gbWeight"
+                        maxlength="5"
+                        name="gbWeight"
+                        ng-reflect-maxlength="5"
+                        ng-reflect-name="gbWeight"
+                        type="number"
+                      />
+                    </div>
+                    
+                    <div
+                      class="govuk-form-group govuk-!-margin-left-3"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="eecWeight"
+                      >
+                         EEC (optional) 
+                      </label>
+                      <input
+                        class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                        id="eecWeight"
+                        maxlength="5"
+                        name="eecWeight"
+                        ng-reflect-maxlength="5"
+                        ng-reflect-name="eecWeight"
+                        type="number"
+                      />
+                    </div>
+                    
+                    <div
+                      class="govuk-form-group govuk-!-margin-left-3"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="designWeight"
+                      >
+                         Design 
+                      </label>
+                      <input
+                        class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                        id="designWeight"
+                        maxlength="5"
+                        name="designWeight"
+                        ng-reflect-maxlength="5"
+                        ng-reflect-name="designWeight"
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-weights-edit>
+`;
+
+exports[`WeightsEditComponent should create with initialized form weights controls 1`] = `
+<vtm-weights-edit
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  techAxles={[Function Array]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Vehicle weight (kg)
+            </h2>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Gross vehicle weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="grossGbWeight"
+                  >
+                     GB 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="grossGbWeight"
+                    maxlength="5"
+                    name="grossGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossGbWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="grossEecWeight"
+                  >
+                     EEC (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="grossEecWeight"
+                    maxlength="5"
+                    name="grossEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossEecWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="grossDesignWeight"
+                  >
+                     Design (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="grossDesignWeight"
+                    maxlength="5"
+                    name="grossDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossDesignWeight"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Gross train weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="trainGbWeight"
+                  >
+                     GB (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="trainGbWeight"
+                    maxlength="5"
+                    name="trainGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="trainGbWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="trainEecWeight"
+                  >
+                     EEC (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="trainEecWeight"
+                    maxlength="5"
+                    name="trainEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="trainEecWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="trainDesignWeight"
+                  >
+                     Design (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="trainDesignWeight"
+                    maxlength="5"
+                    name="trainDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="trainDesignWeight"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Max train weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="maxTrainGbWeight"
+                  >
+                     GB (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="maxTrainGbWeight"
+                    maxlength="5"
+                    name="maxTrainGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="maxTrainGbWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="maxTrainEecWeight"
+                  >
+                     EEC (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="maxTrainEecWeight"
+                    maxlength="5"
+                    name="maxTrainEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="maxTrainEecWeight"
+                    type="number"
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="maxTrainDesignWeight"
+                  >
+                     Design (optional) 
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="maxTrainDesignWeight"
+                    maxlength="5"
+                    name="maxTrainDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="maxTrainDesignWeight"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-weights-edit>
+`;

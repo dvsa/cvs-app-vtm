@@ -6,8 +6,10 @@ import { Store, INITIAL_STATE } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { hot } from 'jasmine-marbles';
 import { DocumentInfo, DocumentMetaData } from '@app/models/document-meta-data';
-import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import {
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 
 const appConfigMock = {
   get settings() {
@@ -75,7 +77,7 @@ describe('TechnicalRecordService', () => {
 
   it('updateTechnicalRecords should update technical record', (done) => {
     const mock = { techRecord: [] } as VehicleTechRecordModel;
-    const recordUpdate = { techRecord: [] } as VehicleTechRecordUpdate;
+    const recordUpdate = { techRecord: [] } as VehicleTechRecordEdit;
     service.updateTechnicalRecords(recordUpdate, '1234567').subscribe((res) => {
       expect(res).toBeDefined();
       expect(res).toEqual(mock);

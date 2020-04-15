@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AdrComponent } from '@app/technical-record/adr/adr.component';
 import { ValidationState, STATUS } from '../../adr-validation.mapper';
 import { tap, takeUntil } from 'rxjs/operators';
+import { BOOLEANRADIOOPTIONS } from '@app/technical-record/technical-record.constants';
 
 @Component({
   selector: 'vtm-memo-edit',
@@ -22,7 +23,7 @@ export class MemoEditComponent extends AdrComponent implements OnInit {
 
   ngOnInit() {
     this.adrForm = super.setUp();
-    this.displayOptions = super.radioOptions();
+    this.displayOptions = BOOLEANRADIOOPTIONS;
     this.memoValidationState$ = this.validationMapper.getCurrentState();
 
     this.adrForm.addControl('memosApply', this.fb.control(this.hasMemosApplied));

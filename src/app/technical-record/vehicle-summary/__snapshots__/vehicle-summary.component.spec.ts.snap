@@ -3,6 +3,7 @@
 exports[`VehicleSummaryComponent should create view only with HGV populated data 1`] = `
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
+  isStandardVehicle={[Function Boolean]}
   techRecHelpers={[Function TechRecordHelpersService]}
   vehicleClassDescription={[Function String]}
 >
@@ -379,6 +380,7 @@ exports[`VehicleSummaryComponent should create view only with HGV populated data
 exports[`VehicleSummaryComponent should create view only with PSV populated data 1`] = `
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
+  isStandardVehicle={[Function Boolean]}
   techRecHelpers={[Function TechRecordHelpersService]}
   vehicleClassDescription={[Function String]}
 >
@@ -809,6 +811,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
 exports[`VehicleSummaryComponent should create view only with TRL populated data 1`] = `
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
+  isStandardVehicle={[Function Boolean]}
   techRecHelpers={[Function TechRecordHelpersService]}
   vehicleClassDescription={[Function String]}
 >
@@ -1178,6 +1181,69 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
     
     
     
+  </dl>
+</vtm-vehicle-summary>
+`;
+
+exports[`VehicleSummaryComponent should render the editable component if editState is true 1`] = `
+<vtm-vehicle-summary
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+  isStandardVehicle="false"
+  techRecHelpers={[Function TechRecordHelpersService]}
+  vehicleClassDescription={[Function String]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-vehicle-summary-edit
+          ng-reflect-tech-record="[object Object]"
+        >
+          <div>
+            active record is: {
+    "approvalType": "approval",
+    "regnDate": "12312321",
+    "manufactureYear": 2003,
+    "euVehicleCategory": "3",
+    "departmentalVehicleMarker": true,
+    "vehicleClass": {
+      "code": "2",
+      "description": "motorbikes over 200cc"
+    },
+    "axles": [
+      {
+        "parkingBrakeMrk": true,
+        "axleNumber": 1,
+        "brakes": {
+          "brakeActuator": 123,
+          "leverLength": 123,
+          "springBrakeParking": true
+        },
+        "tyres": {
+          "tyreSize": "16",
+          "plyRating": "12S",
+          "fitmentCode": "12313",
+          "dataTrAxles": 1234
+        },
+        "weights": {
+          "gbWeight": 100,
+          "kerbWeight": 150,
+          "designWeight": 250,
+          "eecWeight": 150
+        }
+      }
+    ]
+  }
+          </div>
+        </vtm-vehicle-summary-edit>
+      </dt>
+    </div>
   </dl>
 </vtm-vehicle-summary>
 `;

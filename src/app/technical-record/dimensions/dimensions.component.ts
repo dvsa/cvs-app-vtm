@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TechRecord } from '@app/models/tech-record.model';
 
 @Component({
@@ -7,12 +7,10 @@ import { TechRecord } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DimensionsComponent implements OnInit {
-
   @Input() activeRecord: TechRecord;
+  @Input() editState: boolean;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

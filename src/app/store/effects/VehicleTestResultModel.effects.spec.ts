@@ -155,6 +155,7 @@ describe('VehicleTestResultModelEffects', () => {
 
       expect(effects.downloadCertificate$).toBeObservable(expected$);
       expect(downloadCertificate).toHaveBeenCalledWith(fileName);
+      // tslint:disable-next-line: deprecation
       expect(FileSaver.saveAs).toHaveBeenCalledWith(downloadedDoc, fileName, { autoBom: false });
     });
 

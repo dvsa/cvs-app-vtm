@@ -18,49 +18,6 @@ describe('TechRecordHelpersService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should check for empty string', () => {
-    const customObject = '';
-    const result = service.isNullOrEmpty(customObject);
-
-    expect(result).toEqual(true);
-  });
-
-  it('should check for null', () => {
-    const customObject = null;
-    const result = service.isNullOrEmpty(customObject);
-
-    expect(result).toEqual(true);
-  });
-
-  it('should check for undefinded', () => {
-    const customObject = undefined;
-    const result = service.isNullOrEmpty(customObject);
-
-    expect(result).toEqual(true);
-  });
-
-  it('should check for non empty string', () => {
-    const customObject = 'one';
-    const result = service.isNullOrEmpty(customObject);
-
-    expect(result).toEqual(false);
-  });
-
-  it('should check for non empty number', () => {
-    const customObject = 123;
-    const result = service.isNullOrEmpty(customObject);
-
-    expect(result).toEqual(false);
-  });
-
-  it('should check if object is empty', () => {
-    expect(service.isEmptyObject({})).toBeTruthy();
-  });
-
-  it('should check if object is empty', () => {
-    expect(service.isEmptyObject({})).toBeTruthy();
-  });
-
   describe('isStandardVehicle', () => {
     it('should return true if vehicle type is a standard one(psv)', () => {
       expect(service.isStandardVehicle('psv')).toBe(true);
