@@ -35,6 +35,7 @@ import { PreparersGuard } from '@app/test-record/guards/preparers.guard';
 import { TestStationsGuard } from '@app/test-record/guards/test-stations.guard';
 import { TestTypeCategoriesGuard } from '@app/test-record/guards/test-type-categories.guard';
 import { TreeComponent } from '@app/shared/components/tree/tree.component.ts';
+import { FormStateGuard } from '@app/guards/form-state.guard';
 
 export const COMPONENTS = [
   TestRecordComponent,
@@ -67,7 +68,7 @@ export const MODULES = [
     {
       path: 'test-record/:id',
       component: TestRecordContainer,
-      canActivate: [AuthenticationGuard, TestResultGuard, PreparersGuard, TestStationsGuard],
+      canActivate: [AuthenticationGuard, TestResultGuard, PreparersGuard, TestStationsGuard, FormStateGuard],
     },
     {
       path: 'select-test-type/:id',

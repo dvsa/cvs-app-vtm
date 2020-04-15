@@ -7,6 +7,8 @@ import { VehicleTestResultModelReducers } from './VehicleTestResultModel.reducer
 import { LoaderReducer } from './Loader.reducers';
 import { ErrorReducer } from './error.reducers';
 import { ReferenceDataReducers } from '@app/store/reducers/ReferenceData.reducers';
+import { AppFormStateReducer } from './app-form-state.reducers';
+import { ModalReducer } from '../../modal/modal.reducer';
 
 export const appReducers: ActionReducerMap<IAppState> = {
   router: routerReducer,
@@ -14,5 +16,7 @@ export const appReducers: ActionReducerMap<IAppState> = {
   vehicleTechRecordModel: VehicleTechRecordModelReducers,
   vehicleTestResultModel: VehicleTestResultModelReducers,
   referenceData: ReferenceDataReducers,
-  error: ErrorReducer
+  error: ErrorReducer,
+  appFormState: AppFormStateReducer,
+  modalState: ModalReducer
 };
