@@ -13,6 +13,12 @@ export enum RECORD_STATUS {
   ARCHIVED = 'archived'
 }
 
+export enum RECORD_COMPLETENESS {
+  complete = 'Complete',
+  skeleton = 'Skeleton - not enough information to perform a vehicle test',
+  testable = 'Testable - some important information is missing'
+}
+
 export enum SEARCH_CRITERIA {
   ALL_CRITERIA = 'Vehicle registration mark, trailer ID or vehicle identification number',
   VRM_CRITERIA = 'Vehicle registration mark (VRM)',

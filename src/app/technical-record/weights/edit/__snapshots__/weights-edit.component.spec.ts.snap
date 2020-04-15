@@ -4,6 +4,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
 <vtm-weights-edit
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
+  isPsvVehicle="false"
   numberOfAxles$={[Function Observable]}
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
@@ -54,7 +55,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-grossGbWeight"
                   >
-                     GB 
+                    <span>
+                      GB
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -64,6 +68,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="grossGbWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -74,7 +79,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-grossEecWeight"
                   >
-                     EEC (optional) 
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -84,6 +92,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="grossEecWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -94,7 +103,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-grossDesignWeight"
                   >
-                     Design (optional) 
+                    <span>
+                      Design
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -104,6 +116,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="grossDesignWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -130,7 +143,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-trainGbWeight"
                   >
-                     GB (optional) 
+                    <span>
+                      GB
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -140,6 +156,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="trainGbWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -150,7 +167,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-trainEecWeight"
                   >
-                     EEC (optional) 
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -160,6 +180,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="trainEecWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -170,7 +191,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-trainDesignWeight"
                   >
-                     Design (optional) 
+                    <span>
+                      Design (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -180,6 +204,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="trainDesignWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -206,7 +231,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-maxTrainGbWeight"
                   >
-                     GB (optional) 
+                    <span>
+                      GB
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -216,6 +244,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="maxTrainGbWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -226,7 +255,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-maxTrainEecWeight"
                   >
-                     EEC (optional) 
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -236,6 +268,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="maxTrainEecWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -246,7 +279,10 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-maxTrainDesignWeight"
                   >
-                     Design (optional) 
+                    <span>
+                      Design (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -256,6 +292,7 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                     ng-reflect-maxlength="5"
                     ng-reflect-name="maxTrainDesignWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -274,6 +311,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
 <vtm-weights-edit
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
+  isPsvVehicle="false"
   numberOfAxles$={[Function Observable]}
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
@@ -324,7 +362,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-grossGbWeight"
                   >
-                     GB 
+                    <span>
+                      GB
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -334,6 +375,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="grossGbWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -344,7 +386,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-grossEecWeight"
                   >
-                     EEC (optional) 
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -354,6 +399,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="grossEecWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -364,7 +410,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-grossDesignWeight"
                   >
-                     Design (optional) 
+                    <span>
+                      Design
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -374,6 +423,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="grossDesignWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -400,7 +450,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-trainGbWeight"
                   >
-                     GB (optional) 
+                    <span>
+                      GB
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -410,6 +463,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="trainGbWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -420,7 +474,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-trainEecWeight"
                   >
-                     EEC (optional) 
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -430,6 +487,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="trainEecWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -440,7 +498,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-trainDesignWeight"
                   >
-                     Design (optional) 
+                    <span>
+                      Design (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -450,6 +511,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="trainDesignWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -476,7 +538,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-maxTrainGbWeight"
                   >
-                     GB (optional) 
+                    <span>
+                      GB
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -486,6 +551,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="maxTrainGbWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -496,7 +562,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-maxTrainEecWeight"
                   >
-                     EEC (optional) 
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -506,6 +575,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="maxTrainEecWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
                 
@@ -516,7 +586,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-maxTrainDesignWeight"
                   >
-                     Design (optional) 
+                    <span>
+                      Design (optional)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -526,6 +599,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                     ng-reflect-maxlength="5"
                     ng-reflect-name="maxTrainDesignWeight"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -569,7 +643,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                         class="govuk-label govuk-!-font-weight-bold"
                         for="test-edit-gbWeight-1"
                       >
-                         GB 
+                        <span>
+                          GB
+                        </span>
+                        
                       </label>
                       <input
                         class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -579,6 +656,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                         ng-reflect-maxlength="5"
                         ng-reflect-name="gbWeight"
                         type="number"
+                        vtmnullvalue=""
                       />
                     </div>
                     
@@ -589,7 +667,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                         class="govuk-label govuk-!-font-weight-bold"
                         for="test-edit-eecWeight-1"
                       >
-                         EEC (optional) 
+                        <span>
+                          EEC (optional)
+                        </span>
+                        
                       </label>
                       <input
                         class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -599,6 +680,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                         ng-reflect-maxlength="5"
                         ng-reflect-name="eecWeight"
                         type="number"
+                        vtmnullvalue=""
                       />
                     </div>
                     
@@ -609,7 +691,10 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                         class="govuk-label govuk-!-font-weight-bold"
                         for="test-edit-designWeight-1"
                       >
-                         Design 
+                        <span>
+                          Design
+                        </span>
+                        
                       </label>
                       <input
                         class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -619,6 +704,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                         ng-reflect-maxlength="5"
                         ng-reflect-name="designWeight"
                         type="number"
+                        vtmnullvalue=""
                       />
                     </div>
                   </div>

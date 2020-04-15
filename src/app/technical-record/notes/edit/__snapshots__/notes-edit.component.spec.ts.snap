@@ -30,6 +30,7 @@ exports[`DocumentsEditComponent component should render with the given propertie
               id="test-edit-notes"
               ng-reflect-name="notes"
               rows="5"
+              vtmnullvalue=""
             />
           </form>
         </fieldset>

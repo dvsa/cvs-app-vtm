@@ -19,10 +19,11 @@ import { TechRecord } from './../models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import {
   VehicleTechRecordModel,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  VehicleTechRecordEditState
 } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
-import { VIEW_STATE } from '@app/app.enums';
+import { VIEW_STATE, RECORD_COMPLETENESS } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -36,7 +37,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   @Input() metaData: MetaData;
   @Input() currentState: VIEW_STATE;
   @Input() testResultJson: TestResultModel[];
-  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEdit>();
+  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEditState>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 
   showAdrDetails: boolean;
@@ -49,6 +50,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   createState: boolean;
   isStandardVehicle: boolean;
   panels: { panel: string; isOpened: boolean }[];
+  recordCompleteness: string;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +61,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { activeVehicleTechRecord, currentState } = changes;
+
     if (activeVehicleTechRecord) {
       this.activeRecord = this.activeVehicleTechRecord.techRecord[0];
       this.adrDisplayParams = { showAdrDetails: !!this.activeRecord.adrDetails };
@@ -79,6 +82,11 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     this.setPanelState(this.createState);
 
     this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
+
+    const completenessKey = Object.keys(RECORD_COMPLETENESS).find(
+      (name) => name === this.activeRecord.recordCompleteness
+    );
+    this.recordCompleteness = RECORD_COMPLETENESS[completenessKey];
   }
 
   setPanelState(toggleState: boolean) {
@@ -162,7 +170,10 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.isSave) {
         mergedRecord.techRecord[0].reasonForCreation = result.data;
-        this.submitVehicleRecord.emit(mergedRecord);
+        this.submitVehicleRecord.emit({
+          vehicleRecordEdit: mergedRecord,
+          viewState: this.currentState
+        });
       }
     });
     // }

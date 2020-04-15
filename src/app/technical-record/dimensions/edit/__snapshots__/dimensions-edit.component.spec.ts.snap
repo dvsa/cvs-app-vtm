@@ -4,6 +4,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
 <vtm-dimensions-edit
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
+  isHgvVehicle="false"
   numberOfAxles$={[Function Observable]}
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
@@ -37,7 +38,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-length"
               >
-                 Length (mm) 
+                <span>
+                  Length (mm)
+                </span>
+                
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -47,6 +51,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                 ng-reflect-maxlength="5"
                 ng-reflect-name="length"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             
@@ -58,7 +63,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-width"
               >
-                 Width (mm) 
+                <span>
+                  Width (mm)
+                </span>
+                
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -68,6 +76,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                 ng-reflect-maxlength="5"
                 ng-reflect-name="width"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             
@@ -79,7 +88,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-frontAxleToRearAxle"
               >
-                 Front axle to rear axle (mm) 
+                <span>
+                  Front axle to rear axle (mm)
+                </span>
+                
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -89,6 +101,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                 ng-reflect-maxlength="5"
                 ng-reflect-name="frontAxleToRearAxle"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             <label
@@ -113,7 +126,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelCouplingMin"
                   >
-                     Minimum (mm) 
+                    <span>
+                      Minimum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -123,6 +139,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelCouplingMin"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -139,7 +156,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelCouplingMax"
                   >
-                     Maximum (mm) 
+                    <span>
+                      Maximum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -149,6 +169,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelCouplingMax"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -175,7 +196,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelMin"
                   >
-                     Minimum (mm) 
+                    <span>
+                      Minimum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -185,6 +209,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelMin"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -201,7 +226,10 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelMax"
                   >
-                     Maximum (mm) 
+                    <span>
+                      Maximum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -211,6 +239,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelMax"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -230,6 +259,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
 <vtm-dimensions-edit
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
+  isHgvVehicle="false"
   numberOfAxles$={[Function Observable]}
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
@@ -263,7 +293,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-length"
               >
-                 Length (mm) 
+                <span>
+                  Length (mm)
+                </span>
+                
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -273,6 +306,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                 ng-reflect-maxlength="5"
                 ng-reflect-name="length"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             
@@ -284,7 +318,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-width"
               >
-                 Width (mm) 
+                <span>
+                  Width (mm)
+                </span>
+                
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -294,6 +331,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                 ng-reflect-maxlength="5"
                 ng-reflect-name="width"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             
@@ -305,7 +343,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-frontAxleToRearAxle"
               >
-                 Front axle to rear axle (mm) 
+                <span>
+                  Front axle to rear axle (mm)
+                </span>
+                
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -315,6 +356,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                 ng-reflect-maxlength="5"
                 ng-reflect-name="frontAxleToRearAxle"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             <label
@@ -339,7 +381,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelCouplingMin"
                   >
-                     Minimum (mm) 
+                    <span>
+                      Minimum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -349,6 +394,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelCouplingMin"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -365,7 +411,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelCouplingMax"
                   >
-                     Maximum (mm) 
+                    <span>
+                      Maximum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -375,6 +424,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelCouplingMax"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -401,7 +451,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelMin"
                   >
-                     Minimum (mm) 
+                    <span>
+                      Minimum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -411,6 +464,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelMin"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -427,7 +481,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     class="govuk-label govuk-!-font-weight-bold"
                     for="test-edit-frontAxleTo5thWheelMax"
                   >
-                     Maximum (mm) 
+                    <span>
+                      Maximum (mm)
+                    </span>
+                    
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -437,6 +494,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                     ng-reflect-maxlength="5"
                     ng-reflect-name="frontAxleTo5thWheelMax"
                     type="number"
+                    vtmnullvalue=""
                   />
                 </div>
               </div>
@@ -459,7 +517,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                   class="govuk-label govuk-!-font-weight-bold"
                   for="test-edit-axleSpacing-value-1"
                 >
-                   Axle 1 to axle 2 (mm) 
+                  <span>
+                    Axle 1 to axle 2 (mm)
+                  </span>
+                  
                 </label>
                 <input
                   class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -469,6 +530,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                   ng-reflect-maxlength="5"
                   ng-reflect-name="value"
                   type="number"
+                  vtmnullvalue=""
                 />
               </div>
               
@@ -482,7 +544,10 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                   class="govuk-label govuk-!-font-weight-bold"
                   for="test-edit-axleSpacing-value-2"
                 >
-                   Axle 2 to axle 3 (mm) 
+                  <span>
+                    Axle 2 to axle 3 (mm)
+                  </span>
+                  
                 </label>
                 <input
                   class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
@@ -492,6 +557,7 @@ exports[`DimensionsEditComponent should render AXLE SPACING controls on initiali
                   ng-reflect-maxlength="5"
                   ng-reflect-name="value"
                   type="number"
+                  vtmnullvalue=""
                 />
               </div>
               

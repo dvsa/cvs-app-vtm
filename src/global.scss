@@ -1,5 +1,4 @@
 @import 'node_modules/govuk-frontend/govuk/all';
-@import '~material-design-icons/iconfont/material-icons.css';
 
 /**
 * This file should be used to create new components not provided by GDS
@@ -91,7 +90,7 @@
 .tree-child-node {
   color: $govuk-link-colour;
   &.is-active {
-    color: govuk-colour("white");
+    color: govuk-colour('white');
     background-color: $govuk-brand-colour;
   }
 }

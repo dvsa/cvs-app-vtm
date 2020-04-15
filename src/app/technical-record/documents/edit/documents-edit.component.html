@@ -14,7 +14,9 @@
               id="test-edit-microfilmDocumentType"
               formControlName="microfilmDocumentType"
               class="govuk-select"
+              vtmNullValue
             >
+              <option [value]=""></option>
               <option
                 *ngFor="let microDocument of microfilmDocumentTypeOptions"
                 [ngValue]="microDocument.name"
@@ -37,6 +39,7 @@
               type="text"
               maxlength="5"
               formControlName="microfilmRollNumber"
+              vtmNullValue
             />
           </div>
 
@@ -53,6 +56,7 @@
               type="text"
               maxlength="4"
               formControlName="microfilmSerialNumber"
+              vtmNullValue
             />
           </div>
         </ng-container>

@@ -32,3 +32,8 @@ export interface VehicleTechRecordState {
   vehicleRecord: VehicleTechRecordModel;
   viewState: VIEW_STATE;
 }
+
+export interface VehicleTechRecordEditState {
+  vehicleRecordEdit: VehicleTechRecordEdit;
+  viewState: VIEW_STATE;
+}
