@@ -14,9 +14,9 @@ import { Observable, Subject } from 'rxjs';
 import { AdrDetails } from '@app/models/adr-details';
 import { TechRecord } from '@app/models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
-import { RADIOOPTIONS } from './adr.constants';
 import { VIEW_STATE } from '@app/app.enums';
 import { ValidationMapper } from './adr-validation.mapper';
+import { BOOLEAN_RADIO_OPTIONS } from '../technical-record.constants';
 
 @Component({
   selector: 'vtm-adr',
@@ -33,6 +33,7 @@ export class AdrComponent implements OnChanges, OnInit, OnDestroy {
   showAdrView: boolean;
   adrDetails: AdrDetails;
   metaData$: Observable<MetaData>;
+  booleanOptions = BOOLEAN_RADIO_OPTIONS;
 
   protected onDestroy$ = new Subject();
 
@@ -63,34 +64,27 @@ export class AdrComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     if (editState) {
-      this.parent.form.removeControl('adrDetails');
-      this.parent.form.addControl('adrDetails', new FormGroup({}));
+      const techRecord = this.parent.form.get('techRecord') as FormGroup;
+      techRecord.removeControl('adrDetails');
+      techRecord.addControl('adrDetails', new FormGroup({}));
     }
   }
 
   ngOnInit() {}
 
   protected setUp(): FormGroup {
-    const group = this.parent.form.get('adrDetails') as FormGroup;
-    if (!group) {
-      this.parent.form.addControl('adrDetails', new FormGroup({}));
-      return this.parent.form.get('adrDetails') as FormGroup;
-    }
-
-    return group;
+    return this.parent.form.get('techRecord.adrDetails') as FormGroup;
   }
 
   switchAdrDisplay($event): void {
+    const techRecord = this.parent.form.get('techRecord') as FormGroup;
     this.showAdrView = $event.currentTarget.value === 'true';
-    if (!this.showAdrView) {
-      this.parent.form.removeControl('adrDetails');
-    } else {
-      this.parent.form.addControl('adrDetails', new FormGroup({}));
-    }
-  }
 
-  radioOptions() {
-    return RADIOOPTIONS;
+    if (!this.showAdrView) {
+      techRecord.removeControl('adrDetails');
+    } else {
+      techRecord.addControl('adrDetails', new FormGroup({}));
+    }
   }
 
   unsorted(): number {

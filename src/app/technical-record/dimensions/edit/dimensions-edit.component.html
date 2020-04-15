@@ -1,0 +1,183 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- Length -->
+          <ng-container
+            *ngTemplateOutlet="
+              dimTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg.get('dimensions'),
+                  label: 'Length (mm)',
+                  field: 'length'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Width -->
+          <ng-container
+            *ngTemplateOutlet="
+              dimTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg.get('dimensions'),
+                  label: 'Width (mm)',
+                  field: 'width'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Front axle to rear axle -->
+          <ng-container
+            *ngTemplateOutlet="
+              dimTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg,
+                  label: 'Front axle to rear axle (mm)',
+                  field: 'frontAxleToRearAxle'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Front of vehicle to 5th -->
+          <label class="govuk-label govuk-!-font-weight-bold">
+            Front of vehicle to 5th wheel coupling
+          </label>
+          <div class="govuk-inset-text govuk-!-margin-top-3">
+            <ng-container
+              *ngFor="
+                let item of [
+                  {
+                    label: 'Minimum (mm)',
+                    field: 'frontAxleTo5thWheelCouplingMin'
+                  },
+                  {
+                    label: 'Maximum (mm)',
+                    field: 'frontAxleTo5thWheelCouplingMax'
+                  }
+                ];
+                let i = index
+              "
+            >
+              <div class="govuk-form-group govuk-!-margin-left-3">
+                <ng-container
+                  *ngTemplateOutlet="
+                    dimTemplate;
+                    context: {
+                      $implicit: {
+                        group: techRecordFg,
+                        label: item.label,
+                        field: item.field
+                      }
+                    }
+                  "
+                ></ng-container>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- Front axle to 5th -->
+          <label class="govuk-label govuk-!-font-weight-bold">
+            Front axle to 5th wheel
+          </label>
+          <div class="govuk-inset-text govuk-!-margin-top-3">
+            <ng-container
+              *ngFor="
+                let item of [
+                  {
+                    label: 'Minimum (mm)',
+                    field: 'frontAxleTo5thWheelMin'
+                  },
+                  {
+                    label: 'Maximum (mm)',
+                    field: 'frontAxleTo5thWheelMax'
+                  }
+                ];
+                let i = index
+              "
+            >
+              <div class="govuk-form-group govuk-!-margin-left-3">
+                <ng-container
+                  *ngTemplateOutlet="
+                    dimTemplate;
+                    context: {
+                      $implicit: {
+                        group: techRecordFg,
+                        label: item.label,
+                        field: item.field
+                      }
+                    }
+                  "
+                ></ng-container>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- Axle mappings -->
+          <ng-container formGroupName="dimensions">
+            <div formArrayName="axleSpacing" *ngIf="axleSpacing.length">
+              <ng-container
+                *ngFor="let spacing of axleSpacing.controls; let i = index"
+                [formGroup]="spacing"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    dimTemplate;
+                    context: {
+                      $implicit: {
+                        group: spacing,
+                        idLabel: 'axleSpacing-',
+                        index: '-' + (i + 1),
+                        label:
+                          'Axle ' +
+                          spacing.get('from').value +
+                          ' to ' +
+                          'axle ' +
+                          spacing.get('to').value +
+                          ' (mm)',
+                        field: 'value'
+                      }
+                    }
+                  "
+                >
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+
+          <ng-template let-dimTemplate #dimTemplate>
+            <div class="govuk-form-group" [formGroup]="dimTemplate.group">
+              <label
+                for="test-edit-{{ dimTemplate.idLabel }}{{ dimTemplate.field }}{{
+                  dimTemplate.index
+                }}"
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                {{ dimTemplate.label }}
+              </label>
+              <input
+                id="test-edit-{{ dimTemplate.idLabel }}{{ dimTemplate.field }}{{
+                  dimTemplate.index
+                }}"
+                type="number"
+                maxlength="5"
+                name="{{ dimTemplate.field }}"
+                class="govuk-input govuk-input--width-5"
+                formControlName="{{ dimTemplate.field }}"
+              />
+            </div>
+          </ng-template>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

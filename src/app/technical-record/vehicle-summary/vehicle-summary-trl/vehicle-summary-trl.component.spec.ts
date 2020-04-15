@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { VehicleSummaryTrlComponent } from './vehicle-summary-trl.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { TechRecord } from '@app/models/tech-record.model';
 
 describe('VehicleSummaryTrlComponent', () => {
@@ -21,7 +20,7 @@ describe('VehicleSummaryTrlComponent', () => {
     component = fixture.componentInstance;
     component.activeRecord = {
       vehicleType: 'trl',
-      firstUseDate: '23122019',
+      firstUseDate: '2019-12-23',
       suspensionType: 'type',
       couplingType: 'type',
       maxLoadOnCoupling: 23,

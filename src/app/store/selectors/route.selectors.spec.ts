@@ -7,7 +7,7 @@ describe('route selector', () => {
     });
   });
 
-  describe('selectSearchPageError', () => {
+  describe('getRouterInfo', () => {
     it('should get router info using reducer state', () => {
       const reducerState = { router: 'test', state: undefined };
       expect(getRouterInfo(reducerState)).toEqual(undefined);
