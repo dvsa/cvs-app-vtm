@@ -1,0 +1,62 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <fieldset class="govuk-fieldset">
+      <form [formGroup]="techRecordFg">
+        <ng-container [formGroup]="techRecordFg.get('microfilm')">
+          <div class="govuk-form-group">
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+              for="test-edit-microfilmDocumentType"
+            >
+              Microfilm document type (optional)
+            </label>
+            <select
+              id="test-edit-microfilmDocumentType"
+              formControlName="microfilmDocumentType"
+              class="govuk-select"
+            >
+              <option
+                *ngFor="let microDocument of microfilmDocumentTypeOptions"
+                [ngValue]="microDocument.name"
+              >
+                {{ microDocument.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="govuk-form-group">
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+              for="test-edit-microfilmRollNumber"
+            >
+              Microfilm roll number (optional)
+            </label>
+            <input
+              class="govuk-input govuk-input--width-10"
+              id="test-edit-microfilmRollNumber"
+              type="text"
+              maxlength="5"
+              formControlName="microfilmRollNumber"
+            />
+          </div>
+
+          <div class="govuk-form-group">
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+              for="test-edit-microfilmSerialNumber"
+            >
+              Microfilm serial number (optional)
+            </label>
+            <input
+              class="govuk-input govuk-input--width-5"
+              id="test-edit-microfilmSerialNumber"
+              type="text"
+              maxlength="4"
+              formControlName="microfilmSerialNumber"
+            />
+          </div>
+        </ng-container>
+      </form>
+    </fieldset>
+  </div>
+</div>

@@ -66,15 +66,14 @@ export const TESTING_UTILS = {
   mockBodyType,
   mockAxleSpacing,
   mockDDA,
-  mockPSVBrakes,
   mockBrakeForceWheelsNotLocked,
   mockBrakeForceWheelsUpToHalfLocked,
   mockDimensions
 };
 
-function mockFormGroupDirective(): FormGroupDirective {
+function mockFormGroupDirective(control = {}): FormGroupDirective {
   const fgd: FormGroupDirective = new FormGroupDirective([], []);
-  fgd.form = new FormGroup({});
+  fgd.form = new FormGroup(control);
   return fgd;
 }
 
@@ -328,11 +327,6 @@ function mockAxle(args?: Partial<Axle>): Axle {
   return { ...mock, ...args };
 }
 
-function mockBrakes(args?: Partial<Brakes>): Brakes {
-  const mock: Brakes = { antilockBrakingSystem: true, loadSensingValve: false } as Brakes;
-  return { ...mock, ...args };
-}
-
 function mockTyres(args?: Partial<Tyres>): Tyres {
   const mock: Tyres = {
     tyreSize: '16',
@@ -355,18 +349,9 @@ function mockWeights(args?: Partial<Weights>): Weights {
 
 function mockBodyType(args?: Partial<BodyType>): BodyType {
   const mock: BodyType = {
-    description: 'the first letter should be capital'
+    code: 'a',
+    description: 'articulated'
   } as BodyType;
-
-  return { ...mock, ...args };
-}
-
-function mockPSVBrakes(args?: Partial<Brakes>): Brakes {
-  const mock: Brakes = {
-    brakeCodeOriginal: '123',
-    brakeCode: '145202',
-    dataTrBrakeThree: 'None'
-  } as Brakes;
 
   return { ...mock, ...args };
 }
@@ -395,6 +380,17 @@ function mockBrakeForceWheelsUpToHalfLocked(
   return { ...mock, ...args };
 }
 
+function mockBrakes(args?: Partial<Brakes>): Brakes {
+  const mock: Brakes = {
+    brakeCodeOriginal: '123',
+    brakeCode: '145202',
+    dataTrBrakeThree: 'None',
+    antilockBrakingSystem: true,
+    loadSensingValve: false
+  } as Brakes;
+  return { ...mock, ...args };
+}
+
 function mockAxleSpacing(args?: Partial<AxleSpacing>): AxleSpacing {
   const mock: AxleSpacing = {
     axles: '1-2',
@@ -407,8 +403,8 @@ function mockAxleSpacing(args?: Partial<AxleSpacing>): AxleSpacing {
 function mockDimensions(args?: Partial<Dimensions>): Dimensions {
   const mock: Dimensions = {
     length: 100,
-    height: 100,
-    width: 100
+    width: 100,
+    height: 200
   } as Dimensions;
 
   return { ...mock, ...args };

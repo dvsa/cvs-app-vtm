@@ -1,0 +1,93 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- Make -->
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-make">
+              Make
+            </label>
+            <input
+              id="test-edit-make"
+              type="text"
+              maxlength="30"
+              formControlName="make"
+              class="govuk-input govuk-input--width-20"
+            />
+          </div>
+
+          <!-- Model -->
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-model">
+              Model
+            </label>
+            <input
+              id="test-edit-model"
+              type="text"
+              maxlength="30"
+              formControlName="model"
+              class="govuk-input govuk-input--width-20"
+            />
+          </div>
+
+          <!-- Body type -->
+          <div class="govuk-form-group" [formGroup]="techRecordFg.get('bodyType')">
+            <label
+              for="test-edit-bodyType-description"
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+              Body type
+            </label>
+            <select
+              id="test-edit-bodyType-description"
+              formControlName="description"
+              class="govuk-select"
+            >
+              <option *ngFor="let desc of bodyTypeDescOptions" [ngValue]="desc.name">
+                {{ desc.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Function -->
+          <div class="govuk-radios govuk-!-margin-bottom-6">
+            <label for="test-edit-functionCode" class="govuk-label govuk-!-font-weight-bold">
+              Function (optional)
+            </label>
+            <div class="govuk-radios__item" *ngFor="let option of functionOptions | keyvalue">
+              <input
+                class="govuk-radios__input"
+                id="test-edit-functionCode-{{ option.key }}"
+                name="functionCode"
+                formControlName="functionCode"
+                type="radio"
+                [value]="option.value"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="test-edit-functionCode-{{ option.key }}"
+              >
+                {{ option.key }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Conversion reference number -->
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-conversionRefNo">
+              Conversion reference number (optional)
+            </label>
+            <input
+              id="test-edit-conversionRefNo"
+              type="text"
+              maxlength="10"
+              formControlName="conversionRefNo"
+              class="govuk-input govuk-input--width-10"
+            />
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

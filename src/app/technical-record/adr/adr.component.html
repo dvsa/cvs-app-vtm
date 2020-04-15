@@ -6,7 +6,7 @@
         <div id="radioADR" class="govuk-radios govuk-radios--inline govuk-!-margin-top-4">
           <div
             class="govuk-radios__item"
-            *ngFor="let option of radioOptions() | keyvalue: unsorted"
+            *ngFor="let option of booleanOptions | keyvalue: unsorted"
           >
             <input
               class="govuk-radios__input"

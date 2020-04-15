@@ -6,6 +6,7 @@ import { AdrComponent } from '@app/technical-record/adr/adr.component';
 import { AdrDetails } from '@app/models/adr-details';
 import { tap, takeUntil } from 'rxjs/operators';
 import { ValidationState, STATUS } from '../../adr-validation.mapper';
+import { BOOLEAN_RADIO_OPTIONS } from '@app/technical-record/technical-record.constants';
 
 @Component({
   selector: 'vtm-battery-list-applicable-edit',
@@ -22,7 +23,7 @@ export class BatteryListApplicableEditComponent extends AdrComponent implements 
 
   ngOnInit() {
     this.adrForm = super.setUp();
-    this.options = super.radioOptions();
+    this.options = BOOLEAN_RADIO_OPTIONS;
     this.batterListValidationState$ = this.validationMapper.getCurrentState();
 
     this.adrForm.addControl(

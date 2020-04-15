@@ -1,0 +1,108 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <h2 class="govuk-heading-m">Applicant</h2>
+
+          <ng-container class="govuk-form-group" [formGroup]="applicantDetails">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-name">
+                Name
+              </label>
+              <input
+                id="test-edit-name"
+                formControlName="name"
+                type="text"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-address1">
+                Building and street
+              </label>
+              <input
+                id="test-edit-address1"
+                type="text"
+                formControlName="address1"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-address2">
+              </label>
+              <input
+                id="test-edit-address2"
+                type="text"
+                formControlName="address2"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-postTown">
+                Town or city
+              </label>
+              <input
+                id="test-edit-postTown"
+                type="text"
+                formControlName="postTown"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-address3">
+                County (optional)
+              </label>
+              <input
+                id="test-edit-address3"
+                type="text"
+                formControlName="address3"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-psotCode">
+                Postcode (optional)
+              </label>
+              <input
+                id="test-edit-postCode"
+                type="text"
+                formControlName="postCode"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-telephoneNumber">
+                Telephone number (optional)
+              </label>
+              <input
+                id="test-edit-telephoneNumber"
+                type="text"
+                formControlName="telephoneNumber"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-emailAddress">
+                Email address (optional)
+              </label>
+              <input
+                id="test-edit-emailAddress"
+                type="text"
+                formControlName="emailAddress"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+          </ng-container>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

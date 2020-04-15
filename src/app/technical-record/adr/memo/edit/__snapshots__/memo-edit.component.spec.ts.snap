@@ -3,6 +3,7 @@
 exports[`MemoEditComponent handleFormChanges should hide section when memoValidationState$ is HIDDEN 1`] = `
 <vtm-memo-edit
   adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   displayOptions={[Function Object]}
   fb={[Function FormBuilder]}
@@ -20,6 +21,7 @@ exports[`MemoEditComponent handleFormChanges should hide section when memoValida
 exports[`MemoEditComponent should create with initialized form controls 1`] = `
 <vtm-memo-edit
   adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   displayOptions={[Function Object]}
   fb={[Function FormBuilder]}

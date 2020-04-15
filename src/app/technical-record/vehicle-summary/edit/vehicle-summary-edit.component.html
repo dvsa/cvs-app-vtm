@@ -1,0 +1,354 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- Vehicle type -->
+          <div class="govuk-radios govuk-!-margin-bottom-6">
+            <label for="test-edit-vehicleType" class="govuk-label govuk-!-font-weight-bold">
+              Vehicle type
+            </label>
+            <div class="govuk-radios__item" *ngFor="let option of vehicleTypeOptions | keyvalue">
+              <input
+                class="govuk-radios__input"
+                id="test-edit-vehicleType-{{ option.key }}"
+                name="vehicleType"
+                formControlName="vehicleType"
+                type="radio"
+                [value]="option.value"
+              />
+              <label
+                class="govuk-label govuk-radios__label"
+                for="test-edit-vehicleType-{{ option.key }}"
+              >
+                {{ option.key }}
+              </label>
+            </div>
+          </div>
+
+          <!-- Date of first registration -->
+          <div class="govuk-form-group">
+            <div role="group" aria-describedby="registration-date">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-regnDate">
+                Date of first registration
+              </label>
+              <vtm-date-input
+                id="test-edit-regnDate"
+                ariaDescribedBy="regnDate"
+                formControlName="regnDate"
+              ></vtm-date-input>
+            </div>
+          </div>
+
+          <!-- Year of manufacture -->
+          <div class="govuk-form-group">
+            <label for="test-edit-manufactureYear" class="govuk-label govuk-!-font-weight-bold">
+              Year of manufacture
+            </label>
+            <input
+              id="test-edit-manufactureYear"
+              type="number"
+              name="manufactureYear"
+              maxlength="4"
+              formControlName="manufactureYear"
+              class="govuk-input govuk-input--width-4"
+            />
+          </div>
+
+          <!-- Number of axles -->
+          <div class="govuk-form-group">
+            <label for="test-edit-noOfAxles" class="govuk-label govuk-!-font-weight-bold">
+              Number of axles
+            </label>
+            <select id="test-edit-noOfAxles" formControlName="noOfAxles" class="govuk-select">
+              <option *ngFor="let axleNo of axleNoOptions" [ngValue]="axleNo">
+                {{ axleNo }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Dtp number -->
+          <div class="govuk-form-group" [formGroup]="techRecordFg.get('brakes')">
+            <label for="test-edit-dtpNumber" class="govuk-label govuk-!-font-weight-bold">
+              DTp number
+            </label>
+            <input
+              id="test-edit-dtpNumber"
+              type="text"
+              name="dtpNumber"
+              maxlength="6"
+              formControlName="dtpNumber"
+              class="govuk-input govuk-input--width-5"
+            />
+          </div>
+
+          <!-- Axles with parking brake -->
+          <ng-container *ngIf="axles.length">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                Axles fitted with a parking brake
+              </label>
+              <div class="govuk-checkboxes" formArrayName="axles">
+                <ng-container
+                  *ngFor="let axle of axles.controls; let i = index"
+                  [formGroup]="axle"
+                >
+                  <div class="govuk-checkboxes__item">
+                    <input
+                      id="test-edit-axle-{{ i + 1 }}"
+                      type="checkbox"
+                      [value]="axle.get('selected').value"
+                      [formControl]="axle.get('selected')"
+                      class="govuk-checkboxes__input"
+                    />
+                    <label
+                      for="test-edit-axle-{{ i + 1 }}"
+                      class="govuk-label govuk-checkboxes__label"
+                    >
+                      {{ axle.get('name').value }}
+                    </label>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Speed limiter exempt -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  label: 'Speed limiter exempt',
+                  field: 'speedLimiterMrk'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Tacho exempt -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  label: 'Tacho exempt',
+                  field: 'tachoExemptMrk'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Euro standard -->
+          <div class="govuk-form-group">
+            <label for="test-edit-euroStandard" class="govuk-label govuk-!-font-weight-bold">
+              Euro standard
+            </label>
+            <input
+              id="test-edit-euroStandard"
+              type="text"
+              name="euroStandard"
+              formControlName="euroStandard"
+              class="govuk-input govuk-input--width-2"
+            />
+          </div>
+
+          <!-- Road friendly suspension -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  label: 'Road friendly suspension',
+                  field: 'roadFriendly'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!--Fuel propulsion  -->
+          <div class="govuk-form-group">
+            <label
+              for="test-edit-fuelPropulsionSystem"
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+              Fuel/propulsion
+            </label>
+            <select
+              id="test-edit-fuelPropulsionSystem"
+              formControlName="fuelPropulsionSystem"
+              class="govuk-select"
+            >
+              <option *ngFor="let fuelProp of fuelPropulsionOptions" [ngValue]="fuelProp.name">
+                {{ fuelProp.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Drawbar coupling fitted -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  label: 'Drawbar coupling fitted',
+                  field: 'drawbarCouplingFitted'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Vehicle class -->
+          <div class="govuk-form-group" [formGroup]="techRecordFg.get('vehicleClass')">
+            <label
+              for="test-edit-vehicleClass-description"
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+              Vehicle class
+            </label>
+            <select
+              id="test-edit-vehicleClass-description"
+              formControlName="description"
+              class="govuk-select"
+            >
+              <option *ngFor="let desc of vehicleClassOptions" [ngValue]="desc.name">
+                {{ desc.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Vehicle configuration -->
+          <div class="govuk-form-group">
+            <label
+              for="test-edit-vehicleConfiguration"
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+              Vehicle configuration
+            </label>
+            <select
+              id="test-edit-vehicleConfiguration"
+              formControlName="vehicleConfiguration"
+              class="govuk-select"
+            >
+              <option *ngFor="let config of vehicleConfigOptions" [ngValue]="config.name">
+                {{ config.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Offroad vehicle -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  label: 'Offroad vehicle',
+                  field: 'offRoad'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Number of wheels driven -->
+          <div class="govuk-form-group">
+            <label
+              for="test-edit-numberOfWheelsDriven"
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+              Number of wheels driven
+            </label>
+            <input
+              id="test-edit-numberOfWheelsDriven"
+              type="number"
+              name="numberOfWheelsDriven"
+              formControlName="numberOfWheelsDriven"
+              class="govuk-input govuk-input--width-4"
+            />
+          </div>
+
+          <!-- EU vehicle category -->
+          <div class="govuk-form-group">
+            <label for="test-edit-euVehicleCategory" class="govuk-label govuk-!-font-weight-bold">
+              EU vehicle category
+            </label>
+            <select
+              id="test-edit-euVehicleCategory"
+              formControlName="euVehicleCategory"
+              class="govuk-select"
+            >
+              <option *ngFor="let category of vehicleEUCategoryOptions" [ngValue]="category.name">
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Emission limit -->
+          <div class="govuk-form-group">
+            <label for="test-edit-emissionsLimit" class="govuk-label govuk-!-font-weight-bold">
+              Emission limit (optional)
+            </label>
+            <input
+              id="test-edit-emissionsLimit"
+              type="number"
+              name="emissionsLimit"
+              formControlName="emissionsLimit"
+              class="govuk-input govuk-input govuk-input--width-20"
+            />
+          </div>
+
+          <!-- Departmental vehicle marker -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  label: 'Departmental vehicle marker',
+                  field: 'departmentalVehicleMarker'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <ng-template let-boolTemplate #boolTemplate>
+            <div class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5">
+              <label
+                for="test-edit-{{ boolTemplate.field }}"
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                {{ boolTemplate.label }}
+              </label>
+              <div
+                class="govuk-radios__item"
+                *ngFor="let option of booleanOptions | keyvalue: unsorted"
+              >
+                <input
+                  class="govuk-radios__input"
+                  id="test-edit-{{ boolTemplate.field }}-{{ option.key }}"
+                  name="{{ boolTemplate.field }}"
+                  formControlName="{{ boolTemplate.field }}"
+                  type="radio"
+                  [value]="option.value"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-{{ boolTemplate.field }}-{{ option.key }}"
+                >
+                  {{ option.key }}
+                </label>
+              </div>
+            </div>
+          </ng-template>
+
+          <!-- Type approval -->
+          <vtm-type-approval [techRecord]="techRecord"></vtm-type-approval>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>
