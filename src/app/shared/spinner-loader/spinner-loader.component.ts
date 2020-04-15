@@ -10,9 +10,8 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpinnerLoaderComponent {
-  
-  loader$: Observable<boolean>
-  constructor(private _store: Store<IAppState>) { 
+  loader$: Observable<boolean>;
+  constructor(private _store: Store<IAppState>) {
     this.loader$ = this._store.pipe(select(state => state.loader.loading));
   }
 }

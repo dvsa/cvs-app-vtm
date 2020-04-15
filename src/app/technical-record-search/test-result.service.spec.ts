@@ -31,6 +31,7 @@ describe('TestResultService', () => {
   let store: Store<IAppState>;
 
   beforeEach(() => {
+    actions = new ReplaySubject();
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,

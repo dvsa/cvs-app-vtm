@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfig } from '@app/app.config';
 import { Observable } from 'rxjs';
-import { delayedRetry } from '@app/shared/delayed-retry/delayed-retry'
+import { delayedRetry } from '@app/shared/delayed-retry/delayed-retry';
 import { shareReplay, finalize } from 'rxjs/operators';
 import { IAppState } from '@app/store/state/app.state';
 import { Store } from '@ngrx/store';
