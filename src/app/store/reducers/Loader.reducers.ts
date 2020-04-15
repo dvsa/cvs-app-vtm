@@ -15,7 +15,7 @@ export function LoaderReducer(state = initialLoaderState, action: LoadingActions
       return {
         ...state,
         loading: false,
-      }
+      };
     }
 
     default: return state;

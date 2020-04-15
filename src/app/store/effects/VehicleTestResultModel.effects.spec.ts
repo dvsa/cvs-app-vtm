@@ -23,6 +23,7 @@ describe('VehicleTechRecordModelEffects', () => {
   let store: Store<IAppState>;
 
   beforeEach(() => {
+    actions = new Observable();
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [

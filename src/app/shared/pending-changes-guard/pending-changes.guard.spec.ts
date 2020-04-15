@@ -13,7 +13,7 @@ describe('PendingChangesGuard', () => {
         {
           provide: PendingChangesService,
           useValue: {
-            confirm: () => { return false }
+            confirm: () => false
           }
         }]
     }).compileComponents();
@@ -23,17 +23,17 @@ describe('PendingChangesGuard', () => {
     service = injector.get(PendingChangesService);
   });
 
-  it('should return true when user is allowed to navigate', inject([PendingChangesGuard], (guard: PendingChangesGuard) => {
-    expect(guard).toBeTruthy();
+  it('should return true when user is allowed to navigate', inject([PendingChangesGuard], (pendingChangesGuard: PendingChangesGuard) => {
+    expect(pendingChangesGuard).toBeTruthy();
   }));
 
   describe('canDeactivate', () => {
     test('should retrurn true if the component can be deactivated', () => {
-      expect(guard.canDeactivate({canDeactivate: () => {return true}})).toBe(true);
+      expect(guard.canDeactivate({canDeactivate: () => true })).toBe(true);
     });
 
     test('should retrurn service call if the component can not be deactivated', () => {
-      expect(guard.canDeactivate({canDeactivate: () => {return false}})).toBe(service.confirm());
+      expect(guard.canDeactivate({canDeactivate: () => false })).toBe(service.confirm());
     });
   });
 });

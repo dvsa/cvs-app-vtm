@@ -71,7 +71,7 @@ describe('HeaderComponent', () => {
       component.ngOnInit();
       expect(component.userName).toEqual(adal.userInfo.profile.name);
     });
-  })
+  });
 
   it('should change value of menuOpen on click event', () => {
     const event = { currentTarget: { checked: false } };

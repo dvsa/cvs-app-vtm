@@ -15,10 +15,10 @@ import { of, Subject } from 'rxjs';
 import { TechnicalRecordComponent } from './technical-record.component';
 
 describe('TechnicalRecordComponent', () => {
-  let component: TechnicalRecordComponent;
-  let fixture: ComponentFixture<TechnicalRecordComponent>;
+  // let component: TechnicalRecordComponent;
+  // let fixture: ComponentFixture<TechnicalRecordComponent>;
   let dialog: MatDialog;
-  const unsubscribe = new Subject<void>();
+  // const unsubscribe = new Subject<void>();
   let injector: TestBed;
   let store: Store<IAppState>;
 
