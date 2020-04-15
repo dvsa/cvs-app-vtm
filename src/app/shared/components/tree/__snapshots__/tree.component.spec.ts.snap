@@ -29,8 +29,8 @@ Array [
             "observers": Array [],
             "thrownError": null,
           },
-          "id": "103",
-          "nodeName": "Paid",
+          "id": "104",
+          "nodeName": "Part paid",
         },
         TreeNode {
           "children": BehaviorSubject {
@@ -42,8 +42,8 @@ Array [
             "observers": Array [],
             "thrownError": null,
           },
-          "id": "104",
-          "nodeName": "Part paid",
+          "id": "103",
+          "nodeName": "Paid",
         },
       ],
       "closed": false,

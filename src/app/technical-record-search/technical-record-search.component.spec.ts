@@ -6,7 +6,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { IAppState } from '@app/store/state/app.state';
 import { TechnicalRecordSearchComponent } from './technical-record-search.component';
-import { GetVehicleTechRecordModelHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
+import { GetVehicleTechRecordHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { SearchParams } from '@app/models/search-params';
 
 describe('TechnicalRecordSearchComponent', () => {
@@ -62,7 +62,7 @@ describe('TechnicalRecordSearchComponent', () => {
       expect(component.searchParams.searchCriteria).toBe('all');
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        new GetVehicleTechRecordModelHavingStatusAll(component.searchParams)
+        new GetVehicleTechRecordHavingStatusAll(component.searchParams)
       );
     });
 
@@ -76,7 +76,7 @@ describe('TechnicalRecordSearchComponent', () => {
       expect(component.searchParams.searchCriteria).toBe('vrm');
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        new GetVehicleTechRecordModelHavingStatusAll(component.searchParams)
+        new GetVehicleTechRecordHavingStatusAll(component.searchParams)
       );
     });
 
@@ -90,7 +90,7 @@ describe('TechnicalRecordSearchComponent', () => {
       expect(component.searchParams.searchCriteria).toBe('vin');
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        new GetVehicleTechRecordModelHavingStatusAll(component.searchParams)
+        new GetVehicleTechRecordHavingStatusAll(component.searchParams)
       );
     });
 
@@ -104,7 +104,7 @@ describe('TechnicalRecordSearchComponent', () => {
       expect(component.searchParams.searchCriteria).toBe('partialVin');
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        new GetVehicleTechRecordModelHavingStatusAll(component.searchParams)
+        new GetVehicleTechRecordHavingStatusAll(component.searchParams)
       );
     });
 
@@ -118,7 +118,7 @@ describe('TechnicalRecordSearchComponent', () => {
       expect(component.searchParams.searchCriteria).toBe('trailerId');
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        new GetVehicleTechRecordModelHavingStatusAll(component.searchParams)
+        new GetVehicleTechRecordHavingStatusAll(component.searchParams)
       );
     });
 
@@ -129,7 +129,7 @@ describe('TechnicalRecordSearchComponent', () => {
       expect(component.searchParams.searchCriteria).toBe('all');
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        new GetVehicleTechRecordModelHavingStatusAll(component.searchParams)
+        new GetVehicleTechRecordHavingStatusAll(component.searchParams)
       );
     });
   });

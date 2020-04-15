@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BackButtonDirective } from '@app/shared/directives/back-button.directive';
 
-export const PIPES_AND_COMPONENTS = [BackButtonDirective];
+import { BackButtonDirective } from './back-button.directive';
+import { NullValueDirective } from './null-value.directive';
+
+export const PIPES_AND_COMPONENTS = [BackButtonDirective, NullValueDirective];
 
 @NgModule({
   imports: [CommonModule],
