@@ -8,6 +8,7 @@ describe('BackButtonDirective', () => {
   let directive: BackButtonDirective;
   let location: Location;
 
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -22,7 +23,7 @@ describe('BackButtonDirective', () => {
     expect(directive).toBeTruthy();
   }));
 
-  it('should call the navigate back on click', () => {
+  it('should call the back on click', () => {
     jest.spyOn(location, 'back');
     directive.onClick();
     expect(location.back).toHaveBeenCalled();

@@ -60,7 +60,11 @@
         </button>
       </div>
     </div>
-    <form [formGroup]="testResultParentForm" (ngSubmit)="onSaveTestResult(testResultParentForm)">
+    <form
+      [formGroup]="testResultParentForm"
+      (ngSubmit)="onSaveTestResult(testResultParentForm)"
+      vtmFormConnector="testResultParentForm"
+    >
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
           <vtm-accordion>

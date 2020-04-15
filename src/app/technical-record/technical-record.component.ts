@@ -135,6 +135,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     for (let index = 0; index < controlNames.length; index++) {
       techGroup.removeControl(controlNames[index]);
     }
+    this.vehicleRecordFg.reset();
     this.vehicleRecordFg.updateValueAndValidity();
   }
 

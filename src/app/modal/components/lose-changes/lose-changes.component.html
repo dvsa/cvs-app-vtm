@@ -1,0 +1,14 @@
+<div mat-dialog-content lose-changes>
+    <h1 class="govuk-heading-m">Unsaved changes</h1>
+    <span class="govuk-hint">
+      If you leave this page, your changes will be lost.
+    </span>
+  </div>
+
+  <button id="test-lose-changes" class="govuk-button" data-module="govuk-button" (click)="onLoseChangesClick()" cdkFocusInitial>
+    Leave and lose changes
+  </button>
+
+  <a  id= "test-cancel" class="cancel" (click)="onCancelClick()">
+    <span>Continue changing record</span>
+  </a>

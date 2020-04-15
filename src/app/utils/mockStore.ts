@@ -17,6 +17,8 @@ import {
 } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
 import { getRouterParams } from '@app/store/selectors/route.selectors';
+import { getCurrentModalState } from '@app/modal/modal.selectors';
+import { getAppFormState } from '@app/store/selectors/app-form-state.selectors';
 
 export class MockStore {
   mockSelector: BehaviorSubject<any>;
@@ -129,6 +131,22 @@ export class MockStore {
             value && value.hasOwnProperty('getRouterParams') ? value['getRouterParams'] : {}
           )
         );
+        case getCurrentModalState:
+          return this.mockSelector.pipe(
+            map((value: any) =>
+              value && value.hasOwnProperty('getCurrentModalState')
+                ? value['getCurrentModalState']
+                : {}
+            )
+          );
+        case getAppFormState:
+          return this.mockSelector.pipe(
+            map((value: any) =>
+              value && value.hasOwnProperty('getCurrentModalState')
+                ? value['getCurrentModalState']
+                : {}
+            )
+          );
 
       default:
         return this.mockSelector;

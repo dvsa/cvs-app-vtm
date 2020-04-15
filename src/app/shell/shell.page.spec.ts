@@ -9,24 +9,19 @@ describe('ShellPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShellPage ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-      .compileComponents();
+      declarations: [ShellPage],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ShellPage);
     component = fixture.componentInstance;
+  });
+
+  it('should create shell component', () => {
     fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(fixture).toMatchSnapshot();
   });
-
-  afterAll(() => {
-    TestBed.resetTestingModule();
-  });
-
 });

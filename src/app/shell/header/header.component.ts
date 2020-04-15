@@ -11,9 +11,11 @@ import { MatDialog } from '@angular/material/dialog';
 export class HeaderComponent implements OnInit {
   userName: string;
   menuOpen = false;
-  constructor(private adal: MsAdalAngular6Service,
-    private dialog: MatDialog, ) {
-  }
+
+  constructor(
+    private adal: MsAdalAngular6Service,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit() {
     this.userName = this.adal.userInfo != null ? this.adal.userInfo.profile.name : '';
@@ -27,9 +29,9 @@ export class HeaderComponent implements OnInit {
     if (this.adal.isAuthenticated) {
       const dialogRef = this.dialog.open(LogoutModalComponent, {
         width: '600px',
-        disableClose: true,
+        disableClose: true
       });
-      return dialogRef.afterClosed().subscribe(res => {
+      return dialogRef.afterClosed().subscribe((res) => {
         if (res) {
           this.adal.logout();
         }

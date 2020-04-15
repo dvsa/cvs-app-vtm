@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalReducer LoadModal should set the current modal to lose changes 1`] = `
+Object {
+  "currentModal": "lose-changes",
+  "urlToRedirect": undefined,
+}
+`;
+
+exports[`ModalReducer ResetModal should set current modal to none from the state 1`] = `
+Object {
+  "currentModal": "none",
+  "payload": undefined,
+}
+`;
+
+exports[`ModalReducer when initialised should set the default state 1`] = `
+Object {
+  "currentModal": "none",
+}
+`;
