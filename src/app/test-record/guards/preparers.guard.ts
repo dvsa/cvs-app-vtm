@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { map, tap, switchMap, catchError } from 'rxjs/operators';
+import { map, tap, switchMap, catchError, take } from 'rxjs/operators';
 
 import { IAppState } from '@app/store/state/app.state';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
@@ -12,17 +12,14 @@ import { Preparer } from '@app/models/preparer';
 
 @Injectable({ providedIn: 'root' })
 export class PreparersGuard implements CanActivate {
-  constructor(
-    private store: Store<IAppState>,
-    private testResultService: TestResultService
-  ) {}
+  constructor(private store: Store<IAppState>, private testResultService: TestResultService) {}
 
   hasPreparers(): Observable<boolean> {
-    return this.store.pipe(
-      select(getPreparers),
+    return this.store.select(getPreparers).pipe(
       map((preparers) => {
         return !!preparers;
-      })
+      }),
+      take(1)
     );
   }
 

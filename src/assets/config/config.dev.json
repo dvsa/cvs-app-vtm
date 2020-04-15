@@ -29,6 +29,7 @@
     "APIDocumentsServerUri": "assets/files",
     "APIPreparersServerUri": "http://localhost:3003",
     "APITestStationsServerUri": "http://localhost:3004",
+    "APITestTypesServerUri": "http://localhost:3002",
     "APIDocumentBlobUri": "",
     "APICertificatesBlobUri": ""
   }

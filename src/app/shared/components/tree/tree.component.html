@@ -1,0 +1,38 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="govuk-!-margin-bottom-6">
+  <!-- nodes without children -->
+  <mat-tree-node
+    class="tree-parent-node"
+    [ngClass]="{ 'is-active': node.isActive }"
+    *matTreeNodeDef="let node"
+    matTreeNodeToggle
+    matTreeNodePadding
+  >
+    <button
+      class="govuk-!-margin-left-6"
+      id="test-tree-button-parent-{{ node.id }}"
+      (click)="setActiveNode(node)"
+      mat-icon-button
+    >
+      {{ node.nodeName }}
+    </button>
+  </mat-tree-node>
+
+  <!-- nodes that have children -->
+  <mat-tree-node
+    class="tree-child-node"
+    [ngClass]="{ 'is-active': node.isActive }"
+    *matTreeNodeDef="let node; when: hasChildren"
+    matTreeNodePadding
+  >
+    <button
+      id="test-tree-button-child-{{ node.id }}"
+      (click)="setActiveNode(node)"
+      mat-icon-button
+      matTreeNodeToggle
+      [attr.aria-label]="'toggle ' + node.nodeName"
+    >
+      <i class="material-icons">{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</i>
+      {{ node.nodeName }}
+    </button>
+  </mat-tree-node>
+</mat-tree>

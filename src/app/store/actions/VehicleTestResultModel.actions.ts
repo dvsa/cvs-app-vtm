@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { TestResultModel } from '../../models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
+import { KeyValue } from '@angular/common';
 
 export enum EVehicleTestResultModelActions {
   GetVehicleTestResultModel = '[TestResultModel] Get TestResultModel',
@@ -12,6 +13,8 @@ export enum EVehicleTestResultModelActions {
   UpdateTestResultSuccess = '[UpdateTestResultSuccess]',
   SetSelectedTestResultModel = '[SetSelectedVehicleTestResultModel]',
   SetSelectedTestResultModelSuccess = '[SetSelectedVehicleTestResultModelSuccess]',
+  UpdateSelectedTestResultModel = '[UpdateSelectedTestResultModel]',
+  UpdateSelectedTestResultModelSuccess = '[UpdateSelectedTestResultModelSuccess]',
   DownloadCertificate = '[DownloadCertificate]'
 }
 
@@ -60,6 +63,16 @@ export class DownloadCertificate implements Action {
   constructor(public payload: string) {}
 }
 
+export class UpdateSelectedTestResultModel implements Action {
+  readonly type = EVehicleTestResultModelActions.UpdateSelectedTestResultModel;
+  constructor(public payload: KeyValue<string, string>) {}
+}
+
+export class UpdateSelectedTestResultModelSuccess implements Action {
+  readonly type = EVehicleTestResultModelActions.UpdateSelectedTestResultModelSuccess;
+  constructor(public payload: TestResultModel) {}
+}
+
 export type VehicleTestResultModelActions =
   | GetVehicleTestResultModel
   | GetVehicleTestResultModelSuccess
@@ -68,4 +81,7 @@ export type VehicleTestResultModelActions =
   | UpdateTestResult
   | UpdateTestResultSuccess
   | SetSelectedTestResultModel
-  | SetSelectedTestResultModelSuccess;
+  | SetSelectedTestResultModelSuccess
+  | UpdateSelectedTestResultModel
+  | UpdateSelectedTestResultModelSuccess
+  | DownloadCertificate;

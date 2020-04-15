@@ -5,6 +5,8 @@ import {
   GetVehicleTestResultModelFailure,
   GetVehicleTestResultModelSuccess,
   SetTestViewState,
+  UpdateSelectedTestResultModel,
+  UpdateSelectedTestResultModelSuccess,
   UpdateTestResult,
   UpdateTestResultSuccess,
   DownloadCertificate
@@ -21,8 +23,13 @@ import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update'
 import { VIEW_STATE } from '@app/app.enums';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
 import { UserService } from '@app/app-user.service';
-import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import {
+  getSelectedVehicleTestResultModel,
+  getVehicleTestResultModel
+} from '@app/store/selectors/VehicleTestResultModel.selectors';
 import * as FileSaver from 'file-saver';
+import { Router } from '@angular/router';
+import { getRouterParams } from '@app/store/selectors/route.selectors';
 
 @Injectable()
 export class VehicleTestResultModelEffects {
@@ -106,11 +113,49 @@ export class VehicleTestResultModelEffects {
     })
   );
 
+  @Effect()
+  updateSelectedTestResult$ = this._actions$.pipe(
+    ofType<UpdateSelectedTestResultModel>(
+      EVehicleTestResultModelActions.UpdateSelectedTestResultModel
+    ),
+    withLatestFrom(
+      this._store.select(getSelectedVehicleTestResultModel),
+      this._store.select(getRouterParams)
+    ),
+    map(([{ payload }, selectedTestResult, routeParams]) => {
+      return {
+        payload,
+        selectedTestResult,
+        routeParams
+      };
+    }),
+    switchMap((params) => {
+      let updatedTestRecord: TestResultModel;
+      const { payload, selectedTestResult, routeParams } = params;
+
+      updatedTestRecord = this.updateTestTypeInTestRecord(
+        selectedTestResult,
+        routeParams.params.id,
+        payload
+      );
+
+      this.router.navigate(['/test-record', routeParams.params.id], {
+        queryParams: {
+          testResultId: selectedTestResult.testResultId,
+          systemNumber: selectedTestResult.systemNumber
+        }
+      });
+
+      return [new UpdateSelectedTestResultModelSuccess(updatedTestRecord)];
+    })
+  );
+
   constructor(
     private _testResultService: TestResultService,
     private _store: Store<IAppState>,
     private _actions$: Actions,
-    private loggedUser: UserService
+    private loggedUser: UserService,
+    private router: Router
   ) {}
 
   updateTestResultsInState(
@@ -130,5 +175,20 @@ export class VehicleTestResultModelEffects {
           }
         })
       : [{} as TestResultModel];
+  }
+
+  updateTestTypeInTestRecord(
+    selectedTestResult: TestResultModel,
+    testNumber,
+    treeData
+  ): TestResultModel {
+    selectedTestResult.testTypes.forEach((tType, index) => {
+      if (tType.testNumber === testNumber) {
+        const testType = selectedTestResult.testTypes[index];
+        testType.testTypeId = !!treeData ? treeData.key : testType.testTypeId;
+        testType.testTypeName = !!treeData ? treeData.value : testType.testTypeName;
+      }
+    });
+    return selectedTestResult;
   }
 }

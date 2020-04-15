@@ -44,5 +44,6 @@ export interface TestResultModel {
   lastUpdatedByName: string;
   lastUpdatedAt: string;
   testHistory: TestResultModel[];
+  vehicleSubclass: string[];
 }
 

@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReferenceDataReducers [LoadPreparersSuccess] should update the ReferenceDataReducers reducer state with the correct payload once LoadPreparersSuccess is dispatched 1`] = `
+Object {
+  "preparers": Array [
+    Object {
+      "preparerId": "1",
+      "preparerName": "test",
+    },
+  ],
+  "testStations": null,
+  "testTypeCategories": null,
+}
+`;
+
+exports[`ReferenceDataReducers [LoadTestStationsSuccess] should update the ReferenceDataReducers reducer state with the correct payload once LoadTestStationsSuccess is dispatched 1`] = `
+Object {
+  "preparers": null,
+  "testStations": Array [
+    Object {
+      "testStationName": "test",
+      "testStationPNumber": "2",
+    },
+  ],
+  "testTypeCategories": null,
+}
+`;
+
+exports[`ReferenceDataReducers [LoadTestTypeCategoriesSuccess] should update the ReferenceDataReducers reducer state with the correct payload once LoadTestTypeCategoriesSuccess is dispatched 1`] = `
+Object {
+  "preparers": null,
+  "testStations": null,
+  "testTypeCategories": Array [
+    Object {
+      "forEuVehicleCategory": null,
+      "forVehicleAxles": null,
+      "forVehicleClass": null,
+      "forVehicleConfiguration": Array [
+        "articulated",
+        "rigid",
+      ],
+      "forVehicleSize": Array [
+        "small",
+        "large",
+      ],
+      "forVehicleSubclass": null,
+      "forVehicleType": Array [
+        "psv",
+      ],
+      "forVehicleWheels": null,
+      "id": "1",
+      "linkedIds": Array [
+        "38",
+        "39",
+      ],
+      "name": "Annual test",
+      "testTypeClassification": "Annual With Certificate",
+      "testTypeName": "Annual test",
+    },
+  ],
+}
+`;
+
+exports[`ReferenceDataReducers should return default for different action return current state value 1`] = `
+Object {
+  "preparers": null,
+  "testStations": null,
+  "testTypeCategories": null,
+}
+`;

@@ -1,9 +1,11 @@
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestType } from '@app/models/test.type';
+import { TestTypeCategory } from '@app/models/test-type-category';
 
 export const TEST_MODEL_UTILS = {
   mockTestRecord,
-  mockTestType
+  mockTestType,
+  mockTestTypeCategory
 };
 
 function mockTestRecord(args?: Partial<TestResultModel>): TestResultModel {
@@ -33,6 +35,26 @@ function mockTestType(args?: Partial<TestType>): TestType {
       description: 'test'
     }
   } as TestType;
+
+  return { ...mock, ...args };
+}
+
+function mockTestTypeCategory(args?: Partial<TestTypeCategory>): TestTypeCategory {
+  const mock: TestTypeCategory = {
+    id: '1',
+    name: 'Annual test',
+    linkedIds: ['38', '39'],
+    testTypeName: 'Annual test',
+    forVehicleType: ['psv'],
+    forVehicleSize: ['small', 'large'],
+    forVehicleConfiguration: ['articulated', 'rigid'],
+    forVehicleAxles: null,
+    forEuVehicleCategory: null,
+    forVehicleClass: null,
+    forVehicleSubclass: null,
+    forVehicleWheels: null,
+    testTypeClassification: 'Annual With Certificate'
+  } as TestTypeCategory;
 
   return { ...mock, ...args };
 }
