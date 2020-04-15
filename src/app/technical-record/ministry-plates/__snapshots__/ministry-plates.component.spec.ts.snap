@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinistryPlatesComponent should create 1`] = `
+<vtm-ministry-plates
+  applicantDetails={[Function Object]}
+  loggedUser={[Function Object]}
+  plateHandler={[Function EventEmitter]}
+  plateIssueOptions={[Function Object]}
+  platesForm={[Function FormGroup]}
+>
+  <h2
+    class="govuk-heading-l"
+  >
+    Select reason for sending ministry plate
+  </h2><form
+    class="ng-untouched ng-pristine ng-valid"
+    ng-reflect-form="[object Object]"
+    novalidate=""
+  >
+    <div
+      class="govuk-form-group"
+    >
+      <fieldset
+        class="govuk-fieldset"
+      >
+        <div
+          class="govuk-radios"
+        >
+          
+          <div
+            class="govuk-radios__item"
+          >
+            <input
+              class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+              formcontrolname="plateReasonForIssue"
+              id="test-issue-0"
+              ng-reflect-form-control-name="plateReasonForIssue"
+              ng-reflect-name="plateReasonForIssue"
+              ng-reflect-value="Original"
+              type="radio"
+            />
+            <label
+              class="govuk-label govuk-radios__label"
+              for="test-issue-0"
+            >
+               Issue original certificate 
+            </label>
+          </div>
+          <div
+            class="govuk-radios__item"
+          >
+            <input
+              class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+              formcontrolname="plateReasonForIssue"
+              id="test-issue-1"
+              ng-reflect-form-control-name="plateReasonForIssue"
+              ng-reflect-name="plateReasonForIssue"
+              ng-reflect-value="Replacement"
+              type="radio"
+            />
+            <label
+              class="govuk-label govuk-radios__label"
+              for="test-issue-1"
+            >
+               Issue replacement 
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </form><div
+    class="govuk-inset-text"
+  >
+     A digital copy of the ministry plate will be email to the applicant on the tech record (test@test.te)
+  
+  </div>
+</vtm-ministry-plates>
+`;

@@ -8,7 +8,8 @@ import { hot } from 'jasmine-marbles';
 import { DocumentInfo, DocumentMetaData } from '@app/models/document-meta-data';
 import {
   VehicleTechRecordModel,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  UpdateRecordInfo
 } from '@app/models/vehicle-tech-record.model';
 
 const appConfigMock = {
@@ -89,17 +90,44 @@ describe('TechnicalRecordService', () => {
     request.flush(mock);
   });
 
-  it('updateTechnicalRecords should update technical record', (done) => {
-    const mock = { techRecord: [] } as VehicleTechRecordModel;
-    const recordUpdate = { techRecord: [] } as VehicleTechRecordEdit;
-    service.updateTechnicalRecords(recordUpdate, '1234567').subscribe((res) => {
-      expect(res).toBeDefined();
-      expect(res).toEqual(mock);
-      done();
+  describe('updateVehicleRecord', () => {
+    let mock: VehicleTechRecordModel;
+    let recordUpdateInfo: UpdateRecordInfo;
+    beforeEach(() => {
+      mock = { techRecord: [] } as VehicleTechRecordModel;
+      recordUpdateInfo = {
+        vehicleRecord: {} as VehicleTechRecordEdit,
+        systemNumber: '1234567'
+      } as UpdateRecordInfo;
     });
 
-    const request = httpMock.expectOne((req) => req.url.includes(`/vehicles/1234567`));
-    request.flush(mock);
+    it('should update the vehicle record', (done) => {
+      service.updateVehicleRecord(recordUpdateInfo).subscribe((res) => {
+        expect(res).toBeDefined();
+        expect(res).toEqual(mock);
+        done();
+      });
+
+      const request = httpMock.expectOne((req) => req.url.includes(`/vehicles/1234567`));
+      request.flush(mock);
+    });
+
+    it('should update the vehicle record with changed status', (done) => {
+      const updatedInfo: UpdateRecordInfo = {
+        ...recordUpdateInfo,
+        oldStatusCode: 'current'
+      };
+      service.updateVehicleRecord(updatedInfo).subscribe((res) => {
+        expect(res).toBeDefined();
+        expect(res).toEqual(mock);
+        done();
+      });
+
+      const request = httpMock.expectOne((req) =>
+        req.url.includes(`/vehicles/1234567?oldStatusCode=current`)
+      );
+      request.flush(mock);
+    });
   });
 
   describe('uploadDocument', () => {

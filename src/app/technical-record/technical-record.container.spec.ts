@@ -18,7 +18,7 @@ import {
   VehicleTechRecordEditState
 } from '@app/models/vehicle-tech-record.model';
 import { MetaData } from '@app/models/meta-data';
-import { VIEW_STATE } from '@app/app.enums';
+import { VIEW_STATE, RECORD_STATUS } from '@app/app.enums';
 import { TechnicalRecordsContainer } from './technical-record.container';
 import { TestResultModel } from '@app/models/test-result.model';
 import { TESTING_UTILS, MockStore } from '@app/utils/';
@@ -51,7 +51,13 @@ describe('TechnicalRecordsContainer', () => {
       getSelectedVehicleTechRecord: {
         techRecord: [TESTING_UTILS.mockTechRecord()]
       } as VehicleTechRecordModel,
-      getActiveVehicleTechRecord: null,
+      getActiveVehicleTechRecord: () => {
+        return {
+          vin: 'ABENE777',
+          primaryVrm: 'LMEFE',
+          techRecord: [{ statusCode: RECORD_STATUS.PROVISIONAL }]
+        } as VehicleTechRecordEdit;
+      },
       getVehicleTestResultModel: [] as TestResultModel[],
       getVehicleTechRecordMetaData: TESTING_UTILS.mockMetaData(),
       getTechViewState: VIEW_STATE.VIEW_ONLY

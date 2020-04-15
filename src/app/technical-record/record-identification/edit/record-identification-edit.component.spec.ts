@@ -2,9 +2,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule, FormGroupDirective } from '@angular/forms';
 
-import { SharedModule } from '@app/shared';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { RecordIdentificationEditComponent } from './record-identification-edit.component';
+import { VIEW_STATE } from '@app/app.enums';
 
 describe('RecordIdentificationEditComponent', () => {
   let component: RecordIdentificationEditComponent;
@@ -12,7 +12,7 @@ describe('RecordIdentificationEditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, SharedModule],
+      imports: [FormsModule, ReactiveFormsModule],
       declarations: [RecordIdentificationEditComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -36,5 +36,19 @@ describe('RecordIdentificationEditComponent', () => {
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
+  });
+
+  it('should allow vin editing in CREATE VIEW', () => {
+    component.viewState = VIEW_STATE.CREATE;
+    fixture.detectChanges();
+
+    expect(component.disableVinEditing).toBeFalsy();
+  });
+
+  it('should disable vin editing in EDIT VIEW', () => {
+    component.viewState = VIEW_STATE.EDIT;
+    fixture.detectChanges();
+
+    expect(component.disableVinEditing).toBeTruthy();
   });
 });

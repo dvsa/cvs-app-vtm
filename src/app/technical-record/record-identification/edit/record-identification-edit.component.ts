@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormBuilder, FormGroup } from '@angular/forms';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-record-identification-edit',
@@ -13,15 +14,21 @@ import { ControlContainer, FormGroupDirective, FormBuilder, FormGroup } from '@a
   ]
 })
 export class RecordIdentificationEditComponent implements OnInit {
-  vehicleRecordFg: FormGroup;
-
   @Input() vin: string;
   @Input() primaryVrm: string;
+  @Input() viewState: VIEW_STATE;
+
+  vehicleRecordFg: FormGroup;
+  disableVinEditing: boolean;
 
   constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}
 
   ngOnInit() {
+    this.disableVinEditing = this.viewState === VIEW_STATE.EDIT;
+
     this.vehicleRecordFg = this.parent.form;
+    this.vehicleRecordFg.removeControl('vin');
+    this.vehicleRecordFg.removeControl('primaryVrm');
 
     this.vehicleRecordFg.addControl('vin', this.fb.control(decodeURIComponent(this.vin)));
     this.vehicleRecordFg.addControl(

@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecordStatusEditComponent should create with initialized form controls 1`] = `
+<vtm-record-status-edit
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  recordCompleteness={[Function String]}
+  recordOptions={[Function Object]}
+  techRecHelper={[Function TechRecordHelperService]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <div
+              class="govuk-radios govuk-!-margin-bottom-0"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-statusCode"
+              >
+                 Status 
+              </label>
+              
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="statusCode"
+                  id="test-edit-statusCode-Current"
+                  name="statusCode"
+                  ng-reflect-form-control-name="statusCode"
+                  ng-reflect-name="statusCode"
+                  ng-reflect-value="current"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-statusCode-Current"
+                >
+                   Current 
+                </label>
+              </div>
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="statusCode"
+                  id="test-edit-statusCode-Provisional"
+                  name="statusCode"
+                  ng-reflect-form-control-name="statusCode"
+                  ng-reflect-name="statusCode"
+                  ng-reflect-value="provisional"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-statusCode-Provisional"
+                >
+                   Provisional 
+                </label>
+              </div>
+            </div>
+            <p
+              class="govuk-body govuk-!-margin-top-4"
+            >
+              <span
+                class="govuk-!-font-weight-bold govuk-!-padding-right-2"
+              >
+                 Record completeness 
+              </span>
+              <span
+                class="govuk-!-font-weight-regular"
+                id="test-edit-record-completeness"
+              >
+                 Testable - some important information is missing 
+              </span>
+            </p>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-record-status-edit>
+`;

@@ -397,3 +397,407 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
   </div>
 </vtm-tank-details-edit>
 `;
+
+exports[`TankDetailsEditComponent should create with multiple UN number controls 1`] = `
+<vtm-tank-details-edit
+  adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
+  classNumberSubstance={[Function String]}
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  permittedSubstance={[Function String]}
+  showTankDetails={[Function Boolean]}
+  substanceProductSelect={[Function String]}
+  substanceStatementSelect={[Function String]}
+  tank={[Function Object]}
+  tankValidationState$={[Function Observable]}
+  validationMapper={[Function ValidationMapper]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Tank details
+            </h2>
+            
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="tankManufacturer"
+              >
+                 Make 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="tankManufacturer"
+                id="tankManufacturer"
+                name="tankManufacturer"
+                ng-reflect-name="tankManufacturer"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="vehicleType"
+              >
+                 Year of manufacture 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                formcontrolname="yearOfManufacture"
+                id="yearOfManufacture"
+                name="yearOfManufacture"
+                ng-reflect-name="yearOfManufacture"
+                ng-reflect-pattern="[0-9]*"
+                pattern="[0-9]*"
+                type="number"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="tankManufacturerSerialNo"
+              >
+                 Manufacturer serial number 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                formcontrolname="tankManufacturerSerialNo"
+                id="tankManufacturerSerialNo"
+                name="tankManufacturerSerialNo"
+                ng-reflect-name="tankManufacturerSerialNo"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="tankTypeAppNo"
+              >
+                 Tank type approval number 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                formcontrolname="tankTypeAppNo"
+                id="tankTypeAppNo"
+                name="tankTypeAppNo"
+                ng-reflect-name="tankTypeAppNo"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="tankCode"
+              >
+                 Code 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                formcontrolname="tankCode"
+                id="tankCode"
+                name="tankCode"
+                ng-reflect-name="tankCode"
+                type="text"
+              />
+            </div>
+            
+            <label
+              class="govuk-label govuk-!-font-weight-bold"
+            >
+              Substances permitted
+            </label>
+            <div
+              class="govuk-radios govuk-radios--conditional"
+            >
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="substancesPermitted"
+                  id="substancesPermitted_permitted"
+                  name="substancesPermitted"
+                  ng-reflect-form-control-name="substancesPermitted"
+                  ng-reflect-name="substancesPermitted"
+                  ng-reflect-value="permitted"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="substancesPermitted_permitted"
+                >
+                   Substances permitted under the tank code and any special provisions specified in 9 may be carried 
+                </label>
+              </div>
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="substancesPermitted"
+                  id="substancesPermitted_classNumber"
+                  name="substancesPermitted"
+                  ng-reflect-form-control-name="substancesPermitted"
+                  ng-reflect-name="substancesPermitted"
+                  ng-reflect-value="classnumber"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="substancesPermitted_classNumber"
+                >
+                   Substances (class UN number and if necessary packing group and proper shipping name) may be carried 
+                </label>
+              </div>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
+                id="conditional-substancesPermitted_classNumber"
+              >
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="substancesPermitted_CLASSNUMBER"
+                  >
+                     Select: 
+                  </label>
+                  <div
+                    class="govuk-radios"
+                  >
+                    <div
+                      class="govuk-radios__item"
+                    >
+                      <input
+                        class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                        formcontrolname="substanceReferenceSelect"
+                        id="select_statement_Y"
+                        ng-reflect-form-control-name="substanceReferenceSelect"
+                        ng-reflect-name="substanceReferenceSelect"
+                        ng-reflect-value="statement"
+                        type="radio"
+                      />
+                      <label
+                        class="govuk-label govuk-radios__label"
+                      >
+                         Statement (optional) 
+                      </label>
+                    </div>
+                    <div
+                      class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
+                      id="conditional-selectStatement"
+                    >
+                      <div
+                        class="govuk-form-group govuk-!-margin-left-3"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="statementRefNumber"
+                        >
+                           Reference number (optional) 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="statement"
+                          id="statementRefNumber"
+                          name="statementRefNumber"
+                          ng-reflect-name="statement"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-radios__item"
+                    >
+                      <input
+                        class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                        formcontrolname="substanceReferenceSelect"
+                        id="select_productlist_N"
+                        ng-reflect-form-control-name="substanceReferenceSelect"
+                        ng-reflect-name="substanceReferenceSelect"
+                        ng-reflect-value="productList"
+                        type="radio"
+                      />
+                      <label
+                        class="govuk-label govuk-radios__label"
+                      >
+                         Product list (optional) 
+                      </label>
+                    </div>
+                    <div
+                      class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
+                      id="conditional-select_productlist_N"
+                    >
+                      <div
+                        class="govuk-form-group govuk-!-margin-left-3"
+                      >
+                        <div
+                          class="govuk-form-group"
+                        >
+                          <label
+                            class="govuk-label govuk-!-font-weight-bold"
+                            for="productListRefNumber"
+                          >
+                             Reference number (optional) 
+                          </label>
+                          <input
+                            class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                            formcontrolname="productListRefNo"
+                            id="productListRefNumber"
+                            name="productListRefNumber"
+                            ng-reflect-name="productListRefNo"
+                            type="text"
+                          />
+                        </div>
+                        <div
+                          class="govuk-form-group ng-untouched ng-pristine ng-valid"
+                          formarrayname="productListUnNo"
+                          ng-reflect-name="productListUnNo"
+                        >
+                          
+                          
+                          <div
+                            class="govuk-form-group"
+                          >
+                            
+                            <label
+                              class="govuk-label govuk-!-font-weight-bold"
+                              for="productListUnNumber_0"
+                            >
+                               UN number (optional) 
+                            </label>
+                            <input
+                              class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                              id="productListUnNumber_0"
+                              name="productListUnNumber_0"
+                              ng-reflect-form="[object Object]"
+                              type="text"
+                            />
+                            
+                          </div>
+                          
+                          <div
+                            class="govuk-form-group"
+                          >
+                            
+                            <input
+                              class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                              id="productListUnNumber_1"
+                              name="productListUnNumber_1"
+                              ng-reflect-form="[object Object]"
+                              type="text"
+                            />
+                            
+                            <span
+                              class="govuk-!-font-weight-bold govuk-!-margin-left-2"
+                              id="test-edit-removeUNNumber_1"
+                            >
+                              <a
+                                class="govuk-link govuk-link--no-visited-state"
+                                href="javascript:void(0)"
+                              >
+                                <span>
+                                  Remove
+                                </span>
+                              </a>
+                            </span>
+                          </div>
+                        </div>
+                        <div
+                          class="govuk-label govuk-!-margin-top-0 govuk-!-margin-bottom-5"
+                        >
+                          <a
+                            class="govuk-link govuk-link--no-visited-state"
+                            href="javascript:void(0)"
+                          >
+                             Add a UN number 
+                          </a>
+                        </div>
+                        <div
+                          class="govuk-form-group"
+                        >
+                          <label
+                            class="govuk-label govuk-!-font-weight-bold"
+                            for="productList"
+                          >
+                             Additional details (optional) 
+                          </label>
+                          <textarea
+                            aria-describedby="productList"
+                            class="govuk-textarea ng-untouched ng-pristine ng-valid"
+                            formcontrolname="productList"
+                            id="productList"
+                            name="productList"
+                            ng-reflect-name="productList"
+                            rows="8"
+                          >
+                                                    
+                          </textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="specialProvisions"
+              >
+                 Special provisions (optional) 
+              </label>
+              <textarea
+                aria-describedby="specialProvisions"
+                class="govuk-textarea govuk-!-margin-bottom-0 ng-untouched ng-pristine ng-valid"
+                formcontrolname="specialProvisions"
+                id="specialProvisions"
+                name="specialProvisions"
+                ng-reflect-name="specialProvisions"
+                rows="8"
+              >
+                              
+              </textarea>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-tank-details-edit>
+`;

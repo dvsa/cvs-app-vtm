@@ -1,0 +1,43 @@
+<ng-container *ngIf="!editState">
+  <div class="govuk-inset-text govuk-!-margin-top-2">
+    <div class="govuk-!-padding-top-1">
+      <p>
+        <span class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2">
+          Status
+        </span>
+
+        <span id="test-status" class="govuk-!-font-weight-regular govuk-!-font-size-19">
+          {{ activeRecord.statusCode | titlecase }}
+        </span>
+      </p>
+
+      <p>
+        <a
+          href="javascript:void(0)"
+          id="test-scroll-to-section"
+          class="govuk-link"
+          (click)="emitPanelTitle()"
+          >{{ titleOfTechHistory }}</a
+        >
+      </p>
+
+      <p>
+        <span class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2">
+          Record completeness
+        </span>
+
+        <span
+          id="test-record-completeness"
+          class="govuk-!-font-weight-regular govuk-!-font-size-19"
+        >
+          {{ recordCompleteness }}
+        </span>
+      </p>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Edit Record Status -->
+<ng-container *ngIf="editState">
+  <vtm-record-status-edit [techRecord]="activeRecord"></vtm-record-status-edit>
+</ng-container>

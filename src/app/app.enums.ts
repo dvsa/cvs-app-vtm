@@ -13,6 +13,9 @@ export enum RECORD_STATUS {
   ARCHIVED = 'archived'
 }
 
+export const RECORD_COMPLETENESS_complete = 'complete';
+export const RECORD_COMPLETENESS_skeleton = 'skeleton';
+export const RECORD_COMPLETENESS_testable = 'testable';
 export enum RECORD_COMPLETENESS {
   complete = 'Complete',
   skeleton = 'Skeleton - not enough information to perform a vehicle test',
@@ -113,10 +116,30 @@ export enum COUNTRY_OF_REGISTRATION {
 }
 
 export enum APP_MODALS {
-
   LOSE_CHANGES = 'lose-changes',
   REASON_FOR_CHANGE = 'reason-for-change',
   REASON_FOR_DELETED = 'reason-for-delete',
   LOGOUT = 'logout',
   NONE = 'none'
+}
+
+export enum PANEL_TITLE {
+  VEHICLE_SUMMARY = 'Vehicle summary',
+  BODY = 'Body',
+  WEIGHTS = 'Weights',
+  TYRES = 'Tyres',
+  BRAKES = 'Brakes',
+  DDA = 'DDA',
+  DIMENSIONS = 'Dimensions',
+  ADR = 'ADR',
+  APPLICANT = 'Applicant',
+  DOCUMENTS = 'Documents',
+  PURCHASER = 'Purchaser',
+  MANUFACTURER = 'Manufacturer',
+  AUTH_INTO_SERVICE = 'Authorization into service',
+  LETTERS_OF_AUTH = 'Letters of authorization',
+  NOTES = 'Notes',
+  TEST_HISTORY = 'Test',
+  TECHNICAL_RECORD_HISTORY = 'Technical record history',
+  PLATES = 'Plates'
 }

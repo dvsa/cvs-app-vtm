@@ -57,13 +57,14 @@ describe('TankDetailsEditComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 
-  it('should create with mulitiple UN number controls', () => {
+  it('should create with multiple UN number controls', () => {
     component.tank = TESTING_UTILS.mockTank({
       tankStatement: { productListUnNo: ['listUN1', 'listUN2'] } as TankStatement
     });
     fixture.detectChanges();
 
     expect(component.productListUnNo.controls.length).toBe(2);
+    expect(fixture).toMatchSnapshot();
   });
 
   it('should call vehicleTypeSelected on validationMapper if vehicle type exist', () => {

@@ -12,7 +12,8 @@ import { SetErrorMessage, ClearErrorMessage } from './../store/actions/Error.act
 import { DocumentInfo, DocumentMetaData } from '@app/models/document-meta-data';
 import {
   VehicleTechRecordModel,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  UpdateRecordInfo
 } from '@app/models/vehicle-tech-record.model';
 
 @Injectable({ providedIn: 'root' })
@@ -30,8 +31,8 @@ export class TechnicalRecordService {
         const queryStr = `${searchIdentifier}/tech-records?status=all&metadata=true&searchCriteria=${searchCriteria}`;
         return `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${queryStr}`;
       },
-      createTechRecord: () => `${this._apiServer.APITechnicalRecordServerUri}/vehicles`,
-      updateTechRecords: (vin: string) =>
+      createTechRecord: (): string => `${this._apiServer.APITechnicalRecordServerUri}/vehicles`,
+      updateVehicleRecord: (vin: string): string =>
         `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${vin}`
     };
   }
@@ -72,18 +73,18 @@ export class TechnicalRecordService {
       );
   }
 
-  updateTechnicalRecords(
-    techRecordDto: VehicleTechRecordEdit,
-    systemNumber: string
-  ): Observable<VehicleTechRecordModel> {
+  updateVehicleRecord(params: UpdateRecordInfo): Observable<VehicleTechRecordModel> {
+    const { vehicleRecord, systemNumber, oldStatusCode } = params;
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
 
     this._store.dispatch(new LoadingTrue());
 
+    const route = oldStatusCode
+      ? `${this.routes.updateVehicleRecord(systemNumber)}?oldStatusCode=${oldStatusCode}`
+      : `${this.routes.updateVehicleRecord(systemNumber)}`;
+
     return this.httpClient
-      .put<VehicleTechRecordModel>(this.routes.updateTechRecords(systemNumber), techRecordDto, {
-        headers
-      })
+      .put<VehicleTechRecordModel>(route, vehicleRecord, { headers })
       .pipe(
         delayedRetry(),
         shareReplay(),

@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleSummaryEditHgvComponent should create with empty control states 1`] = `
+<vtm-vehicle-summary-edit-trl
+  fb={[Function FormBuilder]}
+  frameDescriptionOptions={[Function Array]}
+  parent={[Function FormGroupDirective]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-form-group"
+  >
+    <form
+      class="ng-untouched ng-pristine ng-valid"
+      ng-reflect-form="[object Object]"
+      novalidate=""
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <div
+          aria-describedby="firstUse-date"
+          role="group"
+        >
+          <label
+            class="govuk-label govuk-!-font-weight-bold"
+            for="test-edit-firstUseDate"
+          >
+             First use date (optional) 
+          </label>
+          <vtm-date-input
+            ariadescribedby="firstUseDate"
+            class="ng-untouched ng-pristine ng-valid"
+            formcontrolname="firstUseDate"
+            ng-reflect-id="test-edit-firstUseDate"
+            ng-reflect-name="firstUseDate"
+          >
+            
+            <div
+              class="govuk-date-input"
+            >
+              <div
+                class="govuk-date-input__item"
+              >
+                <div
+                  class="govuk-form-group"
+                >
+                  <label
+                    class="govuk-label govuk-date-input__label"
+                    for="test-edit-firstUseDate-1-day"
+                  >
+                     Day 
+                  </label>
+                  <input
+                    autocomplete="off"
+                    class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                    formcontrolname="day"
+                    id="test-edit-firstUseDate-1-day"
+                    maxlength="2"
+                    name="dateDay"
+                    ng-reflect-maxlength="2"
+                    ng-reflect-name="day"
+                    ng-reflect-pattern="[0-9]*"
+                    pattern="[0-9]*"
+                    type="number"
+                  />
+                </div>
+              </div>
+              <div
+                class="govuk-date-input__item"
+              >
+                <div
+                  class="govuk-form-group"
+                >
+                  <label
+                    class="govuk-label govuk-date-input__label"
+                    for="test-edit-firstUseDate-1-month"
+                  >
+                     Month 
+                  </label>
+                  <input
+                    autocomplete="off"
+                    class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                    formcontrolname="month"
+                    id="test-edit-firstUseDate-1-month"
+                    maxlength="2"
+                    name="dateMonth"
+                    ng-reflect-maxlength="2"
+                    ng-reflect-name="month"
+                    ng-reflect-pattern="[0-9]*"
+                    pattern="[0-9]*"
+                    type="number"
+                  />
+                </div>
+              </div>
+              <div
+                class="govuk-date-input__item"
+              >
+                <div
+                  class="govuk-form-group"
+                >
+                  <label
+                    class="govuk-label govuk-date-input__label"
+                    for="test-edit-firstUseDate-1-year"
+                  >
+                     Year 
+                  </label>
+                  <input
+                    autocomplete="off"
+                    class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                    formcontrolname="year"
+                    id="test-edit-firstUseDate-1-year"
+                    maxlength="4"
+                    minlength="4"
+                    name="dateYear"
+                    ng-reflect-maxlength="4"
+                    ng-reflect-minlength="4"
+                    ng-reflect-name="year"
+                    ng-reflect-pattern="[0-9]*"
+                    pattern="[0-9]*"
+                    type="number"
+                  />
+                </div>
+              </div>
+            </div>
+          </vtm-date-input>
+        </div>
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-suspensionType"
+        >
+           Suspension type (optional) 
+        </label>
+        <input
+          class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+          formcontrolname="suspensionType"
+          id="test-edit-suspensionType"
+          name="suspensionType"
+          ng-reflect-name="suspensionType"
+          type="text"
+          vtmnullvalue=""
+        />
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-couplingType"
+        >
+           Coupling type (optional) 
+        </label>
+        <input
+          class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+          formcontrolname="couplingType"
+          id="test-edit-couplingType"
+          name="couplingType"
+          ng-reflect-name="couplingType"
+          type="text"
+          vtmnullvalue=""
+        />
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-maxLoadOnCoupling"
+        >
+           Max load on coupling (optional) 
+        </label>
+        <input
+          class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+          formcontrolname="maxLoadOnCoupling"
+          id="test-edit-maxLoadOnCoupling"
+          maxlength="5"
+          name="maxLoadOnCoupling"
+          ng-reflect-maxlength="5"
+          ng-reflect-name="maxLoadOnCoupling"
+          type="number"
+          vtmnullvalue=""
+        />
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-frameDescription"
+        >
+           Frame description (optional) 
+        </label>
+        <select
+          class="govuk-select ng-untouched ng-pristine ng-valid"
+          formcontrolname="frameDescription"
+          id="test-edit-frameDescription"
+          ng-reflect-name="frameDescription"
+          vtmnullvalue=""
+        >
+          <option />
+          
+          <option
+            ng-reflect-ng-value="Channel section"
+            value="1: Channel section"
+          >
+             Channel section 
+          </option>
+          <option
+            ng-reflect-ng-value="Space frame"
+            value="2: Space frame"
+          >
+             Space frame 
+          </option>
+          <option
+            ng-reflect-ng-value="I section"
+            value="3: I section"
+          >
+             I section 
+          </option>
+          <option
+            ng-reflect-ng-value="Tubular"
+            value="4: Tubular"
+          >
+             Tubular 
+          </option>
+          <option
+            ng-reflect-ng-value="Frame section"
+            value="5: Frame section"
+          >
+             Frame section 
+          </option>
+          <option
+            ng-reflect-ng-value="Other"
+            value="6: Other"
+          >
+             Other 
+          </option>
+          <option
+            ng-reflect-ng-value="integral"
+            value="7: integral"
+          >
+             integral 
+          </option>
+          <option
+            ng-reflect-ng-value="Box section"
+            value="8: Box section"
+          >
+             Box section 
+          </option>
+          <option
+            ng-reflect-ng-value="U section"
+            value="9: U section"
+          >
+             U section 
+          </option>
+        </select>
+      </div>
+    </form>
+  </div>
+</vtm-vehicle-summary-edit-trl>
+`;

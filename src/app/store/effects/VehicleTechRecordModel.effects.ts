@@ -25,14 +25,16 @@ import {
   CREATE_PAGE_LABELS,
   VEHICLE_TECH_RECORD_SEARCH_ERRORS,
   VIEW_STATE,
-  RECORD_STATUS,
-  VEHICLE_TYPES
+  RECORD_STATUS
 } from '@app/app.enums';
-import { getSelectedVehicleTechRecord } from '../selectors/VehicleTechRecordModel.selectors';
+import {
+  getSelectedVehicleTechRecord,
+  getActiveVehicleTechRecord
+} from '../selectors/VehicleTechRecordModel.selectors';
 import {
   VehicleTechRecordModel,
   VehicleIdentifiers,
-  VehicleTechRecordEdit
+  UpdateRecordInfo
 } from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { SearchParams } from '@app/models/search-params';
@@ -176,36 +178,47 @@ export class VehicleTechRecordModelEffects {
   );
 
   @Effect()
-  updateTechnicalRecords$ = this.actions$.pipe(
+  updateVehicleRecord$ = this.actions$.pipe(
     ofType<UpdateVehicleTechRecord>(EVehicleTechRecordActions.UpdateVehicleTechRecord),
-    withLatestFrom(this.store.select(getSelectedVehicleTechRecord)),
-    switchMap(
-      ([{ vehicleRecordEdit }, vehicleTechRecord]: [
-        { vehicleRecordEdit: VehicleTechRecordEdit },
-        VehicleTechRecordModel
-      ]) => {
-        // TODO: data should be coming from Store. Retrieve via the selector
-        vehicleRecordEdit.msUserDetails = { ...this.loggedUser.getUser() };
+    withLatestFrom(
+      this.store.select(getActiveVehicleTechRecord).pipe(map((f) => f())),
+      this.store.select(getSelectedVehicleTechRecord)
+    ),
+    switchMap(([{ vehicleRecordEdit }, activeVehicleRecord, selectedVehicleRecord]) => {
+      // TODO: data should be coming from Store. Retrieve via the selector
+      vehicleRecordEdit.msUserDetails = { ...this.loggedUser.getUser() };
 
-        return this.technicalRecordService
-          .updateTechnicalRecords(vehicleRecordEdit, vehicleTechRecord.systemNumber)
-          .pipe(
-            switchMap((updatedVehicleTechRecord: VehicleTechRecordModel) => {
-              updatedVehicleTechRecord.metadata = vehicleTechRecord.metadata;
-              return [
-                new UpdateVehicleTechRecordSuccess(updatedVehicleTechRecord),
-                new SetSelectedVehicleTechRecordSuccess(updatedVehicleTechRecord),
-                new SetViewState(VIEW_STATE.VIEW_ONLY)
-              ];
-            }),
-            catchError(({ error }) => {
-              const errorMessages = error.errors;
-              return [new SetErrorMessage(errorMessages)];
-            })
-          );
-      }
-    )
+      const updateParams: UpdateRecordInfo = {
+        vehicleRecord: vehicleRecordEdit,
+        systemNumber: selectedVehicleRecord.systemNumber,
+        oldStatusCode: this.getUpdatedStatus(
+          vehicleRecordEdit.techRecord[0],
+          activeVehicleRecord.techRecord[0]
+        )
+      };
+
+      return this.technicalRecordService.updateVehicleRecord(updateParams).pipe(
+        switchMap((updatedVehicleRecord: VehicleTechRecordModel) => {
+          updatedVehicleRecord.metadata = selectedVehicleRecord.metadata;
+          return [
+            new UpdateVehicleTechRecordSuccess(updatedVehicleRecord),
+            new SetSelectedVehicleTechRecordSuccess(updatedVehicleRecord),
+            new SetViewState(VIEW_STATE.VIEW_ONLY)
+          ];
+        }),
+        catchError(({ error }) => {
+          const errorMessages = error.errors;
+          return [new SetErrorMessage(errorMessages)];
+        })
+      );
+    })
   );
+
+  private getUpdatedStatus(editedTechRecord: TechRecord, currentTechRecord: TechRecord): string {
+    return editedTechRecord.statusCode !== currentTechRecord.statusCode
+      ? currentTechRecord.statusCode
+      : '';
+  }
 
   private getVehicleTechRecordOnCreate(identifier: VehicleIdentifiers): VehicleTechRecordModel {
     const { vin, vrm, vType } = identifier;
@@ -215,7 +228,7 @@ export class VehicleTechRecordModelEffects {
       techRecord: [
         {
           statusCode: RECORD_STATUS.PROVISIONAL,
-          vehicleType: VEHICLE_TYPES[vType]
+          vehicleType: vType
         }
       ] as TechRecord[]
     } as VehicleTechRecordModel;

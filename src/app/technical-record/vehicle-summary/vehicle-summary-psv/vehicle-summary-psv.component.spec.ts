@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VehicleSummaryPsvComponent } from './vehicle-summary-psv.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 
 describe('PsvVehicleSummaryComponent', () => {
@@ -12,8 +11,7 @@ describe('PsvVehicleSummaryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [VehicleSummaryPsvComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      declarations: [VehicleSummaryPsvComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(VehicleSummaryPsvComponent);

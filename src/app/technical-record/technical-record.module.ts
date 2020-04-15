@@ -21,6 +21,8 @@ import {
 import { SharedModule } from '../shared/shared.module';
 import { TechnicalRecordsContainer } from './technical-record.container';
 import { TechnicalRecordComponent } from '@app/technical-record/technical-record.component';
+import { RecordStatusComponent } from './record-status/record-status.component';
+import { RecordStatusEditComponent } from './record-status/edit/record-status-edit.component';
 import { RecordIdentificationComponent } from './record-identification/record-identification.component';
 import { RecordIdentificationEditComponent } from './record-identification/edit/record-identification-edit.component';
 import { VehicleSummaryComponent } from './vehicle-summary/vehicle-summary.component';
@@ -28,6 +30,8 @@ import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-ps
 import { VehicleSummaryHgvComponent } from './vehicle-summary/vehicle-summary-hgv/vehicle-summary-hgv.component';
 import { VehicleSummaryTrlComponent } from './vehicle-summary/vehicle-summary-trl/vehicle-summary-trl.component';
 import { VehicleSummaryEditComponent } from './vehicle-summary/edit/vehicle-summary-edit.component';
+import { VehicleSummaryEditHgvComponent } from './vehicle-summary/edit/vehicle-summary-edit-hgv/vehicle-summary-edit-hgv.component';
+import { VehicleSummaryEditTrlComponent } from './vehicle-summary/edit/vehicle-summary-edit-trl/vehicle-summary-edit-trl.component';
 import { TypeApprovalComponent } from './vehicle-summary/edit/type-approval/type-approval.component';
 import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { BodyComponent } from './body/body.component';
@@ -68,6 +72,8 @@ const routes: Routes = [
 const COMPONENTS = [
   TechnicalRecordsContainer,
   TechnicalRecordComponent,
+  RecordStatusComponent,
+  RecordStatusEditComponent,
   RecordIdentificationComponent,
   RecordIdentificationEditComponent,
   VehicleSummaryComponent,
@@ -75,6 +81,8 @@ const COMPONENTS = [
   VehicleSummaryHgvComponent,
   VehicleSummaryTrlComponent,
   VehicleSummaryEditComponent,
+  VehicleSummaryEditHgvComponent,
+  VehicleSummaryEditTrlComponent,
   TypeApprovalComponent,
   NotesEditComponent,
   BodyEditComponent,

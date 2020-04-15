@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { VehicleSummaryComponent } from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import { SharedModule } from '@app/shared/shared.module';
@@ -36,8 +36,7 @@ describe('VehicleSummaryComponent', () => {
         TestVehicleSummaryPsvComponent,
         TestVehicleSummaryEditComponent
       ],
-      providers: [TechRecordHelperService],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      providers: [TechRecordHelperService]
     }).compileComponents();
 
     techRecHelper = TestBed.get(TechRecordHelperService);

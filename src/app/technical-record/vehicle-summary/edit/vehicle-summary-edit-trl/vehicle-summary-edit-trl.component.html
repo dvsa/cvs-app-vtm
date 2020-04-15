@@ -1,0 +1,81 @@
+<div class="govuk-form-group">
+  <form [formGroup]="techRecordFg">
+    <!-- First use date -->
+    <div class="govuk-form-group">
+      <div role="group" aria-describedby="firstUse-date">
+        <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-firstUseDate">
+          First use date (optional)
+        </label>
+        <vtm-date-input
+          id="test-edit-firstUseDate"
+          ariaDescribedBy="firstUseDate"
+          formControlName="firstUseDate"
+        ></vtm-date-input>
+      </div>
+    </div>
+
+    <!-- Suspension type -->
+    <div class="govuk-form-group">
+      <label for="test-edit-suspensionType" class="govuk-label govuk-!-font-weight-bold">
+        Suspension type (optional)
+      </label>
+      <input
+        id="test-edit-suspensionType"
+        type="text"
+        name="suspensionType"
+        formControlName="suspensionType"
+        class="govuk-input govuk-input--width-2"
+        vtmNullValue
+      />
+    </div>
+
+    <!-- Coupling type -->
+    <div class="govuk-form-group">
+      <label for="test-edit-couplingType" class="govuk-label govuk-!-font-weight-bold">
+        Coupling type (optional)
+      </label>
+      <input
+        id="test-edit-couplingType"
+        type="text"
+        name="couplingType"
+        formControlName="couplingType"
+        class="govuk-input govuk-input--width-2"
+        vtmNullValue
+      />
+    </div>
+
+    <!-- Max load on coupling -->
+    <div class="govuk-form-group">
+      <label for="test-edit-maxLoadOnCoupling" class="govuk-label govuk-!-font-weight-bold">
+        Max load on coupling (optional)
+      </label>
+      <input
+        id="test-edit-maxLoadOnCoupling"
+        type="number"
+        name="maxLoadOnCoupling"
+        maxlength="5"
+        formControlName="maxLoadOnCoupling"
+        class="govuk-input govuk-input--width-5"
+        vtmNullValue
+      />
+    </div>
+
+    <!-- Frame description -->
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-frameDescription">
+        Frame description (optional)
+      </label>
+      <select
+        id="test-edit-frameDescription"
+        formControlName="frameDescription"
+        class="govuk-select"
+        vtmNullValue
+      >
+        <option [value]=""></option>
+        <option *ngFor="let frameDesc of frameDescriptionOptions" [ngValue]="frameDesc.name">
+          {{ frameDesc.name }}
+        </option>
+      </select>
+    </div>
+  </form>
+</div>
