@@ -7,27 +7,22 @@ import { TestResultService } from '@app/technical-record-search/test-result.serv
 import { getSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { TestResultModel } from '@app/models/test-result.model';
-import {
-  SetSelectedTestResultModelSuccess
-} from '@app/store/actions/VehicleTestResultModel.actions';
+import { SetSelectedTestResultModelSuccess } from '@app/store/actions/VehicleTestResultModel.actions';
 
 @Injectable({ providedIn: 'root' })
 export class TestResultGuard {
   constructor(private store: Store<IAppState>, private testResultService: TestResultService) {}
 
-  hasSelectedTestResult(): Observable<boolean> {
+  hasSelectedTestResult(testResultId: string): Observable<boolean> {
     return this.store.pipe(
       select(getSelectedVehicleTestResultModel),
       map((testResult) => {
-        return !!testResult;
+        return !!testResult ? testResultId === testResult.testResultId : !!testResult;
       })
     );
   }
 
-  populateStoreWithDataFromApi(
-    testResultId: string,
-    systemNumber: string
-  ): Observable<boolean> {
+  populateStoreWithDataFromApi(testResultId: string, systemNumber: string): Observable<boolean> {
     return this.testResultService.getTestResultById(systemNumber, testResultId).pipe(
       tap((testResult: TestResultModel) => {
         this.store.dispatch(new SetSelectedTestResultModelSuccess(testResult));
@@ -40,7 +35,7 @@ export class TestResultGuard {
   }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    return this.hasSelectedTestResult().pipe(
+    return this.hasSelectedTestResult(route.queryParams.testResultId).pipe(
       switchMap((inStore) => {
         if (inStore) {
           return of(inStore);

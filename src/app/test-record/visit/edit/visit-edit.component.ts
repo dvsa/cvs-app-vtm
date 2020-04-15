@@ -31,7 +31,11 @@ export class VisitEditComponent implements OnInit {
     this.testResultChildForm.form.addControl(
       'testStationNameNumber',
       new FormControl(
-        this.testRecord.testStationName + ' (' + this.testRecord.testStationPNumber + ')',
+        !!this.testRecord.testStationName
+          ? this.testRecord.testStationName
+          : '' + !!this.testRecord.testStationPNumber
+          ? ' (' + this.testRecord.testStationPNumber + ')'
+          : '',
         Validators.required
       )
     );
@@ -59,7 +63,9 @@ export class VisitEditComponent implements OnInit {
     this.testStationsOptions = !!this.testStations
       ? this.testStations.map(
           ({ testStationName, testStationPNumber }) =>
-            `${testStationName} (${testStationPNumber})`
+            `${!!testStationName ? testStationName : ''} ${
+              !!testStationPNumber ? '(' + testStationPNumber + ')' : ''
+            }`
         )
       : [''];
 

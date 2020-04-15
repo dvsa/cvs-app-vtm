@@ -124,24 +124,6 @@ exports[`VehicleEditComponent should create 1`] = `
                     <input
                       class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
                       formcontrolname="euVehicleCategory"
-                      id="test-euVehicleCategory-M1"
-                      ng-reflect-form-control-name="euVehicleCategory"
-                      ng-reflect-name="euVehicleCategory"
-                      ng-reflect-value="m1"
-                      type="radio"
-                    />
-                    <label
-                      class="govuk-label govuk-radios__label"
-                    >
-                       M1 
-                    </label>
-                  </div>
-                  <div
-                    class="govuk-radios__item"
-                  >
-                    <input
-                      class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
-                      formcontrolname="euVehicleCategory"
                       id="test-euVehicleCategory-M2"
                       ng-reflect-form-control-name="euVehicleCategory"
                       ng-reflect-name="euVehicleCategory"

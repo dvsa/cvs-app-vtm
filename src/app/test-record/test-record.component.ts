@@ -89,7 +89,7 @@ export class TestRecordComponent implements OnInit {
   onSaveTestResult(testResultParentForm) {
     const testResultUpdated: TestResultModel = this.testRecordMapper.mapFormValues(
       JSON.parse(JSON.stringify(this.testResultParentForm.getRawValue())),
-      this.testResultObj
+      JSON.parse(JSON.stringify(this.testResultObj))
     );
 
     const dialogRef = this.dialog.open(DialogBoxComponent, {

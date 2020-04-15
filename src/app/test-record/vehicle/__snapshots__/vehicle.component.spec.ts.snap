@@ -2,7 +2,6 @@
 
 exports[`VehicleComponent should create 1`] = `
 <vtm-vehicle
-  countryOfRegistration="undefined"
   testRecord={[Function Object]}
 >
   <dl
@@ -107,7 +106,6 @@ exports[`VehicleComponent should create 1`] = `
 
 exports[`VehicleComponent should render edit template if editState is EDIT 1`] = `
 <vtm-vehicle
-  countryOfRegistration="undefined"
   editState={[Function Number]}
   testRecord={[Function Object]}
 >
@@ -213,7 +211,6 @@ exports[`VehicleComponent should render edit template if editState is EDIT 1`] =
 
 exports[`VehicleComponent should render view template if editState is VIEW_ONLY 1`] = `
 <vtm-vehicle
-  countryOfRegistration="undefined"
   editState="0"
   testRecord={[Function Object]}
 >

@@ -80,7 +80,10 @@ export class VehicleEditComponent implements OnInit {
     );
 
     this.preparersOptions = !!this.preparers
-      ? this.preparers.map(({ preparerName, preparerId }) => `${preparerName} (${preparerId})`)
+      ? this.preparers.map(
+          ({ preparerName, preparerId }) =>
+            `${!!preparerName ? preparerName : ''} ${!!preparerId ? '(' + preparerId + ')' : ''}`
+        )
       : [''];
 
     if (!!this.testRecord) {
