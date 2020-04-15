@@ -77,7 +77,7 @@ export class VehicleTestResultModelEffects {
             ];
           }),
           catchError(({ error }) => {
-            const errorMessage = error.errors;
+            const errorMessage = !!error ? error.errors : [''];
             return [new SetErrorMessage(errorMessage)];
           })
         );
@@ -100,7 +100,7 @@ export class VehicleTestResultModelEffects {
             Try resaving this test record to generate a new certificate or manually issue a copy using the information on this page.`;
 
           this._store.dispatch(new SetErrorMessage([errorMsg]));
-           return of(undefined);
+          return of(undefined);
         })
       );
     })
@@ -117,16 +117,18 @@ export class VehicleTestResultModelEffects {
     testResultsInState: TestResultModel[],
     testResultTestTypeNumberObject: TestResultTestTypeNumber
   ): TestResultModel[] {
-    return testResultsInState.map((testResult) => {
-      if (
-        testResult.testTypes.some(
-          (testType) => testType.testNumber === testResultTestTypeNumberObject.testTypeNumber
-        )
-      ) {
-        return testResultTestTypeNumberObject.testResultUpdated;
-      } else {
-        return testResult;
-      }
-    });
+    return !!testResultsInState
+      ? testResultsInState.map((testResult) => {
+          if (
+            testResult.testTypes.some(
+              (testType) => testType.testNumber === testResultTestTypeNumberObject.testTypeNumber
+            )
+          ) {
+            return testResultTestTypeNumberObject.testResultUpdated;
+          } else {
+            return testResult;
+          }
+        })
+      : [{} as TestResultModel];
   }
 }

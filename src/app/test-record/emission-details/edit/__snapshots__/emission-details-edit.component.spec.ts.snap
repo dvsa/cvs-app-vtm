@@ -2,8 +2,8 @@
 
 exports[`EmissionDetailsEditComponent should create 1`] = `
 <vtm-emission-details-edit
-  editModTypeUsed={[Function Boolean]}
-  editParticulate={[Function Boolean]}
+  editModTypeUsed="false"
+  editParticulate="false"
   emissionStandardOptions={[Function Array]}
   fuelTypeOptions={[Function Array]}
   modTypeOptions={[Function Array]}
@@ -379,65 +379,8 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
               </div>
             </div>
             
-            <div
-              class="govuk-grid-row govuk-!-margin-bottom-5"
-            >
-              <div
-                class="govuk-grid-column-one-half"
-              >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
-                >
-                   Modification type used 
-                </label>
-                <input
-                  class="govuk-input"
-                  formcontrolname="modificationTypeUsed"
-                  id="test-modificationTypeUsed"
-                  type="text"
-                />
-              </div>
-            </div>
             
-            <div
-              class="govuk-grid-row govuk-!-margin-bottom-5"
-            >
-              <div
-                class="govuk-grid-column-one-half"
-              >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
-                >
-                   Particulate trap fitted 
-                </label>
-                <input
-                  class="govuk-input"
-                  formcontrolname="particulateTrapFitted"
-                  id="test-particulateTrapFitted"
-                  type="text"
-                />
-              </div>
-            </div>
             
-            <div
-              class="govuk-grid-row govuk-!-margin-bottom-5"
-            >
-              <div
-                class="govuk-grid-column-one-half"
-              >
-                <label
-                  class="govuk-label govuk-!-font-weight-bold"
-                >
-                   Particulate trap serial number 
-                </label>
-                <input
-                  class="govuk-input"
-                  formcontrolname="particulateTrapSerialNumber"
-                  id="test-particulateTrapSerialNumber"
-                  type="text"
-                />
-              </div>
-            </div>
           </form>
         </fieldset>
       </div>

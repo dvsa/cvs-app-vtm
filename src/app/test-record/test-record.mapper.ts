@@ -177,6 +177,12 @@ export class TestRecordMapper {
       testSectionApplicable1: this.getTestTypeApplicable('testSectionApplicable1'),
       testSectionApplicable2: this.getTestTypeApplicable('testSectionApplicable2')
     };
+    const mapPreparer = !!testResultFormData.preparer
+      ? testResultFormData.preparer.match(/\((.*)\)/)
+      : '';
+    const mapTestStation = !!testResultFormData.testStationNameNumber
+      ? testResultFormData.testStationNameNumber.match(/\((.*)\)/)
+      : '';
 
     testResultMapped.countryOfRegistration = this.getCountryOfRegistrationCode(
       testResultFormData.countryOfRegistration
@@ -187,16 +193,15 @@ export class TestRecordMapper {
     testResultMapped.preparerName = !!testResultFormData.preparer
       ? testResultFormData.preparer.split('(')[0]
       : '';
-    testResultMapped.preparerId = !!testResultFormData.preparer
-      ? testResultFormData.preparer.match(/\((.*)\)/).pop()
-      : '';
+    testResultMapped.preparerId = !!mapPreparer ? mapPreparer.pop() : '';
+
     testResultMapped.testStationName = !!testResultFormData.testStationNameNumber
       ? testResultFormData.testStationNameNumber.split('(')[0]
       : '';
-    testResultMapped.testStationPNumber = !!testResultFormData.testStationNameNumber
-      ? testResultFormData.testStationNameNumber.match(/\((.*)\)/).pop()
+    testResultMapped.testStationPNumber = !!mapTestStation ? mapTestStation.pop() : '';
+    testResultMapped.testStationType = !!testResultFormData.testStationType
+      ? testResultFormData.testStationType.toLowerCase()
       : '';
-    testResultMapped.testStationType = testResultFormData.testStationType;
     testResultMapped.testerName = testResultFormData.testerName;
     testResultMapped.testerEmailAddress = testResultFormData.testerEmailAddress;
     testTypeMapped.seatbeltInstallationCheckDate =
@@ -208,10 +213,10 @@ export class TestRecordMapper {
     testTypeMapped.smokeTestKLimitApplied = testResultFormData.testType.smokeTestKLimitApplied;
     testTypeMapped.fuelType = testResultFormData.testType.fuelType;
     if (!!testTypeMapped.modType) {
-      testTypeMapped.modType.code = !!testResultFormData.testType.modType
-        ? testResultFormData.testType.modType.split('-')[0]
+      testTypeMapped.modType.code = !!testResultFormData.testType.modType.length
+        ? testResultFormData.testType.modType.split('-')[0].trim()
         : '';
-      testTypeMapped.modType.description = !!testResultFormData.testType.modType
+      testTypeMapped.modType.description = !!testResultFormData.testType.modType.length
         ? testResultFormData.testType.modType.split('-')[1].trim()
         : '';
     }
