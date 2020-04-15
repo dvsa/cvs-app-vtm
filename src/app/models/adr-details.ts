@@ -31,6 +31,7 @@ export interface AdrDetails {
   documents: string[];
   permittedDangerousGoods: string[];
   additionalExaminerNotes: string;
+  adrCertificateNotes: string;
   applicantDetails: ApplicantDetails;
   memosApply: string[];
   additionalNotes: AdditionalNotes;

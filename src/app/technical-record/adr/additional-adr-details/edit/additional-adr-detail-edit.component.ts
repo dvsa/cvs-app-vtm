@@ -20,5 +20,10 @@ export class AdditionalAdrDetailEditComponent extends AdrComponent implements On
       'additionalExaminerNotes',
       this.fb.control(this.adrDetails.additionalExaminerNotes)
     );
+
+    this.adrForm.addControl(
+      'adrCertificateNotes',
+      this.fb.control(this.adrDetails.adrCertificateNotes)
+    );
   }
 }

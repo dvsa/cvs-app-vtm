@@ -8,6 +8,9 @@
           </h2>
 
           <div class="govuk-form-group">
+            <label for="additionalExaminerNotes" class="govuk-label govuk-!-font-weight-bold"
+              >Examiner notes</label
+            >
             <span id="additional-details-hint" class="govuk-hint" for="additionalExaminerNotes">
               Will not be present on the ADR certificate
             </span>
@@ -16,6 +19,21 @@
               aria-describedby="additionalExaminerNotes-hint"
               name="additionalExaminerNotes"
               formControlName="additionalExaminerNotes"
+              rows="8"
+              class="govuk-textarea"
+            >
+            </textarea>
+          </div>
+
+          <div class="govuk-form-group">
+            <label for="adrCertificateNotes" class="govuk-label govuk-!-font-weight-bold"
+              >ADR certificate notes</label
+            >
+            <textarea
+              id="adrCertificateNotes"
+              aria-describedby="adrCertificateNotes-hint"
+              name="adrCertificateNotes"
+              formControlName="adrCertificateNotes"
               rows="8"
               class="govuk-textarea"
             >
