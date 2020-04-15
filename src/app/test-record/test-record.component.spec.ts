@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location } from '@angular/common';
 import { TEST_TYPE_APPLICABLE_UTILS } from '@app/utils/test-type-applicable-models.utils';
 import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
@@ -38,7 +39,7 @@ describe('TestRecordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ReactiveFormsModule, MatDialogModule, BrowserAnimationsModule],
+      imports: [SharedModule, ReactiveFormsModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
       declarations: [TestRecordComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [

@@ -17,6 +17,11 @@ import { VehicleTechRecordModelEffects } from '../effects/VehicleTechRecordModel
 import { ErrorEffects } from './../effects/error.effects';
 import { RouterEffects } from '../effects/router.effects';
 import { ErrorState, initialErrorState } from '../reducers/error.reducers';
+import { AppFormState, initialAppFormState } from '../reducers/app-form-state.reducers';
+import { ModalState } from '@app/modal/modal.reducer';
+import { initialModalState } from '../../modal/modal.reducer';
+import { ModalEffects } from '@app/modal/modal.effects';
+import { AppFormEffects } from '../effects/app-form-state.effects';
 
 export interface IAppState {
   router?: RouterReducerState;
@@ -25,6 +30,8 @@ export interface IAppState {
   vehicleTestResultModel: IVehicleTestResultModelState;
   referenceData: ReferenceDataState;
   error: ErrorState;
+  appFormState: AppFormState;
+  modalState: ModalState;
 }
 
 export const initialAppState: IAppState = {
@@ -32,9 +39,11 @@ export const initialAppState: IAppState = {
   vehicleTechRecordModel: initialVehicleTechRecordModelState,
   vehicleTestResultModel: initialVehicleTestResultModelState,
   referenceData: initialReferenceDataState,
-  error: initialErrorState
+  error: initialErrorState,
+  appFormState: initialAppFormState,
+  modalState: initialModalState,
 };
 
 export const getInitialState = (): IAppState => initialAppState;
 
-export const ROOT_EFFECTS = [VehicleTechRecordModelEffects, ErrorEffects, RouterEffects];
+export const ROOT_EFFECTS = [VehicleTechRecordModelEffects, ModalEffects, ErrorEffects, AppFormEffects, RouterEffects];

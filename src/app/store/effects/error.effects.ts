@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 
@@ -14,7 +14,7 @@ import { ClearErrorMessage } from '../actions/Error.actions';
 @Injectable()
 export class ErrorEffects {
   @Effect()
-  clearSummaryErrors$: Observable<Action> = this.actions$.pipe(
+  clearSummaryErrors$ = this.actions$.pipe(
     ofType<SetViewState>(EVehicleTechRecordModelActions.SetViewState),
     filter((action: SetViewState): boolean => action.viewState === VIEW_STATE.VIEW_ONLY),
     map(() => new ClearErrorMessage())

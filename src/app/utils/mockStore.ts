@@ -15,6 +15,8 @@ import {
   selectTestTypeById
 } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
+import { getCurrentModalState } from '@app/modal/modal.selectors';
+import { getAppFormState } from '@app/store/selectors/app-form-state.selectors';
 
 export class MockStore {
   mockSelector: BehaviorSubject<any>;
@@ -109,6 +111,23 @@ export class MockStore {
         return this.mockSelector.pipe(
           map((value: any) =>
             value && value.hasOwnProperty('getTestViewState') ? value['getTestViewState'] : {}
+          )
+        );
+
+      case getCurrentModalState:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getCurrentModalState')
+              ? value['getCurrentModalState']
+              : {}
+          )
+        );
+      case getAppFormState:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getCurrentModalState')
+              ? value['getCurrentModalState']
+              : {}
           )
         );
 
