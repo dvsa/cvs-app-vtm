@@ -7,16 +7,14 @@ import { hot, cold } from 'jasmine-marbles';
 
 import { RouterStateUrl } from './../index';
 import { RouterEffects } from './router.effects';
-import { VIEW_STATE } from './../../app.enums';
-import { SetViewState } from '../actions/VehicleTechRecordModel.actions';
 import {
   RouterNavigationAction,
   ROUTER_NAVIGATION,
   RouterNavigationPayload
 } from '@ngrx/router-store';
 import { ClearErrorMessage } from '../actions/Error.actions';
+import { getErrors } from '../selectors/error.selectors';
 import { MockStore } from '@app/utils/';
-
 describe('RouterEffects', () => {
   let effects: RouterEffects;
   let actions$: Observable<Action>;
@@ -63,24 +61,20 @@ describe('RouterEffects', () => {
       };
     });
 
-    it('should dispatch SetViewState and ClearErrorMessage actions if exist in state', () => {
+    it('should dispatch ClearErrorMessage actions if exist in state', () => {
       mockSelector.next({
-        getTechViewState: VIEW_STATE.EDIT,
-        getErrors: ['error1', 'error2']
+        getErrors: ['some error']
       });
 
       actions$ = hot('-a--', { a: navActionWithBack });
-      const viewStateAction = new SetViewState(VIEW_STATE.VIEW_ONLY);
-      const clearErrorAction = new ClearErrorMessage();
-
-      const expected$ = cold('-(bc)', { b: viewStateAction, c: clearErrorAction });
+      const action = new ClearErrorMessage();
+      const expected$ = cold('-(b)-', { b: action });
 
       expect(effects.navigate$).toBeObservable(expected$);
     });
 
-    it('should return an empty stream if VIEW_ONLY and no errors', () => {
+    it('should return an empty stream if no errors', () => {
       mockSelector.next({
-        getTechViewState: VIEW_STATE.VIEW_ONLY,
         getErrors: []
       });
 

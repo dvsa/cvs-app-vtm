@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LandingPage should create landing component 1`] = `
+<vtm-landing-page>
+  <div
+    class="govuk-width-container landing-page"
+  >
+    <main
+      class="govuk-main-wrapper"
+    >
+      <div
+        class="govuk-grid-row"
+      >
+        <div
+          class="govuk-grid-column-full"
+        >
+          <p
+            class="govuk-heading-xl govuk-!-font-weight-bold"
+          >
+             Select activity 
+          </p>
+          <div
+            class="govuk-grid-row"
+          >
+            <div
+              class="govuk-grid-column-one-third"
+            >
+              <h2
+                class="govuk-heading-m"
+              >
+                <a
+                  class="govuk-link"
+                  data-module="govuk-button"
+                  href="/search"
+                  id="test-search-vehicle"
+                  ng-reflect-router-link="search"
+                >
+                  Search for a technical record
+                </a>
+              </h2>
+              <p
+                class="govuk-body"
+              >
+                Manage technical records, test records and issue certificates or documents
+              </p>
+            </div>
+            <div
+              class="govuk-grid-column-one-third"
+            >
+              <h2
+                class="govuk-heading-m"
+              >
+                <a
+                  class="govuk-link"
+                  data-module="govuk-button"
+                  href="/create"
+                  id="test-create-new-vehicle"
+                  ng-reflect-router-link="create"
+                >
+                  Create a new technical record
+                </a>
+              </h2>
+              <p
+                class="govuk-body"
+              >
+                Create records for PSVs, HGVs and trailers
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</vtm-landing-page>
+`;

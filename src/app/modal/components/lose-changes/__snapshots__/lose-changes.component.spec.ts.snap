@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoseChangesComponent should create lose changes modal component 1`] = `
+<vtm-lose-changes
+  okCancelAction={[Function EventEmitter]}
+>
+  <div
+    lose-changes=""
+    mat-dialog-content=""
+  >
+    <h1
+      class="govuk-heading-m"
+    >
+      Unsaved changes
+    </h1>
+    <span
+      class="govuk-hint"
+    >
+       If you leave this page, your changes will be lost. 
+    </span>
+  </div><button
+    cdkfocusinitial=""
+    class="govuk-button"
+    data-module="govuk-button"
+    id="test-lose-changes"
+  >
+     Leave and lose changes 
+  </button><a
+    class="cancel"
+    id="test-cancel"
+  >
+    <span>
+      Continue changing record
+    </span>
+  </a>
+</vtm-lose-changes>
+`;
