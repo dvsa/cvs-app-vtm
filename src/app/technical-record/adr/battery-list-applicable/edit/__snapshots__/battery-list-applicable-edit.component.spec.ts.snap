@@ -5,6 +5,7 @@ exports[`BatteryListApplicableEditComponent handleFormChanges should hide sectio
   adrDetails={[Function Object]}
   adrForm={[Function FormGroup]}
   batterListValidationState$={[Function Observable]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   onDestroy$={[Function Subject]}
@@ -22,6 +23,7 @@ exports[`BatteryListApplicableEditComponent should create with initialized form 
   adrDetails={[Function Object]}
   adrForm={[Function FormGroup]}
   batterListValidationState$={[Function Observable]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   onDestroy$={[Function Subject]}

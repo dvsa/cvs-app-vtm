@@ -3,48 +3,26 @@ import { Params } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { hot, cold } from 'jasmine-marbles';
 
 import { RouterStateUrl } from './../index';
 import { RouterEffects } from './router.effects';
 import { VIEW_STATE } from './../../app.enums';
-import { getViewState } from '../selectors/VehicleTechRecordModel.selectors';
 import { SetViewState } from '../actions/VehicleTechRecordModel.actions';
 import {
   RouterNavigationAction,
   ROUTER_NAVIGATION,
   RouterNavigationPayload
 } from '@ngrx/router-store';
-
-const mockSelector = new BehaviorSubject<any>(undefined);
-
-class MockStore {
-  select(selector: any) {
-    switch (selector) {
-      case getViewState:
-        return mockSelector.pipe(
-          map((value: any) =>
-            value && value.hasOwnProperty('getViewState') ? value['getViewState'] : {}
-          )
-        );
-      default:
-        return mockSelector;
-    }
-  }
-
-  dispatch(action: Action) {
-    return [];
-  }
-}
+import { ClearErrorMessage } from '../actions/Error.actions';
+import { MockStore } from '@app/utils/';
 
 describe('RouterEffects', () => {
   let effects: RouterEffects;
   let actions$: Observable<Action>;
   let routerNavigationAction: RouterNavigationAction<RouterStateUrl>;
-  let action: Action;
-
-  const store: MockStore = new MockStore();
+  const mockSelector = new BehaviorSubject<any>(undefined);
+  const store: MockStore = new MockStore(mockSelector);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -73,8 +51,9 @@ describe('RouterEffects', () => {
   });
 
   describe('navigate$', () => {
-    it('should dispatch SetViewState action if current view state is in edit state', () => {
-      const navActionWithBack: RouterNavigationAction<RouterStateUrl> = {
+    let navActionWithBack: RouterNavigationAction<RouterStateUrl>;
+    beforeEach(() => {
+      navActionWithBack = {
         ...routerNavigationAction,
         payload: {
           routerState: {
@@ -82,21 +61,30 @@ describe('RouterEffects', () => {
           }
         } as RouterNavigationPayload<RouterStateUrl>
       };
+    });
 
+    it('should dispatch SetViewState and ClearErrorMessage actions if exist in state', () => {
       mockSelector.next({
-        getViewState: VIEW_STATE.EDIT
+        getTechViewState: VIEW_STATE.EDIT,
+        getErrors: ['error1', 'error2']
       });
 
       actions$ = hot('-a--', { a: navActionWithBack });
-      action = new SetViewState(VIEW_STATE.VIEW_ONLY);
-      const expected$ = cold('-(b)-', { b: action });
+      const viewStateAction = new SetViewState(VIEW_STATE.VIEW_ONLY);
+      const clearErrorAction = new ClearErrorMessage();
+
+      const expected$ = cold('-(bc)', { b: viewStateAction, c: clearErrorAction });
 
       expect(effects.navigate$).toBeObservable(expected$);
     });
 
-    it('should return an empty stream if current view state is VIEW_ONLY', () => {
-      action = new SetViewState(VIEW_STATE.VIEW_ONLY);
-      actions$ = hot('-a--', { a: action });
+    it('should return an empty stream if VIEW_ONLY and no errors', () => {
+      mockSelector.next({
+        getTechViewState: VIEW_STATE.VIEW_ONLY,
+        getErrors: []
+      });
+
+      actions$ = hot('-a--', { a: navActionWithBack });
 
       const expected$ = cold('--');
 

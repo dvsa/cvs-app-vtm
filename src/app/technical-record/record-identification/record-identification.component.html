@@ -1,0 +1,56 @@
+<ng-container *ngIf="!editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Vehicle identification number (VIN)
+      </dt>
+      <dd id="test-vin" class="govuk-summary-list__value">
+        {{ vehicleTechRecord.vin }}
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Vehicle registration mark (VRM)
+      </dt>
+      <dd id="test-vrm" class="govuk-summary-list__value">
+        <div *ngIf="vehicleTechRecord.primaryVrm; else hyphen">
+          <p>{{ vehicleTechRecord.primaryVrm }}</p>
+        </div>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Previous VRM
+      </dt>
+      <dd id="test-secondaryVrms" class="govuk-summary-list__value">
+        <div *ngIf="vehicleTechRecord.secondaryVrms.length; else hyphen">
+          <p *ngFor="let vrmSecondary of vehicleTechRecord.secondaryVrms; let i = index">
+            <span id="{{ 'test-vrm-' + i }}">{{ vrmSecondary }}</span>
+          </p>
+        </div>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row" *ngIf="isTrailer">
+      <dt class="govuk-summary-list__key main-details">
+        Trailer ID
+      </dt>
+      <dd id="test-trailerId" class="govuk-summary-list__value">
+        {{ vehicleTechRecord.trailerId }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-template #hyphen><span>-</span></ng-template>
+
+<!-- Edit Vehicle Identification -->
+<ng-container *ngIf="editState">
+  <vtm-record-identification-edit
+    [vin]="vehicleTechRecord.vin"
+    [primaryVrm]="vehicleTechRecord.primaryVrm"
+  ></vtm-record-identification-edit>
+</ng-container>

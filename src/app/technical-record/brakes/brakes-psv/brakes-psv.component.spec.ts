@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { BrakesPsvComponent } from './brakes-psv.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 import { SharedModule } from '@app/shared/shared.module';
-import { TESTING_UTILS } from '../../../utils/testing.utils';
+import { BrakesPsvComponent } from './brakes-psv.component';
+import { TESTING_UTILS } from '@app/utils/testing.utils';
 
 describe('PsvBrakesComponent', () => {
   let component: BrakesPsvComponent;
@@ -20,9 +20,11 @@ describe('PsvBrakesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BrakesPsvComponent);
     component = fixture.componentInstance;
-    component.brakes = TESTING_UTILS.mockPSVBrakes();
-    component.brakes.brakeForceWheelsNotLocked = TESTING_UTILS.mockBrakeForceWheelsNotLocked();
-    component.brakes.brakeForceWheelsUpToHalfLocked = TESTING_UTILS.mockBrakeForceWheelsUpToHalfLocked();
+    component.brakes = TESTING_UTILS.mockBrakes({
+      brakeForceWheelsNotLocked: TESTING_UTILS.mockBrakeForceWheelsNotLocked(),
+      brakeForceWheelsUpToHalfLocked: TESTING_UTILS.mockBrakeForceWheelsUpToHalfLocked()
+    });
+
     fixture.detectChanges();
   });
 

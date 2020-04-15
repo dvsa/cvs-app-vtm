@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+
 import { Microfilm } from '@app/models/tech-record.model';
 
 @Component({
@@ -7,11 +8,10 @@ import { Microfilm } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentsComponent implements OnInit {
+  @Input() editState: boolean;
   @Input() microfilm: Microfilm;
-  constructor() {
-  }
 
-  ngOnInit() {
-  }
+  constructor() {}
 
+  ngOnInit() {}
 }

@@ -1,5 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DocumentsComponent should create edit only view when editState is set to true 1`] = `
+<vtm-documents
+  editState={[Function Boolean]}
+  microfilm={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-documents-edit
+          ng-reflect-microfilm-details="[object Object]"
+        >
+          <div>
+            microfilmDetails is: {
+    "microfilmDocumentType": "PSV Miscellaneous",
+    "microfilmRollNumber": "1234",
+    "microfilmSerialNumber": "5678"
+  }
+          </div>
+        </vtm-documents-edit>
+      </dt>
+    </div>
+  </dl>
+</vtm-documents>
+`;
+
 exports[`DocumentsComponent should create view only with populated data 1`] = `
 <vtm-documents
   microfilm={[Function Object]}

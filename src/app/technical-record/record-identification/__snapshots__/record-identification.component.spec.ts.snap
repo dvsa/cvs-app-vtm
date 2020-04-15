@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecordIdentificationComponent should create view only with populated data 1`] = `
+<vtm-record-identification
+  editState="false"
+  isTrailer="false"
+  vehicleTechRecord={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle identification number (VIN) 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vin"
+      >
+         ABCDEFGH654321 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle registration mark (VRM) 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vrm"
+      >
+        
+        <div>
+          <p>
+            LKJH654
+          </p>
+        </div>
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Previous VRM 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-secondaryVrms"
+      >
+        
+        <div>
+          
+          <p>
+            <span
+              id="test-vrm-0"
+            >
+              AAJH654
+            </span>
+          </p>
+          <p>
+            <span
+              id="test-vrm-1"
+            >
+              LKJHBBB
+            </span>
+          </p>
+        </div>
+      </dd>
+    </div>
+    
+  </dl>
+</vtm-record-identification>
+`;
+
+exports[`RecordIdentificationComponent should create view only with trailer Id data 1`] = `
+<vtm-record-identification
+  editState="false"
+  isTrailer={[Function String]}
+  vehicleTechRecord={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle identification number (VIN) 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vin"
+      >
+         ABCDEFGH654321 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle registration mark (VRM) 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vrm"
+      >
+        
+        <div>
+          <p>
+            LKJH654
+          </p>
+        </div>
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Previous VRM 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-secondaryVrms"
+      >
+        
+        <div>
+          
+          <p>
+            <span
+              id="test-vrm-0"
+            >
+              AAJH654
+            </span>
+          </p>
+          <p>
+            <span
+              id="test-vrm-1"
+            >
+              LKJHBBB
+            </span>
+          </p>
+        </div>
+      </dd>
+    </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key main-details"
+      >
+         Trailer ID 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-trailerId"
+      >
+         0285678 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-record-identification>
+`;
+
+exports[`RecordIdentificationComponent should render the editable component if editState is true 1`] = `
+<vtm-record-identification
+  editState={[Function Boolean]}
+  isTrailer="false"
+  vehicleTechRecord={[Function Object]}
+>
+  <vtm-record-identification-edit
+    ng-reflect-primary-vrm="LKJH654"
+    ng-reflect-vin="ABCDEFGH654321"
+  >
+    <div>
+      Vin is ABCDEFGH654321
+    </div>
+    <div>
+      Primary Vrm is LKJH654
+    </div>
+  </vtm-record-identification-edit>
+</vtm-record-identification>
+`;
