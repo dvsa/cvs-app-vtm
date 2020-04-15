@@ -1,52 +1,79 @@
 import { async, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { INITIAL_STATE, Store } from '@ngrx/store';
-import { hot } from 'jasmine-marbles';
+import { Store } from '@ngrx/store';
+import { MockStore } from '@app/utils';
+import { BehaviorSubject } from 'rxjs';
+import { cold } from 'jasmine-marbles';
+
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { PreparersGuard } from '@app/test-record/guards/preparers.guard';
-import { IAppState } from '@app/store/state/app.state';
-import {Preparer} from '@app/models/preparer';
+import { Preparer } from '@app/models/preparer';
+import { LoadPreparersSuccess } from '@app/store/actions/ReferenceData.actions';
 
 describe('PreparersGuard', () => {
   let preparersGuard: PreparersGuard;
-  let testResultService;
-  let store: Store<IAppState>;
+  let getPreparers: jest.Mock;
+  const mockSelector = new BehaviorSubject<any>(undefined);
+  const store: MockStore = new MockStore(mockSelector);
 
   beforeEach(async(() => {
+    getPreparers = jest.fn();
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        TestResultService,
+        PreparersGuard,
         {
           provide: Store,
-          useValue: {
-            dispatch: jest.fn(),
-            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
-            select: jest.fn()
-          }
+          useValue: store
+        },
+        {
+          provide: TestResultService,
+          useValue: { getPreparers }
         }
       ]
     }).compileComponents();
-    store = TestBed.get(Store);
-    spyOn(store, 'dispatch').and.callThrough();
 
+    preparersGuard = TestBed.get(PreparersGuard);
+    spyOn(store, 'dispatch');
   }));
 
-  describe('should check the store and populate it with preparers data', () => {
-    testResultService = { getPreparers: () => [{} as Preparer] };
-    preparersGuard = new PreparersGuard(store, testResultService);
+  describe('PreparersGuard', () => {
+    it('should get preparers from the store', () => {
+      const preparer = { preparerId: 'test', preparerName: 'test' } as Preparer;
+      const getPreparers$ = cold('(-a|)', { a: [preparer] });
+      getPreparers.mockReturnValue(getPreparers$);
 
-    it('should return true for preparers in store', () => {
-      expect(preparersGuard.canActivate).toBeTruthy();
+      store.dispatch(new LoadPreparersSuccess([preparer]));
+
+      const expected$ = cold('(a|)', { a: true });
+      const activate$ = preparersGuard.canActivate();
+
+      expect(getPreparers).not.toHaveBeenCalled();
+      expect(activate$).toBeObservable(expected$);
     });
 
-    it('should return true for preparers in store', () => {
-      expect(preparersGuard.hasPreparers).toBeTruthy();
+    it('should load the Prepares from the API', () => {
+      const preparer = { preparerId: 'test', preparerName: 'test' } as Preparer;
+      const getPreparers$ = cold('--(a|)', { a: [preparer] });
+      getPreparers.mockReturnValue(getPreparers$);
+
+      store.dispatch(new LoadPreparersSuccess(null));
+
+      const expected$ = cold('--(a|)', { a: true });
+      const activate$ = preparersGuard.canActivate();
+
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(activate$).toBeObservable(expected$);
     });
 
-    it('should dispatch the action to populate store with preparers', () => {
-      expect(preparersGuard.populateStoreWithDataFromApi).toBeTruthy();
+    it('rejects after API throws an error', () => {
+      const preparersData$ = cold('---#');
+      getPreparers.mockReturnValue(preparersData$);
+
+      const expected$ = cold('---(a|)', { a: false });
+      const activate$ = preparersGuard.canActivate();
+
+      expect(activate$).toBeObservable(expected$);
     });
   });
-
 });

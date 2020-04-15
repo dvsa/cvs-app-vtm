@@ -11,6 +11,7 @@ import { TestResultModel } from '@app/models/test-result.model';
 import { Preparer } from '@app/models/preparer.ts';
 import { TestStation } from '@app/models/test-station';
 import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
+import { TestTypeCategory } from '@app/models/test-type-category';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,8 @@ export class TestResultService {
       updateTestResults: (systemNumber: string) =>
         `${this._apiServer.APITestResultServerUri}/test-results/${systemNumber}`,
       testResultById: (systemNumber: string, testResultId: string) =>
-        `${this._apiServer.APITestResultServerUri}/test-results/${systemNumber}?testResultId=${testResultId}&version=all`
+        `${this._apiServer.APITestResultServerUri}/test-results/${systemNumber}?testResultId=${testResultId}&version=all`,
+      testTypeCategories: () => `${this._apiServer.APITestTypesServerUri}/test-types`
     };
   }
 
@@ -109,5 +111,17 @@ export class TestResultService {
       headers,
       responseType: 'arraybuffer'
     });
+  }
+
+  getTestTypeCategories(): Observable<TestTypeCategory[]> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    this._store.dispatch(new LoadingTrue());
+    return this.httpClient
+      .get<TestTypeCategory[]>(this.routes.testTypeCategories(), { headers })
+      .pipe(
+        delayedRetry(),
+        shareReplay(),
+        finalize(() => this._store.dispatch(new LoadingFalse()))
+      );
   }
 }

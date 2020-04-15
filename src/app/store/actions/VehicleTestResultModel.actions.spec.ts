@@ -6,12 +6,15 @@ import {
   SetTestViewState,
   SetSelectedTestResultModel,
   SetSelectedTestResultModelSuccess,
-  UpdateTestResult
+  UpdateTestResult,
+  UpdateSelectedTestResultModel,
+  UpdateSelectedTestResultModelSuccess
 } from './VehicleTestResultModel.actions';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
 import { DownloadCertificate } from './VehicleTestResultModel.actions';
 import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
+import { KeyValue } from '@angular/common';
 
 const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestRecord({
   testerStaffId: '21',
@@ -21,7 +24,7 @@ const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestRecord(
 } as TestResultModel);
 
 describe('GetVehicleTestResultModel', () => {
-  it('action should have the right type and system number payload when the action is instantiated', () => {
+  it('should create GetVehicleTestResultModel action', () => {
     const actionInstance = new GetVehicleTestResultModel('23434234');
 
     expect({ ...actionInstance }).toEqual({
@@ -32,7 +35,7 @@ describe('GetVehicleTestResultModel', () => {
 });
 
 describe('GetVehicleTestResultModelSuccess', () => {
-  it('action should have the right type and test results array payload when the action is instantiated', () => {
+  it('should create GetVehicleTestResultModelSuccess action', () => {
     const actionInstance = new GetVehicleTestResultModelSuccess([testResultModelExample]);
 
     expect({ ...actionInstance }).toEqual({
@@ -43,7 +46,7 @@ describe('GetVehicleTestResultModelSuccess', () => {
 });
 
 describe('GetVehicleTestResultModelFailure', () => {
-  it('action should have the right type and error payload when the action is instantiated', () => {
+  it('should create GetVehicleTestResultModelFailure action', () => {
     const actionInstance = new GetVehicleTestResultModelFailure('test');
 
     expect({ ...actionInstance }).toEqual({
@@ -54,7 +57,7 @@ describe('GetVehicleTestResultModelFailure', () => {
 });
 
 describe('SetTestViewState', () => {
-  it('action should have correct type and state value as payload when the action is instantiated', () => {
+  it('should create SetTestViewState action', () => {
     const actionInstance = new SetTestViewState(VIEW_STATE.VIEW_ONLY);
 
     expect({ ...actionInstance }).toEqual({
@@ -65,7 +68,7 @@ describe('SetTestViewState', () => {
 });
 
 describe('UpdateTestResult', () => {
-  it('action should have correct type and test result updated payload when the action is instantiated', () => {
+  it('should create UpdateTestResult action', () => {
     const actionInstance = new UpdateTestResult({
       testResultUpdated: testResultModelExample,
       testTypeNumber: '1',
@@ -84,7 +87,7 @@ describe('UpdateTestResult', () => {
 });
 
 describe('SetSelectedTestResultModel', () => {
-  it('action should have correct type & payload', () => {
+  it('should create SetSelectedTestResultModel action', () => {
     const actionInstance = new SetSelectedTestResultModel('');
 
     expect({ ...actionInstance }).toEqual({
@@ -95,7 +98,7 @@ describe('SetSelectedTestResultModel', () => {
 });
 
 describe('SetSelectedTestResultModelSuccess', () => {
-  it('action should have correct type & payload', () => {
+  it('should create SetSelectedTestResultModelSuccess action', () => {
     const actionInstance = new SetSelectedTestResultModelSuccess(testResultModelExample);
 
     expect({ ...actionInstance }).toEqual({
@@ -106,12 +109,39 @@ describe('SetSelectedTestResultModelSuccess', () => {
 });
 
 describe('DownloadCertificate', () => {
-  it('action should have correct type & payload', () => {
+  it('should create DownloadCertificate action', () => {
     const actionInstance = new DownloadCertificate('');
 
     expect({ ...actionInstance }).toEqual({
       type: EVehicleTestResultModelActions.DownloadCertificate,
       payload: ''
+    });
+  });
+});
+
+describe('UpdateSelectedTestResultModel', () => {
+  const testTreeNode = {
+    key: '1',
+    value: 'test'
+  } as KeyValue<string, string>;
+
+  it('should create UpdateSelectedTestResultModel action', () => {
+    const actionInstance = new UpdateSelectedTestResultModel(testTreeNode);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.UpdateSelectedTestResultModel,
+      payload: testTreeNode
+    });
+  });
+});
+
+describe('UpdateSelectedTestResultModelSuccess', () => {
+  it('should create UpdateSelectedTestResultModelSuccess action', () => {
+    const actionInstance = new UpdateSelectedTestResultModelSuccess(testResultModelExample);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.UpdateSelectedTestResultModelSuccess,
+      payload: testResultModelExample
     });
   });
 });

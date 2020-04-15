@@ -23,6 +23,13 @@ export function ReferenceDataReducers(
       };
     }
 
+    case EReferenceDataActions.LoadTestTypeCategoriesSuccess: {
+      return {
+        ...state,
+        testTypeCategories: action.testTypeCategories
+      };
+    }
+
     default:
       return state;
   }

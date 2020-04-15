@@ -12,3 +12,8 @@ export const getTestStations = createSelector(
   selectFeature,
   (state: ReferenceDataState) => state.testStations
 );
+
+export const getTestTypeCategories = createSelector(
+  selectFeature,
+  (state: ReferenceDataState) => state.testTypeCategories
+);

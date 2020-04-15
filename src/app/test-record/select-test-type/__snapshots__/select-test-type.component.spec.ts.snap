@@ -2,10 +2,46 @@
 
 exports[`SelectTestTypeComponent should create 1`] = `
 <vtm-select-test-type
-  route={[Function Object]}
-  store={[Function Object]}
-  testRecordObservable$="undefined"
+  filteredCategories={[Function Array]}
+  testTypeSelected={[Function EventEmitter]}
 >
-  
+  <div
+    class="govuk-width-container"
+  >
+    <a
+      class="govuk-back-link"
+      id="test-back-button"
+      vtmbackbutton=""
+    >
+      Back
+    </a>
+    <main
+      class="govuk-main-wrapper"
+    >
+      <div
+        class="govuk-grid-row"
+      >
+        <div
+          class="govuk-grid-column-full"
+        >
+          <h1
+            class="govuk-heading-xl"
+            id="test-select-test-type"
+          >
+            Select a test type
+          </h1>
+        </div>
+      </div>
+      <vtm-tree-component />
+      <button
+        class="govuk-button"
+        data-module="govuk-button"
+        id="test-change-test-type"
+        type="button"
+      >
+         Change test type 
+      </button>
+    </main>
+  </div>
 </vtm-select-test-type>
 `;

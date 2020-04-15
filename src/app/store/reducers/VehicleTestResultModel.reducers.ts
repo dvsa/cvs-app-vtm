@@ -45,6 +45,13 @@ export function VehicleTestResultModelReducers(
       };
     }
 
+    case EVehicleTestResultModelActions.UpdateSelectedTestResultModelSuccess: {
+      return {
+        ...state,
+        selectedTestResultModel: action.payload
+      };
+    }
+
     default:
       return state;
   }
