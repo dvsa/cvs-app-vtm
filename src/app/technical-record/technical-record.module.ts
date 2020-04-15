@@ -21,6 +21,8 @@ import {
 import { SharedModule } from '../shared/shared.module';
 import { TechnicalRecordsContainer } from './technical-record.container';
 import { TechnicalRecordComponent } from '@app/technical-record/technical-record.component';
+import { RecordStatusComponent } from './record-status/record-status.component';
+import { RecordStatusEditComponent } from './record-status/edit/record-status-edit.component';
 import { RecordIdentificationComponent } from './record-identification/record-identification.component';
 import { RecordIdentificationEditComponent } from './record-identification/edit/record-identification-edit.component';
 import { VehicleSummaryComponent } from './vehicle-summary/vehicle-summary.component';
@@ -68,6 +70,8 @@ const routes: Routes = [
 const COMPONENTS = [
   TechnicalRecordsContainer,
   TechnicalRecordComponent,
+  RecordStatusComponent,
+  RecordStatusEditComponent,
   RecordIdentificationComponent,
   RecordIdentificationEditComponent,
   VehicleSummaryComponent,

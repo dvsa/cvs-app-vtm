@@ -13,6 +13,9 @@ export enum RECORD_STATUS {
   ARCHIVED = 'archived'
 }
 
+export const RECORD_COMPLETENESS_complete = 'complete';
+export const RECORD_COMPLETENESS_skeleton = 'skeleton';
+export const RECORD_COMPLETENESS_testable = 'testable';
 export enum RECORD_COMPLETENESS {
   complete = 'Complete',
   skeleton = 'Skeleton - not enough information to perform a vehicle test',
@@ -113,7 +116,6 @@ export enum COUNTRY_OF_REGISTRATION {
 }
 
 export enum APP_MODALS {
-
   LOSE_CHANGES = 'lose-changes',
   REASON_FOR_CHANGE = 'reason-for-change',
   REASON_FOR_DELETED = 'reason-for-delete',

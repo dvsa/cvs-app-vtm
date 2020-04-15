@@ -221,14 +221,16 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                     class="govuk-grid-column-one-quarter"
                   >
                     <span
-                      class="govuk-!-padding-left-9 govuk-!-margin-left-9"
+                      class="govuk-label govuk-!-padding-left-9 govuk-!-margin-left-9"
                     >
                       <a
                         class="govuk-link govuk-link--no-visited-state "
                         href="javascript:void(0)"
                         id="test-removeTc3-0"
                       >
-                         Remove 
+                        <span>
+                          Remove
+                        </span>
                       </a>
                     </span>
                   </div>

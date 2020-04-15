@@ -23,7 +23,7 @@ import {
   VehicleTechRecordEditState
 } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
-import { VIEW_STATE, RECORD_COMPLETENESS } from '@app/app.enums';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -44,13 +44,18 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   adrDisplayParams: { [key: string]: boolean };
   activeRecord: TechRecord;
   vehicleRecordFg: FormGroup;
+
   allOpened: boolean;
-  viewOnlyState: boolean;
-  editState: boolean;
-  createState: boolean;
-  isStandardVehicle: boolean;
   panels: { panel: string; isOpened: boolean }[];
-  recordCompleteness: string;
+  viewOnlyState: boolean;
+  viewEditState: boolean;
+  viewCreateState: boolean;
+  isEditable: boolean;
+
+  isHgvOrTrlVehicle: boolean;
+  isStandardVehicle: boolean;
+  isPsvOrTrlVehicle: boolean;
+  isArchivedRecord: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -69,8 +74,9 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
 
     if (currentState) {
       this.viewOnlyState = this.currentState === VIEW_STATE.VIEW_ONLY;
-      this.editState = this.currentState === VIEW_STATE.EDIT;
-      this.createState = this.currentState === VIEW_STATE.CREATE;
+      this.viewEditState = this.currentState === VIEW_STATE.EDIT;
+      this.viewCreateState = this.currentState === VIEW_STATE.CREATE;
+      this.isEditable = this.viewEditState || this.viewCreateState;
     }
   }
 
@@ -79,14 +85,12 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       techRecord: this.fb.group({})
     });
 
-    this.setPanelState(this.createState);
+    this.setPanelState(this.viewCreateState);
 
     this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
-
-    const completenessKey = Object.keys(RECORD_COMPLETENESS).find(
-      (name) => name === this.activeRecord.recordCompleteness
-    );
-    this.recordCompleteness = RECORD_COMPLETENESS[completenessKey];
+    this.isHgvOrTrlVehicle = this.techRecHelper.isHgvOrTrlVehicle(this.activeRecord.vehicleType);
+    this.isPsvOrTrlVehicle = this.techRecHelper.isPsvOrTrlVehicle(this.activeRecord.vehicleType);
+    this.isArchivedRecord = this.techRecHelper.isArchivedRecord(this.activeRecord.statusCode);
   }
 
   setPanelState(toggleState: boolean) {

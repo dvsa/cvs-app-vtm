@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentsEditComponent component should render with the given properties  1`] = `
+exports[`NotesEditComponent should render with the given properties  1`] = `
 <vtm-notes-edit
   fb={[Function FormBuilder]}
   notesDetails=""
