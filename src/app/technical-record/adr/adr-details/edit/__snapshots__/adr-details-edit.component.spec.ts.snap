@@ -278,7 +278,7 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
                     <h4
                       class="govuk-heading-m"
                     >
-                      Compatibility group J
+                      Compatibility group J (optional)
                     </h4>
                     <div
                       class="govuk-radios govuk-radios--inline"
@@ -337,7 +337,7 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
                 class="govuk-label govuk-!-font-weight-bold"
                 for="adrTypeApprovalNo"
               >
-                 ADR type approval number 
+                 ADR type approval number (optional) 
               </label>
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
@@ -354,7 +354,7 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
               <label
                 class="govuk-label govuk-!-font-weight-bold"
               >
-                 Guidance notes 
+                 Guidance notes (optional) 
               </label>
               <div
                 class="govuk-checkboxes ng-untouched ng-pristine ng-valid"
