@@ -76,7 +76,7 @@ exports[`TyresComponent should create psv view only with populated data 1`] = `
           class="govuk-table__header govuk-!-font-weight-bold"
           scope="col"
         >
-          Speed category symbol
+           Speed category symbol 
         </td>
         <td
           class="govuk-table__header govuk-!-font-weight-bold"
@@ -98,44 +98,44 @@ exports[`TyresComponent should create psv view only with populated data 1`] = `
         <th
           class="govuk-table__cell govuk-!-font-weight-bold"
         >
-          Axle 1
+           Axle 1 
         </th>
         <td
           class="govuk-table__cell"
           id="test-tyreCode-1"
         >
-           -
+           - 
         </td>
         <td
           class="govuk-table__cell"
           id="test-tyreSize-1"
         >
-           16
+           16 
         </td>
         <td
           class="govuk-table__cell"
           id="test-plyRating-1"
         >
-           12S
+           12S 
         </td>
         
         <td
           class="govuk-table__cell"
           id="test-speedCategorySymbol-1"
         >
-           -
+           - 
         </td>
         <td
           class="govuk-table__cell"
           id="test-fitmentCode-1"
         >
-           12313
+           12313 
         </td>
         <td
           class="govuk-table__cell"
           id="test-dataTrAxles-1"
         >
-           1234
+           1234 
         </td>
       </tr>
     </tbody>
@@ -205,41 +205,93 @@ exports[`TyresComponent should create view only with populated data 1`] = `
         <th
           class="govuk-table__cell govuk-!-font-weight-bold"
         >
-          Axle 1
+           Axle 1 
         </th>
         <td
           class="govuk-table__cell"
           id="test-tyreCode-1"
         >
-           -
+           - 
         </td>
         <td
           class="govuk-table__cell"
           id="test-tyreSize-1"
         >
-           16
+           16 
         </td>
         <td
           class="govuk-table__cell"
           id="test-plyRating-1"
         >
-           12S
+           12S 
         </td>
         
         <td
           class="govuk-table__cell"
           id="test-fitmentCode-1"
         >
-           12313
+           12313 
         </td>
         <td
           class="govuk-table__cell"
           id="test-dataTrAxles-1"
         >
-           1234
+           1234 
         </td>
       </tr>
     </tbody>
   </table>
+</vtm-tyres>
+`;
+
+exports[`TyresComponent should render the editable component if editState is true 1`] = `
+<vtm-tyres
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-tyres-edit
+          ng-reflect-tech-record="[object Object]"
+        >
+          <div>
+            active record is: {
+    "tyreUseCode": "4",
+    "axles": [
+      {
+        "parkingBrakeMrk": true,
+        "axleNumber": 1,
+        "brakes": {
+          "brakeActuator": 123,
+          "leverLength": 123,
+          "springBrakeParking": true
+        },
+        "tyres": {
+          "tyreSize": "16",
+          "plyRating": "12S",
+          "fitmentCode": "12313",
+          "dataTrAxles": 1234
+        },
+        "weights": {
+          "gbWeight": 100,
+          "kerbWeight": 150,
+          "designWeight": 250,
+          "eecWeight": 150
+        }
+      }
+    ]
+  }
+          </div>
+        </vtm-tyres-edit>
+      </dt>
+    </div>
+  </dl>
 </vtm-tyres>
 `;

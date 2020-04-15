@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '@app/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
+
 import { VehicleSummaryComponent } from '@app/technical-record/vehicle-summary/vehicle-summary.component';
-import { TESTING_UTILS } from '../../utils/testing.utils';
+import { SharedModule } from '@app/shared/shared.module';
+import { TESTING_UTILS } from '@app/utils/';
 import { TechRecord } from '@app/models/tech-record.model';
 import { VEHICLE_TYPES } from '@app/app.enums';
 
@@ -21,7 +22,6 @@ const getTechRecord = (): TechRecord => {
 describe('VehicleSummaryComponent', () => {
   let component: VehicleSummaryComponent;
   let fixture: ComponentFixture<VehicleSummaryComponent>;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
@@ -29,7 +29,8 @@ describe('VehicleSummaryComponent', () => {
         VehicleSummaryComponent,
         TestVehicleSummaryHgvComponent,
         TestVehicleSummaryTrlComponent,
-        TestVehicleSummaryPsvComponent
+        TestVehicleSummaryPsvComponent,
+        TestVehicleSummaryEditComponent
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -68,8 +69,14 @@ describe('VehicleSummaryComponent', () => {
 
     expect(component.axlesHasParkingBrakeMrk()).toBeTruthy();
   });
-});
 
+  it('should render the editable component if editState is true', () => {
+    component.editState = true;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
+});
 @Component({
   selector: 'vtm-vehicle-summary-hgv',
   template: `
@@ -98,4 +105,14 @@ class TestVehicleSummaryTrlComponent {
 })
 class TestVehicleSummaryPsvComponent {
   @Input() activeRecord: TechRecord;
+}
+
+@Component({
+  selector: 'vtm-vehicle-summary-edit',
+  template: `
+    <div>active record is: {{ techRecord | json }}</div>
+  `
+})
+class TestVehicleSummaryEditComponent {
+  @Input() techRecord: TechRecord;
 }

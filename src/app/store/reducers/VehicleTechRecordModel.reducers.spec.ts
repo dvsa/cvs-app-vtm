@@ -4,7 +4,6 @@ import {
   GetVehicleTechRecordModel,
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  GetVehicleTechRecordModelSuccess,
   SetVehicleTechRecordModelOnCreate
 } from '../actions/VehicleTechRecordModel.actions';
 import { initialVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
@@ -30,17 +29,6 @@ describe('VehicleTechRecordModel Reducer', () => {
       const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
       expect(result).toEqual({
         ...initialVehicleTechRecordModelState
-      });
-    });
-  });
-
-  describe('[VehicleTechRecordModel] Get VehicleTechRecordModel Success', () => {
-    it('should update the state with the payload', () => {
-      const action = new GetVehicleTechRecordModelSuccess([vehicleTechRecord]);
-      const result = VehicleTechRecordModelReducers(initialVehicleTechRecordModelState, action);
-      expect(result).toEqual({
-        ...initialVehicleTechRecordModelState,
-        selectedVehicleTechRecordModel: [vehicleTechRecord]
       });
     });
   });

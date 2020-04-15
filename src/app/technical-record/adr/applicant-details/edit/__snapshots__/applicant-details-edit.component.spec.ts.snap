@@ -4,6 +4,7 @@ exports[`ApplicantDetailsEditComponent should create with initialized form contr
 <vtm-applicant-details-edit
   adrForm={[Function FormGroup]}
   applicantDetails={[Function Object]}
+  booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   onDestroy$={[Function Subject]}

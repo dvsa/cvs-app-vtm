@@ -3,6 +3,7 @@
 exports[`TankDetailsEditComponent handleFormChanges should hide section when tankValidationState$ value is HIDDEN 1`] = `
 <vtm-tank-details-edit
   adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
   classNumberSubstance={[Function String]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
@@ -23,6 +24,7 @@ exports[`TankDetailsEditComponent handleFormChanges should hide section when tan
 exports[`TankDetailsEditComponent should create with initialized form controls 1`] = `
 <vtm-tank-details-edit
   adrForm={[Function FormGroup]}
+  booleanOptions={[Function Object]}
   classNumberSubstance={[Function String]}
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}

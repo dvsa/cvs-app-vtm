@@ -1,45 +1,77 @@
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject } from 'rxjs';
 
 import { SharedModule } from '@app/shared';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MultipleRecordsContainer } from '@app/multiple-records/multiple-records.container';
-import { of } from 'rxjs';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Store, INITIAL_STATE } from '@ngrx/store';
-import { hot } from 'jasmine-marbles';
+import { MockStore } from '@app/utils';
+import { RECORD_STATUS, VIEW_STATE } from '@app/app.enums';
+import { SetSelectedVehicleTechnicalRecord } from '@app/store/actions/VehicleTechRecordModel.actions';
 
 describe('MultipleRecordsContainer', () => {
-  let container: MultipleRecordsContainer;
   let fixture: ComponentFixture<MultipleRecordsContainer>;
-  const vTechRec: VehicleTechRecordModel = {} as VehicleTechRecordModel;
+  let component: MultipleRecordsContainer;
+  const mockSelector = new BehaviorSubject<any>(undefined);
+  const store: MockStore = new MockStore(mockSelector);
+
+  const mockVehicleRecord = (): VehicleTechRecordModel => {
+    return {
+      systemNumber: '16228',
+      techRecord: [{ statusCode: RECORD_STATUS.PROVISIONAL }]
+    } as VehicleTechRecordModel;
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, SharedModule],
-      providers: [
-        {
-          provide: Store,
-          useValue: {
-            dispatch: jest.fn(),
-            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
-            select: jest.fn()
-          }
-        }
-      ],
-      declarations: [MultipleRecordsContainer],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      imports: [SharedModule],
+      declarations: [MultipleRecordsContainer, TestMultipleRecordComponent],
+      providers: [{ provide: Store, useValue: store }]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(MultipleRecordsContainer);
+    component = fixture.componentInstance;
+    jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(MultipleRecordsContainer);
-    container = fixture.componentInstance;
-    container.vehicleTechRecords$ = of([vTechRec]);
+  it('should render the container', () => {
+    mockSelector.next({
+      selectVehicleTechRecordModelHavingStatusAll: [
+        mockVehicleRecord()
+      ] as VehicleTechRecordModel[]
+    });
+
     fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
   });
 
-  it('should create', () => {
-    expect(container).toBeTruthy();
+  it('should dispatch the selected record', () => {
+    const selectedRecordAction = new SetSelectedVehicleTechnicalRecord({
+      vehicleRecord: mockVehicleRecord(),
+      viewState: VIEW_STATE.VIEW_ONLY
+    });
+
+    const mockMultipleComponent = fixture.debugElement.query(
+      By.directive(TestMultipleRecordComponent)
+    );
+    mockMultipleComponent.componentInstance.setVehicleTechRecord.emit(mockVehicleRecord());
+
+    expect(store.dispatch).toHaveBeenCalledWith(selectedRecordAction);
   });
 });
+
+@Component({
+  selector: 'vtm-multiple-records',
+  template: `
+    <div>Vehicle records: {{ vehicleTechRecords | json }}</div>
+  `
+})
+class TestMultipleRecordComponent {
+  @Input() vehicleTechRecords: VehicleTechRecordModel[];
+  @Output() setVehicleTechRecord = new EventEmitter<VehicleTechRecordModel>();
+}

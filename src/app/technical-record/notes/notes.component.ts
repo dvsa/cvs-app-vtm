@@ -7,9 +7,14 @@ import { TechRecord } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotesComponent implements OnInit {
+  @Input() editState: boolean;
   @Input() activeRecord: TechRecord;
+
+  notes: string;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.notes = this.activeRecord.notes;
+  }
 }
