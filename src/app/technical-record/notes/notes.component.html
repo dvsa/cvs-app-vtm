@@ -3,7 +3,7 @@
     <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType !== 'psv'">
       <dt class="govuk-summary-list__key">Notes</dt>
       <dd id="test-notes" class="govuk-summary-list__value">
-        <span class="notes-section">{{ this.notes | DefaultNullOrEmpty }}</span>
+        <span class="notes-section">{{ notes | DefaultNullOrEmpty }}</span>
       </dd>
     </div>
 
@@ -30,7 +30,7 @@
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
-        <vtm-notes-edit [notesDetails]="this.notes"></vtm-notes-edit>
+        <vtm-notes-edit [notesDetails]="notes"></vtm-notes-edit>
       </dt>
     </div>
   </dl>

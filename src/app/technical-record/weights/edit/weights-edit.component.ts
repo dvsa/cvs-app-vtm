@@ -18,6 +18,7 @@ import { Observable, Subject } from 'rxjs';
 import { TechRecord, Axle, Weights } from '@app/models/tech-record.model';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
 import { tap, takeUntil } from 'rxjs/operators';
+import { VEHICLE_TYPES } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-weights-edit',
@@ -36,6 +37,7 @@ export class WeightsEditComponent implements OnInit, OnDestroy {
   techRecordFg: FormGroup;
   numberOfAxles$: Observable<number>;
   onDestroy$ = new Subject();
+  isPsvVehicle: boolean;
 
   get axlesWeigths() {
     return this.techRecordFg.get('axlesWeights') as FormArray;
@@ -50,6 +52,7 @@ export class WeightsEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
+    this.isPsvVehicle = this.techRecord.vehicleType === VEHICLE_TYPES.PSV;
 
     const { axles } = this.techRecord;
     const techAxles = axles && axles.length ? axles : [];

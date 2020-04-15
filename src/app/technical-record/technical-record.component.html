@@ -49,7 +49,7 @@
               id="test-record-completeness"
               class="govuk-!-font-weight-regular govuk-!-font-size-19"
             >
-              {{ activeRecord.recordCompleteness | titlecase }}
+              {{ recordCompleteness }}
             </span>
           </p>
         </div>
@@ -806,7 +806,7 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="viewOnlyState || editState">
+      <ng-container *ngIf="viewOnlyState">
         <div [@.disabled]="true">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "

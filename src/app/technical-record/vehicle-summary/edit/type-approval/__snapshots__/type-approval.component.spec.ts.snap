@@ -90,6 +90,7 @@ exports[`TypeApprovalComponent should create with empty control states 1`] = `
             ng-reflect-maxlength="25"
             ng-reflect-name="approvalTypeNumber"
             type="text"
+            vtmnullvalue=""
           />
         </div>
         <div
@@ -110,6 +111,7 @@ exports[`TypeApprovalComponent should create with empty control states 1`] = `
             ng-reflect-maxlength="40"
             ng-reflect-name="ntaNumber"
             type="text"
+            vtmnullvalue=""
           />
         </div>
         <div
@@ -130,6 +132,7 @@ exports[`TypeApprovalComponent should create with empty control states 1`] = `
             ng-reflect-maxlength="25"
             ng-reflect-name="variantNumber"
             type="text"
+            vtmnullvalue=""
           />
         </div>
         <div
@@ -150,6 +153,7 @@ exports[`TypeApprovalComponent should create with empty control states 1`] = `
             ng-reflect-maxlength="35"
             ng-reflect-name="variantVersionNumber"
             type="text"
+            vtmnullvalue=""
           />
         </div>
       </form>

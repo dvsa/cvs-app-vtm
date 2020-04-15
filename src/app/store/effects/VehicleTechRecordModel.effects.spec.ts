@@ -11,14 +11,21 @@ import { VehicleTechRecordModelEffects } from '@app/store/effects/VehicleTechRec
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { UserService } from '@app/app-user.service';
 import {
-  GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllSuccess,
+  GetVehicleTechRecordHavingStatusAll,
+  GetVehicleTechRecordHavingStatusAllSuccess,
   SetSelectedVehicleTechnicalRecord,
-  SetSelectedVehicleTechnicalRecordSucess,
-  SetViewState
+  SetSelectedVehicleTechRecordSuccess,
+  SetViewState,
+  CreateVehicleTechRecord,
+  UpdateVehicleTechRecord,
+  UpdateVehicleTechRecordSuccess
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
-import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { TechRecord } from './../../models/tech-record.model';
+import {
+  VehicleTechRecordModel,
+  VehicleTechRecordEdit
+} from '@app/models/vehicle-tech-record.model';
 import { VEHICLE_TECH_RECORD_SEARCH_ERRORS, VIEW_STATE } from '@app/app.enums';
 import { SearchParams } from '@app/models/search-params';
 import { SetErrorMessage } from '@app/store/actions/Error.actions';
@@ -28,7 +35,7 @@ const mockVehicleTechRecord = (): VehicleTechRecordModel => {
     systemNumber: '1231243',
     vrms: null,
     vin: 'ABCDEFGH777777',
-    techRecord: [],
+    techRecord: [{}] as TechRecord[],
     metadata: { adrDetails: undefined }
   };
 };
@@ -40,6 +47,11 @@ const mockSearchParams = (): SearchParams => {
   };
 };
 
+const mockVehicleRecordEdit = {
+  vin: 'ABCDR1234',
+  techRecord: [{}]
+} as VehicleTechRecordEdit;
+
 describe('VehicleTechRecordModelEffects', () => {
   let effects: VehicleTechRecordModelEffects;
   let actions$: Observable<Action>;
@@ -47,6 +59,8 @@ describe('VehicleTechRecordModelEffects', () => {
 
   let navigate: jest.Mock;
   let getTechnicalRecordsAllStatuses: jest.Mock;
+  let createTechnicalRecord: jest.Mock;
+  let updateTechnicalRecords: jest.Mock;
   let getUser: jest.Mock;
 
   const mockSelector = new BehaviorSubject<any>(undefined);
@@ -55,6 +69,8 @@ describe('VehicleTechRecordModelEffects', () => {
   beforeEach(() => {
     navigate = jest.fn();
     getTechnicalRecordsAllStatuses = jest.fn();
+    createTechnicalRecord = jest.fn();
+    updateTechnicalRecords = jest.fn();
     getUser = jest.fn();
 
     TestBed.configureTestingModule({
@@ -65,7 +81,11 @@ describe('VehicleTechRecordModelEffects', () => {
         { provide: Store, useValue: store },
         {
           provide: TechnicalRecordService,
-          useValue: { getTechnicalRecordsAllStatuses }
+          useValue: {
+            getTechnicalRecordsAllStatuses,
+            createTechnicalRecord,
+            updateTechnicalRecords
+          }
         },
         {
           provide: UserService,
@@ -90,13 +110,13 @@ describe('VehicleTechRecordModelEffects', () => {
     let vehicleTechRecordAllStatusesSuccess: Action;
 
     beforeEach(() => {
-      action = new GetVehicleTechRecordModelHavingStatusAll(mockSearchParams());
+      action = new GetVehicleTechRecordHavingStatusAll(mockSearchParams());
       actions$ = hot('-a--', { a: action });
     });
 
     it('should navigate to multiple records page when multiple records are found', () => {
       const vehicleRecords = [mockVehicleTechRecord(), mockVehicleTechRecord()];
-      vehicleTechRecordAllStatusesSuccess = new GetVehicleTechRecordModelHavingStatusAllSuccess(
+      vehicleTechRecordAllStatusesSuccess = new GetVehicleTechRecordHavingStatusAllSuccess(
         vehicleRecords
       );
 
@@ -115,7 +135,7 @@ describe('VehicleTechRecordModelEffects', () => {
 
     it('should dispatch SetSelectedVehicleTechnicalRecord for single record found', () => {
       const vehicleRecords = [mockVehicleTechRecord()];
-      vehicleTechRecordAllStatusesSuccess = new GetVehicleTechRecordModelHavingStatusAllSuccess(
+      vehicleTechRecordAllStatusesSuccess = new GetVehicleTechRecordHavingStatusAllSuccess(
         vehicleRecords
       );
 
@@ -155,8 +175,8 @@ describe('VehicleTechRecordModelEffects', () => {
     });
 
     it(`should navigate to technical record and dispatch
-    SetSelectedVehicleTechnicalRecordSucess, SetViewState, GetVehicleTestResultModel `, () => {
-      const setTechSuccess = new SetSelectedVehicleTechnicalRecordSucess(mockVehicleTechRecord());
+    SetSelectedVehicleTechRecordSuccess, SetViewState, GetVehicleTestResultModel `, () => {
+      const setTechSuccess = new SetSelectedVehicleTechRecordSuccess(mockVehicleTechRecord());
       const setViewState = new SetViewState(VIEW_STATE.VIEW_ONLY);
       const testRestult = new GetVehicleTestResultModel(mockVehicleTechRecord().systemNumber);
 
@@ -167,62 +187,74 @@ describe('VehicleTechRecordModelEffects', () => {
     });
   });
 
-  // it('setVinOnCreate$ - should call the technicalRecordService service method info with a payload', () => {
-  //   const valuePayload = { vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: [] };
-  //   const requestErrors = [];
-  //   const requests: Observable<any>[] = [of(undefined), of(undefined)];
+  describe('createTechnicalRecords$', () => {
+    beforeEach(() => {
+      action = new CreateVehicleTechRecord(mockVehicleRecordEdit);
+      actions$ = hot('-a--', { a: action });
+    });
 
-  //   actions = cold('a', { a: new SetVehicleTechRecordModelOnCreate(valuePayload) });
+    it('should dispatch GetVehicleTechRecordHavingStatusAll on successful create', () => {
+      const getTechRecord = new GetVehicleTechRecordHavingStatusAll({
+        searchIdentifier: mockVehicleRecordEdit.vin,
+        searchCriteria: 'all'
+      });
 
-  //   forkJoin(requests).subscribe((result) => {
-  //     try {
-  //       expect(result[0]).toBe(undefined);
-  //       expect(result[1]).toBe(undefined);
-  //     } catch (error) {
-  //       fail('forkJoin: ' + error);
-  //     }
-  //   });
+      const createRecord$ = cold('-(b)', { b: 'success' });
+      const expected$ = cold('--(c)-', { c: getTechRecord });
+      createTechnicalRecord.mockReturnValue(createRecord$);
 
-  //   effects.setVinOnCreate$.subscribe(() => {
-  //     try {
-  //       spyOn(store, 'dispatch');
-  //       expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
-  //         valuePayload.vin
-  //       );
-  //       expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
-  //         valuePayload.vrm
-  //       );
-  //       expect(requestErrors).toEqual([]);
-  //     } catch (error) {
-  //       fail('setVinOnCreate$: ' + error);
-  //     }
-  //   });
-  // });
+      expect(effects.createTechnicalRecord$).toBeObservable(expected$);
+      expect(createTechnicalRecord).toHaveBeenCalledWith(mockVehicleRecordEdit);
+    });
 
-  // it('setVinOnCreate$ - should return errors for existing VIN & VRM', () => {
-  //   const valuePayload = { vin: 'P012301230001', vrm: 'CT70002', vType: 'HGV', error: [] };
+    it('should dispatch SetErrorMessage when create api call fails', () => {
+      const error = { error: { errors: ['error1', 'error2'] } };
+      const setError = new SetErrorMessage(error.error.errors);
 
-  //   effects.setVinOnCreate$.subscribe(() => {
-  //     spyOn(store, 'dispatch');
-  //     expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
-  //       valuePayload.vin
-  //     );
-  //     expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
-  //       valuePayload.vrm
-  //     );
-  //     expect(store.dispatch).toHaveBeenCalledWith(new SetErrorMessage(['']));
-  //   });
-  // });
+      const failed$ = cold('--#', {}, error);
+      const expected$ = cold('---e-', { e: setError });
+      createTechnicalRecord.mockReturnValue(failed$);
 
-  // it('setVinOnCreate$ - should return errors for existing VIN & VRM', () => {
-  //   const valuePayload = { vin: 'P012301230001', vrm: 'CT70002', vType: 'Trailer', error: [] };
+      expect(effects.createTechnicalRecord$).toBeObservable(expected$);
+    });
+  });
 
-  //   effects.setVinOnCreate$.subscribe(() => {
-  //     spyOn(store, 'dispatch');
-  //     expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
-  //       'P012301230001'
-  //     );
-  //     expect(store.dispatch).toHaveBeenCalledWith(new SetErrorMessage(['']));
-  //   });
-  // });
+  describe('updateTechnicalRecords$', () => {
+    beforeEach(() => {
+      action = new UpdateVehicleTechRecord(mockVehicleRecordEdit);
+      actions$ = hot('-a--', { a: action });
+
+      mockSelector.next({
+        getSelectedVehicleTechRecord: mockVehicleTechRecord()
+      });
+    });
+
+    it(`should dispatch UpdateVehicleTechRecordSuccess, SetSelectedVehicleTechRecordSuccess, SetViewState `, () => {
+      const savedRecord = mockVehicleTechRecord();
+      const updateTechRecord = new UpdateVehicleTechRecordSuccess(mockVehicleTechRecord());
+      const setTechSuccess = new SetSelectedVehicleTechRecordSuccess(mockVehicleTechRecord());
+      const setViewState = new SetViewState(VIEW_STATE.VIEW_ONLY);
+
+      const updatedRecord$ = cold('-(b)', { b: savedRecord });
+      const expected$ = cold('--(cde)-', {
+        c: updateTechRecord,
+        d: setTechSuccess,
+        e: setViewState
+      });
+      updateTechnicalRecords.mockReturnValue(updatedRecord$);
+
+      expect(effects.updateTechnicalRecords$).toBeObservable(expected$);
+    });
+
+    it('should dispatch SetErrorMessage when update api call fails', () => {
+      const error = { error: { errors: ['error1', 'error2'] } };
+      const setError = new SetErrorMessage(error.error.errors);
+
+      const failed$ = cold('--#', {}, error);
+      const expected$ = cold('---e-', { e: setError });
+      updateTechnicalRecords.mockReturnValue(failed$);
+
+      expect(effects.updateTechnicalRecords$).toBeObservable(expected$);
+    });
+  });
 });
