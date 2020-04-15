@@ -19,7 +19,7 @@ describe('VehicleSummaryComponent', () => {
   let component: VehicleSummaryComponent;
   let fixture: ComponentFixture<VehicleSummaryComponent>;
   let injector: TestBed;
-  let axles = [
+  const axles = [
     {
       parkingBrakeMrk: false,
       axleNumber: 1

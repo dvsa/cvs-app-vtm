@@ -22,13 +22,10 @@ export class FormConnectorDirective implements OnInit, OnDestroy {
     this.formChange = this.formGroupDirective.form.valueChanges
       .pipe(
         debounceTime(this.debounce),
-        tap((value) => {
-          console.log('VALUE:', value, 'PATH:', this.path);
-        })
+        tap(value => console.log('VALUE: ', value, 'PATH: ', this.path))
       )
       .subscribe();
-
-    console.log(this.formGroupDirective.form);
+      console.log(this.formGroupDirective.form);
   }
 
   ngOnDestroy(): void {
