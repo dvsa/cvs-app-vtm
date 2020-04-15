@@ -46,7 +46,10 @@
           >Cancel</a
         >
       </div>
-      <div class="govuk-grid-column-one-quarter govuk-!-margin-left-0 govuk-!-padding-left-0">
+      <div
+        *ngIf="!editState"
+        class="govuk-grid-column-one-quarter govuk-!-margin-left-0 govuk-!-padding-left-0"
+      >
         <button
           id="test-view-certificate"
           class="govuk-button govuk-button--secondary govuk-!-padding-left-3 govuk-!-padding-right-3"
