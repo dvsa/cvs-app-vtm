@@ -75,6 +75,20 @@ describe('TechnicalRecordService', () => {
     request.flush(mock);
   });
 
+  it('createTechnicalRecord should create vehicle technical record', (done) => {
+    const mock = 'mock';
+    const recordCreated = { techRecord: [], vin: 'ABCDEF123' } as VehicleTechRecordEdit;
+
+    service.createTechnicalRecord(recordCreated).subscribe((res) => {
+      expect(res).toBeDefined();
+      expect(res).toEqual(mock);
+      done();
+    });
+
+    const request = httpMock.expectOne((req) => req.url.includes(`/vehicles`));
+    request.flush(mock);
+  });
+
   it('updateTechnicalRecords should update technical record', (done) => {
     const mock = { techRecord: [] } as VehicleTechRecordModel;
     const recordUpdate = { techRecord: [] } as VehicleTechRecordEdit;

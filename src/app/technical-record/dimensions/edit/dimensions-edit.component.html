@@ -76,6 +76,7 @@
                       $implicit: {
                         group: techRecordFg,
                         label: item.label,
+                        displayOptional: isHgvVehicle,
                         field: item.field
                       }
                     }
@@ -162,7 +163,8 @@
                 }}"
                 class="govuk-label govuk-!-font-weight-bold"
               >
-                {{ dimTemplate.label }}
+                <span>{{ dimTemplate.label }}</span>
+                <span *ngIf="dimTemplate.displayOptional">&nbsp;(optional)</span>
               </label>
               <input
                 id="test-edit-{{ dimTemplate.idLabel }}{{ dimTemplate.field }}{{
@@ -173,6 +175,7 @@
                 name="{{ dimTemplate.field }}"
                 class="govuk-input govuk-input--width-5"
                 formControlName="{{ dimTemplate.field }}"
+                vtmNullValue
               />
             </div>
           </ng-template>

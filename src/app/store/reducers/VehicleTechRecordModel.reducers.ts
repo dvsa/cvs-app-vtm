@@ -1,25 +1,25 @@
 import {
-  EVehicleTechRecordModelActions,
-  VehicleTechRecordModelActions
+  EVehicleTechRecordActions,
+  VehicleTechRecordActions
 } from '../actions/VehicleTechRecordModel.actions';
 import {
   initialVehicleTechRecordModelState,
-  IVehicleTechRecordModelState
+  VehicleTechRecordState
 } from '@app/store/state/VehicleTechRecordModel.state';
 
-export function VehicleTechRecordModelReducers(
+export function VehicleTechRecordReducers(
   state = initialVehicleTechRecordModelState,
-  action: VehicleTechRecordModelActions
-): IVehicleTechRecordModelState {
+  action: VehicleTechRecordActions
+): VehicleTechRecordState {
   switch (action.type) {
-    case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess: {
+    case EVehicleTechRecordActions.GetVehicleTechRecordHavingStatusAllSuccess: {
       return {
         ...state,
         vehicleTechRecordModel: action.vehicleTechRecords
       };
     }
 
-    case EVehicleTechRecordModelActions.UpdateVehicleTechRecordSuccess: {
+    case EVehicleTechRecordActions.UpdateVehicleTechRecordSuccess: {
       return {
         ...state,
         vehicleTechRecordModel: state.vehicleTechRecordModel.map((vehicleRecord) =>
@@ -30,14 +30,14 @@ export function VehicleTechRecordModelReducers(
       };
     }
 
-    case EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecordSucess: {
+    case EVehicleTechRecordActions.SetSelectedVehicleTechRecordSuccess: {
       return {
         ...state,
         selectedVehicleTechRecord: action.vehicleTechRecord
       };
     }
 
-    case EVehicleTechRecordModelActions.SetViewState: {
+    case EVehicleTechRecordActions.SetViewState: {
       return {
         ...state,
         viewState: action.viewState

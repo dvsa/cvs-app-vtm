@@ -1,8 +1,9 @@
-import { BackButtonDirective } from './back-button.directive';
 import { async, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { SpyLocation } from '@angular/common/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
+
+import { BackButtonDirective } from './back-button.directive';
 
 describe('BackButtonDirective', () => {
   let directive: BackButtonDirective;
@@ -26,6 +27,7 @@ describe('BackButtonDirective', () => {
   it('should call the back on click', () => {
     jest.spyOn(location, 'back');
     directive.onClick();
+
     expect(location.back).toHaveBeenCalled();
   });
 });

@@ -14,11 +14,13 @@ import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResul
 import { MetaData } from '@app/models/meta-data';
 import {
   SetViewState,
+  CreateVehicleTechRecord,
   UpdateVehicleTechRecord
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {
   VehicleTechRecordModel,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  VehicleTechRecordEditState
 } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
@@ -66,11 +68,15 @@ export class TechnicalRecordsContainer implements OnInit {
 
   ngOnInit(): void {}
 
-  vehicleRecordSubmissionHandler(editedVehicleRecord: VehicleTechRecordEdit) {
-    this.store.dispatch(new UpdateVehicleTechRecord(editedVehicleRecord));
+  vehicleRecordSubmissionHandler(editedVehicleRecordState: VehicleTechRecordEditState): void {
+    const { vehicleRecordEdit, viewState } = editedVehicleRecordState;
+
+    viewState === VIEW_STATE.CREATE
+      ? this.store.dispatch(new CreateVehicleTechRecord(vehicleRecordEdit))
+      : this.store.dispatch(new UpdateVehicleTechRecord(vehicleRecordEdit));
   }
 
-  viewStateHandler(state: VIEW_STATE) {
+  viewStateHandler(state: VIEW_STATE): void {
     this.store.dispatch(new SetViewState(state));
   }
 }
