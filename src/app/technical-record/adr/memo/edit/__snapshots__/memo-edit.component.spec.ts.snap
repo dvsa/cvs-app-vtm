@@ -49,7 +49,7 @@ exports[`MemoEditComponent should create with initialized form controls 1`] = `
             <h2
               class="govuk-heading-m"
             >
-              Memo 07/09 (3 month extension) applied
+              Memo 07/09 (3 month extension) applied (optional)
             </h2>
             <div
               class="govuk-radios govuk-radios--inline"

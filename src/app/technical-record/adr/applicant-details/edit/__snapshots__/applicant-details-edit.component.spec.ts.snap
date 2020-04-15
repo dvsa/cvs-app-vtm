@@ -30,7 +30,7 @@ exports[`ApplicantDetailsEditComponent should create with initialized form contr
             <h2
               class="govuk-heading-m"
             >
-              Applicant details
+              Owner/operator details
             </h2>
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
