@@ -30,6 +30,7 @@ export class TechnicalRecordService {
         const queryStr = `${searchIdentifier}/tech-records?status=all&metadata=true&searchCriteria=${searchCriteria}`;
         return `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${queryStr}`;
       },
+      createTechRecord: () => `${this._apiServer.APITechnicalRecordServerUri}/vehicles`,
       updateTechRecords: (vin: string) =>
         `${this._apiServer.APITechnicalRecordServerUri}/vehicles/${vin}`
     };
@@ -48,6 +49,22 @@ export class TechnicalRecordService {
         this.routes.techRecordsAllStatuses(searchIdentifier, searchCriteria),
         { headers }
       )
+      .pipe(
+        delayedRetry(),
+        shareReplay(),
+        finalize(() => this._store.dispatch(new LoadingFalse()))
+      );
+  }
+
+  createTechnicalRecord(techRecord: VehicleTechRecordEdit): Observable<string> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+
+    this._store.dispatch(new LoadingTrue());
+
+    return this.httpClient
+      .post<VehicleTechRecordEdit>(this.routes.createTechRecord(), techRecord, {
+        headers
+      })
       .pipe(
         delayedRetry(),
         shareReplay(),

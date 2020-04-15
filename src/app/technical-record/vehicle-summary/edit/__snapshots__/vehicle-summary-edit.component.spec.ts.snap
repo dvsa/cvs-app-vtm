@@ -996,6 +996,7 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
                 name="emissionsLimit"
                 ng-reflect-name="emissionsLimit"
                 type="number"
+                vtmnullvalue=""
               />
             </div>
             

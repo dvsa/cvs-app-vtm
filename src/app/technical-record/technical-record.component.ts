@@ -19,7 +19,8 @@ import { TechRecord } from './../models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import {
   VehicleTechRecordModel,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  VehicleTechRecordEditState
 } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
@@ -36,7 +37,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   @Input() metaData: MetaData;
   @Input() currentState: VIEW_STATE;
   @Input() testResultJson: TestResultModel[];
-  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEdit>();
+  @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEditState>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
 
   showAdrDetails: boolean;
@@ -59,6 +60,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { activeVehicleTechRecord, currentState } = changes;
+
     if (activeVehicleTechRecord) {
       this.activeRecord = this.activeVehicleTechRecord.techRecord[0];
       this.adrDisplayParams = { showAdrDetails: !!this.activeRecord.adrDetails };
@@ -69,28 +71,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       this.editState = this.currentState === VIEW_STATE.EDIT;
       this.createState = this.currentState === VIEW_STATE.CREATE;
 
-      this.allOpened = this.createState;
-      this.panels = [
-        { panel: 'Vehicle summary', isOpened: this.createState },
-        { panel: 'Body', isOpened: this.createState },
-        { panel: 'Weights', isOpened: this.createState },
-        { panel: 'Tyres', isOpened: this.createState },
-        { panel: 'Brakes', isOpened: this.createState },
-        { panel: 'DDA', isOpened: this.createState },
-        { panel: 'Dimensions', isOpened: this.createState },
-        { panel: 'ADR', isOpened: this.createState },
-        { panel: 'Applicant', isOpened: this.createState },
-        { panel: 'Documents', isOpened: this.createState },
-        { panel: 'Purchaser', isOpened: this.createState },
-        { panel: 'Manufacturer', isOpened: this.createState },
-        { panel: 'Authorisation into service', isOpened: this.createState },
-        { panel: 'Letters of authorisation', isOpened: this.createState },
-        { panel: 'Documents', isOpened: this.createState },
-        { panel: 'Notes', isOpened: this.createState },
-        { panel: 'Test history', isOpened: this.createState },
-        { panel: 'Technical record history', isOpened: this.createState },
-        { panel: 'Plates', isOpened: this.createState }
-      ];
+      this.setPanelState(this.createState);
     }
   }
 
@@ -100,6 +81,31 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     });
 
     this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
+  }
+
+  setPanelState(toggleState: boolean) {
+    this.allOpened = toggleState;
+    this.panels = [
+      { panel: 'Vehicle summary', isOpened: toggleState },
+      { panel: 'Body', isOpened: toggleState },
+      { panel: 'Weights', isOpened: toggleState },
+      { panel: 'Tyres', isOpened: toggleState },
+      { panel: 'Brakes', isOpened: toggleState },
+      { panel: 'DDA', isOpened: toggleState },
+      { panel: 'Dimensions', isOpened: toggleState },
+      { panel: 'ADR', isOpened: toggleState },
+      { panel: 'Applicant', isOpened: toggleState },
+      { panel: 'Documents', isOpened: toggleState },
+      { panel: 'Purchaser', isOpened: toggleState },
+      { panel: 'Manufacturer', isOpened: toggleState },
+      { panel: 'Authorisation into service', isOpened: toggleState },
+      { panel: 'Letters of authorisation', isOpened: toggleState },
+      { panel: 'Documents', isOpened: toggleState },
+      { panel: 'Notes', isOpened: toggleState },
+      { panel: 'Test history', isOpened: toggleState },
+      { panel: 'Technical record history', isOpened: toggleState },
+      { panel: 'Plates', isOpened: toggleState }
+    ];
   }
 
   togglePanel() {
@@ -157,7 +163,10 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.isSave) {
         mergedRecord.techRecord[0].reasonForCreation = result.data;
-        this.submitVehicleRecord.emit(mergedRecord);
+        this.submitVehicleRecord.emit({
+          vehicleRecordEdit: mergedRecord,
+          viewState: this.currentState
+        });
       }
     });
     // }

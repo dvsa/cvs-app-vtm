@@ -46,6 +46,7 @@ exports[`TyresEditComponent should create with initialized form AXLE tyres contr
                 ng-reflect-maxlength="2"
                 ng-reflect-name="tyreUseCode"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
             
@@ -130,6 +131,7 @@ exports[`TyresEditComponent should create with initialized form AXLE tyres contr
                           ng-reflect-maxlength="2"
                           ng-reflect-name="plyRating"
                           type="text"
+                          vtmnullvalue=""
                         />
                       </div>
                       <div
@@ -258,6 +260,7 @@ exports[`TyresEditComponent should create with initialized form AXLE tyres contr
                           ng-reflect-maxlength="2"
                           ng-reflect-name="plyRating"
                           type="text"
+                          vtmnullvalue=""
                         />
                       </div>
                       <div
@@ -368,6 +371,7 @@ exports[`TyresEditComponent should create with initialized form tyre controls 1`
                 ng-reflect-maxlength="2"
                 ng-reflect-name="tyreUseCode"
                 type="text"
+                vtmnullvalue=""
               />
             </div>
             
