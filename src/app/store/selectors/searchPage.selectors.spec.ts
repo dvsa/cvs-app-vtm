@@ -1,10 +1,8 @@
 import { Store } from '@ngrx/store';
-import { IAppState } from '../state/app.state';
 import { selectFeature, selectSearchPageError } from '../selectors/searchPage.selectors';
 import { async, TestBed } from '@angular/core/testing';
 
 describe('searchPage selector', () => {
-  let store: Store<IAppState>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

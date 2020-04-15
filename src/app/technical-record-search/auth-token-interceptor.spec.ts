@@ -69,7 +69,7 @@ describe('AuthTokenInterceptor', () => {
     injector = getTestBed();
     httpMock = TestBed.get(HttpTestingController);
     service = injector.get(TestResultService);
-    store= injector.get(Store);
+    store = injector.get(Store);
     adal = TestBed.get(MsAdalAngular6Service);
 
   });

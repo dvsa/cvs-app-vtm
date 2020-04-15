@@ -32,7 +32,7 @@ describe('SpinnerLoaderComponent', () => {
     store = injector.get(Store);
     spyOn(store, 'pipe').and.callThrough();
     component = fixture.componentInstance;
-    fixture.detectChanges;
+    fixture.detectChanges();
   });
 
   test('should create', () => {
