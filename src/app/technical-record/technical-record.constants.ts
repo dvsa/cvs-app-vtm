@@ -1,10 +1,10 @@
-export const AXLENUMOPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+export const AXLE_NUM_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-export const BOOLEANRADIOOPTIONS = { ['Yes']: true, ['No']: false };
+export const BOOLEAN_RADIO_OPTIONS = { ['Yes']: true, ['No']: false };
 
-export const FUNCTIONOPTIONS = { ['Articulated']: 'a', ['Rigid']: 'r' };
+export const FUNCTION_OPTIONS = { ['Articulated']: 'a', ['Rigid']: 'r' };
 
-export const FUELPROPULSION = [
+export const FUEL_PROPULSION = [
   'DieselPetrol',
   'Hybrid',
   'Electric',
@@ -67,23 +67,7 @@ export const VEHICLE_EUCATEGORY = [
 
 export const APPROVAL_TYPE = ['NTA', 'ECTA', 'IVA', 'NSSTA', 'ECSSTA'];
 
-export const FITMENT_CODE = [
-  'a7',
-  'a8',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'p',
-  'q'
-];
+export const FITMENT_CODE = ['double', 'single'];
 
 export const BODY_TYPE_DESC = [
   'articulated',

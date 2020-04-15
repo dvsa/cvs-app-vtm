@@ -92,16 +92,13 @@
                 >
                   <div class="govuk-checkboxes__item">
                     <input
-                      id="axle{{ i }}"
+                      id="axle_{{ i }}"
                       type="checkbox"
                       [value]="axle.get('selected').value"
                       [formControl]="axle.get('selected')"
                       class="govuk-checkboxes__input"
                     />
-                    <label
-                      for="permittedGood_{{ i }}"
-                      class="govuk-label govuk-checkboxes__label"
-                    >
+                    <label for="axle_{{ i }}" class="govuk-label govuk-checkboxes__label">
                       {{ axle.get('name').value }}
                     </label>
                   </div>

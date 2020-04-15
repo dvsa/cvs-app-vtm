@@ -4,9 +4,13 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
 <vtm-vehicle-summary-edit
   axleNoOptions={[Function Array]}
   booleanOptions={[Function Object]}
+  detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   fuelPropulsionOptions={[Function Array]}
+  numberOfAxles$={[Function Observable]}
+  onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
+  techRecHelper={[Function TechRecordHelperService]}
   techRecord={[Function Object]}
   techRecordFg={[Function FormGroup]}
   vehicleClassOptions={[Function Array]}
@@ -1048,38 +1052,14 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
             >
               <div>
                 Active record is: {
-    "statusCode": "provisional",
-    "adrDetails": {
-      "vehicleDetails": {
-        "approvalDate": "2020-03-10",
-        "type": "centre axle battery"
-      },
-      "listStatementApplicable": false,
-      "batteryListNumber": "",
-      "declarationsSeen": false,
-      "brakeDeclarationsSeen": false,
-      "brakeDeclarationIssuer": "",
-      "brakeEndurance": false,
-      "weight": "",
-      "compatibilityGroupJ": false,
-      "documents": [],
-      "permittedDangerousGoods": [
-        "AT"
-      ],
-      "additionalExaminerNotes": "",
-      "applicantDetails": {
-        "name": "Ben",
-        "street": "Robert green",
-        "city": "Birmingham",
-        "town": "lala land",
-        "postcode": "NG4 12Z"
-      },
-      "memosApply": [],
-      "additionalNotes": {
-        "number": [],
-        "guidanceNotes": []
-      },
-      "adrTypeApprovalNo": ""
+    "approvalType": "approval",
+    "regnDate": "2020-06-08",
+    "manufactureYear": 2003,
+    "euVehicleCategory": "3",
+    "departmentalVehicleMarker": true,
+    "vehicleClass": {
+      "code": "2",
+      "description": "motorbikes over 200cc"
     }
   }
               </div>

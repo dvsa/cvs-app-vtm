@@ -1,7 +1,7 @@
 import { AdrDetails } from '../models/adr-details';
 import { Injectable } from '@angular/core';
 
-import { TechRecord } from '@app/models/tech-record.model';
+import { TechRecord, Axle, Dimensions, AxleSpacing } from '@app/models/tech-record.model';
 import { VehicleTechRecordEdit } from '@app/models/vehicle-tech-record.model';
 import { SelectOption } from '@app/models/select-option';
 import { NOTES, SUBSTANCES, MEMOS } from '@app/app.enums';
@@ -17,12 +17,54 @@ export class TechnicalRecordValuesMapper {
   }
 
   private mapToTechRecordAllowedValues({ techRecord }: { techRecord: TechRecord }): TechRecord[] {
-    techRecord.updateType = undefined;
-    techRecord.adrDetails = this.mapToAdrAllowedValues(techRecord);
-    return [techRecord];
+    const {
+      axles,
+      axlesWeights,
+      axlesTyres,
+      dimensions,
+      adrDetails,
+      ...techRecordTemp
+    } = techRecord as any;
+
+    techRecordTemp.updateType = undefined;
+    techRecordTemp.axles = this.mapToAxlesAllowdeValues({ axles, axlesWeights, axlesTyres });
+    techRecordTemp.dimensions = this.mapToDimensionsAllowedValued({ dimensions });
+    techRecordTemp.adrDetails = this.mapToAdrAllowedValues(adrDetails);
+    return [techRecordTemp];
   }
 
-  private mapToAdrAllowedValues({ adrDetails }: { adrDetails?: AdrDetails }): AdrDetails {
+  private mapToAxlesAllowdeValues(params): Axle[] {
+    const { axles, axlesWeights, axlesTyres } = params;
+
+    const axlesTemp: Axle[] =
+      axles &&
+      (axles as any[]).map((axle, i) => {
+        return {
+          axleNumber: axle.axleNumber,
+          parkingBrakeMrk: axle.selected,
+          weights: axlesWeights[i].weights,
+          tyres: axlesTyres[i].tyres
+        } as Axle;
+      });
+
+    return axlesTemp;
+  }
+
+  private mapToDimensionsAllowedValued(params): Dimensions {
+    const { dimensions } = params;
+
+    if (dimensions) {
+      const axlesSpacingTemp: AxleSpacing[] = dimensions.axleSpacing.map(({ axles, value }) => {
+        return { axles, value };
+      });
+
+      dimensions.axleSpacing = axlesSpacingTemp;
+
+      return dimensions;
+    }
+  }
+
+  private mapToAdrAllowedValues(adrDetails: AdrDetails): AdrDetails {
     if (!adrDetails || !Object.keys(adrDetails).length) {
       return null;
     }

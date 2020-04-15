@@ -89,30 +89,35 @@
           >
           </ng-container>
 
-          <!--  -->
           <!-- Axle weights -->
-          <ng-container *ngIf="techAxles.length">
+          <ng-container *ngIf="axlesWeigths.length">
             <h2 class="govuk-heading-m">Axle weight (kg)</h2>
 
-            <div formArrayName="axles">
-              <div *ngFor="let axle of axleCtrls.controls; let i = index" [formGroup]="axle">
+            <div formArrayName="axlesWeights">
+              <div
+                *ngFor="let axleWeight of axlesWeigths.controls; let i = index"
+                [formGroup]="axleWeight"
+              >
                 <ng-container
                   *ngTemplateOutlet="
                     weightTemplate;
                     context: {
                       $implicit: {
-                        group: axle.get('weights'),
-                        labelHead: 'Axle ' + axle.get('axleNumber').value,
+                        group: axleWeight.get('weights'),
+                        labelHead: 'Axle ' + axleWeight.get('axleNumber').value,
                         weightFields: [
                           {
+                            index: '_' + i,
                             label: 'GB',
                             field: 'gbWeight'
                           },
                           {
+                            index: '_' + i,
                             label: 'EEC (optional)',
                             field: 'eecWeight'
                           },
                           {
+                            index: '_' + i,
                             label: 'Design',
                             field: 'designWeight'
                           }
@@ -133,11 +138,14 @@
               <div class="govuk-inset-text govuk-!-margin-top-3">
                 <ng-container *ngFor="let item of weightTemplate.weightFields">
                   <div class="govuk-form-group govuk-!-margin-left-3">
-                    <label for="{{ item.field }}" class="govuk-label govuk-!-font-weight-bold">
+                    <label
+                      for="{{ item.field }}{{ item.index }}"
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
                       {{ item.label }}
                     </label>
                     <input
-                      id="{{ item.field }}"
+                      id="{{ item.field }}{{ item.index }}"
                       type="number"
                       maxlength="5"
                       name="{{ item.field }}"

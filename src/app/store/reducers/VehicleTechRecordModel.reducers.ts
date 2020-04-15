@@ -15,7 +15,7 @@ export function VehicleTechRecordModelReducers(
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess: {
       return {
         ...state,
-        vehicleTechRecordModel: action.payload
+        vehicleTechRecordModel: action.vehicleTechRecords
       };
     }
 

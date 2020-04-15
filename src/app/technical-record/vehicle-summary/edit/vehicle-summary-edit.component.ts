@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
 import {
   FormGroup,
   ControlContainer,
@@ -6,19 +13,21 @@ import {
   FormBuilder,
   FormArray
 } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, tap, takeUntil } from 'rxjs/operators';
 
 import { TechRecord, Axle } from '@app/models/tech-record.model';
 import { VEHICLE_TYPES } from '@app/app.enums';
 import {
-  AXLENUMOPTIONS,
-  BOOLEANRADIOOPTIONS,
-  FUELPROPULSION,
+  AXLE_NUM_OPTIONS,
+  BOOLEAN_RADIO_OPTIONS,
+  FUEL_PROPULSION,
   VEHICLE_CLASS,
   VEHICLE_CONFIGURATION,
   VEHICLE_EUCATEGORY
 } from '@app/technical-record/technical-record.constants';
-import { SelectOption } from '@app/models/select-option';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
+import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
 
 @Component({
   selector: 'vtm-vehicle-summary-edit',
@@ -31,34 +40,38 @@ import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
     }
   ]
 })
-export class VehicleSummaryEditComponent implements OnInit {
+export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
   @Input() techRecord: TechRecord;
 
   techRecordFg: FormGroup;
+  numberOfAxles$: Observable<number>;
+  onDestroy$ = new Subject();
+
   vehicleTypeOptions = {
     ['HGV']: VEHICLE_TYPES.HGV,
     ['PSV']: VEHICLE_TYPES.PSV,
     ['Trailer']: VEHICLE_TYPES.TRL
   };
-  axleNoOptions: number[];
-  booleanOptions = BOOLEANRADIOOPTIONS;
-  fuelPropulsionOptions: SelectOption[];
-  vehicleClassOptions: SelectOption[];
-  vehicleConfigOptions: SelectOption[];
-  vehicleEUCategoryOptions: SelectOption[];
+  booleanOptions = BOOLEAN_RADIO_OPTIONS;
+  axleNoOptions = AXLE_NUM_OPTIONS;
+  fuelPropulsionOptions = new DisplayOptionsPipe().transform(FUEL_PROPULSION);
+  vehicleClassOptions = new DisplayOptionsPipe().transform(VEHICLE_CLASS);
+  vehicleConfigOptions = new DisplayOptionsPipe().transform(VEHICLE_CONFIGURATION);
+  vehicleEUCategoryOptions = new DisplayOptionsPipe().transform(VEHICLE_EUCATEGORY);
 
   get axles() {
     return this.techRecordFg.get('axles') as FormArray;
   }
 
-  constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}
+  constructor(
+    private parent: FormGroupDirective,
+    private fb: FormBuilder,
+    private techRecHelper: TechRecordHelperService,
+    private detectChange: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.axleNoOptions = AXLENUMOPTIONS;
-    this.fuelPropulsionOptions = new DisplayOptionsPipe().transform(FUELPROPULSION);
-    this.vehicleClassOptions = new DisplayOptionsPipe().transform(VEHICLE_CLASS);
-    this.vehicleConfigOptions = new DisplayOptionsPipe().transform(VEHICLE_CONFIGURATION);
-    this.vehicleEUCategoryOptions = new DisplayOptionsPipe().transform(VEHICLE_EUCATEGORY);
+    this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
 
     const { brakes, axles, vehicleClass } = this.techRecord;
     const dtpNumber = brakes ? brakes.dtpNumber : null;
@@ -84,20 +97,20 @@ export class VehicleSummaryEditComponent implements OnInit {
     this.techRecordFg.addControl(
       'speedLimiterMrk',
       this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.speedLimiterMrk, BOOLEANRADIOOPTIONS.No)
+        this.setDisplayOptionByDefault(this.techRecord.speedLimiterMrk, BOOLEAN_RADIO_OPTIONS.No)
       )
     );
     this.techRecordFg.addControl(
       'tachoExemptMrk',
       this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.tachoExemptMrk, BOOLEANRADIOOPTIONS.No)
+        this.setDisplayOptionByDefault(this.techRecord.tachoExemptMrk, BOOLEAN_RADIO_OPTIONS.No)
       )
     );
     this.techRecordFg.addControl('euroStandard', this.fb.control(this.techRecord.euroStandard));
     this.techRecordFg.addControl(
       'roadFriendly',
       this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.roadFriendly, BOOLEANRADIOOPTIONS.No)
+        this.setDisplayOptionByDefault(this.techRecord.roadFriendly, BOOLEAN_RADIO_OPTIONS.No)
       )
     );
     this.techRecordFg.addControl(
@@ -109,7 +122,7 @@ export class VehicleSummaryEditComponent implements OnInit {
       this.fb.control(
         this.setDisplayOptionByDefault(
           this.techRecord.drawbarCouplingFitted,
-          BOOLEANRADIOOPTIONS.No
+          BOOLEAN_RADIO_OPTIONS.No
         )
       )
     );
@@ -126,7 +139,7 @@ export class VehicleSummaryEditComponent implements OnInit {
     this.techRecordFg.addControl(
       'offRoad',
       this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.offRoad, BOOLEANRADIOOPTIONS.No)
+        this.setDisplayOptionByDefault(this.techRecord.offRoad, BOOLEAN_RADIO_OPTIONS.No)
       )
     );
     this.techRecordFg.addControl(
@@ -146,10 +159,12 @@ export class VehicleSummaryEditComponent implements OnInit {
       this.fb.control(
         this.setDisplayOptionByDefault(
           this.techRecord.departmentalVehicleMarker,
-          BOOLEANRADIOOPTIONS.No
+          BOOLEAN_RADIO_OPTIONS.No
         )
       )
     );
+
+    this.handleFormChanges();
   }
 
   buildAxleArrayGroup(axles: Axle[]): FormArray {
@@ -175,16 +190,59 @@ export class VehicleSummaryEditComponent implements OnInit {
   unsorted(): number {
     return 0;
   }
-}
 
-// TODO: Remove after CVSB-10619
-// const techAxles = [
-//   {
-//     axleNumber: 1,
-//     parkingBrakeMrk: false
-//   },
-//   {
-//     axleNumber: 2,
-//     parkingBrakeMrk: true
-//   },
-// ] as Axle[];
+  handleFormChanges() {
+    this.techRecordFg
+      .get('noOfAxles')
+      .valueChanges.pipe(
+        debounceTime(500),
+        tap((value) => this.techRecHelper.setNumberOfAxles(value)),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe();
+
+    this.numberOfAxles$
+      .pipe(
+        tap((numAxles) => {
+          this.createAxleGroupByNumberOfAxles(numAxles);
+          this.detectChange.markForCheck();
+        }),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe();
+  }
+
+  private createAxleGroupByNumberOfAxles(numOfAxles: number): void {
+    const numOfIterations: number = this.axles.controls.length - numOfAxles;
+
+    numOfIterations < 0
+      ? this.addAxleGroupByIterations(numOfIterations)
+      : this.removeAxleGroupByIterations(numOfIterations);
+
+    this.axles.markAsDirty();
+  }
+
+  private addAxleGroupByIterations(numofIterations: number): void {
+    let index = numofIterations;
+    for (; index < 0; index++) {
+      const axleGroup = this.buildAxleGroup({
+        axleNumber: this.axles.controls.length + 1,
+        parkingBrakeMrk: false
+      } as Axle);
+
+      this.axles.push(axleGroup);
+    }
+  }
+
+  private removeAxleGroupByIterations(numofIterations: number): void {
+    let index = numofIterations;
+    for (; index > 0; index--) {
+      this.axles.removeAt(--this.axles.controls.length);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+}

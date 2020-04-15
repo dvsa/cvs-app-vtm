@@ -6,7 +6,7 @@ import { SelectOption } from '@app/models/select-option';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import {
   BODY_TYPE_DESC,
-  FUNCTIONOPTIONS
+  FUNCTION_OPTIONS
 } from '@app/technical-record/technical-record.constants';
 
 @Component({
@@ -19,7 +19,7 @@ export class BodyEditComponent implements OnInit {
 
   techRecordFg: FormGroup;
   bodyTypeDescOptions: SelectOption[];
-  functionOptions = FUNCTIONOPTIONS;
+  functionOptions = FUNCTION_OPTIONS;
 
   constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}
 

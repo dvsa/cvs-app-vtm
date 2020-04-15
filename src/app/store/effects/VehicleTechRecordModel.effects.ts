@@ -46,8 +46,6 @@ export class VehicleTechRecordModelEffects {
       EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll
     ),
     map((action) => action.payload),
-    // TODO: Needs refactoring with forkJoin or mergeMap to avoid nesting switchMap
-    // We make 2 calls to return vehicleTechRecord & the ones having all statuses
     switchMap((searchParams: SearchParams) =>
       this._technicalRecordService
         .getTechnicalRecordsAllStatuses(
@@ -58,13 +56,13 @@ export class VehicleTechRecordModelEffects {
           switchMap((vTechRecords: VehicleTechRecordModel[]) =>
             of(new GetVehicleTechRecordModelHavingStatusAllSuccess(vTechRecords))
           ),
-          tap((action) => {
-            if (action.payload.length > 1) {
+          tap(({ vehicleTechRecords }) => {
+            if (vehicleTechRecords.length > 1) {
               this.router.navigate(['/multiple-records']);
             } else {
               this._store.dispatch(
                 new SetSelectedVehicleTechnicalRecord({
-                  vehicleRecord: action.payload[0],
+                  vehicleRecord: vehicleTechRecords[0],
                   viewState: VIEW_STATE.VIEW_ONLY
                 })
               );
@@ -160,7 +158,7 @@ export class VehicleTechRecordModelEffects {
   @Effect()
   updateTechnicalRecords$ = this._actions$.pipe(
     ofType<UpdateVehicleTechRecord>(EVehicleTechRecordModelActions.UpdateVehicleTechRecord),
-    withLatestFrom(this._store.pipe(select(getSelectedVehicleTechRecord))),
+    withLatestFrom(this._store.select(getSelectedVehicleTechRecord)),
     switchMap(
       ([{ vehicleRecordEdit }, vehicleTechRecord]: [
         { vehicleRecordEdit: VehicleTechRecordEdit },
@@ -189,7 +187,7 @@ export class VehicleTechRecordModelEffects {
     )
   );
 
-  getVehicleTechRecordOnCreate(identifier: VehicleIdentifiers): VehicleTechRecordModel {
+  private getVehicleTechRecordOnCreate(identifier: VehicleIdentifiers): VehicleTechRecordModel {
     const { vin, vrm, vType } = identifier;
     return {
       vin,
@@ -203,15 +201,7 @@ export class VehicleTechRecordModelEffects {
     } as VehicleTechRecordModel;
   }
 
-  constructor(
-    private _actions$: Actions,
-    private _store: Store<IVehicleTechRecordModelState>,
-    private router: Router,
-    private _technicalRecordService: TechnicalRecordService,
-    private loggedUser: UserService
-  ) {}
-
-  public getSearchResultError(error: any) {
+  private getSearchResultError(error: any) {
     let errorMessage: string;
     switch (true) {
       case error.error === 'No resources match the search criteria.':
@@ -226,6 +216,15 @@ export class VehicleTechRecordModelEffects {
       default:
         errorMessage = error.error;
     }
+
     return errorMessage;
   }
+
+  constructor(
+    private _actions$: Actions,
+    private _store: Store<IVehicleTechRecordModelState>,
+    private router: Router,
+    private _technicalRecordService: TechnicalRecordService,
+    private loggedUser: UserService
+  ) {}
 }

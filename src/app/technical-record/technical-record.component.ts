@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'lodash';
 
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
+import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
 import { TechnicalRecordValuesMapper } from './technical-record-value.mapper';
 import { TechRecord } from './../models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
@@ -54,7 +54,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private allowedValues: TechnicalRecordValuesMapper,
-    public techRecHelpers: TechRecordHelpersService
+    public techRecHelper: TechRecordHelperService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -99,7 +99,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       techRecord: this.fb.group({})
     });
 
-    this.isStandardVehicle = this.techRecHelpers.isStandardVehicle(this.activeRecord.vehicleType);
+    this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
   }
 
   togglePanel() {

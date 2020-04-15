@@ -38,7 +38,7 @@ export class GetVehicleTechRecordModelHavingStatusAllSuccess implements Action {
   public readonly type =
     EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess;
 
-  constructor(public payload: VehicleTechRecordModel[]) {}
+  constructor(public vehicleTechRecords: VehicleTechRecordModel[]) {}
 }
 
 export class SetVehicleTechRecordModelOnCreate implements Action {

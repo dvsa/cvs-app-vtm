@@ -1,11 +1,336 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TyresEditComponent should create with initialized form tyre controls 1`] = `
+exports[`TyresEditComponent should create with initialized form AXLE tyres controls on initialization 1`] = `
 <vtm-tyres-edit
+  detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
   fitmentCodeOptions={[Function Array]}
+  numberOfAxles$={[Function Observable]}
+  onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
-  techAxles={[Function Array]}
+  techRecHelper={[Function TechRecordHelperService]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-invalid"
+            ng-reflect-form="[object Object]"
+          >
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="tyreUseCode"
+              >
+                 Tyre use code (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-invalid"
+                formcontrolname="tyreUseCode"
+                id="tyreUseCode"
+                maxlength="2"
+                name="tyreUseCode"
+                ng-reflect-maxlength="2"
+                ng-reflect-name="tyreUseCode"
+                type="text"
+              />
+            </div>
+            
+            
+            <div
+              class="ng-untouched ng-pristine ng-invalid"
+              formarrayname="axlesTyres"
+              ng-reflect-name="axlesTyres"
+            >
+              
+              <div
+                class="ng-untouched ng-pristine ng-invalid"
+                ng-reflect-form="[object Object]"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-invalid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                  >
+                     Axle 1 
+                  </label>
+                  <div
+                    class="govuk-inset-text govuk-!-margin-top-3"
+                  >
+                    <div
+                      class="govuk-!-margin-left-3"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="tyreCode_0"
+                        >
+                           Tyre code 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                          id="tyreCode_0"
+                          maxlength="5"
+                          name="tyreCode"
+                          ng-reflect-maxlength="5"
+                          ng-reflect-name="tyreCode"
+                          type="number"
+                        />
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="tyreSize_0"
+                        >
+                           Tyre size 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                          id="tyreSize_0"
+                          maxlength="10"
+                          ng-reflect-maxlength="10"
+                          ng-reflect-name="tyreSize"
+                          type="text"
+                        />
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="plyRating_0"
+                        >
+                           Ply rating (optional) 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-invalid"
+                          id="plyRating_0"
+                          maxlength="2"
+                          name="plyRating"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="plyRating"
+                          type="text"
+                        />
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="fitmentCode_0"
+                        >
+                           Fitment code 
+                        </label>
+                        <select
+                          class="govuk-select ng-untouched ng-pristine ng-valid"
+                          id="fitmentCode_0"
+                          ng-reflect-name="fitmentCode"
+                        >
+                          
+                          <option
+                            ng-reflect-ng-value="double"
+                            value="0: double"
+                          >
+                             double 
+                          </option>
+                          <option
+                            ng-reflect-ng-value="single"
+                            value="1: single"
+                          >
+                             single 
+                          </option>
+                        </select>
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="dataTrAxles_0"
+                        >
+                           Load index 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          id="dataTrAxles_0"
+                          maxlength="3"
+                          name="dataTrAxles"
+                          ng-reflect-maxlength="3"
+                          ng-reflect-name="dataTrAxles"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ng-untouched ng-pristine ng-invalid"
+                ng-reflect-form="[object Object]"
+              >
+                
+                <div
+                  class="govuk-form-group ng-untouched ng-pristine ng-invalid"
+                  ng-reflect-form="[object Object]"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                  >
+                     Axle 1 
+                  </label>
+                  <div
+                    class="govuk-inset-text govuk-!-margin-top-3"
+                  >
+                    <div
+                      class="govuk-!-margin-left-3"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="tyreCode_1"
+                        >
+                           Tyre code 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                          id="tyreCode_1"
+                          maxlength="5"
+                          name="tyreCode"
+                          ng-reflect-maxlength="5"
+                          ng-reflect-name="tyreCode"
+                          type="number"
+                        />
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="tyreSize_1"
+                        >
+                           Tyre size 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                          id="tyreSize_1"
+                          maxlength="10"
+                          ng-reflect-maxlength="10"
+                          ng-reflect-name="tyreSize"
+                          type="text"
+                        />
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="plyRating_1"
+                        >
+                           Ply rating (optional) 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-invalid"
+                          id="plyRating_1"
+                          maxlength="2"
+                          name="plyRating"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="plyRating"
+                          type="text"
+                        />
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="fitmentCode_1"
+                        >
+                           Fitment code 
+                        </label>
+                        <select
+                          class="govuk-select ng-untouched ng-pristine ng-valid"
+                          id="fitmentCode_1"
+                          ng-reflect-name="fitmentCode"
+                        >
+                          
+                          <option
+                            ng-reflect-ng-value="double"
+                            value="0: double"
+                          >
+                             double 
+                          </option>
+                          <option
+                            ng-reflect-ng-value="single"
+                            value="1: single"
+                          >
+                             single 
+                          </option>
+                        </select>
+                      </div>
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-!-font-weight-bold"
+                          for="dataTrAxles_1"
+                        >
+                           Load index 
+                        </label>
+                        <input
+                          class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          id="dataTrAxles_1"
+                          maxlength="3"
+                          name="dataTrAxles"
+                          ng-reflect-maxlength="3"
+                          ng-reflect-name="dataTrAxles"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-tyres-edit>
+`;
+
+exports[`TyresEditComponent should create with initialized form tyre controls 1`] = `
+<vtm-tyres-edit
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  fitmentCodeOptions={[Function Array]}
+  numberOfAxles$={[Function Observable]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  techRecHelper={[Function TechRecordHelperService]}
   techRecord={[Function Object]}
   techRecordFg={[Function FormGroup]}
 >
@@ -45,6 +370,8 @@ exports[`TyresEditComponent should create with initialized form tyre controls 1`
                 type="text"
               />
             </div>
+            
+            
           </div>
         </fieldset>
       </div>

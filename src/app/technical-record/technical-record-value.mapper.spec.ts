@@ -7,6 +7,55 @@ import { DocumentMetaData } from '../models/document-meta-data';
 import { TechnicalRecordValuesMapper } from './technical-record-value.mapper';
 import { VehicleTechRecordEdit } from '@app/models/vehicle-tech-record.model';
 
+const axleControlValues = () => {
+  return {
+    axles: [
+      {
+        name: 'Axle 1',
+        selected: true,
+        axleNumber: 1
+      }
+    ],
+    axlesWeights: [
+      {
+        axleNumber: 1,
+        weights: {
+          gbWeight: 743,
+          eecWeight: 83,
+          designWeight: 438
+        }
+      }
+    ],
+    axlesTyres: [
+      {
+        axleNumber: 1,
+        tyres: {
+          tyreCode: 84,
+          tyreSize: 'eu',
+          plyRating: '4',
+          fitmentCode: 'double',
+          dataTrAxles: 8483
+        }
+      }
+    ]
+  };
+};
+
+const dimensionControlValues = () => {
+  return {
+    length: null,
+    width: null,
+    axleSpacing: [
+      {
+        axles: '1-2',
+        from: '1',
+        to: '2',
+        value: 500
+      }
+    ]
+  };
+};
+
 const adrDetailsControlValues = () => {
   return {
     permittedDangerousGoods: [
@@ -69,6 +118,38 @@ describe('TechnicalRecordValuesMapper', () => {
     });
 
     vehicleValueMapper = TestBed.get(TechnicalRecordValuesMapper);
+  });
+
+  describe('mapToAxlesAllowdeValues', () => {
+    it('should map AXLE control value in TechRecord to allowed values', () => {
+      const controlValues = {
+        ...vehicleRecordControlValues(),
+        techRecord: {
+          ...axleControlValues()
+        }
+      };
+      const result: VehicleTechRecordEdit = vehicleValueMapper.mapControlValuesToDataValues(
+        controlValues as any
+      );
+
+      expect(result.techRecord[0].axles).toMatchSnapshot();
+    });
+  });
+
+  describe('mapToDimensionsAllowedValued', () => {
+    it('should map DIMENSIONS control value in TechRecord to allowed values', () => {
+      const controlValues = {
+        ...vehicleRecordControlValues(),
+        techRecord: {
+          dimensions: dimensionControlValues()
+        }
+      };
+      const result: VehicleTechRecordEdit = vehicleValueMapper.mapControlValuesToDataValues(
+        controlValues as any
+      );
+
+      expect(result.techRecord[0].dimensions).toMatchSnapshot();
+    });
   });
 
   describe('mapControlValuesToDataValues', () => {

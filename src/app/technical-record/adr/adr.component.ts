@@ -16,7 +16,7 @@ import { TechRecord } from '@app/models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import { VIEW_STATE } from '@app/app.enums';
 import { ValidationMapper } from './adr-validation.mapper';
-import { BOOLEANRADIOOPTIONS } from '../technical-record.constants';
+import { BOOLEAN_RADIO_OPTIONS } from '../technical-record.constants';
 
 @Component({
   selector: 'vtm-adr',
@@ -33,7 +33,7 @@ export class AdrComponent implements OnChanges, OnInit, OnDestroy {
   showAdrView: boolean;
   adrDetails: AdrDetails;
   metaData$: Observable<MetaData>;
-  booleanOptions = BOOLEANRADIOOPTIONS;
+  booleanOptions = BOOLEAN_RADIO_OPTIONS;
 
   protected onDestroy$ = new Subject();
 

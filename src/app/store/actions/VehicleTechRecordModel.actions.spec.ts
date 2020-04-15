@@ -51,7 +51,7 @@ describe('GetVehicleTechRecordModelHavingStatusAllSuccess', () => {
 
     expect({ ...action }).toEqual({
       type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess,
-      payload: [vehicleTechRecordModel]
+      vehicleTechRecords: [vehicleTechRecordModel]
     });
   });
 });

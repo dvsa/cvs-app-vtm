@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  ChangeDetectorRef,
+  OnDestroy
+} from '@angular/core';
 import {
   FormGroup,
   ControlContainer,
@@ -6,8 +13,11 @@ import {
   FormBuilder,
   FormArray
 } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
 
 import { TechRecord, Axle, Weights } from '@app/models/tech-record.model';
+import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
+import { tap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'vtm-weights-edit',
@@ -20,21 +30,29 @@ import { TechRecord, Axle, Weights } from '@app/models/tech-record.model';
     }
   ]
 })
-export class WeightsEditComponent implements OnInit {
+export class WeightsEditComponent implements OnInit, OnDestroy {
   @Input() techRecord: TechRecord;
 
   techRecordFg: FormGroup;
-  techAxles: Axle[];
+  numberOfAxles$: Observable<number>;
+  onDestroy$ = new Subject();
 
-  get axleCtrls() {
-    return this.techRecordFg.get('axles') as FormArray;
+  get axlesWeigths() {
+    return this.techRecordFg.get('axlesWeights') as FormArray;
   }
 
-  constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}
+  constructor(
+    private parent: FormGroupDirective,
+    private fb: FormBuilder,
+    private techRecHelper: TechRecordHelperService,
+    private detectChange: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
+    this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
+
     const { axles } = this.techRecord;
-    this.techAxles = axles && axles.length ? axles : [];
+    const techAxles = axles && axles.length ? axles : [];
 
     this.techRecordFg = this.parent.form.get('techRecord') as FormGroup;
     this.techRecordFg.addControl('grossGbWeight', this.fb.control(this.techRecord.grossGbWeight));
@@ -70,45 +88,69 @@ export class WeightsEditComponent implements OnInit {
       this.fb.control(this.techRecord.maxTrainDesignWeight)
     );
 
-    this.buildAxleWeightsGroup(this.techAxles);
+    this.techRecordFg.addControl('axlesWeights', this.buildAxleArrayGroup(techAxles));
+
+    this.handleFormChanges();
   }
 
-  buildAxleWeightsGroup(axles: Axle[]): void {
-    axles.map((axle: Axle, index: number) => {
-      const weightsGroup: FormGroup = this.buildWeightGroup(
-        axle.weights ? axle.weights : ({} as Weights)
-      );
-      this.addToAxleArrayGroup(index, weightsGroup);
-    });
+  buildAxleArrayGroup(axles: Axle[]): FormArray {
+    return this.fb.array(axles.map(this.buildAxleWeightsGroup.bind(this)));
   }
 
-  buildWeightGroup(weights: Weights): FormGroup {
+  buildAxleWeightsGroup(axle: Axle): FormGroup {
+    const weights = axle.weights ? axle.weights : ({} as Weights);
+
     return this.fb.group({
-      gbWeight: this.fb.control(weights.gbWeight),
-      eecWeight: this.fb.control(weights.eecWeight),
-      designWeight: this.fb.control(weights.designWeight)
+      axleNumber: this.fb.control(axle.axleNumber),
+      weights: this.fb.group({
+        gbWeight: this.fb.control(weights.gbWeight),
+        eecWeight: this.fb.control(weights.eecWeight),
+        designWeight: this.fb.control(weights.designWeight)
+      })
     });
   }
 
-  addToAxleArrayGroup(position: number, weightsGroup: FormGroup): void {
-    (this.axleCtrls.controls[position] as FormGroup).addControl('weights', weightsGroup);
+  handleFormChanges() {
+    this.numberOfAxles$
+      .pipe(
+        tap((numAxles) => {
+          this.createAxleWeightsGroupByNumberOfAxles(numAxles), this.detectChange.markForCheck();
+        }),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe();
+  }
+
+  private createAxleWeightsGroupByNumberOfAxles(numOfAxles: number): void {
+    const numOfIterations: number = this.axlesWeigths.controls.length - numOfAxles;
+
+    numOfIterations < 0
+      ? this.addAxleWeightsGroupByIterations(numOfIterations)
+      : this.removeAxleWeightsGroupByIterations(numOfIterations);
+
+    this.axlesWeigths.markAsDirty();
+  }
+
+  private addAxleWeightsGroupByIterations(numofIterations: number): void {
+    let index = numofIterations;
+    for (; index < 0; index++) {
+      const axleWeightsGroup = this.buildAxleWeightsGroup({
+        axleNumber: this.axlesWeigths.controls.length + 1
+      } as Axle);
+
+      this.axlesWeigths.push(axleWeightsGroup);
+    }
+  }
+
+  private removeAxleWeightsGroupByIterations(numofIterations: number): void {
+    let index = numofIterations;
+    for (; index > 0; index--) {
+      this.axlesWeigths.removeAt(--this.axlesWeigths.controls.length);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }
-
-// TODO: Remove after CVSB-10619
-// this.techAxles = [
-//   {
-//     weights: {
-//       gbWeight: 0,
-//       eecWeight: 0,
-//       designWeight: 0
-//     }
-//   },
-//   {
-//     weights: {
-//       gbWeight: 10,
-//       eecWeight: 15,
-//       designWeight: 20
-//     }
-//   }
-// ] as Axle[];

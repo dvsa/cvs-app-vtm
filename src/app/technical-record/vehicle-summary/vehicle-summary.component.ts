@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 import { TechRecord } from '@app/models/tech-record.model';
-import { TechRecordHelpersService } from '../tech-record-helpers.service';
+import { TechRecordHelperService } from '../tech-record-helper.service';
 
 @Component({
   selector: 'vtm-vehicle-summary',
@@ -15,7 +15,7 @@ export class VehicleSummaryComponent implements OnInit {
   vehicleClassDescription: string;
   isStandardVehicle: boolean;
 
-  constructor(public techRecHelpers: TechRecordHelpersService) {}
+  constructor(public techRecHelper: TechRecordHelperService) {}
 
   ngOnInit() {
     this.vehicleClassDescription =
@@ -23,7 +23,7 @@ export class VehicleSummaryComponent implements OnInit {
         ? this.activeRecord.vehicleClass.description
         : null;
 
-    this.isStandardVehicle = this.techRecHelpers.isStandardVehicle(this.activeRecord.vehicleType);
+    this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
   }
 
   axlesHasParkingBrakeMrk(): boolean {

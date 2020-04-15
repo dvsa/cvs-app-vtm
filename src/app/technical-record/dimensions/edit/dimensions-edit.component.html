@@ -122,13 +122,47 @@
             </ng-container>
           </div>
 
+          <!-- Axle mappings -->
+          <ng-container formGroupName="dimensions">
+            <div formArrayName="axleSpacing" *ngIf="axleSpacing.length">
+              <ng-container
+                *ngFor="let spacing of axleSpacing.controls; let i = index"
+                [formGroup]="spacing"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    dimTemplate;
+                    context: {
+                      $implicit: {
+                        group: spacing,
+                        index: '_' + i,
+                        label:
+                          'Axle ' +
+                          spacing.get('from').value +
+                          ' to ' +
+                          'axle ' +
+                          spacing.get('to').value +
+                          ' (mm)',
+                        field: 'value'
+                      }
+                    }
+                  "
+                >
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+
           <ng-template let-dimTemplate #dimTemplate>
             <div class="govuk-form-group" [formGroup]="dimTemplate.group">
-              <label for="{{ dimTemplate.field }}" class="govuk-label govuk-!-font-weight-bold">
+              <label
+                for="{{ dimTemplate.field }}{{ dimTemplate.index }}"
+                class="govuk-label govuk-!-font-weight-bold"
+              >
                 {{ dimTemplate.label }}
               </label>
               <input
-                id="{{ dimTemplate.field }}"
+                id="{{ dimTemplate.field }}{{ dimTemplate.index }}"
                 type="number"
                 maxlength="5"
                 name="{{ dimTemplate.field }}"

@@ -4,7 +4,7 @@ exports[`VehicleSummaryComponent should create view only with HGV populated data
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
   isStandardVehicle={[Function Boolean]}
-  techRecHelpers={[Function TechRecordHelpersService]}
+  techRecHelper={[Function TechRecordHelperService]}
   vehicleClassDescription={[Function String]}
 >
   <dl
@@ -42,7 +42,7 @@ exports[`VehicleSummaryComponent should create view only with HGV populated data
       >
         
         <span>
-           01/01/1970 
+           08/06/2020 
         </span>
       </dd>
       <dd
@@ -238,7 +238,7 @@ exports[`VehicleSummaryComponent should create view only with HGV populated data
     <div>
       HGV active record is: {
     "approvalType": "approval",
-    "regnDate": "12312321",
+    "regnDate": "2020-06-08",
     "manufactureYear": 2003,
     "euVehicleCategory": "3",
     "departmentalVehicleMarker": true,
@@ -381,8 +381,8 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
   isStandardVehicle={[Function Boolean]}
-  techRecHelpers={[Function TechRecordHelpersService]}
-  vehicleClassDescription={[Function String]}
+  techRecHelper={[Function TechRecordHelperService]}
+  vehicleClassDescription="null"
 >
   <dl
     class="govuk-summary-list"
@@ -419,7 +419,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
       >
         
         <span>
-           01/01/1970 
+          -
         </span>
       </dd>
       <dd
@@ -438,7 +438,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
         class="govuk-summary-list__value"
         id="test-manufactureYear"
       >
-         2003 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -498,19 +498,9 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
         id="test-parkingBrakeMrk"
       >
         
-        
-        
-        <div>
-          
-          <div>
-            <span
-              id="test-parkingBrakeMrkAxle-1"
-            >
-              Axle 1
-            </span>
-          </div>
-        </div>
-        
+        <span>
+          -
+        </span>
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -528,7 +518,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
         class="govuk-summary-list__value"
         id="test-vehicleClassDescription"
       >
-         Motorbikes over 200cc 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -565,7 +555,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
         class="govuk-summary-list__value"
         id="test-euVehicleCategory"
       >
-         3 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -584,7 +574,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
         class="govuk-summary-list__value"
         id="test-departmentalVehicleMarker"
       >
-         Yes 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -614,39 +604,8 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
   >
     <div>
       PSV active record is: {
-    "approvalType": "approval",
-    "regnDate": "12312321",
-    "manufactureYear": 2003,
-    "euVehicleCategory": "3",
-    "departmentalVehicleMarker": true,
-    "vehicleClass": {
-      "code": "2",
-      "description": "motorbikes over 200cc"
-    },
-    "axles": [
-      {
-        "parkingBrakeMrk": true,
-        "axleNumber": 1,
-        "brakes": {
-          "brakeActuator": 123,
-          "leverLength": 123,
-          "springBrakeParking": true
-        },
-        "tyres": {
-          "tyreSize": "16",
-          "plyRating": "12S",
-          "fitmentCode": "12313",
-          "dataTrAxles": 1234
-        },
-        "weights": {
-          "gbWeight": 100,
-          "kerbWeight": 150,
-          "designWeight": 250,
-          "eecWeight": 150
-        }
-      }
-    ],
-    "vehicleType": "psv"
+    "vehicleType": "psv",
+    "seatbeltInstallationApprovalDate": "2018-05-16"
   }
     </div>
   </vtm-vehicle-summary-psv><dl
@@ -669,7 +628,7 @@ exports[`VehicleSummaryComponent should create view only with PSV populated data
         class="govuk-summary-list__value"
         id="test-approvalType"
       >
-         approval 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -812,8 +771,8 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
   isStandardVehicle={[Function Boolean]}
-  techRecHelpers={[Function TechRecordHelpersService]}
-  vehicleClassDescription={[Function String]}
+  techRecHelper={[Function TechRecordHelperService]}
+  vehicleClassDescription="null"
 >
   <dl
     class="govuk-summary-list"
@@ -850,7 +809,7 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
       >
         
         <span>
-           01/01/1970 
+          -
         </span>
       </dd>
       <dd
@@ -869,7 +828,7 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
         class="govuk-summary-list__value"
         id="test-manufactureYear"
       >
-         2003 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -929,19 +888,9 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
         id="test-parkingBrakeMrk"
       >
         
-        
-        
-        <div>
-          
-          <div>
-            <span
-              id="test-parkingBrakeMrkAxle-1"
-            >
-              Axle 1
-            </span>
-          </div>
-        </div>
-        
+        <span>
+          -
+        </span>
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -959,7 +908,7 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
         class="govuk-summary-list__value"
         id="test-vehicleClassDescription"
       >
-         Motorbikes over 200cc 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -996,7 +945,7 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
         class="govuk-summary-list__value"
         id="test-euVehicleCategory"
       >
-         3 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -1015,7 +964,7 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
         class="govuk-summary-list__value"
         id="test-departmentalVehicleMarker"
       >
-         Yes 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -1045,39 +994,8 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
   >
     <div>
       TRL active record is: {
-    "approvalType": "approval",
-    "regnDate": "12312321",
-    "manufactureYear": 2003,
-    "euVehicleCategory": "3",
-    "departmentalVehicleMarker": true,
-    "vehicleClass": {
-      "code": "2",
-      "description": "motorbikes over 200cc"
-    },
-    "axles": [
-      {
-        "parkingBrakeMrk": true,
-        "axleNumber": 1,
-        "brakes": {
-          "brakeActuator": 123,
-          "leverLength": 123,
-          "springBrakeParking": true
-        },
-        "tyres": {
-          "tyreSize": "16",
-          "plyRating": "12S",
-          "fitmentCode": "12313",
-          "dataTrAxles": 1234
-        },
-        "weights": {
-          "gbWeight": 100,
-          "kerbWeight": 150,
-          "designWeight": 250,
-          "eecWeight": 150
-        }
-      }
-    ],
-    "vehicleType": "trl"
+    "vehicleType": "trl",
+    "firstUseDate": "2019-05-16"
   }
     </div>
   </vtm-vehicle-summary-trl><dl
@@ -1100,7 +1018,7 @@ exports[`VehicleSummaryComponent should create view only with TRL populated data
         class="govuk-summary-list__value"
         id="test-approvalType"
       >
-         approval 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -1189,8 +1107,8 @@ exports[`VehicleSummaryComponent should render the editable component if editSta
 <vtm-vehicle-summary
   activeRecord={[Function Object]}
   editState={[Function Boolean]}
-  isStandardVehicle="false"
-  techRecHelpers={[Function TechRecordHelpersService]}
+  isStandardVehicle="undefined"
+  techRecHelper={[Function TechRecordHelperService]}
   vehicleClassDescription={[Function String]}
 >
   <dl
@@ -1208,7 +1126,7 @@ exports[`VehicleSummaryComponent should render the editable component if editSta
           <div>
             active record is: {
     "approvalType": "approval",
-    "regnDate": "12312321",
+    "regnDate": "2020-06-08",
     "manufactureYear": 2003,
     "euVehicleCategory": "3",
     "departmentalVehicleMarker": true,
