@@ -1,121 +1,190 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TechRecHistoryComponent should create view only with populated data 1`] = `
-<vtm-tech-rec-history
-  techRecordsJson={[Function Object]}
+<test-vtm-tech-rec-history
+  activeRecord={[Function Object]}
+  hideLinkForSelectedRecord={[Function Function]}
+  vehicleTechRecord={[Function Object]}
+  viewRecordHandler={[Function Function]}
 >
-  <table
-    class="govuk-table"
+  <vtm-tech-rec-history
+    ng-reflect-focused-record="[object Object]"
+    ng-reflect-vehicle-record="[object Object]"
   >
-    <thead
-      class="govuk-table__head"
+    <table
+      class="govuk-table"
     >
-      <tr
-        class="govuk-table__row"
+      <thead
+        class="govuk-table__head"
       >
-        <th
-          class="govuk-table__header"
-          scope="col"
+        <tr
+          class="govuk-table__row"
         >
-          Status
-        </th>
-        <th
-          class="govuk-table__header"
-          scope="col"
-        >
-          Reason for creation
-        </th>
-        <th
-          class="govuk-table__header"
-          scope="col"
-        >
-          Created by
-        </th>
-        <th
-          class="govuk-table__header"
-          scope="col"
-        >
-          Created at
-        </th>
-        <th
-          class="govuk-table__header"
-          scope="col"
-        >
-          Last updated by
-        </th>
-        <th
-          class="govuk-table__header"
-          scope="col"
-        >
-          Last updated at
-        </th>
-        <th
-          class="govuk-table__header"
-          scope="col"
-        />
-        <th
-          class="govuk-table__header"
-          scope="col"
-        />
-      </tr>
-    </thead>
-    <tbody
-      class="govuk-table__body"
-    >
-      
-      <tr
-        class="govuk-table__row"
+          <th
+            class="govuk-table__header"
+            scope="col"
+          >
+            Status
+          </th>
+          <th
+            class="govuk-table__header"
+            scope="col"
+          >
+            Reason for creation
+          </th>
+          <th
+            class="govuk-table__header"
+            scope="col"
+          >
+            Created by
+          </th>
+          <th
+            class="govuk-table__header"
+            scope="col"
+          >
+            Created at
+          </th>
+          <th
+            class="govuk-table__header"
+            scope="col"
+          >
+            Last updated by
+          </th>
+          <th
+            class="govuk-table__header"
+            scope="col"
+          >
+            Last updated at
+          </th>
+          <th
+            class="govuk-table__header"
+            scope="col"
+          />
+          <th
+            class="govuk-table__header"
+            scope="col"
+          />
+        </tr>
+      </thead>
+      <tbody
+        class="govuk-table__body"
       >
-        <td
-          class="govuk-table__cell"
-          id="test-statusCode-0"
+        
+        <tr
+          class="govuk-table__row"
         >
-           Current 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-reasonForCreation-0"
-        >
-           Reason For Creation 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-createdByName-0"
-        >
-           Test Name 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-createdAt-0"
-        >
+          <td
+            class="govuk-table__cell"
+            id="test-statusCode-0"
+          >
+             Current 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-reasonForCreation-0"
+          >
+             Reason For Creation 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-createdByName-0"
+          >
+             Test Name 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-createdAt-0"
+          >
+            
+            <span>
+               29/05/2020 
+            </span>
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-lastUpdatedByName-0"
+          >
+             Test 1 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-lastUpdatedAt-0"
+          >
+            
+            <span>
+               11/06/2020 
+            </span>
+          </td>
           
-          <span>
-             01/01/2020 
-          </span>
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-lastUpdatedByName-0"
+          <td
+            class="govuk-table__cell"
+          />
+        </tr>
+        <tr
+          class="govuk-table__row"
         >
-           Test 1 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-lastUpdatedAt-0"
-        >
+          <td
+            class="govuk-table__cell"
+            id="test-statusCode-1"
+          >
+             Provisional 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-reasonForCreation-1"
+          >
+             Reason For Creation 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-createdByName-1"
+          >
+             Test Name 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-createdAt-1"
+          >
+            
+            <span>
+               29/05/2020 
+            </span>
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-lastUpdatedByName-1"
+          >
+             Test 1 
+          </td>
+          <td
+            class="govuk-table__cell"
+            id="test-lastUpdatedAt-1"
+          >
+            
+            <span>
+               11/06/2020 
+            </span>
+          </td>
           
-          <span>
-             03/12/2020 
-          </span>
-        </td>
-        <td
-          class="govuk-table__cell"
-        />
-        <td
-          class="govuk-table__cell"
-        />
-      </tr>
-    </tbody>
-  </table>
-</vtm-tech-rec-history>
+          <td
+            class="govuk-table__cell"
+            id="test-view-link-1"
+          >
+            <a
+              class="govuk-link"
+              href="javascript:void(0)"
+              id="test-tech-rec-1"
+            >
+              View 
+            </a>
+          </td>
+          <td
+            class="govuk-table__cell"
+          />
+        </tr>
+      </tbody>
+    </table>
+    
+  </vtm-tech-rec-history>
+</test-vtm-tech-rec-history>
 `;

@@ -3,31 +3,29 @@
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <form [formGroup]="vehicleRecordFg">
-          <div class="govuk-form-group govuk-!-margin-top-7">
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-vin">
-                Vehicle identification number (VIN)
-              </label>
-              <input
-                id="test-edit-vin"
-                type="text"
-                class="govuk-input govuk-input--width-20"
-                formControlName="vin"
-                [readOnly]="false"
-              />
-            </div>
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-vin">
+              Vehicle identification number (VIN)
+            </label>
+            <input
+              id="test-edit-vin"
+              type="text"
+              class="govuk-input govuk-input--width-20"
+              formControlName="vin"
+              [readOnly]="disableVinEditing"
+            />
+          </div>
 
-            <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-vrm">
-                Vehicle registration number (VRM)
-              </label>
-              <input
-                id="test-edit-vrm"
-                class="govuk-input govuk-input--width-10"
-                type="text"
-                formControlName="primaryVrm"
-              />
-            </div>
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-vrm">
+              Vehicle registration number (VRM)
+            </label>
+            <input
+              id="test-edit-vrm"
+              class="govuk-input govuk-input--width-10"
+              type="text"
+              formControlName="primaryVrm"
+            />
           </div>
         </form>
       </fieldset>

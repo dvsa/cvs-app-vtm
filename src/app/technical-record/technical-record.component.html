@@ -7,59 +7,55 @@
   >
     <h1 class="govuk-heading-xl title">Technical record</h1>
 
-    <div *ngIf="!createState && !editState">
-      <button id="test-change-btn" class="govuk-button" type="button" (click)="editTechRecord()">
-        Change technical record
-      </button>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third govuk-!-margin-right-0 govuk-!-padding-right-0">
+        <ng-container *ngIf="viewOnlyState">
+          <button
+            id="test-change-btn"
+            class="govuk-button"
+            type="button"
+            (click)="editTechRecord()"
+            *ngIf="!isArchivedRecord"
+          >
+            Change technical record
+          </button>
+        </ng-container>
+
+        <ng-container>
+          <button id="test-save-btn" class="govuk-button" type="submit" *ngIf="isEditable">
+            Save technical record
+          </button>
+          <span
+            id="test-edit-cancel"
+            class="govuk-!-font-size-19 govuk-!-margin-left-5"
+            *ngIf="viewEditState"
+          >
+            <a
+              href="javascript:void(0)"
+              class="govuk-link govuk-link--no-visited-state"
+              (click)="cancelTechRecord()"
+            >
+              <span>Cancel</span>
+            </a>
+          </span>
+        </ng-container>
+      </div>
     </div>
 
-    <ng-container>
-      <button
-        id="test-save-btn"
-        class="govuk-button"
-        type="submit"
-        *ngIf="editState || createState"
-      >
-        Save technical record
-      </button>
-      <a id="cancel2" (click)="cancelTechRecord()" *ngIf="editState">
-        <span>Cancel</span>
-      </a>
-    </ng-container>
-
-    <ng-container *ngIf="!createState || editState">
-      <div class="govuk-inset-text govuk-!-margin-top-2">
-        <div class="govuk-!-padding-top-1">
-          <p>
-            <span class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2">
-              Status
-            </span>
-
-            <span id="test-status" class="govuk-!-font-weight-regular govuk-!-font-size-19">
-              {{ activeRecord.statusCode | titlecase }}
-            </span>
-          </p>
-
-          <p>
-            <span class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2">
-              Record completeness
-            </span>
-
-            <span
-              id="test-record-completeness"
-              class="govuk-!-font-weight-regular govuk-!-font-size-19"
-            >
-              {{ recordCompleteness }}
-            </span>
-          </p>
-        </div>
-      </div>
+    <!-- Active record status -->
+    <ng-container *ngIf="!viewCreateState">
+      <vtm-record-status
+        [activeRecord]="activeRecord"
+        [editState]="isEditable"
+        (onScrollToSection)="scrollDownToSection($event)"
+      ></vtm-record-status>
     </ng-container>
 
     <!-- Vehicle Record Identification -->
     <vtm-record-identification
       [vehicleTechRecord]="activeVehicleTechRecord"
-      [editState]="createState"
+      [editState]="isEditable"
+      [viewState]="currentState"
     ></vtm-record-identification>
 
     <div class="open-close-all">
@@ -111,7 +107,7 @@
 
           <vtm-vehicle-summary
             [activeRecord]="activeRecord"
-            [editState]="createState"
+            [editState]="isEditable"
           ></vtm-vehicle-summary>
         </mat-expansion-panel>
       </div>
@@ -159,7 +155,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-body [activeRecord]="activeRecord" [editState]="createState"></vtm-body>
+          <vtm-body [activeRecord]="activeRecord" [editState]="isEditable"></vtm-body>
         </mat-expansion-panel>
       </div>
 
@@ -202,7 +198,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-weights [activeRecord]="activeRecord" [editState]="createState"> </vtm-weights>
+          <vtm-weights [activeRecord]="activeRecord" [editState]="isEditable"> </vtm-weights>
         </mat-expansion-panel>
       </div>
 
@@ -245,14 +241,11 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-tyres [activeRecord]="activeRecord" [editState]="createState"></vtm-tyres>
+          <vtm-tyres [activeRecord]="activeRecord" [editState]="isEditable"></vtm-tyres>
         </mat-expansion-panel>
       </div>
 
-      <div
-        [@.disabled]="true"
-        *ngIf="activeRecord.vehicleType === 'psv' || activeRecord.vehicleType === 'trl'"
-      >
+      <div [@.disabled]="true" *ngIf="isPsvOrTrlVehicle">
         <mat-expansion-panel
           class="custom-header mat-elevation-z0"
           hideToggle="true"
@@ -381,18 +374,12 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-dimensions
-            [activeRecord]="activeRecord"
-            [editState]="createState"
-          ></vtm-dimensions>
+          <vtm-dimensions [activeRecord]="activeRecord" [editState]="isEditable"></vtm-dimensions>
         </mat-expansion-panel>
       </div>
 
-      <ng-container *ngIf="viewOnlyState || editState">
-        <div
-          [@.disabled]="true"
-          *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
-        >
+      <ng-container *ngIf="viewOnlyState || viewEditState">
+        <div [@.disabled]="true" *ngIf="isHgvOrTrlVehicle">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
@@ -436,7 +423,7 @@
             <!-- ADR -->
             <vtm-adr
               [params]="adrDisplayParams"
-              [editState]="editState"
+              [editState]="isEditable"
               [activeRecord]="activeRecord"
               [vehicleMetaData]="metaData"
             >
@@ -486,7 +473,7 @@
 
           <vtm-applicant
             [applicantDetails]="activeRecord.applicantDetails"
-            [editState]="createState"
+            [editState]="isEditable"
           >
           </vtm-applicant>
         </mat-expansion-panel>
@@ -709,7 +696,7 @@
 
           <vtm-documents
             [microfilm]="activeRecord?.microfilm"
-            [editState]="createState"
+            [editState]="isEditable"
           ></vtm-documents>
         </mat-expansion-panel>
       </div>
@@ -753,11 +740,11 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-notes [activeRecord]="activeRecord" [editState]="createState"></vtm-notes>
+          <vtm-notes [activeRecord]="activeRecord" [editState]="isEditable"></vtm-notes>
         </mat-expansion-panel>
       </div>
 
-      <ng-container *ngIf="viewOnlyState || editState">
+      <ng-container *ngIf="viewOnlyState || viewEditState">
         <div [@.disabled]="true">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "
@@ -850,16 +837,17 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <vtm-tech-rec-history [techRecordsJson]="vehicleTechRecord"></vtm-tech-rec-history>
+            <vtm-tech-rec-history
+              [focusedRecord]="activeRecord"
+              [vehicleRecord]="vehicleTechRecord"
+              (onViewRecord)="techRecordViewHandler($event)"
+            ></vtm-tech-rec-history>
           </mat-expansion-panel>
         </div>
       </ng-container>
 
-      <ng-container *ngIf="viewOnlyState || editState">
-        <div
-          [@.disabled]="true"
-          *ngIf="activeRecord.vehicleType === 'trl' || activeRecord.vehicleType === 'hgv'"
-        >
+      <ng-container *ngIf="viewOnlyState || viewEditState">
+        <div [@.disabled]="true" *ngIf="isHgvOrTrlVehicle">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "
             hideToggle="true"

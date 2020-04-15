@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SharedModule } from '@app/shared';
+import { VIEW_STATE } from '@app/app.enums';
 import { RecordIdentificationComponent } from './record-identification.component';
 import { VehicleTechRecordEdit } from '@app/models/vehicle-tech-record.model';
 
@@ -11,7 +11,6 @@ describe('RecordIdentificationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule],
       declarations: [RecordIdentificationComponent, TestRecordIdentificationEditComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -45,6 +44,7 @@ describe('RecordIdentificationComponent', () => {
 
   it('should render the editable component if editState is true', () => {
     component.editState = true;
+    component.viewState = VIEW_STATE.CREATE;
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
@@ -56,9 +56,11 @@ describe('RecordIdentificationComponent', () => {
   template: `
     <div>Vin is {{ vin }}</div>
     <div>Primary Vrm is {{ primaryVrm }}</div>
+    <div>View State is {{ viewState }} Create state (2)</div>
   `
 })
 class TestRecordIdentificationEditComponent {
   @Input() vin: string;
   @Input() primaryVrm: string;
+  @Input() viewState: VIEW_STATE;
 }
