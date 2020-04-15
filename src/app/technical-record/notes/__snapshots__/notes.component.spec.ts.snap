@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NotesComponent should create view only for hgv and trl with populated data 1`] = `
+exports[`NotesComponent should create view only for hgv or trl with populated data 1`] = `
 <vtm-notes
   activeRecord={[Function Object]}
+  notes={[Function String]}
 >
   <dl
     class="govuk-summary-list"
@@ -33,9 +34,10 @@ exports[`NotesComponent should create view only for hgv and trl with populated d
 </vtm-notes>
 `;
 
-exports[`NotesComponent should create view only for motorcycle populated date 1`] = `
+exports[`NotesComponent should create view only for motorcycle populated data 1`] = `
 <vtm-notes
   activeRecord={[Function Object]}
+  notes={[Function String]}
 >
   <dl
     class="govuk-summary-list"
@@ -88,6 +90,7 @@ exports[`NotesComponent should create view only for motorcycle populated date 1`
 exports[`NotesComponent should create view only for psv populated data 1`] = `
 <vtm-notes
   activeRecord={[Function Object]}
+  notes="undefined"
 >
   <dl
     class="govuk-summary-list"
@@ -132,6 +135,34 @@ exports[`NotesComponent should create view only for psv populated data 1`] = `
           10/10
         </span>
       </dd>
+    </div>
+  </dl>
+</vtm-notes>
+`;
+
+exports[`NotesComponent should render the editable component if editState is true 1`] = `
+<vtm-notes
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+  notes={[Function String]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        <vtm-notes-edit
+          ng-reflect-notes-details="some notes"
+        >
+          <div>
+            Note details: some notes
+          </div>
+        </vtm-notes-edit>
+      </dt>
     </div>
   </dl>
 </vtm-notes>

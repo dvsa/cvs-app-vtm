@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecordIdentificationEditComponent should create with initialized form controls 1`] = `
+<vtm-record-identification-edit
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  primaryVrm={[Function String]}
+  vehicleRecordFg={[Function FormGroup]}
+  vin={[Function String]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <div
+              class="govuk-form-group govuk-!-margin-top-7"
+            >
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-vin"
+                >
+                   Vehicle identification number (VIN) 
+                </label>
+                <input
+                  class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="vin"
+                  id="test-edit-vin"
+                  ng-reflect-name="vin"
+                  type="text"
+                />
+              </div>
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-vrm"
+                >
+                   Vehicle registration number (VRM) 
+                </label>
+                <input
+                  class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="primaryVrm"
+                  id="test-edit-vrm"
+                  ng-reflect-name="primaryVrm"
+                  type="text"
+                />
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-record-identification-edit>
+`;

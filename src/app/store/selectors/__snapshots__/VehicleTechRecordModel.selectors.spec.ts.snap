@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleTechRecordModel selectors should return the active vehicle Record 1`] = `
+Object {
+  "msUserDetails": null,
+  "primaryVrm": "LKJH654",
+  "secondaryVrms": Array [
+    "POI9876",
+  ],
+  "techRecord": Array [
+    Object {
+      "createdAt": "2019-06-26T10:26:54.903Z",
+      "statusCode": "current",
+    },
+  ],
+  "trailerId": undefined,
+  "vin": "ABCDEFGH654321",
+}
+`;
+
+exports[`VehicleTechRecordModel selectors should return the active vehicle Record with the latest techRecord from archives 1`] = `
+Object {
+  "msUserDetails": null,
+  "primaryVrm": "LKJH654",
+  "secondaryVrms": Array [
+    "POI9876",
+  ],
+  "techRecord": Array [
+    Object {
+      "createdAt": "2020-06-26T10:26:10.803Z",
+      "statusCode": "archived",
+    },
+  ],
+  "trailerId": undefined,
+  "vin": "ABCDEFGH654321",
+}
+`;
+
+exports[`VehicleTechRecordModel selectors should return the active vehicle Record with the preferred techRecord 1`] = `
+Object {
+  "msUserDetails": null,
+  "primaryVrm": "LKJH654",
+  "secondaryVrms": Array [
+    "POI9876",
+  ],
+  "techRecord": Array [
+    Object {
+      "createdAt": "2019-06-26T10:26:00.903Z",
+      "statusCode": "archived",
+    },
+  ],
+  "trailerId": undefined,
+  "vin": "ABCDEFGH654321",
+}
+`;
+
+exports[`VehicleTechRecordModel selectors should return the active vehicle Record with trailer Id 1`] = `
+Object {
+  "msUserDetails": null,
+  "primaryVrm": "LKJH654",
+  "secondaryVrms": Array [
+    "POI9876",
+  ],
+  "techRecord": Array [
+    Object {
+      "createdAt": "2019-06-26T10:26:54.903Z",
+      "statusCode": "current",
+    },
+  ],
+  "trailerId": "0285678",
+  "vin": "ABCDEFGH654321",
+}
+`;

@@ -1,0 +1,175 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div [formGroup]="techRecordFg">
+          <!-- Tyre usecode -->
+          <div class="govuk-form-group">
+            <label for="test-edit-tyreUseCode" class="govuk-label govuk-!-font-weight-bold">
+              Tyre use code (optional)
+            </label>
+            <input
+              id="test-edit-tyreUseCode"
+              type="text"
+              name="tyreUseCode"
+              maxlength="2"
+              formControlName="tyreUseCode"
+              class="govuk-input govuk-input--width-2"
+            />
+          </div>
+
+          <!-- Axle tyres -->
+          <ng-container *ngIf="axlesTyres.length">
+            <div formArrayName="axlesTyres">
+              <div
+                *ngFor="let axleTyre of axlesTyres.controls; let i = index"
+                [formGroup]="axleTyre"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    tyreTemplate;
+                    context: {
+                      $implicit: {
+                        group: axleTyre.get('tyres'),
+                        labelHead: 'Axle ' + axleTyre.get('axleNumber').value,
+                        fields: {
+                          index: '-' + (i + 1),
+                          tyreCode: 'tyreCode',
+                          tyreSize: 'tyreSize',
+                          plyRating: 'plyRating',
+                          fitmentCode: 'fitmentCode',
+                          dataTrAxles: 'dataTrAxles'
+                        }
+                      }
+                    }
+                  "
+                ></ng-container>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template let-tyreTemplate #tyreTemplate>
+            <div class="govuk-form-group" [formGroup]="tyreTemplate.group">
+              <label class="govuk-label govuk-!-font-weight-bold">
+                {{ tyreTemplate.labelHead }}
+              </label>
+              <div class="govuk-inset-text govuk-!-margin-top-3">
+                <div class="govuk-!-margin-left-3">
+                  <!-- Tyre code -->
+                  <div class="govuk-form-group">
+                    <label
+                      for="test-edit-{{ tyreTemplate.fields.tyreCode }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
+                      Tyre code
+                    </label>
+                    <input
+                      id="test-edit-{{ tyreTemplate.fields.tyreCode }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      type="number"
+                      maxlength="5"
+                      name="{{ tyreTemplate.fields.tyreCode }}"
+                      class="govuk-input govuk-input--width-5"
+                      formControlName="{{ tyreTemplate.fields.tyreCode }}"
+                    />
+                  </div>
+
+                  <!-- Tyre size -->
+                  <div class="govuk-form-group">
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                      for="test-edit-{{ tyreTemplate.fields.tyreSize }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                    >
+                      Tyre size
+                    </label>
+                    <input
+                      id="test-edit-{{ tyreTemplate.fields.tyreSize }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      type="text"
+                      maxlength="10"
+                      formControlName="{{ tyreTemplate.fields.tyreSize }}"
+                      class="govuk-input govuk-input--width-10"
+                    />
+                  </div>
+
+                  <!-- Ply rating -->
+                  <div class="govuk-form-group">
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                      for="test-edit-{{ tyreTemplate.fields.plyRating }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                    >
+                      Ply rating (optional)
+                    </label>
+                    <input
+                      id="test-edit-{{ tyreTemplate.fields.plyRating }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      type="text"
+                      maxlength="2"
+                      name="{{ tyreTemplate.fields.plyRating }}"
+                      formControlName="{{ tyreTemplate.fields.plyRating }}"
+                      class="govuk-input govuk-input--width-2"
+                    />
+                  </div>
+
+                  <!-- Fitment code -->
+                  <div class="govuk-form-group">
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                      for="test-edit-{{ tyreTemplate.fields.fitmentCode }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                    >
+                      Fitment code
+                    </label>
+                    <select
+                      id="test-edit-{{ tyreTemplate.fields.fitmentCode }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      formControlName="{{ tyreTemplate.fields.fitmentCode }}"
+                      class="govuk-select"
+                    >
+                      <option *ngFor="let code of fitmentCodeOptions" [ngValue]="code.name">
+                        {{ code.name }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- Load index -->
+                  <div class="govuk-form-group">
+                    <label
+                      for="test-edit-{{ tyreTemplate.fields.dataTrAxles }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
+                      Load index
+                    </label>
+                    <input
+                      id="test-edit-{{ tyreTemplate.fields.dataTrAxles }}{{
+                        tyreTemplate.fields.index
+                      }}"
+                      type="number"
+                      maxlength="3"
+                      name="{{ tyreTemplate.fields.dataTrAxles }}"
+                      class="govuk-input govuk-input--width-4"
+                      formControlName="{{ tyreTemplate.fields.dataTrAxles }}"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

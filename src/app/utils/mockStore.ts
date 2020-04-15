@@ -3,6 +3,13 @@ import { BehaviorSubject } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { getErrors } from '@app/store/selectors/error.selectors';
 import {
+  getSelectedVehicleTechRecord,
+  getTechViewState,
+  getVehicleTechRecordMetaData,
+  getActiveVehicleTechRecord,
+  selectVehicleTechRecordModelHavingStatusAll
+} from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import {
   getTestViewState,
   getVehicleTestResultModel,
   selectTestTypeById
@@ -18,6 +25,49 @@ export class MockStore {
 
   select(selector: any) {
     switch (selector) {
+      case selectVehicleTechRecordModelHavingStatusAll:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('selectVehicleTechRecordModelHavingStatusAll')
+              ? value['selectVehicleTechRecordModelHavingStatusAll']
+              : []
+          )
+        );
+
+      case getSelectedVehicleTechRecord:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getSelectedVehicleTechRecord')
+              ? value['getSelectedVehicleTechRecord']
+              : {}
+          )
+        );
+
+      case getActiveVehicleTechRecord:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getActiveVehicleTechRecord')
+              ? value['getActiveVehicleTechRecord']
+              : {}
+          )
+        );
+
+      case getVehicleTechRecordMetaData:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getVehicleTechRecordMetaData')
+              ? value['getVehicleTechRecordMetaData']
+              : {}
+          )
+        );
+
+      case getTechViewState:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getTechViewState') ? value['getTechViewState'] : {}
+          )
+        );
+
       case getErrors:
         return this.mockSelector.pipe(
           map((value: any) =>

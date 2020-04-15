@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BodyEditComponent component should render with the given properties  1`] = `
+<vtm-body-edit
+  bodyDetails={[Function Object]}
+  bodyTypeDescOptions={[Function Array]}
+  fb={[Function FormBuilder]}
+  functionOptions={[Function Object]}
+  parent={[Function FormGroupDirective]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-make"
+              >
+                 Make 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="make"
+                id="test-edit-make"
+                maxlength="30"
+                ng-reflect-maxlength="30"
+                ng-reflect-name="make"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-model"
+              >
+                 Model 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+                formcontrolname="model"
+                id="test-edit-model"
+                maxlength="30"
+                ng-reflect-maxlength="30"
+                ng-reflect-name="model"
+                type="text"
+              />
+            </div>
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-bodyType-description"
+              >
+                 Body type 
+              </label>
+              <select
+                class="govuk-select ng-untouched ng-pristine ng-valid"
+                formcontrolname="description"
+                id="test-edit-bodyType-description"
+                ng-reflect-name="description"
+              >
+                
+                <option
+                  ng-reflect-ng-value="articulated"
+                  value="0: articulated"
+                >
+                   articulated 
+                </option>
+                <option
+                  ng-reflect-ng-value="single decker"
+                  value="1: single decker"
+                >
+                   single decker 
+                </option>
+                <option
+                  ng-reflect-ng-value="double decker"
+                  value="2: double decker"
+                >
+                   double decker 
+                </option>
+                <option
+                  ng-reflect-ng-value="other"
+                  value="3: other"
+                >
+                   other 
+                </option>
+                <option
+                  ng-reflect-ng-value="petrol/oil tanker"
+                  value="4: petrol/oil tanker"
+                >
+                   petrol/oil tanker 
+                </option>
+                <option
+                  ng-reflect-ng-value="skeletal"
+                  value="5: skeletal"
+                >
+                   skeletal 
+                </option>
+                <option
+                  ng-reflect-ng-value="tipper"
+                  value="6: tipper"
+                >
+                   tipper 
+                </option>
+                <option
+                  ng-reflect-ng-value="box"
+                  value="7: box"
+                >
+                   box 
+                </option>
+                <option
+                  ng-reflect-ng-value="flat"
+                  value="8: flat"
+                >
+                   flat 
+                </option>
+                <option
+                  ng-reflect-ng-value="refuse"
+                  value="9: refuse"
+                >
+                   refuse 
+                </option>
+                <option
+                  ng-reflect-ng-value="skip loader"
+                  value="10: skip loader"
+                >
+                   skip loader 
+                </option>
+                <option
+                  ng-reflect-ng-value="refrigerated"
+                  value="11: refrigerated"
+                >
+                   refrigerated 
+                </option>
+              </select>
+            </div>
+            <div
+              class="govuk-radios govuk-!-margin-bottom-6"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-functionCode"
+              >
+                 Function (optional) 
+              </label>
+              
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="functionCode"
+                  id="test-edit-functionCode-Articulated"
+                  name="functionCode"
+                  ng-reflect-form-control-name="functionCode"
+                  ng-reflect-name="functionCode"
+                  ng-reflect-value="a"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-functionCode-Articulated"
+                >
+                   Articulated 
+                </label>
+              </div>
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  formcontrolname="functionCode"
+                  id="test-edit-functionCode-Rigid"
+                  name="functionCode"
+                  ng-reflect-form-control-name="functionCode"
+                  ng-reflect-name="functionCode"
+                  ng-reflect-value="r"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-functionCode-Rigid"
+                >
+                   Rigid 
+                </label>
+              </div>
+            </div>
+            <div
+              class="govuk-form-group"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-conversionRefNo"
+              >
+                 Conversion reference number (optional) 
+              </label>
+              <input
+                class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                formcontrolname="conversionRefNo"
+                id="test-edit-conversionRefNo"
+                maxlength="10"
+                ng-reflect-maxlength="10"
+                ng-reflect-name="conversionRefNo"
+                type="text"
+              />
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-body-edit>
+`;

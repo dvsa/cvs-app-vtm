@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TechnicalRecordValuesMapper mapControlValuesToDataValues should map ADR control values in TechRecord to allowed values 1`] = `
+Object {
+  "additionalNotes": Object {
+    "guidanceNotes": Array [
+      "New certificate requested",
+    ],
+    "number": Array [],
+  },
+  "documents": Array [
+    "UUID_Filename",
+  ],
+  "memosApply": Array [
+    "07/09 3mth leak ext",
+  ],
+  "permittedDangerousGoods": Array [
+    "Class 5.1 Hydrogen Peroxide (OX)",
+  ],
+  "tank": Object {
+    "tankStatement": Object {
+      "productListUnNo": Array [
+        "un1",
+        "un2",
+      ],
+      "substancesPermitted": "Substances permitted under the tank code and any special provisions specified in 9 may be carried",
+    },
+  },
+  "weight": "5",
+}
+`;
+
+exports[`TechnicalRecordValuesMapper mapToAxlesAllowdeValues should map AXLE control value in TechRecord to allowed values 1`] = `
+Array [
+  Object {
+    "axleNumber": 1,
+    "parkingBrakeMrk": true,
+    "tyres": Object {
+      "dataTrAxles": 8483,
+      "fitmentCode": "double",
+      "plyRating": "4",
+      "tyreCode": 84,
+      "tyreSize": "eu",
+    },
+    "weights": Object {
+      "designWeight": 438,
+      "eecWeight": 83,
+      "gbWeight": 743,
+    },
+  },
+]
+`;
+
+exports[`TechnicalRecordValuesMapper mapToDimensionsAllowedValued should map DIMENSIONS control value in TechRecord to allowed values 1`] = `
+Object {
+  "axleSpacing": Array [
+    Object {
+      "axles": "1-2",
+      "value": 500,
+    },
+  ],
+  "length": null,
+  "width": null,
+}
+`;

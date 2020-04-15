@@ -9,9 +9,7 @@ import { TechRecord } from '@app/models/tech-record.model';
 export class BodyPsvComponent implements OnInit {
   @Input() activeRecord: TechRecord;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

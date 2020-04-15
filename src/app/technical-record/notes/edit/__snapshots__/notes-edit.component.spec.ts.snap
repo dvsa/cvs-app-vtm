@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentsEditComponent component should render with the given properties  1`] = `
+<vtm-notes-edit
+  fb={[Function FormBuilder]}
+  notesDetails=""
+  parent={[Function FormGroupDirective]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <textarea
+              class="govuk-textarea ng-untouched ng-pristine ng-valid"
+              formcontrolname="notes"
+              id="test-edit-notes"
+              ng-reflect-name="notes"
+              rows="5"
+            />
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-notes-edit>
+`;
