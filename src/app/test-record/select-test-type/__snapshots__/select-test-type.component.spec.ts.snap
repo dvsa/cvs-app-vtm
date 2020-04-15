@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectTestTypeComponent should create 1`] = `
+<vtm-select-test-type
+  route={[Function Object]}
+  store={[Function Object]}
+  testRecordObservable$="undefined"
+>
+  
+</vtm-select-test-type>
+`;

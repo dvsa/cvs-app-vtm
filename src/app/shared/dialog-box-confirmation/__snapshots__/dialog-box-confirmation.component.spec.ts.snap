@@ -1,27 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DialogBoxComponent should create 1`] = `
-<vtm-dialog-box
+exports[`DialogBoxConfirmationComponent should create 1`] = `
+<vtm-dialog-box-confirmation
   data={[Function Object]}
   dialogRef={[Function Object]}
 >
   <div
-    class="mat-dialog-content"
-    mat-dialog-content=""
+    class="govuk-grid-row"
   >
-    <h2
-      class="govuk-heading-l"
+    <div
+      class="govuk-grid-column-full"
     >
-      
-    </h2>
-    <textarea
-      aria-describedby="reasonForCreation"
-      class="govuk-textarea govuk-!-width-three-quarters ng-untouched ng-pristine ng-valid"
-      id="test-reasonForCreation"
-      rows="8"
-    >
-        
-    </textarea>
+      <div
+        class="mat-dialog-content"
+        mat-dialog-content=""
+      />
+    </div>
   </div><div
     class="govuk-grid-row"
   >
@@ -41,8 +35,9 @@ exports[`DialogBoxComponent should create 1`] = `
       class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0 govuk-!-padding-top-2"
     >
       <a
-        class="govuk-link govuk-!-margin-left-2"
+        class="govuk-link govuk-link--no-visited-state"
         href="javascript:void(0)"
+        id="test-cancel"
       >
         <span>
           Cancel
@@ -50,5 +45,5 @@ exports[`DialogBoxComponent should create 1`] = `
       </a>
     </div>
   </div>
-</vtm-dialog-box>
+</vtm-dialog-box-confirmation>
 `;

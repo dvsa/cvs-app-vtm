@@ -5,7 +5,7 @@ import { hot } from 'jasmine-marbles';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { PreparersGuard } from '@app/test-record/guards/preparers.guard';
 import { IAppState } from '@app/store/state/app.state';
-import { Preparer } from '@app/models/preparer';
+import {Preparer} from '@app/models/preparer';
 
 describe('PreparersGuard', () => {
   let preparersGuard: PreparersGuard;
@@ -29,6 +29,7 @@ describe('PreparersGuard', () => {
     }).compileComponents();
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
+
   }));
 
   describe('should check the store and populate it with preparers data', () => {
@@ -47,4 +48,5 @@ describe('PreparersGuard', () => {
       expect(preparersGuard.populateStoreWithDataFromApi).toBeTruthy();
     });
   });
+
 });
