@@ -10,11 +10,13 @@ import {
   selectVehicleTechRecordModelHavingStatusAll
 } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import {
+  getSelectedVehicleTestResultModel,
   getTestViewState,
   getVehicleTestResultModel,
   selectTestTypeById
 } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
+import { getRouterParams } from '@app/store/selectors/route.selectors';
 
 export class MockStore {
   mockSelector: BehaviorSubject<any>;
@@ -94,14 +96,14 @@ export class MockStore {
       case getPreparers:
         return this.mockSelector.pipe(
           map((value: any) =>
-            value && value.hasOwnProperty('getPreparers') ? value['getPreparers'] : []
+            value && value.hasOwnProperty('getPreparers') ? value['getPreparers'] : null
           )
         );
 
       case getTestStations:
         return this.mockSelector.pipe(
           map((value: any) =>
-            value && value.hasOwnProperty('getTestStations') ? value['getTestStations'] : []
+            value && value.hasOwnProperty('getTestStations') ? value['getTestStations'] : null
           )
         );
 
@@ -109,6 +111,22 @@ export class MockStore {
         return this.mockSelector.pipe(
           map((value: any) =>
             value && value.hasOwnProperty('getTestViewState') ? value['getTestViewState'] : {}
+          )
+        );
+
+      case getSelectedVehicleTestResultModel:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getSelectedVehicleTestResultModel')
+              ? value['getSelectedVehicleTestResultModel']
+              : {}
+          )
+        );
+
+      case getRouterParams:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getRouterParams') ? value['getRouterParams'] : {}
           )
         );
 

@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectTestTypeComponent } from './select-test-type.component';
-import { INITIAL_STATE, Store } from '@ngrx/store';
-import { hot } from 'jasmine-marbles';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { KeyValue } from '@angular/common';
+import { TestTypeCategory } from '@app/models/test-type-category';
+import { TreeData } from '@app/models/tree-data';
 
 describe('SelectTestTypeComponent', () => {
   let component: SelectTestTypeComponent;
@@ -13,15 +15,8 @@ describe('SelectTestTypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SelectTestTypeComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        {
-          provide: Store,
-          useValue: {
-            dispatch: jest.fn(),
-            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
-            select: jest.fn()
-          }
-        },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -36,6 +31,7 @@ describe('SelectTestTypeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectTestTypeComponent);
     component = fixture.componentInstance;
+    component.filteredCategories = [{ id: '1', isActive: true } as TreeData];
     fixture.detectChanges();
   });
 
@@ -43,4 +39,28 @@ describe('SelectTestTypeComponent', () => {
     expect(component).toBeTruthy();
     expect(fixture).toMatchSnapshot();
   });
+
+  it('should emit on change test type CTA', () => {
+    const testTreeNode = {
+      key: '1',
+      value: 'test'
+    } as KeyValue<string, string>;
+
+    component.testTypeData = testTreeNode;
+    fixture.detectChanges();
+
+    spyOn(component.testTypeSelected, 'emit');
+    component.updateSelectedTestResult();
+    expect(component.testTypeSelected.emit).toHaveBeenCalledWith(testTreeNode);
+  });
 });
+
+@Component({
+  selector: 'vtm-tree-component',
+  template: `
+    <div>{{ treeData | json }}</div>
+  `
+})
+class TestTreeComponent {
+  @Input() treeData: TestTypeCategory[];
+}
