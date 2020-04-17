@@ -14,7 +14,7 @@
           <button
             class="govuk-button govuk-button--secondary"
             data-module="govuk-button"
-            (click)="switchCurrentState('edit', false)"
+            (click)="switchCurrentState('edit')"
           >
             Change test record
           </button>
@@ -30,7 +30,7 @@
           >
             Save test record
           </button>
-          <a class="govuk-link govuk-!-margin-left-2" (click)="switchCurrentState('edit', true)">
+          <a class="govuk-link govuk-!-margin-left-2" (click)="switchCurrentState('view')">
             <span>Cancel</span>
           </a>
         </div>
@@ -51,7 +51,6 @@
                 [testRecord]="testResultObj.testRecord"
                 [preparers]="preparers"
                 [editState]="editState"
-                [formErrors]="formErrors"
               ></vtm-vehicle>
             </vtm-accordion-item>
             <vtm-accordion-item [title]="'Test'">
@@ -87,7 +86,6 @@
               <vtm-seatbelt-installation-check
                 [testType]="testResultObj.testType"
                 [editState]="editState"
-                [formErrors]="formErrors"
               ></vtm-seatbelt-installation-check>
             </vtm-accordion-item>
             </span>
@@ -105,7 +103,6 @@
                 [testRecord]="testResultObj.testRecord"
                 [testType]="testResultObj.testType"
                 [editState]="editState"
-                [formErrors]="formErrors"
               ></vtm-emission-details>
             </vtm-accordion-item>
             </span>
@@ -114,19 +111,19 @@
                 [testRecord]="testResultObj.testRecord"
                 [editState]="editState"
                 [testStations]="testStations"
-                [formErrors]="formErrors"
               ></vtm-visit>
             </vtm-accordion-item>
             <vtm-accordion-item [title]="'Notes'">
               <vtm-notes
                 [testType]="testResultObj.testType"
                 [editState]="editState"
-                [formErrors]="formErrors"
               ></vtm-notes>
             </vtm-accordion-item>
-            <vtm-accordion-item [title]="'Test record history'">
-              <vtm-test-history [testRecord]="testResultObj.testRecord" [editState]="editState"></vtm-test-history>
-            </vtm-accordion-item>
+            <span [hidden]="editState">
+              <vtm-accordion-item [title]="'Test record history'">
+                <vtm-test-history [testRecord]="testResultObj.testRecord" [editState]="editState"></vtm-test-history>
+              </vtm-accordion-item>
+            </span>
           </vtm-accordion>
         </div>
       </div>

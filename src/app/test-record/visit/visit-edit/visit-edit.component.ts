@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TestStation } from '@app/models/test-station';
-import {ControlContainer, FormControl, FormGroupDirective, Validators} from '@angular/forms';
+import { ControlContainer, FormControl, FormGroupDirective, Validators } from '@angular/forms';
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 
@@ -27,11 +27,17 @@ export class VisitEditComponent implements OnInit {
   ngOnInit() {
     this.testResultChildForm.form.addControl(
       'testStationNameNumber',
-      new FormControl(this.testRecord.testStationName + ' (' + this.testRecord.testStationPNumber + ')', Validators.required)
+      new FormControl(
+        this.testRecord.testStationName + ' (' + this.testRecord.testStationPNumber + ')',
+        Validators.required
+      )
     );
     this.testResultChildForm.form.addControl(
       'testStationType',
-      new FormControl({ value: this.testRecord.testStationType, disabled: true }, Validators.required)
+      new FormControl(
+        { value: this.testRecord.testStationType, disabled: true },
+        Validators.required
+      )
     );
     this.testResultChildForm.form.addControl(
       'testerName',
@@ -39,27 +45,25 @@ export class VisitEditComponent implements OnInit {
     );
     this.testResultChildForm.form.addControl(
       'testerEmailAddress',
-      new FormControl({ value: this.testRecord.testerEmailAddress }, [Validators.required, Validators.email])
+      new FormControl(this.testRecord.testerEmailAddress, [Validators.required, Validators.email])
     );
 
-
-    this.testStationsOptions = !!this.testStations ? this.testStations.map(
-      (res) => res.testStationName + ' (' + res.testStationPNumber + ')'
-    ) : [''];
+    this.testStationsOptions = !!this.testStations
+      ? this.testStations.map((res) => res.testStationName + ' (' + res.testStationPNumber + ')')
+      : [''];
 
     this.testResultChildForm.form
       .get('testStationNameNumber')
       .valueChanges.subscribe((testStationVal) => {
         const testStationPNumber = !!testStationVal ? testStationVal.match(/\((.*)\)/).pop() : '';
         this.testStationType = this.searchTestStationType(testStationPNumber);
-        console.log(this.testStationType);
         this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
       });
   }
 
   searchTestStationType(testStationPNumber: string) {
     let testStationType;
-    this.testStations.forEach(function (item) {
+    this.testStations.forEach(function(item) {
       if (item.testStationPNumber === testStationPNumber) {
         testStationType = item.testStationType;
       }
@@ -67,5 +71,4 @@ export class VisitEditComponent implements OnInit {
 
     return this.testRecordMapper.getTestStationType(testStationType);
   }
-
 }

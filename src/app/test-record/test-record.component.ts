@@ -65,15 +65,11 @@ export class TestRecordComponent implements OnInit, OnChanges {
     }
   }
 
-  switchCurrentState(state: string, cancel: boolean) {
+  switchCurrentState(state: string) {
     if (state === 'view') {
       this.switchState.emit(VIEW_STATE.VIEW_ONLY);
     } else {
       this.switchState.emit(VIEW_STATE.EDIT);
-    }
-
-    if (cancel) {
-      this.location.back();
     }
   }
 

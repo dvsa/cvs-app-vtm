@@ -88,17 +88,15 @@ describe('TestRecordComponent', () => {
 
   it('should switch current state to view', () => {
     spyOn(component.switchState, 'emit');
-    component.switchCurrentState('view', false);
+    component.switchCurrentState('view');
     expect(component.switchState.emit).toHaveBeenCalled();
     expect(component.switchState.emit).toHaveBeenCalledWith(VIEW_STATE.VIEW_ONLY);
   });
 
   it('should switch current state to edit', () => {
     spyOn(component.switchState, 'emit');
-    spyOn(location, 'back');
-    component.switchCurrentState('edit', true);
+    component.switchCurrentState('edit');
     expect(component.switchState.emit).toHaveBeenCalled();
-    expect(location.back).toHaveBeenCalled();
     expect(component.switchState.emit).toHaveBeenCalledWith(VIEW_STATE.EDIT);
   });
 

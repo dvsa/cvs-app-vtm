@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestStation } from '@app/models/test-station';
-import {TESTING_UTILS} from '@app/utils/testing.utils';
+import { TESTING_UTILS } from '@app/utils/testing.utils';
 
 describe('VisitEditComponent', () => {
   let component: VisitEditComponent;

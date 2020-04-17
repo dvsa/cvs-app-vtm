@@ -1,7 +1,8 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy} from '@angular/core';
 import { TestType } from '@app/models/test.type';
 import { EMISSION_STANDARD, FUEL_TYPE, MOD_TYPE } from '@app/test-record/test-record.enums';
-import {ControlContainer, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
+import { ControlContainer, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'vtm-emission-details-edit',
@@ -20,6 +21,7 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
   editParticulate: boolean;
   testResultChildForm: FormGroupDirective;
   testTypeGroup: FormGroup;
+  modTypeSubscription: Subscription;
 
   constructor(parentForm: FormGroupDirective) {
     this.testResultChildForm = parentForm;
@@ -52,7 +54,7 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
         new FormControl(this.testType.particulateTrapSerialNumber, Validators.required)
       );
 
-      this.testTypeGroup.get('modType').valueChanges.subscribe((value) => {
+      this.modTypeSubscription = this.testTypeGroup.get('modType').valueChanges.subscribe((value) => {
         this.editParticulate = value === 'P - Particulate trap';
         this.editModTypeUsed = value === 'G - Gas engine';
       });
@@ -60,6 +62,6 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // TODO: unsubscribe
+    this.modTypeSubscription.unsubscribe();
   }
 }

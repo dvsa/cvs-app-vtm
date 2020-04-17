@@ -125,11 +125,13 @@ exports[`TestRecordComponent should create 1`] = `
               >
                 <vtm-notes />
               </vtm-accordion-item>
-              <vtm-accordion-item
-                title="Test record history"
-              >
-                <vtm-test-history />
-              </vtm-accordion-item>
+              <span>
+                <vtm-accordion-item
+                  title="Test record history"
+                >
+                  <vtm-test-history />
+                </vtm-accordion-item>
+              </span>
             </vtm-accordion>
           </div>
         </div>
