@@ -9,7 +9,7 @@ import { TestStation } from '@app/models/test-station';
 
 describe('Reference Data Reducer', () => {
   describe('[LoadPreparersSuccess]', () => {
-    test('should update preparers', () => {
+    it('should update preparers', () => {
       const action = new LoadPreparersSuccess({} as Preparer[]);
       const result = ReferenceDataReducers(initialReferenceDataState, action);
 
@@ -21,7 +21,7 @@ describe('Reference Data Reducer', () => {
   });
 
   describe('[LoadTestStationsSuccess]', () => {
-    test('should update testStations', () => {
+    it('should update testStations', () => {
       const action = new LoadTestStationsSuccess({} as TestStation[]);
       const result = ReferenceDataReducers(initialReferenceDataState, action);
 
@@ -32,8 +32,8 @@ describe('Reference Data Reducer', () => {
     });
   });
 
-  describe('should return default if action is different', () => {
-    test('return current state value', () => {
+  describe('LoadTestStations', () => {
+    it('return current state value', () => {
       const result = ReferenceDataReducers(initialReferenceDataState, new LoadTestStations());
 
       expect(result).toMatchObject({

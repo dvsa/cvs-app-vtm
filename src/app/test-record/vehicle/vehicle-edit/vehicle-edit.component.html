@@ -3,12 +3,12 @@
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <div class="govuk-form-group">
-          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the vin')">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('vin')?.invalid">
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Vehicle identification number (VIN)
               </label>
-              <span *ngIf="formErrors?.includes('Enter the vin')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('vin')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
                 <span>Enter the VIN</span>
               </span>
@@ -19,12 +19,12 @@
                 type="text"
                 minLength="1"
                 maxlength="21"
-                [class.govuk-input--error]="formErrors?.includes('Enter the vin')"
+                [class.govuk-input--error]="isSubmitted && testResultChildForm.form.get('vin')?.invalid"
               />
             </div>
           </div>
 
-          <div [class.govuk-form-group--error]="formErrors?.includes('Enter the vrm')">
+          <div [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('vrm')?.invalid">
             <div class="govuk-grid-row govuk-!-margin-bottom-3">
               <div class="govuk-grid-column-one-half">
                 <label class="govuk-label govuk-!-font-weight-bold">
@@ -34,7 +34,7 @@
             </div>
             <div class="govuk-grid-row govuk-!-margin-bottom-3">
               <div class="govuk-grid-column-one-third">
-              <span *ngIf="formErrors?.includes('Enter the vrm')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('vrm')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
                 <span>Enter the VRM</span>
               </span>
@@ -45,7 +45,7 @@
                   type="text"
                   minLength="1"
                   maxlength="8"
-                  [class.govuk-input--error]="formErrors?.includes('Enter the vrm')"
+                  [class.govuk-input--error]="isSubmitted && testResultChildForm.form.get('vrm')?.invalid"
                 />
               </div>
             </div>
@@ -54,13 +54,13 @@
           <div
             *ngIf="testRecord.vehicleType == 'trl'"
             class="govuk-grid-row govuk-!-margin-bottom-3"
-            [class.govuk-form-group--error]="formErrors?.includes('Enter the trailerId')"
+            [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('trailerId')?.invalid"
           >
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Trailer ID
               </label>
-              <span *ngIf="formErrors?.includes('Enter the trailerId')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('trailerId')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
                 <span>Enter the trailer ID</span>
               </span>
@@ -69,22 +69,23 @@
                 id="test-trl-id"
                 formControlName="trailerId"
                 type="text"
-                [class.govuk-input--error]="formErrors?.includes('Enter the trailerId')"
+                [class.govuk-input--error]="isSubmitted && testResultChildForm.form.get('trailerId')?.invalid"
               />
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the countryOfRegistration')">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('countryOfRegistration')?.invalid">
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Country of registration
               </label>
-              <span *ngIf="formErrors?.includes('Enter the countryOfRegistration')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('countryOfRegistration')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
                 <span>Enter the country of registration</span>
               </span>
               <vtm-autocomplete
                 [autocompleteData]="countryOfRegistrationOptions"
+                [hasError]="isSubmitted && testResultChildForm.form.get('countryOfRegistration')?.invalid"
                 id="countryOfRegistration"
                 ariaDescribedBy="countryOfRegistration"
                 formControlName="countryOfRegistration"
@@ -93,14 +94,14 @@
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the euVehicleCategory')">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('euVehicleCategory')?.invalid">
             <div class="govuk-grid-column-three-quarters">
               <label class="govuk-label govuk-!-font-weight-bold">
                 EU vehicle category
               </label>
-              <span *ngIf="formErrors?.includes('Enter the euVehicleCategory')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('euVehicleCategory')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
-                <span>Enter the country of EU vehicle category</span>
+                <span>Select the EU vehicle category</span>
               </span>
               <div class="govuk-radios">
                 <div class="govuk-radios__item" *ngFor="let euCategory of euVehicleCategories">
@@ -111,7 +112,7 @@
                     formControlName="euVehicleCategory"
                     value="{{ euCategory | lowercase }}"
                     [checked]="(testRecord.euVehicleCategory | titlecase) == euCategory"
-                    [class.govuk-input--error]="formErrors?.includes('Enter the euVehicleCategory')"
+                    [class.govuk-input--error]="isSubmitted && testResultChildForm.form.get('euVehicleCategory')?.invalid"
                   />
                   <label class="govuk-label govuk-radios__label">
                     {{ euCategory }}
@@ -121,33 +122,34 @@
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the odometerReading')">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('odometerReading')?.invalid">
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Odometer reading
               </label>
-              <span *ngIf="formErrors?.includes('Enter the odometerReading')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('odometerReading')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
                 <span>Enter the odometer reading</span>
               </span>
               <input
+                appDigitOnly
                 class="govuk-input"
                 id="test-odometerReading"
                 formControlName="odometerReading"
                 type="text"
-                [class.govuk-input--error]="formErrors?.includes('Enter the odometerReading')"
+                [class.govuk-input--error]="isSubmitted && testResultChildForm.form.get('odometerReading')?.invalid"
               />
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the odometerReadingUnit')">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="isSubmitted && testResultChildForm.form.get('odometerReadingUnit')?.invalid">
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Odometer reading unit
               </label>
-              <span *ngIf="formErrors?.includes('Enter the odometerReadingUnit')" class="govuk-error-message">
+              <span *ngIf="isSubmitted && testResultChildForm.form.get('odometerReadingUnit')?.invalid" class="govuk-error-message">
                 <span class="govuk-visually-hidden">Error:</span>
-                <span>Enter the odometer reading unit</span>
+                <span>Select the odometer reading unit</span>
               </span>
               <select class="govuk-select" id="test-odometerReadingUnit">
                 <option
@@ -159,15 +161,11 @@
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3" [class.govuk-form-group--error]="formErrors?.includes('Enter the preparer')">
+          <div class="govuk-grid-row govuk-!-margin-bottom-3">
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
                 Preparer
               </label>
-              <span *ngIf="formErrors?.includes('Enter the preparer')" class="govuk-error-message">
-                <span class="govuk-visually-hidden">Error:</span>
-                <span>Enter the preparer</span>
-              </span>
               <vtm-autocomplete
                 [autocompleteData]="preparersOptions"
                 id="preparer"

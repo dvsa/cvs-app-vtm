@@ -1,12 +1,11 @@
 import { selectFeature } from '@app/store/selectors/ReferenceData.selectors';
-import { IReferenceDataState } from '@app/store/state/ReferenceDataState.state';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
-import {getPreparers, getTestStations} from '@app/store/selectors/ReferenceData.selectors';
+import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
 
 describe('vehicleTechRecordModel selectors', () => {
   const createState = ({
-   referenceData = {
+    referenceData = {
       preparers: {} as Preparer[],
       testStations: {} as TestStation[]
     }

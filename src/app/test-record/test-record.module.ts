@@ -27,6 +27,8 @@ import { VisitEditComponent } from './visit/visit-edit/visit-edit.component';
 import { PendingChangesGuard } from '@app/shared/pending-changes-guard/pending-changes.guard';
 import { DateInputComponent } from '@app/shared/components/date-input/date-input.component';
 import { AutocompleteComponent } from '@app/shared/components/autocomplete/autocomplete.component';
+import { TestSectionEditComponent } from './test-section/test-section-edit/test-section-edit.component';
+import { SelectTestTypeComponent } from './select-test-type/select-test-type.component';
 
 export const COMPONENTS = [
   TestRecordComponent,
@@ -69,7 +71,7 @@ export const MODULES = [
 
 @NgModule({
   imports: [MODULES],
-  declarations: [COMPONENTS],
+  declarations: [COMPONENTS, TestSectionEditComponent, SelectTestTypeComponent],
   exports: [COMPONENTS],
   providers: [FormGroupDirective]
 })

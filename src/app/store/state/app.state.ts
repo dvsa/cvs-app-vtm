@@ -5,20 +5,20 @@ import {
 } from './VehicleTechRecordModel.state';
 import {
   initialVehicleTestResultModelState,
-  IVehicleTestResultModelState
+  VehicleTestResultModelState
 } from './VehicleTestResultModel.state';
 import { initialLoaderState, ILoaderState } from './Loader.state';
 import {
   initialReferenceDataState,
-  IReferenceDataState
+  ReferenceDataState
 } from '@app/store/state/ReferenceDataState.state';
 
 export interface IAppState {
   router?: RouterReducerState;
   loader: ILoaderState;
   vehicleTechRecordModel: IVehicleTechRecordModelState;
-  vehicleTestResultModel: IVehicleTestResultModelState;
-  referenceData: IReferenceDataState;
+  vehicleTestResultModel: VehicleTestResultModelState;
+  referenceData: ReferenceDataState;
   error?: [string] | null;
 }
 

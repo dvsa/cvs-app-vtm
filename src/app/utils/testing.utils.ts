@@ -9,6 +9,7 @@ import {
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
 import { TestResultModel } from '@app/models/test-result.model';
+import { TestType } from '@app/models/test.type';
 
 /**
  * *******************SOME GROUND RULES*************************************
@@ -32,7 +33,8 @@ export const TESTING_UTILS = {
   mockTc2Details,
   mockTc3Details,
   mockMetaData,
-  mockMapFormValues
+  mockTestRecord,
+  mockTestType
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -173,6 +175,21 @@ function mockMetaData(): MetaData {
   };
 }
 
-function mockMapFormValues() {
-  return {} as TestResultModel;
+function mockTestRecord(args?: Partial<TestResultModel>): TestResultModel {
+  const mock: TestResultModel = {
+    reasonForCreation: '',
+    testResultId: '123',
+    vehicleType: 'hgv',
+    testTypes: [this.mockTestType()]
+  } as TestResultModel;
+
+  return { ...mock, ...args };
+}
+
+function mockTestType(args?: Partial<TestType>): TestType {
+  const mock: TestType = {
+    seatbeltInstallationCheckDate: true
+  } as TestType;
+
+  return { ...mock, ...args };
 }

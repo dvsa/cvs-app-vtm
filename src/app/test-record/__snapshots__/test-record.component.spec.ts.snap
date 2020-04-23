@@ -7,7 +7,6 @@ exports[`TestRecordComponent should create 1`] = `
   fb={[Function FormBuilder]}
   hasErrors={[Function EventEmitter]}
   isFormDirty={[Function EventEmitter]}
-  location={[Function SpyLocation]}
   parent={[Function FormGroupDirective]}
   preparers={[Function Array]}
   submitTest={[Function EventEmitter]}
@@ -99,11 +98,15 @@ exports[`TestRecordComponent should create 1`] = `
                   <vtm-defects />
                 </vtm-accordion-item>
               </span>
-              <span>
+              <span
+                hidden=""
+              >
                 <vtm-accordion-item
                   title="Seatbelt installation check"
                 >
-                  <vtm-seatbelt-installation-check />
+                  <vtm-seatbelt-installation-check
+                    hidden=""
+                  />
                 </vtm-accordion-item>
               </span>
               <span
@@ -112,7 +115,9 @@ exports[`TestRecordComponent should create 1`] = `
                 <vtm-accordion-item
                   title="Emission details"
                 >
-                  <vtm-emission-details />
+                  <vtm-emission-details
+                    hidden=""
+                  />
                 </vtm-accordion-item>
               </span>
               <vtm-accordion-item

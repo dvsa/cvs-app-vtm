@@ -20,7 +20,7 @@ import { COUNTRY_OF_REGISTRATION } from '@app/app.enums';
 export class VehicleEditComponent implements OnInit {
   @Input() testRecord: TestResultModel;
   @Input() preparers: Preparer[];
-  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
   euVehicleCategories: string[];
   countryOfRegistrationOptions: string[] = Object.values(COUNTRY_OF_REGISTRATION);
   odometerReadingUnits: string[] = Object.values(ODOMETER_READING_UNITS);

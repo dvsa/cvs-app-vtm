@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { VehicleComponent } from './vehicle.component';
 import { TestResultModel } from '@app/models/test-result.model';
 import { SharedModule } from '@app/shared/shared.module';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Preparer } from '@app/models/preparer';
 
 describe('VehicleComponent', () => {
   let component: VehicleComponent;
@@ -12,8 +13,7 @@ describe('VehicleComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [VehicleComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      declarations: [VehicleComponent, TestVehicleEditComponent]
     }).compileComponents();
   }));
 
@@ -29,3 +29,13 @@ describe('VehicleComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 });
+
+@Component({
+  selector: 'vtm-vehicle-edit',
+  template: `<div>{{ testRecord | json }}</div> `
+})
+class TestVehicleEditComponent {
+  @Input() testRecord: TestResultModel;
+  @Input() preparers: Preparer[];
+  @Input() isSubmitted: boolean;
+}

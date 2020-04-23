@@ -7,18 +7,22 @@
             <div class="govuk-grid-column-three-quarters">
               <div
                 [class.govuk-form-group--error]="
-                  formErrors?.includes('Enter the seatbeltInstallationCheckDate')
+                  isSubmitted &&
+                  testResultChildForm.form.get('seatbeltInstallationCheckDate')?.invalid
                 "
               >
                 <label class="govuk-label govuk-!-font-weight-bold">
                   Carried out during test
                 </label>
                 <span
-                  *ngIf="formErrors?.includes('Enter the seatbeltInstallationCheckDate')"
+                  *ngIf="
+                    isSubmitted &&
+                    testResultChildForm.form.get('seatbeltInstallationCheckDate')?.invalid
+                  "
                   class="govuk-error-message"
                 >
                   <span class="govuk-visually-hidden">Error:</span>
-                  <span>Enter the carried out during test</span>
+                  <span>Select the carried out during test</span>
                 </span>
                 <div class="govuk-radios govuk-radios--inline">
                   <div
@@ -33,7 +37,8 @@
                       value="{{ option.selected }}"
                       [checked]="option.selected"
                       [class.govuk-input--error]="
-                        formErrors?.includes('Enter the seatbeltInstallationCheckDate')
+                        isSubmitted &&
+                        testResultChildForm.form.get('seatbeltInstallationCheckDate')?.invalid
                       "
                     />
                     <label class="govuk-label govuk-radios__label">
@@ -45,7 +50,7 @@
 
               <div
                 [class.govuk-form-group--error]="
-                  formErrors?.includes('Enter the numberOfSeatbeltsFitted')
+                  isSubmitted && testResultChildForm.form.get('numberOfSeatbeltsFitted')?.invalid
                 "
               >
                 <div class="govuk-grid-row govuk-!-margin-bottom-3">
@@ -58,19 +63,24 @@
                 <div class="govuk-grid-row govuk-!-margin-bottom-3">
                   <div class="govuk-grid-column-one-third">
                     <span
-                      *ngIf="formErrors?.includes('Enter the numberOfSeatbeltsFitted')"
+                      *ngIf="
+                        isSubmitted &&
+                        testResultChildForm.form.get('numberOfSeatbeltsFitted')?.invalid
+                      "
                       class="govuk-error-message"
                     >
                       <span class="govuk-visually-hidden">Error:</span>
                       <span>Enter the carried out during test</span>
                     </span>
                     <input
+                      appDigitOnly
                       class="govuk-input"
                       id="test-numberOfSeatbeltsFitted"
                       formControlName="numberOfSeatbeltsFitted"
                       type="text"
                       [class.govuk-input--error]="
-                        formErrors?.includes('Enter the numberOfSeatbeltsFitted')
+                        isSubmitted &&
+                        testResultChildForm.form.get('numberOfSeatbeltsFitted')?.invalid
                       "
                     />
                   </div>
@@ -80,7 +90,8 @@
               <div
                 class="govuk-grid-row govuk-!-margin-bottom-3"
                 [class.govuk-form-group--error]="
-                  formErrors?.includes('Enter the lastSeatbeltInstallationCheckDate')
+                  isSubmitted &&
+                  testResultChildForm.form.get('lastSeatbeltInstallationCheckDate')?.invalid
                 "
               >
                 <div class="govuk-grid-column-three-quarters">
@@ -88,11 +99,14 @@
                     Most recent installation check
                   </label>
                   <span
-                    *ngIf="formErrors?.includes('Enter the lastSeatbeltInstallationCheckDate')"
+                    *ngIf="
+                      isSubmitted &&
+                      testResultChildForm.form.get('lastSeatbeltInstallationCheckDate')?.invalid
+                    "
                     class="govuk-error-message"
                   >
                     <span class="govuk-visually-hidden">Error:</span>
-                    <span>Enter the VIN</span>
+                    <span>Enter the most recent installation check</span>
                   </span>
                   <vtm-date-input
                     id="test-lastSeatbeltInstallationCheckDate"

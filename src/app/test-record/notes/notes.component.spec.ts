@@ -2,7 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NotesComponent } from './notes.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { TestType } from '@app/models/test.type';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {VIEW_STATE} from '@app/app.enums';
 
 describe('NotesComponent', () => {
   let component: NotesComponent;
@@ -12,8 +13,7 @@ describe('NotesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [NotesComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      declarations: [NotesComponent, TestNotesEditComponent]
     }).compileComponents();
   }));
 
@@ -29,3 +29,13 @@ describe('NotesComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 });
+
+@Component({
+  selector: 'vtm-notes-edit',
+  template: `<div>{{ testType | json }}</div> `
+})
+class TestNotesEditComponent {
+  @Input() currentState: VIEW_STATE;
+  @Input() testType: TestType;
+  @Input() isSubmitted: boolean;
+}

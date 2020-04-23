@@ -13,7 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
   @Input() testType: TestType;
-  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
+
   emissionStandardOptions: string[] = Object.values(EMISSION_STANDARD);
   fuelTypeOptions: string[] = Object.values(FUEL_TYPE);
   modTypeOptions: string[] = Object.values(MOD_TYPE);
@@ -29,6 +30,7 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
+    console.log('mama');
 
     if (!!this.testTypeGroup) {
       this.testTypeGroup.addControl(

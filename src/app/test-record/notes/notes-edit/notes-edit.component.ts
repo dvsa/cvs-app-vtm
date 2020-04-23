@@ -13,7 +13,7 @@ import { TestType } from '@app/models/test.type';
 export class NotesEditComponent implements OnInit {
   @Input() currentState: VIEW_STATE;
   @Input() testType: TestType;
-  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
 
   testResultChildForm: FormGroupDirective;
   testTypeGroup: FormGroup;

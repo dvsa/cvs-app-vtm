@@ -25,9 +25,9 @@
   </div>
 </dl>
 
-<ng-container *ngIf="editState">
+<ng-container *ngIf="editState && !hidden">
   <vtm-seatbelt-installation-check-edit
     [testType]="testType"
-    [formErrors]="formErrors"
+    [isSubmitted]="isSubmitted"
   ></vtm-seatbelt-installation-check-edit>
 </ng-container>

@@ -14,7 +14,7 @@ import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 export class VisitEditComponent implements OnInit {
   @Input() testRecord: TestResultModel;
   @Input() testStations: TestStation[];
-  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
 
   testStationsOptions: string[];
   testStationType = '';
@@ -35,7 +35,12 @@ export class VisitEditComponent implements OnInit {
     this.testResultChildForm.form.addControl(
       'testStationType',
       new FormControl(
-        { value: this.testRecord.testStationType, disabled: true },
+        {
+          value: this.testRecord.testStationType
+            ? this.testRecord.testStationType.toUpperCase()
+            : '',
+          disabled: true
+        },
         Validators.required
       )
     );
@@ -55,7 +60,8 @@ export class VisitEditComponent implements OnInit {
     this.testResultChildForm.form
       .get('testStationNameNumber')
       .valueChanges.subscribe((testStationVal) => {
-        const testStationPNumber = !!testStationVal ? testStationVal.match(/\((.*)\)/).pop() : '';
+        const testStationPNumber =
+          testStationVal !== '' ? testStationVal.match(/\((.*)\)/).pop() : '';
         this.testStationType = this.searchTestStationType(testStationPNumber);
         this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
       });
@@ -63,7 +69,7 @@ export class VisitEditComponent implements OnInit {
 
   searchTestStationType(testStationPNumber: string) {
     let testStationType;
-    this.testStations.forEach(function(item) {
+    this.testStations.forEach(function (item) {
       if (item.testStationPNumber === testStationPNumber) {
         testStationType = item.testStationType;
       }
