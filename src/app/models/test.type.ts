@@ -1,4 +1,4 @@
-import {Defect} from '@app/models/defect';
+import { Defect } from '@app/models/defect';
 
 export interface ModType {
   code: string;
@@ -9,15 +9,15 @@ export interface TestType {
   prohibitionIssued: boolean;
   testCode: string;
   testNumber: string;
-  lastUpdatedAt: Date;
+  lastUpdatedAt: string;
   additionalCommentsForAbandon: string;
   numberOfSeatbeltsFitted: number;
-  testTypeEndTimestamp: Date;
+  testTypeEndTimestamp: string;
   reasonForAbandoning: string;
-  lastSeatbeltInstallationCheckDate: Date;
-  createdAt: Date;
+  lastSeatbeltInstallationCheckDate: string;
+  createdAt: string;
   testTypeId: string;
-  testTypeStartTimestamp: Date;
+  testTypeStartTimestamp: string;
   certificateNumber: string;
   testTypeName: string;
   seatbeltInstallationCheckDate: boolean;
@@ -27,7 +27,7 @@ export interface TestType {
   certificateLink: string;
   testResult: string;
   testExpiryDate: string;
-  testAnniversaryDate: Date;
+  testAnniversaryDate: string;
   modType: ModType;
   emissionStandard: string;
   smokeTestKLimitApplied: string;

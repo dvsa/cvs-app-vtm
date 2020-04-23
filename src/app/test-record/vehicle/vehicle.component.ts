@@ -14,6 +14,7 @@ export class VehicleComponent implements OnInit {
   @Input() preparers: Preparer[];
   @Input() editState: VIEW_STATE;
   @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
 
   constructor() {}
 

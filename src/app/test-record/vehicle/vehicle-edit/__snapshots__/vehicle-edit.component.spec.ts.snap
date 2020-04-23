@@ -103,9 +103,14 @@ exports[`VehicleEditComponent should create 1`] = `
                   class="ng-untouched ng-pristine ng-invalid"
                   formcontrolname="countryOfRegistration"
                   id="countryOfRegistration"
+                  ng-reflect-autocomplete-data="Great Britain and Northern Ire"
                   ng-reflect-name="countryOfRegistration"
                   ngdefaultcontrol=""
-                />
+                >
+                  <div>
+                    Great Britain and Northern Ireland - GB,Alderney - GBA,Guernsey - GBG,Jersey - GBJ,Isle of Man - GBM,Gibraltar - GBZ,Austria - A,Belgium - B,Bosnia and Herzegovina - BIH,Bulgaria - BG,Croatia - HR,Cyprus - CY,Czech Republic - CZ,Denmark - DK,Estonia - EST,Finland - FIN,France - F,Germany - D,Greece - GR,Hungary - H,Ireland - IRL,Italy - I,Latvia - LV,Lithuania - LT,Luxembourg - L,Malta - M,Netherlands - NL,Norway - N,Poland - PL,Portugal - P,Romania - RO,Slovakia - SK,Slovenia - SLO,Spain - E,Sweden - S,Switzerland - CH,Non EU,Country Not Known
+                  </div>
+                </vtm-autocomplete>
               </div>
             </div>
             <div
@@ -199,6 +204,7 @@ exports[`VehicleEditComponent should create 1`] = `
                   id="test-odometerReading"
                   ng-reflect-name="odometerReading"
                   type="text"
+                  vtmdigitonly=""
                 />
               </div>
             </div>
@@ -239,15 +245,19 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                    Preparer 
                 </label>
-                
                 <vtm-autocomplete
                   ariadescribedby="preparer"
                   class="ng-untouched ng-pristine ng-valid"
                   formcontrolname="preparer"
                   id="preparer"
+                  ng-reflect-autocomplete-data="undefined(undefined)"
                   ng-reflect-name="preparer"
                   ngdefaultcontrol=""
-                />
+                >
+                  <div>
+                    undefined(undefined)
+                  </div>
+                </vtm-autocomplete>
               </div>
             </div>
           </div>

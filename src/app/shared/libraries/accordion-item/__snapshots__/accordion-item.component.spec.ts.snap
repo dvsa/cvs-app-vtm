@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccordionItemComponent should create 1`] = `
+<vtm-accordion-item>
+  <div
+    class="govuk-accordion__section"
+  >
+    <div
+      class="govuk-accordion__section-header"
+    >
+      <h2
+        class="govuk-accordion__section-heading"
+      >
+        <span
+          class="govuk-link govuk-!-font-size-36"
+        >
+          
+        </span>
+        <span
+          class="govuk-accordion__section-button"
+          id="accordion-default-heading-"
+        />
+      </h2>
+    </div>
+    <div
+      class="govuk-accordion__section-content"
+      id="accordion-default-content"
+    />
+  </div>
+</vtm-accordion-item>
+`;
+
+exports[`AccordionItemComponent should populate the accordion item with content provided 1`] = `
+<test-accordion-item>
+  <p
+    name="testAccordionItem"
+  >
+    Test
+  </p>
+</test-accordion-item>
+`;

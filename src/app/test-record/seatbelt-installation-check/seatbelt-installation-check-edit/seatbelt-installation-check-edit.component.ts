@@ -19,7 +19,8 @@ import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 })
 export class SeatbeltInstallationCheckEditComponent implements OnInit {
   @Input() testType: TestType;
-  @Input() formErrors: string[];
+  @Input() isSubmitted: boolean;
+
   testResultChildForm: FormGroupDirective;
   testTypeGroup: FormGroup;
   seatbeltInstallationCheckDateOptions: SelectOption[];

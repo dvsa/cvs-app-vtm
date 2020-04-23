@@ -13,7 +13,7 @@ describe('DefectsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [DefectsComponent],
+      declarations: [DefectsComponent]
     }).compileComponents();
   }));
 
@@ -29,4 +29,10 @@ describe('DefectsComponent', () => {
     expect(component).toBeTruthy();
     expect(fixture).toMatchSnapshot();
   });
+
+  it('should concat strings', () => {
+    const stringsConcatenated = component.concatStrings(['test1', 'test2'], '/');
+    expect(stringsConcatenated).toEqual('test1/test2');
+  });
+
 });

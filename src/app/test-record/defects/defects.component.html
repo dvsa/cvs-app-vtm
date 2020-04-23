@@ -1,75 +1,90 @@
-
-  <dl *ngFor="let defect of testType.defects" class="govuk-summary-list">
-    <h2 class="govuk-heading-l">
-      <span class="govuk-!-margin-top-3"> {{defect.deficiencyRef}}</span> -
-      <span class="govuk-tag govuk-!-font-size-24"
-            [class.tag--black]="defect.deficiencyCategory==='dangerous'"
-            [class.tag--red]="defect.deficiencyCategory==='major'">
-          {{defect.deficiencyCategory}}
-        </span>
-    </h2>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Category
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{ ((defect.imNumber ? defect.imNumber : '') + ' ' + (defect.imDescription ? defect.imDescription : '')) | DefaultNullOrEmpty}}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Item
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{ ((defect.itemNumber ? defect.itemNumber : '') + ' ' + (defect.itemDescription ? defect.itemDescription : '')) | DefaultNullOrEmpty}}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Description
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{ ((defect.deficiencyId ? defect.deficiencyId : '') + ' ' + (defect.deficiencySubId ? defect.deficiencySubId : '') + ' ' + (defect.deficiencyText ? defect.deficiencyText : '')) | DefaultNullOrEmpty}}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Location
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{ ((defect.additionalInformation.location.vertical ? (defect.additionalInformation.location.vertical | titlecase) : "") +
-          (defect.additionalInformation.location.horizontal ? "/" + (defect.additionalInformation.location.horizontal | titlecase) : "") +
-          (defect.additionalInformation.location.lateral ? "/" + (defect.additionalInformation.location.lateral | titlecase) : "") +
-          (defect.additionalInformation.location.longitudinal ? "/" + (defect.additionalInformation.location.longitudinal | titlecase) : "") +
-          (defect.additionalInformation.location.rowNumber ? "/" + (defect.additionalInformation.location.rowNumber.toString() | titlecase) : "") +
-          (defect.additionalInformation.location.seatNumber ? "/" + (defect.additionalInformation.location.seatNumber.toString() | titlecase) : "") +
-          (defect.additionalInformation.location.axleNumber ? "/" + (defect.additionalInformation.location.axleNumber| titlecase) : ""))
-          | DefaultNullOrEmpty }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Repaired during test
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{(defect.prs | DefaultNullOrEmpty) | titlecase}}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Prohibition issued
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{(defect.prohibitionIssued | DefaultNullOrEmpty) | titlecase}}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">
-        Additional defect details
-      </dt>
-      <dd class="govuk-summary-list__value">
-        {{(defect.additionalInformation.notes | DefaultNullOrEmpty) | titlecase}}
-      </dd>
-    </div>
-  </dl>
-
+<dl *ngFor="let defect of testType.defects" class="govuk-summary-list">
+  <h2 class="govuk-heading-l">
+    <span class="govuk-!-margin-top-3"> {{ defect.deficiencyRef }}</span> -
+    <span
+      class="govuk-tag govuk-!-font-size-24"
+      [class.tag--black]="defect.deficiencyCategory === 'dangerous'"
+      [class.tag--red]="defect.deficiencyCategory === 'major'"
+    >
+      {{ defect.deficiencyCategory }}
+    </span>
+  </h2>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Category
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{
+        concatStrings([defect.imNumber, defect.imDescription], ' ')
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Item
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{
+        concatStrings([defect.itemNumber, defect.itemDescription], ' ')
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Description
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{
+        concatStrings([defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText], ' ')
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Location
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{
+        concatStrings(
+          [
+            defect.additionalInformation.location.vertical | titlecase,
+            defect.additionalInformation.location.horizontal | titlecase,
+            defect.additionalInformation.location.lateral | titlecase,
+            defect.additionalInformation.location.longitudinal | titlecase,
+            defect.additionalInformation.location.rowNumber,
+            defect.additionalInformation.location.seatNumber,
+            defect.additionalInformation.location.axleNumber | titlecase
+          ],
+          '/'
+        )
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Repaired during test
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ defect.prs | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Prohibition issued
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ defect.prohibitionIssued | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Additional defect details
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ defect.additionalInformation.notes | DefaultNullOrEmpty | titlecase }}
+    </dd>
+  </div>
+</dl>

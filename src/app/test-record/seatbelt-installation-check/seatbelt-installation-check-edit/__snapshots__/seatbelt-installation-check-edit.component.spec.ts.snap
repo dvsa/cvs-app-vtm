@@ -49,7 +49,7 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                         formcontrolname="seatbeltInstallationCheckDate"
                         id="test-seatbelt-0"
                         type="radio"
-                        value="false"
+                        value="true"
                       />
                       <label
                         class="govuk-label govuk-radios__label"
@@ -65,7 +65,7 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                         formcontrolname="seatbeltInstallationCheckDate"
                         id="test-seatbelt-1"
                         type="radio"
-                        value="true"
+                        value="false"
                       />
                       <label
                         class="govuk-label govuk-radios__label"
@@ -101,6 +101,7 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                         formcontrolname="numberOfSeatbeltsFitted"
                         id="test-numberOfSeatbeltsFitted"
                         type="text"
+                        vtmdigitonly=""
                       />
                     </div>
                   </div>

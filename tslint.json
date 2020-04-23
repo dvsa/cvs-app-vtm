@@ -116,6 +116,7 @@
       true,
       "attribute",
       "app",
+      "vtm",
       "camelCase"
     ],
     "component-selector": [

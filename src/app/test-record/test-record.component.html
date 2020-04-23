@@ -1,5 +1,5 @@
 <div class="govuk-width-container">
-  <a class="govuk-back-link" appBackButton>Back</a>
+  <a class="govuk-back-link" vtmBackButton>Back</a>
 
   <main class="govuk-main-wrapper">
     <div class="govuk-grid-row">
@@ -8,41 +8,42 @@
       </div>
     </div>
 
-    <div class="govuk-grid-row">
-      <ng-container *ngIf="!editState">
+    <form
+      [formGroup]="testResultParentForm"
+      #testForm="ngForm"
+      (ngSubmit)="onSaveTestResult(testForm)"
+    >
+      <div class="govuk-grid-row">
+        <ng-container *ngIf="!editState">
+          <div class="govuk-grid-column-one-quarter">
+            <button
+              class="govuk-button govuk-button--secondary"
+              data-module="govuk-button"
+              (click)="switchCurrentState('edit')"
+            >
+              Change test record
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="editState">
+          <div class="govuk-grid-column-one-quarter">
+            <button class="govuk-button" data-module="govuk-button" type="submit">
+              Save test record
+            </button>
+            <a class="govuk-link govuk-!-margin-left-2" (click)="switchCurrentState('view')">
+              <span>Cancel</span>
+            </a>
+          </div>
+        </ng-container>
+
         <div class="govuk-grid-column-one-quarter">
-          <button
-            class="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-            (click)="switchCurrentState('edit')"
-          >
-            Change test record
+          <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            View certificate
           </button>
         </div>
-      </ng-container>
-
-      <ng-container *ngIf="editState">
-        <div class="govuk-grid-column-one-quarter">
-          <button
-            class="govuk-button"
-            data-module="govuk-button"
-            (click)="onSaveTestResult(testResultParentForm)"
-          >
-            Save test record
-          </button>
-          <a class="govuk-link govuk-!-margin-left-2" (click)="switchCurrentState('view')">
-            <span>Cancel</span>
-          </a>
-        </div>
-      </ng-container>
-
-      <div class="govuk-grid-column-one-quarter">
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          View certificate
-        </button>
       </div>
-    </div>
-    <form [formGroup]="testResultParentForm" (ngSubmit)="onSaveTestResult(testResultParentForm)">
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
           <vtm-accordion>
@@ -51,6 +52,7 @@
                 [testRecord]="testResultObj.testRecord"
                 [preparers]="preparers"
                 [editState]="editState"
+                [isSubmitted]="testForm.submitted"
               ></vtm-vehicle>
             </vtm-accordion-item>
             <vtm-accordion-item [title]="'Test'">
@@ -79,49 +81,68 @@
               [hidden]="
                 !testTypesApplicable.seatBeltApplicable?.hasOwnProperty(
                   testResultObj.testType.testTypeId
-                ) && !(testResultObj.testRecord.vehicleType.valueOf() == 'psv')
+                ) && !(testResultObj.testRecord.vehicleType == 'psv')
               "
             >
-            <vtm-accordion-item [title]="'Seatbelt installation check'">
-              <vtm-seatbelt-installation-check
-                [testType]="testResultObj.testType"
-                [editState]="editState"
-              ></vtm-seatbelt-installation-check>
-            </vtm-accordion-item>
+              <vtm-accordion-item [title]="'Seatbelt installation check'">
+                <vtm-seatbelt-installation-check
+                  [testType]="testResultObj.testType"
+                  [editState]="editState"
+                  [isSubmitted]="testForm.submitted"
+                  [hidden]="
+                    !testTypesApplicable.seatBeltApplicable?.hasOwnProperty(
+                      testResultObj.testType.testTypeId
+                    ) && !(testResultObj.testRecord.vehicleType == 'psv')
+                  "
+                ></vtm-seatbelt-installation-check>
+              </vtm-accordion-item>
             </span>
             <span
               [hidden]="
                 !testTypesApplicable.emissionDetailsApplicable?.hasOwnProperty(
                   testResultObj.testType.testTypeId
                 ) &&
-                (!(testResultObj.testRecord.vehicleType.valueOf() == 'psv') ||
+                (!(testResultObj.testRecord.vehicleType == 'psv') ||
                   !(testResultObj.testRecord.vehicleType.valueOf() == 'hgv'))
               "
             >
-            <vtm-accordion-item [title]="'Emission details'">
-              <vtm-emission-details
-                [testRecord]="testResultObj.testRecord"
-                [testType]="testResultObj.testType"
-                [editState]="editState"
-              ></vtm-emission-details>
-            </vtm-accordion-item>
+              <vtm-accordion-item [title]="'Emission details'">
+                <vtm-emission-details
+                  [testRecord]="testResultObj.testRecord"
+                  [testType]="testResultObj.testType"
+                  [editState]="editState"
+                  [isSubmitted]="testForm.submitted"
+                  [hidden]="
+                    !testTypesApplicable.emissionDetailsApplicable?.hasOwnProperty(
+                      testResultObj.testType.testTypeId
+                    ) &&
+                    (!(testResultObj.testRecord.vehicleType == 'psv') ||
+                      !(testResultObj.testRecord.vehicleType.valueOf() == 'hgv'))
+                  "
+                ></vtm-emission-details>
+              </vtm-accordion-item>
             </span>
             <vtm-accordion-item [title]="'Visit'">
               <vtm-visit
                 [testRecord]="testResultObj.testRecord"
                 [editState]="editState"
                 [testStations]="testStations"
+                [isSubmitted]="testForm.submitted"
               ></vtm-visit>
             </vtm-accordion-item>
             <vtm-accordion-item [title]="'Notes'">
               <vtm-notes
                 [testType]="testResultObj.testType"
                 [editState]="editState"
+                [isSubmitted]="testForm.submitted"
               ></vtm-notes>
             </vtm-accordion-item>
             <span [hidden]="editState">
               <vtm-accordion-item [title]="'Test record history'">
-                <vtm-test-history [testRecord]="testResultObj.testRecord" [editState]="editState"></vtm-test-history>
+                <vtm-test-history
+                  [testRecord]="testResultObj.testRecord"
+                  [editState]="editState"
+                ></vtm-test-history>
               </vtm-accordion-item>
             </span>
           </vtm-accordion>
