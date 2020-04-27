@@ -29,6 +29,7 @@ import { DateInputComponent } from '@app/shared/components/date-input/date-input
 import { AutocompleteComponent } from '@app/shared/components/autocomplete/autocomplete.component';
 import { TestSectionEditComponent } from './test-section/test-section-edit/test-section-edit.component';
 import { SelectTestTypeComponent } from './select-test-type/select-test-type.component';
+import { TimeInputComponent } from '@app/shared/components/time-input/time-input.component';
 
 export const COMPONENTS = [
   TestRecordComponent,
@@ -48,7 +49,8 @@ export const COMPONENTS = [
   NotesEditComponent,
   VisitEditComponent,
   DateInputComponent,
-  AutocompleteComponent
+  AutocompleteComponent,
+  TimeInputComponent
 ];
 
 export const MODULES = [

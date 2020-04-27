@@ -199,12 +199,12 @@ exports[`VehicleEditComponent should create 1`] = `
                 </label>
                 
                 <input
-                  appdigitonly=""
                   class="govuk-input ng-untouched ng-pristine ng-invalid"
                   formcontrolname="odometerReading"
                   id="test-odometerReading"
                   ng-reflect-name="odometerReading"
                   type="text"
+                  vtmdigitonly=""
                 />
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DefaultNullOrEmpty } from '@app/pipes/DefaultNullOrEmptyPipe';
 import { FilterRecordPipe } from '@app/pipes/FilterRecordPipe';
@@ -16,6 +16,7 @@ import { SortByDatePipe } from '@app/pipes/SortByDatePipe';
 import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
+import { TimeInputComponent } from '@app/shared/components/time-input/time-input.component';
 
 export const PIPES_AND_COMPONENTS = [
   IsPrimaryVrmPipe,
@@ -37,7 +38,12 @@ export const PIPES_AND_COMPONENTS = [
   imports: [FormsModule, MatDialogModule, CommonModule],
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
-  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent, DialogBoxConfirmationComponent],
+  entryComponents: [
+    AdrReasonModalComponent,
+    PreventLeavePageModalComponent,
+    DialogBoxComponent,
+    DialogBoxConfirmationComponent
+  ],
   providers: [FilterRecordPipe, PendingChangesService]
 })
 export class SharedModule {}

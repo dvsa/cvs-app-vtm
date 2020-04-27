@@ -58,7 +58,11 @@
             type="radio"
             formControlName="testResult"
             value="{{ res | lowercase }}"
-            [checked]="testType.testResult !== 'prs' ? (testType.testResult | titlecase) == res : (testType.testResult | uppercase) == res"
+            [checked]="
+              testType.testResult !== 'prs'
+                ? (testType.testResult | titlecase) == res
+                : (testType.testResult | uppercase) == res
+            "
             [class.govuk-input--error]="
               isSubmitted && testResultChildForm.form.get('testResult')?.invalid
             "
@@ -101,7 +105,10 @@
         <div class="govuk-grid-row govuk-!-margin-top-7">
           <div class="govuk-grid-column-two-thirds">
             <div class="govuk-form-group">
-              <label class="govuk-label govuk-!-font-weight-bold" for="additionalCommentsForAbandon">
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="additionalCommentsForAbandon"
+              >
                 Additional details for abandoning
               </label>
               <span id="additionalCommentsForAbandon" class="govuk-hint">
@@ -229,6 +236,58 @@
         formControlName="testEndTimestamp"
       >
       </vtm-date-input>
+    </div>
+  </div>
+
+  <div
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testTypeEndTimestamp')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        End time
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testTypeEndTimestamp')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the end time</span>
+      </span>
+      <vtm-time-input
+        id="test-testTypeEndTimestamp"
+        ariaDescribedBy="testTypeEndTimestamp"
+        formControlName="testTypeEndTimestamp"
+      >
+      </vtm-time-input>
+    </div>
+  </div>
+
+  <div
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testTypeStartTimestamp')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Start time
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testTypeStartTimestamp')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the start time</span>
+      </span>
+      <vtm-time-input
+        id="test-testTypeStartTimestamp"
+        ariaDescribedBy="testTypeStartTimestamp"
+        formControlName="testTypeStartTimestamp"
+      >
+      </vtm-time-input>
     </div>
   </div>
 

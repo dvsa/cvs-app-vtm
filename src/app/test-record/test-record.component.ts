@@ -6,7 +6,7 @@ import {
   EventEmitter,
   Output
 } from '@angular/core';
-import { FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
+import {FormGroup, FormGroupDirective} from '@angular/forms';
 import { initAll } from 'govuk-frontend';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestResultModel } from '@app/models/test-result.model';
@@ -37,11 +37,8 @@ export class TestRecordComponent implements OnInit {
 
   testResultParentForm: FormGroup;
   formErrors: string[];
-  isSubmitted: boolean;
 
   constructor(
-    private parent: FormGroupDirective,
-    protected fb: FormBuilder,
     private dialog: MatDialog,
     private testRecordMapper: TestRecordMapper
   ) {}
@@ -70,9 +67,8 @@ export class TestRecordComponent implements OnInit {
     }
   }
 
-  onSaveTestResult(testResultParentForm): void {
-    this.isSubmitted = true;
-
+  onSaveTestResult(form) {
+    console.log(this.testResultParentForm);
     if (this.testResultParentForm.valid) {
       const testResultUpdated: TestResultModel = this.testRecordMapper.mapFormValues(
         this.testResultParentForm.getRawValue(),
@@ -88,7 +84,6 @@ export class TestRecordComponent implements OnInit {
         if (result && result.isSave) {
           testResultUpdated.reasonForCreation = result.data;
           this.submitTest.emit(testResultUpdated);
-          this.isSubmitted = false;
         }
       });
     } else {

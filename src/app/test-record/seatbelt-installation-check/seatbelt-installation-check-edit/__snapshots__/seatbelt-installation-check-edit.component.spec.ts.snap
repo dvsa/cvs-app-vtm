@@ -97,11 +97,11 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                     >
                       
                       <input
-                        appdigitonly=""
                         class="govuk-input"
                         formcontrolname="numberOfSeatbeltsFitted"
                         id="test-numberOfSeatbeltsFitted"
                         type="text"
+                        vtmdigitonly=""
                       />
                     </div>
                   </div>

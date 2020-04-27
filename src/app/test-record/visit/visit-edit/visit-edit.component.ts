@@ -60,8 +60,8 @@ export class VisitEditComponent implements OnInit {
     this.testResultChildForm.form
       .get('testStationNameNumber')
       .valueChanges.subscribe((testStationVal) => {
-        const testStationPNumber =
-          testStationVal !== '' ? testStationVal.match(/\((.*)\)/).pop() : '';
+        const testStationPNumberMatch = testStationVal.match(/\((.*)\)/);
+        const testStationPNumber = !!testStationPNumberMatch ? testStationPNumberMatch.pop() : '';
         this.testStationType = this.searchTestStationType(testStationPNumber);
         this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
       });

@@ -1,5 +1,5 @@
 <div class="govuk-width-container">
-  <a class="govuk-back-link" appBackButton>Back</a>
+  <a class="govuk-back-link" vtmBackButton>Back</a>
 
   <main class="govuk-main-wrapper">
     <div class="govuk-grid-row">
@@ -8,45 +8,42 @@
       </div>
     </div>
 
-    <div class="govuk-grid-row">
-      <ng-container *ngIf="!editState">
-        <div class="govuk-grid-column-one-quarter">
-          <button
-            class="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-            (click)="switchCurrentState('edit')"
-          >
-            Change test record
-          </button>
-        </div>
-      </ng-container>
-
-      <ng-container *ngIf="editState">
-        <div class="govuk-grid-column-one-quarter">
-          <button
-            class="govuk-button"
-            data-module="govuk-button"
-            (click)="onSaveTestResult(testResultParentForm)"
-          >
-            Save test record
-          </button>
-          <a class="govuk-link govuk-!-margin-left-2" (click)="switchCurrentState('view')">
-            <span>Cancel</span>
-          </a>
-        </div>
-      </ng-container>
-
-      <div class="govuk-grid-column-one-quarter">
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          View certificate
-        </button>
-      </div>
-    </div>
     <form
       [formGroup]="testResultParentForm"
       #testForm="ngForm"
-      (ngSubmit)="onSaveTestResult(testResultParentForm)"
+      (ngSubmit)="onSaveTestResult(testForm)"
     >
+      <div class="govuk-grid-row">
+        <ng-container *ngIf="!editState">
+          <div class="govuk-grid-column-one-quarter">
+            <button
+              class="govuk-button govuk-button--secondary"
+              data-module="govuk-button"
+              (click)="switchCurrentState('edit')"
+            >
+              Change test record
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="editState">
+          <div class="govuk-grid-column-one-quarter">
+            <button class="govuk-button" data-module="govuk-button" type="submit">
+              Save test record
+            </button>
+            <a class="govuk-link govuk-!-margin-left-2" (click)="switchCurrentState('view')">
+              <span>Cancel</span>
+            </a>
+          </div>
+        </ng-container>
+
+        <div class="govuk-grid-column-one-quarter">
+          <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+            View certificate
+          </button>
+        </div>
+      </div>
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
           <vtm-accordion>
@@ -55,17 +52,17 @@
                 [testRecord]="testResultObj.testRecord"
                 [preparers]="preparers"
                 [editState]="editState"
-                [isSubmitted]="isSubmitted"
+                [isSubmitted]="testForm.submitted"
               ></vtm-vehicle>
             </vtm-accordion-item>
             <vtm-accordion-item [title]="'Test'">
               <vtm-test-section
                 [testType]="testResultObj.testType"
                 [testRecord]="testResultObj.testRecord"
+                [editState]="editState"
+                [isSubmitted]="testForm.submitted"
                 [applicableTestTypeIds1]="testTypesApplicable.testSectionApplicable1"
                 [applicableTestTypeIds2]="testTypesApplicable.testSectionApplicable2"
-                [editState]="editState"
-                [isSubmitted]="isSubmitted"
               ></vtm-test-section>
             </vtm-accordion-item>
             <span
@@ -93,7 +90,7 @@
                 <vtm-seatbelt-installation-check
                   [testType]="testResultObj.testType"
                   [editState]="editState"
-                  [isSubmitted]="isSubmitted"
+                  [isSubmitted]="testForm.submitted"
                   [hidden]="
                     !testTypesApplicable.seatBeltApplicable?.hasOwnProperty(
                       testResultObj.testType.testTypeId
@@ -116,7 +113,7 @@
                   [testRecord]="testResultObj.testRecord"
                   [testType]="testResultObj.testType"
                   [editState]="editState"
-                  [isSubmitted]="isSubmitted"
+                  [isSubmitted]="testForm.submitted"
                   [hidden]="
                     !testTypesApplicable.emissionDetailsApplicable?.hasOwnProperty(
                       testResultObj.testType.testTypeId
@@ -132,14 +129,14 @@
                 [testRecord]="testResultObj.testRecord"
                 [editState]="editState"
                 [testStations]="testStations"
-                [isSubmitted]="isSubmitted"
+                [isSubmitted]="testForm.submitted"
               ></vtm-visit>
             </vtm-accordion-item>
             <vtm-accordion-item [title]="'Notes'">
               <vtm-notes
                 [testType]="testResultObj.testType"
                 [editState]="editState"
-                [isSubmitted]="isSubmitted"
+                [isSubmitted]="testForm.submitted"
               ></vtm-notes>
             </vtm-accordion-item>
             <span [hidden]="editState">

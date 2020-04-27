@@ -4,10 +4,8 @@ exports[`TestRecordComponent should create 1`] = `
 <vtm-test-record
   dialog={[Function MatDialog]}
   editState="0"
-  fb={[Function FormBuilder]}
   hasErrors={[Function EventEmitter]}
   isFormDirty={[Function EventEmitter]}
-  parent={[Function FormGroupDirective]}
   preparers={[Function Array]}
   submitTest={[Function EventEmitter]}
   switchState={[Function EventEmitter]}
@@ -21,8 +19,8 @@ exports[`TestRecordComponent should create 1`] = `
     class="govuk-width-container"
   >
     <a
-      appbackbutton=""
       class="govuk-back-link"
+      vtmbackbutton=""
     >
       Back
     </a>
@@ -42,38 +40,38 @@ exports[`TestRecordComponent should create 1`] = `
           </h1>
         </div>
       </div>
-      <div
-        class="govuk-grid-row"
-      >
-        
-        
-        <div
-          class="govuk-grid-column-one-quarter"
-        >
-          <button
-            class="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-          >
-             Change test record 
-          </button>
-        </div>
-        
-        <div
-          class="govuk-grid-column-one-quarter"
-        >
-          <button
-            class="govuk-button govuk-button--secondary"
-            data-module="govuk-button"
-          >
-             View certificate 
-          </button>
-        </div>
-      </div>
       <form
         class="ng-untouched ng-pristine ng-valid"
         ng-reflect-form="[object Object]"
         novalidate=""
       >
+        <div
+          class="govuk-grid-row"
+        >
+          
+          
+          <div
+            class="govuk-grid-column-one-quarter"
+          >
+            <button
+              class="govuk-button govuk-button--secondary"
+              data-module="govuk-button"
+            >
+               Change test record 
+            </button>
+          </div>
+          
+          <div
+            class="govuk-grid-column-one-quarter"
+          >
+            <button
+              class="govuk-button govuk-button--secondary"
+              data-module="govuk-button"
+            >
+               View certificate 
+            </button>
+          </div>
+        </div>
         <div
           class="govuk-grid-row"
         >

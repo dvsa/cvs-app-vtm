@@ -62,22 +62,27 @@ export class TestSectionEditComponent implements OnInit {
     this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
 
     if (!!this.testTypeGroup) {
+
       this.testTypeGroup.addControl(
         'testResult',
         new FormControl(this.testType.testResult, Validators.required)
       );
+
       this.testTypeGroup.addControl(
         'reasonForAbandoning',
         new FormControl(this.testType.reasonForAbandoning, Validators.required)
       );
+
       this.testTypeGroup.addControl(
         'additionalCommentsForAbandon',
         new FormControl(this.testType.additionalCommentsForAbandon)
       );
+
       this.testTypeGroup.addControl(
         'certificateNumber',
         new FormControl(this.testType.certificateNumber, Validators.required)
       );
+
       this.testTypeGroup.addControl(
         'testExpiryDate',
         new FormControl(
@@ -85,6 +90,7 @@ export class TestSectionEditComponent implements OnInit {
           Validators.required
         )
       );
+
       this.testTypeGroup.addControl(
         'testAnniversaryDate',
         new FormControl(
@@ -94,6 +100,7 @@ export class TestSectionEditComponent implements OnInit {
           Validators.required
         )
       );
+
       this.testTypeGroup.addControl(
         'testEndTimestamp',
         new FormControl(
@@ -101,14 +108,16 @@ export class TestSectionEditComponent implements OnInit {
           Validators.required
         )
       );
-      // this.testTypeGroup.addControl(
-      //   'testTypeStartTimestamp',
-      //   new FormControl(this.testType.testTypeStartTimestamp, Validators.required)
-      // );
-      // this.testTypeGroup.addControl(
-      //   'testTypeEndTimestamp',
-      //   new FormControl(this.testType.testTypeEndTimestamp, Validators.required)
-      // );
+
+      this.testTypeGroup.addControl(
+        'testTypeStartTimestamp',
+        new FormControl('22:11', Validators.required)
+      );
+
+      this.testTypeGroup.addControl(
+        'testTypeEndTimestamp',
+        new FormControl('11:33', Validators.required)
+      );
 
       this.testTypeGroup.addControl(
         'prohibitionIssued',
