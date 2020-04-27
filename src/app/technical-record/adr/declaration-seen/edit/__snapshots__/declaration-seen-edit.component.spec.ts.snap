@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeclarationSeenEditComponent should create with initialized form controls 1`] = `
+<vtm-declaration-seen-edit
+  adrDetails={[Function Object]}
+  adrForm={[Function FormGroup]}
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  validationMapper={[Function ValidationMapper]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-full"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Declarations seen
+            </h2>
+            <div
+              class="govuk-form-group"
+            >
+              <div
+                class="govuk-checkboxes"
+              >
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    formcontrolname="brakeDeclarationsSeen"
+                    id="brakeDeclarationsSeen"
+                    ng-reflect-name="brakeDeclarationsSeen"
+                    type="checkbox"
+                    value="true"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="brakeDeclarationsSeen"
+                  >
+                     Manufacturer brake declaration 
+                  </label>
+                </div>
+                <div
+                  class="govuk-inset-text govuk-!-margin-top-0"
+                  id="conditional-brakeDeclarationsSeen"
+                >
+                  
+                  <div
+                    class="govuk-form-group govuk-!-margin-left-3"
+                  >
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                      for="brakeDeclarationIssuer"
+                    >
+                       Issuer 
+                    </label>
+                    <input
+                      class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                      id="brakeDeclarationIssuer"
+                      name="brakeDeclarationIssuer"
+                      ng-reflect-name="brakeDeclarationIssuer"
+                      type="text"
+                    />
+                  </div>
+                  <div
+                    class="govuk-checkboxes__item govuk-!-margin-left-3"
+                  >
+                    <input
+                      class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                      formcontrolname="brakeEndurance"
+                      id="brakeEndurance"
+                      ng-reflect-name="brakeEndurance"
+                      type="checkbox"
+                      value="true"
+                    />
+                    <label
+                      class="govuk-label govuk-checkboxes__label"
+                      for="brakeEndurance"
+                    >
+                       Brake endurance 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-inset-text govuk-!-margin-top-0 govuk-!-margin-left-3"
+                    id="conditional-brakeEndurance"
+                  >
+                    
+                    <div
+                      class="govuk-form-group govuk-!-margin-left-3"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="weight"
+                      >
+                         Weight(kg) 
+                      </label>
+                      <input
+                        class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
+                        id="weight"
+                        name="weight"
+                        ng-reflect-name="weight"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="govuk-checkboxes__item"
+                >
+                  <input
+                    class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
+                    formcontrolname="declarationsSeen"
+                    id="declarationsSeen"
+                    ng-reflect-name="declarationsSeen"
+                    type="checkbox"
+                    value="false"
+                  />
+                  <label
+                    class="govuk-label govuk-checkboxes__label"
+                    for="declarationsSeen"
+                  >
+                     Owner/operator declaration 
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-declaration-seen-edit>
+`;

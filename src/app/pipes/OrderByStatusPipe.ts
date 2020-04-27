@@ -1,21 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { TechRecord } from '@app/models/tech-record.model';
 
 @Pipe({ name: 'OrderByStatusPipe' })
 
 export class OrderByStatusPipe implements PipeTransform {
 
-  transform(techRecordList: any): any {
+  transform(techRecordList: TechRecord[]): TechRecord[] {
     if (techRecordList) {
       const orderedTechRec = [];
-      let records = techRecordList.find((record: any) => record.statusCode === 'current');
+      let records: TechRecord = techRecordList.find((record: TechRecord) => record.statusCode === 'current');
       if (records !== undefined) { orderedTechRec.push(records); }
 
-      records = techRecordList.find((record: any) => record.statusCode === 'provisional');
+      records = techRecordList.find((record: TechRecord) => record.statusCode === 'provisional');
       if (records !== undefined) { orderedTechRec.push(records); }
 
-      records = techRecordList.filter((record: any) => record.statusCode === 'archived');
-      records.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      if (records !== undefined) { records.forEach(element => orderedTechRec.push(element)); }
+     const archivedRecords: TechRecord[] = techRecordList.filter((record: TechRecord) => record.statusCode === 'archived');
+      archivedRecords.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      if (archivedRecords !== undefined) { archivedRecords.forEach(element => orderedTechRec.push(element)); }
 
       return orderedTechRec;
 

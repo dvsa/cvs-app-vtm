@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdditionalAdrDetailEditComponent should create with initialized form controls 1`] = `
+<vtm-additional-adr-detail-edit
+  adrDetails={[Function Object]}
+  adrForm={[Function FormGroup]}
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  validationMapper={[Function ValidationMapper]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            <h2
+              class="govuk-heading-m govuk-!-margin-bottom-1"
+            >
+               Additional ADR details 
+            </h2>
+            <div
+              class="govuk-form-group"
+            >
+              <span
+                class="govuk-hint"
+                for="additionalExaminerNotes"
+                id="additional-details-hint"
+              >
+                 Will not be present on the ADR certificate 
+              </span>
+              <textarea
+                aria-describedby="additionalExaminerNotes-hint"
+                class="govuk-textarea ng-untouched ng-pristine ng-valid"
+                formcontrolname="additionalExaminerNotes"
+                id="additionalExaminerNotes"
+                name="additionalExaminerNotes"
+                ng-reflect-name="additionalExaminerNotes"
+                rows="8"
+              >
+                            
+              </textarea>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-additional-adr-detail-edit>
+`;

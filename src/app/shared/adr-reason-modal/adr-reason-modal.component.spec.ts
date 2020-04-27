@@ -4,7 +4,6 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MaterialModule } from '@app/material.module';
 import { AdrReasonModalComponent } from './adr-reason-modal.component';
 
-
 describe('AdrReasonModalComponent', () => {
   let component: AdrReasonModalComponent;
   let fixture: ComponentFixture<AdrReasonModalComponent>;
@@ -18,8 +17,7 @@ describe('AdrReasonModalComponent', () => {
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -33,11 +31,18 @@ describe('AdrReasonModalComponent', () => {
   });
 
   describe('close', () => {
-    it('should close the modal when called', () => {
+    beforeEach(() => {
       spyOn(component.dialogRef, 'close');
+    });
+    it('should close the modal when the close button is clicked', () => {
       component.close();
-
       expect(component.dialogRef.close).toHaveBeenCalled();
+    });
+
+    it('should close the modal with entered data when save button is clicked', () => {
+      const data = 'some entered data';
+      component.save(data);
+      expect(component.dialogRef.close).toHaveBeenCalledWith({ isSave: true, data });
     });
   });
 });
