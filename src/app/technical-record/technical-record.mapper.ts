@@ -11,7 +11,7 @@ export class TechnicalRecordValuesMapper {
   constructor() {}
 
   mapControlValuesToDataValues(techRecord: TechRecord): TechRecord {
-    techRecord.statusCode = undefined;
+    techRecord.updateType = undefined;
     techRecord.adrDetails = this.mapToAdrAllowedValues(techRecord);
 
     return techRecord;

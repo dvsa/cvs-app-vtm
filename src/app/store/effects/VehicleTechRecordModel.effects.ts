@@ -164,7 +164,7 @@ export class VehicleTechRecordModelEffects {
         dataToSave.systemNumber = vehicleTechRecord.systemNumber;
 
         return this._technicalRecordService
-          .updateTechnicalRecords(dataToSave, vehicleTechRecord.vin)
+          .updateTechnicalRecords(dataToSave, vehicleTechRecord.systemNumber)
           .pipe(
             switchMap((updatedVehicleTechRecord: VehicleTechRecordModel) => {
               updatedVehicleTechRecord.metadata = vehicleTechRecord.metadata;

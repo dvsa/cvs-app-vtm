@@ -11,7 +11,6 @@ import { LandingPageComponent } from '@app/landing-page/landing-page.component';
 import { FooterComponent } from '@app/shell/footer/footer.component';
 import { HeaderComponent } from '@app/shell/header/header.component';
 import { ShellPage } from '@app/shell/shell.page';
-import { VehicleTechRecordModelEffects } from '@app/store/effects/VehicleTechRecordModel.effects';
 import { CustomSerializer } from '@app/store';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { TechnicalRecordCreateComponent } from '@app/technical-record-create/technical-record-create.component';

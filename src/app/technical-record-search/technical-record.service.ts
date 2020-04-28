@@ -55,14 +55,16 @@ export class TechnicalRecordService {
 
   updateTechnicalRecords(
     techRecordDto: VehicleTechRecordUpdate,
-    vin: string
+    systemNumber: string
   ): Observable<VehicleTechRecordModel> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
 
     this._store.dispatch(new LoadingTrue());
 
     return this.httpClient
-      .put<VehicleTechRecordModel>(this.routes.updateTechRecords(vin), techRecordDto, { headers })
+      .put<VehicleTechRecordModel>(this.routes.updateTechRecords(systemNumber), techRecordDto, {
+        headers
+      })
       .pipe(
         delayedRetry(),
         shareReplay(),
