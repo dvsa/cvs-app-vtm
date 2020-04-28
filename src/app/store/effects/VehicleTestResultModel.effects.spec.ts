@@ -1,19 +1,18 @@
-import {Observable, of, ReplaySubject} from 'rxjs';
-import {TechnicalRecordServiceMock} from '../../../../testconfig/services-mocks/technical-record-service.mock';
-import {TestBed} from '@angular/core/testing';
-import {TechnicalRecordService} from '@app/technical-record-search/technical-record.service';
-import {RouterTestingModule} from '@angular/router/testing';
-import {INITIAL_STATE, Store} from '@ngrx/store';
-import {hot} from 'jasmine-marbles';
-import {provideMockActions} from '@ngrx/effects/testing';
-import {EVehicleTestResultModelActions,
-        GetVehicleTestResultModel,
-        GetVehicleTestResultModelFailure,
-        GetVehicleTestResultModelSuccess} from '@app/store/actions/VehicleTestResultModel.actions';
-import {IAppState} from '@app/store/state/app.state';
-import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
-import {TestResultService} from '@app/technical-record-search/test-result.service';
-import {TestResultModel} from '@app/models/test-result.model';
+import { Observable, ReplaySubject } from 'rxjs';
+import { TechnicalRecordServiceMock } from '../../../../testconfig/services-mocks/technical-record-service.mock';
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { INITIAL_STATE, Store } from '@ngrx/store';
+import { hot } from 'jasmine-marbles';
+import { provideMockActions } from '@ngrx/effects/testing';
+import {
+  GetVehicleTestResultModel,
+  GetVehicleTestResultModelSuccess
+} from '@app/store/actions/VehicleTestResultModel.actions';
+import { IAppState } from '@app/store/state/app.state';
+import { VehicleTestResultModelEffects } from '@app/store/effects/VehicleTestResultModel.effects';
+import { TestResultService } from '@app/technical-record-search/test-result.service';
+import { TestResultModel } from '@app/models/test-result.model';
 
 const testResult = {} as TestResultModel;
 
@@ -29,12 +28,12 @@ describe('VehicleTechRecordModelEffects', () => {
       providers: [
         VehicleTestResultModelEffects,
         provideMockActions(() => actions),
-        {provide: TestResultService, useValue: TechnicalRecordServiceMock},
+        { provide: TestResultService, useValue: TechnicalRecordServiceMock },
         {
           provide: Store,
           useValue: {
             dispatch: jest.fn(),
-            pipe: jest.fn(() => hot('-a', {a: INITIAL_STATE})),
+            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
             select: jest.fn()
           }
         }
@@ -59,6 +58,4 @@ describe('VehicleTechRecordModelEffects', () => {
       expect(result).toEqual(sucess);
     });
   });
-
-
 });

@@ -1,3 +1,4 @@
+import { TechRecord } from './../models/tech-record.model';
 import { FormGroupDirective, FormGroup } from '@angular/forms';
 
 import {
@@ -8,8 +9,6 @@ import {
 } from './../models/adr-details';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
-import { TestResultModel } from '@app/models/test-result.model';
-import { TestType } from '@app/models/test.type';
 
 /**
  * *******************SOME GROUND RULES*************************************
@@ -33,8 +32,7 @@ export const TESTING_UTILS = {
   mockTc2Details,
   mockTc3Details,
   mockMetaData,
-  mockTestRecord,
-  mockTestType
+  mockTechRecord
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -146,6 +144,15 @@ function mockAdrDetails(args?: Partial<AdrDetails>): AdrDetails {
   return { ...mock, ...args };
 }
 
+function mockTechRecord(args?: Partial<TechRecord>): TechRecord {
+  const mock: TechRecord = {
+    statusCode: 'provisional',
+    adrDetails: mockAdrDetails()
+  } as TechRecord;
+
+  return { ...mock, ...args };
+}
+
 function mockMetaData(): MetaData {
   return {
     adrDetails: {
@@ -175,21 +182,3 @@ function mockMetaData(): MetaData {
   };
 }
 
-function mockTestRecord(args?: Partial<TestResultModel>): TestResultModel {
-  const mock: TestResultModel = {
-    reasonForCreation: '',
-    testResultId: '123',
-    vehicleType: 'hgv',
-    testTypes: [this.mockTestType()]
-  } as TestResultModel;
-
-  return { ...mock, ...args };
-}
-
-function mockTestType(args?: Partial<TestType>): TestType {
-  const mock: TestType = {
-    seatbeltInstallationCheckDate: true
-  } as TestType;
-
-  return { ...mock, ...args };
-}

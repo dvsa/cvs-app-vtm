@@ -190,9 +190,6 @@ export class TestRecordMapper {
   }
 
   mapFormValues(testResultFormData, testResultObject: TestRecordTestType): TestResultModel {
-
-    // Todo: map separately testcode,testType,testNumber to net get errors from backend
-
     const testResultMapped: TestResultModel = testResultObject.testRecord;
     const testTypeMapped: TestType = testResultObject.testType;
     const testTypesApplicable = {

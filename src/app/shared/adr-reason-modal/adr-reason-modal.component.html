@@ -1,11 +1,21 @@
 <div mat-dialog-content>
-  <h1 class="govuk-heading-m enter-reason-for-cha">{{data.context}}</h1>
-  <textarea class="govuk-textarea" id="reasonForCreation" rows="8" [(ngModel)]="data.response"
-    aria-describedby="reasonForCreation">
+  <h1 class="govuk-heading-m enter-reason-for-cha">{{ data.context }}</h1>
+  <textarea
+    class="govuk-textarea"
+    id="reasonForCreation"
+    rows="8"
+    [(ngModel)]="data.response"
+    aria-describedby="reasonForCreation"
+  >
   </textarea>
 </div>
 
-<button class="govuk-button" data-module="govuk-button" [mat-dialog-close]="data.response" cdkFocusInitial>
+<button
+  class="govuk-button"
+  data-module="govuk-button"
+  cdkFocusInitial
+  (click)="save(data.response)"
+>
   Save technical record
 </button>
 

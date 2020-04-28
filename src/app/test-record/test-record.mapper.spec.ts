@@ -1,7 +1,7 @@
 import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
-import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
+import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 
 describe('TestRecordMapper', () => {
   const mapper = new TestRecordMapper();
@@ -53,8 +53,8 @@ describe('TestRecordMapper', () => {
 
   it('should map form values for PSV', () => {
     const testResultObject = {
-      testRecord: TESTING_UTILS.mockTestRecord(),
-      testType: TESTING_UTILS.mockTestType()
+      testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
+      testType: TESTING_TEST_MODELS_UTILS.mockTestType()
     } as TestRecordTestType;
 
     const testResultMapped = mapper.mapFormValues(

@@ -6,7 +6,7 @@ import {
   EventEmitter,
   Output
 } from '@angular/core';
-import {FormGroup, FormGroupDirective} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { initAll } from 'govuk-frontend';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestResultModel } from '@app/models/test-result.model';
@@ -38,10 +38,7 @@ export class TestRecordComponent implements OnInit {
   testResultParentForm: FormGroup;
   formErrors: string[];
 
-  constructor(
-    private dialog: MatDialog,
-    private testRecordMapper: TestRecordMapper
-  ) {}
+  constructor(private dialog: MatDialog, private testRecordMapper: TestRecordMapper) {}
 
   ngOnInit(): void {
     initAll();
@@ -68,7 +65,6 @@ export class TestRecordComponent implements OnInit {
   }
 
   onSaveTestResult(form) {
-    console.log(this.testResultParentForm);
     if (this.testResultParentForm.valid) {
       const testResultUpdated: TestResultModel = this.testRecordMapper.mapFormValues(
         this.testResultParentForm.getRawValue(),

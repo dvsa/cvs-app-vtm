@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { LandingPageComponent } from '@app/landing-page/landing-page.component';
 import { TechnicalRecordCreateComponent } from '@app/technical-record-create/technical-record-create.component';
+import { MultipleRecordsContainer } from '@app/multiple-records/multiple-records.container';
 import { PreparersGuard } from '@app/test-record/guards/preparers.guard';
 import { TestStationsGuard } from '@app/test-record/guards/test-stations.guard';
 import { SelectTestTypeComponent } from '@app/test-record/select-test-type/select-test-type.component';
@@ -23,6 +24,11 @@ const routes: Routes = [
   {
     path: 'technical-record',
     loadChildren: './technical-record/technical-record.module#TechnicalRecordModule',
+    canActivate: [AuthenticationGuard]
+  },
+  {
+    path: 'multiple-records',
+    component: MultipleRecordsContainer,
     canActivate: [AuthenticationGuard]
   },
   {

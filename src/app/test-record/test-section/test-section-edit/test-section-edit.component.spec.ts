@@ -6,6 +6,7 @@ import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormGroupDirective } from '@angular/forms';
+import {TESTING_TEST_MODELS_UTILS} from '@app/utils/testing-test-models.utils';
 
 describe('TestSectionEditComponent', () => {
   let component: TestSectionEditComponent;
@@ -28,8 +29,8 @@ describe('TestSectionEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestSectionEditComponent);
     component = fixture.componentInstance;
-    component.testRecord = TESTING_UTILS.mockTestRecord();
-    component.testType = TESTING_UTILS.mockTestType();
+    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
+    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType();
     component.applicableTestTypeIds1 = { 43: 'test' };
     component.applicableTestTypeIds2 = { 43: 'test' };
     fixture.detectChanges();

@@ -37,4 +37,3 @@ export interface AdrDetails {
   adrTypeApprovalNo: string;
   tank?: Tank;
 }
-

@@ -5,17 +5,26 @@ import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
 
 describe('BackButtonDirective', () => {
+  let directive: BackButtonDirective;
+  let location: Location;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [{ provide: Location, useClass: SpyLocation }]
     }).compileComponents();
+
+    location = TestBed.get(Location);
+    directive = new BackButtonDirective(location);
   }));
 
   it('should create an instance', async(() => {
-    const location = TestBed.get(Location);
-    const directive = new BackButtonDirective(location);
     expect(directive).toBeTruthy();
   }));
-});
 
+  it('should call the navigate back on click', () => {
+    jest.spyOn(location, 'back');
+    directive.onClick();
+    expect(location.back).toHaveBeenCalled();
+  });
+});

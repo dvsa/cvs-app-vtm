@@ -11,6 +11,7 @@ import {
   EU_VEHICLE_CATEGORY_TRL
 } from '@app/test-record/test-record.enums';
 import { Component, Input } from '@angular/core';
+import {TESTING_TEST_MODELS_UTILS} from '@app/utils/testing-test-models.utils';
 
 describe('VehicleEditComponent', () => {
   let component: VehicleEditComponent;
@@ -33,7 +34,7 @@ describe('VehicleEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VehicleEditComponent);
     component = fixture.componentInstance;
-    component.testRecord = TESTING_UTILS.mockTestRecord({
+    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord({
       vehicleType: 'psv'
     } as TestResultModel);
     component.preparers = [{} as Preparer];
@@ -47,7 +48,7 @@ describe('VehicleEditComponent', () => {
   });
 
   it('should switch euVehicleCategories by vehicleType = hgv', () => {
-    component.testRecord = TESTING_UTILS.mockTestRecord({
+    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord({
       vehicleType: 'hgv'
     } as TestResultModel);
     component.ngOnInit();
@@ -55,7 +56,7 @@ describe('VehicleEditComponent', () => {
   });
 
   it('should switch euVehicleCategories by vehicleType = trl', () => {
-    component.testRecord = TESTING_UTILS.mockTestRecord({
+    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord({
       vehicleType: 'trl'
     } as TestResultModel);
     component.ngOnInit();
@@ -63,7 +64,7 @@ describe('VehicleEditComponent', () => {
   });
 
   it('should switch euVehicleCategories by vehicleType = empty string', () => {
-    component.testRecord = TESTING_UTILS.mockTestRecord({
+    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord({
       vehicleType: ''
     } as TestResultModel);
     component.ngOnInit();

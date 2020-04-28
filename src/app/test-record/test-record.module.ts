@@ -25,7 +25,6 @@ import { EmissionDetailsEditComponent } from './emission-details/emission-detail
 import { NotesEditComponent } from './notes/notes-edit/notes-edit.component';
 import { VisitEditComponent } from './visit/visit-edit/visit-edit.component';
 import { PendingChangesGuard } from '@app/shared/pending-changes-guard/pending-changes.guard';
-import { DateInputComponent } from '@app/shared/components/date-input/date-input.component';
 import { AutocompleteComponent } from '@app/shared/components/autocomplete/autocomplete.component';
 import { TestSectionEditComponent } from './test-section/test-section-edit/test-section-edit.component';
 import { SelectTestTypeComponent } from './select-test-type/select-test-type.component';
@@ -48,9 +47,10 @@ export const COMPONENTS = [
   EmissionDetailsEditComponent,
   NotesEditComponent,
   VisitEditComponent,
-  DateInputComponent,
   AutocompleteComponent,
-  TimeInputComponent
+  TimeInputComponent,
+  TestSectionEditComponent,
+  SelectTestTypeComponent
 ];
 
 export const MODULES = [
@@ -73,7 +73,7 @@ export const MODULES = [
 
 @NgModule({
   imports: [MODULES],
-  declarations: [COMPONENTS, TestSectionEditComponent, SelectTestTypeComponent],
+  declarations: [COMPONENTS],
   exports: [COMPONENTS],
   providers: [FormGroupDirective]
 })

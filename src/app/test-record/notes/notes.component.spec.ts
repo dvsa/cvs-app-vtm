@@ -2,8 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NotesComponent } from './notes.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { TestType } from '@app/models/test.type';
-import {Component, Input} from '@angular/core';
-import {VIEW_STATE} from '@app/app.enums';
+import { Component, Input } from '@angular/core';
+import { VIEW_STATE } from '@app/app.enums';
 
 describe('NotesComponent', () => {
   let component: NotesComponent;
@@ -32,7 +32,9 @@ describe('NotesComponent', () => {
 
 @Component({
   selector: 'vtm-notes-edit',
-  template: `<div>{{ testType | json }}</div> `
+  template: `
+    <div>{{ testType | json }}</div>
+  `
 })
 class TestNotesEditComponent {
   @Input() currentState: VIEW_STATE;

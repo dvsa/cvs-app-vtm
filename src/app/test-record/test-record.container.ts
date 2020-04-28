@@ -19,7 +19,6 @@ import {
 import { TestStation } from '@app/models/test-station';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
-import { SetErrorMessage } from '@app/store/actions/Error.actions';
 
 @Component({
   selector: 'vtm-test-record-container',
@@ -35,7 +34,6 @@ import { SetErrorMessage } from '@app/store/actions/Error.actions';
           (submitTest)="onTestSubmit($event)"
           (switchState)="currentStateHandler($event)"
           (isFormDirty)="setFormState($event)"
-          (hasErrors)="setFormErrors($event)"
         >
         </vtm-test-record>
       </ng-container>
@@ -48,7 +46,6 @@ export class TestRecordContainer implements OnInit {
   preparers$: Observable<Preparer[]>;
   editState$: Observable<VIEW_STATE>;
   testStations$: Observable<TestStation[]>;
-  errorsInState$: Observable<string[]>;
   testTypesApplicable: TestTypesApplicable;
   isFormDirty: boolean;
   testTypeNumber: string;
@@ -81,7 +78,6 @@ export class TestRecordContainer implements OnInit {
     this.preparers$ = this.store.pipe(select(getPreparers));
     this.editState$ = this.store.pipe(select(getCurrentState));
     this.testStations$ = this.store.pipe(select(getTestStations));
-    this.errorsInState$ = this.store.pipe(select('error'));
   }
 
   onTestSubmit(testResultUpdated: TestResultModel) {
@@ -103,9 +99,5 @@ export class TestRecordContainer implements OnInit {
 
   canDeactivate(): Observable<boolean> | boolean {
     return !this.isFormDirty;
-  }
-
-  setFormErrors(errors: string[]) {
-    this.store.dispatch(new SetErrorMessage(errors));
   }
 }

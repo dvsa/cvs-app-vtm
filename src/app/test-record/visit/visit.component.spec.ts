@@ -6,7 +6,7 @@ import { TestResultModel } from '@app/models/test-result.model';
 import { Component, Input } from '@angular/core';
 import { VIEW_STATE } from '@app/app.enums';
 import { TestStation } from '@app/models/test-station';
-import { TESTING_UTILS } from '@app/utils/testing.utils';
+import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 
 describe('VisitComponent', () => {
   let component: VisitComponent;
@@ -22,7 +22,7 @@ describe('VisitComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VisitComponent);
     component = fixture.componentInstance;
-    component.testRecord = TESTING_UTILS.mockTestRecord();
+    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
     component.editState = VIEW_STATE.VIEW_ONLY;
     component.testStations = [{} as TestStation];
     fixture.detectChanges();
@@ -36,7 +36,9 @@ describe('VisitComponent', () => {
 
 @Component({
   selector: 'vtm-visit-edit',
-  template: `<div>{{ testRecord | json }}</div> `
+  template: `
+    <div>{{ testRecord | json }}</div>
+  `
 })
 class TestVisitEditComponent {
   @Input() testRecord: TestResultModel;

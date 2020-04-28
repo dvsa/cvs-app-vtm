@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, OnDestroy } from '@angular/core';
 import { TestType } from '@app/models/test.type';
 import { EMISSION_STANDARD, FUEL_TYPE, MOD_TYPE } from '@app/test-record/test-record.enums';
 import { ControlContainer, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
@@ -30,7 +30,6 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
-    console.log('mama');
 
     if (!!this.testTypeGroup) {
       this.testTypeGroup.addControl(

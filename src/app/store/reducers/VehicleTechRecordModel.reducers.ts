@@ -1,12 +1,16 @@
 import {
   EVehicleTechRecordModelActions,
-  SetVehicleTechRecordModelVinOnCreateSucess,
   VehicleTechRecordModelActions
 } from '../actions/VehicleTechRecordModel.actions';
-import { initialVehicleTechRecordModelState, IVehicleTechRecordModelState } from '@app/store/state/VehicleTechRecordModel.state';
+import {
+  initialVehicleTechRecordModelState,
+  IVehicleTechRecordModelState
+} from '@app/store/state/VehicleTechRecordModel.state';
 
-export function VehicleTechRecordModelReducers(state = initialVehicleTechRecordModelState, action: VehicleTechRecordModelActions):
-IVehicleTechRecordModelState {
+export function VehicleTechRecordModelReducers(
+  state = initialVehicleTechRecordModelState,
+  action: VehicleTechRecordModelActions
+): IVehicleTechRecordModelState {
   switch (action.type) {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess: {
       return {
@@ -27,7 +31,7 @@ IVehicleTechRecordModelState {
     case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure: {
       return {
         ...state,
-        error: action.payload  // capture error message
+        error: action.payload // capture error message
       };
     }
 
@@ -44,6 +48,36 @@ IVehicleTechRecordModelState {
         ...state,
         initialDetails: action.payload,
         error: null
+      };
+    }
+
+    case EVehicleTechRecordModelActions.UpdateVehicleTechRecordSuccess: {
+      return {
+        ...state,
+        vehicleTechRecordModel: state.vehicleTechRecordModel.map((vehicleRecord) =>
+          vehicleRecord.systemNumber === action.vehicleTechRecord.systemNumber
+            ? action.vehicleTechRecord
+            : vehicleRecord
+        )
+      };
+    }
+
+    case EVehicleTechRecordModelActions.SetSelectedVehicleTechnicalRecordSucess: {
+      return {
+        ...state,
+        selectedVehicleTechRecord: action.vehicleTechRecord
+      };
+    }
+
+    /**
+     * TODO: This reducer as well as corresponding effect and action
+     * should be extracted to an app wide implementation. The implementation should
+     * not be relevant to only TechRecord
+     */
+    case EVehicleTechRecordModelActions.SetViewState: {
+      return {
+        ...state,
+        viewState: action.viewState
       };
     }
 

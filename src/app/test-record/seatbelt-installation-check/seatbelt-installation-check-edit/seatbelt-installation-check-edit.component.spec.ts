@@ -2,8 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SeatbeltInstallationCheckEditComponent } from './seatbelt-installation-check-edit.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {FormGroup, FormGroupDirective} from '@angular/forms';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
+import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 
 describe('SeatbeltInstallationCheckEditComponent', () => {
   let component: SeatbeltInstallationCheckEditComponent;
@@ -26,7 +27,7 @@ describe('SeatbeltInstallationCheckEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SeatbeltInstallationCheckEditComponent);
     component = fixture.componentInstance;
-    component.testType = TESTING_UTILS.mockTestType();
+    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType();
     component.testTypeGroup = new FormGroup({});
     fixture.detectChanges();
   });
@@ -37,16 +38,18 @@ describe('SeatbeltInstallationCheckEditComponent', () => {
   });
 
   it('should set seatbeltOptionSelected to Yes', () => {
-    component.testType = TESTING_UTILS.mockTestType({ seatbeltInstallationCheckDate: true });
+    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType({
+      seatbeltInstallationCheckDate: true
+    });
     component.ngOnInit();
     expect(component.seatbeltOptionSelected).toEqual('Yes');
   });
 
   it('should set seatbeltOptionSelected to No', () => {
-    component.testType = TESTING_UTILS.mockTestType({ seatbeltInstallationCheckDate: false });
+    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType({
+      seatbeltInstallationCheckDate: false
+    });
     component.ngOnInit();
     expect(component.seatbeltOptionSelected).toEqual('No');
   });
-
 });
-

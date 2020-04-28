@@ -1,11 +1,24 @@
-/* tslint:disable:no-unused-variable */
-
-import { TestBed, async } from '@angular/core/testing';
 import { DisplayOptionsPipe } from './display-options.pipe';
 
-describe('Pipe: DisplayOptione', () => {
+describe('Pipe: DisplayOptions', () => {
+  let pipe: DisplayOptionsPipe;
+
+  beforeEach(() => {
+    pipe = new DisplayOptionsPipe();
+  });
+
   it('create an instance', () => {
-    const pipe = new DisplayOptionsPipe();
     expect(pipe).toBeTruthy();
+  });
+
+  it('should return the expected object given the array of string values', () => {
+    const strOptions = ['AT', 'DANGER', 'NON-DANGER'];
+    const selectedOptions = ['AT', 'DANGER'];
+    const result = pipe.transform(strOptions, selectedOptions);
+    expect(result).toStrictEqual([
+      { id: 0, name: 'AT', selected: true },
+      { id: 1, name: 'DANGER', selected: true },
+      { id: 2, name: 'NON-DANGER', selected: false }
+    ]);
   });
 });

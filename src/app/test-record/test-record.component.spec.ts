@@ -13,8 +13,8 @@ import { VIEW_STATE } from '@app/app.enums';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
 import { SpyLocation } from '@angular/common/testing';
-import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
@@ -24,8 +24,8 @@ describe('TestRecordComponent', () => {
   let dialog: MatDialog;
   let testRecordMapper;
   const testObject: TestRecordTestType = {
-    testRecord: TESTING_UTILS.mockTestRecord(),
-    testType: TESTING_UTILS.mockTestType()
+    testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
+    testType: TESTING_TEST_MODELS_UTILS.mockTestType()
   };
   const testResultParentForm = new FormGroup({
     testTypes: new FormGroup({ testTypeId: new FormControl('1') })
