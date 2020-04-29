@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlatesComponent } from './plates.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { TESTING_UTILS } from '@app/utils/testing.utils';
 
 describe('PlatesComponent', () => {
   let component: PlatesComponent;
@@ -12,7 +12,7 @@ describe('PlatesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [PlatesComponent,],
+      declarations: [PlatesComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -23,15 +23,9 @@ describe('PlatesComponent', () => {
   });
 
   it('should create view only with populated data', () => {
-    component.plates = [{
-      plateSerialNumber: '123123',
-      plateIssueDate: '2019-12-13',
-      plateReasonForIssue: '5678',
-      plateIssuer: 'Issuer1'
-      }];
+    component.plates = [TESTING_UTILS.mockPlates()];
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
   });
-
 });
