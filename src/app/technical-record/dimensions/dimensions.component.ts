@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import { AxleSpacing } from '@app/models/tech-record.model';
+import { TechRecord } from '@app/models/tech-record.model';
 
 @Component({
   selector: 'vtm-dimensions',
@@ -8,8 +8,7 @@ import { AxleSpacing } from '@app/models/tech-record.model';
 })
 export class DimensionsComponent implements OnInit {
 
-  @Input() activeRecord: any;
-  @Input() axleSpacing: AxleSpacing[];
+  @Input() activeRecord: TechRecord;
 
   constructor() { }
 

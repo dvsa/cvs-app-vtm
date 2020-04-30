@@ -39,14 +39,9 @@ describe('DimensionsComponent', () => {
                                             }
                               } as TechRecord;
     component.activeRecord = tecRec;
-    component.axleSpacing = [
-                              { axles: '1', value: 100},
-                              { axles: '2', value: 100},
-                              { axles: '3', value: 100},
-                            ];
   });
 
-  fit('should create view only with populated data', () => {
+  it('should create view only with populated data', () => {
     fixture.detectChanges();
 
     expect(component).toBeDefined();

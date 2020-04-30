@@ -3,7 +3,6 @@
 exports[`DimensionsComponent should create view only with populated data 1`] = `
 <vtm-dimensions
   activeRecord={[Function Object]}
-  axleSpacing={[Function Array]}
 >
   <table
     class="govuk-table table-details"
@@ -97,6 +96,7 @@ exports[`DimensionsComponent should create view only with populated data 1`] = `
           class="govuk-table__cell"
         />
       </tr>
+      
       
       
       
