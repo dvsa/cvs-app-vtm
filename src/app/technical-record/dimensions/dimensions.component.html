@@ -3,7 +3,7 @@
     <tr class="govuk-table__row">
       <th class="govuk-table__cell govuk-!-font-weight-bold">Length (mm)</th>
       <td id="test-length" class="govuk-table__cell">
-        {{ activeRecord?.dimensions.length | DefaultNullOrEmpty }}
+        {{ activeRecord?.dimensions?.length | DefaultNullOrEmpty }}
       </td>
       <th class="govuk-table__cell"></th>
       <th class="govuk-table__cell"></th>
