@@ -19,6 +19,7 @@ import { SortByDatePipe } from '@app/pipes/SortByDatePipe';
 import { FormConnectorDirective } from '@app/directives/form-connector/form-connector.directive';
 import { FilterMultipleRecordsPipe } from '@app/pipes/FilterMultipleRecordsPipe';
 import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
+import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
 
 export const PIPES_AND_COMPONENTS = [
   AdrReasonModalComponent,
@@ -28,6 +29,7 @@ export const PIPES_AND_COMPONENTS = [
   ErrorSummaryComponent,
   FormConnectorDirective,
   DialogBoxComponent,
+  DialogBoxConfirmationComponent,
 
   IsPrimaryVrmPipe,
   FilterRecordPipe,
@@ -42,7 +44,7 @@ export const PIPES_AND_COMPONENTS = [
   imports: [FormsModule, CommonModule, ReactiveFormsModule, MatDialogModule],
   declarations: PIPES_AND_COMPONENTS,
   exports: PIPES_AND_COMPONENTS,
-  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent],
+  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent, DialogBoxConfirmationComponent],
   providers: [FilterRecordPipe, PendingChangesService]
 })
 export class SharedModule {}

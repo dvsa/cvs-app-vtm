@@ -24,7 +24,11 @@ import { SeatbeltInstallationCheckEditComponent } from './seatbelt-installation-
 import { EmissionDetailsEditComponent } from './emission-details/emission-details-edit/emission-details-edit.component';
 import { NotesEditComponent } from './notes/notes-edit/notes-edit.component';
 import { VisitEditComponent } from './visit/visit-edit/visit-edit.component';
+import { PendingChangesGuard } from '@app/shared/pending-changes-guard/pending-changes.guard';
 import { AutocompleteComponent } from '@app/shared/components/autocomplete/autocomplete.component';
+import { TestSectionEditComponent } from './test-section/test-section-edit/test-section-edit.component';
+import { SelectTestTypeComponent } from './select-test-type/select-test-type.component';
+import { TimeInputComponent } from '@app/shared/components/time-input/time-input.component';
 
 export const COMPONENTS = [
   TestRecordComponent,
@@ -43,7 +47,10 @@ export const COMPONENTS = [
   EmissionDetailsEditComponent,
   NotesEditComponent,
   VisitEditComponent,
-  AutocompleteComponent
+  AutocompleteComponent,
+  TimeInputComponent,
+  TestSectionEditComponent,
+  SelectTestTypeComponent
 ];
 
 export const MODULES = [

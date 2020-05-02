@@ -1,0 +1,332 @@
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test type
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}
+    </dd>
+    <dd class="govuk-summary-list__value">
+      <a class="govuk-link" (click)="onChangeTestType()">
+        <span>Change</span>
+      </a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test code
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.testCode | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Test number
+    </dt>
+    <dd class="govuk-summary-list__value">
+      {{ testType.testNumber | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+</dl>
+
+<div formGroupName="testType">
+  <div
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testResult')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-full">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Result
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testResult')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Select the test result</span>
+      </span>
+      <div class="govuk-radios">
+        <div class="govuk-radios__item" *ngFor="let res of resultOptions">
+          <input
+            class="govuk-radios__input"
+            id="{{ 'test-testResult-' + res }}"
+            type="radio"
+            formControlName="testResult"
+            value="{{ res | lowercase }}"
+            [checked]="
+              testType.testResult !== 'prs'
+                ? (testType.testResult | titlecase) == res
+                : (testType.testResult | uppercase) == res
+            "
+            [class.govuk-input--error]="
+              isSubmitted && testResultChildForm.form.get('testResult')?.invalid
+            "
+          />
+          <label class="govuk-label govuk-radios__label">
+            {{ res }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isAbandoned" class="govuk-grid-row govuk-!-margin-bottom-5">
+    <div class="govuk-grid-column-full">
+      <div class="govuk-inset-text govuk-!-margin-bottom-0 govuk-!-padding-bottom-0">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <h4 class="govuk-heading-s">Reason for abandoning</h4>
+
+            <div class="govuk-checkboxes">
+              <div
+                *ngFor="let reason of reasonsForAbandoning; let i = index"
+                class="govuk-checkboxes__item"
+              >
+                <input
+                  class="govuk-checkboxes__input"
+                  id="test-reason-{{ i }}"
+                  formControlName="reasonForAbandoning"
+                  type="checkbox"
+                  value="{{ reason }}"
+                />
+                <label class="govuk-label govuk-checkboxes__label">
+                  <span>{{ reason }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="govuk-grid-row govuk-!-margin-top-7">
+          <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-form-group">
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="additionalCommentsForAbandon"
+              >
+                Additional details for abandoning
+              </label>
+              <span id="additionalCommentsForAbandon" class="govuk-hint">
+                Notes about the reason for abandoning should be displayed here...
+              </span>
+              <textarea
+                class="govuk-textarea"
+                id="more-detail"
+                formControlName="additionalCommentsForAbandon"
+                rows="5"
+                aria-describedby="additionalCommentsForAbandon"
+                >{{ testType.additionalCommentsForAbandon }}</textarea
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="applicableTestTypeIds1.hasOwnProperty(testType.testTypeId)"
+    class="govuk-grid-row govuk-!-margin-bottom-7"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('certificateNumber')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-one-half">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Certificate number
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('certificateNumber')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the certificate number</span>
+      </span>
+      <input
+        class="govuk-input"
+        id="test-certificateNumber"
+        formControlName="certificateNumber"
+        type="text"
+        [class.govuk-input--error]="
+          isSubmitted && testResultChildForm.form.get('certificateNumber')?.invalid
+        "
+      />
+    </div>
+  </div>
+
+  <div
+    *ngIf="applicableTestTypeIds1.hasOwnProperty(testType.testTypeId)"
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testExpiryDate')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Expiry Date
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testExpiryDate')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the expiry date</span>
+      </span>
+      <vtm-date-input
+        id="test-testExpiryDate"
+        ariaDescribedBy="testExpiryDate"
+        formControlName="testExpiryDate"
+      >
+      </vtm-date-input>
+    </div>
+  </div>
+
+  <div
+    *ngIf="applicableTestTypeIds1.hasOwnProperty(testType.testTypeId)"
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testAnniversaryDate')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Anniversary Date
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testAnniversaryDate')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the anniversary date</span>
+      </span>
+      <vtm-date-input
+        id="test-testAnniversaryDate"
+        ariaDescribedBy="testAnniversaryDate"
+        formControlName="testAnniversaryDate"
+      >
+      </vtm-date-input>
+    </div>
+  </div>
+
+  <div
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testEndTimestamp')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Test date
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testEndTimestamp')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the test date</span>
+      </span>
+      <vtm-date-input
+        id="test-testEndTimestamp"
+        ariaDescribedBy="testEndTimestamp"
+        formControlName="testEndTimestamp"
+      >
+      </vtm-date-input>
+    </div>
+  </div>
+
+  <div
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testTypeEndTimestamp')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        End time
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testTypeEndTimestamp')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the end time</span>
+      </span>
+      <vtm-time-input
+        id="test-testTypeEndTimestamp"
+        ariaDescribedBy="testTypeEndTimestamp"
+        formControlName="testTypeEndTimestamp"
+      >
+      </vtm-time-input>
+    </div>
+  </div>
+
+  <div
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('testTypeStartTimestamp')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-three-quarters">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Start time
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('testTypeStartTimestamp')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Enter the start time</span>
+      </span>
+      <vtm-time-input
+        id="test-testTypeStartTimestamp"
+        ariaDescribedBy="testTypeStartTimestamp"
+        formControlName="testTypeStartTimestamp"
+      >
+      </vtm-time-input>
+    </div>
+  </div>
+
+  <div
+    *ngIf="applicableTestTypeIds2.hasOwnProperty(testType.testTypeId)"
+    class="govuk-grid-row govuk-!-margin-bottom-3"
+    [class.govuk-form-group--error]="
+      isSubmitted && testResultChildForm.form.get('prohibitionIssued')?.invalid
+    "
+  >
+    <div class="govuk-grid-column-full">
+      <label class="govuk-label govuk-!-font-weight-bold">
+        Prohibition Issued
+      </label>
+      <span
+        *ngIf="isSubmitted && testResultChildForm.form.get('prohibitionIssued')?.invalid"
+        class="govuk-error-message"
+      >
+        <span class="govuk-visually-hidden">Error:</span>
+        <span>Select the prohibition issued</span>
+      </span>
+      <div class="govuk-radios">
+        <div class="govuk-radios__item" *ngFor="let option of prohibitionOptions">
+          <input
+            class="govuk-radios__input"
+            id="test-prohibitionIssued-{{ option.id }}"
+            formControlName="prohibitionIssued"
+            type="radio"
+            value="{{ option.selected }}"
+            [checked]="option.selected"
+            [class.govuk-input--error]="
+              isSubmitted && testResultChildForm.form.get('prohibitionIssued')?.invalid
+            "
+          />
+          <label class="govuk-label govuk-radios__label">
+            {{ option.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

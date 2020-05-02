@@ -1,0 +1,42 @@
+<ng-container [formGroup]="timeInputs">
+  <div class="govuk-date-input">
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="{{ id }}-hour">
+          Hour
+        </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          [class.govuk-input--error]="false"
+          formControlName="hour"
+          id="{{ id }}-hour"
+          name="hour"
+          type="number"
+          [attr.aria-describedby]="ariaDescribedBy"
+          pattern="[0-9]*"
+          maxlength="2"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="{{ id }}-minute">
+          Minute
+        </label>
+        <input
+          class="govuk-input govuk-date-input__input govuk-input--width-2"
+          [class.govuk-input--error]="false"
+          formControlName="minute"
+          id="{{ id }}-minute"
+          name="minute"
+          type="number"
+          pattern="[0-9]*"
+          maxlength="2"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+  </div>
+</ng-container>

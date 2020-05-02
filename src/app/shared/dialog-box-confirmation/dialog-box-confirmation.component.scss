@@ -1,0 +1,14 @@
+.cancel {
+  color: #005EA5;
+  font-family: "GDS Transport", Arial, sans-serif;
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 44px;
+  text-align: left;
+  padding-left: 2rem;
+  cursor: pointer;
+  span {
+    border-bottom: solid;
+    border-bottom-width: 2px;
+  }
+}
