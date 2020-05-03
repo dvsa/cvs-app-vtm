@@ -3,7 +3,6 @@
 exports[`MultipleRecordsComponent should create 1`] = `
 <vtm-multiple-records
   setVehicleTechRecord={[Function EventEmitter]}
-  techRecHelpers={[Function TechRecordHelpersService]}
   vehicleTechRecords={[Function Array]}
 >
   <div
