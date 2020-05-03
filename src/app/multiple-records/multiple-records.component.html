@@ -47,7 +47,7 @@
                   Vehicle registration mark (VRM)
                 </dt>
                 <dd class="govuk-summary-list__value">
-                  <div *ngIf="!techRecHelpers.isEmptyObject(vTechRecord.vrms); else hyphen">
+                  <div *ngIf="!!vTechRecord.vrms; else hyphen">
                     <div
                       *ngFor="
                         let vrmItem of vTechRecord.vrms | IsPrimaryVrm: true;
