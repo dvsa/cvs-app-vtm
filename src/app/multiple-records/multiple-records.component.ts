@@ -1,6 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
 
 @Component({
   selector: 'vtm-multiple-records',
@@ -14,7 +13,7 @@ export class MultipleRecordsComponent implements OnInit {
   @Output() setVehicleTechRecord = new EventEmitter<VehicleTechRecordModel>();
 
 
-  constructor(public techRecHelpers: TechRecordHelpersService) {}
+  constructor() {}
 
   ngOnInit() {}
 
