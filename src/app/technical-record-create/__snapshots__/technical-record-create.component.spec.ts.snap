@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TechnicalRecordSearchComponent should create 1`] = `
+<vtm-technical-record-create
+  _store={[Function Object]}
+  createTechRecordForm={[Function FormGroup]}
+  formError$={[Function Observable]}
+  formErrors={[Function Object]}
+  vehicleTypes={[Function Array]}
+  vrmLabel={[Function String]}
+>
+  <div
+    class="govuk-width-container"
+  >
+    <a
+      class="govuk-back-link"
+      vtmbackbutton=""
+    >
+      Back
+    </a>
+    <main
+      class="govuk-main-wrapper"
+    >
+      <div
+        class="govuk-grid-row"
+      >
+        <div
+          class="govuk-grid-column-two-thirds"
+        >
+          <div
+            class="govuk-grid-row govuk-!-padding-left-0 govuk-!-margin-left-0"
+          >
+            <div
+              class="govuk-grid-column-full"
+            >
+              <h1
+                class="govuk-heading-xl"
+              >
+                 Create new technical record 
+              </h1>
+            </div>
+          </div>
+          
+          <div
+            class="govuk-grid-row"
+          >
+            <div
+              class="govuk-grid-column-full"
+            >
+              <form
+                class="ng-untouched ng-pristine ng-invalid"
+                ng-reflect-form="[object Object]"
+                novalidate=""
+              >
+                <div
+                  class="govuk-form-group"
+                >
+                  <div
+                    class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-padding-left-0 govuk-!-margin-left-0"
+                  >
+                    <div
+                      class="govuk-grid-column-full"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                      >
+                         Vehicle type 
+                      </label>
+                      
+                      <div
+                        class="govuk-radios"
+                      >
+                        
+                        <div
+                          class="govuk-radios__item"
+                        >
+                          <input
+                            class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
+                            formcontrolname="vehicleType"
+                            id="test-radio-PSV"
+                            ng-reflect-form-control-name="vehicleType"
+                            ng-reflect-name="vehicleType"
+                            ng-reflect-value="PSV"
+                            type="radio"
+                          />
+                          <label
+                            class="govuk-label govuk-radios__label"
+                            for="test-radio-PSV"
+                          >
+                             PSV 
+                          </label>
+                        </div>
+                        <div
+                          class="govuk-radios__item"
+                        >
+                          <input
+                            class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
+                            formcontrolname="vehicleType"
+                            id="test-radio-HGV"
+                            ng-reflect-form-control-name="vehicleType"
+                            ng-reflect-name="vehicleType"
+                            ng-reflect-value="HGV"
+                            type="radio"
+                          />
+                          <label
+                            class="govuk-label govuk-radios__label"
+                            for="test-radio-HGV"
+                          >
+                             HGV 
+                          </label>
+                        </div>
+                        <div
+                          class="govuk-radios__item"
+                        >
+                          <input
+                            class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
+                            formcontrolname="vehicleType"
+                            id="test-radio-Trailer"
+                            ng-reflect-form-control-name="vehicleType"
+                            ng-reflect-name="vehicleType"
+                            ng-reflect-value="Trailer"
+                            type="radio"
+                          />
+                          <label
+                            class="govuk-label govuk-radios__label"
+                            for="test-radio-Trailer"
+                          >
+                             Trailer 
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-padding-left-0 govuk-!-margin-left-0 govuk-form-group--error"
+                  >
+                    <div
+                      class="govuk-grid-column-full"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="test-vin"
+                      >
+                         Vehicle identification number (VIN) 
+                      </label>
+                      
+                      <span
+                        class="govuk-error-message"
+                        id="vin-error"
+                      >
+                        <span
+                          class="govuk-visually-hidden"
+                        >
+                          Error:
+                        </span>
+                        <span>
+                          
+                        </span>
+                        
+                      </span>
+                      <input
+                        class="govuk-input govuk-input--width-20 govuk-input--error ng-untouched ng-pristine ng-invalid"
+                        formcontrolname="vin"
+                        id="test-vin"
+                        maxlength="21"
+                        ng-reflect-maxlength="21"
+                        ng-reflect-name="vin"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-padding-left-0 govuk-!-margin-left-0"
+                  >
+                    <div
+                      class="govuk-grid-column-full"
+                    >
+                      <label
+                        class="govuk-label govuk-!-font-weight-bold"
+                        for="test-vrm"
+                      >
+                         Vehicle registration mark (VRM) 
+                      </label>
+                      
+                      <span
+                        class="govuk-error-message"
+                        id="vrm-error"
+                      >
+                        <span
+                          class="govuk-visually-hidden"
+                        >
+                          Error:
+                        </span>
+                        <span>
+                          
+                        </span>
+                        
+                      </span>
+                      <input
+                        class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-invalid"
+                        formcontrolname="vrm"
+                        id="test-vrm"
+                        maxlength="8"
+                        ng-reflect-maxlength="8"
+                        ng-reflect-name="vrm"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="govuk-grid-row govuk-!-padding-left-0 govuk-!-margin-left-0"
+                  >
+                    <div
+                      class="govuk-grid-column-full"
+                    >
+                      <button
+                        class="govuk-button"
+                        data-module="govuk-button"
+                        id="test-continue-btn"
+                        type="submit"
+                      >
+                         Continue 
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</vtm-technical-record-create>
+`;
