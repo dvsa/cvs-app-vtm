@@ -16,10 +16,6 @@ export class RouterEffects {
   navigate$ = this.actions$.pipe(
     ofType(ROUTER_NAVIGATION),
     withLatestFrom(this.store.select(getViewState)),
-    filter(
-      ([action, currentState]: [RouterNavigationAction<RouterStateUrl>, VIEW_STATE]) =>
-        currentState === VIEW_STATE.EDIT
-    ),
     map(([action, currentState]) => new SetViewState(VIEW_STATE.VIEW_ONLY))
   );
 

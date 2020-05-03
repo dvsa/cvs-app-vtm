@@ -65,6 +65,7 @@ describe('TechnicalRecordSearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(fixture).toMatchSnapshot();
   });
 
   it('form invalid when empty', () => {

@@ -4,81 +4,78 @@ import {
   GetVehicleTechRecordModelSuccess,
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  GetVehicleTechRecordModelHavingStatusAllFailure,
-  SetVehicleTechRecordModelVinOnCreate,
-  SetVehicleTechRecordModelVinOnCreateSucess
+  SetVehicleTechRecordModelOnCreate
 } from './VehicleTechRecordModel.actions';
-import {VehicleTechRecordModel} from '../../models/vehicle-tech-record.model';
-import {CreateTechRecordVM} from '../state/VehicleTechRecordModel.state';
-import {TechRecord} from '@app/models/tech-record.model';
-import {SearchParams} from '@app/models/search-params';
+import {
+  VehicleIdentifiers,
+  VehicleTechRecordModel
+} from '@app/models/vehicle-tech-record.model';
+import { TechRecord } from '@app/models/tech-record.model';
+import { SearchParams } from '@app/models/search-params';
 
 const vehicleTechRecordModel: VehicleTechRecordModel = {} as VehicleTechRecordModel;
 const techRecord: TechRecord = {} as TechRecord;
 
 describe('GetVehicleTechRecordModel', () => {
-  test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModel(techRecord);
+  it('the action should have the right type and payload', () => {
+    const action = new GetVehicleTechRecordModel(techRecord);
 
-    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModel);
-    expect(actionInstance.payload).toBe(techRecord);
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModel,
+      payload: techRecord
+    });
+
   });
 });
 
 describe('GetVehicleTechRecordModelSuccess', () => {
-  test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelSuccess([vehicleTechRecordModel]);
+  it('the action should have the right type and payload', () => {
+    const action = new GetVehicleTechRecordModelSuccess([vehicleTechRecordModel]);
 
-    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess);
-    expect(actionInstance.payload).toStrictEqual([vehicleTechRecordModel]);
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelSuccess,
+      payload: [vehicleTechRecordModel]
+    });
+
   });
 });
 
 describe('GetVehicleTechRecordModelHavingStatusAll', () => {
-  test('the action should have the right type and payload', () => {
-    const searchParams: SearchParams = { searchIdentifier: '1234', searchCriteria: 'all'};
-    const actionInstance = new GetVehicleTechRecordModelHavingStatusAll(searchParams);
+  it('the action should have the right type and payload', () => {
+    const searchParams: SearchParams = { searchIdentifier: '1234', searchCriteria: 'all' };
+    const action = new GetVehicleTechRecordModelHavingStatusAll(searchParams);
 
-    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll);
-    expect(actionInstance.payload).toStrictEqual({ searchIdentifier: '1234', searchCriteria: 'all'});
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAll,
+      payload: searchParams
+    });
   });
 });
 
 describe('GetVehicleTechRecordModelHavingStatusAllSuccess', () => {
-  test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelHavingStatusAllSuccess([vehicleTechRecordModel]);
+  it('the action should have the right type and payload', () => {
+    const action = new GetVehicleTechRecordModelHavingStatusAllSuccess([vehicleTechRecordModel]);
 
-    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess);
-    expect(actionInstance.payload).toStrictEqual([vehicleTechRecordModel]);
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllSuccess,
+      payload: [vehicleTechRecordModel]
+    });
   });
 });
 
-describe('GetVehicleTechRecordModelHavingStatusAllFailure', () => {
-  test('the action should have the right type and payload', () => {
-    const actionInstance = new GetVehicleTechRecordModelHavingStatusAllFailure([vehicleTechRecordModel]);
+describe('SetVehicleTechRecordModelOnCreate', () => {
+  it('the action should have the right type and payload', () => {
+    const vehicleIdentifiers: VehicleIdentifiers = {
+      vin: 'aaa',
+      vrm: 'bbb',
+      vType: 'PSV'
+    } as VehicleIdentifiers;
 
-    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure);
-    expect(actionInstance.payload).toStrictEqual([vehicleTechRecordModel]);
-  });
-});
+    const action = new SetVehicleTechRecordModelOnCreate(vehicleIdentifiers);
 
-describe('SetVehicleTechRecordModelVinOnCreate', () => {
-  test('the action should have the right type and payload', () => {
-
-    const actionInstance = new SetVehicleTechRecordModelVinOnCreate({vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: []});
-
-    expect(actionInstance.type).toBe(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate);
-    expect(actionInstance.payload).toEqual({vin: 'aaa', vrm: 'bbb', vType: 'PSV', error: []});
-
-  });
-});
-
-describe('SetVehicleTechRecordModelVinOnCreateSucess', () => {
-  test('the action should have the right type and payload', () => {
-    const payload: CreateTechRecordVM = {vin: '', vrm: '', vType: '', error: []};
-    const action = new SetVehicleTechRecordModelVinOnCreateSucess(payload);
-
-    expect(action.type).toBe(EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreateSucess);
-    expect(action.payload).toBe(payload);
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordModelActions.SetVehicleTechRecordModelOnCreate,
+      payload: vehicleIdentifiers
+    });
   });
 });
