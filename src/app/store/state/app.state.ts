@@ -1,3 +1,4 @@
+
 import { RouterReducerState } from '@ngrx/router-store';
 
 import {
@@ -12,25 +13,23 @@ import { initialLoaderState, ILoaderState } from './Loader.state';
 import { VehicleTechRecordModelEffects } from '../effects/VehicleTechRecordModel.effects';
 import { ErrorEffects } from './../effects/error.effects';
 import { RouterEffects } from '../effects/router.effects';
+import { ErrorState, initialErrorState } from '../reducers/error.reducers';
 
 export interface IAppState {
   router?: RouterReducerState;
   loader: ILoaderState;
   vehicleTechRecordModel: IVehicleTechRecordModelState;
   vehicleTestResultModel: IVehicleTestResultModelState;
-  error?: [string] | null;
+  error: ErrorState;
 }
 
 export const initialAppState: IAppState = {
   loader: initialLoaderState,
   vehicleTechRecordModel: initialVehicleTechRecordModelState,
-  vehicleTestResultModel: initialVehicleTestResultModelState
+  vehicleTestResultModel: initialVehicleTestResultModelState,
+  error: initialErrorState
 };
 
 export const getInitialState = (): IAppState => initialAppState;
 
 export const ROOT_EFFECTS = [VehicleTechRecordModelEffects, ErrorEffects, RouterEffects];
-
-/**
- * TODO: Content of app.reducers to be merged centrally with app.state.ts
- */

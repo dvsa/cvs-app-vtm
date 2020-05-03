@@ -8,12 +8,10 @@ import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators'
 import {
   EVehicleTechRecordModelActions,
   GetVehicleTechRecordModelHavingStatusAll,
-  GetVehicleTechRecordModelHavingStatusAllFailure,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
   SetSelectedVehicleTechnicalRecord,
   SetSelectedVehicleTechnicalRecordSucess,
-  SetVehicleTechRecordModelVinOnCreate,
-  SetVehicleTechRecordModelVinOnCreateSucess,
+  SetVehicleTechRecordModelOnCreate,
   SetViewState,
   UpdateVehicleTechRecord,
   UpdateVehicleTechRecordSuccess
@@ -22,13 +20,18 @@ import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.act
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { IVehicleTechRecordModelState } from '../state/VehicleTechRecordModel.state';
 import { ClearErrorMessage, SetErrorMessage } from '../actions/Error.actions';
-import { VEHICLE_TECH_RECORD_SEARCH_ERRORS, VIEW_STATE } from '@app/app.enums';
+import {
+  CREATE_PAGE_LABELS,
+  VEHICLE_TECH_RECORD_SEARCH_ERRORS,
+  VIEW_STATE
+} from '@app/app.enums';
 import { getSelectedVehicleTechRecord } from '../selectors/VehicleTechRecordModel.selectors';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { VehicleTechRecordUpdate } from '@app/models/vehicle-tech-record-update';
 import { SearchParams } from '@app/models/search-params';
 import { UserService } from '@app/app-user.service';
+import { VrmModel } from '@app/models/vrm.model';
 
 @Injectable()
 export class VehicleTechRecordModelEffects {
@@ -59,9 +62,7 @@ export class VehicleTechRecordModelEffects {
           }),
           catchError((error) => {
             const errorMessage = this.getSearchResultError(error);
-
-            this._store.dispatch(new SetErrorMessage([errorMessage]));
-            return of(new GetVehicleTechRecordModelHavingStatusAllFailure(error));
+            return [new SetErrorMessage([errorMessage])];
           })
         )
     )
@@ -80,70 +81,51 @@ export class VehicleTechRecordModelEffects {
 
   @Effect({ dispatch: false })
   setVinOnCreate$ = this._actions$.pipe(
-    ofType<SetVehicleTechRecordModelVinOnCreate>(
-      EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate
+    ofType<SetVehicleTechRecordModelOnCreate>(
+      EVehicleTechRecordModelActions.SetVehicleTechRecordModelOnCreate
     ),
     map((action) => action.payload),
     switchMap((payload) => {
-      const requests: Observable<any>[] = [];
+      let requests: Observable<any>[] = [];
       const requestErrors = [];
 
+      requests.push(
+        this._technicalRecordService
+          .getTechnicalRecordsAllStatuses(payload.vin, 'all')
+          .pipe(catchError((error) => of(undefined)))
+      );
+
       if (payload.vType === 'PSV' || payload.vType === 'HGV') {
-        requests.push(
-          this._technicalRecordService
-            .getTechnicalRecordsAllStatuses(payload.vin, 'all')
-            .pipe(catchError((error) => of(undefined)))
-        );
         requests.push(
           this._technicalRecordService
             .getTechnicalRecordsAllStatuses(payload.vrm, 'all')
             .pipe(catchError((error) => of(undefined)))
         );
-
-        forkJoin(requests).subscribe((result) => {
-          if (result[0] !== undefined) {
-            requestErrors.push(
-              'A technical record with this VIN already exists, check the VIN or change the existing technical record'
-            );
-          }
-          if (result[1] !== undefined) {
-            requestErrors.push(
-              'A technical record with this VRM already exists, check the VRM or change the existing technical record'
-            );
-          }
-          if (result[0] === undefined && result[1] === undefined) {
-            this.router.navigate([`/technical-record`]);
-          }
-          requests.length = 0;
-          this._store.dispatch(
-            new SetVehicleTechRecordModelVinOnCreateSucess({
-              vin: payload.vin,
-              vrm: payload.vrm,
-              vType: payload.vType,
-              error: requestErrors
-            })
-          );
-        });
-      } else if (payload.vType === 'Trailer') {
-        this._technicalRecordService.getTechnicalRecordsAllStatuses(payload.vin, 'all').subscribe(
-          (result) => {
-            requestErrors.push(
-              'A technical record with this VIN already exists, check the VIN or change the existing technical record'
-            );
-            this._store.dispatch(
-              new SetVehicleTechRecordModelVinOnCreateSucess({
-                vin: payload.vin,
-                vrm: payload.vrm,
-                vType: payload.vType,
-                error: requestErrors
-              })
-            );
-          },
-          (error) => {
-            this.router.navigate([`/technical-record`]);
-          }
-        );
       }
+
+      forkJoin(requests).subscribe(([res1, res2]) => {
+        if (res1) {
+          requestErrors.push(CREATE_PAGE_LABELS.CREATE_VIN_LABEL_ERROR);
+        }
+        if (res2) {
+          requestErrors.push(CREATE_PAGE_LABELS.CREATE_VRM_LABEL_ERROR);
+        }
+        if (!res1 && !res2) {
+          const vehicleTechRecord = {} as VehicleTechRecordModel;
+          vehicleTechRecord.vin = payload.vin;
+          vehicleTechRecord.vrms = [{ vrm: payload.vrm, isPrimary: true }] as VrmModel[];
+          vehicleTechRecord.techRecord = [
+            { statusCode: 'provisional', vehicleType: payload.vType } as TechRecord
+          ];
+
+          // this._store.dispatch(new SetSelectedVehicleTechnicalRecordSucess(vehicleTechRecord));
+          // this.router.navigate(['/technical-record/create']);
+        }
+        requests = [];
+        if (requestErrors.length > 0) {
+          this._store.dispatch(new SetErrorMessage(requestErrors));
+        }
+      });
 
       return of(payload);
     })

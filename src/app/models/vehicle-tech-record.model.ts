@@ -8,5 +8,10 @@ export interface VehicleTechRecordModel {
   systemNumber: string;
   techRecord: TechRecord[];
   metadata: MetaData;
-  error?: any | null | undefined;
+}
+
+export interface VehicleIdentifiers {
+  vin: string;
+  vrm: string;
+  vType: string;
 }
