@@ -10,22 +10,21 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import {
   GetVehicleTechRecordModelHavingStatusAll,
   GetVehicleTechRecordModelHavingStatusAllSuccess,
-  SetVehicleTechRecordModelVinOnCreate,
-  SetVehicleTechRecordModelVinOnCreateSucess
+  SetVehicleTechRecordModelOnCreate
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 import { addMatchers } from 'jasmine-marbles';
 import { IAppState } from '@app/store/state/app.state';
 import { VEHICLE_TECH_RECORD_SEARCH_ERRORS } from '@app/app.enums';
 import { SearchParams } from '@app/models/search-params';
+import { SetErrorMessage } from '@app/store/actions/Error.actions';
 
 const techRecordModel: VehicleTechRecordModel = {
   systemNumber: '1231243',
   vrms: null,
   vin: 'ABCDEFGH777777',
   techRecord: [],
-  metadata: { adrDetails: undefined },
-  error: null
+  metadata: { adrDetails: undefined }
 };
 
 describe('VehicleTechRecordModelEffects', () => {
@@ -96,7 +95,7 @@ describe('VehicleTechRecordModelEffects', () => {
     const requestErrors = [];
     const requests: Observable<any>[] = [of(undefined), of(undefined)];
 
-    actions = cold('a', { a: new SetVehicleTechRecordModelVinOnCreate(valuePayload) });
+    actions = cold('a', { a: new SetVehicleTechRecordModelOnCreate(valuePayload) });
 
     forkJoin(requests).subscribe((result) => {
       try {
@@ -117,14 +116,6 @@ describe('VehicleTechRecordModelEffects', () => {
           valuePayload.vrm
         );
         expect(requestErrors).toEqual([]);
-        expect(store.dispatch).toHaveBeenCalledWith(
-          new SetVehicleTechRecordModelVinOnCreateSucess({
-            vin: 'aaa',
-            vrm: 'bbb',
-            vType: 'PSV',
-            error: requestErrors
-          })
-        );
       } catch (error) {
         fail('setVinOnCreate$: ' + error);
       }
@@ -142,9 +133,7 @@ describe('VehicleTechRecordModelEffects', () => {
       expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
         valuePayload.vrm
       );
-      expect(store.dispatch).toHaveBeenCalledWith(
-        new SetVehicleTechRecordModelVinOnCreateSucess(valuePayload)
-      );
+      expect(store.dispatch).toHaveBeenCalledWith(new SetErrorMessage(['']));
     });
   });
 
@@ -156,9 +145,7 @@ describe('VehicleTechRecordModelEffects', () => {
       expect(technicalRecordService.getTechnicalRecordsAllStatuses).toHaveBeenCalledWith(
         'P012301230001'
       );
-      expect(store.dispatch).toHaveBeenCalledWith(
-        new SetVehicleTechRecordModelVinOnCreateSucess(valuePayload)
-      );
+      expect(store.dispatch).toHaveBeenCalledWith(new SetErrorMessage(['']));
     });
   });
 

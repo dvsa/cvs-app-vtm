@@ -1,5 +1,5 @@
 <div *ngIf="errorList$ | async as errorList" class="govuk-width-container">
-  <main class="govuk-main-wrapper" id="errorBox">
+  <main class="govuk-main-wrapper" id="test-errorBox" *ngIf="errorList.length">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <div

@@ -35,7 +35,7 @@ describe('VehicleTestResultModel Reducer', () => {
       const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
       expect(result).toEqual({
         ...initialVehicleTestResultModelState,
-        selectedTestResultModel: vehicleTestResult,
+        vehicleTestResultModel: vehicleTestResult,
 
       });
     });

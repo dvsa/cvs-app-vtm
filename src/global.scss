@@ -1,0 +1,52 @@
+/**
+* This file should be used to create new components not provided by GDS
+* Consider not scoping css at component levels and use of a compiled stylesheet for better portability
+* Please first use what GDS gives out of the box
+* If new components need to be created please follow the GDS convention for consistency in terms of CSS architecture
+*
+* USEFUL LINKS:
+*
+* --> Living styleguide: https://design-system.service.gov.uk/components/
+* --> Living styleguide - Scaffolding: https://design-system.service.gov.uk/styles/
+* --> Repo: https://github.com/alphagov/govuk-frontend/tree/master/src/govuk/components
+*/
+
+/**
+* If the files grow, please consider following the GDS folder structure as guidance
+* Entrypoint: https://github.com/alphagov/govuk-frontend/blob/master/src/govuk/all.scss
+*/
+
+
+/************/
+// SETTINGS //
+/************/
+
+// Colour
+
+// Images
+
+// Spacing
+
+// Typography
+
+
+/**************/
+// COMPONENTS //
+/**************/
+
+.govuk-back-link {
+  // TODO - Technical task to fix the styling as part of GDS living styleguide
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/*********/
+// PAGES //
+/*********/
+
+
+/***********/
+// GLOBALS //
+/***********/
+

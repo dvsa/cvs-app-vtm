@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { IAppState } from '@app/store/state/app.state';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
+import { IAppState } from '@app/store/state/app.state';
+import { getErrors } from '@app/store/selectors/error.selectors';
 
 @Component({
   selector: 'vtm-error-summary',
@@ -11,8 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class ErrorSummaryComponent {
   errorList$: Observable<string[]>;
-  constructor(private _store: Store<IAppState>) {
-    this.errorList$ = this._store.pipe(select('error'));
+  constructor(private store: Store<IAppState>) {
+    this.errorList$ = this.store.select(getErrors);
   }
-
 }
