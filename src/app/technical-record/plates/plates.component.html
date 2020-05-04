@@ -1,39 +1,36 @@
-<ng-container *ngIf="plates; else hyphen">
+<table class="govuk-table t-history">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Serial number</th>
+        <th scope="col" class="govuk-table__header">Reason for creation</th>
+        <th scope="col" class="govuk-table__header">Created by</th>
+        <th scope="col" class="govuk-table__header">Created at</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body" *ngIf="plates; else noPlates">
+      <tr class="govuk-table__row" *ngFor="let plate of plates | SortByDatePipe: 'plateIssueDate'">
+        <td id="test-lettersOfAuth-letterType" class="govuk-table__cell">
+            {{ plate.plateSerialNumber | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-lettersOfAuth-letterDateRequested" class="govuk-table__cell">
+            {{ plate.plateReasonForIssue | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-lettersOfAuth-letterContents" class="govuk-table__cell">
+            {{ plate.plateIssuer | DefaultNullOrEmpty }}
+        </td>
+        <td id="test-lettersOfAuth-letterContents" class="govuk-table__cell">
+            {{ plate.plateIssueDate | DefaultNullOrEmpty }}
+        </td>
+      </tr>
+    </tbody>
+    <ng-template #noPlates>
+      <tbody class="govuk-table__body">
+        <tr>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </ng-template>
+  </table>
   
-  <dl class="govuk-summary-list">
-    <ng-container *ngFor="let plate of (plates | SortByDatePipe :'plateIssueDate')">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Serial number</dt>
-      <dd id="test-plate-plateSerialNumber" class="govuk-summary-list__value">
-        {{  plate.plateSerialNumber | DefaultNullOrEmpty }}
-      </dd>
-      <dd class="govuk-summary-list__value"></dd>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Reason for creation</dt>
-      <dd id="test-plate-plateReasonForIssue" class="govuk-summary-list__value">
-        {{ plate.plateReasonForIssue | DefaultNullOrEmpty }}
-      </dd>
-      <dd class="govuk-summary-list__value"></dd>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Created by</dt>
-      <dd id="test-plate-plateIssuer" class="govuk-summary-list__value">
-        {{ plate.plateIssuer | DefaultNullOrEmpty }}
-      </dd>
-      <dd class="govuk-summary-list__value"></dd>
-    </div>
-
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Created at</dt>
-      <dd id="test-plate-plateIssueDate" class="govuk-summary-list__value">
-        {{ plate.plateIssueDate | DefaultNullOrEmpty }}
-      </dd>
-      <dd class="govuk-summary-list__value"></dd>
-    </div>
-    </ng-container>
-    </dl>
-</ng-container>
-<ng-template #hyphen><span>-</span></ng-template>

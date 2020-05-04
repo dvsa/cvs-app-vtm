@@ -80,7 +80,7 @@
       <td class="govuk-table__cell"></td>
     </tr>
     <ng-container
-      *ngIf="activeRecord.vehicleType === 'hgv' && activeRecord?.dimensions.axleSpacing"
+      *ngIf="activeRecord.vehicleType === 'hgv' && activeRecord?.dimensions?.axleSpacing"
     >
       <ng-container *ngFor="let item of activeRecord?.dimensions.axleSpacing; let i = index">
         <ng-container *ngIf="i < activeRecord?.dimensions.axleSpacing.length-1">
