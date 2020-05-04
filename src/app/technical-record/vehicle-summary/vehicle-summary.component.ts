@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TechRecord } from '@app/models/tech-record.model';
-import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 
 @Component({
   selector: 'vtm-vehicle-summary',

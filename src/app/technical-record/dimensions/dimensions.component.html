@@ -100,26 +100,36 @@
         </ng-container>
       </ng-container>
     </ng-container>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear axle</th>
-      <td id="test-couplingCenterToRearAxleMin" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearAxleMin | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-couplingCenterToRearAxleMax" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearAxleMax | DefaultNullOrEmpty }}
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+    <th class="govuk-table__cell govuk-!-font-weight-bold"> Coupling center to rear axle</th>
+    <td id="test-couplingCenterToRearAxleMin" class="govuk-table__cell">
+      {{ activeRecord.couplingCenterToRearAxleMin | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-couplingCenterToRearAxleMax" class="govuk-table__cell">
+      {{ activeRecord.couplingCenterToRearAxleMax | DefaultNullOrEmpty }}
+    </td>
+    <td class="govuk-table__cell"></td>
+    <td class="govuk-table__cell"></td>
+    <td class="govuk-table__cell"></td>
+  </tr>
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+    <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear trailer</th>
+    <td id="test-couplingCenterToRearTrlMin" class="govuk-table__cell">
+      {{ activeRecord.couplingCenterToRearTrlMin | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-couplingCenterToRearTrlMax" class="govuk-table__cell">
+      {{ activeRecord.couplingCenterToRearTrlMax | DefaultNullOrEmpty }}
+    </td>
+    <td class="govuk-table__cell"></td>
+    <td class="govuk-table__cell"></td>
+    <td class="govuk-table__cell"></td>
+  </tr>
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+      <th class="govuk-table__cell govuk-!-font-weight-bold">Centre of rearmost axle to rear of trailer</th>
+      <td id="test-centreOfRearmostAxleToRearOfTrl" class="govuk-table__cell">
+        {{ activeRecord.centreOfRearmostAxleToRearOfTrl | DefaultNullOrEmpty }}
       </td>
       <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-      <td class="govuk-table__cell"></td>
-    </tr>
-    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Coupling center to rear trailer</th>
-      <td id="test-couplingCenterToRearTrlMin" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearTrlMin | DefaultNullOrEmpty }}
-      </td>
-      <td id="test-couplingCenterToRearTrlMax" class="govuk-table__cell">
-        {{ activeRecord.couplingCenterToRearTrlMax | DefaultNullOrEmpty }}
-      </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>

@@ -2,7 +2,6 @@ import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@app/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TechRecHistoryComponent } from './tech-rec-history.component';
-import { TESTING_UTILS } from '../../utils/testing.utils';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
 describe('TechRecHistoryComponent', () => {

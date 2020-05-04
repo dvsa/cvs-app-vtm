@@ -1,4 +1,4 @@
-import {ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
 import { SharedModule } from '@app/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -21,7 +21,11 @@ describe('VehicleSummaryComponent', () => {
     fixture = TestBed.createComponent(VehicleSummaryComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
-    component.activeRecord = TESTING_UTILS.mockTechRecord({approvalType: 'approval', variantNumber: '123', ntaNumber: '4566'});
+    component.activeRecord = TESTING_UTILS.mockTechRecord({
+      approvalType: 'approval',
+      variantNumber: '123',
+      ntaNumber: '4566'
+    });
     component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
   });
 
@@ -33,10 +37,11 @@ describe('VehicleSummaryComponent', () => {
   });
 
   it('should create format the vehicle class description', () => {
-    component.activeRecord.vehicleClass = {description: 'the first letter needs to be capital'} as BodyType;
+    component.activeRecord.vehicleClass = {
+      description: 'the first letter needs to be capital'
+    } as BodyType;
     fixture.detectChanges();
     expect(component.vehicleClassDescription).toEqual('The first letter needs to be capital');
-
   });
 
   afterAll(() => {

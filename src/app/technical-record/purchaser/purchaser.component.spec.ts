@@ -4,7 +4,6 @@ import { PurchaserComponent } from './purchaser.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@app/shared/shared.module';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import { PurchaserDetails } from '@app/models/tech-record.model';
 
 describe('PurchaserComponent', () => {
   let component: PurchaserComponent;
