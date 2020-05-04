@@ -4,7 +4,6 @@ import {TechRecordHelpersService} from '@app/technical-record/tech-record-helper
 @Component({
   selector: 'vtm-test-history',
   templateUrl: './test-history.component.html',
-  styleUrls: ['../../app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestHistoryComponent implements OnInit {

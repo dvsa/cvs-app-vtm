@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthorisationIntoServiceComponent should create view only with populated data 1`] = `
+<vtm-authorisation-into-service
+  authoIntoService={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        COC issue date
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-cocIssueDate"
+      >
+         13/12/2019 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date received
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-dateReceived"
+      >
+         13/11/2018 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date pending
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-datePending"
+      >
+         2017-6-5 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date authorised
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-dateAuthorised"
+      >
+         2018-2-10 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date rejected
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-dateRejected"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-authorisation-into-service>
+`;

@@ -35,7 +35,7 @@ export const PIPES_AND_COMPONENTS = [
   DefaultNullOrEmpty,
   SortByDatePipe,
   FilterMultipleRecordsPipe,
-  BackButtonDirective
+  BackButtonDirective,
 ];
 
 @NgModule({

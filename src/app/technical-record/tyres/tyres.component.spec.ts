@@ -14,6 +14,7 @@ import {NgrxFormsModule} from 'ngrx-forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {VehicleSummaryComponent} from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import { TESTING_UTILS } from '../../utils/testing.utils';
 
 describe('VehicleSummaryComponent', () => {
 
@@ -49,25 +50,18 @@ describe('VehicleSummaryComponent', () => {
     fixture = TestBed.createComponent(VehicleSummaryComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
-    component.activeRecord = {
-      'vin': 'XMGDE02FS0H012345',
-      'vehicleSize': 'small',
-      'testStationName': 'Rowe, Wunsch and Wisoky',
-      'vehicleId': 'JY58FPP',
-      'vehicleType': 'psv',
-      'axles': [
-        { 'parkingBrakeMrk': false, 'axleNumber': 1 },
-        { 'parkingBrakeMrk': true, 'axleNumber': 2 },
-        { 'parkingBrakeMrk': false, 'axleNumber': 3 }
-      ]
-    };
+    component.activeRecord = TESTING_UTILS.mockTechRecord();
 
     fixture.detectChanges();
   });
 
-  it('should create my component', async(() => {
-    expect(component).toBeTruthy();
-  }));
+  it('should create view only with populated data', () => {
+    fixture.detectChanges();
+
+    expect(component).toBeDefined();
+    expect(fixture).toMatchSnapshot();
+  });
+
 
   afterAll(() => {
     TestBed.resetTestingModule();

@@ -15,7 +15,7 @@
     <tr class="govuk-table__row">
       <th class="govuk-table__cell govuk-!-font-weight-bold">Width (mm)</th>
       <td id="test-width" class="govuk-table__cell">
-        {{ activeRecord?.dimensions.width | DefaultNullOrEmpty }}
+        {{ activeRecord?.dimensions?.width | DefaultNullOrEmpty }}
       </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>
@@ -83,11 +83,11 @@
       *ngIf="activeRecord.vehicleType === 'hgv' && activeRecord?.dimensions?.axleSpacing"
     >
       <ng-container *ngFor="let item of activeRecord?.dimensions.axleSpacing; let i = index">
-        <ng-container *ngIf="i < activeRecord?.dimensions.axleSpacing.length-1">
+        <ng-container *ngIf="i < activeRecord?.dimensions.axleSpacing.length - 1">
           <tr class="govuk-table__row">
             <th class="govuk-table__cell govuk-!-font-weight-bold">
-              Axle {{ activeRecord?.dimensions.axleSpacing[i].axles }} to
-              {{ activeRecord?.dimensions.axleSpacing[i+1].axles }} (mm)
+              Axle {{ (activeRecord?.dimensions.axleSpacing)[i].axles }} to
+              {{ (activeRecord?.dimensions.axleSpacing)[i + 1].axles }} (mm)
             </th>
             <td id="test-axleSpacingItem-i" class="govuk-table__cell">
               {{ item.value | DefaultNullOrEmpty }}
@@ -120,6 +120,18 @@
       <td id="test-couplingCenterToRearTrlMax" class="govuk-table__cell">
         {{ activeRecord.couplingCenterToRearTrlMax | DefaultNullOrEmpty }}
       </td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+    </tr>
+    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'trl'">
+      <th class="govuk-table__cell govuk-!-font-weight-bold">
+        Centre of rearmost axle to rear of trailer
+      </th>
+      <td id="test-centreOfRearmostAxleToRearOfTrl" class="govuk-table__cell">
+        {{ activeRecord.centreOfRearmostAxleToRearOfTrl | DefaultNullOrEmpty }}
+      </td>
+      <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>

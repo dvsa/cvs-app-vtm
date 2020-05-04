@@ -24,7 +24,7 @@
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
     <td id="test-trainGbWeight" class="govuk-table__cell">
       {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
@@ -38,7 +38,7 @@
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
     <td id="test-maxTrainGbWeight" class="govuk-table__cell">
       {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}

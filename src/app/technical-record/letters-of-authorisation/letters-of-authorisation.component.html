@@ -1,0 +1,31 @@
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Letter type</th>
+      <th scope="col" class="govuk-table__header">Create at</th>
+      <th scope="col" class="govuk-table__header">Letter contents</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body" *ngIf="lettersOfAuth; else noLetterOfAuth">
+    <tr class="govuk-table__row">
+      <td id="test-lettersOfAuth-letterType" class="govuk-table__cell">
+        {{ lettersOfAuth?.letterType | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-lettersOfAuth-letterDateRequested" class="govuk-table__cell">
+        {{ lettersOfAuth?.letterDateRequested | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-lettersOfAuth-letterContents" class="govuk-table__cell">
+        {{ lettersOfAuth?.letterContents | DefaultNullOrEmpty }}
+      </td>
+    </tr>
+  </tbody>
+  <ng-template #noLetterOfAuth>
+    <tbody class="govuk-table__body">
+      <tr>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+    </tbody>
+  </ng-template>
+</table>

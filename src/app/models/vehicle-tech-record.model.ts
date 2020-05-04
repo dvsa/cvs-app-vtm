@@ -5,6 +5,7 @@ import { MetaData } from './meta-data';
 export interface VehicleTechRecordModel {
   vrms: VrmModel[];
   vin: string;
+  trailerId?: string;
   systemNumber: string;
   techRecord: TechRecord[];
   metadata: MetaData;

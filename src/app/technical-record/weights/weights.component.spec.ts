@@ -1,13 +1,37 @@
-import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SharedModule} from '@app/shared/shared.module';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { WeightsComponent } from './weights.component';
+import { TESTING_UTILS } from '../../utils/testing.utils';
+import { TechRecord } from '../../models/tech-record.model';
 
 describe('WeightsComponent', () => {
 
   let component: WeightsComponent;
   let fixture: ComponentFixture<WeightsComponent>;
+  const techRecordWeights: TechRecord = {
+    'grossGbWeight': 3,
+    'grossDesignWeight': 2,
+    'grossEecWeight': 3,
+    'axles': [
+      {
+        'axleNumber': 1,
+        'weights': {
+          'gbWeight': 500,
+          'eecWeight': 500,
+          'designWeight': 500
+        }
+      },
+      {
+        'axleNumber': 2,
+        'weights': {
+          'gbWeight': 500,
+          'eecWeight': 500,
+          'designWeight': 500
+        }
+      }
+    ]
+  }as TechRecord;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,43 +46,18 @@ describe('WeightsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WeightsComponent);
     component = fixture.componentInstance;
-    component.activeRecord = {
-      'vin': 'XMGDE02FS0H012345',
-      'vehicleSize': 'small',
-      'testStationName': 'Rowe, Wunsch and Wisoky',
-      'vehicleId': 'JY58FPP',
-      'vehicleType': 'hgv',
-      'grossGbWeight': 3,
-      'grossDesignWeight': 2,
-      'grossEecWeight': 3,
-      'trainGbWeight': 900,
-      'trainDesignWeight': 900,
-      'trainEecWeight': 400,
-      'maxTrainGbWeight': 500,
-      'maxTrainDesignWeight': 500,
-      'maxTrainEecWeight': 500,
-      'axles': [
-        {
-          'axleNumber': 1,
-          'weights': {
-            'gbWeight': 500,
-            'eecWeight': 500,
-            'designWeight': 500
-          }
-        },
-        {
-          'axleNumber': 2,
-          'weights': {
-            'gbWeight': 500,
-            'eecWeight': 500,
-            'designWeight': 500
-          }
-        }
-      ]
-    };
   });
 
-  it('should create view only with populated data', () => {
+  it('should create trl view only with populated data', () => {
+    component.activeRecord = TESTING_UTILS.mockTechRecord({vehicleType: 'trl', ...techRecordWeights});
+    fixture.detectChanges();
+
+    expect(component).toBeDefined();
+    expect(fixture).toMatchSnapshot();
+  });
+
+  it('should create hgv view only with populated data', () => {
+    component.activeRecord = TESTING_UTILS.mockTechRecord({vehicleType: 'hgv', ...techRecordWeights});
     fixture.detectChanges();
 
     expect(component).toBeDefined();

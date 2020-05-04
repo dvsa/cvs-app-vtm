@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TechRecHistoryComponent should create view only with populated data 1`] = `
+<vtm-tech-rec-history
+  techRecHelpers={[Function TechRecordHelpersService]}
+  techRecordsJson={[Function Object]}
+>
+  <table
+    class="govuk-table"
+  >
+    <thead
+      class="govuk-table__head"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Status
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Reason for creation
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Created by
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Created at
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Last updated by
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Last updated at
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        />
+        <th
+          class="govuk-table__header"
+          scope="col"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="govuk-table__body"
+    >
+      
+      <tr
+        class="govuk-table__row"
+      >
+        <td
+          class="govuk-table__cell"
+          id="test-statusCode-0"
+        >
+           Current 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-reasonForCreation-0"
+        >
+           Reason For Creation 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-createdByName-0"
+        >
+           Test Name 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-createdAt-0"
+        >
+           01/01/2020 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-createdByName-0"
+        >
+           Test 1 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-createdAt-0"
+        >
+           12-3-2020 
+        </td>
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+      </tr>
+    </tbody>
+  </table>
+</vtm-tech-rec-history>
+`;

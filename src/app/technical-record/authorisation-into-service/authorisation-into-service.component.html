@@ -1,0 +1,52 @@
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">COC issue date</dt>
+    <dd
+      id="test-authIntoService-cocIssueDate"
+      class="govuk-summary-list__value"
+    >
+      {{ authoIntoService?.cocIssueDate | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date received</dt>
+    <dd
+      id="test-authIntoService-dateReceived"
+      class="govuk-summary-list__value"
+    >
+      {{ authoIntoService?.dateReceived | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date pending</dt>
+    <dd id="test-authIntoService-datePending" class="govuk-summary-list__value">
+      {{ authoIntoService?.datePending | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date authorised</dt>
+    <dd
+      id="test-authIntoService-dateAuthorised"
+      class="govuk-summary-list__value"
+    >
+      {{ authoIntoService?.dateAuthorised | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Date rejected</dt>
+    <dd
+      id="test-authIntoService-dateRejected"
+      class="govuk-summary-list__value"
+    >
+      {{ authoIntoService?.dateRejected | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+</dl>
