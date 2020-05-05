@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthorisationIntoServiceComponent should create view only with populated data 1`] = `
+<vtm-authorisation-into-service
+  authoIntoService={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        COC issue date
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-cocIssueDate"
+      >
+        
+        <span>
+           13/12/2019 
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date received
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-dateReceived"
+      >
+        
+        <span>
+           13/11/2018 
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date pending
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-datePending"
+      >
+        
+        <span>
+           05/06/2017 
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date authorised
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-dateAuthorised"
+      >
+        
+        <span>
+           10/02/2018 
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Date rejected
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-authIntoService-dateRejected"
+      >
+        
+        <span>
+          -
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-authorisation-into-service>
+`;

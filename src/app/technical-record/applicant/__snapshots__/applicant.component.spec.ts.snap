@@ -38,7 +38,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-applicantDetails-address1And2"
       >
-         Robert green Birmingham 
+         Garrets green Birmingham 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -56,7 +56,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-applicantDetails-postTown"
       >
-         lala land 
+         A town 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -74,7 +74,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-applicantDetails-address3"
       >
-         MyCounty 
+         lala land 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -92,7 +92,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-applicantDetails-postCode"
       >
-         AC 123 
+         NG4 12Z 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -110,7 +110,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
         id="test-applicantDetails-telephonenumber"
       >
-         0207777777 
+         123123123 
       </dd>
       <dd
         class="govuk-summary-list__value"

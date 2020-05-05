@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TyresComponent should create view only with populated data 1`] = `
+<vtm-tyres
+  activeRecord={[Function Object]}
+>
+  <table
+    class="govuk-table table-details"
+  >
+    <thead
+      class="govuk-table__head"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+          Tyre use code
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-tyreUseCode"
+        >
+           - 
+        </td>
+        <th
+          class="govuk-table__cell"
+        />
+        <th
+          class="govuk-table__cell"
+        />
+        <th
+          class="govuk-table__cell"
+        />
+        <th
+          class="govuk-table__cell"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="govuk-table__body"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__header"
+          scope="col"
+        />
+        <td
+          class="govuk-table__header govuk-!-font-weight-bold"
+          scope="col"
+        >
+          Tyre code
+        </td>
+        <td
+          class="govuk-table__header govuk-!-font-weight-bold"
+          scope="col"
+        >
+          Tyre size
+        </td>
+        <td
+          class="govuk-table__header govuk-!-font-weight-bold"
+          scope="col"
+        >
+          Ply rating
+        </td>
+        <td
+          class="govuk-table__header govuk-!-font-weight-bold"
+          scope="col"
+        >
+          Fitment code
+        </td>
+        <td
+          class="govuk-table__header govuk-!-font-weight-bold"
+          scope="col"
+        >
+          Load index
+        </td>
+      </tr>
+      
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+          Axle 1
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-tyreCode-1"
+        >
+           -
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-tyreSize-1"
+        >
+           16
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-plyRating-1"
+        >
+           12S
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-fitmentCode-1"
+        >
+           12313
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-dataTrAxles-1"
+        >
+           1234
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</vtm-tyres>
+`;

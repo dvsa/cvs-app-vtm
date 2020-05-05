@@ -1,17 +1,16 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { TechRecord } from '../../models/tech-record.model';
 
 @Component({
   selector: 'vtm-tyres',
   templateUrl: './tyres.component.html',
-  styleUrls: ['../../app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TyresComponent implements OnInit {
 
-  @Input() activeRecord: any;
+  @Input() activeRecord: TechRecord;
 
-  constructor(public techRecHelpers: TechRecordHelpersService) { }
+  constructor() { }
 
   ngOnInit() {
   }

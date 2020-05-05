@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestHistoryComponent should create view only with populated data 1`] = `
+<vtm-test-history
+  testResultJson={[Function Array]}
+>
+  <table
+    class="govuk-table"
+  >
+    <thead
+      class="govuk-table__head"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Test type
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Test date
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Expiry date
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Certificate number
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Result
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Tester name
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        />
+      </tr>
+    </thead>
+    
+    <tbody
+      class="govuk-table__body"
+    >
+      
+      
+      
+      <tr
+        class="govuk-table__row"
+      >
+        <td
+          class="govuk-table__cell"
+          id="test-testCode-tRes-0-tType-0"
+        >
+           First Test 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-testTypeEndTimestamp-tRes-0-tType-0"
+        >
+          
+          <span>
+             16/01/2020 
+          </span>
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-expiryDate-tRes-0-tType-0"
+        >
+          
+          <span>
+            -
+          </span>
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-certificateNumber-tRes-0-tType-0"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell govuk-!-font-weight-bold"
+          id="test-testResult-tRes-0-tType-0"
+          ng-reflect-ng-style="[object Object]"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-testerName-0"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-view-0"
+        >
+          <a
+            class="govuk-link"
+            href="/test-record/123123"
+            id="test-view-123123"
+            ng-reflect-router-link="/test-record,123123"
+          >
+            View
+          </a>
+        </td>
+      </tr>
+      
+    </tbody>
+    
+  </table>
+</vtm-test-history>
+`;

@@ -1,0 +1,336 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleSummaryComponent should create view only with populated data 1`] = `
+<vtm-vehicle-summary
+  activeRecord={[Function Object]}
+  vehicleClassDescription={[Function String]}
+>
+  <dl
+    class="technical-record-sub-details govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle type 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleType"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Year of manufacture 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-manufactureYear"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Number of axles 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-noOfaxles"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         DTP number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-dtpNumber"
+      >
+        
+        <span>
+          -
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Axles fitted with a parking brake 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-parkingBrakeMrk"
+      >
+        
+        
+        
+        <div>
+          
+          <div>
+            <span
+              id="test-parkingBrakeMrkAxle-1"
+            >
+              Axle 1
+            </span>
+          </div>
+        </div>
+        
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Road friendly suspension 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-roadFriendly"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle class 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleClassDescription"
+      >
+         The first letter should be capital 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle configuration 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleConfiguration"
+      >
+         The first letter should be capital 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         EU vehicle category 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleConfiguration"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Departmental vehicle marker 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleConfiguration"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Alteration marker 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleConfiguration"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <h2
+      class="govuk-heading-m"
+    >
+      Type Approval
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Approval type
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehiclesummary-approvalType"
+      >
+         approval 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Approval type number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-approvalTypeNumber"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        National type approval number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-ntaNumber"
+      >
+         4566 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Variant number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-variantNumber"
+      >
+         123 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Variant version number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-variantVersionNumber"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-vehicle-summary>
+`;

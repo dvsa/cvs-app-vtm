@@ -1,5 +1,6 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
 import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { TechRecord } from '../../models/tech-record.model';
 
 @Component({
   selector: 'vtm-weights',
@@ -9,7 +10,7 @@ import {TechRecordHelpersService} from '@app/technical-record/tech-record-helper
 })
 export class WeightsComponent implements OnInit {
 
-  @Input() activeRecord: any;
+  @Input() activeRecord: TechRecord;
 
   constructor(public techRecHelpers: TechRecordHelpersService) { }
 
