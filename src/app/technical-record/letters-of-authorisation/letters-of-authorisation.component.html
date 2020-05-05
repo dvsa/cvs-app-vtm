@@ -8,15 +8,15 @@
   </thead>
   <tbody class="govuk-table__body" *ngIf="lettersOfAuth; else noLetterOfAuth">
     <tr class="govuk-table__row">
-      <td id="test-lettersOfAuth-letterType" class="govuk-table__cell">
+      <td id="test-letterType" class="govuk-table__cell">
         {{ lettersOfAuth?.letterType | DefaultNullOrEmpty }}
       </td>
-      <td id="test-lettersOfAuth-letterDateRequested" class="govuk-table__cell">
+      <td id="test-letterDateRequested" class="govuk-table__cell">
         <span *ngIf="lettersOfAuth?.letterDateRequested; else hyphen">
           {{ lettersOfAuth?.letterDateRequested | date: 'dd/MM/yyyy' }}
         </span>
       </td>
-      <td id="test-lettersOfAuth-letterContents" class="govuk-table__cell">
+      <td id="test-letterContents" class="govuk-table__cell">
         {{ lettersOfAuth?.letterContents | DefaultNullOrEmpty }}
       </td>
     </tr>

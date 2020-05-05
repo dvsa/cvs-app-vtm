@@ -3,8 +3,8 @@
   <tr class="govuk-table__row">
     <th scope="col" class="govuk-table__header"></th>
     <th scope="col" class="govuk-table__header">GB weight (kg)</th>
-    <th scope="col" class="govuk-table__header">EEC weight (kg)</th>
-    <th scope="col" class="govuk-table__header">Design weight (kg)</th>
+    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">EEC weight (kg)</th>
+    <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Design weight (kg)</th>
     <th class="govuk-table__cell"></th>
     <th class="govuk-table__cell"></th>
   </tr>
@@ -15,7 +15,7 @@
     <td id="test-grossGbWeight" class="govuk-table__cell">
       {{ activeRecord.grossGbWeight | DefaultNullOrEmpty }}
     </td>
-    <td id="test-grossDesignWeight" class="govuk-table__cell">
+    <td id="test-grossEecWeight" class="govuk-table__cell">
       {{ activeRecord.grossEecWeight | DefaultNullOrEmpty }}
     </td>
     <td id="test-grossDesignWeight" class="govuk-table__cell">

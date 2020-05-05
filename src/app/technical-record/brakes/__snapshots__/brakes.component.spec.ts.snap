@@ -18,7 +18,7 @@ exports[`BrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-loadSensingValve"
+        id="test-loadSensingValve"
       >
          No 
       </dd>
@@ -36,7 +36,7 @@ exports[`BrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-antilockBrakingSystem"
+        id="test-antilockBrakingSystem"
       >
          Yes 
       </dd>

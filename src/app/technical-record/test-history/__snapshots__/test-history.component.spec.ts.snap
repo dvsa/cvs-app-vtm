@@ -67,13 +67,13 @@ exports[`TestHistoryComponent should create view only with populated data 1`] = 
       >
         <td
           class="govuk-table__cell"
-          id="test-testCode-tRes-0-tType-0"
+          id="test-testCode-tRes-0-0"
         >
            First Test 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-testTypeEndTimestamp-tRes-0-tType-0"
+          id="test-testTypeEndTimestamp-tRes-0-0"
         >
           
           <span>
@@ -82,29 +82,29 @@ exports[`TestHistoryComponent should create view only with populated data 1`] = 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-expiryDate-tRes-0-tType-0"
+          id="test-expiryDate-tRes-0-0"
         >
           
           <span>
-            -
+             16/01/2021 
           </span>
         </td>
         <td
           class="govuk-table__cell"
-          id="test-certificateNumber-tRes-0-tType-0"
+          id="test-certificateNumber-tRes-0-0"
         >
            - 
         </td>
         <td
           class="govuk-table__cell govuk-!-font-weight-bold"
-          id="test-testResult-tRes-0-tType-0"
+          id="test-testResult-tRes-0-0"
           ng-reflect-ng-style="[object Object]"
         >
            - 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-testerName-0"
+          id="test-testerName-0-0"
         >
            - 
         </td>

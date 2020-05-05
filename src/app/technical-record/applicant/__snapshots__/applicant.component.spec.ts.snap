@@ -36,7 +36,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-applicantDetails-address1And2"
+        id="test-applicantDetails-address"
       >
          Garrets green Birmingham 
       </dd>
@@ -108,7 +108,7 @@ exports[`ApplicantComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-applicantDetails-telephonenumber"
+        id="test-applicantDetails-telephoneNumber"
       >
          123123123 
       </dd>

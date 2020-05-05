@@ -21,36 +21,36 @@
           let ii = index
         "
       >
-        <td id="{{ 'test-testCode-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
+        <td id="{{ 'test-testCode-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
           {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}
         </td>
         <td
-          id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-tType-' + ii }}"
+          id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-' + ii }}"
           class="govuk-table__cell"
         >
           <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
             {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}
           </span>
         </td>
-        <td id="{{ 'test-expiryDate-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-          <span *ngIf="testRes.testExpiryDate; else hyphen">
-            {{ testRes.testExpiryDate | date: 'dd/MM/yyyy' }}
+        <td id="{{ 'test-expiryDate-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
+          <span *ngIf="testType.testExpiryDate; else hyphen">
+            {{ testType.testExpiryDate | date: 'dd/MM/yyyy' }}
           </span>
         </td>
         <td
-          id="{{ 'test-certificateNumber-tRes-' + i + '-tType-' + ii }}"
+          id="{{ 'test-certificateNumber-tRes-' + i + '-' + ii }}"
           class="govuk-table__cell"
         >
           {{ testType.certificateNumber | DefaultNullOrEmpty }}
         </td>
         <td
-          id="{{ 'test-testResult-tRes-' + i + '-tType-' + ii }}"
+          id="{{ 'test-testResult-tRes-' + i + '-' + ii }}"
           class="govuk-table__cell govuk-!-font-weight-bold"
           [ngStyle]="setResultColor(testType.testResult)"
         >
           {{ testType.testResult | DefaultNullOrEmpty | uppercase }}
         </td>
-        <td id="{{ 'test-testerName-' + i }}" class="govuk-table__cell">
+        <td id="{{ 'test-testerName-' + i + '-' + ii}}" class="govuk-table__cell">
           {{ testRes.testerName | DefaultNullOrEmpty }}
         </td>
         <td id="{{ 'test-view-' + i }}" class="govuk-table__cell">

@@ -165,7 +165,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
         id="test-vehicleConfiguration"
       >
-         The first letter should be capital 
+         - 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -191,7 +191,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
+        id="test-euVehicleCategory"
       >
          - 
       </dd>
@@ -210,7 +210,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
+        id="test-departmentalVehicleMarker"
       >
          - 
       </dd>
@@ -228,7 +228,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
+        id="test-alterationMarker"
       >
          - 
       </dd>
@@ -236,6 +236,9 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+  </dl><dl
+    class="technical-record-sub-details govuk-summary-list"
+  >
     <h2
       class="govuk-heading-m"
     >
@@ -251,7 +254,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehiclesummary-approvalType"
+        id="test-approvalType"
       >
          approval 
       </dd>
@@ -269,7 +272,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-approvalTypeNumber"
+        id="test-approvalTypeNumber"
       >
          - 
       </dd>
@@ -287,7 +290,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-ntaNumber"
+        id="test-ntaNumber"
       >
          4566 
       </dd>
@@ -305,7 +308,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-variantNumber"
+        id="test-variantNumber"
       >
          123 
       </dd>
@@ -323,7 +326,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-variantVersionNumber"
+        id="test-variantVersionNumber"
       >
          - 
       </dd>

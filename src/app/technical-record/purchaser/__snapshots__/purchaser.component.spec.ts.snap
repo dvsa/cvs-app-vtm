@@ -36,7 +36,7 @@ exports[`PurchaserComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-purchaser-address1And2"
+        id="test-purchaser-address"
       >
          Garrets green Birmingham 
       </dd>
@@ -108,7 +108,7 @@ exports[`PurchaserComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-purchaser-telephonenumber"
+        id="test-purchaser-telephoneNumber"
       >
          123123123 
       </dd>

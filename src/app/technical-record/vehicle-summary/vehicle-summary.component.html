@@ -111,7 +111,7 @@
       Vehicle configuration
     </dt>
     <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
-      {{ vehicleClassDescription }}
+      {{ activeRecord.vehicleConfiguration | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -191,7 +191,7 @@
     <dt class="govuk-summary-list__key">
       Offroad vehicle
     </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+    <dd id="test-offRoad" class="govuk-summary-list__value">
       {{ activeRecord.offRoad | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -200,7 +200,7 @@
     <dt class="govuk-summary-list__key">
       Number of wheels driven
     </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+    <dd id="test-numberOfWheelsDriven" class="govuk-summary-list__value">
       {{ activeRecord.numberOfWheelsDriven | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -209,7 +209,7 @@
     <dt class="govuk-summary-list__key">
       EU vehicle category
     </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+    <dd id="test-euVehicleCategory" class="govuk-summary-list__value">
       {{ activeRecord.euVehicleCategory | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -218,7 +218,7 @@
     <dt class="govuk-summary-list__key">
       Emission limit
     </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+    <dd id="test-emissionsLimit" class="govuk-summary-list__value">
       {{ activeRecord.emissionsLimit | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -227,7 +227,7 @@
     <dt class="govuk-summary-list__key">
       Departmental vehicle marker
     </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+    <dd id="test-departmentalVehicleMarker" class="govuk-summary-list__value">
       {{ activeRecord.departmentalVehicleMarker | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -236,16 +236,17 @@
     <dt class="govuk-summary-list__key">
       Alteration marker
     </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+    <dd id="test-alterationMarker" class="govuk-summary-list__value">
       {{ activeRecord.alterationMarker | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-
+</dl>
+<dl class="technical-record-sub-details govuk-summary-list">
   <h2 class="govuk-heading-m">Type Approval</h2>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Approval type</dt>
-    <dd id="test-vehiclesummary-approvalType" class="govuk-summary-list__value">
+    <dd id="test-approvalType" class="govuk-summary-list__value">
       {{ activeRecord.approvalType | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -253,7 +254,7 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Approval type number</dt>
-    <dd id="test-vehicleSummary-approvalTypeNumber" class="govuk-summary-list__value">
+    <dd id="test-approvalTypeNumber" class="govuk-summary-list__value">
       {{ activeRecord.approvalTypeNumber | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -261,7 +262,7 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">National type approval number</dt>
-    <dd id="test-vehicleSummary-ntaNumber" class="govuk-summary-list__value">
+    <dd id="test-ntaNumber" class="govuk-summary-list__value">
       {{ activeRecord.ntaNumber | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -269,7 +270,7 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Variant number</dt>
-    <dd id="test-vehicleSummary-variantNumber" class="govuk-summary-list__value">
+    <dd id="test-variantNumber" class="govuk-summary-list__value">
       {{ activeRecord.variantNumber | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -277,7 +278,7 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Variant version number</dt>
-    <dd id="test-vehicleSummary-variantVersionNumber" class="govuk-summary-list__value">
+    <dd id="test-variantVersionNumber" class="govuk-summary-list__value">
       {{ activeRecord.variantVersionNumber | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
