@@ -26,7 +26,7 @@
       class="govuk-table__row"
       *ngIf="activeRecord.vehicleType == 'trl' || activeRecord.vehicleType == 'hgv'"
     >
-      <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to rear axle</th>
+      <th class="govuk-table__cell govuk-!-font-weight-bold">Front axle to rear axle (mm)</th>
       <td id="test-frontAxleToRearAxle" class="govuk-table__cell">
         {{ activeRecord.frontAxleToRearAxle | DefaultNullOrEmpty }}
       </td>
