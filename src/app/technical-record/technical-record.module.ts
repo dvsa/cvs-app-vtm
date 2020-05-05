@@ -34,6 +34,12 @@ import { WeightsComponent } from './weights/weights.component';
 import { ApplicantComponent } from './applicant/applicant.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { PlatesComponent } from './plates/plates.component';
+import { BrakesComponent } from './brakes/brakes.component';
+import { PurchaserComponent } from './purchaser/purchaser.component';
+import { ManufacturerComponent } from './manufacturer/manufacturer.component';
+import { AuthorisationIntoServiceComponent } from './authorisation-into-service/authorisation-into-service.component';
+import { LettersOfAuthorisationComponent } from './letters-of-authorisation/letters-of-authorisation.component';
+import { AxleBrakesComponent } from './brakes/axle-brakes/axle-brakes.component';
 
 import { AdrModule } from './adr/adr.module';
 import { TechnicalRecordsContainer } from './technical-record.container';
@@ -72,7 +78,13 @@ import { TechnicalRecordsContainer } from './technical-record.container';
     TechRecHistoryComponent,
     ApplicantComponent,
     DocumentsComponent,
-    PlatesComponent
+    PlatesComponent,
+    BrakesComponent,
+    PurchaserComponent,
+    ManufacturerComponent,
+    AuthorisationIntoServiceComponent,
+    LettersOfAuthorisationComponent,
+    AxleBrakesComponent,
   ],
   exports: [TechnicalRecordsContainer, TechnicalRecordComponent]
 })

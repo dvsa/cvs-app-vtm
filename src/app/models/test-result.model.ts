@@ -5,9 +5,9 @@ export interface TestResultModel {
   reasonForCreation: string;
   testResultId: string;
   testerStaffId: string;
-  testStartTimestamp: Date;
+  testStartTimestamp: string;
   odometerReadingUnits: string;
-  testEndTimestamp: Date;
+  testEndTimestamp: string;
   testStatus: string;
   numberOfWheelsDriven: number;
   testTypes: TestType[];

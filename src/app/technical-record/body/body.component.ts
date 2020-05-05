@@ -1,5 +1,5 @@
 import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { TechRecord } from '../../models/tech-record.model';
 
 @Component({
   selector: 'vtm-body',
@@ -9,9 +9,9 @@ import {TechRecordHelpersService} from '@app/technical-record/tech-record-helper
 })
 export class BodyComponent implements OnInit {
 
-  @Input() activeRecord: any;
+  @Input() activeRecord: TechRecord;
 
-  constructor(public techRecHelpers: TechRecordHelpersService) { }
+  constructor() { }
 
   ngOnInit() {
   }

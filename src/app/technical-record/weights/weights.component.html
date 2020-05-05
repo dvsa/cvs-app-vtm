@@ -24,7 +24,7 @@
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
     <td id="test-trainGbWeight" class="govuk-table__cell">
       {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
@@ -38,7 +38,7 @@
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
     <td id="test-maxTrainGbWeight" class="govuk-table__cell">
       {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}
@@ -56,11 +56,11 @@
     <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
       {{ axle.axleNumber | DefaultNullOrEmpty }}</th>
     <td id="{{ 'test-gbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
-      {{ axle.weights.gbWeight | DefaultNullOrEmpty }}</td>
+      {{ axle.weights?.gbWeight | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-eecWeight-' + axle.axleNumber }}" class="govuk-table__cell">
-      {{ axle.weights.eecWeight | DefaultNullOrEmpty }}</td>
+      {{ axle.weights?.eecWeight | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-designWeight-' + axle.axleNumber }}" class="govuk-table__cell">
-      {{ axle.weights.designWeight | DefaultNullOrEmpty }}</td>
+      {{ axle.weights?.designWeight | DefaultNullOrEmpty }}</td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
