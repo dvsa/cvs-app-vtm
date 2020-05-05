@@ -32,18 +32,23 @@ export class TechnicalRecordComponent implements OnInit {
 
   allOpened = false;
   panels: { panel: string; isOpened: boolean }[] = [
-    { panel: 'panel1', isOpened: false },
-    { panel: 'panel2', isOpened: false },
-    { panel: 'panel3', isOpened: false },
-    { panel: 'panel4', isOpened: false },
-    { panel: 'panel5', isOpened: false },
-    { panel: 'panel6', isOpened: false },
-    { panel: 'panel7', isOpened: false },
-    { panel: 'panel8', isOpened: false },
-    { panel: 'panel9', isOpened: false },
-    { panel: 'panel10', isOpened: false },
-    { panel: 'panel11', isOpened: false },
-    { panel: 'panel12', isOpened: false }
+    { panel: 'Vehicle summary', isOpened: false },
+    { panel: 'Body', isOpened: false },
+    { panel: 'Weights', isOpened: false },
+    { panel: 'Tyres', isOpened: false },
+    { panel: 'Brakes', isOpened: false },
+    { panel: 'Dimensions', isOpened: false },
+    { panel: 'ADR', isOpened: false },
+    { panel: 'Applicant', isOpened: false },
+    { panel: 'Documents', isOpened: false },
+    { panel: 'Purchaser', isOpened: false },
+    { panel: 'Manufacturer', isOpened: false },
+    { panel: 'Authorisation into service', isOpened: false },
+    { panel: 'Letters of authorisation', isOpened: false },
+    { panel: 'Documents', isOpened: false },
+    { panel: 'Notes', isOpened: false },
+    { panel: 'Technical record history', isOpened: false },
+    { panel: 'Plates', isOpened: false }
   ];
 
   @Input() vehicleTechRecord: VehicleTechRecordModel;

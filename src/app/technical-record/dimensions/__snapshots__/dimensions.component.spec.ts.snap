@@ -101,6 +101,7 @@ exports[`DimensionsComponent should create view only with populated data 1`] = `
       
       
       
+      
     </tbody>
   </table>
 </vtm-dimensions>

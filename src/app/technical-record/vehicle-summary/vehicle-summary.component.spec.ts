@@ -1,107 +1,50 @@
-import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
-import { appReducers } from '@app/store/reducers/app.reducers';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialogModule } from '@angular/material/dialog';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '@app/material.module';
+import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@app/shared/shared.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgrxFormsModule } from 'ngrx-forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { VehicleSummaryComponent } from '@app/technical-record/vehicle-summary/vehicle-summary.component';
-import { TechnicalRecordComponent } from '@app/technical-record/technical-record.component';
+import { TESTING_UTILS } from '../../utils/testing.utils';
 
 describe('VehicleSummaryComponent', () => {
   let component: VehicleSummaryComponent;
   let fixture: ComponentFixture<VehicleSummaryComponent>;
   let injector: TestBed;
-  const axles = [
-    {
-      parkingBrakeMrk: false,
-      axleNumber: 1
-    },
-    {
-      parkingBrakeMrk: true,
-      axleNumber: 2
-    }
-  ];
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(appReducers),
-        HttpClientTestingModule,
-        MatDialogModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MaterialModule,
-        SharedModule,
-        RouterTestingModule,
-        FontAwesomeModule,
-        ReactiveFormsModule,
-        NgrxFormsModule
-      ],
-      declarations: [VehicleSummaryComponent, TechnicalRecordComponent],
-      providers: [TechRecordHelpersService],
+      imports: [SharedModule],
+      declarations: [VehicleSummaryComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(VehicleSummaryComponent);
     injector = getTestBed();
     component = fixture.componentInstance;
-    component.activeRecord = {
-      vin: 'XMGDE02FS0H012345',
-      vehicleSize: 'small',
-      testStationName: 'Rowe, Wunsch and Wisoky',
-      vehicleId: 'JY58FPP',
-      vehicleType: 'psv',
-      axles: [
-        { parkingBrakeMrk: false, axleNumber: 1 },
-        { parkingBrakeMrk: true, axleNumber: 2 },
-        { parkingBrakeMrk: false, axleNumber: 3 }
-      ],
-      approvalType: 'NTA',
-      approvalTypeNumber: 'string',
-      ntaNumber: 'string',
-      variantNumber: '22',
-      variantVersionNumber: '3435',
-      fuelpropulsionsystem: 'DieselPetrol',
-      offRoad: true,
-      numberOfWheelsDriven: 8,
-      euVehicleCategory: 'm2',
-      emissionsLimit: 5,
-      departmentalVehicleMarker: false,
-      alterationMarker: true
-    };
-    component.axlesHasNoParkingBrakeMrk(axles);
-
-    fixture.detectChanges();
+    component.activeRecord = TESTING_UTILS.mockTechRecord({
+      approvalType: 'approval',
+      variantNumber: '123',
+      ntaNumber: '4566',
+      vehicleClass: TESTING_UTILS.mockBodyType()
+    });
+    component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
   });
 
-  it('should create my component', async(() => {
-    expect(component).toBeTruthy();
-  }));
+  it('should create view only with populated data', () => {
+    fixture.detectChanges();
+
+    expect(component).toBeDefined();
+    expect(fixture).toMatchSnapshot();
+  });
 
   it('should check if axles has no parking brake mrk', () => {
-    component.axlesHasNoParkingBrakeMrk(axles);
-    for (const axle of axles) {
-      if (axle.parkingBrakeMrk === true) {
-        expect(component.axlesHasNoParkingBrakeMrk(axles)).toBeFalsy();
-      }
-    }
+    expect(component.axlesHasParkingBrakeMrk()).toBeTruthy();
   });
 
-  it('should return true if the axles has no parking brake when called', () => {
-    expect(component.axlesHasNoParkingBrakeMrk([])).toBe(true);
+  it('should check if axles has no parking brake mrk', () => {
+    expect(component.formatVehicleClassDescription()).toEqual('The first letter should be capital');
   });
 
-  it('should return false if one of the axles have parking brake when called', () => {
-    expect(component.axlesHasNoParkingBrakeMrk(axles)).toBe(false);
+  it('should create format the vehicle class description', () => {
+    fixture.detectChanges();
+    expect(component.vehicleClassDescription).toEqual('The first letter should be capital');
   });
 
   afterAll(() => {
