@@ -59,7 +59,7 @@
                     Record completeness
                   </div>
                   <div
-                    id="record-completeness"
+                    id="test-record-completeness"
                     class="grid-item-technical-record-status govuk-!-font-weight-regular govuk-body govuk-!-font-size-19 grid-item-technical-record-status-value"
                   >
                     {{ activeRecord.recordCompleteness | titlecase }}
@@ -624,7 +624,7 @@
               </mat-expansion-panel-header>
 
               <vtm-authorisation-into-service
-                [authoIntoService]="activeRecord.authoIntoService"
+                [authIntoService]="activeRecord.authIntoService"
               ></vtm-authorisation-into-service>
             </mat-expansion-panel>
           </div>

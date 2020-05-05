@@ -29,7 +29,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-applicantDetails-name"
+          id="test-ownerDetails-name"
         >
            Ben 
         </dd>

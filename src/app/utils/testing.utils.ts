@@ -11,7 +11,7 @@ import {
   Applicant,
   Microfilm,
   Plate,
-  AuthoIntoService,
+  AuthIntoService,
   LettersOfAuth,
   AddressInformation,
   AxleBrakes,
@@ -247,8 +247,8 @@ function mockPlates(args?: Partial<Plate>): Plate {
   return { ...mock, ...args };
 }
 
-function mockAuthoIntoService(args?: Partial<AuthoIntoService>): AuthoIntoService {
-  const mock: AuthoIntoService = {
+function mockAuthoIntoService(args?: Partial<AuthIntoService>): AuthIntoService {
+  const mock: AuthIntoService = {
     cocIssueDate: '2019-12-13',
     dateReceived: '2018-11-13',
     dateAuthorised: '2018-2-10',

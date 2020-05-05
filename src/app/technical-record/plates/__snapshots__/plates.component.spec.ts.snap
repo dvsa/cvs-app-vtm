@@ -49,27 +49,30 @@ exports[`PlatesComponent should create view only with populated data 1`] = `
       >
         <td
           class="govuk-table__cell"
-          id="test-plate-plateSerialNumber"
+          id="test-plateSerialNumber-i"
         >
            123123 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-plate-plateReasonForIssue"
+          id="test-plateReasonForIssue-i"
         >
            5678 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-plate-plateIssuer"
+          id="test-plateIssuer-i"
         >
            Issuer1 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-plate-plateIssueDate"
+          id="test-plateIssueDate-i"
         >
-           2019-12-13 
+          
+          <span>
+             13/12/2019 
+          </span>
         </td>
       </tr>
     </tbody>
