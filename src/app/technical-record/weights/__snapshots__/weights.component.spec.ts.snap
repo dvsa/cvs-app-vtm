@@ -25,13 +25,13 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
           GB weight (kg)
         </th>
         <th
-          class="govuk-table__header"
+          class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
           EEC weight (kg)
         </th>
         <th
-          class="govuk-table__header"
+          class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
           Design weight (kg)
@@ -63,7 +63,7 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-grossDesignWeight"
+          id="test-grossEecWeight"
         >
            3 
         </td>
@@ -212,13 +212,13 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
           GB weight (kg)
         </th>
         <th
-          class="govuk-table__header"
+          class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
           EEC weight (kg)
         </th>
         <th
-          class="govuk-table__header"
+          class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
           Design weight (kg)
@@ -250,7 +250,7 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-grossDesignWeight"
+          id="test-grossEecWeight"
         >
            3 
         </td>

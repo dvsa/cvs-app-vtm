@@ -17,7 +17,7 @@ exports[`DocumentsComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-microfilm-microfilmDocumentType"
+        id="test-microfilmDocumentType"
       >
          PSV Miscellaneous 
       </dd>
@@ -35,7 +35,7 @@ exports[`DocumentsComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-microfilm-microfilmRollNumber"
+        id="test-microfilmRollNumber"
       >
          1234 
       </dd>
@@ -53,7 +53,7 @@ exports[`DocumentsComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-microfilm-microfilmSerialNumber"
+        id="test-microfilmSerialNumber"
       >
          5678 
       </dd>

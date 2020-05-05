@@ -42,13 +42,13 @@ exports[`LettersOfAuthorisationComponent should create view only with populated 
       >
         <td
           class="govuk-table__cell"
-          id="test-lettersOfAuth-letterType"
+          id="test-letterType"
         >
            Trailer authorization 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-lettersOfAuth-letterDateRequested"
+          id="test-letterDateRequested"
         >
           
           <span>
@@ -57,7 +57,7 @@ exports[`LettersOfAuthorisationComponent should create view only with populated 
         </td>
         <td
           class="govuk-table__cell"
-          id="test-lettersOfAuth-letterContents"
+          id="test-letterContents"
         >
            some letter text 
         </td>

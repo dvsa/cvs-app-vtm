@@ -21,7 +21,7 @@ describe('AuthorisationIntoServiceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthorisationIntoServiceComponent);
     component = fixture.componentInstance;
-    component.authoIntoService = TESTING_UTILS.mockAuthoIntoService();
+    component.authIntoService = TESTING_UTILS.mockAuthoIntoService();
   });
 
   it('should create view only with populated data', () => {

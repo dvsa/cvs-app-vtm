@@ -18,7 +18,7 @@ export interface Plate {
   plateIssuer: string;
 }
 
-export interface AuthoIntoService {
+export interface AuthIntoService {
   cocIssueDate: string;
   dateReceived: string;
   datePending: string;
@@ -214,7 +214,7 @@ export interface TechRecord {
   axles: Axle[];
   purchaserDetails: PurchaserDetails;
   manufacturerDetails: ManufacturerDetails;
-  authoIntoService: AuthoIntoService;
+  authIntoService: AuthIntoService;
   lettersOfAuth: LettersOfAuth;
   frameDescription: string;
 }
