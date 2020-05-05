@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BodyComponent should create view only with populated data 1`] = `
+<vtm-body
+  activeRecord={[Function Object]}
+>
+  <dl
+    class="technical-record-sub-details govuk-summary-list "
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Make 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-make"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Model 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-model"
+      >
+         honda 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Body type 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-bodyTypeDescription"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Conversion reference number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-conversionRefNo"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-body>
+`;

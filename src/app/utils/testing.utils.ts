@@ -6,9 +6,25 @@ import {
   VehicleDetails,
   AdditionalNotes
 } from './../models/adr-details';
-import { TechRecord, Applicant, Microfilm, Plate } from './../models/tech-record.model';
+import {
+  TechRecord,
+  Applicant,
+  Microfilm,
+  Plate,
+  AuthoIntoService,
+  LettersOfAuth,
+  AddressInformation,
+  AxleBrakes,
+  Brakes,
+  Tyres,
+  PurchaserDetails,
+  ManufacturerDetails,
+  Axle,
+  Weights
+} from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
+import { BodyType } from '@app/models/body-type';
 
 /**
  * *******************SOME GROUND RULES*************************************
@@ -35,7 +51,14 @@ export const TESTING_UTILS = {
   mockTechRecord,
   mockApplicant,
   mockMicrofilm,
-  mockPlates
+  mockPlates,
+  mockAuthoIntoService,
+  mockLettersOfAuth,
+  mockPurchaser,
+  mockManufacturer,
+  mockAxle,
+  mockBrakes,
+  mockBodyType
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -184,17 +207,23 @@ function mockMetaData(): MetaData {
     }
   };
 }
+function mockAddressInformation(args?: Partial<AddressInformation>): AddressInformation {
+  const mock: AddressInformation = {
+    address1: 'Garrets green',
+    address2: 'Birmingham',
+    address3: 'lala land',
+    postCode: 'NG4 12Z',
+    postTown: 'A town',
+    telephoneNumber: '123123123',
+    emailAddress: 'test@test.com'
+  };
+  return { ...mock, ...args };
+}
 
 function mockApplicant(args?: Partial<Applicant>): Applicant {
   const mock: Applicant = {
     name: 'Ben',
-    address1: 'Robert green',
-    address2: 'Birmingham',
-    postTown: 'lala land',
-    address3: 'MyCounty',
-    postCode: 'AC 123',
-    emailAddress: 'test@test.com',
-    telephoneNumber: '0207777777'
+    ...mockAddressInformation()
   };
   return { ...mock, ...args };
 }
@@ -215,5 +244,97 @@ function mockPlates(args?: Partial<Plate>): Plate {
     plateReasonForIssue: '5678',
     plateIssuer: 'Issuer1'
   };
+  return { ...mock, ...args };
+}
+
+function mockAuthoIntoService(args?: Partial<AuthoIntoService>): AuthoIntoService {
+  const mock: AuthoIntoService = {
+    cocIssueDate: '2019-12-13',
+    dateReceived: '2018-11-13',
+    dateAuthorised: '2018-2-10',
+    datePending: '2017-6-5',
+    dateRejected: ''
+  };
+  return { ...mock, ...args };
+}
+
+function mockLettersOfAuth(args?: Partial<LettersOfAuth>): LettersOfAuth {
+  const mock: LettersOfAuth = {
+    letterType: 'Trailer authorization',
+    letterDateRequested: '2020-1-13',
+    letterContents: 'some letter text'
+  };
+  return { ...mock, ...args };
+}
+
+function mockPurchaser(args?: Partial<PurchaserDetails>): PurchaserDetails {
+  const mock: PurchaserDetails = {
+    name: 'Ben',
+    faxNumber: '1231234',
+    purchaserNotes: 'some notes',
+    ...mockAddressInformation()
+  };
+  return { ...mock, ...args };
+}
+
+function mockManufacturer(args?: Partial<ManufacturerDetails>): ManufacturerDetails {
+  const mock: ManufacturerDetails = {
+    name: 'Ben',
+    faxNumber: '1231234',
+    manufacturerNotes: 'some notes',
+    ...mockAddressInformation()
+  };
+  return { ...mock, ...args };
+}
+
+function mockAxleBrakes(args?: Partial<AxleBrakes>): AxleBrakes {
+  const mock: AxleBrakes = {
+    brakeActuator: 123,
+    leverLength: 123,
+    springBrakeParking: true
+  } as AxleBrakes;
+  return { ...mock, ...args };
+}
+
+function mockAxle(args?: Partial<Axle>): Axle {
+  const mock: Axle = {
+    parkingBrakeMrk: true,
+    axleNumber: 1,
+    brakes: mockAxleBrakes(),
+    tyres: mockTyres(),
+    weights: mockWeights()
+  } as Axle;
+  return { ...mock, ...args };
+}
+
+function mockBrakes(args?: Partial<Brakes>): Brakes {
+  const mock: Brakes = { antilockBrakingSystem: true, loadSensingValve: false } as Brakes;
+  return { ...mock, ...args };
+}
+
+function mockTyres(args?: Partial<Tyres>): Tyres {
+  const mock: Tyres = {
+    tyreSize: '16',
+    plyRating: '12S',
+    fitmentCode: '12313',
+    dataTrAxles: 1234
+  } as Tyres;
+  return { ...mock, ...args };
+}
+
+function mockWeights(args?: Partial<Weights>): Weights {
+  const mock: Weights = {
+    gbWeight: 100,
+    kerbWeight: 150,
+    designWeight: 250,
+    eecWeight: 150
+  } as Weights;
+  return { ...mock, ...args };
+}
+
+function mockBodyType(args?: Partial<BodyType>): BodyType {
+  const mock: BodyType = {
+    description: 'the first letter should be capital'
+  } as BodyType;
   return { ...mock, ...args };
 }

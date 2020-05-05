@@ -8,12 +8,28 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
+  >
     <dt class="govuk-summary-list__key">
       Date of first registration
     </dt>
     <dd id="test-regnDate" class="govuk-summary-list__value">
-      {{ activeRecord.regnDate | DefaultNullOrEmpty }}
+      <span *ngIf="activeRecord.regnDate; else hyphen">
+        {{ activeRecord.regnDate | date: 'dd/MM/yyyy' }}
+      </span>
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      First use date
+    </dt>
+    <dd id="test-firstUseDate" class="govuk-summary-list__value">
+      <span *ngIf="activeRecord.firstUseDate; else hyphen">
+        {{ activeRecord.firstUseDate | date: 'dd/MM/yyyy' }}
+      </span>
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -23,15 +39,6 @@
     </dt>
     <dd id="test-manufactureYear" class="govuk-summary-list__value">
       {{ activeRecord.manufactureYear | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-    <dt class="govuk-summary-list__key">
-      First use date
-    </dt>
-    <dd id="test-firstUseDate" class="govuk-summary-list__value">
-      {{ activeRecord.firstUseDate | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -46,10 +53,10 @@
   </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
-      DTp number
+      DTP number
     </dt>
     <dd id="test-dtpNumber" class="govuk-summary-list__value">
-      <div *ngIf="!(activeRecord.brakes == null); else hyphen">
+      <div *ngIf="activeRecord.brakes; else hyphen">
         {{ activeRecord.brakes.dtpNumber | DefaultNullOrEmpty }}
       </div>
     </dd>
@@ -60,107 +67,19 @@
       Axles fitted with a parking brake
     </dt>
     <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk">
-      <div
-        *ngIf="
-          !techRecHelpers.isEmptyObject(activeRecord.axles) &&
-            !axlesHasNoParkingBrakeMrk(activeRecord.axles);
-          else hyphen
-        "
-      >
+      <ng-container *ngIf="axlesHasParkingBrakeMrk(); else hyphen">
         <div *ngFor="let axel of activeRecord.axles">
-          <div *ngIf="axel.hasOwnProperty('parkingBrakeMrk') && axel.parkingBrakeMrk === true">
-            <div *ngIf="axel.parkingBrakeMrk">
-              <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}"
-                >Axle {{ axel.axleNumber }}</span
-              >
-            </div>
+          <div *ngIf="axel.parkingBrakeMrk">
+            <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}"
+              >Axle {{ axel.axleNumber }}</span
+            >
           </div>
         </div>
-      </div>
+      </ng-container>
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-    <dt class="govuk-summary-list__key">
-      Load sensing valve
-    </dt>
-    <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-      <div *ngIf="!!activeRecord.brakes; else hyphen">
-        {{ activeRecord.brakes.loadSensingValve | DefaultNullOrEmpty }}
-      </div>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-    <dt class="govuk-summary-list__key">
-      Antilock braking system
-    </dt>
-    <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
-      <div *ngIf="!(activeRecord.brakes == null); else hyphen">
-        {{ activeRecord.brakes.antilockBrakingSystem | DefaultNullOrEmpty }}
-      </div>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-    <dt class="govuk-summary-list__key">
-      Brake actuator
-    </dt>
-    <dd id="test-brakeActuator" class="govuk-summary-list__value">
-      {{ activeRecord.axles.slice(-1)[0].brakes.brakeActuator | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-    <dt class="govuk-summary-list__key">
-      Lever length
-    </dt>
-    <dd id="test-leverLength" class="govuk-summary-list__value">
-      <div *ngIf="activeRecord.axles[1] != null; else hyphen">
-        <span>{{ activeRecord.axles[1].brakes.leverLength | DefaultNullOrEmpty }}</span>
-      </div>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
-    <dt class="govuk-summary-list__key">
-      Spring brake parking
-    </dt>
-    <dd id="test-springBrakeParking" class="govuk-summary-list__value">
-      <div *ngIf="activeRecord.axles[1] != null; else hyphen">
-        <span>{{ activeRecord.axles[1].brakes.springBrakeParking | DefaultNullOrEmpty }}</span>
-      </div>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-    <dt class="govuk-summary-list__key">
-      Speed limiter exempt
-    </dt>
-    <dd id="test-speedLimiterMrk" class="govuk-summary-list__value">
-      {{ activeRecord.speedLimiterMrk | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-    <dt class="govuk-summary-list__key">
-      Tacho exempt
-    </dt>
-    <dd id="test-tachoExemptMrk" class="govuk-summary-list__value">
-      {{ activeRecord.tachoExemptMrk | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
-    <dt class="govuk-summary-list__key">
-      Euro standard
-    </dt>
-    <dd id="test-euroStandard" class="govuk-summary-list__value">
-      {{ activeRecord.euroStandard | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'trl'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
     <dt class="govuk-summary-list__key">
       Suspension type
     </dt>
@@ -180,10 +99,82 @@
   </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
+      Vehicle class
+    </dt>
+    <dd id="test-vehicleClassDescription" class="govuk-summary-list__value">
+      {{ vehicleClassDescription }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Vehicle configuration
+    </dt>
+    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
+      {{ vehicleClassDescription }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Coupling type
+    </dt>
+    <dd id="test-couplingType" class="govuk-summary-list__value">
+      {{ activeRecord.couplingType | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Max load on coupling
+    </dt>
+    <dd id="test-maxLoadOnCoupling" class="govuk-summary-list__value">
+      {{ activeRecord.maxLoadOnCoupling | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Frame description
+    </dt>
+    <dd id="test-frameDescription" class="govuk-summary-list__value">
+      {{ activeRecord.frameDescription | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+    <dt class="govuk-summary-list__key">
+      Speed limiter exempt
+    </dt>
+    <dd id="test-speedLimiterMrk" class="govuk-summary-list__value">
+      {{ activeRecord.speedLimiterMrk | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+    <dt class="govuk-summary-list__key">
+      Tacho exempt
+    </dt>
+    <dd id="test-tachoExemptMrk" class="govuk-summary-list__value">
+      {{ activeRecord.tachoExemptMrk | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+    <dt class="govuk-summary-list__key">
+      Euro standard
+    </dt>
+    <dd id="test-euroStandard" class="govuk-summary-list__value">
+      {{ activeRecord.euroStandard | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+    <dt class="govuk-summary-list__key">
       Fuel/propulsion system
     </dt>
     <dd id="test-fuelpropulsionsystem" class="govuk-summary-list__value">
-      {{ activeRecord.fuelpropulsionsystem | DefaultNullOrEmpty }}
+      {{ activeRecord.fuelPropulsionSystem | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
@@ -196,33 +187,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Vehicle class
-    </dt>
-    <dd id="test-vehicleClassDescription" class="govuk-summary-list__value">
-      {{
-        techRecHelpers.isNullOrEmpty(activeRecord.vehicleClass)
-          ? '-'
-          : (activeRecord.vehicleClass.description | DefaultNullOrEmpty).charAt(0).toUpperCase() +
-            (activeRecord.vehicleClass.description | DefaultNullOrEmpty).substr(1).toLowerCase()
-      }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Vehicle configuration
-    </dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
-      {{
-        (activeRecord.vehicleConfiguration | DefaultNullOrEmpty).charAt(0).toUpperCase() +
-          (activeRecord.vehicleConfiguration | DefaultNullOrEmpty).substr(1).toLowerCase()
-      }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv'">
     <dt class="govuk-summary-list__key">
       Offroad vehicle
     </dt>
@@ -276,27 +241,8 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
-    <dt class="govuk-summary-list__key">
-      Coupling type
-    </dt>
-    <dd id="test-couplingType" class="govuk-summary-list__value">
-      {{ activeRecord.couplingType | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
-    <dt class="govuk-summary-list__key">
-      Max load on coupling
-    </dt>
-    <dd id="test-maxLoadOnCoupling" class="govuk-summary-list__value">
-      {{ activeRecord.maxLoadOnCoupling | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
 
   <h2 class="govuk-heading-m">Type Approval</h2>
-
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Approval type</dt>
     <dd id="test-vehiclesummary-approvalType" class="govuk-summary-list__value">
