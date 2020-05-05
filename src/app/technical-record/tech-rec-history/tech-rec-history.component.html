@@ -1,4 +1,4 @@
-<table class="govuk-table t-history">
+<table class="govuk-table">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Status</th>
@@ -33,11 +33,13 @@
           {{ techRec.createdAt | date: 'dd/MM/yyyy' }}
         </span>
       </td>
-      <td id="{{ 'test-createdByName-' + i }}" class="govuk-table__cell">
+      <td id="{{ 'test-lastUpdatedByName-' + i }}" class="govuk-table__cell">
         {{ techRec.lastUpdatedByName | DefaultNullOrEmpty | titlecase }}
       </td>
-      <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-        {{ techRec.lastUpdatedAt | DefaultNullOrEmpty }}
+      <td id="{{ 'test-lastUpdatedAt-' + i }}" class="govuk-table__cell">
+        <span *ngIf="techRec.lastUpdatedAt; else hyphen">
+        {{ techRec.lastUpdatedAt | date: 'dd/MM/yyyy'  }}
+        </span> 
       </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>

@@ -22,7 +22,7 @@
       Body type
     </dt>
     <dd id="test-bodyTypeDescription" class="govuk-summary-list__value">
-      {{ ( activeRecord.bodyType.description | DefaultNullOrEmpty ) | titlecase}}
+      {{ ( activeRecord.bodyType?.description | DefaultNullOrEmpty ) | titlecase}}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>

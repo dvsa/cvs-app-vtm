@@ -4,7 +4,6 @@ import { Microfilm } from '@app/models/tech-record.model';
 @Component({
   selector: 'vtm-documents',
   templateUrl: './documents.component.html',
-  styleUrls: ['./documents.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentsComponent implements OnInit {
