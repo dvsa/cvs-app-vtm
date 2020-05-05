@@ -12,7 +12,7 @@ export class FilterMultipleRecordsPipe implements PipeTransform {
       const recordB = this.getRecord(b);
 
       if (recordA.make !== recordB.make) {
-        return recordA.make.localeCompare(recordB.make);
+        return String(recordA.make).localeCompare(String(recordB.make));
       } else {
         return recordB.manufactureYear - recordA.manufactureYear;
       }
