@@ -70,6 +70,8 @@ exports[`DimensionsComponent should create view only with populated data 1`] = `
       </tr>
       
       
+      
+      
       <tr
         class="govuk-table__row"
       >
@@ -96,8 +98,6 @@ exports[`DimensionsComponent should create view only with populated data 1`] = `
           class="govuk-table__cell"
         />
       </tr>
-      
-      
       
       
       
