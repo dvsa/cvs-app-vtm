@@ -1,5 +1,5 @@
 <dl class="technical-record-sub-details govuk-summary-list ">
-  <div class="govuk-summary-list__row">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
     <dt class="govuk-summary-list__key">
       Make
     </dt>
@@ -8,7 +8,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
     <dt class="govuk-summary-list__key">
       Model
     </dt>
@@ -17,6 +17,57 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'psv'">
+    <dt class="govuk-summary-list__key">
+      Make
+    </dt>
+    <dd id="test-bodyMake" class="govuk-summary-list__value">
+      {{ activeRecord.bodyMake | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'psv'">
+    <dt class="govuk-summary-list__key">
+      Model
+    </dt>
+    <dd id="test-bodyModel" class="govuk-summary-list__value">
+      {{ activeRecord.bodyModel | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+   <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'psv'">
+    <dt class="govuk-summary-list__key">
+      Model literal
+    </dt>
+    <dd id="test-modelLiteral" class="govuk-summary-list__value">
+      {{ activeRecord.modelLiteral | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'psv'">
+    <dt class="govuk-summary-list__key">
+      Chassis make
+    </dt>
+    <dd id="test-chassisMake" class="govuk-summary-list__value">
+      {{ activeRecord.chassisMake | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'psv'">
+    <dt class="govuk-summary-list__key">
+      Chassis model
+    </dt>
+    <dd id="test-chassisModel" class="govuk-summary-list__value">
+      {{ activeRecord.chassisModel | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Body type
@@ -26,7 +77,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Function
     </dt>

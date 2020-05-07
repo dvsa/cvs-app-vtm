@@ -19,3 +19,7 @@
       <vtm-axle-brakes [axle]="axle" [vehicleType]="currentVehicleType"></vtm-axle-brakes>
   </ng-container>
 </ng-container>
+
+<ng-container *ngIf="currentVehicleType === 'psv'">
+  <vtm-psv-brakes [brakes]="brakes"></vtm-psv-brakes>
+</ng-container>

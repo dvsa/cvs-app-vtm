@@ -26,7 +26,24 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
-    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Date of first registration 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-regnDate"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
     
     <div
       class="govuk-summary-list__row"
@@ -200,6 +217,12 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       />
     </div>
     
+    
+    
+    
+    
+    
+    
     <div
       class="govuk-summary-list__row"
     >
@@ -236,6 +259,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+    <br />
     <h2
       class="govuk-heading-m"
     >
@@ -331,6 +355,9 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+    
+    
+    
   </dl>
 </vtm-vehicle-summary>
 `;

@@ -3,10 +3,13 @@
   <tr class="govuk-table__row">
     <th scope="col" class="govuk-table__header"></th>
     <th scope="col" class="govuk-table__header">GB weight (kg)</th>
-    <th scope="col" class="govuk-table__header">EEC weight (kg)</th>
+    <th scope="col" class="govuk-table__header" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">EEC weight (kg)</th>
     <th scope="col" class="govuk-table__header">Design weight (kg)</th>
-    <th class="govuk-table__cell"></th>
-    <th class="govuk-table__cell"></th>
+    <td scope="col" class="govuk-table__header" *ngIf="activeRecord.vehicleType === 'psv'">Kerb weight (kg)</td>
+    <td scope="col" class="govuk-table__header" *ngIf="activeRecord.vehicleType === 'psv'">Laden weight (kg)</td>
+    <td scope="col" class="govuk-table__header" *ngIf="activeRecord.vehicleType === 'psv'">Unladen weight (kg)</td>
+    <th class="govuk-table__cell" *ngIf="activeRecord.vehicleType !== 'psv'"></th>
+    <th class="govuk-table__cell" *ngIf="activeRecord.vehicleType !== 'psv'"></th>
   </tr>
   </thead>
   <tbody class="govuk-table__body">
@@ -15,21 +18,30 @@
     <td id="test-grossGbWeight" class="govuk-table__cell">
       {{ activeRecord.grossGbWeight | DefaultNullOrEmpty }}
     </td>
-    <td id="test-grossDesignWeight" class="govuk-table__cell">
+    <td id="test-grossDesignWeight" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
       {{ activeRecord.grossEecWeight | DefaultNullOrEmpty }}
     </td>
     <td id="test-grossDesignWeight" class="govuk-table__cell">
       {{ activeRecord.grossDesignWeight | DefaultNullOrEmpty }}
     </td>
-    <td class="govuk-table__cell"></td>
-    <td class="govuk-table__cell"></td>
+    <td id="test-grossKerbWeight" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'psv'">
+      {{ activeRecord.grossKerbWeight | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-grossLadenWeight" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'psv'">
+      {{ activeRecord.grossLadenWeight | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-unladenWeight" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'psv'">
+      {{ activeRecord.unladenWeight | DefaultNullOrEmpty }}
+    </td>
+    <th class="govuk-table__cell" *ngIf="activeRecord.vehicleType !== 'psv'"></th>
+    <th class="govuk-table__cell" *ngIf="activeRecord.vehicleType !== 'psv'"></th>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
     <td id="test-trainGbWeight" class="govuk-table__cell">
       {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
     </td>
-    <td id="test-trainDesignWeight" class="govuk-table__cell">
+    <td id="test-trainEecWeight" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
       {{ activeRecord.trainEecWeight | DefaultNullOrEmpty }}
     </td>
     <td id="test-trainDesignWeight" class="govuk-table__cell">
@@ -37,18 +49,20 @@
     </td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
+    <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+  <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
     <td id="test-maxTrainGbWeight" class="govuk-table__cell">
       {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}
     </td>
-    <td id="test-minTrainGbWeight" class="govuk-table__cell">
+    <td id="test-maxTrainEecWeight" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
       {{ activeRecord.maxTrainEecWeight | DefaultNullOrEmpty }}
     </td>
-    <td id="test-minTrainGbWeight" class="govuk-table__cell">
+    <td id="test-maxTrainDesignWeight" class="govuk-table__cell">
       {{ activeRecord.maxTrainDesignWeight | DefaultNullOrEmpty }}
     </td>
+    <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
@@ -57,12 +71,16 @@
       {{ axle.axleNumber | DefaultNullOrEmpty }}</th>
     <td id="{{ 'test-gbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
       {{ axle.weights.gbWeight | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-eecWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+    <td id="{{ 'test-eecWeight-' + axle.axleNumber }}" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
       {{ axle.weights.eecWeight | DefaultNullOrEmpty }}</td>
     <td id="{{ 'test-designWeight-' + axle.axleNumber }}" class="govuk-table__cell">
       {{ axle.weights.designWeight | DefaultNullOrEmpty }}</td>
-    <td class="govuk-table__cell"></td>
-    <td class="govuk-table__cell"></td>
+    <td id="{{ 'test-kerbWeight-' + axle.axleNumber }}" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'psv'">
+      {{ axle.weights.kerbWeight | DefaultNullOrEmpty }}</td>
+    <td id="{{ 'test-ladenWeight-' + axle.axleNumber }}" class="govuk-table__cell" *ngIf="activeRecord.vehicleType === 'psv'">
+      {{ axle.weights.ladenWeight | DefaultNullOrEmpty }}</td>
+    <td class="govuk-table__cell" ></td>
+    <td class="govuk-table__cell" *ngIf="activeRecord.vehicleType !== 'psv'"></td>
   </tr>
   </tbody>
 </table>

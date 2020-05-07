@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VehicleSummaryComponent should create view only with populated data 1`] = `
-<vtm-vehicle-summary
-  activeRecord={[Function Object]}
-  vehicleClassDescription={[Function String]}
+exports[`PsvBrakesComponent should create view only with populated data 1`] = `
+<vtm-psv-brakes
+  brakes={[Function Object]}
 >
   <dl
-    class="technical-record-sub-details govuk-summary-list"
+    class="govuk-summary-list"
   >
     <div
       class="govuk-summary-list__row"
@@ -14,13 +13,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle type 
+        Brake code
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleType"
+        id="psv-brakes-brakeCode"
       >
-         - 
+         145202 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -32,32 +31,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Date of first registration 
+        Service brake information
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-regnDate"
+        id="psv-brakes-dataTrBrakeOne"
       >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Year of manufacture 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-manufactureYear"
-      >
-         - 
+         None 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -69,13 +49,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Number of axles 
+        Secondary brake information
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-noOfaxles"
+        id="psv-brakes-dataTrBrakeTwo"
       >
-         - 
+         None 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -87,16 +67,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         DTP number 
+        Parking brake information
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-dtpNumber"
+        id="psv-brakes-dataTrBrakeThree"
       >
-        
-        <span>
-          -
-        </span>
+         None 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -108,35 +85,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Axles fitted with a parking brake 
+        Retarder brake one
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-parkingBrakeMrk"
+        id="psv-brakes-retarderBrakeOne"
       >
-        
-        <span>
-          -
-        </span>
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Road friendly suspension 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-roadFriendly"
-      >
-         - 
+         electric 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -148,102 +103,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle class 
+        Retarder brake two
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleClassDescription"
+        id="psv-brakes-retarderBrakeTwo"
       >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Vehicle configuration 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
-      >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         EU vehicle category 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
-      >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Departmental vehicle marker 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
-      >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Alteration marker 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
-      >
-         - 
+         exhaust 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -253,7 +119,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
     <h2
       class="govuk-heading-m"
     >
-      Type Approval
+      Brake force wheels not locked
     </h2>
     <div
       class="govuk-summary-list__row"
@@ -261,13 +127,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Approval type
+        Service
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehiclesummary-approvalType"
+        id="psv-brakes-serviceBrakeForceA"
       >
-         - 
+         6531 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -279,13 +145,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Approval type number
+        Secondary
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-approvalTypeNumber"
+        id="psv-brakes-secondaryBrakeForceA"
       >
-         - 
+         3265 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -297,13 +163,37 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        National type approval number
+        Parking
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-ntaNumber"
+        id="psv-brakes-parkingBrakeForceA"
       >
-         - 
+         2322 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <br />
+    <h2
+      class="govuk-heading-m"
+    >
+      Brake force wheels up to half locked
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Service
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="psv-brakes-serviceBrakeForceB"
+      >
+         5510 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -315,13 +205,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Variant number
+        Secondary
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-variantNumber"
+        id="psv-brakes-secondaryBrakeForceB"
       >
-         - 
+         2755 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -333,21 +223,18 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Variant version number
+        Parking
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-variantVersionNumber"
+        id="psv-brakes-parkingBrakeForceB"
       >
-         - 
+         1763 
       </dd>
       <dd
         class="govuk-summary-list__value"
       />
     </div>
-    
-    
-    
   </dl>
-</vtm-vehicle-summary>
+</vtm-psv-brakes>
 `;

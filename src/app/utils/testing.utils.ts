@@ -6,7 +6,18 @@ import {
   VehicleDetails,
   AdditionalNotes
 } from './../models/adr-details';
-import { TechRecord, Applicant, Microfilm, Plate, AuthoIntoService, LettersOfAuth, AddressInformation, AxleBrakes, Brakes } from './../models/tech-record.model';
+import {
+  TechRecord,
+  Applicant,
+  Microfilm,
+  Plate,
+  AuthoIntoService,
+  LettersOfAuth,
+  AddressInformation,
+  AxleBrakes,
+  Brakes,
+  DDA
+} from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
 import { PurchaserDetails } from '@app/models/tech-record.model';
@@ -44,7 +55,9 @@ export const TESTING_UTILS = {
   mockPurchaser,
   mockManufacturer,
   mockAxle,
-  mockBrakes
+  mockBrakes,
+  mockDDA,
+  mockPSVBrakes,
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -60,6 +73,25 @@ function mockApplicantDetails(args?: Partial<ApplicantDetails>): ApplicantDetail
     city: 'Birmingham',
     town: 'lala land',
     postcode: 'NG4 12Z'
+  };
+
+  return { ...mock, ...args };
+}
+
+function mockDDA(args?: Partial<DDA>): DDA {
+  const mock: DDA = {
+    certificateIssued: true,
+    wheelchairCapacity: 23,
+    wheelchairFittings: 23,
+    wheelchairLiftPresent: 'none',
+    wheelchairLiftInformation: 'none',
+    wheelchairRampPresent: 'none', 
+    wheelchairRampInformation: 'none',
+    minEmergencyExits: '3',
+    outswing: 'no',
+    ddaSchedules: '123',
+    seatbeltsFitted: '3',
+    ddaNotes: 'all',
   };
 
   return { ...mock, ...args };
@@ -201,7 +233,7 @@ function mockAddressInformation(args?: Partial<AddressInformation>): AddressInfo
     postCode: 'NG4 12Z',
     postTown: 'A town',
     telephoneNumber: '123123123',
-    emailAddress: 'test@test.com',
+    emailAddress: 'test@test.com'
   };
   return { ...mock, ...args };
 }
@@ -274,7 +306,11 @@ function mockManufacturer(args?: Partial<ManufacturerDetails>): ManufacturerDeta
 }
 
 function mockAxleBrakes(args?: Partial<AxleBrakes>): AxleBrakes {
-  const mock: AxleBrakes = {brakeActuator: 123, leverLength: 123, springBrakeParking: true } as AxleBrakes;
+  const mock: AxleBrakes = {
+    brakeActuator: 123,
+    leverLength: 123,
+    springBrakeParking: true
+  } as AxleBrakes;
   return { ...mock, ...args };
 }
 
@@ -285,5 +321,29 @@ function mockAxle(args?: Partial<Axle>): Axle {
 
 function mockBrakes(args?: Partial<Brakes>): Brakes {
   const mock: Brakes = { antilockBrakingSystem: true, loadSensingValve: false } as Brakes;
+  return { ...mock, ...args };
+}
+
+function mockPSVBrakes(args?: Partial<Brakes>): Brakes {
+  const mock: Brakes = {
+    brakeCodeOriginal: '123',
+    brakeCode: '145202',
+    retarderBrakeOne: 'electric',
+    brakeForceWheelsNotLocked: {
+      parkingBrakeForceA: 2322,
+      serviceBrakeForceA: 6531,
+      secondaryBrakeForceA: 3265
+    },
+    dataTrBrakeTwo: 'None',
+    retarderBrakeTwo: 'exhaust',
+    dataTrBrakeOne: 'None',
+    dataTrBrakeThree: 'None',
+    brakeForceWheelsUpToHalfLocked: {
+      secondaryBrakeForceB: 2755,
+      parkingBrakeForceB: 1763,
+      serviceBrakeForceB: 5510,
+    }
+  } as Brakes;
+
   return { ...mock, ...args };
 }

@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VehicleSummaryComponent should create view only with populated data 1`] = `
-<vtm-vehicle-summary
-  activeRecord={[Function Object]}
-  vehicleClassDescription={[Function String]}
+exports[`DdaComponent should create view only with populated data 1`] = `
+<vtm-dda
+  ddaDetails={[Function Object]}
+  techRecHelpers={[Function TechRecordHelpersService]}
 >
   <dl
-    class="technical-record-sub-details govuk-summary-list"
+    class="govuk-summary-list"
   >
     <div
       class="govuk-summary-list__row"
@@ -14,13 +14,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle type 
+        DDA certificate issued (Yes/No)
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleType"
+        id="dda-certificateIssued"
       >
-         - 
+         Yes 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -32,32 +32,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Date of first registration 
+        Wheelchair capacity
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-regnDate"
+        id="dda-wheelchairCapacity"
       >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Year of manufacture 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-manufactureYear"
-      >
-         - 
+         23 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -69,13 +50,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Number of axles 
+        Wheelchair fittings
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-noOfaxles"
+        id="dda-wheelchairFittings"
       >
-         - 
+         23 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -87,16 +68,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         DTP number 
+        Wheelchair lift present
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-dtpNumber"
+        id="dda-wheelchairLiftPresent"
       >
-        
-        <span>
-          -
-        </span>
+         none 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -108,35 +86,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Axles fitted with a parking brake 
+        Wheelchair lift information
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-parkingBrakeMrk"
+        id="dda-wheelchairLiftInformation"
       >
-        
-        <span>
-          -
-        </span>
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Road friendly suspension 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-roadFriendly"
-      >
-         - 
+         none 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -148,13 +104,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle class 
+        Wheelchair ramp present
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleClassDescription"
+        id="dda-wheelchairRampInformation"
       >
-         - 
+         none 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -166,66 +122,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle configuration 
+        Wheelchair ramp information
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
+        id="dda-wheelchairRampInformation"
       >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         EU vehicle category 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
-      >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Departmental vehicle marker 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
-      >
-         - 
+         none 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -237,37 +140,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Alteration marker 
+        Minimum emergency exits needed
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleConfiguration"
+        id="dda-minEmergencyExits"
       >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <br />
-    <h2
-      class="govuk-heading-m"
-    >
-      Type Approval
-    </h2>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Approval type
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-vehiclesummary-approvalType"
-      >
-         - 
+         3 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -279,13 +158,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Approval type number
+        Outswing
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-approvalTypeNumber"
+        id="dda-outswing"
       >
-         - 
+         no 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -297,13 +176,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        National type approval number
+        DDA schedules
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-ntaNumber"
+        id="dda-ddaSchedules"
       >
-         - 
+         123 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -315,13 +194,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Variant number
+        Seatbelts fitted
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-variantNumber"
+        id="dda-seatbeltsFitted"
       >
-         - 
+         3 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -333,21 +212,18 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-        Variant version number
+        DDA notes
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-variantVersionNumber"
+        id="dda-ddaNotes"
       >
-         - 
+         all 
       </dd>
       <dd
         class="govuk-summary-list__value"
       />
     </div>
-    
-    
-    
   </dl>
-</vtm-vehicle-summary>
+</vtm-dda>
 `;

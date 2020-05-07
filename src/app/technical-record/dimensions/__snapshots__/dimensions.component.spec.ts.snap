@@ -69,6 +69,33 @@ exports[`DimensionsComponent should create view only with populated data 1`] = `
         />
       </tr>
       
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+          Front axle to rear axle (mm)
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-frontAxleToRearAxle"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+      </tr>
       
       <tr
         class="govuk-table__row"
@@ -96,6 +123,7 @@ exports[`DimensionsComponent should create view only with populated data 1`] = `
           class="govuk-table__cell"
         />
       </tr>
+      
       
       
       

@@ -1,6 +1,20 @@
 import { AdrDetails } from '@app/models/adr-details';
 import { BodyType } from './body-type';
 
+export interface DDA {
+  certificateIssued: boolean;
+  wheelchairCapacity: number;
+  wheelchairFittings: number;
+  wheelchairLiftPresent: string;
+  wheelchairLiftInformation: string;
+  wheelchairRampPresent: string;
+  wheelchairRampInformation: string;
+  minEmergencyExits: string;
+  outswing: string;
+  ddaSchedules: string;
+  seatbeltsFitted: string;
+  ddaNotes: string;
+}
 export interface Applicant extends AddressInformation {
   name: string;
 }

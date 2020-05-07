@@ -10,7 +10,6 @@
   </div>
   <div
     class="govuk-summary-list__row"
-    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
   >
     <dt class="govuk-summary-list__key">
       Date of first registration
@@ -145,7 +144,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Speed limiter exempt
     </dt>
@@ -154,7 +153,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Tacho exempt
     </dt>
@@ -163,7 +162,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Euro standard
     </dt>
@@ -172,7 +171,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Fuel/propulsion system
     </dt>
@@ -199,7 +198,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Number of wheels driven
     </dt>
@@ -217,7 +216,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'">
     <dt class="govuk-summary-list__key">
       Emission limit
     </dt>
@@ -226,6 +225,67 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      Seats lower deck
+    </dt>
+    <dd id="test-vehicleSummary-seatsLowerDeck" class="govuk-summary-list__value">
+      {{ activeRecord.seatsLowerDeck | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      Seats upper deck
+    </dt>
+    <dd id="test-vehicleSummary-seatsUpperDeck" class="govuk-summary-list__value">
+      {{ activeRecord.seatsUpperDeck | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      Standing capacity
+    </dt>
+    <dd id="test-vehicleSummary-standingCapacity" class="govuk-summary-list__value">
+      {{ activeRecord.standingCapacity | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      Vehicle size
+    </dt>
+    <dd id="test-vehicleSummary-vehicleSize" class="govuk-summary-list__value">
+      {{ activeRecord.vehicleSize | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      Number of seat belts
+    </dt>
+    <dd id="test-vehicleSummary-numberOfSeatbelts" class="govuk-summary-list__value">
+      {{ activeRecord.numberOfSeatbelts | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      Seatbelt installation approval date / type approved
+    </dt>
+    <dd id="test-vehicleSummary-seatbeltInstallationApprovalDate" class="govuk-summary-list__value">
+      {{ activeRecord.seatbeltInstallationApprovalDate | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Departmental vehicle marker
@@ -244,7 +304,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-
+  <br>
   <h2 class="govuk-heading-m">Type Approval</h2>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Approval type</dt>
@@ -282,6 +342,36 @@
     <dt class="govuk-summary-list__key">Variant version number</dt>
     <dd id="test-vehicleSummary-variantVersionNumber" class="govuk-summary-list__value">
       {{ activeRecord.variantVersionNumber | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      COIF serial number
+    </dt>
+    <dd id="test-vehicleSummary-coifSerialNumber" class="govuk-summary-list__value">
+      {{ activeRecord.coifSerialNumber | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      COIF certifier name
+    </dt>
+    <dd id="test-vehicleSummary-coifCertifierName" class="govuk-summary-list__value">
+      {{ activeRecord.coifCertifierName | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">
+      COIF date
+    </dt>
+    <dd id="test-vehicleSummary-coifDate" class="govuk-summary-list__value">
+      {{ activeRecord.coifDate | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
