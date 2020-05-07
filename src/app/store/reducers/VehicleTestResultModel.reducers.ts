@@ -1,12 +1,18 @@
-import { initialVehicleTestResultModelState } from '../../store/state/VehicleTestResultModel.state';
-import { EVehicleTestResultModelActions, VehicleTestResultModelActions } from '../actions/VehicleTestResultModel.actions';
+import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
+import {
+  EVehicleTestResultModelActions,
+  VehicleTestResultModelActions
+} from '../actions/VehicleTestResultModel.actions';
 
-export function VehicleTestResultModelReducers(state = initialVehicleTestResultModelState, action: VehicleTestResultModelActions) {
+export function VehicleTestResultModelReducers(
+  state = initialVehicleTestResultModelState,
+  action: VehicleTestResultModelActions
+) {
   switch (action.type) {
     case EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess: {
       return {
         ...state,
-        selectedTestResultModel: action.payload,
+        vehicleTestResultModel: action.payload,
         error: null // clear error message
       };
     }
@@ -14,7 +20,8 @@ export function VehicleTestResultModelReducers(state = initialVehicleTestResultM
     case EVehicleTestResultModelActions.GetVehicleTestResultModelFailure: {
       return {
         ...state,
-        error: action.payload  // capture error message
+        vehicleTestResultModel: null,
+        error: action.payload // capture error message
       };
     }
 

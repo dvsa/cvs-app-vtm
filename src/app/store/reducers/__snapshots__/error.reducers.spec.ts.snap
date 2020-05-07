@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorReducer ClearErrorMessage should clear error(s) from the state 1`] = `
+Object {
+  "errors": Array [],
+}
+`;
+
+exports[`ErrorReducer SetErrorMessage should set the error(s) to the state 1`] = `
+Object {
+  "errors": Array [
+    "error1",
+    "error2",
+  ],
+}
+`;
+
+exports[`ErrorReducer when initialised should set the default state 1`] = `
+Object {
+  "errors": Array [],
+}
+`;

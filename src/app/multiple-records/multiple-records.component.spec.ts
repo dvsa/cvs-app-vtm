@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MultipleRecordsComponent } from './multiple-records.component';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
 import { SharedModule } from '@app/shared';
 import { RouterTestingModule } from '@angular/router/testing';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
@@ -18,7 +17,6 @@ describe('MultipleRecordsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule],
-      providers: [TechRecordHelpersService],
       declarations: [MultipleRecordsComponent]
     }).compileComponents();
   }));

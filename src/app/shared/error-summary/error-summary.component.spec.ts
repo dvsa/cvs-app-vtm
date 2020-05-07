@@ -1,15 +1,19 @@
-import { Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
-import { IAppState } from '@app/store/state/app.state';
-import { Store, INITIAL_STATE } from '@ngrx/store';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { BehaviorSubject } from 'rxjs';
+
+import MockStore from '../../utils/mockStore';
 import { ErrorSummaryComponent } from './error-summary.component';
-import { hot } from 'jasmine-marbles';
+
+
+
+const mockSelector = new BehaviorSubject<any>(undefined);
 
 describe('ErrorSummaryComponent', () => {
   let component: ErrorSummaryComponent;
   let fixture: ComponentFixture<ErrorSummaryComponent>;
-  let store: Store<IAppState>;
-  let injector: Injector;
+  const store: MockStore = new MockStore(mockSelector);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,24 +21,30 @@ describe('ErrorSummaryComponent', () => {
       providers: [
         {
           provide: Store,
-          useValue: {
-            dispatch: jest.fn(),
-            pipe: jest.fn(() => hot('-a', { a: INITIAL_STATE })),
-            select: jest.fn()
-          }
-        },
+          useValue: store
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ErrorSummaryComponent);
-    injector = getTestBed();
-    store = TestBed.get(Store);
     component = fixture.componentInstance;
+    jest.spyOn(store, 'dispatch');
+
     fixture.detectChanges();
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render component template with available error(s)', () => {
+    mockSelector.next({
+      getErrors: ['Available Error1', 'Available Error2']
+    });
+
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
   });
 });

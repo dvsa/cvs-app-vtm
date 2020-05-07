@@ -7,5 +7,5 @@ export const selectFeature = createFeatureSelector<IVehicleTestResultModelState>
 
 export const selectSelectedVehicleTestResultModel = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.selectedTestResultModel
+  (state: IVehicleTestResultModelState) => state.vehicleTestResultModel
 );
