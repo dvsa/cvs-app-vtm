@@ -30,14 +30,14 @@ const testResultModelExample: TestResultModel = {
   vin: '213',
   vehicleSize: '213',
   preparerName: '213'
-}
+};
 
 describe('GetVehicleTestResultModel', () => {
   test('action should have the right type and payload when used', () => {
     const actionInstance = new GetVehicleTestResultModel(testResultModelExample);
 
     expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModel);
-    expect(actionInstance.payload).toBe(testResultModelExample)
+    expect(actionInstance.payload).toBe(testResultModelExample);
   });
 });
 
@@ -46,7 +46,7 @@ describe('GetVehicleTestResultModelSuccess', () => {
     const actionInstance = new GetVehicleTestResultModelSuccess(testResultModelExample);
 
     expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess);
-    expect(actionInstance.payload).toBe(testResultModelExample)
+    expect(actionInstance.payload).toBe(testResultModelExample);
   });
 });
 
@@ -55,6 +55,6 @@ describe('GetVehicleTestResultModelFailure', () => {
     const actionInstance = new GetVehicleTestResultModelFailure(testResultModelExample);
 
     expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModelFailure);
-    expect(actionInstance.payload).toBe(testResultModelExample)
+    expect(actionInstance.payload).toBe(testResultModelExample);
   });
 });
