@@ -45,4 +45,3 @@ Thumbs.db
 .reports
 
 *.env
-/**/*.dev.json
