@@ -4,9 +4,9 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 export class SortByDatePipe implements PipeTransform {
 
-  transform(testResultList: any, sortBy: any): any {
-    if (testResultList) {
-      return testResultList.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
+  transform(listToSort: any, sortBy: string): any {
+    if (listToSort) {
+      return listToSort.sort((a, b) => new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime());
     }
   }
 

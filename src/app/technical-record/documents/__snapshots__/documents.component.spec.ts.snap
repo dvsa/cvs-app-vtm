@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentsComponent should create view only with populated data 1`] = `
+<vtm-documents
+  microfilm={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Microfilm document type
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-microfilm-microfilmDocumentType"
+      >
+         PSV Miscellaneous 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Microfilm roll number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-microfilm-microfilmRollNumber"
+      >
+         1234 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Microfilm serial number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-microfilm-microfilmSerialNumber"
+      >
+         5678 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl>
+</vtm-documents>
+`;

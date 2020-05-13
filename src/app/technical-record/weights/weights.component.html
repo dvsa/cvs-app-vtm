@@ -3,8 +3,8 @@
   <tr class="govuk-table__row">
     <th scope="col" class="govuk-table__header"></th>
     <th scope="col" class="govuk-table__header">GB weight (kg)</th>
+    <th scope="col" class="govuk-table__header">EEC weight (kg)</th>
     <th scope="col" class="govuk-table__header">Design weight (kg)</th>
-    <th class="govuk-table__cell"></th>
     <th class="govuk-table__cell"></th>
     <th class="govuk-table__cell"></th>
   </tr>
@@ -16,9 +16,11 @@
       {{ activeRecord.grossGbWeight | DefaultNullOrEmpty }}
     </td>
     <td id="test-grossDesignWeight" class="govuk-table__cell">
+      {{ activeRecord.grossEecWeight | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-grossDesignWeight" class="govuk-table__cell">
       {{ activeRecord.grossDesignWeight | DefaultNullOrEmpty }}
     </td>
-    <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
@@ -28,9 +30,11 @@
       {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
     </td>
     <td id="test-trainDesignWeight" class="govuk-table__cell">
+      {{ activeRecord.trainEecWeight | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-trainDesignWeight" class="govuk-table__cell">
       {{ activeRecord.trainDesignWeight | DefaultNullOrEmpty }}
     </td>
-    <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
@@ -40,20 +44,23 @@
       {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}
     </td>
     <td id="test-minTrainGbWeight" class="govuk-table__cell">
+      {{ activeRecord.maxTrainEecWeight | DefaultNullOrEmpty }}
+    </td>
+    <td id="test-minTrainGbWeight" class="govuk-table__cell">
       {{ activeRecord.maxTrainDesignWeight | DefaultNullOrEmpty }}
     </td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
-    <td class="govuk-table__cell"></td>
   </tr>
-  <tr class="govuk-table__row" *ngFor="let axelNo of activeRecord.axles">
+  <tr class="govuk-table__row" *ngFor="let axle of activeRecord.axles">
     <th class="govuk-table__cell govuk-!-font-weight-bold">Axle
-      {{ axelNo.axleNumber | DefaultNullOrEmpty }}</th>
-    <td id="{{ 'test-gbWeight-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.weights.gbWeight | DefaultNullOrEmpty }}</td>
-    <td id="{{ 'test-designWeight-' + axelNo.axleNumber }}" class="govuk-table__cell">
-      {{ axelNo.weights.designWeight | DefaultNullOrEmpty }}</td>
-    <td class="govuk-table__cell"></td>
+      {{ axle.axleNumber | DefaultNullOrEmpty }}</th>
+    <td id="{{ 'test-gbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+      {{ axle.weights.gbWeight | DefaultNullOrEmpty }}</td>
+    <td id="{{ 'test-eecWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+      {{ axle.weights.eecWeight | DefaultNullOrEmpty }}</td>
+    <td id="{{ 'test-designWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+      {{ axle.weights.designWeight | DefaultNullOrEmpty }}</td>
     <td class="govuk-table__cell"></td>
     <td class="govuk-table__cell"></td>
   </tr>
