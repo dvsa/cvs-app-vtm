@@ -16,7 +16,4 @@ export class TechRecordHelpersService {
     return obj && Object.keys(obj).length === 0;
   }
 
-  capitalizeWord(word: string) {
-    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
-  }
 }

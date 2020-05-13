@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestRecordContainer should create 1`] = `
+<vtm-test-record-container
+  defectsApplicable={[Function Array]}
+  emissionDetailsApplicable={[Function Array]}
+  route={[Function Object]}
+  seatBeltApplicable={[Function Array]}
+  store={[Function Object]}
+  testRecordMapper={[Function TestRecordMapper]}
+  testRecordObservable$="undefined"
+  testSectionApplicable1={[Function Object]}
+  testSectionApplicable2={[Function Object]}
+  testTypeNumber={[Function String]}
+>
+  
+</vtm-test-record-container>
+`;
