@@ -1,26 +1,35 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { TechRecordHelpersService } from '@app/technical-record/tech-record-helpers.service';
+import { TechRecord } from '@app/models/tech-record.model';
 
 @Component({
   selector: 'vtm-vehicle-summary',
   templateUrl: './vehicle-summary.component.html',
-  styleUrls: ['./vehicle-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VehicleSummaryComponent implements OnInit {
-  @Input() activeRecord: any;
+  @Input() activeRecord: TechRecord;
+  vehicleClassDescription = '-';
+  constructor() {}
 
-  constructor(public techRecHelpers: TechRecordHelpersService) {}
+  ngOnInit() {
+    this.vehicleClassDescription =
+      this.activeRecord.vehicleClass && this.activeRecord.vehicleClass.description
+        ? this.formatVehicleClassDescription()
+        : '-';
+  }
 
-  ngOnInit() {}
+  axlesHasParkingBrakeMrk(): boolean {
+    return (
+      this.activeRecord.axles &&
+      this.activeRecord.axles.length &&
+      this.activeRecord.axles.some((x) => x.parkingBrakeMrk)
+    );
+  }
 
-  axlesHasNoParkingBrakeMrk(axles): boolean {
-    let baxlesHasNoParkingBrakeMrk = true;
-    axles.forEach((axle) => {
-      if (axle.parkingBrakeMrk === true) {
-        baxlesHasNoParkingBrakeMrk = false;
-      }
-    });
-    return baxlesHasNoParkingBrakeMrk;
+  formatVehicleClassDescription() {
+    return (
+      this.activeRecord.vehicleClass.description.charAt(0).toUpperCase() +
+      this.activeRecord.vehicleClass.description.substr(1).toLowerCase()
+    );
   }
 }

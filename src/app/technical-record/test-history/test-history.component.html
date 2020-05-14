@@ -1,4 +1,4 @@
-<table class="govuk-table t-history">
+<table class="govuk-table">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Test type</th>
@@ -28,10 +28,14 @@
           id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-tType-' + ii }}"
           class="govuk-table__cell"
         >
-          {{ testType.testTypeEndTimestamp | DefaultNullOrEmpty }}
+          <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
+            {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}
+          </span>
         </td>
         <td id="{{ 'test-expiryDate-tRes-' + i + '-tType-' + ii }}" class="govuk-table__cell">
-          {{ testRes.testExpiryDate | DefaultNullOrEmpty }}
+          <span *ngIf="testRes.testExpiryDate; else hyphen">
+            {{ testRes.testExpiryDate | date: 'dd/MM/yyyy' }}
+          </span>
         </td>
         <td
           id="{{ 'test-certificateNumber-tRes-' + i + '-tType-' + ii }}"

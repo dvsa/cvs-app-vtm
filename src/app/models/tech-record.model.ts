@@ -1,15 +1,8 @@
 import { AdrDetails } from '@app/models/adr-details';
 import { BodyType } from './body-type';
 
-export interface Applicant {
+export interface Applicant extends AddressInformation {
   name: string;
-  address1: string;
-  address2: string;
-  postTown: string;
-  address3: string;
-  postCode: string;
-  emailAddress: string;
-  telephoneNumber: string;
 }
 
 export interface Microfilm {
@@ -25,6 +18,14 @@ export interface Plate {
   plateIssuer: string;
 }
 
+export interface AuthoIntoService {
+  cocIssueDate: string;
+  dateReceived: string;
+  datePending: string;
+  dateAuthorised: string;
+  dateRejected: string;
+}
+
 export interface AxleSpacing {
   axles: string;
   value: number;
@@ -36,7 +37,7 @@ export interface Dimensions {
   axleSpacing: AxleSpacing[];
 }
 
-interface Brakes {
+export interface Brakes {
   brakeCodeOriginal: string;
   brakeCode: string;
   dataTrBrakeOne: string;
@@ -63,7 +64,7 @@ interface BrakeForceWheelsUpToHalfLocked {
   parkingBrakeForceB: number;
 }
 
-interface Weights {
+export interface Weights {
   kerbWeight: number;
   ladenWeight: number;
   gbWeight: number;
@@ -71,7 +72,7 @@ interface Weights {
   designWeight: number;
 }
 
-interface Tyres {
+export interface Tyres {
   tyreSize: string;
   plyRating: string;
   fitmentCode: string;
@@ -80,18 +81,46 @@ interface Tyres {
   tyreCode: number;
 }
 
-interface AxleBrakes {
+export interface AxleBrakes {
   brakeActuator: number;
   leverLength: number;
   springBrakeParking: boolean;
 }
 
-interface Axle {
+export interface Axle {
   axleNumber: number;
   parkingBrakeMrk: boolean;
   weights: Weights;
   tyres: Tyres;
   brakes: AxleBrakes;
+}
+
+export interface AddressInformation {
+  address1: string;
+  address2: string;
+  postTown: string;
+  address3: string;
+  postCode: string;
+  emailAddress: string;
+  telephoneNumber: string;
+}
+
+export interface PurchaserDetails extends AddressInformation {
+  name: string;
+  faxNumber: string;
+  purchaserNotes: string;
+}
+
+export interface ManufacturerDetails extends AddressInformation {
+  name: string;
+  faxNumber: string;
+  manufacturerNotes: string;
+}
+
+export interface LettersOfAuth {
+  letterType: string;
+  letterDateRequested: string;
+  letterContents: string;
 }
 
 export interface TechRecord {
@@ -166,6 +195,7 @@ export interface TechRecord {
   couplingCenterToRearAxleMax: number;
   couplingCenterToRearTrlMin: number;
   couplingCenterToRearTrlMax: number;
+  centreOfRearmostAxleToRearOfTrl: number;
   notes: string;
   noOfAxles: number;
   brakeCode: string;
@@ -182,4 +212,9 @@ export interface TechRecord {
   vehicleConfiguration: string;
   brakes: Brakes;
   axles: Axle[];
+  purchaserDetails: PurchaserDetails;
+  manufacturerDetails: ManufacturerDetails;
+  authoIntoService: AuthoIntoService;
+  lettersOfAuth: LettersOfAuth;
+  frameDescription: string;
 }
