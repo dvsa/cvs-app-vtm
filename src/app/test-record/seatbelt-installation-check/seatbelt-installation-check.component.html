@@ -4,9 +4,7 @@
       Carried out during test
     </dt>
     <dd class="govuk-summary-list__value" id="test-seatbeltInstallationCheckDate">
-      <span *ngIf="testType.seatbeltInstallationCheckDate; else hyphen">
-        {{ testType.seatbeltInstallationCheckDate | date: 'dd/MM/yyyy' }}
-      </span>
+        {{ testType.seatbeltInstallationCheckDate | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">

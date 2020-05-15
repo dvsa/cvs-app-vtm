@@ -55,8 +55,17 @@
   color: $govuk-text-colour;
 }
 
+.tag--white {
+  background-color: govuk-colour("white");
+  color: $govuk-text-colour;
+}
+
 .border--bottom-none {
   border-bottom: none;
+}
+
+.white-space--normal {
+  white-space: normal;
 }
 
 /*********/

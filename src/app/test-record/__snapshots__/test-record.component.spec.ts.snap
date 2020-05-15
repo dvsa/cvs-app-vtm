@@ -5,7 +5,7 @@ exports[`TestRecordComponent should create 1`] = `
   defectsApplicable={[Function Array]}
   emissionDetailsApplicable={[Function Array]}
   hasDefectsApplicable="undefined"
-  hasEmissionApplicable="false"
+  hasEmissionApplicable={[Function Boolean]}
   hasSeatBeltApplicable="false"
   seatBeltApplicable={[Function Array]}
   testRecord={[Function Object]}
@@ -92,7 +92,9 @@ exports[`TestRecordComponent should create 1`] = `
                 <vtm-seatbelt-installation-check />
               </vtm-accordion-item>
             </span>
-            <span>
+            <span
+              hidden=""
+            >
               <vtm-accordion-item
                 title="Emission details"
               >
