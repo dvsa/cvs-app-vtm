@@ -12,7 +12,7 @@
       Test code
     </dt>
     <dd class="govuk-summary-list__value" id="test-testCode">
-      {{ testType.testCode | DefaultNullOrEmpty | titlecase }}
+      {{ testType.testCode | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -20,7 +20,7 @@
       Result
     </dt>
     <dd class="govuk-summary-list__value" id="test-testResult">
-      {{ testType.testResult | DefaultNullOrEmpty | titlecase }}
+      {{ testType.testResult | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -28,7 +28,7 @@
       Reason for abandoning
     </dt>
     <dd class="govuk-summary-list__value" id="test-reasonForAbandoning">
-      {{ testType.reasonForAbandoning | DefaultNullOrEmpty | titlecase }}
+      {{ testType.reasonForAbandoning | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -36,7 +36,7 @@
       Additional details for abandoning
     </dt>
     <dd class="govuk-summary-list__value" id="test-additionalCommentsForAbandon">
-      {{ testType.additionalCommentsForAbandon | DefaultNullOrEmpty | titlecase }}
+      {{ testType.additionalCommentsForAbandon | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <ng-container *ngIf="applicableTestTypeIds1">
@@ -45,7 +45,7 @@
         Certificate number
       </dt>
       <dd class="govuk-summary-list__value" id="test-certificateNumber">
-        {{ testType.certificateNumber | DefaultNullOrEmpty | titlecase }}
+        {{ testType.certificateNumber | DefaultNullOrEmpty | CapitalizeString }}
       </dd>
     </div>
   </ng-container>
@@ -64,7 +64,7 @@
       </dt>
       <dd class="govuk-summary-list__value" id="test-testExpiryDate">
         <span *ngIf="testType.testExpiryDate; else hyphen">
-          {{ testType.testExpiryDate | date: 'dd/MM/yyyy' }}
+          {{ testType.testExpiryDate | date: 'dd/MM/yyyy':'UTC' }}
         </span>
       </dd>
     </div>
@@ -74,7 +74,7 @@
       </dt>
       <dd class="govuk-summary-list__value" id="test-testAnniversaryDate">
         <span *ngIf="testType.testAnniversaryDate; else hyphen">
-          {{ testType.testAnniversaryDate | date: 'dd/MM/yyyy' }}
+          {{ testType.testAnniversaryDate | date: 'dd/MM/yyyy':'UTC' }}
         </span>
       </dd>
     </div>

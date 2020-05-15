@@ -13,6 +13,6 @@ export class AccordionItemComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.titleTrimmed = !!this.title ? this.title.trim() : '';
+    this.titleTrimmed = !!this.title ? this.title.replace(/\s/g, '') : '';
   }
 }

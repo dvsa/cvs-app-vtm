@@ -27,13 +27,12 @@ export class TestRecordComponent implements OnInit {
   ngOnInit(): void {
     this.hasDefectsApplicable = this.defectsApplicable[this.testType.testTypeId];
     this.hasSeatBeltApplicable =
-      !!this.seatBeltApplicable[this.testType.testTypeId] &&
-      !(this.testRecord.vehicleType === 'psv');
-    this.hasEmissionApplicable =
-      !!this.emissionDetailsApplicable[this.testType.testTypeId] &&
-      (!(this.testRecord.vehicleType === 'psv') ||
-        !(this.testRecord.vehicleType.toString() === 'hgv')) &&
-      this.testType.testResult !== 'pass';
+      !this.seatBeltApplicable[this.testType.testTypeId] && this.testRecord.vehicleType !== 'psv';
+    this.hasEmissionApplicable = !(
+      this.emissionDetailsApplicable[this.testType.testTypeId] &&
+      (this.testRecord.vehicleType === 'psv' || this.testRecord.vehicleType === 'hgv') &&
+      this.testType.testResult === 'pass'
+    );
 
     initAll();
   }
