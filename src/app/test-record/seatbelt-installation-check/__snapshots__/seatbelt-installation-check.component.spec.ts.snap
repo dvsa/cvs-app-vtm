@@ -19,10 +19,7 @@ exports[`SeatbeltInstallationCheckComponent should create 1`] = `
         class="govuk-summary-list__value"
         id="test-seatbeltInstallationCheckDate"
       >
-        
-        <span>
-          -
-        </span>
+         - 
       </dd>
     </div>
     <div

@@ -36,7 +36,7 @@
       EU vehicle category
     </dt>
     <dd class="govuk-summary-list__value" id="test-euVehicleCategory">
-      {{ testRecord.euVehicleCategory | DefaultNullOrEmpty | titlecase }}
+      {{ testRecord.euVehicleCategory | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div *ngIf="testRecord.vehicleType !== 'trl'" class="govuk-summary-list__row">
