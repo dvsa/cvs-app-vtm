@@ -3,6 +3,7 @@ import { SharedModule } from '@app/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TechRecHistoryComponent } from './tech-rec-history.component';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { TESTING_UTILS } from '../../utils/testing.utils';
 
 describe('TechRecHistoryComponent', () => {
   let component: TechRecHistoryComponent;
@@ -21,14 +22,14 @@ describe('TechRecHistoryComponent', () => {
     component = fixture.componentInstance;
     component.techRecordsJson = {
       techRecord: [
-        {
+        TESTING_UTILS.mockTechRecord({
           statusCode: 'current',
           reasonForCreation: 'reason for creation',
           createdByName: 'test name',
           createdAt: '1-1-2020',
           lastUpdatedByName: 'test 1',
           lastUpdatedAt: '12-3-2020'
-        }
+        })
       ]
     } as VehicleTechRecordModel;
   });
