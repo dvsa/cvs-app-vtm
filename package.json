@@ -158,7 +158,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "echo 'RUN COMMITLINT ./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS'",
+      "commit-msg": "./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "npm run lint",
       "pre-push": "npm run prepush"
     }
