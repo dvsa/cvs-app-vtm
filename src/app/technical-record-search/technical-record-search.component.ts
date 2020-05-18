@@ -28,7 +28,7 @@ export class TechnicalRecordSearchComponent implements OnInit {
 
   public searchTechRecords(searchIdentifier: string, searchCriteria: string) {
     this.isLoading = true;
-    this.searchParams.searchIdentifier = searchIdentifier;
+    this.searchParams.searchIdentifier = encodeURIComponent(searchIdentifier);
 
     switch (searchCriteria) {
       case SEARCH_CRITERIA.VRM_CRITERIA:
