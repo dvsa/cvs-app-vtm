@@ -1,12 +1,6 @@
 /// <reference types="cypres" /
 describe('VTM Detail - HGV+TRL Tech Record View', () => {
   beforeEach(() => {
-    // cy.visit('http://localhost:4200');
-    // cy.get('input[formcontrolname=loginfmt]').type('Vtm-Admin1@dvsagov.onmicrosoft.com');
-    // cy.get('inout[type=submit]').click();
-    // cy.get('input[formcontrolname=passwd]').type('Vtm-Admin1@dvsagov.onmicrosoft.com');
-    // cy.get('input[formcontrolname=password]').type('Vtmadmin!1');
-    // cy.get('input[type=submit]').click();
   });
 
   context('AC1: After searching, technical record with status "current" is displayed if it exists for this vehicle in DynamoDB', () => {
