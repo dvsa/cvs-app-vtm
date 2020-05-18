@@ -51,13 +51,14 @@ describe('TechnicalRecordSearchComponent', () => {
 
   describe('searchTechRecords', () => {
     it('should dispatch get action when the button is pressed', () => {
-      const searchIdentifier = 'test';
+      const searchIdentifier = 'test@23. com';
+      const searchIdentifierEncoded = 'test%4023.%20com';
       const searchCriteria =
         'Vehicle registration mark, trailer ID or vehicle identification number';
       component.searchTechRecords(searchIdentifier, searchCriteria);
 
       expect(component.isLoading).toBe(true);
-      expect(component.searchParams.searchIdentifier).toBe(searchIdentifier);
+      expect(component.searchParams.searchIdentifier).toBe(searchIdentifierEncoded);
       expect(component.searchParams.searchCriteria).toBe('all');
 
       expect(store.dispatch).toHaveBeenCalledWith(
