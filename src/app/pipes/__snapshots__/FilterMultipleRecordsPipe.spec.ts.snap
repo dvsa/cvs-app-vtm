@@ -30,6 +30,7 @@ Array [
       },
       Object {
         "createdAt": "2019-06-26T08:26:54.903Z",
+        "make": undefined,
         "statusCode": "archived",
       },
     ],

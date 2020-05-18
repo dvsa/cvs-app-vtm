@@ -1,12 +1,6 @@
 /// <reference types="cypres" /
 describe('VTM ADR Ticket 1: Updating And Saving Core ADR Details', () => {
   beforeEach(() => {
-    // cy.visit('http://localhost:4200');
-    // cy.get('input[formcontrolname=loginfmt]').type('Vtm-Admin1@dvsagov.onmicrosoft.com');
-    // cy.get('inout[type=submit]').click();
-    // cy.get('input[formcontrolname=passwd]').type('Vtm-Admin1@dvsagov.onmicrosoft.com');
-    // cy.get('input[formcontrolname=password]').type('Vtmadmin!1');
-    // cy.get('input[type=submit]').click();
   });
 
   context('AC1. User clicks the call to action to change the technical record', () => {

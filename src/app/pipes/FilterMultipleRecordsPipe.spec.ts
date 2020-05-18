@@ -30,7 +30,8 @@ const vehicleTechRecordList: VehicleTechRecordModel[] = [
       },
       {
         statusCode: 'archived',
-        createdAt: '2019-06-26T08:26:54.903Z'
+        createdAt: '2019-06-26T08:26:54.903Z',
+        make: undefined // make is optional
       }
     ]
   }
