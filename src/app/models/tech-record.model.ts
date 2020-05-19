@@ -1,6 +1,20 @@
 import { AdrDetails } from '@app/models/adr-details';
 import { BodyType } from './body-type';
 
+export interface DDA {
+  certificateIssued: boolean;
+  wheelchairCapacity: number;
+  wheelchairFittings: number;
+  wheelchairLiftPresent: string;
+  wheelchairLiftInformation: string;
+  wheelchairRampPresent: string;
+  wheelchairRampInformation: string;
+  minEmergencyExits: string;
+  outswing: string;
+  ddaSchedules: string;
+  seatbeltsFitted: string;
+  ddaNotes: string;
+}
 export interface Applicant extends AddressInformation {
   name: string;
 }
@@ -52,13 +66,13 @@ export interface Brakes {
   antilockBrakingSystem: boolean;
 }
 
-interface BrakeForceWheelsNotLocked {
+export interface BrakeForceWheelsNotLocked {
   serviceBrakeForceA: number;
   secondaryBrakeForceA: number;
   parkingBrakeForceA: number;
 }
 
-interface BrakeForceWheelsUpToHalfLocked {
+export interface BrakeForceWheelsUpToHalfLocked {
   serviceBrakeForceB: number;
   secondaryBrakeForceB: number;
   parkingBrakeForceB: number;
@@ -152,6 +166,7 @@ export interface TechRecord {
   bodyMake: string;
   bodyModel: string;
   bodyType: BodyType;
+  modelLiteral?: string;
   manufactureYear: number;
   regnDate: string;
   firstUseDate: string;

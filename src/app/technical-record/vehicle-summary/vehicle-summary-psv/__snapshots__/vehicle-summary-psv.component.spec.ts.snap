@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PsvVehicleSummaryComponent should create view only with populated data 1`] = `
+<vtm-vehicle-summary-psv
+  activeRecord={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Seats lower deck 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-seatsLowerDeck"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Seats upper deck 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-seatsUpperDeck"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Standing capacity 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-standingCapacity"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle size 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-vehicleSize"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Number of seat belts 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-numberOfSeatbelts"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Seatbelt installation approval date / type approved 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleSummary-seatbeltInstallationApprovalDate"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <dl
+      class="govuk-summary-list"
+    />
+  </dl>
+</vtm-vehicle-summary-psv>
+`;

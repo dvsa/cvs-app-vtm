@@ -10,33 +10,8 @@ exports[`TyresComponent should create view only with populated data 1`] = `
     <thead
       class="govuk-table__head"
     >
-      <tr
-        class="govuk-table__row"
-      >
-        <th
-          class="govuk-table__cell govuk-!-font-weight-bold"
-        >
-          Tyre use code
-        </th>
-        <td
-          class="govuk-table__cell"
-          id="test-tyreUseCode"
-        >
-           - 
-        </td>
-        <th
-          class="govuk-table__cell"
-        />
-        <th
-          class="govuk-table__cell"
-        />
-        <th
-          class="govuk-table__cell"
-        />
-        <th
-          class="govuk-table__cell"
-        />
-      </tr>
+      
+      
     </thead>
     <tbody
       class="govuk-table__body"
@@ -65,6 +40,12 @@ exports[`TyresComponent should create view only with populated data 1`] = `
           scope="col"
         >
           Ply rating
+        </td>
+        <td
+          class="govuk-table__header govuk-!-font-weight-bold"
+          scope="col"
+        >
+          Speed category symbol
         </td>
         <td
           class="govuk-table__header govuk-!-font-weight-bold"
@@ -106,6 +87,7 @@ exports[`TyresComponent should create view only with populated data 1`] = `
         >
            12S
         </td>
+        
         <td
           class="govuk-table__cell"
           id="test-fitmentCode-1"

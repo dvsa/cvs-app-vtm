@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TechRecord } from '../../models/tech-record.model';
 
 @Component({
@@ -8,12 +8,9 @@ import { TechRecord } from '../../models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BodyComponent implements OnInit {
-
   @Input() activeRecord: TechRecord;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
