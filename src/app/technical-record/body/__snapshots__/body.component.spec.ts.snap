@@ -5,44 +5,10 @@ exports[`BodyComponent should create view only with populated data 1`] = `
   activeRecord={[Function Object]}
 >
   <dl
-    class="technical-record-sub-details govuk-summary-list "
+    class="govuk-summary-list "
   >
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Make 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-make"
-      >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Model 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-model"
-      >
-         honda 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
+    
+    
     <div
       class="govuk-summary-list__row"
     >
@@ -61,7 +27,24 @@ exports[`BodyComponent should create view only with populated data 1`] = `
         class="govuk-summary-list__value"
       />
     </div>
-    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Function 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-functionCode"
+      >
+         someCode 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
     <div
       class="govuk-summary-list__row"
     >
