@@ -151,7 +151,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run prepush"
+      "pre-push": "npm run prepush",
+      "pre-commit": "npm run security-checks"
     }
   },
   "description": "CVS VTM Application"
