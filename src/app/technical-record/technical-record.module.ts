@@ -43,6 +43,11 @@ import { AxleBrakesComponent } from './brakes/axle-brakes/axle-brakes.component'
 
 import { AdrModule } from './adr/adr.module';
 import { TechnicalRecordsContainer } from './technical-record.container';
+import { DdaComponent } from './dda/dda.component';
+import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
+import { BodyPsvComponent } from './body/body-psv/body-psv.component';
+import { WeightsPsvComponent } from './weights/weights-psv/weights-psv.component';
+import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-psv/vehicle-summary-psv.component';
 
 @NgModule({
   imports: [
@@ -85,6 +90,11 @@ import { TechnicalRecordsContainer } from './technical-record.container';
     AuthorisationIntoServiceComponent,
     LettersOfAuthorisationComponent,
     AxleBrakesComponent,
+    DdaComponent,
+    BrakesPsvComponent,
+    BodyPsvComponent,
+    WeightsPsvComponent,
+    VehicleSummaryPsvComponent,
   ],
   exports: [TechnicalRecordsContainer, TechnicalRecordComponent]
 })

@@ -21,7 +21,10 @@ import {
   ManufacturerDetails,
   Axle,
   Weights,
-  AxleSpacing
+  AxleSpacing,
+  DDA,
+  BrakeForceWheelsNotLocked,
+  BrakeForceWheelsUpToHalfLocked,
 } from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
@@ -60,7 +63,11 @@ export const TESTING_UTILS = {
   mockAxle,
   mockBrakes,
   mockBodyType,
-  mockAxleSpacing
+  mockAxleSpacing,
+  mockDDA,
+  mockPSVBrakes,
+  mockBrakeForceWheelsNotLocked,
+  mockBrakeForceWheelsUpToHalfLocked,
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -77,6 +84,16 @@ function mockApplicantDetails(args?: Partial<ApplicantDetails>): ApplicantDetail
     town: 'lala land',
     postcode: 'NG4 12Z'
   };
+
+  return { ...mock, ...args };
+}
+
+function mockDDA(args?: Partial<DDA>): DDA {
+  const mock: DDA = {
+    certificateIssued: true,
+    wheelchairCapacity: 23,
+    ddaNotes: 'all'
+  } as DDA;
 
   return { ...mock, ...args };
 }
@@ -338,6 +355,37 @@ function mockBodyType(args?: Partial<BodyType>): BodyType {
   const mock: BodyType = {
     description: 'the first letter should be capital'
   } as BodyType;
+
+  return { ...mock, ...args };
+}
+
+function mockPSVBrakes(args?: Partial<Brakes>): Brakes {
+  const mock: Brakes = {
+    brakeCodeOriginal: '123',
+    brakeCode: '145202',
+    dataTrBrakeThree: 'None',
+  } as Brakes;
+
+  return { ...mock, ...args };
+}
+
+function mockBrakeForceWheelsNotLocked(args?: Partial<BrakeForceWheelsNotLocked>): BrakeForceWheelsNotLocked {
+  const mock: BrakeForceWheelsNotLocked = {
+    parkingBrakeForceA: 2322,
+    serviceBrakeForceA: 6531,
+    secondaryBrakeForceA: 3265,
+  } as BrakeForceWheelsNotLocked;
+
+  return { ...mock, ...args };
+}
+
+function mockBrakeForceWheelsUpToHalfLocked(args?: Partial<BrakeForceWheelsUpToHalfLocked>): BrakeForceWheelsUpToHalfLocked {
+  const mock: BrakeForceWheelsUpToHalfLocked = {
+    secondaryBrakeForceB: 2755,
+    parkingBrakeForceB: 1763,
+    serviceBrakeForceB: 5510,
+  } as BrakeForceWheelsUpToHalfLocked;
+
   return { ...mock, ...args };
 }
 

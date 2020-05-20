@@ -1,7 +1,22 @@
-<dl class="technical-record-sub-details govuk-summary-list">
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">Notes</dt>
+    <dd id="test-notes" class="govuk-summary-list__value">
       <span id="test-notes" class="notes-section">{{ activeRecord.notes | DefaultNullOrEmpty }}</span>
-    </dt>
+    </dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">Remarks</dt>
+    <dd id="test-dispensations" class="govuk-summary-list__value">
+      <span id="test-notes" class="notes-section">{{ activeRecord.remarks | DefaultNullOrEmpty }}</span>
+    </dd>
+  </div>
+
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <dt class="govuk-summary-list__key">Dispensations</dt>
+    <dd id="test-dispensations" class="govuk-summary-list__value">
+      <span id="test-notes" class="notes-section">{{ activeRecord.dispensations | DefaultNullOrEmpty }}</span>
+    </dd>
   </div>
 </dl>
