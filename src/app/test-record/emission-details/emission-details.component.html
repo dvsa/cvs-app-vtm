@@ -18,7 +18,7 @@
       Fuel type
     </dt>
     <dd class="govuk-summary-list__value" id="test-fuelType">
-      {{ testType.fuelType | DefaultNullOrEmpty }}
+      {{ testType.fuelType | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -40,7 +40,7 @@
       Modification type used
     </dt>
     <dd class="govuk-summary-list__value" id="test-modificationTypeUsed">
-      {{ testType.modificationTypeUsed | DefaultNullOrEmpty }}
+      {{ testType.modificationTypeUsed | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -48,7 +48,7 @@
       Particulate trap fitted
     </dt>
     <dd class="govuk-summary-list__value" id="test-particulateTrapFitted">
-      {{ testType.particulateTrapFitted | DefaultNullOrEmpty }}
+      {{ testType.particulateTrapFitted | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">

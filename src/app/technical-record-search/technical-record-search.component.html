@@ -1,7 +1,7 @@
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper">
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-grid-column-full">
         <h1 class="govuk-heading-xl">Search for a technical record</h1>
 
         <ng-container *ngIf="searchError$ | async as searchError">
@@ -16,36 +16,19 @@
             </label>
             <span *ngIf="searchError.length" id="name-error" class="govuk-error-message">
               <span class="govuk-visually-hidden">Error:</span>
-
-              <div *ngIf="searchError.includes('No resources match the search criteria.')">
-                Vehicle not found, check the vehicle registration mark, trailer ID, vehicle
-                identification number or change <br />
-                the search criteria to find a vehicle
-              </div>
-
-              <div *ngIf="searchError.length">
-                Enter a vehicle registration mark, trailer ID or vehicle identification number
-              </div>
-
-              <div
-                *ngIf="
-                  searchError.includes('The provided partial VIN returned more than one match.')
-                "
-              >
-                Multiple vehicles found, search using the full vehicle identification number
-              </div>
+              <p class="white-space--normal">{{ searchError }}</p>
             </span>
 
             <input
-                #searchIdentifier
-                [ngClass]="{
+              #searchIdentifier
+              [ngClass]="{
                 'govuk-input': true,
                 'govuk-input--error': searchError.length > 0
               }"
-                id="searchIdentifier"
-                name="searchIdentifier"
-                type="text"
-                aria-describedby="name-error"
+              id="searchIdentifier"
+              name="searchIdentifier"
+              type="text"
+              aria-describedby="name-error"
             />
           </div>
 
@@ -57,7 +40,7 @@
               <option
                 *ngFor="let searchCriteria of searchCriteriaOptions"
                 [value]="searchCriteria"
-              >{{ searchCriteria }}</option
+                >{{ searchCriteria }}</option
               >
             </select>
           </div>
