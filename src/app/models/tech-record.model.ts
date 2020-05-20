@@ -47,6 +47,7 @@ export interface AxleSpacing {
 
 export interface Dimensions {
   length: number;
+  height: number;
   width: number;
   axleSpacing: AxleSpacing[];
 }
@@ -172,6 +173,8 @@ export interface TechRecord {
   firstUseDate: string;
   coifDate: string;
   ntaNumber: string;
+  coifSerialNumber: string;
+  coifCertifierName: string;
   conversionRefNo: string;
   seatsLowerDeck: number;
   seatsUpperDeck: number;
@@ -224,6 +227,8 @@ export interface TechRecord {
   vehicleSubclass: string[];
   vehicleType: string;
   vehicleSize: string;
+  numberOfSeatbelts: string;
+  seatbeltInstallationApprovalDate: string;
   vehicleConfiguration: string;
   brakes: Brakes;
   axles: Axle[];
