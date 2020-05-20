@@ -19,7 +19,7 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
           scope="col"
         />
         <th
-          class="govuk-table__header"
+          class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
           GB weight (kg)
@@ -206,7 +206,7 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
           scope="col"
         />
         <th
-          class="govuk-table__header"
+          class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
           GB weight (kg)

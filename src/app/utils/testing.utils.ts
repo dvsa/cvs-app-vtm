@@ -20,7 +20,8 @@ import {
   PurchaserDetails,
   ManufacturerDetails,
   Axle,
-  Weights
+  Weights,
+  AxleSpacing
 } from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
@@ -58,7 +59,8 @@ export const TESTING_UTILS = {
   mockManufacturer,
   mockAxle,
   mockBrakes,
-  mockBodyType
+  mockBodyType,
+  mockAxleSpacing
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -337,4 +339,13 @@ function mockBodyType(args?: Partial<BodyType>): BodyType {
     description: 'the first letter should be capital'
   } as BodyType;
   return { ...mock, ...args };
+}
+
+function mockAxleSpacing(args?: Partial<AxleSpacing>): AxleSpacing {
+  const mock: AxleSpacing = {
+    axles: '1-2',
+    value: 1234
+  } as AxleSpacing;
+
+  return {...mock, ...args};
 }
