@@ -1,0 +1,8 @@
+.npmrc
+.scannerwork/sonarts-bundle/node_modules/tslint-sonarts/lib/rules/*.js.map
+.scannerwork/sonarts-bundle/node_modules/tslint-sonarts/lib/rules/*.js
+.scannerwork/sonarts-bundle/node_modules/tslint-sonarts/lib/rules/*.d.ts
+.scannerwork/sonarts-bundle/node_modules/js-yaml/lib/js-yaml/*.js
+.scannerwork/css-bundle/node_modules/caniuse-lite/data/features/*.js
+.scannerwork/css-bundle/node_modules/js-yaml/lib/js-yaml/*.js
+.scannerwork/css-bundle/node_modules/validate-npm-package-license/*.log
