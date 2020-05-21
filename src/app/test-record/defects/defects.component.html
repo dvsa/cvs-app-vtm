@@ -47,15 +47,13 @@
       Description
     </dt>
     <dd class="govuk-summary-list__value" id="test-deficiencyId-{{ i }}">
-      {{
-        [
-          '(' + (defect.deficiencyId | DefaultNullOrEmpty) + ')',
-          '(' + (defect.deficiencySubId | DefaultNullOrEmpty) + ')',
-          defect.deficiencyText
-        ]
-          | DisplayByDelimiter: ' '
-          | DefaultNullOrEmpty
-      }}
+      <span *ngIf="defect.deficiencyId; else space">
+        {{ ' (' + defect.deficiencyId + ')' }}
+      </span>
+      <span *ngIf="defect.deficiencySubId; else space">
+        {{ ' (' + defect.deficiencySubId + ') ' }}
+      </span>
+      {{ defect.deficiencyText | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -104,5 +102,5 @@
   </div>
 </dl>
 <ng-template #space>
-  <span> </span>
+  <span>&nbsp;</span>
 </ng-template>

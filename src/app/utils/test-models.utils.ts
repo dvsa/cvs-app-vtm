@@ -14,25 +14,25 @@ import { TestType } from '@app/models/test.type';
  */
 
 export const TEST_MODEL_UTILS = {
-    mockTestResult
-  };
-
+  mockTestResult,
+  mockTestType
+};
 
 function mockTestResult(args?: Partial<TestResultModel>): TestResultModel {
-    const mock: TestResultModel = {
-      testEndTimestamp: '2020-01-16T12:24:38.027Z',
-      testStartTimestamp: '2020-01-16T10:24:38.027Z',
-      testTypes: [mockTestType()]
-    } as TestResultModel;
-    return { ...mock, ...args };
-  }
+  const mock: TestResultModel = {
+    testEndTimestamp: '2020-01-16T12:24:38.027Z',
+    testStartTimestamp: '2020-01-16T10:24:38.027Z',
+    testTypes: [mockTestType()]
+  } as TestResultModel;
+  return { ...mock, ...args };
+}
 
-  function mockTestType(args?: Partial<TestType>): TestType {
-    const mock: TestType = {
-      testTypeName: 'first test',
-      testNumber: '123123',
-      testTypeEndTimestamp: '2020-01-16T12:24:38.027Z',
-      testExpiryDate: '2021-01-16T12:24:38.027Z'
-    } as TestType;
-    return { ...mock, ...args };
-  }
+function mockTestType(args?: Partial<TestType>): TestType {
+  const mock: TestType = {
+    testTypeName: 'first test',
+    testNumber: '123123',
+    testTypeEndTimestamp: '2020-01-16T12:24:38.027Z',
+    testExpiryDate: '2021-01-16T12:24:38.027Z'
+  } as TestType;
+  return { ...mock, ...args };
+}
