@@ -42,10 +42,10 @@
                     govuk-!-font-weight-regular govuk-body
                     govuk-!-font-size-19
                     grid-item-technical-record-status-value"
-                  >
-                    {{ activeRecord.statusCode | titlecase }}
-                  </div>
-                  <div class="grid-item-technical-record-status"></div>
+                >
+                  {{ activeRecord.statusCode | titlecase }}
+                </div>
+                <div class="grid-item-technical-record-status"></div>
                 <div class="grid-item-technical-record-status"></div>
               </div>
               <div class="grid-container-technical-record-status">
@@ -313,7 +313,11 @@
           </mat-expansion-panel>
         </div>
 
-        <div class="auto-pad" [@.disabled]="true">
+        <div
+          class="auto-pad"
+          [@.disabled]="true"
+          *ngIf="activeRecord.vehicleType === 'psv' || activeRecord.vehicleType === 'trl'"
+        >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
             hideToggle="true"
