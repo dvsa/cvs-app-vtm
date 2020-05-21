@@ -2,21 +2,22 @@
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Load sensing valve</dt>
     <dd id="test-loadSensingValve" class="govuk-summary-list__value">
-      {{  brakes?.loadSensingValve | DefaultNullOrEmpty }}
+      {{ brakes?.loadSensingValve | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Antilock braking system</dt>
     <dd id="test-antilockBrakingSystem" class="govuk-summary-list__value">
-      {{ brakes?.antilockBrakingSystem| DefaultNullOrEmpty }}
+      {{ brakes?.antilockBrakingSystem | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
 </dl>
+
 <ng-container *ngIf="axles && currentVehicleType === 'trl'">
   <ng-container *ngFor="let axle of axles">
-      <vtm-axle-brakes [axle]="axle" [vehicleType]="currentVehicleType"></vtm-axle-brakes>
+    <vtm-axle-brakes [axle]="axle" [vehicleType]="currentVehicleType"></vtm-axle-brakes>
   </ng-container>
 </ng-container>
 
