@@ -46,11 +46,11 @@
     <dt class="govuk-summary-list__key">
       Description
     </dt>
-    <dd class="govuk-summary-list__value" id="test-deficencyId-{{ i }}">
+    <dd class="govuk-summary-list__value" id="test-deficiencyId-{{ i }}">
       {{
         [
           '(' + (defect.deficiencyId | DefaultNullOrEmpty) + ')',
-          defect.deficiencySubId,
+          '(' + (defect.deficiencySubId | DefaultNullOrEmpty) + ')',
           defect.deficiencyText
         ]
           | DisplayByDelimiter: ' '
