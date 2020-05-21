@@ -57,9 +57,13 @@
       id="test-vehicleSummary-seatbeltInstallationApprovalDate"
       class="govuk-summary-list__value"
     >
-      {{ activeRecord.seatbeltInstallationApprovalDate | DefaultNullOrEmpty }}
+      <span *ngIf="activeRecord.seatbeltInstallationApprovalDate; else hyphen">
+        {{ activeRecord.seatbeltInstallationApprovalDate | date: 'dd/MM/yyyy' }}
+      </span>
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
   <dl class="govuk-summary-list"></dl>
 </dl>
+
+<ng-template #hyphen><span>-</span></ng-template>

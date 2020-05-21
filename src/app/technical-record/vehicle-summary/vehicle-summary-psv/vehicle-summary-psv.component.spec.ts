@@ -28,9 +28,6 @@ describe('PsvVehicleSummaryComponent', () => {
     component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
   }));
 
-  beforeEach(() => {
-  });
-
   it('should create view only with populated data', () => {
     fixture.detectChanges();
 

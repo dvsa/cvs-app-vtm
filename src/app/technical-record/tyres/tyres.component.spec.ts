@@ -31,6 +31,14 @@ describe('TyresComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 
+  it('should create psv view only with populated data', () => {
+    component.activeRecord.vehicleType = 'psv';
+    fixture.detectChanges();
+
+    expect(component).toBeDefined();
+    expect(fixture).toMatchSnapshot();
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });
