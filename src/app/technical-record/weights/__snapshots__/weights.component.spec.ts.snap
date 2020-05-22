@@ -33,7 +33,7 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
           class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
-          Design weight (kg)
+           Design weight (kg) 
         </th>
         <th
           class="govuk-table__cell"
@@ -156,25 +156,25 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
         <th
           class="govuk-table__cell govuk-!-font-weight-bold"
         >
-          Axle 1
+           Axle 1 
         </th>
         <td
           class="govuk-table__cell"
           id="test-gbWeight-1"
         >
-           100
+           100 
         </td>
         <td
           class="govuk-table__cell"
           id="test-eecWeight-1"
         >
-           150
+           150 
         </td>
         <td
           class="govuk-table__cell"
           id="test-designWeight-1"
         >
-           250
+           250 
         </td>
         <td
           class="govuk-table__cell"
@@ -221,7 +221,7 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
           class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
-          Design weight (kg)
+           Design weight (kg) 
         </th>
         <th
           class="govuk-table__cell"
@@ -308,25 +308,25 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
         <th
           class="govuk-table__cell govuk-!-font-weight-bold"
         >
-          Axle 1
+           Axle 1 
         </th>
         <td
           class="govuk-table__cell"
           id="test-gbWeight-1"
         >
-           100
+           100 
         </td>
         <td
           class="govuk-table__cell"
           id="test-eecWeight-1"
         >
-           150
+           150 
         </td>
         <td
           class="govuk-table__cell"
           id="test-designWeight-1"
         >
-           250
+           250 
         </td>
         <td
           class="govuk-table__cell"
