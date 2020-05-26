@@ -9,7 +9,7 @@ import { hot, cold } from 'jasmine-marbles';
 import { RouterStateUrl } from './../index';
 import { RouterEffects } from './router.effects';
 import { VIEW_STATE } from './../../app.enums';
-import { getViewState } from '../selectors/VehicleTechRecordModel.selectors';
+import { getTechViewState } from '../selectors/VehicleTechRecordModel.selectors';
 import { SetViewState } from '../actions/VehicleTechRecordModel.actions';
 import {
   RouterNavigationAction,
@@ -22,7 +22,7 @@ const mockSelector = new BehaviorSubject<any>(undefined);
 class MockStore {
   select(selector: any) {
     switch (selector) {
-      case getViewState:
+      case getTechViewState:
         return mockSelector.pipe(
           map((value: any) =>
             value && value.hasOwnProperty('getViewState') ? value['getViewState'] : {}

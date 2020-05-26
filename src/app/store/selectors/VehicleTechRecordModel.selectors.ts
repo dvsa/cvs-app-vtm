@@ -27,7 +27,7 @@ export const getVehicleTechRecordMetaData = createSelector(
   (state: VehicleTechRecordModel) => state.metadata
 );
 
-export const getViewState = createSelector(
+export const getTechViewState = createSelector(
   selectFeature,
   (state: IVehicleTechRecordModelState) => state.viewState
 );

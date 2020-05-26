@@ -7,7 +7,7 @@ import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResul
 import {
   getVehicleTechRecordMetaData,
   getSelectedVehicleTechRecord,
-  getViewState
+  getTechViewState
 } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 import { MetaData } from '@app/models/meta-data';
 import { TechRecord } from '@app/models/tech-record.model';
@@ -49,7 +49,7 @@ export class TechnicalRecordsContainer implements OnInit {
     this.vehicleTechnicalRecord$ = this.store.select(getSelectedVehicleTechRecord);
     this.testResults$ = this.store.select(getVehicleTestResultModel);
     this.metaData$ = this.store.select(getVehicleTechRecordMetaData);
-    this.viewState$ = this.store.select(getViewState);
+    this.viewState$ = this.store.select(getTechViewState);
   }
 
   ngOnInit(): void {}
