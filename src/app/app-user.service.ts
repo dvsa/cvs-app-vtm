@@ -14,7 +14,10 @@ export class UserService {
     this.user.msUser = userProfile.unique_name;
   }
 
+  // TODO: Refactor, remove when auth class is implemented,
+  // user retrieved from the store user.details
   getUser() {
     return this.user;
   }
+
 }

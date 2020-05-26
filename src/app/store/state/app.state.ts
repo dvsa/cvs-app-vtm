@@ -21,6 +21,7 @@ import { ModalState } from '@app/modal/modal.reducer';
 import { initialModalState } from '../../modal/modal.reducer';
 import { ModalEffects } from '@app/modal/modal.effects';
 import { AppFormEffects } from '../effects/app-form.effects';
+import { UserState, initialUserState } from '../reducers/User.reducers';
 
 export interface IAppState {
   router?: RouterReducerState;
@@ -31,6 +32,7 @@ export interface IAppState {
   error: ErrorState;
   appFormState: AppFormState;
   modalState: ModalState;
+  user: UserState;
 }
 
 export const initialAppState: IAppState = {
@@ -41,6 +43,7 @@ export const initialAppState: IAppState = {
   error: initialErrorState,
   appFormState: initialAppFormState,
   modalState: initialModalState,
+  user: initialUserState
 };
 
 export const getInitialState = (): IAppState => initialAppState;

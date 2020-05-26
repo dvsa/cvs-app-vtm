@@ -9,6 +9,7 @@ import { ErrorReducer } from './error.reducers';
 import { ReferenceDataReducers } from '@app/store/reducers/ReferenceData.reducers';
 import { AppFormStateReducer } from './app-form-state.reducers';
 import { ModalReducer } from '../../modal/modal.reducer';
+import { UserReducer } from './User.reducers';
 
 export const appReducers: ActionReducerMap<IAppState> = {
   router: routerReducer,
@@ -18,5 +19,7 @@ export const appReducers: ActionReducerMap<IAppState> = {
   referenceData: ReferenceDataReducers,
   error: ErrorReducer,
   appFormState: AppFormStateReducer,
-  modalState: ModalReducer
+  modalState: ModalReducer,
+  user: UserReducer
+
 };
