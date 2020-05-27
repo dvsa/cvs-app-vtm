@@ -102,4 +102,12 @@ export class TestResultService {
         finalize(() => this._store.dispatch(new LoadingFalse()))
       );
   }
+
+  downloadCertificate(fileName: string) {
+    const headers = new HttpHeaders().set('Accept', '*/*');
+    return this.httpClient.get(`${this._apiServer.APICertificatesBlobUri}${fileName}`, {
+      headers,
+      responseType: 'arraybuffer'
+    });
+  }
 }

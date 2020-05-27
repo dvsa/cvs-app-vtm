@@ -3,6 +3,7 @@
 exports[`TestRecordComponent should create 1`] = `
 <vtm-test-record
   dialog={[Function MatDialog]}
+  downloadCert={[Function EventEmitter]}
   editState="0"
   fb={[Function FormBuilder]}
   hasDefectsApplicable={[Function String]}

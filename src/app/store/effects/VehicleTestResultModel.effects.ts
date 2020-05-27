@@ -6,7 +6,8 @@ import {
   GetVehicleTestResultModelSuccess,
   SetTestViewState,
   UpdateTestResult,
-  UpdateTestResultSuccess
+  UpdateTestResultSuccess,
+  DownloadCertificate
 } from '@app/store/actions/VehicleTestResultModel.actions';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -21,6 +22,7 @@ import { VIEW_STATE } from '@app/app.enums';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
 import { UserService } from '@app/app-user.service';
 import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import * as FileSaver from 'file-saver';
 
 @Injectable()
 export class VehicleTestResultModelEffects {
@@ -79,6 +81,26 @@ export class VehicleTestResultModelEffects {
             return [new SetErrorMessage(errorMessage)];
           })
         );
+    })
+  );
+
+  @Effect()
+  downloadCertificate$ = this._actions$.pipe(
+    ofType<DownloadCertificate>(EVehicleTestResultModelActions.DownloadCertificate),
+    map((action) => action.payload),
+    switchMap((fileName: string) => {
+      return this._testResultService.downloadCertificate(fileName).pipe(
+        switchMap((documentBlob: string | Blob) => {
+          FileSaver.saveAs(documentBlob, fileName);
+          return of(undefined);
+        }),
+        catchError((error) => {
+          const errorMsg = `A digital certificate could not be found for this test.
+            Try resaving this test record to generate a new certificate or manually issue a copy using the information on this page.`;
+
+          return of(new SetErrorMessage([errorMsg]));
+        })
+      );
     })
   );
 
