@@ -14,7 +14,8 @@ const appConfigMock = {
   get settings() {
     return {
       apiServer: {
-        APITestResultServerUri: 'http://localhost:3006'
+        APITestResultServerUri: 'http://localhost:3006',
+        APICertificatesBlobUri: 'http://someCertificate'
       }
     };
   }
@@ -132,11 +133,28 @@ describe('TestResultService', () => {
     });
     expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
 
-    const req = httpMock.expectOne((request) => request.url.includes('/test-results/111?testResultId=222&version=all'));
+    const req = httpMock.expectOne((request) =>
+      request.url.includes('/test-results/111?testResultId=222&version=all')
+    );
     expect(req.request.method).toBe('GET');
     req.flush(mock);
   });
 
+  describe('downloadCertificate', () => {
+    it('should download the document', () => {
+      const fileName = '_fileName';
+
+      const uri = `${appConfigMock.settings.apiServer.APICertificatesBlobUri}${fileName}`;
+      // act
+      service.downloadCertificate(fileName).subscribe();
+
+      // assert
+      const getRequest = httpMock.expectOne((req) => req.url.includes(uri));
+      expect(getRequest.request.method).toBe('GET');
+      expect(getRequest.request.url).toEqual(uri);
+      expect(getRequest.request.headers.get('Accept')).toEqual('*/*');
+    });
+  });
 
   afterAll(() => {
     TestBed.resetTestingModule();

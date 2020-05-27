@@ -14,7 +14,8 @@ import { VIEW_STATE } from '@app/app.enums';
 import { TestResultModel } from '@app/models/test-result.model';
 import {
   SetTestViewState,
-  UpdateTestResult
+  UpdateTestResult,
+  DownloadCertificate
 } from '@app/store/actions/VehicleTestResultModel.actions';
 import { TestStation } from '@app/models/test-station';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
@@ -32,6 +33,7 @@ import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-numb
           [testTypesApplicable]="this.testTypesApplicable"
           (submitTest)="onTestSubmit($event)"
           (switchState)="currentStateHandler($event)"
+          (downloadCert)="downloadCertificate($event)"
         >
         </vtm-test-record>
     </ng-container>
@@ -89,5 +91,9 @@ export class TestRecordContainer implements OnInit {
 
   currentStateHandler(state: VIEW_STATE) {
     this.store.dispatch(new SetTestViewState(state));
+  }
+
+  downloadCertificate(fileName: string) {
+    this.store.dispatch(new DownloadCertificate(fileName));
   }
 }
