@@ -24,12 +24,6 @@ describe('TestRecordContainer', () => {
   let container: TestRecordContainer;
   let fixture: ComponentFixture<TestRecordContainer>;
   const store: MockStore = new MockStore(mockSelector);
-  const testRecordTestType = {} as TestRecordTestType;
-  const testResultTestTypeNumber: TestResultTestTypeNumber = {
-    testResultUpdated: testRecordTestType.testRecord,
-    testTypeNumber: '1',
-    testResultsUpdated: {} as TestResultModel[]
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

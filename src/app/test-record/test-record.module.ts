@@ -22,6 +22,8 @@ import { EmissionDetailsEditComponent } from './emission-details/edit/emission-d
 import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { VisitEditComponent } from './visit/edit/visit-edit.component';
 import { AutocompleteComponent } from '@app/shared/components/autocomplete/autocomplete.component';
+import { VehicleTestResultModelEffects } from '@app/store/effects/VehicleTestResultModel.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 export const COMPONENTS = [
   TestRecordComponent,
@@ -52,6 +54,7 @@ export const MODULES = [
       canActivate: [AuthenticationGuard]
     }
   ]),
+  EffectsModule.forFeature([VehicleTestResultModelEffects]),
   SharedModule,
   LibrariesModule,
   ReactiveFormsModule

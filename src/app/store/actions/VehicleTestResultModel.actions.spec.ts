@@ -11,6 +11,7 @@ import {
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
 import { TEST_MODEL_UTILS } from '../../utils/test-models.utils';
+import { DownloadCertificate } from './VehicleTestResultModel.actions';
 
 const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestResult({
   testerStaffId: '21',
@@ -100,6 +101,17 @@ describe('SetSelectedTestResultModelSuccess', () => {
     expect({ ...actionInstance }).toEqual({
       type: EVehicleTestResultModelActions.SetSelectedTestResultModelSuccess,
       payload: testResultModelExample
+    });
+  });
+});
+
+describe('DownloadCertificate', () => {
+  it('action should have correct type & payload', () => {
+    const actionInstance = new DownloadCertificate('');
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.DownloadCertificate,
+      payload: ''
     });
   });
 });
