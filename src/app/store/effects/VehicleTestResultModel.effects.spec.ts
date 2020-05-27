@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Action, Store } from '@ngrx/store';
@@ -20,6 +20,8 @@ import { ClearErrorMessage } from '@app/store/actions/Error.actions';
 import { UserService } from '@app/app-user.service';
 import { UserDetails } from '@app/models/user-details';
 import { MockStore } from '@app/utils/mockStore';
+import { DownloadCertificate } from '../actions/VehicleTestResultModel.actions';
+import * as FileSaver from 'file-saver';
 
 const testResult = [TESTING_TEST_MODELS_UTILS.mockTestRecord()];
 const mockSelector = new BehaviorSubject<any>(undefined);
@@ -34,11 +36,13 @@ describe('VehicleTestResultModelEffects', () => {
   let updateTestResults: jest.Mock;
   let getTestResults: jest.Mock;
   let getUser: jest.Mock;
+  let downloadCertificate: jest.Mock;
 
   beforeEach(() => {
     updateTestResults = jest.fn();
     getTestResults = jest.fn();
     getUser = jest.fn();
+    downloadCertificate = jest.fn();
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -46,7 +50,7 @@ describe('VehicleTestResultModelEffects', () => {
         [VehicleTestResultModelEffects, provideMockActions(() => actions$)],
         {
           provide: TestResultService,
-          useValue: { updateTestResults, getTestResults }
+          useValue: { updateTestResults, getTestResults, downloadCertificate }
         },
         {
           provide: Store,
@@ -69,7 +73,6 @@ describe('VehicleTestResultModelEffects', () => {
   });
 
   describe('getTestResults$', () => {
-
     it('should return test results observable', () => {
       action = new GetVehicleTestResultModel('123');
       actions$ = hot('-a--', { a: action });
@@ -126,6 +129,47 @@ describe('VehicleTestResultModelEffects', () => {
         msUserDetails: userDetails,
         testResult: testResultTestTypeNumber.testResultsUpdated[0]
       });
+    });
+  });
+
+  describe('downloadCertificate', () => {
+    const fileName = 'file_name.pdf';
+    beforeEach(() => {
+      action = new DownloadCertificate(fileName);
+      actions$ = hot('-a--', { a: action });
+    });
+    it('should download certificate', () => {
+      const arrayBuff = new ArrayBuffer(100);
+      const downloadedDoc = new Blob([arrayBuff]);
+      spyOn(FileSaver, 'saveAs').and.stub();
+
+      const downloadedCert$ = cold('-(b|)-', {
+        b: arrayBuff
+      });
+
+      const expected$ = cold('--(c)-', {
+        c: undefined
+      });
+
+      downloadCertificate.mockReturnValue(downloadedCert$);
+
+      expect(effects.downloadCertificate$).toBeObservable(expected$);
+      expect(downloadCertificate).toHaveBeenCalledWith(fileName);
+      expect(FileSaver.saveAs).toHaveBeenCalledWith(downloadedDoc, fileName, { autoBom: false });
+    });
+
+    it('should dispatch SetErrorMessage Action', () => {
+      const error = new Error('some error');
+      const errorMsg = ['error'];
+
+      const failed$ = cold('-#', {}, error);
+      const expected$ = cold('--e-', {
+        e: undefined
+      });
+
+      downloadCertificate.mockReturnValue(failed$);
+
+      expect(effects.downloadCertificate$).toBeObservable(expected$);
     });
   });
 });

@@ -93,4 +93,16 @@ describe('TestRecordComponent', () => {
     component.onSaveTestResult(testResultParentForm);
     expect(formRawValue).toMatchObject({ testTypes: { testTypeId: '1' } });
   });
+
+  it('should emit on download certificate', () => {
+    spyOn(component.downloadCert, 'emit');
+    component.downloadCertificate();
+
+    component.testResultParentForm.valueChanges.subscribe(() => {
+      expect(component.downloadCert.emit).toHaveBeenCalled();
+    });
+
+    expect(component.testResultObj).toEqual(testObject);
+  });
 });
+

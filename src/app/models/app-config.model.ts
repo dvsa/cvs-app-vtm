@@ -30,5 +30,6 @@ export interface IAppConfig {
     APIDocumentBlobUri: string;
     APIPreparersServerUri: string;
     APITestStationsServerUri: string;
+    APICertificatesBlobUri: string;
   };
 }
