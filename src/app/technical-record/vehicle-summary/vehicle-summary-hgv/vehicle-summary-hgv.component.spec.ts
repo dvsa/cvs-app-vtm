@@ -1,37 +1,38 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VehicleSummaryPsvComponent } from './vehicle-summary-psv.component';
-import { SharedModule } from '@app/shared/shared.module';
+import { VehicleSummaryHgvComponent } from './vehicle-summary-hgv.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SharedModule } from '@app/shared/shared.module';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
+import { TechRecord } from '@app/models/tech-record.model';
 
-describe('PsvVehicleSummaryComponent', () => {
-  let component: VehicleSummaryPsvComponent;
-  let fixture: ComponentFixture<VehicleSummaryPsvComponent>;
+describe('VehicleSummaryHgvComponent', () => {
+  let component: VehicleSummaryHgvComponent;
+  let fixture: ComponentFixture<VehicleSummaryHgvComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [VehicleSummaryPsvComponent],
+      declarations: [VehicleSummaryHgvComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
+  }));
 
-    fixture = TestBed.createComponent(VehicleSummaryPsvComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(VehicleSummaryHgvComponent);
     component = fixture.componentInstance;
-    component.activeRecord = TESTING_UTILS.mockTechRecord({
-      approvalType: 'approval',
-      variantNumber: '123',
-      ntaNumber: '4566',
+    component.activeRecord = {
+      vehicleType: 'hgv',
+      drawbarCouplingFitted: true,
+      offRoad: false,
       speedLimiterMrk: true,
       tachoExemptMrk: true,
       euroStandard: '6',
       fuelPropulsionSystem: 'gas',
       numberOfWheelsDriven: 4,
-      emissionsLimit: 23,
-      vehicleClass: TESTING_UTILS.mockBodyType()
-    });
-    component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
-  }));
+      emissionsLimit: 23
+    } as TechRecord;
+  });
 
   it('should create view only with populated data', () => {
     fixture.detectChanges();
