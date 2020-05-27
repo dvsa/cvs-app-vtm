@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VehicleSummaryComponent should create view only with populated data 1`] = `
-<vtm-vehicle-summary
+exports[`VehicleSummaryTrlComponent should create view only with populated data 1`] = `
+<vtm-vehicle-summary-trl
   activeRecord={[Function Object]}
-  vehicleClassDescription={[Function String]}
 >
   <dl
     class="govuk-summary-list"
@@ -14,33 +13,15 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle type 
+         First use date 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleType"
-      >
-         - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Date of first registration 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-regnDate"
+        id="test-firstUseDate"
       >
         
         <span>
-          -
+           01/01/1970 
         </span>
       </dd>
       <dd
@@ -53,13 +34,13 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Year of manufacture 
+         Suspension type 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-manufactureYear"
+        id="test-suspensionType"
       >
-         - 
+         type 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -71,59 +52,72 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
       <dt
         class="govuk-summary-list__key"
       >
-         Number of axles 
+         Coupling type 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-noOfaxles"
+        id="test-couplingType"
       >
-         - 
+         type 
       </dd>
       <dd
         class="govuk-summary-list__value"
       />
     </div>
-    
-    
     <div
       class="govuk-summary-list__row"
     >
       <dt
         class="govuk-summary-list__key"
       >
-         Vehicle class 
+         Max load on coupling 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleClassDescription"
+        id="test-maxLoadOnCoupling"
       >
-         The first letter should be capital 
+         23 
       </dd>
       <dd
         class="govuk-summary-list__value"
       />
     </div>
-    
     <div
       class="govuk-summary-list__row"
     >
       <dt
         class="govuk-summary-list__key"
       >
-         EU vehicle category 
+         Frame description 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-euVehicleCategory"
+        id="test-frameDescription"
       >
-         - 
+         none 
       </dd>
       <dd
         class="govuk-summary-list__value"
       />
     </div>
-    
-    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Road friendly suspension 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-roadFriendly"
+      >
+         Yes 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
   </dl>
-</vtm-vehicle-summary>
+</vtm-vehicle-summary-trl>
 `;
