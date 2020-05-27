@@ -31,7 +31,7 @@
       <th class="govuk-table__cell"></th>
     </tr>
 
-    <tr class="govuk-table__row">
+    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv'">
       <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
       <td id="test-trainGbWeight" class="govuk-table__cell">
         {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
