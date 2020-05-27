@@ -61,69 +61,31 @@
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
-      Seats lower deck
+      Drawbar coupling fitted
     </dt>
-    <dd id="test-vehicleSummary-seatsLowerDeck" class="govuk-summary-list__value">
-      {{ activeRecord.seatsLowerDeck | DefaultNullOrEmpty }}
+    <dd id="test-drawbarCouplingFitted" class="govuk-summary-list__value">
+      {{ activeRecord.drawbarCouplingFitted | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
-      Seats upper deck
+      Offroad vehicle
     </dt>
-    <dd id="test-vehicleSummary-seatsUpperDeck" class="govuk-summary-list__value">
-      {{ activeRecord.seatsUpperDeck | DefaultNullOrEmpty }}
+    <dd id="test-offRoad" class="govuk-summary-list__value">
+      {{ activeRecord.offRoad | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
 
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
-      Standing capacity
+      Road friendly suspension
     </dt>
-    <dd id="test-vehicleSummary-standingCapacity" class="govuk-summary-list__value">
-      {{ activeRecord.standingCapacity | DefaultNullOrEmpty }}
+    <dd id="test-roadFriendly" class="govuk-summary-list__value">
+      {{ activeRecord.roadFriendly | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Vehicle size
-    </dt>
-    <dd id="test-vehicleSummary-vehicleSize" class="govuk-summary-list__value">
-      {{ activeRecord.vehicleSize | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Number of seat belts
-    </dt>
-    <dd id="test-vehicleSummary-numberOfSeatbelts" class="govuk-summary-list__value">
-      {{ activeRecord.numberOfSeatbelts | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Seatbelt installation approval date / type approved
-    </dt>
-    <dd
-      id="test-vehicleSummary-seatbeltInstallationApprovalDate"
-      class="govuk-summary-list__value"
-    >
-      <span *ngIf="activeRecord.seatbeltInstallationApprovalDate; else hyphen">
-        {{ activeRecord.seatbeltInstallationApprovalDate | date: 'dd/MM/yyyy' }}
-      </span>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-  <dl class="govuk-summary-list"></dl>
 </dl>
-
-<ng-template #hyphen><span>-</span></ng-template>
