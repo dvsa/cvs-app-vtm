@@ -79,6 +79,7 @@ exports[`WeightsComponent should create hgv view only with populated data 1`] = 
           class="govuk-table__cell"
         />
       </tr>
+      
       <tr
         class="govuk-table__row"
       >
@@ -267,39 +268,7 @@ exports[`WeightsComponent should create trl view only with populated data 1`] = 
           class="govuk-table__cell"
         />
       </tr>
-      <tr
-        class="govuk-table__row"
-      >
-        <th
-          class="govuk-table__cell govuk-!-font-weight-bold"
-        >
-          Train
-        </th>
-        <td
-          class="govuk-table__cell"
-          id="test-trainGbWeight"
-        >
-           - 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-trainEecWeight"
-        >
-           - 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-trainDesignWeight"
-        >
-           - 
-        </td>
-        <td
-          class="govuk-table__cell"
-        />
-        <td
-          class="govuk-table__cell"
-        />
-      </tr>
+      
       
       
       <tr
