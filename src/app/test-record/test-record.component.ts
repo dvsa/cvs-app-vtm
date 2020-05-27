@@ -31,6 +31,7 @@ export class TestRecordComponent implements OnInit {
   @Input() testTypesApplicable: TestTypesApplicable;
   @Output() submitTest = new EventEmitter<TestResultModel>();
   @Output() switchState = new EventEmitter<VIEW_STATE>();
+  @Output() downloadCert = new EventEmitter<string>();
   testResultParentForm: FormGroup;
 
   hasDefectsApplicable: boolean;
@@ -86,7 +87,6 @@ export class TestRecordComponent implements OnInit {
   }
 
   onSaveTestResult(testResultParentForm) {
-
     const testResultUpdated: TestResultModel = this.testRecordMapper.mapFormValues(
       JSON.parse(JSON.stringify(this.testResultParentForm.getRawValue())),
       this.testResultObj
@@ -103,5 +103,10 @@ export class TestRecordComponent implements OnInit {
         this.submitTest.emit(testResultUpdated);
       }
     });
+  }
+
+  downloadCertificate() {
+    const fileName = `${this.testResultObj.testType.testNumber}_${this.testResultObj.testRecord.vin}.pdf`;
+    this.downloadCert.emit(fileName);
   }
 }
