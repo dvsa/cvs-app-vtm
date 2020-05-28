@@ -48,8 +48,6 @@ import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
 import { BodyPsvComponent } from './body/body-psv/body-psv.component';
 import { WeightsPsvComponent } from './weights/weights-psv/weights-psv.component';
 import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-psv/vehicle-summary-psv.component';
-import { VehicleSummaryHgvComponent } from './vehicle-summary/vehicle-summary-hgv/vehicle-summary-hgv.component';
-import { VehicleSummaryTrlComponent } from './vehicle-summary/vehicle-summary-trl/vehicle-summary-trl.component';
 
 @NgModule({
   imports: [
@@ -97,8 +95,6 @@ import { VehicleSummaryTrlComponent } from './vehicle-summary/vehicle-summary-tr
     BodyPsvComponent,
     WeightsPsvComponent,
     VehicleSummaryPsvComponent,
-    VehicleSummaryHgvComponent,
-    VehicleSummaryTrlComponent
   ],
   exports: [TechnicalRecordsContainer, TechnicalRecordComponent]
 })

@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TechRecord } from '@app/models/tech-record.model';
-import { VEHICLE_TYPES } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-vehicle-summary',
@@ -31,14 +30,6 @@ export class VehicleSummaryComponent implements OnInit {
     return (
       this.activeRecord.vehicleClass.description.charAt(0).toUpperCase() +
       this.activeRecord.vehicleClass.description.substr(1).toLowerCase()
-    );
-  }
-
-  isStandardVehicle(vehicleType: string): boolean {
-    return (
-      VEHICLE_TYPES.HGV === vehicleType ||
-      VEHICLE_TYPES.TRL === vehicleType ||
-      VEHICLE_TYPES.PSV === vehicleType
     );
   }
 }

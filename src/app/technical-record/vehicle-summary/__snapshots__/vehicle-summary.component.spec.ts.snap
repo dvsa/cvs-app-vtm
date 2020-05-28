@@ -47,6 +47,7 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+    
     <div
       class="govuk-summary-list__row"
     >
@@ -83,8 +84,77 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         DTP number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-dtpNumber"
+      >
+        
+        <span>
+          -
+        </span>
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Axles fitted with a parking brake 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-parkingBrakeMrk"
+      >
+        
+        
+        
+        <div>
+          
+          <div>
+            <span
+              id="test-parkingBrakeMrkAxle-1"
+            >
+              Axle 1
+            </span>
+          </div>
+        </div>
+        
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
     
-    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Road friendly suspension 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-roadFriendly"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
     <div
       class="govuk-summary-list__row"
     >
@@ -103,6 +173,33 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Vehicle configuration 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-vehicleConfiguration"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     <div
       class="govuk-summary-list__row"
@@ -122,6 +219,142 @@ exports[`VehicleSummaryComponent should create view only with populated data 1`]
         class="govuk-summary-list__value"
       />
     </div>
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Departmental vehicle marker 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-departmentalVehicleMarker"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Alteration marker 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-alterationMarker"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl><dl
+    class="govuk-summary-list"
+  >
+    <h2
+      class="govuk-heading-m"
+    >
+      Type Approval
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Approval type
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-approvalType"
+      >
+         approval 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Approval type number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-approvalTypeNumber"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        National type approval number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-ntaNumber"
+      >
+         4566 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Variant number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-variantNumber"
+      >
+         123 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Variant version number
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-variantVersionNumber"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    
     
     
   </dl>

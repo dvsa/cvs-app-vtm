@@ -1,10 +1,7 @@
 export enum VEHICLE_TYPES {
   PSV = 'psv',
   HGV = 'hgv',
-  TRL = 'trl',
-  Car = 'car',
-  LGV = 'lgv',
-  Moto = 'motorcycle'
+  TRL = 'trl'
 }
 
 export enum SEARCH_CRITERIA {
@@ -98,3 +95,4 @@ export enum COUNTRY_OF_REGISTRATION {
   'non-eu' = 'Non EU',
   'not-known' = 'Country Not Known'
 }
+
