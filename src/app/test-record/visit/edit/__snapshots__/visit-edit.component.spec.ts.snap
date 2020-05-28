@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VisitEditComponent should create 1`] = `
+<vtm-visit-edit
+  testRecord={[Function Object]}
+  testRecordMapper={[Function TestRecordMapper]}
+  testResultChildForm={[Function FormGroupDirective]}
+  testStationType=""
+  testStations={[Function Array]}
+  testStationsOptions={[Function Array]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="govuk-form-group"
+          >
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Test facility name/number 
+                </label>
+                <vtm-autocomplete
+                  ariadescribedby="testStationNameNumber"
+                  class="ng-untouched ng-pristine ng-valid"
+                  formcontrolname="testStationNameNumber"
+                  id="testStationNameNumber"
+                  ng-reflect-autocomplete-data="undefined (1)"
+                  ng-reflect-name="testStationNameNumber"
+                  ngdefaultcontrol=""
+                >
+                  <div>
+                    undefined (1)
+                  </div>
+                </vtm-autocomplete>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-full"
+              >
+                <div
+                  class="govuk-inset-text govuk-!-padding-bottom-0"
+                >
+                  <div
+                    class="govuk-grid-row"
+                  >
+                    <div
+                      class="govuk-grid-column-one-third govuk-!-font-weight-bold govuk-!-padding-right-0"
+                    >
+                       Type of test facility 
+                    </div>
+                    <div
+                      class="govuk-grid-column-one-half govuk-!-padding-left-0 section--test-station"
+                    >
+                      <span>
+                          
+                      </span>
+                      <input
+                        class="govuk-input govuk-!-padding-bottom-5 border--none ng-untouched ng-pristine"
+                        disabled=""
+                        formcontrolname="testStationType"
+                        id="test-testStationType"
+                        ng-reflect-name="testStationType"
+                        type="hidden"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Tester name 
+                </label>
+                <input
+                  class="govuk-input ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="testerName"
+                  id="test-testerName"
+                  ng-reflect-name="testerName"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-one-half"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Email address 
+                </label>
+                <input
+                  class="govuk-input ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="testerEmailAddress"
+                  id="test-testerEmailAddress"
+                  ng-reflect-name="testerEmailAddress"
+                />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-visit-edit>
+`;

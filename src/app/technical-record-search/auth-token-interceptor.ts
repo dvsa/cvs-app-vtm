@@ -27,11 +27,11 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       );
     }
 
-    const authorizedRequest = req.clone({
+    const authorizedAdalRequest = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${this.adal.accessToken}`)
     });
 
     this.userSvc.setUser(this.adal.userInfo.profile);
-    return next.handle(authorizedRequest);
+    return next.handle(authorizedAdalRequest);
   }
 }

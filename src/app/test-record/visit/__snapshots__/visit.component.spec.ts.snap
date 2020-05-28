@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VisitComponent should create 1`] = `
+<vtm-visit
+  editState="0"
+  testRecord={[Function Object]}
+  testStations={[Function Array]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test facility name/number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testStationName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Type of test facility 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testStationType"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Tester name 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testerName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Email address 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-testerEmailAddress"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-visit>
+`;
+
+exports[`VisitComponent should render edit template if editState is EDIT 1`] = `
+<vtm-visit
+  editState={[Function Number]}
+  testRecord={[Function Object]}
+  testStations={[Function Array]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test facility name/number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testStationName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Type of test facility 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testStationType"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Tester name 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testerName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Email address 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-testerEmailAddress"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-visit>
+`;
+
+exports[`VisitComponent should render view template if editState is VIEW_ONLY 1`] = `
+<vtm-visit
+  editState="0"
+  testRecord={[Function Object]}
+  testStations={[Function Array]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test facility name/number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testStationName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Type of test facility 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testStationType"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Tester name 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testerName"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Email address 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-testerEmailAddress"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-visit>
+`;

@@ -23,7 +23,6 @@ describe('TechnicalRecordSearchComponent', () => {
   let fixture: ComponentFixture<TechnicalRecordCreateComponent>;
   let store: Store<IAppState>;
   let injector: TestBed;
-  let timerCallback;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -65,6 +64,7 @@ describe('TechnicalRecordSearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(fixture).toMatchSnapshot();
   });
 
   it('form invalid when empty', () => {

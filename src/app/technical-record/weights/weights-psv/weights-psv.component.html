@@ -1,0 +1,77 @@
+<table class="govuk-table table-details">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header"></th>
+      <th scope="col" class="govuk-table__header">GB weight (kg)</th>
+      <th scope="col" class="govuk-table__header">Design weight (kg)</th>
+      <td scope="col" class="govuk-table__header">Kerb weight (kg)</td>
+      <td scope="col" class="govuk-table__header">Laden weight (kg)</td>
+      <td scope="col" class="govuk-table__header">Unladen weight (kg)</td>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <th class="govuk-table__cell govuk-!-font-weight-bold">Gross</th>
+      <td id="test-grossGbWeight" class="govuk-table__cell">
+        {{ activeRecord.grossGbWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-grossDesignWeight" class="govuk-table__cell">
+        {{ activeRecord.grossDesignWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-grossKerbWeight" class="govuk-table__cell">
+        {{ activeRecord.grossKerbWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-grossLadenWeight" class="govuk-table__cell">
+        {{ activeRecord.grossLadenWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-unladenWeight" class="govuk-table__cell">
+        {{ activeRecord.unladenWeight | DefaultNullOrEmpty }}
+      </td>
+    </tr>
+
+    <tr class="govuk-table__row">
+      <th class="govuk-table__cell govuk-!-font-weight-bold">Train</th>
+      <td id="test-trainGbWeight" class="govuk-table__cell">
+        {{ activeRecord.trainGbWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-trainDesignWeight" class="govuk-table__cell">
+        {{ activeRecord.trainDesignWeight | DefaultNullOrEmpty }}
+      </td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+    </tr>
+
+    <tr class="govuk-table__row">
+      <th class="govuk-table__cell govuk-!-font-weight-bold">Max train</th>
+      <td id="test-maxTrainGbWeight" class="govuk-table__cell">
+        {{ activeRecord.maxTrainGbWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-maxTrainDesignWeight" class="govuk-table__cell">
+        {{ activeRecord.maxTrainDesignWeight | DefaultNullOrEmpty }}
+      </td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+      <td class="govuk-table__cell"></td>
+    </tr>
+
+    <tr class="govuk-table__row" *ngFor="let axle of activeRecord.axles">
+      <th class="govuk-table__cell govuk-!-font-weight-bold">
+        Axle {{ axle.axleNumber | DefaultNullOrEmpty }}
+      </th>
+      <td id="{{ 'test-gbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+        {{ axle.weights.gbWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-designWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+        {{ axle.weights.designWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-kerbWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+        {{ axle.weights.kerbWeight | DefaultNullOrEmpty }}
+      </td>
+      <td id="{{ 'test-ladenWeight-' + axle.axleNumber }}" class="govuk-table__cell">
+        {{ axle.weights.ladenWeight | DefaultNullOrEmpty }}
+      </td>
+      <td class="govuk-table__cell"></td>
+    </tr>
+  </tbody>
+</table>

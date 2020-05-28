@@ -1,6 +1,6 @@
-import { ELoadingActions, LoadingActions, LoadingFalse, LoadingTrue } from "../actions/Loader.actions";
-import { initialLoaderState } from "../state/Loader.state";
-import { LoaderReducer } from "./Loader.reducers";
+import { ELoadingActions, LoadingActions, LoadingFalse, LoadingTrue } from '../actions/Loader.actions';
+import { initialLoaderState } from '../state/Loader.state';
+import { LoaderReducer } from './Loader.reducers';
 
 describe('LoaderReducer', () => {
   describe('AppIsLoading', () => {

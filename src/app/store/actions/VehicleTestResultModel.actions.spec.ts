@@ -1,60 +1,105 @@
 import {
-  EVehicleTestResultModelActions, GetVehicleTestResultModel, GetVehicleTestResultModelSuccess, GetVehicleTestResultModelFailure
+  EVehicleTestResultModelActions,
+  GetVehicleTestResultModel,
+  GetVehicleTestResultModelFailure,
+  GetVehicleTestResultModelSuccess,
+  SetTestViewState,
+  SetSelectedTestResultModel,
+  SetSelectedTestResultModelSuccess,
+  UpdateTestResult
 } from './VehicleTestResultModel.actions';
 import { TestResultModel } from '@app/models/test-result.model';
+import { VIEW_STATE } from '@app/app.enums';
+import { TEST_MODEL_UTILS } from '../../utils/test-models.utils';
 
-const testResultModelExample: TestResultModel = {
+const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestResult({
   testerStaffId: '21',
-  testStartTimestamp: new Date(),
-  odometerReadingUnits: 'test',
-  testEndTimestamp: new Date(),
-  testStatus: 'new',
-  testTypes: [],
-  vehicleClass: null,
-  testStationName: 'test',
-  vehicleId: '213',
-  noOfAxles: 2,
-  vehicleType: 'none',
-  countryOfRegistration: 'Ro',
-  preparerId: '231',
-  odometerReading: 123,
-  vehicleConfiguration: 'none',
-  testStationType: 'none',
-  reasonForCancellation: 'none',
-  testerName: '213',
-  vrm: '123',
-  testStationPNumber: '123',
-  numberOfSeats: 123,
-  testerEmailAddress: '123@123.com',
-  euVehicleCategory: '123',
+  testStartTimestamp: '2019-01-16T12:24:38.027Z',
   vin: '213',
-  vehicleSize: '213',
-  preparerName: '213'
-}
+  vehicleSize: '213'
+} as TestResultModel);
 
 describe('GetVehicleTestResultModel', () => {
-  test('action should have the right type and payload when used', () => {
-    const actionInstance = new GetVehicleTestResultModel(testResultModelExample);
+  it('action should have the right type and system number payload when the action is instantiated', () => {
+    const actionInstance = new GetVehicleTestResultModel('23434234');
 
-    expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModel);
-    expect(actionInstance.payload).toBe(testResultModelExample)
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.GetVehicleTestResultModel,
+      payload: '23434234'
+    });
   });
 });
 
 describe('GetVehicleTestResultModelSuccess', () => {
-  test('action should have the right type and payload when used', () => {
-    const actionInstance = new GetVehicleTestResultModelSuccess(testResultModelExample);
+  it('action should have the right type and test results array payload when the action is instantiated', () => {
+    const actionInstance = new GetVehicleTestResultModelSuccess([testResultModelExample]);
 
-    expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess);
-    expect(actionInstance.payload).toBe(testResultModelExample)
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess,
+      payload: [testResultModelExample]
+    });
   });
 });
 
 describe('GetVehicleTestResultModelFailure', () => {
-  test('action should have the right type and payload when used', () => {
-    const actionInstance = new GetVehicleTestResultModelFailure(testResultModelExample);
+  it('action should have the right type and error payload when the action is instantiated', () => {
+    const actionInstance = new GetVehicleTestResultModelFailure('test');
 
-    expect(actionInstance.type).toBe(EVehicleTestResultModelActions.GetVehicleTestResultModelFailure);
-    expect(actionInstance.payload).toBe(testResultModelExample)
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.GetVehicleTestResultModelFailure,
+      payload: 'test'
+    });
+  });
+});
+
+describe('SetTestViewState', () => {
+  it('action should have correct type and state value as payload when the action is instantiated', () => {
+    const actionInstance = new SetTestViewState(VIEW_STATE.VIEW_ONLY);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.SetTestViewState,
+      editState: VIEW_STATE.VIEW_ONLY
+    });
+  });
+});
+
+describe('UpdateTestResult', () => {
+  it('action should have correct type and test result updated payload when the action is instantiated', () => {
+    const actionInstance = new UpdateTestResult({
+      testResultUpdated: testResultModelExample,
+      testTypeNumber: '1',
+      testResultsUpdated: [testResultModelExample]
+    });
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.UpdateTestResult,
+      testResultTestTypeNumber: {
+        testResultUpdated: testResultModelExample,
+        testTypeNumber: '1',
+        testResultsUpdated: [testResultModelExample]
+      }
+    });
+  });
+});
+
+describe('SetSelectedTestResultModel', () => {
+  it('action should have correct type & payload', () => {
+    const actionInstance = new SetSelectedTestResultModel('');
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.SetSelectedTestResultModel,
+      payload: ''
+    });
+  });
+});
+
+describe('SetSelectedTestResultModelSuccess', () => {
+  it('action should have correct type & payload', () => {
+    const actionInstance = new SetSelectedTestResultModelSuccess(testResultModelExample);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.SetSelectedTestResultModelSuccess,
+      payload: testResultModelExample
+    });
   });
 });

@@ -14,7 +14,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
     <h2
       class="govuk-heading-m"
     >
-      Applicant details
+      Owner/operator details
     </h2>
     <dl
       class="govuk-summary-list"
@@ -29,7 +29,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-applicantDetails-name"
+          id="test-ownerDetails-name"
         >
            Ben 
         </dd>
@@ -47,7 +47,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-applicantDetails-street"
+          id="test-ownerDetails-street"
         >
            Robert green 
         </dd>
@@ -65,7 +65,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-applicantDetails-town"
+          id="test-ownerDetails-town"
         >
            lala land 
         </dd>
@@ -83,7 +83,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-applicantDetails-city"
+          id="test-ownerDetails-city"
         >
            Birmingham 
         </dd>
@@ -101,7 +101,7 @@ exports[`ApplicantDetailsComponent should create view only with populated data 1
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-applicantDetails-postcode"
+          id="test-ownerDetails-postcode"
         >
            NG4 12Z 
         </dd>

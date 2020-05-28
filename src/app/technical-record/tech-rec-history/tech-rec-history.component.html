@@ -1,10 +1,12 @@
-<table class="govuk-table t-history">
+<table class="govuk-table">
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Status</th>
       <th scope="col" class="govuk-table__header">Reason for creation</th>
       <th scope="col" class="govuk-table__header">Created by</th>
       <th scope="col" class="govuk-table__header">Created at</th>
+      <th scope="col" class="govuk-table__header">Last updated by</th>
+      <th scope="col" class="govuk-table__header">Last updated at</th>
       <th scope="col" class="govuk-table__header"></th>
       <th scope="col" class="govuk-table__header"></th>
     </tr>
@@ -27,10 +29,24 @@
         {{ techRec.createdByName | DefaultNullOrEmpty | titlecase }}
       </td>
       <td id="{{ 'test-createdAt-' + i }}" class="govuk-table__cell">
-        {{ techRec.createdAt ? (techRec.createdAt | date: 'dd/MM/yyyy') : '-' }}
+        <span *ngIf="techRec.createdAt; else hyphen">
+          {{ techRec.createdAt | date: 'dd/MM/yyyy' }}
+        </span>
+      </td>
+      <td id="{{ 'test-lastUpdatedByName-' + i }}" class="govuk-table__cell">
+        {{ techRec.lastUpdatedByName | DefaultNullOrEmpty | titlecase }}
+      </td>
+      <td id="{{ 'test-lastUpdatedAt-' + i }}" class="govuk-table__cell">
+        <span *ngIf="techRec.lastUpdatedAt; else hyphen">
+        {{ techRec.lastUpdatedAt | date: 'dd/MM/yyyy' }}
+        </span>
       </td>
       <td class="govuk-table__cell"></td>
       <td class="govuk-table__cell"></td>
     </tr>
   </tbody>
 </table>
+
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>

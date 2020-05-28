@@ -18,7 +18,10 @@ import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { SortByDatePipe } from '@app/pipes/SortByDatePipe';
 import { FormConnectorDirective } from '@app/directives/form-connector/form-connector.directive';
 import { FilterMultipleRecordsPipe } from '@app/pipes/FilterMultipleRecordsPipe';
-import { BackButtonDirective } from '@app/shared/directives/back-button.directive';
+import { DisplayByDelimiter } from '@app/pipes/display-by-delimiter';
+import { CapitalizeString } from '@app/pipes/capitalize-string';
+import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
+import { DirectivesModule } from '@app/shared/directives/directives.module';
 
 export const PIPES_AND_COMPONENTS = [
   AdrReasonModalComponent,
@@ -27,6 +30,7 @@ export const PIPES_AND_COMPONENTS = [
   PreventLeavePageModalComponent,
   ErrorSummaryComponent,
   FormConnectorDirective,
+  DialogBoxComponent,
 
   IsPrimaryVrmPipe,
   FilterRecordPipe,
@@ -35,14 +39,15 @@ export const PIPES_AND_COMPONENTS = [
   DefaultNullOrEmpty,
   SortByDatePipe,
   FilterMultipleRecordsPipe,
-  BackButtonDirective
+  DisplayByDelimiter,
+  CapitalizeString
 ];
 
 @NgModule({
-  imports: [FormsModule, CommonModule, ReactiveFormsModule, MatDialogModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, MatDialogModule, DirectivesModule],
   declarations: PIPES_AND_COMPONENTS,
-  exports: PIPES_AND_COMPONENTS,
-  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent],
+  exports: [PIPES_AND_COMPONENTS, DirectivesModule],
+  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent],
   providers: [FilterRecordPipe, PendingChangesService]
 })
 export class SharedModule {}

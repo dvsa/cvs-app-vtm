@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 
-import { selectSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import {
   getVehicleTechRecordMetaData,
   getSelectedVehicleTechRecord,
@@ -41,13 +41,13 @@ import { VIEW_STATE } from '@app/app.enums';
 })
 export class TechnicalRecordsContainer implements OnInit {
   vehicleTechnicalRecord$: Observable<VehicleTechRecordModel>;
-  testResults$: Observable<TestResultModel>;
+  testResults$: Observable<TestResultModel[]>;
   metaData$: Observable<MetaData>;
   viewState$: Observable<VIEW_STATE>;
 
   constructor(private store: Store<IAppState>) {
     this.vehicleTechnicalRecord$ = this.store.select(getSelectedVehicleTechRecord);
-    this.testResults$ = this.store.select(selectSelectedVehicleTestResultModel);
+    this.testResults$ = this.store.select(getVehicleTestResultModel);
     this.metaData$ = this.store.select(getVehicleTechRecordMetaData);
     this.viewState$ = this.store.select(getViewState);
   }

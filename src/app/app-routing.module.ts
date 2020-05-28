@@ -4,7 +4,9 @@ import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { LandingPageComponent } from '@app/landing-page/landing-page.component';
 import { TechnicalRecordCreateComponent } from '@app/technical-record-create/technical-record-create.component';
 import { MultipleRecordsContainer } from '@app/multiple-records/multiple-records.container';
-import { TestRecordComponent } from '@app/test-record/test-record.component';
+import { PreparersGuard } from '@app/test-record/guards/preparers.guard';
+import { TestStationsGuard } from '@app/test-record/guards/test-stations.guard';
+import { TestResultGuard } from '@app/test-record/guards/test-result.guard';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent, canActivate: [AuthenticationGuard] },
@@ -29,7 +31,11 @@ const routes: Routes = [
     component: MultipleRecordsContainer,
     canActivate: [AuthenticationGuard]
   },
-  { path: 'test-record/:id', component: TestRecordComponent, canActivate: [AuthenticationGuard] }
+  {
+    path: 'test-record/:id',
+    loadChildren: './test-record/test-record.module#TestRecordModule',
+    canActivate: [TestResultGuard, PreparersGuard, TestStationsGuard]
+  }
 ];
 
 @NgModule({

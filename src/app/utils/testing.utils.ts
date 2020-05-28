@@ -1,4 +1,3 @@
-import { TechRecord } from './../models/tech-record.model';
 import { FormGroupDirective, FormGroup } from '@angular/forms';
 
 import {
@@ -7,8 +6,29 @@ import {
   VehicleDetails,
   AdditionalNotes
 } from './../models/adr-details';
+import {
+  TechRecord,
+  Applicant,
+  Microfilm,
+  Plate,
+  AuthIntoService,
+  LettersOfAuth,
+  AddressInformation,
+  AxleBrakes,
+  Brakes,
+  Tyres,
+  PurchaserDetails,
+  ManufacturerDetails,
+  Axle,
+  Weights,
+  AxleSpacing,
+  DDA,
+  BrakeForceWheelsNotLocked,
+  BrakeForceWheelsUpToHalfLocked,
+} from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
+import { BodyType } from '@app/models/body-type';
 
 /**
  * *******************SOME GROUND RULES*************************************
@@ -32,7 +52,22 @@ export const TESTING_UTILS = {
   mockTc2Details,
   mockTc3Details,
   mockMetaData,
-  mockTechRecord
+  mockTechRecord,
+  mockApplicant,
+  mockMicrofilm,
+  mockPlates,
+  mockAuthoIntoService,
+  mockLettersOfAuth,
+  mockPurchaser,
+  mockManufacturer,
+  mockAxle,
+  mockBrakes,
+  mockBodyType,
+  mockAxleSpacing,
+  mockDDA,
+  mockPSVBrakes,
+  mockBrakeForceWheelsNotLocked,
+  mockBrakeForceWheelsUpToHalfLocked,
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -49,6 +84,16 @@ function mockApplicantDetails(args?: Partial<ApplicantDetails>): ApplicantDetail
     town: 'lala land',
     postcode: 'NG4 12Z'
   };
+
+  return { ...mock, ...args };
+}
+
+function mockDDA(args?: Partial<DDA>): DDA {
+  const mock: DDA = {
+    certificateIssued: true,
+    wheelchairCapacity: 23,
+    ddaNotes: 'all'
+  } as DDA;
 
   return { ...mock, ...args };
 }
@@ -180,4 +225,175 @@ function mockMetaData(): MetaData {
       }
     }
   };
+}
+function mockAddressInformation(args?: Partial<AddressInformation>): AddressInformation {
+  const mock: AddressInformation = {
+    address1: 'Garrets green',
+    address2: 'Birmingham',
+    address3: 'lala land',
+    postCode: 'NG4 12Z',
+    postTown: 'A town',
+    telephoneNumber: '123123123',
+    emailAddress: 'test@test.com'
+  };
+  return { ...mock, ...args };
+}
+
+function mockApplicant(args?: Partial<Applicant>): Applicant {
+  const mock: Applicant = {
+    name: 'Ben',
+    ...mockAddressInformation()
+  };
+  return { ...mock, ...args };
+}
+
+function mockMicrofilm(args?: Partial<Microfilm>): Microfilm {
+  const mock: Microfilm = {
+    microfilmDocumentType: 'PSV Miscellaneous',
+    microfilmRollNumber: '1234',
+    microfilmSerialNumber: '5678'
+  };
+  return { ...mock, ...args };
+}
+
+function mockPlates(args?: Partial<Plate>): Plate {
+  const mock: Plate = {
+    plateSerialNumber: '123123',
+    plateIssueDate: '2019-12-13',
+    plateReasonForIssue: '5678',
+    plateIssuer: 'Issuer1'
+  };
+  return { ...mock, ...args };
+}
+
+function mockAuthoIntoService(args?: Partial<AuthIntoService>): AuthIntoService {
+  const mock: AuthIntoService = {
+    cocIssueDate: '2019-12-13',
+    dateReceived: '2018-11-13',
+    dateAuthorised: '2018-2-10',
+    datePending: '2017-6-5',
+    dateRejected: ''
+  };
+  return { ...mock, ...args };
+}
+
+function mockLettersOfAuth(args?: Partial<LettersOfAuth>): LettersOfAuth {
+  const mock: LettersOfAuth = {
+    letterType: 'Trailer authorization',
+    letterDateRequested: '2020-1-13',
+    letterContents: 'some letter text'
+  };
+  return { ...mock, ...args };
+}
+
+function mockPurchaser(args?: Partial<PurchaserDetails>): PurchaserDetails {
+  const mock: PurchaserDetails = {
+    name: 'Ben',
+    faxNumber: '1231234',
+    purchaserNotes: 'some notes',
+    ...mockAddressInformation()
+  };
+  return { ...mock, ...args };
+}
+
+function mockManufacturer(args?: Partial<ManufacturerDetails>): ManufacturerDetails {
+  const mock: ManufacturerDetails = {
+    name: 'Ben',
+    faxNumber: '1231234',
+    manufacturerNotes: 'some notes',
+    ...mockAddressInformation()
+  };
+  return { ...mock, ...args };
+}
+
+function mockAxleBrakes(args?: Partial<AxleBrakes>): AxleBrakes {
+  const mock: AxleBrakes = {
+    brakeActuator: 123,
+    leverLength: 123,
+    springBrakeParking: true
+  } as AxleBrakes;
+  return { ...mock, ...args };
+}
+
+function mockAxle(args?: Partial<Axle>): Axle {
+  const mock: Axle = {
+    parkingBrakeMrk: true,
+    axleNumber: 1,
+    brakes: mockAxleBrakes(),
+    tyres: mockTyres(),
+    weights: mockWeights()
+  } as Axle;
+  return { ...mock, ...args };
+}
+
+function mockBrakes(args?: Partial<Brakes>): Brakes {
+  const mock: Brakes = { antilockBrakingSystem: true, loadSensingValve: false } as Brakes;
+  return { ...mock, ...args };
+}
+
+function mockTyres(args?: Partial<Tyres>): Tyres {
+  const mock: Tyres = {
+    tyreSize: '16',
+    plyRating: '12S',
+    fitmentCode: '12313',
+    dataTrAxles: 1234
+  } as Tyres;
+  return { ...mock, ...args };
+}
+
+function mockWeights(args?: Partial<Weights>): Weights {
+  const mock: Weights = {
+    gbWeight: 100,
+    kerbWeight: 150,
+    designWeight: 250,
+    eecWeight: 150
+  } as Weights;
+  return { ...mock, ...args };
+}
+
+function mockBodyType(args?: Partial<BodyType>): BodyType {
+  const mock: BodyType = {
+    description: 'the first letter should be capital'
+  } as BodyType;
+
+  return { ...mock, ...args };
+}
+
+function mockPSVBrakes(args?: Partial<Brakes>): Brakes {
+  const mock: Brakes = {
+    brakeCodeOriginal: '123',
+    brakeCode: '145202',
+    dataTrBrakeThree: 'None',
+  } as Brakes;
+
+  return { ...mock, ...args };
+}
+
+function mockBrakeForceWheelsNotLocked(args?: Partial<BrakeForceWheelsNotLocked>): BrakeForceWheelsNotLocked {
+  const mock: BrakeForceWheelsNotLocked = {
+    parkingBrakeForceA: 2322,
+    serviceBrakeForceA: 6531,
+    secondaryBrakeForceA: 3265,
+  } as BrakeForceWheelsNotLocked;
+
+  return { ...mock, ...args };
+}
+
+function mockBrakeForceWheelsUpToHalfLocked(args?: Partial<BrakeForceWheelsUpToHalfLocked>): BrakeForceWheelsUpToHalfLocked {
+  const mock: BrakeForceWheelsUpToHalfLocked = {
+    secondaryBrakeForceB: 2755,
+    parkingBrakeForceB: 1763,
+    serviceBrakeForceB: 5510,
+  } as BrakeForceWheelsUpToHalfLocked;
+
+  return { ...mock, ...args };
+}
+
+function mockAxleSpacing(args?: Partial<AxleSpacing>): AxleSpacing {
+  const mock: AxleSpacing = {
+    axles: '1-2',
+    value: 1234
+  } as AxleSpacing;
+
+  return {...mock, ...args};
 }

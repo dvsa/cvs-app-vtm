@@ -1,76 +1,55 @@
-import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
-import { StoreModule} from '@ngrx/store';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
-import {appReducers} from '@app/store/reducers/app.reducers';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {MatDialogModule} from '@angular/material/dialog';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from '@app/material.module';
-import {SharedModule} from '@app/shared/shared.module';
-import {RouterTestingModule} from '@angular/router/testing';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {NgrxFormsModule} from 'ngrx-forms';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {VehicleSummaryComponent} from '@app/technical-record/vehicle-summary/vehicle-summary.component';
-import {TechnicalRecordComponent} from '@app/technical-record/technical-record.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from '@app/shared/shared.module';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { WeightsComponent } from './weights.component';
+import { TESTING_UTILS } from '../../utils/testing.utils';
+import { TechRecord } from '../../models/tech-record.model';
 
-describe('VehicleSummaryComponent', () => {
+describe('WeightsComponent', () => {
+  let component: WeightsComponent;
+  let fixture: ComponentFixture<WeightsComponent>;
+  const techRecordWeights: TechRecord = {
+    grossGbWeight: 3,
+    grossDesignWeight: 2,
+    grossEecWeight: 3,
+    axles: [TESTING_UTILS.mockAxle()],
+  } as TechRecord;
 
-  let component: VehicleSummaryComponent;
-  let fixture: ComponentFixture<VehicleSummaryComponent>;
-  let injector: TestBed;
-
-  beforeEach(() => {
-
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot(appReducers),
-        HttpClientTestingModule,
-        MatDialogModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MaterialModule,
-        SharedModule,
-        RouterTestingModule,
-        FontAwesomeModule,
-        ReactiveFormsModule,
-        NgrxFormsModule
-      ],
-      declarations: [VehicleSummaryComponent, TechnicalRecordComponent],
-      providers: [
-        TechRecordHelpersService
-      ],
+      imports: [SharedModule],
+      declarations: [WeightsComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
     }).compileComponents();
-
-    fixture = TestBed.createComponent(VehicleSummaryComponent);
-    injector = getTestBed();
-    component = fixture.componentInstance;
-    component.activeRecord = {
-      'vin': 'XMGDE02FS0H012345',
-      'vehicleSize': 'small',
-      'testStationName': 'Rowe, Wunsch and Wisoky',
-      'vehicleId': 'JY58FPP',
-      'vehicleType': 'psv',
-      'axles': [
-        { 'parkingBrakeMrk': false, 'axleNumber': 1 },
-        { 'parkingBrakeMrk': true, 'axleNumber': 2 },
-        { 'parkingBrakeMrk': false, 'axleNumber': 3 }
-      ]
-    };
-
-    fixture.detectChanges();
-  });
-
-  it('should create my component', async(() => {
-    expect(component).toBeTruthy();
   }));
 
-  afterAll(() => {
-    TestBed.resetTestingModule();
+  beforeEach(() => {
+    fixture = TestBed.createComponent(WeightsComponent);
+    component = fixture.componentInstance;
   });
 
+  it('should create trl view only with populated data', () => {
+    component.activeRecord = TESTING_UTILS.mockTechRecord({
+      vehicleType: 'trl',
+      ...techRecordWeights
+    });
+
+    fixture.detectChanges();
+
+    expect(component).toBeDefined();
+    expect(fixture).toMatchSnapshot();
+  });
+
+  it('should create hgv view only with populated data', () => {
+    component.activeRecord = TESTING_UTILS.mockTechRecord({
+      vehicleType: 'hgv',
+      trainGbWeight: 2,
+      trainDesignWeight: 20,
+      ...techRecordWeights
+    });
+    fixture.detectChanges();
+
+    expect(component).toBeDefined();
+    expect(fixture).toMatchSnapshot();
+  });
 });

@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
+<vtm-seatbelt-installation-check-edit
+  seatbeltInstallationCheckDateOptions={[Function Array]}
+  seatbeltOptionSelected={[Function String]}
+  testResultChildForm={[Function FormGroupDirective]}
+  testType={[Function Object]}
+  testTypeGroup="null"
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="govuk-form-group"
+            formgroupname="testType"
+          >
+            <div
+              class="govuk-grid-row govuk-!-margin-bottom-3"
+            >
+              <div
+                class="govuk-grid-column-three-quarters"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                >
+                   Carried out during test 
+                </label>
+                <div
+                  class="govuk-radios govuk-radios--inline"
+                >
+                  
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="seatbeltInstallationCheckDate"
+                      id="test-seatbelt-0"
+                      type="radio"
+                      value="true"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       Yes 
+                    </label>
+                  </div>
+                  <div
+                    class="govuk-radios__item"
+                  >
+                    <input
+                      class="govuk-radios__input"
+                      formcontrolname="seatbeltInstallationCheckDate"
+                      id="test-seatbelt-1"
+                      type="radio"
+                      value="false"
+                    />
+                    <label
+                      class="govuk-label govuk-radios__label"
+                    >
+                       No 
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="govuk-grid-row govuk-!-margin-bottom-3"
+                >
+                  <div
+                    class="govuk-grid-column-three-quarters"
+                  >
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
+                       Number of seatbelts fitted 
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="govuk-grid-row govuk-!-margin-bottom-3"
+                >
+                  <div
+                    class="govuk-grid-column-one-third"
+                  >
+                    <input
+                      class="govuk-input"
+                      formcontrolname="numberOfSeatbeltsFitted"
+                      id="test-numberOfSeatbeltsFitted"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="govuk-grid-row govuk-!-margin-bottom-3"
+                >
+                  <div
+                    class="govuk-grid-column-three-quarters"
+                  >
+                    <label
+                      class="govuk-label govuk-!-font-weight-bold"
+                    >
+                       Most recent installation check 
+                    </label>
+                    <vtm-date-input
+                      ariadescribedby="lastSeatbeltInstallationCheckDate"
+                      formcontrolname="lastSeatbeltInstallationCheckDate"
+                      id="test-lastSeatbeltInstallationCheckDate"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-seatbelt-installation-check-edit>
+`;

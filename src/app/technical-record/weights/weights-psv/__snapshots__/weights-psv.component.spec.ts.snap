@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PsvWeightsComponent should create psv view only with populated data 1`] = `
+<vtm-weights-psv
+  activeRecord={[Function Object]}
+>
+  <table
+    class="govuk-table table-details"
+  >
+    <thead
+      class="govuk-table__head"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__header"
+          scope="col"
+        />
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          GB weight (kg)
+        </th>
+        <th
+          class="govuk-table__header"
+          scope="col"
+        >
+          Design weight (kg)
+        </th>
+        <td
+          class="govuk-table__header"
+          scope="col"
+        >
+          Kerb weight (kg)
+        </td>
+        <td
+          class="govuk-table__header"
+          scope="col"
+        >
+          Laden weight (kg)
+        </td>
+        <td
+          class="govuk-table__header"
+          scope="col"
+        >
+          Unladen weight (kg)
+        </td>
+      </tr>
+    </thead>
+    <tbody
+      class="govuk-table__body"
+    >
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+          Gross
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-grossGbWeight"
+        >
+           3 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-grossDesignWeight"
+        >
+           2 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-grossKerbWeight"
+        >
+           3 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-grossLadenWeight"
+        >
+           5 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-unladenWeight"
+        >
+           4 
+        </td>
+      </tr>
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+          Train
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-trainGbWeight"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-trainDesignWeight"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+      </tr>
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+          Max train
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-maxTrainGbWeight"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-maxTrainDesignWeight"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+        <td
+          class="govuk-table__cell"
+        />
+      </tr>
+      
+      <tr
+        class="govuk-table__row"
+      >
+        <th
+          class="govuk-table__cell govuk-!-font-weight-bold"
+        >
+           Axle 1 
+        </th>
+        <td
+          class="govuk-table__cell"
+          id="test-gbWeight-1"
+        >
+           100 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-designWeight-1"
+        >
+           250 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-kerbWeight-1"
+        >
+           150 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-ladenWeight-1"
+        >
+           - 
+        </td>
+        <td
+          class="govuk-table__cell"
+        />
+      </tr>
+    </tbody>
+  </table>
+</vtm-weights-psv>
+`;

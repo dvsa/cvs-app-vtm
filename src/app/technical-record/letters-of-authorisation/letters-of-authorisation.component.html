@@ -1,0 +1,36 @@
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Letter type</th>
+      <th scope="col" class="govuk-table__header">Created at</th>
+      <th scope="col" class="govuk-table__header">Letter contents</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body" *ngIf="lettersOfAuth; else noLetterOfAuth">
+    <tr class="govuk-table__row">
+      <td id="test-letterType" class="govuk-table__cell">
+        {{ lettersOfAuth?.letterType | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-letterDateRequested" class="govuk-table__cell">
+        <span *ngIf="lettersOfAuth?.letterDateRequested; else hyphen">
+          {{ lettersOfAuth?.letterDateRequested | date: 'dd/MM/yyyy' }}
+        </span>
+      </td>
+      <td id="test-letterContents" class="govuk-table__cell">
+        {{ lettersOfAuth?.letterContents | DefaultNullOrEmpty }}
+      </td>
+    </tr>
+  </tbody>
+  <ng-template #noLetterOfAuth>
+    <tbody class="govuk-table__body">
+      <tr>
+        <td id="test-letterType">-</td>
+        <td id="test-letterDateRequested">-</td>
+        <td id="test-letterContents">-</td>
+      </tr>
+    </tbody>
+  </ng-template>
+</table>
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>

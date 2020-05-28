@@ -1,42 +1,58 @@
 import { AdrDetails } from '@app/models/adr-details';
 import { BodyType } from './body-type';
 
-interface ApplicantDetails {
+export interface DDA {
+  certificateIssued: boolean;
+  wheelchairCapacity: number;
+  wheelchairFittings: number;
+  wheelchairLiftPresent: string;
+  wheelchairLiftInformation: string;
+  wheelchairRampPresent: string;
+  wheelchairRampInformation: string;
+  minEmergencyExits: string;
+  outswing: string;
+  ddaSchedules: string;
+  seatbeltsFitted: string;
+  ddaNotes: string;
+}
+export interface Applicant extends AddressInformation {
   name: string;
-  address1: string;
-  address2: string;
-  postTown: string;
-  address3: string;
-  postCode: string;
-  emailAddress: string;
-  telephoneNumber: string;
 }
 
-interface Microfilm {
+export interface Microfilm {
   microfilmDocumentType: string;
   microfilmRollNumber: string;
   microfilmSerialNumber: string;
 }
 
-interface Plate {
+export interface Plate {
   plateSerialNumber: string;
   plateIssueDate: string;
   plateReasonForIssue: string;
   plateIssuer: string;
 }
 
-interface AxleSpacing {
+export interface AuthIntoService {
+  cocIssueDate: string;
+  dateReceived: string;
+  datePending: string;
+  dateAuthorised: string;
+  dateRejected: string;
+}
+
+export interface AxleSpacing {
   axles: string;
   value: number;
 }
 
-interface Dimensions {
+export interface Dimensions {
   length: number;
+  height: number;
   width: number;
   axleSpacing: AxleSpacing[];
 }
 
-interface Brakes {
+export interface Brakes {
   brakeCodeOriginal: string;
   brakeCode: string;
   dataTrBrakeOne: string;
@@ -51,19 +67,19 @@ interface Brakes {
   antilockBrakingSystem: boolean;
 }
 
-interface BrakeForceWheelsNotLocked {
+export interface BrakeForceWheelsNotLocked {
   serviceBrakeForceA: number;
   secondaryBrakeForceA: number;
   parkingBrakeForceA: number;
 }
 
-interface BrakeForceWheelsUpToHalfLocked {
+export interface BrakeForceWheelsUpToHalfLocked {
   serviceBrakeForceB: number;
   secondaryBrakeForceB: number;
   parkingBrakeForceB: number;
 }
 
-interface Weights {
+export interface Weights {
   kerbWeight: number;
   ladenWeight: number;
   gbWeight: number;
@@ -71,7 +87,7 @@ interface Weights {
   designWeight: number;
 }
 
-interface Tyres {
+export interface Tyres {
   tyreSize: string;
   plyRating: string;
   fitmentCode: string;
@@ -80,13 +96,13 @@ interface Tyres {
   tyreCode: number;
 }
 
-interface AxleBrakes {
+export interface AxleBrakes {
   brakeActuator: number;
   leverLength: number;
   springBrakeParking: boolean;
 }
 
-interface Axle {
+export interface Axle {
   axleNumber: number;
   parkingBrakeMrk: boolean;
   weights: Weights;
@@ -94,9 +110,38 @@ interface Axle {
   brakes: AxleBrakes;
 }
 
+export interface AddressInformation {
+  address1: string;
+  address2: string;
+  postTown: string;
+  address3: string;
+  postCode: string;
+  emailAddress: string;
+  telephoneNumber: string;
+}
+
+export interface PurchaserDetails extends AddressInformation {
+  name: string;
+  faxNumber: string;
+  purchaserNotes: string;
+}
+
+export interface ManufacturerDetails extends AddressInformation {
+  name: string;
+  faxNumber: string;
+  manufacturerNotes: string;
+}
+
+export interface LettersOfAuth {
+  letterType: string;
+  letterDateRequested: string;
+  letterContents: string;
+}
+
 export interface TechRecord {
   createdAt: string;
   lastUpdatedAt: string;
+  recordCompleteness: string;
   make: string;
   model: string;
   functionCode: string;
@@ -114,7 +159,7 @@ export interface TechRecord {
   grossEecWeight: number;
   trainEecWeight: number;
   maxTrainEecWeight: number;
-  applicantDetails: ApplicantDetails;
+  applicantDetails: Applicant;
   microfilm: Microfilm;
   plates: Plate[];
   chassisMake: string;
@@ -122,11 +167,14 @@ export interface TechRecord {
   bodyMake: string;
   bodyModel: string;
   bodyType: BodyType;
+  modelLiteral?: string;
   manufactureYear: number;
   regnDate: string;
   firstUseDate: string;
   coifDate: string;
   ntaNumber: string;
+  coifSerialNumber: string;
+  coifCertifierName: string;
   conversionRefNo: string;
   seatsLowerDeck: number;
   seatsUpperDeck: number;
@@ -165,6 +213,7 @@ export interface TechRecord {
   couplingCenterToRearAxleMax: number;
   couplingCenterToRearTrlMin: number;
   couplingCenterToRearTrlMax: number;
+  centreOfRearmostAxleToRearOfTrl: number;
   notes: string;
   noOfAxles: number;
   brakeCode: string;
@@ -178,7 +227,14 @@ export interface TechRecord {
   vehicleSubclass: string[];
   vehicleType: string;
   vehicleSize: string;
+  numberOfSeatbelts: string;
+  seatbeltInstallationApprovalDate: string;
   vehicleConfiguration: string;
   brakes: Brakes;
   axles: Axle[];
+  purchaserDetails: PurchaserDetails;
+  manufacturerDetails: ManufacturerDetails;
+  authIntoService: AuthIntoService;
+  lettersOfAuth: LettersOfAuth;
+  frameDescription: string;
 }

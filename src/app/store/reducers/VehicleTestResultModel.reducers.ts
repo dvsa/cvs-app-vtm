@@ -1,20 +1,47 @@
-import { initialVehicleTestResultModelState } from '../../store/state/VehicleTestResultModel.state';
-import { EVehicleTestResultModelActions, VehicleTestResultModelActions } from '../actions/VehicleTestResultModel.actions';
+import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
+import {
+  EVehicleTestResultModelActions, SetSelectedTestResultModelSuccess,
+  VehicleTestResultModelActions
+} from '../actions/VehicleTestResultModel.actions';
 
-export function VehicleTestResultModelReducers(state = initialVehicleTestResultModelState, action: VehicleTestResultModelActions) {
+export function VehicleTestResultModelReducers(
+  state = initialVehicleTestResultModelState,
+  action: VehicleTestResultModelActions
+) {
   switch (action.type) {
     case EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess: {
       return {
         ...state,
-        selectedTestResultModel: action.payload,
-        error: null // clear error message
+        vehicleTestResultModel: action.payload,
       };
     }
 
     case EVehicleTestResultModelActions.GetVehicleTestResultModelFailure: {
       return {
         ...state,
-        error: action.payload  // capture error message
+        vehicleTestResultModel: null,
+      };
+    }
+
+    case EVehicleTestResultModelActions.SetTestViewState: {
+      return {
+        ...state,
+        editState: action.editState
+      };
+    }
+
+    case EVehicleTestResultModelActions.UpdateTestResultSuccess: {
+      return {
+        ...state,
+        vehicleTestResultModel: action.testResultTestTypeNumber.testResultsUpdated,
+        selectedTestResultModel: action.testResultTestTypeNumber.testResultUpdated
+      };
+    }
+
+    case EVehicleTestResultModelActions.SetSelectedTestResultModelSuccess: {
+      return {
+        ...state,
+        selectedTestResultModel: action.payload[0]
       };
     }
 

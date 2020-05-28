@@ -1,0 +1,61 @@
+<table *ngIf="!editState" class="govuk-table govuk-!-padding-bottom-0 govuk-!-margin-bottom-0">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Status</th>
+      <th scope="col" class="govuk-table__header">Reason for creation</th>
+      <th scope="col" class="govuk-table__header">Created by</th>
+      <th scope="col" class="govuk-table__header">Created at</th>
+      <th scope="col" class="govuk-table__header">Last updated by</th>
+      <th scope="col" class="govuk-table__header">Last updated at</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td id="test-testVersion-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+        {{ testRecord.testVersion | titlecase | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-reasonForCreation-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+        {{ testRecord.reasonForCreation | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-createdByName-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+        {{ (testRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-createdAt-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+        {{ testRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-lastUpdatedByName-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+        {{ (testRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}
+      </td>
+      <td id="test-lastUpdatedAt-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+        {{ testRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
+      </td>
+    </tr>
+    <ng-container
+      *ngFor="
+        let archivedTestRecord of testRecord.testHistory | SortByDatePipe: 'createdAt';
+        let i = index
+      "
+    >
+      <tr class="govuk-table__row">
+        <td id="{{ 'test-testVersion-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+          {{ archivedTestRecord.testVersion | titlecase | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-reasonForCreation-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+          {{ archivedTestRecord.reasonForCreation | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-createdByName-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+          {{ (archivedTestRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-createdAt-arc-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+          {{ archivedTestRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-lastUpdatedByName-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+          {{ (archivedTestRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}
+        </td>
+        <td id="{{ 'test-lastUpdatedAt-arc-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+          {{ archivedTestRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

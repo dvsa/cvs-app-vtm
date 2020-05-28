@@ -1,0 +1,11 @@
+<dl *ngIf="!editState" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dd class="govuk-summary-list__value border--bottom-none" id="test-additionalNotesRecorded">
+      {{ testType.additionalNotesRecorded | DefaultNullOrEmpty | CapitalizeString}}
+    </dd>
+  </div>
+</dl>
+
+<ng-container *ngIf="editState">
+  <vtm-notes-edit [currentState]="editState" [testType]="testType"></vtm-notes-edit>
+</ng-container>

@@ -1,0 +1,69 @@
+<dl *ngIf="!editState" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Vehicle identification number (VIN)
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-vin">
+      {{ testRecord.vin | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div *ngIf="testRecord.vehicleType !== 'trl'" class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Vehicle registration mark (VRM)
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-vrm">
+      {{ testRecord.vrm | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div *ngIf="testRecord.vehicleType === 'trl'" class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Trailer ID
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-trailerId">
+      {{ testRecord.trailerId | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Country of registration
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-countryOfRegistration">
+      {{ this.countryOfRegistration | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      EU vehicle category
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-euVehicleCategory">
+      {{ testRecord.euVehicleCategory | DefaultNullOrEmpty | CapitalizeString }}
+    </dd>
+  </div>
+  <div *ngIf="testRecord.vehicleType !== 'trl'" class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Odometer reading
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-odometerReading">
+      {{
+        [testRecord.odometerReading | number:'1.0-2', testRecord.odometerReadingUnits]
+          | DisplayByDelimiter: ' '
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key border--bottom-none">
+      Preparer
+    </dt>
+    <dd class="govuk-summary-list__value border--bottom-none" id="test-preparer">
+      {{
+        [testRecord.preparerName, testRecord.preparerId]
+          | DisplayByDelimiter: ' - '
+          | DefaultNullOrEmpty
+      }}
+    </dd>
+  </div>
+</dl>
+<ng-container *ngIf="editState">
+  <vtm-vehicle-edit [testRecord]="testRecord" [preparers]="preparers"></vtm-vehicle-edit>
+</ng-container>

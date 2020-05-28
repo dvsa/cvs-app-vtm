@@ -1,5 +1,5 @@
-import {Component, OnInit, ChangeDetectionStrategy, Input} from '@angular/core';
-import {TechRecordHelpersService} from '@app/technical-record/tech-record-helpers.service';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { TechRecord } from '../../models/tech-record.model';
 
 @Component({
   selector: 'vtm-weights',
@@ -8,12 +8,9 @@ import {TechRecordHelpersService} from '@app/technical-record/tech-record-helper
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WeightsComponent implements OnInit {
+  @Input() activeRecord: TechRecord;
 
-  @Input() activeRecord: any;
+  constructor() {}
 
-  constructor(public techRecHelpers: TechRecordHelpersService) { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

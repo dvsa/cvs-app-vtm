@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { IAppState } from '@app/store/state/app.state';
-import { getVehicleTechRecordModelError } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import { getErrors } from '@app/store/selectors/error.selectors';
 import { GetVehicleTechRecordModelHavingStatusAll } from '@app/store/actions/VehicleTechRecordModel.actions';
 import { SEARCH_CRITERIA } from '@app/app.enums';
 import { SearchParams } from '@app/models/search-params';
@@ -16,19 +16,19 @@ import { SearchParams } from '@app/models/search-params';
 })
 export class TechnicalRecordSearchComponent implements OnInit {
   isLoading: boolean;
-  searchError$: Observable<any>;
+  searchError$: Observable<string[]>;
   searchCriteriaOptions = Object.values(SEARCH_CRITERIA);
   searchParams: SearchParams = { searchIdentifier: '{none searched}', searchCriteria: 'all' };
 
   constructor(private store: Store<IAppState>) {}
 
   ngOnInit() {
-    this.searchError$ = this.store.select(getVehicleTechRecordModelError);
+    this.searchError$ = this.store.select(getErrors);
   }
 
   public searchTechRecords(searchIdentifier: string, searchCriteria: string) {
     this.isLoading = true;
-    this.searchParams.searchIdentifier = searchIdentifier;
+    this.searchParams.searchIdentifier = encodeURIComponent(searchIdentifier);
 
     switch (searchCriteria) {
       case SEARCH_CRITERIA.VRM_CRITERIA:

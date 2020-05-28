@@ -16,7 +16,6 @@ export function VehicleTechRecordModelReducers(
       return {
         ...state,
         selectedVehicleTechRecordModel: action.payload,
-        error: null // clear error message
       };
     }
 
@@ -24,30 +23,6 @@ export function VehicleTechRecordModelReducers(
       return {
         ...state,
         vehicleTechRecordModel: action.payload,
-        error: null // clear error message
-      };
-    }
-
-    case EVehicleTechRecordModelActions.GetVehicleTechRecordModelHavingStatusAllFailure: {
-      return {
-        ...state,
-        error: action.payload // capture error message
-      };
-    }
-
-    case EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreate: {
-      return {
-        ...state,
-        initialDetails: action.payload,
-        error: null
-      };
-    }
-
-    case EVehicleTechRecordModelActions.SetVehicleTechRecordModelVinOnCreateSucess: {
-      return {
-        ...state,
-        initialDetails: action.payload,
-        error: null
       };
     }
 
