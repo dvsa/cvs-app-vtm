@@ -12,22 +12,17 @@ describe('PsvVehicleSummaryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [VehicleSummaryPsvComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    }).compileComponents();
+      declarations: [ VehicleSummaryPsvComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    .compileComponents();
 
     fixture = TestBed.createComponent(VehicleSummaryPsvComponent);
     component = fixture.componentInstance;
-    component.activeRecord = TESTING_UTILS.mockTechRecord({
+        component.activeRecord = TESTING_UTILS.mockTechRecord({
       approvalType: 'approval',
       variantNumber: '123',
       ntaNumber: '4566',
-      speedLimiterMrk: true,
-      tachoExemptMrk: true,
-      euroStandard: '6',
-      fuelPropulsionSystem: 'gas',
-      numberOfWheelsDriven: 4,
-      emissionsLimit: 23,
       vehicleClass: TESTING_UTILS.mockBodyType()
     });
     component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
@@ -38,5 +33,9 @@ describe('PsvVehicleSummaryComponent', () => {
 
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
   });
 });
