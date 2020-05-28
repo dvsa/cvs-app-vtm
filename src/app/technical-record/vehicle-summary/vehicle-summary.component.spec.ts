@@ -39,13 +39,15 @@ describe('VehicleSummaryComponent', () => {
   });
 
   it('should check if axles has no parking brake mrk', () => {
-    expect(component.formatVehicleClassDescription()).toEqual(
-      'The first letter should be capital'
-    );
+    expect(component.formatVehicleClassDescription()).toEqual('The first letter should be capital');
   });
 
   it('should create format the vehicle class description', () => {
     fixture.detectChanges();
     expect(component.vehicleClassDescription).toEqual('The first letter should be capital');
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
   });
 });

@@ -19,7 +19,17 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      First use date
+    </dt>
+    <dd id="test-firstUseDate" class="govuk-summary-list__value">
+      <span *ngIf="activeRecord.firstUseDate; else hyphen">
+        {{ activeRecord.firstUseDate | date: 'dd/MM/yyyy' }}
+      </span>
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Year of manufacture
@@ -38,7 +48,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle(activeRecord.vehicleType)">
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       DTP number
     </dt>
@@ -49,7 +59,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle(activeRecord.vehicleType)">
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Axles fitted with a parking brake
     </dt>
@@ -66,7 +76,24 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Suspension type
+    </dt>
+    <dd id="test-suspensionType" class="govuk-summary-list__value">
+      {{ activeRecord.suspensionType | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Road friendly suspension
+    </dt>
+    <dd id="test-roadFriendly" class="govuk-summary-list__value">
+      {{ activeRecord.roadFriendly | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Vehicle class
@@ -76,7 +103,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle(activeRecord.vehicleType)">
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Vehicle configuration
     </dt>
@@ -85,7 +112,111 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Coupling type
+    </dt>
+    <dd id="test-couplingType" class="govuk-summary-list__value">
+      {{ activeRecord.couplingType | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Max load on coupling
+    </dt>
+    <dd id="test-maxLoadOnCoupling" class="govuk-summary-list__value">
+      {{ activeRecord.maxLoadOnCoupling | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'trl'">
+    <dt class="govuk-summary-list__key">
+      Frame description
+    </dt>
+    <dd id="test-frameDescription" class="govuk-summary-list__value">
+      {{ activeRecord.frameDescription | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+  >
+    <dt class="govuk-summary-list__key">
+      Speed limiter exempt
+    </dt>
+    <dd id="test-speedLimiterMrk" class="govuk-summary-list__value">
+      {{ activeRecord.speedLimiterMrk | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+  >
+    <dt class="govuk-summary-list__key">
+      Tacho exempt
+    </dt>
+    <dd id="test-tachoExemptMrk" class="govuk-summary-list__value">
+      {{ activeRecord.tachoExemptMrk | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+  >
+    <dt class="govuk-summary-list__key">
+      Euro standard
+    </dt>
+    <dd id="test-euroStandard" class="govuk-summary-list__value">
+      {{ activeRecord.euroStandard | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+  >
+    <dt class="govuk-summary-list__key">
+      Fuel/propulsion system
+    </dt>
+    <dd id="test-fuelpropulsionsystem" class="govuk-summary-list__value">
+      {{ activeRecord.fuelPropulsionSystem | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType == 'hgv'">
+    <dt class="govuk-summary-list__key">
+      Drawbar coupling fitted
+    </dt>
+    <dd id="test-drawbarCouplingFitted" class="govuk-summary-list__value">
+      {{ activeRecord.drawbarCouplingFitted | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'hgv'">
+    <dt class="govuk-summary-list__key">
+      Offroad vehicle
+    </dt>
+    <dd id="test-offRoad" class="govuk-summary-list__value">
+      {{ activeRecord.offRoad | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+  >
+    <dt class="govuk-summary-list__key">
+      Number of wheels driven
+    </dt>
+    <dd id="test-numberOfWheelsDriven" class="govuk-summary-list__value">
+      {{ activeRecord.numberOfWheelsDriven | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       EU vehicle category
@@ -95,8 +226,20 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
+  <div
+    class="govuk-summary-list__row"
+    *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+  >
+    <dt class="govuk-summary-list__key">
+      Emission limit
+    </dt>
+    <dd id="test-emissionsLimit" class="govuk-summary-list__value">
+      {{ activeRecord.emissionsLimit | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
 
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle(activeRecord.vehicleType)">
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Departmental vehicle marker
     </dt>
@@ -105,7 +248,7 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle(activeRecord.vehicleType)">
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">
       Alteration marker
     </dt>
@@ -116,19 +259,11 @@
   </div>
 </dl>
 
-<ng-container *ngIf="activeRecord.vehicleType === 'hgv'">
-  <vtm-vehicle-summary-hgv [activeRecord]="activeRecord"></vtm-vehicle-summary-hgv>
-</ng-container>
-
 <ng-container *ngIf="activeRecord.vehicleType === 'psv'">
   <vtm-vehicle-summary-psv [activeRecord]="activeRecord"></vtm-vehicle-summary-psv>
 </ng-container>
 
-<ng-container *ngIf="activeRecord.vehicleType === 'trl'">
-  <vtm-vehicle-summary-trl [activeRecord]="activeRecord"></vtm-vehicle-summary-trl>
-</ng-container>
-
-<dl class="govuk-summary-list" *ngIf="isStandardVehicle(activeRecord.vehicleType)">
+<dl class="govuk-summary-list">
   <h2 class="govuk-heading-m">Type Approval</h2>
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Approval type</dt>

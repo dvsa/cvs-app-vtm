@@ -17,7 +17,7 @@ import { TechRecord } from './../models/tech-record.model';
 import { MetaData } from '@app/models/meta-data';
 import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
-import { VIEW_STATE, VEHICLE_TYPES } from '@app/app.enums';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-technical-record',
@@ -75,14 +75,6 @@ export class TechnicalRecordComponent implements OnInit {
       panel.isOpened = !this.allOpened;
     }
     this.allOpened = !this.allOpened;
-  }
-
-  isStandardVehicle(vehicleType: string): boolean {
-    return (
-      VEHICLE_TYPES.HGV === vehicleType ||
-      VEHICLE_TYPES.TRL === vehicleType ||
-      VEHICLE_TYPES.PSV === vehicleType
-    );
   }
 
   hasSecondaryVrms(vrms) {
