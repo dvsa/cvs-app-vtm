@@ -114,6 +114,10 @@
     "collectCoverage": false,
     "testResultsProcessor": "jest-sonar-reporter",
     "testURL": "http://localhost",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/assets/config/"
+    ],
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/dist/",
