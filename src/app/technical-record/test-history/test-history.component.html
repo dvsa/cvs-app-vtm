@@ -33,7 +33,7 @@
           </span>
         </td>
         <td id="{{ 'test-expiryDate-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
-          <span *ngIf="testType.testExpiryDate; else hyphen">
+          <span *ngIf="testType.testExpiryDate && testType.testExpiryDate.trim()!==''; else hyphen">
             {{ testType.testExpiryDate | date: 'dd/MM/yyyy' : 'UTC' }}
           </span>
         </td>
