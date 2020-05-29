@@ -37,6 +37,7 @@ export class TechnicalRecordComponent implements OnInit {
     { panel: 'Weights', isOpened: false },
     { panel: 'Tyres', isOpened: false },
     { panel: 'Brakes', isOpened: false },
+    { panel: 'DDA', isOpened: false },
     { panel: 'Dimensions', isOpened: false },
     { panel: 'ADR', isOpened: false },
     { panel: 'Applicant', isOpened: false },

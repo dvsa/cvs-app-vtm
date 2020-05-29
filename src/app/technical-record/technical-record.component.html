@@ -366,13 +366,60 @@
         <div
           class="auto-pad"
           [@.disabled]="true"
-          *ngIf="activeRecord.vehicleType === 'trl' || activeRecord.vehicleType === 'hgv'"
+          *ngIf="activeRecord.vehicleType === 'psv'"
         >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
             hideToggle="true"
             #dimensions
             [(expanded)]="panels[5].isOpened"
+            [@.disabled]="true"
+          >
+            <mat-expansion-panel-header
+              class="disable_ripple"
+              [@.disabled]="true"
+              expandedHeight="80px"
+              collapsedHeight="80px"
+            >
+              <mat-panel-title>
+                <div class="item-technical-record govuk-!-font-weight-bold">
+                  DDA (Disability Discrimination Act)
+                </div>
+              </mat-panel-title>
+              <mat-panel-description>
+                <div class="expansion-icon">
+                  <fa-icon
+                    *ngIf="!dimensions.expanded"
+                    id="test-fa-plus-dimensions"
+                    [icon]="['fa', 'plus']"
+                    size="lg"
+                    class="expander-icon"
+                  ></fa-icon>
+                  <fa-icon
+                    *ngIf="dimensions.expanded"
+                    id="test-fa-minus-dimensions"
+                    [icon]="['fa', 'minus']"
+                    size="lg"
+                    class="expander-icon"
+                  ></fa-icon>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <vtm-dda [ddaDetails]="activeRecord.dda"></vtm-dda>
+          </mat-expansion-panel>
+        </div>
+
+        <div
+          class="auto-pad"
+          [@.disabled]="true"
+          *ngIf="activeRecord.vehicleType === 'trl' || activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+        >
+          <mat-expansion-panel
+            class="custom-header mat-elevation-z0"
+            hideToggle="true"
+            #dimensions
+            [(expanded)]="panels[6].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -410,12 +457,12 @@
           </mat-expansion-panel>
         </div>
 
-        <div class="auto-pad" [@.disabled]="true">
+        <div class="auto-pad" [@.disabled]="true" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #adr
-            [(expanded)]="panels[6].isOpened"
+            [(expanded)]="panels[7].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -465,7 +512,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #applicant
-            [(expanded)]="panels[7].isOpened"
+            [(expanded)]="panels[8].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -507,7 +554,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #purchaser
-            [(expanded)]="panels[8].isOpened"
+            [(expanded)]="panels[9].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -550,7 +597,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #manufacturer
-            [(expanded)]="panels[9].isOpened"
+            [(expanded)]="panels[10].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -595,7 +642,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #authorisationIntoService
-            [(expanded)]="panels[10].isOpened"
+            [(expanded)]="panels[11].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -639,7 +686,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #lettersOfAuthorisation
-            [(expanded)]="panels[11].isOpened"
+            [(expanded)]="panels[12].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -684,7 +731,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #documents
-            [(expanded)]="panels[12].isOpened"
+            [(expanded)]="panels[13].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -726,7 +773,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #notes
-            [(expanded)]="panels[13].isOpened"
+            [(expanded)]="panels[14].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -769,7 +816,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #testHistory
-            [(expanded)]="panels[14].isOpened"
+            [(expanded)]="panels[15].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -814,7 +861,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #techRecHistory
-            [(expanded)]="panels[15].isOpened"
+            [(expanded)]="panels[16].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
@@ -862,7 +909,7 @@
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
             #plates
-            [(expanded)]="panels[16].isOpened"
+            [(expanded)]="panels[17].isOpened"
             [@.disabled]="true"
           >
             <mat-expansion-panel-header
