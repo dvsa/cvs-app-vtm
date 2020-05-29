@@ -22,7 +22,7 @@ exports[`TyresComponent should create psv view only with populated data 1`] = `
         </th>
         <td
           class="govuk-table__cell"
-          id="test-sppedRestriction"
+          id="test-speedRestriction"
         >
            - 
         </td>
