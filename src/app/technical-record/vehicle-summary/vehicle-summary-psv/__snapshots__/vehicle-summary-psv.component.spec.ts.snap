@@ -103,7 +103,11 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       <dt
         class="govuk-summary-list__key"
       >
-         Seatbelt installation approval date / type approved 
+        <p
+          class="white-space--normal"
+        >
+          Seatbelt installation approval date / type approved
+        </p>
       </dt>
       <dd
         class="govuk-summary-list__value"

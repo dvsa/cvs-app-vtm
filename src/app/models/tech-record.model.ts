@@ -237,4 +237,5 @@ export interface TechRecord {
   authIntoService: AuthIntoService;
   lettersOfAuth: LettersOfAuth;
   frameDescription: string;
+  dda: DDA;
 }
