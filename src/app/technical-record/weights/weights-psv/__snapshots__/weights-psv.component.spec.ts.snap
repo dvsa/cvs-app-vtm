@@ -102,18 +102,6 @@ exports[`PsvWeightsComponent should create psv view only with populated data 1`]
         </th>
         <td
           class="govuk-table__cell"
-          id="test-gbWeight-1"
-        >
-           100 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-designWeight-1"
-        >
-           250 
-        </td>
-        <td
-          class="govuk-table__cell"
           id="test-kerbWeight-1"
         >
            150 
@@ -123,6 +111,18 @@ exports[`PsvWeightsComponent should create psv view only with populated data 1`]
           id="test-ladenWeight-1"
         >
            - 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-gbWeight-1"
+        >
+           100 
+        </td>
+        <td
+          class="govuk-table__cell"
+          id="test-designWeight-1"
+        >
+           250 
         </td>
         <td
           class="govuk-table__cell"
@@ -146,13 +146,13 @@ exports[`PsvWeightsComponent should create psv view only with populated data 1`]
           class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
-          Max GB weight (kg)
+           Max GB weight (kg) 
         </th>
         <th
           class="govuk-table__header govuk-!-width-one-quarter"
           scope="col"
         >
-          Design weight (kg)
+           Design weight (kg) 
         </th>
         <th
           class="govuk-table__header"
@@ -187,7 +187,7 @@ exports[`PsvWeightsComponent should create psv view only with populated data 1`]
         </td>
         <td
           class="govuk-table__cell"
-          id="test-maxTrainDesignWeight"
+          id="test-trainDesignWeight"
         >
            - 
         </td>

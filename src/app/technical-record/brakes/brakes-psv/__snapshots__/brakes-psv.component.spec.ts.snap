@@ -17,7 +17,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-brakeCode"
+        id="test-brakeCode"
       >
          145202 
       </dd>
@@ -35,7 +35,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-dataTrBrakeOne"
+        id="test-dataTrBrakeOne"
       >
          - 
       </dd>
@@ -53,7 +53,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-dataTrBrakeTwo"
+        id="test-dataTrBrakeTwo"
       >
          - 
       </dd>
@@ -71,7 +71,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-dataTrBrakeThree"
+        id="test-dataTrBrakeThree"
       >
          None 
       </dd>
@@ -89,7 +89,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-retarderBrakeOne"
+        id="test-retarderBrakeOne"
       >
          - 
       </dd>
@@ -107,7 +107,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-retarderBrakeTwo"
+        id="test-retarderBrakeTwo"
       >
          - 
       </dd>
@@ -131,7 +131,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-serviceBrakeForceA"
+        id="test-serviceBrakeForceA"
       >
          6531 
       </dd>
@@ -149,7 +149,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-secondaryBrakeForceA"
+        id="test-secondaryBrakeForceA"
       >
          3265 
       </dd>
@@ -167,7 +167,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-parkingBrakeForceA"
+        id="test-parkingBrakeForceA"
       >
          2322 
       </dd>
@@ -191,7 +191,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-serviceBrakeForceB"
+        id="test-serviceBrakeForceB"
       >
          5510 
       </dd>
@@ -209,7 +209,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-secondaryBrakeForceB"
+        id="test-secondaryBrakeForceB"
       >
          2755 
       </dd>
@@ -227,7 +227,7 @@ exports[`PsvBrakesComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-brakes-parkingBrakeForceB"
+        id="test-parkingBrakeForceB"
       >
          1763 
       </dd>
