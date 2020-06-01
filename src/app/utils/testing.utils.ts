@@ -25,6 +25,7 @@ import {
   DDA,
   BrakeForceWheelsNotLocked,
   BrakeForceWheelsUpToHalfLocked,
+  Dimensions
 } from './../models/tech-record.model';
 import { Tank, Tc2Details, Tc3Details, TankDetails } from '@app/models/Tank';
 import { MetaData } from '@app/models/meta-data';
@@ -68,6 +69,7 @@ export const TESTING_UTILS = {
   mockPSVBrakes,
   mockBrakeForceWheelsNotLocked,
   mockBrakeForceWheelsUpToHalfLocked,
+  mockDimensions
 };
 
 function mockFormGroupDirective(): FormGroupDirective {
@@ -363,27 +365,31 @@ function mockPSVBrakes(args?: Partial<Brakes>): Brakes {
   const mock: Brakes = {
     brakeCodeOriginal: '123',
     brakeCode: '145202',
-    dataTrBrakeThree: 'None',
+    dataTrBrakeThree: 'None'
   } as Brakes;
 
   return { ...mock, ...args };
 }
 
-function mockBrakeForceWheelsNotLocked(args?: Partial<BrakeForceWheelsNotLocked>): BrakeForceWheelsNotLocked {
+function mockBrakeForceWheelsNotLocked(
+  args?: Partial<BrakeForceWheelsNotLocked>
+): BrakeForceWheelsNotLocked {
   const mock: BrakeForceWheelsNotLocked = {
     parkingBrakeForceA: 2322,
     serviceBrakeForceA: 6531,
-    secondaryBrakeForceA: 3265,
+    secondaryBrakeForceA: 3265
   } as BrakeForceWheelsNotLocked;
 
   return { ...mock, ...args };
 }
 
-function mockBrakeForceWheelsUpToHalfLocked(args?: Partial<BrakeForceWheelsUpToHalfLocked>): BrakeForceWheelsUpToHalfLocked {
+function mockBrakeForceWheelsUpToHalfLocked(
+  args?: Partial<BrakeForceWheelsUpToHalfLocked>
+): BrakeForceWheelsUpToHalfLocked {
   const mock: BrakeForceWheelsUpToHalfLocked = {
     secondaryBrakeForceB: 2755,
     parkingBrakeForceB: 1763,
-    serviceBrakeForceB: 5510,
+    serviceBrakeForceB: 5510
   } as BrakeForceWheelsUpToHalfLocked;
 
   return { ...mock, ...args };
@@ -395,5 +401,15 @@ function mockAxleSpacing(args?: Partial<AxleSpacing>): AxleSpacing {
     value: 1234
   } as AxleSpacing;
 
-  return {...mock, ...args};
+  return { ...mock, ...args };
+}
+
+function mockDimensions(args?: Partial<Dimensions>): Dimensions {
+  const mock: Dimensions = {
+    length: 100,
+    height: 100,
+    width: 100
+  } as Dimensions;
+
+  return { ...mock, ...args };
 }
