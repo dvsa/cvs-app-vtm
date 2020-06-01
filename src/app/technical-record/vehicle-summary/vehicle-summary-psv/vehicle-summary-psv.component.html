@@ -3,7 +3,7 @@
     <dt class="govuk-summary-list__key">
       Seats lower deck
     </dt>
-    <dd id="test-vehicleSummary-seatsLowerDeck" class="govuk-summary-list__value">
+    <dd id="test-seatsLowerDeck" class="govuk-summary-list__value">
       {{ activeRecord.seatsLowerDeck | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -13,7 +13,7 @@
     <dt class="govuk-summary-list__key">
       Seats upper deck
     </dt>
-    <dd id="test-vehicleSummary-seatsUpperDeck" class="govuk-summary-list__value">
+    <dd id="test-seatsUpperDeck" class="govuk-summary-list__value">
       {{ activeRecord.seatsUpperDeck | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -23,7 +23,7 @@
     <dt class="govuk-summary-list__key">
       Standing capacity
     </dt>
-    <dd id="test-vehicleSummary-standingCapacity" class="govuk-summary-list__value">
+    <dd id="test-standingCapacity" class="govuk-summary-list__value">
       {{ activeRecord.standingCapacity | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -33,7 +33,7 @@
     <dt class="govuk-summary-list__key">
       Vehicle size
     </dt>
-    <dd id="test-vehicleSummary-vehicleSize" class="govuk-summary-list__value">
+    <dd id="test-vehicleSize" class="govuk-summary-list__value">
       {{ activeRecord.vehicleSize | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -43,7 +43,7 @@
     <dt class="govuk-summary-list__key">
       Number of seat belts
     </dt>
-    <dd id="test-vehicleSummary-numberOfSeatbelts" class="govuk-summary-list__value">
+    <dd id="test-numberOfSeatbelts" class="govuk-summary-list__value">
       {{ activeRecord.numberOfSeatbelts | DefaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__value"></dd>
@@ -53,10 +53,7 @@
     <dt class="govuk-summary-list__key">
       <p class="white-space--normal">Seatbelt installation approval date / type approved</p>
     </dt>
-    <dd
-      id="test-vehicleSummary-seatbeltInstallationApprovalDate"
-      class="govuk-summary-list__value"
-    >
+    <dd id="test-seatbeltInstallationApprovalDate" class="govuk-summary-list__value">
       <span *ngIf="activeRecord.seatbeltInstallationApprovalDate; else hyphen">
         {{ activeRecord.seatbeltInstallationApprovalDate | date: 'dd/MM/yyyy' }}
       </span>
