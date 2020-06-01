@@ -24,7 +24,12 @@
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
     "prepush": "npm run build && npm test",
     "security-checks": "git secrets --scan && git log -p | scanrepo",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "docker:create:build": "docker build -t $npm_package_name-$(git rev-parse HEAD) .",
+    "docker:run": "docker run --name $npm_package_name --detach --publish 4200:4200 $npm_package_name",
+    "docker:run:dev": "docker run -it $npm_package_name sh",
+    "docker:create:serve": "docker build -t vtm-fe -f ./Dockerfile.serve . ",
+    "docker:serve": "docker run -d -p 4200:4200 vtm-fe"
   },
   "private": true,
   "dependencies": {

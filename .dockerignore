@@ -1,0 +1,10 @@
+node_modules
+cypress
+.reports
+.dependabot
+.github
+coverage
+# TODO: Remove when docker registry
+# dist
+e2e
+# src/assets/config
