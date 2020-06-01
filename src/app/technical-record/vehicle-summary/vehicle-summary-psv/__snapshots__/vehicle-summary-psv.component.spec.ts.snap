@@ -17,7 +17,7 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-seatsLowerDeck"
+        id="test-seatsLowerDeck"
       >
          - 
       </dd>
@@ -35,7 +35,7 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-seatsUpperDeck"
+        id="test-seatsUpperDeck"
       >
          - 
       </dd>
@@ -53,7 +53,7 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-standingCapacity"
+        id="test-standingCapacity"
       >
          - 
       </dd>
@@ -71,7 +71,7 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-vehicleSize"
+        id="test-vehicleSize"
       >
          - 
       </dd>
@@ -89,7 +89,7 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-numberOfSeatbelts"
+        id="test-numberOfSeatbelts"
       >
          - 
       </dd>
@@ -111,7 +111,7 @@ exports[`PsvVehicleSummaryComponent should create view only with populated data 
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-vehicleSummary-seatbeltInstallationApprovalDate"
+        id="test-seatbeltInstallationApprovalDate"
       >
         
         <span>
