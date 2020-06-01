@@ -91,7 +91,7 @@
         </tr>
       </ng-container>
     </ng-container>
-    <tr class="govuk-table__row">
+    <tr class="govuk-table__row" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
       <th class="govuk-table__cell"></th>
       <td class="govuk-table__cell govuk-!-font-weight-bold">Minimum (mm)</td>
       <td class="govuk-table__cell govuk-!-font-weight-bold">Maximum (mm)</td>
