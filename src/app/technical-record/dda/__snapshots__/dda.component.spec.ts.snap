@@ -107,7 +107,7 @@ exports[`DdaComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-wheelchairRampInformation"
+        id="test-wheelchairRampPresent"
       >
          - 
       </dd>

@@ -7,7 +7,7 @@ export interface DDA {
   wheelchairFittings: number;
   wheelchairLiftPresent: string;
   wheelchairLiftInformation: string;
-  wheelchairRampPresent: string;
+  wheelchairRampPresent: boolean;
   wheelchairRampInformation: string;
   minEmergencyExits: string;
   outswing: string;
