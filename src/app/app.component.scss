@@ -268,23 +268,6 @@ dd {
   & .records-container-body {
     padding: 30px;
     display: flex;
-
-    & ngx-data-table {
-      min-width: 130%;
-
-      table {
-        width: 100%;
-        table-layout: fixed;
-      }
-
-      th,
-      td {
-        overflow: hidden;
-        width: 200px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
   }
 }
 
@@ -477,10 +460,6 @@ a#cancel2 {
 
 .govuk-inset-text {
   padding-top: 0 !important;
-}
-
-::ng-deep vtm-adr-details-view > div:nth-child(27) {
-  display: block !important;
 }
 
 .govuk-link,
