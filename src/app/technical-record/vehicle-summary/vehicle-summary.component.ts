@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TechRecord } from '@app/models/tech-record.model';
+import { TechRecordHelpersService } from '../tech-record-helpers.service';
 
 @Component({
   selector: 'vtm-vehicle-summary',
@@ -9,13 +10,13 @@ import { TechRecord } from '@app/models/tech-record.model';
 export class VehicleSummaryComponent implements OnInit {
   @Input() activeRecord: TechRecord;
   vehicleClassDescription = '-';
-  constructor() {}
+  constructor(public techRecHelpers: TechRecordHelpersService) {}
 
   ngOnInit() {
     this.vehicleClassDescription =
       this.activeRecord.vehicleClass && this.activeRecord.vehicleClass.description
-        ? this.formatVehicleClassDescription()
-        : '-';
+        ? this.activeRecord.vehicleClass.description
+        : null;
   }
 
   axlesHasParkingBrakeMrk(): boolean {
@@ -23,13 +24,6 @@ export class VehicleSummaryComponent implements OnInit {
       this.activeRecord.axles &&
       this.activeRecord.axles.length &&
       this.activeRecord.axles.some((x) => x.parkingBrakeMrk)
-    );
-  }
-
-  formatVehicleClassDescription() {
-    return (
-      this.activeRecord.vehicleClass.description.charAt(0).toUpperCase() +
-      this.activeRecord.vehicleClass.description.substr(1).toLowerCase()
     );
   }
 }
