@@ -4,6 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { NotesComponent } from './notes.component';
 import { SharedModule } from '@app/shared';
+import { VEHICLE_TYPES } from '@app/app.enums';
 
 describe('NotesComponent', () => {
   let component: NotesComponent;
@@ -25,7 +26,7 @@ describe('NotesComponent', () => {
   it('should create view only for hgv and trl with populated data', () => {
     component.activeRecord = TESTING_UTILS.mockTechRecord({
       notes: 'some notes',
-      vehicleType: 'hgv'
+      vehicleType: VEHICLE_TYPES.HGV
     });
 
     fixture.detectChanges();
@@ -36,7 +37,20 @@ describe('NotesComponent', () => {
   it('should create view only for psv populated data', () => {
     component.activeRecord = TESTING_UTILS.mockTechRecord({
       remarks: 'some remarks',
-      vehicleType: 'psv'
+      dispensations: '10/10',
+      vehicleType: VEHICLE_TYPES.PSV
+    });
+
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
+
+  it('should create view only for motorcycle populated date', () => {
+    component.activeRecord = TESTING_UTILS.mockTechRecord({
+      notes: 'some remarks',
+      dispensations: '10/10',
+      vehicleType: VEHICLE_TYPES.Moto
     });
 
     fixture.detectChanges();
