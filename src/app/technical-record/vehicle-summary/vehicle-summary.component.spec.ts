@@ -1,53 +1,101 @@
-import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { VehicleSummaryComponent } from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import { TESTING_UTILS } from '../../utils/testing.utils';
+import { TechRecord } from '@app/models/tech-record.model';
+import { VEHICLE_TYPES } from '@app/app.enums';
+
+const getTechRecord = (): TechRecord => {
+  return {
+    approvalType: 'approval',
+    regnDate: '12312321',
+    manufactureYear: 2003,
+    euVehicleCategory: '3',
+    departmentalVehicleMarker: true,
+    vehicleClass: { code: '2', description: 'motorbikes over 200cc' },
+    axles: [TESTING_UTILS.mockAxle()]
+  } as TechRecord;
+};
 
 describe('VehicleSummaryComponent', () => {
   let component: VehicleSummaryComponent;
   let fixture: ComponentFixture<VehicleSummaryComponent>;
-  let injector: TestBed;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [VehicleSummaryComponent],
+      declarations: [
+        VehicleSummaryComponent,
+        TestVehicleSummaryHgvComponent,
+        TestVehicleSummaryTrlComponent,
+        TestVehicleSummaryPsvComponent
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(VehicleSummaryComponent);
-    injector = getTestBed();
     component = fixture.componentInstance;
-    component.activeRecord = TESTING_UTILS.mockTechRecord({
-      approvalType: 'approval',
-      variantNumber: '123',
-      ntaNumber: '4566',
-      vehicleClass: TESTING_UTILS.mockBodyType()
-    });
-    component.activeRecord.axles = [TESTING_UTILS.mockAxle()];
+    component.activeRecord = {
+      ...getTechRecord()
+    } as TechRecord;
   });
 
-  it('should create view only with populated data', () => {
+  it('should create view only with HGV populated data', () => {
+    component.activeRecord.vehicleType = VEHICLE_TYPES.HGV;
     fixture.detectChanges();
 
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
   });
 
+  it('should create view only with TRL populated data', () => {
+    component.activeRecord.vehicleType = VEHICLE_TYPES.TRL;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
+
+  it('should create view only with PSV populated data', () => {
+    component.activeRecord.vehicleType = VEHICLE_TYPES.PSV;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
+
   it('should check if axles has no parking brake mrk', () => {
+    fixture.detectChanges();
+
     expect(component.axlesHasParkingBrakeMrk()).toBeTruthy();
   });
-
-  it('should check if axles has no parking brake mrk', () => {
-    expect(component.formatVehicleClassDescription()).toEqual('The first letter should be capital');
-  });
-
-  it('should create format the vehicle class description', () => {
-    fixture.detectChanges();
-    expect(component.vehicleClassDescription).toEqual('The first letter should be capital');
-  });
-
-  afterAll(() => {
-    TestBed.resetTestingModule();
-  });
 });
+
+@Component({
+  selector: 'vtm-vehicle-summary-hgv',
+  template: `
+    <div>HGV active record is: {{ activeRecord | json }}</div>
+  `
+})
+class TestVehicleSummaryHgvComponent {
+  @Input() activeRecord: TechRecord;
+}
+
+@Component({
+  selector: 'vtm-vehicle-summary-trl',
+  template: `
+    <div>TRL active record is: {{ activeRecord | json }}</div>
+  `
+})
+class TestVehicleSummaryTrlComponent {
+  @Input() activeRecord: TechRecord;
+}
+
+@Component({
+  selector: 'vtm-vehicle-summary-psv',
+  template: `
+    <div>PSV active record is: {{ activeRecord | json }}</div>
+  `
+})
+class TestVehicleSummaryPsvComponent {
+  @Input() activeRecord: TechRecord;
+}

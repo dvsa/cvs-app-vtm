@@ -33,6 +33,58 @@ exports[`NotesComponent should create view only for hgv and trl with populated d
 </vtm-notes>
 `;
 
+exports[`NotesComponent should create view only for motorcycle populated date 1`] = `
+<vtm-notes
+  activeRecord={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Notes
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-notes"
+      >
+        <span
+          class="notes-section"
+        >
+          some remarks
+        </span>
+      </dd>
+    </div>
+    
+    
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+        Dispensations
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-dispensations"
+      >
+        <span
+          class="notes-section"
+        >
+          10/10
+        </span>
+      </dd>
+    </div>
+  </dl>
+</vtm-notes>
+`;
+
 exports[`NotesComponent should create view only for psv populated data 1`] = `
 <vtm-notes
   activeRecord={[Function Object]}
@@ -77,7 +129,7 @@ exports[`NotesComponent should create view only for psv populated data 1`] = `
         <span
           class="notes-section"
         >
-          -
+          10/10
         </span>
       </dd>
     </div>
