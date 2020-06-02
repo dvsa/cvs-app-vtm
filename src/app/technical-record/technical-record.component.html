@@ -179,7 +179,11 @@
           </mat-expansion-panel>
         </div>
 
-        <div class="auto-pad" [@.disabled]="true">
+        <div
+          class="auto-pad"
+          [@.disabled]="true"
+          *ngIf="techRecHelpers.isStandardVehicle(activeRecord.vehicleType)"
+        >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
             hideToggle="true"
@@ -226,7 +230,11 @@
           </mat-expansion-panel>
         </div>
 
-        <div class="auto-pad" [@.disabled]="true">
+        <div
+          class="auto-pad"
+          [@.disabled]="true"
+          *ngIf="techRecHelpers.isStandardVehicle(activeRecord.vehicleType)"
+        >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
             hideToggle="true"
@@ -269,7 +277,11 @@
           </mat-expansion-panel>
         </div>
 
-        <div class="auto-pad" [@.disabled]="true">
+        <div
+          class="auto-pad"
+          [@.disabled]="true"
+          *ngIf="techRecHelpers.isStandardVehicle(activeRecord.vehicleType)"
+        >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
             hideToggle="true"
@@ -363,11 +375,7 @@
           </mat-expansion-panel>
         </div>
 
-        <div
-          class="auto-pad"
-          [@.disabled]="true"
-          *ngIf="activeRecord.vehicleType === 'psv'"
-        >
+        <div class="auto-pad" [@.disabled]="true" *ngIf="activeRecord.vehicleType === 'psv'">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
             hideToggle="true"
@@ -413,7 +421,7 @@
         <div
           class="auto-pad"
           [@.disabled]="true"
-          *ngIf="activeRecord.vehicleType === 'trl' || activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'psv'"
+          *ngIf="techRecHelpers.isStandardVehicle(activeRecord.vehicleType)"
         >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0"
@@ -457,7 +465,11 @@
           </mat-expansion-panel>
         </div>
 
-        <div class="auto-pad" [@.disabled]="true" *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'">
+        <div
+          class="auto-pad"
+          [@.disabled]="true"
+          *ngIf="techRecHelpers.isStandardVehicle(activeRecord.vehicleType)"
+        >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "
             hideToggle="true"
