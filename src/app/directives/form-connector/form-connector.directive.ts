@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { SetAppFormDirty } from '@app/store/actions/app-form-state.actions';
 import { getAppFormState } from '../../store/selectors/app-form-state.selectors';
+import { environment } from '@environments/environment';
 
 @Directive({
   selector: '[vtmFormConnector]'
@@ -29,7 +30,7 @@ export class FormConnectorDirective implements OnInit, OnDestroy {
         withLatestFrom(this.store.select(getAppFormState)),
         tap(([formValue, appForm]: [FormGroup, boolean]) => {
           // TODO: to be removed
-          console.log('VALUE: ', formValue, 'PATH: ', this.path);
+          if (environment.debug) { console.log('VALUE: ', formValue, 'PATH: ', this.path); }
           if (!this.formGroupDirective.form.pristine && appForm) {
             this.store.dispatch(new SetAppFormDirty());
           }
@@ -37,7 +38,7 @@ export class FormConnectorDirective implements OnInit, OnDestroy {
       )
       .subscribe();
     // TODO: to be removed
-    console.log(this.formGroupDirective.form);
+    if (environment.debug) { console.log(this.formGroupDirective.form); }
   }
 
   ngOnDestroy(): void {

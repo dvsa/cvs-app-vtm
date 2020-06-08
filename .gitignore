@@ -45,3 +45,4 @@ Thumbs.db
 .reports
 
 *.env
+/src/environments/environment.ts
