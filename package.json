@@ -124,7 +124,8 @@
       "<rootDir>/node_modules/",
       "<rootDir>/dist/",
       "<rootDir>/src/test.ts",
-      "<rootDir>/test-config"
+      "<rootDir>/test-config",
+      "<rootDir>/src/environments/environment.test.ts"
     ],
     "modulePathIgnorePatterns": [
       "cypress"
