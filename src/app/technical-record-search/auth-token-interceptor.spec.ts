@@ -23,7 +23,7 @@ describe('AuthTokenInterceptor', () => {
   };
 
   const routes = {
-    testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
+    testResults: (searchIdentifier: string) => `${environment.apiServer.APITestResultServerUri}/test-results/${searchIdentifier}`,
   };
 
   let httpMock: HttpTestingController;

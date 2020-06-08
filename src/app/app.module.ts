@@ -50,17 +50,25 @@ export function msAdalAngular6ConfigFactory() {
 }
 
 export function initializeApp(appConfig: AppConfig) {
-  const promise = appConfig.load().then(() => {
+  const setAdalCfg = appConfig.load()
+    .then((config) => {
+      // TODO Remove once docker image is created, is used to debug
+      // create-docker branch needs to be updated
+      console.log('appConfig');
+      console.log(appConfig);
+      console.log('config');
+      console.log(config);
+
     adalConfig = {
-      tenant: appConfig.settings.adalConfig.tenant,
-      clientId: appConfig.settings.adalConfig.clientId,
-      redirectUri: appConfig.settings.adalConfig.redirectUri,
-      endpoints: appConfig.settings.adalConfig.endpoints,
+      tenant: config.adalConfig.tenant,
+      clientId: config.adalConfig.clientId,
+      redirectUri: config.adalConfig.redirectUri,
+      endpoints: config.adalConfig.endpoints,
       navigateToLoginRequestUrl: true,
-      cacheLocation: appConfig.settings.adalConfig.cacheLocation
+      cacheLocation: config.adalConfig.cacheLocation
     };
   });
-  return () => promise;
+  return () => setAdalCfg;
 }
 
 export const COMPONENTS = [

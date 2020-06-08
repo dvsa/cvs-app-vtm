@@ -1,7 +1,5 @@
 export interface IAppConfig {
-  env: {
-    name: string;
-  };
+  name: string;
   appInsights: {
     instrumentationKey: string;
   };

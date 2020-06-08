@@ -1,10 +1,9 @@
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
+  name: 'test',
   production: false,
-  name: 'dev',
+  // APIServerUri: 'http://localhost:3005',
+  // APITestResultServerUri: 'http://localhost:3006',
+  // Add cfg for docker here
   appInsights: {
     instrumentationKey: '#{appInsightsKey}'
   },
@@ -27,6 +26,8 @@ export const environment = {
     }
   },
   apiServer: {
+    // replace with dev endpoints, will be use for docker build to test against latest APIs
+    // when image will be created to be used for e2e tests.
     APITechnicalRecordServerUri: 'http://localhost:3005',
     APITestResultServerUri: 'http://localhost:3006',
     APIDocumentsServerUri: 'assets/files',
@@ -36,11 +37,3 @@ export const environment = {
     APICertificatesBlobUri: ''
   }
 };
-
-/*
- * In development mode, to ignore zone related error stack frames such as
- * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
- * import the following file, but please comment it out in production mode
- * because it will have performance impact when throw error
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
