@@ -6,10 +6,7 @@ export interface ModalState {
   currentRoute: string;
 }
 
-export const initialModalState: ModalState = {
-  currentModal: APP_MODALS.NONE,
-  currentRoute: ''
-};
+export const initialModalState = null;
 
 export function ModalReducer(
   state: ModalState = initialModalState,
@@ -21,14 +18,6 @@ export function ModalReducer(
         ...state,
         currentModal: action.payload.currentModal,
         currentRoute: action.payload.currentRoute
-      };
-    }
-
-    case EModalStateActions.ResetModal: {
-      return {
-        ...state,
-        currentModal: APP_MODALS.NONE,
-        currentRoute: action.urlToRedirect
       };
     }
 

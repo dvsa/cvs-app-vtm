@@ -4,7 +4,7 @@ import { ModalState } from './modal.reducer';
 export enum EModalStateActions {
   LoadModal = '[Load] Modal',
   ResetModal = '[Reset] Modal',
-  RedirectModal = '[Redirect] Modal'
+  ChangeView = '[ChangeView] Modal'
 }
 
 export class LoadModal implements Action {
@@ -12,14 +12,9 @@ export class LoadModal implements Action {
   constructor(public payload: ModalState) {}
 }
 
-export class ResetModal implements Action {
-  public readonly type = EModalStateActions.ResetModal;
-  constructor(public urlToRedirect?: string) {}
+export class ChangeView implements Action {
+  public readonly type = EModalStateActions.ChangeView;
+  constructor(public payload: ModalState) {}
 }
 
-export class RedirectModal implements Action {
-  public readonly type = EModalStateActions.RedirectModal;
-  constructor(public urlToRedirect?: string) {}
-}
-
-export type ModalStateActions = LoadModal | ResetModal;
+export type ModalStateActions = LoadModal | ChangeView;

@@ -44,6 +44,7 @@ import { TestRecordModule } from '@app/test-record/test-record.module';
 import { LogoutModalComponent } from './shell/header/logout-modal/logout-modal.component';
 import { ROOT_EFFECTS } from './store/state/app.state';
 import { ModalModule } from './modal/modal.module';
+import { ModalContainerComponent } from './modal/modal.container.component';
 
 let adalConfig: any; // will be initialized by APP_INITIALIZER
 export function msAdalAngular6ConfigFactory() {

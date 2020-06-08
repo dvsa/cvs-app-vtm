@@ -12,7 +12,7 @@ import { EffectsModule } from '@ngrx/effects';
     EffectsModule.forFeature([ModalEffects]),
   ],
   declarations: [ModalContainerComponent, ModalComponent, LoseChangesComponent],
-  entryComponents: [ModalComponent, LoseChangesComponent],
+  entryComponents: [LoseChangesComponent],
   exports: [ModalContainerComponent],
 })
 export class ModalModule { }

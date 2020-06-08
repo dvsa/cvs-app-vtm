@@ -12,7 +12,7 @@ import { getTechViewState } from './../selectors/VehicleTechRecordModel.selector
 import { getErrors } from '../selectors/error.selectors';
 import { VIEW_STATE } from '@app/app.enums';
 import { AppFormState } from '../reducers/app-form-state.reducers';
-
+import { SetAppFormPristine } from '../actions/app-form-state.actions';
 
 @Injectable()
 export class RouterEffects {
@@ -24,8 +24,7 @@ export class RouterEffects {
       ([action, currentState, errors]: [
         RouterNavigationAction<RouterStateUrl>,
         VIEW_STATE,
-        string[],
-        AppFormState
+        string[]
       ]) => {
         const isEditState = currentState === VIEW_STATE.EDIT;
         const hasErrors = errors.length > 0;
@@ -42,9 +41,9 @@ export class RouterEffects {
     switchMap(({ params }) => {
       const actions = [];
       const { isEditState, hasErrors } = params;
-      // if (isEditState) {
-      //   actions.push(new SetViewState(VIEW_STATE.VIEW_ONLY));
-      // }
+      if (isEditState) {
+        actions.push(...[new SetViewState(VIEW_STATE.VIEW_ONLY)]);
+      }
 
       if (hasErrors) {
         actions.push(new ClearErrorMessage());

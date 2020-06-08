@@ -1,10 +1,17 @@
-import { LoadModal, EModalStateActions, ResetModal, RedirectModal } from './modal.actions';
+import { LoadModal, EModalStateActions, ChangeView } from './modal.actions';
 import { APP_MODALS } from '@app/app.enums';
 import { ModalState } from './modal.reducer';
 
 describe('ModalState actions', () => {
+  let modalState: ModalState;
+  beforeEach(() => {
+    modalState = {
+      currentModal: APP_MODALS.LOSE_CHANGES,
+      currentRoute: '/some/route'
+    } as ModalState;
+  });
+
   it('should create LoadModal action', () => {
-    const modalState = {currentModal: APP_MODALS.LOSE_CHANGES, currentRoute: '/some/route'} as ModalState;
     const action = new LoadModal(modalState);
     expect({ ...action }).toEqual({
       type: EModalStateActions.LoadModal,
@@ -12,19 +19,12 @@ describe('ModalState actions', () => {
     });
   });
 
-  it('should create ResetModal action', () => {
-    const action = new ResetModal();
+  it('should create ChangeView action', () => {
+    const action = new ChangeView(modalState);
 
     expect({ ...action }).toEqual({
-      type: EModalStateActions.ResetModal,
-    });
-  });
-
-  it('should create RedirectModal action', () => {
-    const action = new RedirectModal();
-
-    expect({ ...action }).toEqual({
-      type: EModalStateActions.RedirectModal,
+      type: EModalStateActions.ChangeView,
+      payload: modalState
     });
   });
 });

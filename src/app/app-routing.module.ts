@@ -10,12 +10,12 @@ import { TestResultGuard } from '@app/test-record/guards/test-result.guard';
 import { ModalGuard } from './modal/modal.guard';
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent, canActivate: [AuthenticationGuard] },
+  { path: '', component: LandingPageComponent, canActivate: [AuthenticationGuard, ModalGuard] },
   {
     path: 'search',
     loadChildren:
       './technical-record-search/technical-record-search.module#TechnicalRecordSearchModule',
-    canActivate: [AuthenticationGuard]
+    canActivate: [AuthenticationGuard, ModalGuard]
   },
   {
     path: 'create',
@@ -25,8 +25,8 @@ const routes: Routes = [
   {
     path: 'technical-record',
     loadChildren: './technical-record/technical-record.module#TechnicalRecordModule',
-    canActivate: [AuthenticationGuard],
-    canDeactivate: [ModalGuard]
+    canActivate: [AuthenticationGuard, ModalGuard],
+    // canDeactivate: [ModalGuard]
   },
   {
     path: 'multiple-records',

@@ -1,48 +1,66 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Inject,
+  Input,
+  Output,
+  EventEmitter,
+  AfterViewInit,
+  SimpleChanges
+} from '@angular/core';
 import { APP_MODALS } from '../app.enums';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogConfig,
+  MatDialog
+} from '@angular/material/dialog';
 import { ModalContent } from './modal.model';
-import { Store } from '@ngrx/store';
-import { IAppState } from '@app/store/state/app.state';
-import { ResetModal } from './modal.actions';
-import { ModalContainerComponent } from './modal.container.component';
+import { LoseChangesComponent } from './components/lose-changes/lose-changes.component';
+import { ModalState } from './modal.reducer';
+import { OnChanges } from '@angular/core';
 
 @Component({
   selector: 'vtm-modal',
   template: `
-    <ng-container *ngIf="currentModal.modal === 'lose-changes'">
-      <vtm-lose-changes (okCancelAction)="okCancelAction($event)"></vtm-lose-changes>
-    </ng-container>
+    <div></div>
+    <ng-content></ng-content>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ModalComponent implements OnInit {
-  public currentModal: ModalContent;
+export class ModalComponent implements OnChanges {
+  @Input() modalState: ModalState;
+  @Output() modalChange: EventEmitter<ModalContent>;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) data,
-    public dialogRef: MatDialogRef<ModalComponent>,
-    private store: Store<IAppState>
-  ) {
-    this.currentModal = {
-      modal: data.currentModal,
-      urlToRedirect: data.currentRoute
-    } as ModalContent;
-  }
+  constructor(private dialog: MatDialog) {}
 
-  ngOnInit() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.modalState) {
+      const dialogConfig = new MatDialogConfig();
 
-  okCancelAction(isOk: boolean) {
-    this.handleModal({ ...this.currentModal, status: isOk });
-    this.dialogRef.close();
-  }
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = '45vw';
 
-  handleModal(modalContent: ModalContent) {
-    switch (modalContent.modal) {
-      case APP_MODALS.LOSE_CHANGES:
-        const redirectUrl = modalContent.status ? modalContent.urlToRedirect : '';
-        this.store.dispatch(new ResetModal(redirectUrl));
-        return;
+      let currentDialog: MatDialogRef<any>;
+      if (this.modalState.currentModal === APP_MODALS.LOSE_CHANGES) {
+        currentDialog = this.dialog.open(LoseChangesComponent, dialogConfig);
+        currentDialog.afterClosed().subscribe((loseChanges) => {
+          if (loseChanges) {
+            this.modalChange.emit({
+              modal: this.modalState.currentModal,
+              urlToRedirect: this.modalState.currentRoute,
+              status: loseChanges
+            });
+            console.log({
+              modal: this.modalState.currentModal,
+              urlToRedirect: this.modalState.currentRoute,
+              status: loseChanges
+            });
+          }
+        });
+      }
     }
   }
 }
