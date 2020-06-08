@@ -1,20 +1,22 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, isDevMode } from '@angular/core';
-import configJsonDeploy from './../assets/config/config.deploy.json';
-import configJsonDev from './../assets/config/config.dev.json';
+import { Injectable } from '@angular/core';
 import { IAppConfig } from './models/app-config.model';
-import { createConfig } from '../assets/config';
-
+import { environment } from '@environments/environment';
 
 @Injectable()
 export class AppConfig {
   private _settings: IAppConfig;
-  constructor(private http: HttpClient) { }
-  load(): Promise<IAppConfig> {
-    this._settings = isDevMode() ? createConfig(configJsonDev) :
-    createConfig(configJsonDeploy);
 
-    return Promise.resolve(this._settings);
+  constructor() {}
+
+  load(): Promise<IAppConfig> {
+    // TODO Remove once docker image is created, is used to debug
+    // create-docker branch needs to be updated
+    if (environment.debug) {
+      console.log('environment Promise');
+      console.log(environment);
+    }
+    this._settings = environment;
+    return Promise.resolve(environment);
   }
 
   get settings(): IAppConfig {

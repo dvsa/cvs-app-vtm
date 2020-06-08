@@ -12,9 +12,10 @@
   "homepage": "",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
-    "build:prod": "npm run ng build -- --prod --configuration=deploy",
+    "config": "ts-node ./scripts/generateEnv.ts -- --environment=local",
+    "start": "npm run config && ng serve",
+    "build": "npm run config && ng build --configuration=dev",
+    "build:prod": "npm run config && ng build --prod --configuration=deploy",
     "test": "jest --coverage",
     "test:dev": "jest --watch",
     "lint": "ng lint",
@@ -90,6 +91,7 @@
     "codelyzer": "~4.4.2",
     "cypress": "^4.9.0",
     "cypress-jest-adapter": "^0.1.1",
+    "dotenv": "^8.2.0",
     "jest": "^24.9.0",
     "jest-plugin-context": "^2.9.0",
     "jest-runner-tsc": "^1.6.0",
@@ -126,7 +128,12 @@
       "<rootDir>/node_modules/",
       "<rootDir>/dist/",
       "<rootDir>/src/test.ts",
-      "<rootDir>/test-config"
+      "<rootDir>/test-config",
+      "<rootDir>/src/environments/environment.ts",
+      "<rootDir>/src/environments/environment.dev.ts",
+      "<rootDir>/src/environments/environment.test.ts",
+      "<rootDir>/src/environments/environment.deploy.ts",
+      "<rootDir>/scripts/generateDevEnv.ts"
     ],
     "modulePathIgnorePatterns": [
       "cypress"

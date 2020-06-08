@@ -7,3 +7,4 @@
 .scannerwork/css-bundle/node_modules/js-yaml/lib/js-yaml/*.js
 .scannerwork/css-bundle/node_modules/validate-npm-package-license/*.log
 src/assets/config/config.dev.json~feat(cvsb-10710): download certificate logic with unit tests
+env

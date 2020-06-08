@@ -51,17 +51,18 @@ export function msAdalAngular6ConfigFactory() {
 }
 
 export function initializeApp(appConfig: AppConfig) {
-  const promise = appConfig.load().then(() => {
-    adalConfig = {
-      tenant: appConfig.settings.adalConfig.tenant,
-      clientId: appConfig.settings.adalConfig.clientId,
-      redirectUri: appConfig.settings.adalConfig.redirectUri,
-      endpoints: appConfig.settings.adalConfig.endpoints,
-      navigateToLoginRequestUrl: true,
-      cacheLocation: appConfig.settings.adalConfig.cacheLocation
-    };
+  const setAdalCfg = appConfig.load()
+    .then((config) => {
+      adalConfig = {
+        tenant: config.adalConfig.tenant,
+        clientId: config.adalConfig.clientId,
+        redirectUri: config.adalConfig.redirectUri,
+        endpoints: config.adalConfig.endpoints,
+        navigateToLoginRequestUrl: true,
+        cacheLocation: config.adalConfig.cacheLocation
+      };
   });
-  return () => promise;
+  return () => setAdalCfg;
 }
 
 export const COMPONENTS = [
