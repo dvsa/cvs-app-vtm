@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule, FormGroupDirective } from '@angular/forms';
 import { of, EMPTY } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 import { SharedModule } from '@app/shared';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
@@ -57,6 +58,32 @@ describe('TankInspectionsEditComponent', () => {
     fixture.detectChanges();
 
     expect(validationMapper.vehicleTypeSelected).toHaveBeenCalledWith(type);
+  });
+
+  describe('addSubsequentInspectionGroup', () => {
+    it('should add a subsequent tank inspection when button is clicked', () => {
+      fixture.detectChanges();
+
+      const addInspection: HTMLElement = fixture.debugElement.query(
+        By.css('[id=test-addTc3Details]')
+      ).nativeElement;
+      addInspection.click();
+
+      expect(component.tc3Details.length).toBe(2);
+    });
+  });
+
+  describe('removeSubsequentInspectionGroup', () => {
+    it('should remove the subsequent tank inspection when button is clicked', () => {
+      fixture.detectChanges();
+
+      const selectedSubsequentInspection: HTMLElement = fixture.debugElement.query(
+        By.css('[id=test-removeTc3-0]')
+      ).nativeElement;
+      selectedSubsequentInspection.click();
+
+      expect(component.tc3Details.length).toBe(0);
+    });
   });
 
   describe('handleFormChanges', () => {
