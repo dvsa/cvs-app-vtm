@@ -28,8 +28,23 @@
                 *ngFor="let subsequentTc3 of tc3Details.controls; let i = index"
                 [formGroup]="subsequentTc3"
               >
-                <h4 class="govuk-heading-s">Subsequent</h4>
-
+                <div class="govuk-grid-row">
+                  <div class="govuk-grid-column-three-quarters">
+                    <h4 class="govuk-heading-s">Subsequent</h4>
+                  </div>
+                  <div class="govuk-grid-column-one-quarter">
+                    <span class="govuk-!-padding-left-9 govuk-!-margin-left-9">
+                      <a
+                        href="javascript:void(0)"
+                        id="test-removeTc3-{{ i }}"
+                        class="govuk-link govuk-link--no-visited-state "
+                        (click)="removeSubsequentInspectionGroup(i)"
+                      >
+                        Remove
+                      </a>
+                    </span>
+                  </div>
+                </div>
                 <div [formGroup]="subsequentTc3" class="govuk-inset-text govuk-!-margin-top-0">
                   <!-- Inspection type -->
                   <div class="govuk-form-group govuk-!-margin-left-3">
@@ -75,6 +90,7 @@
               <a
                 href="javascript:void(0)"
                 class="govuk-link govuk-link--no-visited-state"
+                id="test-addTc3Details"
                 (click)="addSubsequentInspectionGroup()"
               >
                 Add a subsequent inspection

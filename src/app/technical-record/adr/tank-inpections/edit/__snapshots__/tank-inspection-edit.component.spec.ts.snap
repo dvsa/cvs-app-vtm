@@ -203,11 +203,34 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
               >
                 
                 
-                <h4
-                  class="govuk-heading-s"
+                <div
+                  class="govuk-grid-row"
                 >
-                  Subsequent
-                </h4>
+                  <div
+                    class="govuk-grid-column-three-quarters"
+                  >
+                    <h4
+                      class="govuk-heading-s"
+                    >
+                      Subsequent
+                    </h4>
+                  </div>
+                  <div
+                    class="govuk-grid-column-one-quarter"
+                  >
+                    <span
+                      class="govuk-!-padding-left-9 govuk-!-margin-left-9"
+                    >
+                      <a
+                        class="govuk-link govuk-link--no-visited-state "
+                        href="javascript:void(0)"
+                        id="test-removeTc3-0"
+                      >
+                         Remove 
+                      </a>
+                    </span>
+                  </div>
+                </div>
                 <div
                   class="govuk-inset-text govuk-!-margin-top-0 ng-untouched ng-pristine ng-valid"
                   ng-reflect-form="[object Object]"
@@ -385,6 +408,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                 <a
                   class="govuk-link govuk-link--no-visited-state"
                   href="javascript:void(0)"
+                  id="test-addTc3Details"
                 >
                    Add a subsequent inspection 
                 </a>
