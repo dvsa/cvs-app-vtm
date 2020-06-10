@@ -15,7 +15,10 @@ import {
   DEFECTS_APPLICABLE,
   EMISSION_DETAILS_APPLICABLE,
   EXPIRY_DATE_APPLICABLE,
-  SEAT_BELT_APPLICABLE
+  SEAT_BELT_APPLICABLE,
+  SPECIALIST_CERTIFICATE_APPLICABLE,
+  SPECIALIST_COIF_APPLICABLE,
+  SPECIALIST_TEST_APPLICABLE
 } from '@app/test-record/test-types-applicable.enum';
 
 export interface TestTypesApplicable {
@@ -25,6 +28,9 @@ export interface TestTypesApplicable {
   anniversaryDateApplicable: {};
   expiryDateApplicable: {};
   certificateApplicable: {};
+  specialistTestApplicable: {};
+  specialistCOIFApplicable: {};
+  specialistCertificateApplicable: {};
 }
 
 @Injectable({ providedIn: 'root' })
@@ -79,7 +85,12 @@ export class TestRecordMapper {
         Object.values(ANNIVERSARY_DATE_APPLICABLE)
       ),
       expiryDateApplicable: this.getTestTypeEnums(Object.values(EXPIRY_DATE_APPLICABLE)),
-      certificateApplicable: this.getTestTypeEnums(Object.values(CERTIFICATE_APPLICABLE))
+      certificateApplicable: this.getTestTypeEnums(Object.values(CERTIFICATE_APPLICABLE)),
+      specialistTestApplicable: this.getTestTypeEnums(Object.values(SPECIALIST_TEST_APPLICABLE)),
+      specialistCOIFApplicable: this.getTestTypeEnums(Object.values(SPECIALIST_COIF_APPLICABLE)),
+      specialistCertificateApplicable: this.getTestTypeEnums(
+        Object.values(SPECIALIST_CERTIFICATE_APPLICABLE)
+      )
     };
 
     return testTypesApplicable[sectionName];

@@ -15,7 +15,14 @@ export class TestSectionComponent implements OnInit {
   @Input() testTypesApplicable: TestTypesApplicable;
   @Input() editState: VIEW_STATE;
 
+  hasCertificateNumber: boolean;
+
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.hasCertificateNumber =
+      this.testTypesApplicable.certificateApplicable[this.testType.testTypeId] ||
+      (this.testTypesApplicable.specialistCertificateApplicable[this.testType.testTypeId] &&
+        this.testType.testResult === 'pass');
+  }
 }

@@ -5,6 +5,12 @@ export interface ModType {
   description: string;
 }
 
+export interface CustomDefect {
+  referenceNumber: string;
+  defectName: string;
+  defectNotes: string;
+}
+
 export interface TestType {
   prohibitionIssued: boolean;
   testCode: string;
@@ -35,4 +41,6 @@ export interface TestType {
   modificationTypeUsed: string;
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
+  secondaryCertificateNumber: string;
+  customDefects: CustomDefect[];
 }
