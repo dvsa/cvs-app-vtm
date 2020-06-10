@@ -23,6 +23,17 @@ export enum EU_VEHICLE_CATEGORY_LGV {
   N1 = 'N1'
 }
 
+export enum EU_VEHICLE_CATEGORY_MOTORCYCLE {
+  L1eA = 'L1eA',
+  L1e = 'L1e',
+  L2e = 'L2e',
+  L3e = 'L3e',
+  L4e = 'L4e',
+  L5e = 'L5e',
+  L6e = 'L6e',
+  L7e = 'L7e'
+}
+
 export enum ODOMETER_READING_UNITS {
   KM = 'kilometres',
   MILES = 'miles'

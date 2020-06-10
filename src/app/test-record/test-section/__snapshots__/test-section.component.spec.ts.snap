@@ -2,6 +2,7 @@
 
 exports[`TestSectionComponent should create 1`] = `
 <vtm-test-section
+  hasCertificateNumber="undefined"
   testRecord={[Function Object]}
   testType={[Function Object]}
   testTypesApplicable={[Function Object]}
@@ -84,6 +85,10 @@ exports[`TestSectionComponent should create 1`] = `
          - 
       </dd>
     </div>
+    
+    
+    
+    
     
     
     

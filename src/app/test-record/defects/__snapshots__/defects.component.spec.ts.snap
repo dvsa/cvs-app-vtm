@@ -4,6 +4,7 @@ exports[`DefectsComponent should create 1`] = `
 <vtm-defects
   testRecord={[Function Object]}
   testType={[Function Object]}
+  testTypesApplicable={[Function Object]}
 >
   <dl
     class="govuk-summary-list"
@@ -149,10 +150,64 @@ exports[`DefectsComponent should create 1`] = `
 </vtm-defects>
 `;
 
-exports[`DefectsComponent should match snapshot if test type doesn t have defects with deficiencyId & deficiencySubId 1`] = `
+exports[`DefectsComponent should generate test type for specialist tests 1`] = `
 <vtm-defects
   testRecord={[Function Object]}
   testType={[Function Object]}
+  testTypesApplicable={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <h2
+      class="govuk-heading-l govuk-!-width-full"
+    >
+      <span
+        class="govuk-!-margin-top-3"
+        id="test-referenceNumber-0"
+      >
+         - 
+      </span>
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Defect name 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-defectName-0"
+      >
+         test 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Defect notes 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-defectNotes-0"
+      >
+         test 
+      </dd>
+    </div>
+  </dl>
+</vtm-defects>
+`;
+
+exports[`DefectsComponent should generate test type for test type doesn t have defects with deficiencyId & deficiencySubId 1`] = `
+<vtm-defects
+  testRecord={[Function Object]}
+  testType={[Function Object]}
+  testTypesApplicable={[Function Object]}
 >
   <dl
     class="govuk-summary-list"
