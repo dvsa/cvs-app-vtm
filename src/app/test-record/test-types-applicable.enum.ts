@@ -15,7 +15,12 @@ export enum SEAT_BELT_APPLICABLE {
   'Part-paid prohibition clearance (partial inspection without certification)' = '23',
   'Paid prohibition clearance with Class 6A seat belt installation check (full inspection)' = '27',
   'Prohibition clearance (retest with Class 6A seat belt installation check)' = '28',
-  'Prohibition clearance (retest without Class 6A seat belt installation check)' = '93'
+  'Prohibition clearance (retest without Class 6A seat belt installation check)' = '93',
+  'COIF with annual test' = '142',
+  'Seatbelt installation check COIF with annual test' = '146',
+  'Seatbelt installation check COIF without annual test' = '147',
+  'COIF retest with annual test' = '175',
+  'Seatbelt installation check COIF retest with annual test' = '177'
 }
 
 export enum DEFECTS_APPLICABLE {
@@ -86,7 +91,11 @@ export enum ANNIVERSARY_DATE_APPLICABLE {
   'Paid prohibition clearance (retest with certification)' = '113',
   'Part paid prohibition clearance (retest with certification)' = '116',
   'Paid prohibition clearance on first test (full inspection with certification) 2' = '119',
-  'Paid retest prohibition clearance on first test 2' = '120'
+  'Paid retest prohibition clearance on first test 2' = '120',
+  'COIF with annual test' = '142',
+  'Seatbelt installation check COIF with annual test' = '146',
+  'COIF retest with annual test' = '175',
+  'Seatbelt installation check COIF retest with annual test' = '177'
 }
 
 export enum EXPIRY_DATE_APPLICABLE {
@@ -128,7 +137,11 @@ export enum EXPIRY_DATE_APPLICABLE {
   'Free ADR retest' = '60',
   'Low Emissions Certificate (LEC) with annual test 1' = '44',
   'Low Emissions Certificate (LEC) with annual test 2' = '39',
-  'Low Emissions Certificate (LEC) without annual test' = '45'
+  'Low Emissions Certificate (LEC) without annual test' = '45',
+  'COIF with annual test' = '142',
+  'Seatbelt installation check COIF with annual test' = '146',
+  'COIF retest with annual test' = '175',
+  'Seatbelt installation check COIF retest with annual test' = '177'
 }
 
 export enum CERTIFICATE_APPLICABLE {
@@ -179,4 +192,117 @@ export enum CERTIFICATE_APPLICABLE {
   'TIR test' = '49',
   'Paid TIR retest' = '56',
   'Free TIR retest' = '57'
+}
+
+export enum SPECIALIST_TEST_APPLICABLE {
+  'Basic IVA inspection' = '125',
+  'Normal IVA inspection 1' = '126',
+  'Normal IVA inspection 2' = '186',
+  'Normal IVA inspection 3' = '187',
+  'Appeal on a normal IVA inspection 1' = '128',
+  'Appeal on a normal IVA inspection 2' = '188',
+  'Appeal on a normal IVA inspection 3' = '189',
+  'Appeal on a basic IVA inspection' = '129',
+  'IVA mutual recognition/ end of series & inspection' = '130',
+  'Full MSVA moped vehicle inspection' = '133',
+  'Full MSVA unbodied vehicle inspection' = '134',
+  'Full MSVA bodied vehicle inspection' = '135',
+  'Part MSVA inspection' = '136',
+  'Appeal on a MSVA moped vehicle inspection' = '138',
+  'Appeal on a MSVA unbodied vehicle inspection' = '139',
+  'Appeal on a MSVA bodied vehicle inspection' = '140',
+  'COIF with annual test' = '142',
+  'COIF without annual test' = '143',
+  'Type approved to bus directive COIF' = '144',
+  'Seatbelt installation check COIF with annual test' = '146',
+  'Seatbelt installation check COIF without annual test' = '147',
+  'Annex 7 COIF' = '148',
+  'DDA Schedule 1, 2 or 3' = '150',
+  'DDA Schedule 1 + 2 or 3' = '151',
+  'Normal voluntary IVA inspection 1' = '153',
+  'Normal voluntary IVA inspection 2' = '190',
+  'Normal voluntary IVA inspection 3' = '191',
+  'Basic voluntary IVA inspection' = '154',
+  'Paid basic IVA inspection retest' = '158',
+  'Free basic IVA inspection retest' = '159',
+  'Paid normal IVA inspection retest 1' = '161',
+  'Paid normal IVA inspection retest 2' = '192',
+  'Paid normal IVA inspection retest 3' = '193',
+  'Free normal IVA inspection retest 4' = '162',
+  'Free normal IVA inspection retest 5' = '194',
+  'Free normal IVA inspection retest 6' = '195',
+  'Mutual recognition/ end of series IVA retest' = '163',
+  'Paid MSVA moped vehicle retest' = '166',
+  'Free MSVA moped vehicle retest' = '167',
+  'Paid MSVA unbodied vehicle retest' = '169',
+  'Free MSVA unbodied vehicle retest' = '170',
+  'Paid MSVA bodied vehicle retest' = '172',
+  'Free MSVA bodied vehicle retest' = '173',
+  'COIF retest with annual test' = '175',
+  'COIF retest without annual test' = '176',
+  'Seatbelt installation check COIF retest with annual test' = '177',
+  'Annex 7 COIF retest' = '178',
+  'TILT COIF retest' = '179',
+  'DDA Schedule 1, 2 or 3 retest' = '181',
+  'DDA Schedule 1 + 2 or 3 retest' = '182',
+  'Normal voluntary IVA inspection retest 1' = '184',
+  'Normal voluntary IVA inspection retest 2' = '196',
+  'Normal voluntary IVA inspection retest 3' = '197',
+  'Basic voluntary IVA inspection retest' = '185'
+}
+
+export enum SPECIALIST_COIF_APPLICABLE {
+  'COIF with annual test' = '142',
+  'COIF without annual test' = '143',
+  'Type approved to bus directive COIF' = '144',
+  'Seatbelt installation check COIF with annual test' = '146',
+  'Seatbelt installation check COIF without annual test' = '147',
+  'Annex 7 COIF' = '148',
+  'COIF retest with annual test' = '175',
+  'COIF retest without annual test' = '176',
+  'Seatbelt installation check COIF retest with annual test' = '177',
+  'Annex 7 COIF retest' = '178',
+  'TILT COIF retest' = '179'
+}
+
+export enum SPECIALIST_CERTIFICATE_APPLICABLE {
+  'Basic IVA inspection' = '125',
+  'Normal IVA inspection 1' = '126',
+  'Normal IVA inspection 2' = '186',
+  'Normal IVA inspection 3' = '187',
+  'Appeal on a normal IVA inspection 1' = '128',
+  'Appeal on a normal IVA inspection 2' = '188',
+  'Appeal on a normal IVA inspection 3' = '189',
+  'Appeal on a basic IVA inspection' = '129',
+  'IVA mutual recognition/ end of series & inspection' = '130',
+  'Full MSVA moped vehicle inspection' = '133',
+  'Full MSVA unbodied vehicle inspection' = '134',
+  'Full MSVA bodied vehicle inspection' = '135',
+  'Part MSVA inspection' = '136',
+  'Appeal on a MSVA moped vehicle inspection' = '138',
+  'Appeal on a MSVA unbodied vehicle inspection' = '139',
+  'Appeal on a MSVA bodied vehicle inspection' = '140',
+  'COIF with annual test' = '142',
+  'Seatbelt installation check COIF with annual test' = '146',
+  'DDA Schedule 1, 2 or 3' = '150',
+  'DDA Schedule 1 + 2 or 3' = '151',
+  'Paid basic IVA inspection retest' = '158',
+  'Free basic IVA inspection retest' = '159',
+  'Paid normal IVA inspection retest 1' = '161',
+  'Paid normal IVA inspection retest 2' = '192',
+  'Paid normal IVA inspection retest 3' = '193',
+  'Free normal IVA inspection retest 4' = '162',
+  'Free normal IVA inspection retest 5' = '194',
+  'Free normal IVA inspection retest 6' = '195',
+  'Mutual recognition/ end of series IVA retest' = '163',
+  'Paid MSVA moped vehicle retest' = '166',
+  'Free MSVA moped vehicle retest' = '167',
+  'Paid MSVA unbodied vehicle retest' = '169',
+  'Free MSVA unbodied vehicle retest' = '170',
+  'Paid MSVA bodied vehicle retest' = '172',
+  'Free MSVA bodied vehicle retest' = '173',
+  'COIF retest with annual test' = '175',
+  'Seatbelt installation check COIF retest with annual test' = '177',
+  'DDA Schedule 1, 2 or 3 retest' = '181',
+  'DDA Schedule 1 + 2 or 3 retest' = '182'
 }

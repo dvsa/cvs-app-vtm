@@ -40,15 +40,28 @@
     </dd>
   </div>
   <ng-container *ngIf="testTypesApplicable">
-    <div
-      *ngIf="testTypesApplicable.certificateApplicable[testType.testTypeId]"
-      class="govuk-summary-list__row"
-    >
+    <div *ngIf="hasCertificateNumber" class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
         Certificate number
       </dt>
       <dd class="govuk-summary-list__value" id="test-certificateNumber">
         {{ testType.certificateNumber | DefaultNullOrEmpty }}
+      </dd>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="testTypesApplicable">
+    <div
+      *ngIf="
+        testTypesApplicable.specialistCOIFApplicable[testType.testTypeId] &&
+        testType.testResult === 'pass'
+      "
+      class="govuk-summary-list__row"
+    >
+      <dt class="govuk-summary-list__key">
+        Certificate number (COIF)
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-certificateNumberCOIF">
+        {{ testType.secondaryCertificateNumber | DefaultNullOrEmpty }}
       </dd>
     </div>
   </ng-container>
@@ -111,13 +124,19 @@
   <div class="govuk-summary-list__row">
     <dt
       class="govuk-summary-list__key"
-      [class.border--bottom-none]="!testTypesApplicable.defectsApplicable[testType.testTypeId]"
+      [class.border--bottom-none]="
+        !testTypesApplicable.defectsApplicable[testType.testTypeId] &&
+        !testTypesApplicable.specialistTestApplicable[testType.testTypeId]
+      "
     >
       End time
     </dt>
     <dd
       class="govuk-summary-list__value"
-      [class.border--bottom-none]="!testTypesApplicable.defectsApplicable[testType.testTypeId]"
+      [class.border--bottom-none]="
+        !testTypesApplicable.defectsApplicable[testType.testTypeId] &&
+        !testTypesApplicable.specialistTestApplicable[testType.testTypeId]
+      "
       id="test-testTypeEndTimestamp"
     >
       <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
@@ -127,7 +146,10 @@
   </div>
   <ng-container *ngIf="testTypesApplicable">
     <div
-      *ngIf="testTypesApplicable.defectsApplicable[testType.testTypeId]"
+      *ngIf="
+        testTypesApplicable.defectsApplicable[testType.testTypeId] ||
+        testTypesApplicable.specialistTestApplicable[testType.testTypeId]
+      "
       class="govuk-summary-list__row"
     >
       <dt class="govuk-summary-list__key border--bottom-none">
@@ -150,4 +172,3 @@
     [testTypesApplicable]="testTypesApplicable"
   ></vtm-test-section-edit>
 </ng-container>
-

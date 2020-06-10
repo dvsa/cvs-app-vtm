@@ -11,6 +11,9 @@ function mockTestTypesApplicable() {
     emissionDetailsApplicable: { 44: 'test' },
     anniversaryDateApplicable: { 3: 'test' },
     expiryDateApplicable: { 50: 'test' },
-    certificateApplicable: { 50: 'test' }
+    certificateApplicable: { 50: 'test' },
+    specialistTestApplicable: { 125: 'test' },
+    specialistCOIFApplicable: { 142: 'test' },
+    specialistCertificateApplicable: { 143: 'test' }
   } as TestTypesApplicable;
 }
