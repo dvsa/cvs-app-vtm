@@ -82,84 +82,84 @@ exports[`BodyEditComponent component should render with the given properties  1`
               >
                 
                 <option
-                  id="test-body-edit-articulated"
+                  id="test-body-edit-description-0"
                   ng-reflect-ng-value="articulated"
                   value="0: articulated"
                 >
                    articulated 
                 </option>
                 <option
-                  id="test-body-edit-single decker"
+                  id="test-body-edit-description-1"
                   ng-reflect-ng-value="single decker"
                   value="1: single decker"
                 >
                    single decker 
                 </option>
                 <option
-                  id="test-body-edit-double decker"
+                  id="test-body-edit-description-2"
                   ng-reflect-ng-value="double decker"
                   value="2: double decker"
                 >
                    double decker 
                 </option>
                 <option
-                  id="test-body-edit-other"
+                  id="test-body-edit-description-3"
                   ng-reflect-ng-value="other"
                   value="3: other"
                 >
                    other 
                 </option>
                 <option
-                  id="test-body-edit-petrol/oil tanker"
+                  id="test-body-edit-description-4"
                   ng-reflect-ng-value="petrol/oil tanker"
                   value="4: petrol/oil tanker"
                 >
                    petrol/oil tanker 
                 </option>
                 <option
-                  id="test-body-edit-skeletal"
+                  id="test-body-edit-description-5"
                   ng-reflect-ng-value="skeletal"
                   value="5: skeletal"
                 >
                    skeletal 
                 </option>
                 <option
-                  id="test-body-edit-tipper"
+                  id="test-body-edit-description-6"
                   ng-reflect-ng-value="tipper"
                   value="6: tipper"
                 >
                    tipper 
                 </option>
                 <option
-                  id="test-body-edit-box"
+                  id="test-body-edit-description-7"
                   ng-reflect-ng-value="box"
                   value="7: box"
                 >
                    box 
                 </option>
                 <option
-                  id="test-body-edit-flat"
+                  id="test-body-edit-description-8"
                   ng-reflect-ng-value="flat"
                   value="8: flat"
                 >
                    flat 
                 </option>
                 <option
-                  id="test-body-edit-refuse"
+                  id="test-body-edit-description-9"
                   ng-reflect-ng-value="refuse"
                   value="9: refuse"
                 >
                    refuse 
                 </option>
                 <option
-                  id="test-body-edit-skip loader"
+                  id="test-body-edit-description-10"
                   ng-reflect-ng-value="skip loader"
                   value="10: skip loader"
                 >
                    skip loader 
                 </option>
                 <option
-                  id="test-body-edit-refrigerated"
+                  id="test-body-edit-description-11"
                   ng-reflect-ng-value="refrigerated"
                   value="11: refrigerated"
                 >
