@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
 import { TestType } from '@app/models/test.type';
 import { VIEW_STATE } from '@app/app.enums';
 import { ControlContainer, FormGroupDirective } from '@angular/forms';
@@ -9,12 +9,15 @@ import { ControlContainer, FormGroupDirective } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
-export class SeatbeltInstallationCheckComponent implements OnInit {
+export class SeatbeltInstallationCheckComponent implements OnChanges {
   @Input() testType: TestType;
   @Input() editState: VIEW_STATE;
   @Input() hasSeatBeltApplicable: boolean;
+  seatbeltOptionSelected: string;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnChanges() {
+    this.seatbeltOptionSelected = this.testType.seatbeltInstallationCheckDate ? 'Yes' : 'No';
+  }
 }

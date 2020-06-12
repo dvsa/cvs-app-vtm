@@ -468,7 +468,7 @@
         <div
           class="auto-pad"
           [@.disabled]="true"
-          *ngIf="techRecHelpers.isStandardVehicle(activeRecord.vehicleType)"
+          *ngIf="activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl'"
         >
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "

@@ -52,7 +52,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-0"
                       type="radio"
-                      value="0.10 g/kwh euro 3 pm"
+                      value="0.10 g/kWh Euro 3 PM"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -68,7 +68,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-1"
                       type="radio"
-                      value="0.03 g/kwh euro iv pm"
+                      value="0.03 g/kWh Euro IV PM"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -84,7 +84,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-2"
                       type="radio"
-                      value="euro 3"
+                      value="Euro 3"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -100,7 +100,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-3"
                       type="radio"
-                      value="euro 4"
+                      value="Euro 4"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -116,7 +116,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-4"
                       type="radio"
-                      value="euro 6"
+                      value="Euro 6"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -132,7 +132,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-5"
                       type="radio"
-                      value="euro vi"
+                      value="Euro VI"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -148,7 +148,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="emissionStandard"
                       id="test-emissionStandard-6"
                       type="radio"
-                      value="full electric"
+                      value="Full Electric"
                     />
                     <label
                       class="govuk-label govuk-radios__label"

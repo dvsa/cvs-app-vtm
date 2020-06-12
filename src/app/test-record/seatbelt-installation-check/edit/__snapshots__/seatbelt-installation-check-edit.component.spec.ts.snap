@@ -47,7 +47,7 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                       formcontrolname="seatbeltInstallationCheckDate"
                       id="test-seatbelt-0"
                       type="radio"
-                      value="true"
+                      value="Yes"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -63,7 +63,7 @@ exports[`SeatbeltInstallationCheckEditComponent should create 1`] = `
                       formcontrolname="seatbeltInstallationCheckDate"
                       id="test-seatbelt-1"
                       type="radio"
-                      value="false"
+                      value="No"
                     />
                     <label
                       class="govuk-label govuk-radios__label"

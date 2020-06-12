@@ -22,12 +22,16 @@ function mockTestRecord(args?: Partial<TestResultModel>): TestResultModel {
 
 function mockTestType(args?: Partial<TestType>): TestType {
   const mock: TestType = {
-    testTypeId: '44',
+    testTypeId: '1',
     seatbeltInstallationCheckDate: true,
     testTypeName: 'first test',
     testNumber: '123123',
     testTypeEndTimestamp: '2020-01-16T12:24:38.027Z',
-    testExpiryDate: '2021-01-16T12:24:38.027Z'
+    testExpiryDate: '2021-01-16T12:24:38.027Z',
+    modType: {
+      code: '1',
+      description: 'test'
+    }
   } as TestType;
 
   return { ...mock, ...args };
