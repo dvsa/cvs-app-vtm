@@ -11,7 +11,6 @@
               <input class="govuk-input" id="test-vin" formControlName="vin" type="text" />
             </div>
           </div>
-
           <div class="govuk-grid-row govuk-!-margin-bottom-3">
             <div class="govuk-grid-column-one-half">
               <label class="govuk-label govuk-!-font-weight-bold">
@@ -24,9 +23,8 @@
               <input class="govuk-input" id="test-vrm" formControlName="vrm" type="text" />
             </div>
           </div>
-
           <div
-            *ngIf="testRecord.vehicleType == 'trl'"
+            *ngIf="testRecord.vehicleType === 'trl'"
             class="govuk-grid-row govuk-!-margin-bottom-3"
           >
             <div class="govuk-grid-column-one-half">
@@ -35,7 +33,7 @@
               </label>
               <input
                 class="govuk-input"
-                id="test-trl-id"
+                id="test-trailerId"
                 formControlName="trailerId"
                 type="text"
               />
@@ -63,10 +61,13 @@
                 EU vehicle category
               </label>
               <div class="govuk-radios">
-                <div class="govuk-radios__item" *ngFor="let euCategory of euVehicleCategories">
+                <div
+                  class="govuk-radios__item"
+                  *ngFor="let euCategory of euVehicleCategories; let i = index"
+                >
                   <input
                     class="govuk-radios__input"
-                    id="{{ 'test-euVehicleCategory-' + euCategory }}"
+                    id="{{ 'test-euVehicleCategory-' + i }}"
                     type="radio"
                     formControlName="euVehicleCategory"
                     value="{{ euCategory | lowercase }}"
@@ -80,39 +81,42 @@
             </div>
           </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3">
-            <div class="govuk-grid-column-one-half">
-              <label class="govuk-label govuk-!-font-weight-bold">
-                Odometer reading
-              </label>
-              <input
-                class="govuk-input"
-                id="test-odometerReading"
-                formControlName="odometerReading"
-                type="text"
-              />
+          <ng-container *ngIf="testRecord.vehicleType !== 'trl'">
+            <div class="govuk-grid-row govuk-!-margin-bottom-3">
+              <div class="govuk-grid-column-one-half">
+                <label class="govuk-label govuk-!-font-weight-bold">
+                  Odometer reading
+                </label>
+                <input
+                  class="govuk-input"
+                  id="test-odometerReading"
+                  formControlName="odometerReading"
+                  type="text"
+                />
+              </div>
             </div>
-          </div>
 
-          <div class="govuk-grid-row govuk-!-margin-bottom-3">
-            <div class="govuk-grid-column-one-half">
-              <label class="govuk-label govuk-!-font-weight-bold">
-                Odometer reading unit
-              </label>
-              <select
-                class="govuk-select"
-                id="test-odometerReadingUnit"
-                formControlName="odometerReadingUnits"
-              >
-                <option
-                  *ngFor="let unit of odometerReadingUnits"
-                  [selected]="testRecord.odometerReadingUnits == unit"
-                  [value]="unit"
-                  >{{ unit }}</option
+            <div class="govuk-grid-row govuk-!-margin-bottom-3">
+              <div class="govuk-grid-column-one-half">
+                <label class="govuk-label govuk-!-font-weight-bold">
+                  Odometer reading unit
+                </label>
+                <select
+                  class="govuk-select"
+                  id="test-odometerReadingUnit"
+                  formControlName="odometerReadingUnits"
                 >
-              </select>
+                  <option
+                    *ngFor="let unit of odometerReadingUnits; let i = index"
+                    [selected]="testRecord.odometerReadingUnits == unit"
+                    [value]="unit"
+                    id="{{ 'test-odometerReadingUnit-' + i }}"
+                    >{{ unit }}</option
+                  >
+                </select>
+              </div>
             </div>
-          </div>
+          </ng-container>
 
           <div class="govuk-grid-row govuk-!-margin-bottom-3">
             <div class="govuk-grid-column-one-half">

@@ -10,10 +10,10 @@ import {
 } from './VehicleTestResultModel.actions';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
-import { TEST_MODEL_UTILS } from '../../utils/test-models.utils';
 import { DownloadCertificate } from './VehicleTestResultModel.actions';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
-const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestResult({
+const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestRecord({
   testerStaffId: '21',
   testStartTimestamp: '2019-01-16T12:24:38.027Z',
   vin: '213',

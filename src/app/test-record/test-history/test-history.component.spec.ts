@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestHistoryComponent } from './test-history.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { VIEW_STATE } from '@app/app.enums';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('TestHistoryComponent', () => {
   let component: TestHistoryComponent;
@@ -18,7 +18,7 @@ describe('TestHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestHistoryComponent);
     component = fixture.componentInstance;
-    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
+    component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
     component.editState = VIEW_STATE.VIEW_ONLY;
     fixture.detectChanges();
   });

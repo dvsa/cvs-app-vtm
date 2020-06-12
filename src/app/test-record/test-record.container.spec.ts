@@ -14,9 +14,9 @@ import { TestResultModel } from '@app/models/test-result.model';
 import { EVehicleTestResultModelActions } from '@app/store/actions/VehicleTestResultModel.actions';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 import { MockStore } from '@app/utils/mockStore';
-import {getTestViewState} from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { TEST_TYPE_APPLICABLE_UTILS } from '@app/utils/test-type-applicable-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 const mockSelector = new BehaviorSubject<any>(undefined);
 
@@ -48,15 +48,15 @@ describe('TestRecordContainer', () => {
     jest.spyOn(store, 'dispatch');
     fixture = TestBed.createComponent(TestRecordContainer);
     container = fixture.componentInstance;
-    container.testTypesApplicable = {} as TestTypesApplicable;
+    container.testTypesApplicable = TEST_TYPE_APPLICABLE_UTILS.mockTestTypesApplicable();
     fixture.detectChanges();
   });
 
   it('should create', () => {
     mockSelector.next({
       selectTestTypeById: {
-        testType: TESTING_TEST_MODELS_UTILS.mockTestType(),
-        testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord()
+        testType: TEST_MODEL_UTILS.mockTestType(),
+        testRecord: TEST_MODEL_UTILS.mockTestRecord()
       },
       getPreparers: { preparerName: 'test' } as Preparer,
       getTestStations: { testStationName: 'test' } as TestStation,

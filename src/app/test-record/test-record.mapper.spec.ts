@@ -1,7 +1,11 @@
 import { TestRecordMapper } from '@app/test-record/test-record.mapper';
 import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import {
+  EMISSION_DETAILS_APPLICABLE,
+  SEAT_BELT_APPLICABLE
+} from '@app/test-record/test-types-applicable.enum';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('TestRecordMapper', () => {
   const mapper = new TestRecordMapper();
@@ -23,27 +27,12 @@ describe('TestRecordMapper', () => {
 
   it('should return test type applicable', () => {
     const type = mapper.getTestTypeApplicable('seatBeltApplicable');
-    expect(Object.values(type)).toHaveLength(17);
+    expect(Object.keys(type)).toEqual(Object.values(SEAT_BELT_APPLICABLE));
   });
 
-  it('should return defectsApplicable', () => {
-    const type = mapper.getTestTypeApplicable('defectsApplicable');
-    expect(Object.values(type)).toHaveLength(27);
-  });
-
-  it('should return emissionDetailsApplicable', () => {
-    const type = mapper.getTestTypeApplicable('emissionDetailsApplicable');
-    expect(Object.values(type)).toHaveLength(3);
-  });
-
-  it('should return testSectionApplicable1', () => {
-    const type = mapper.getTestTypeApplicable('testSectionApplicable1');
-    expect(Object.values(type)).toHaveLength(40);
-  });
-
-  it('should return testSectionApplicable2', () => {
-    const type = mapper.getTestTypeApplicable('testSectionApplicable2');
-    expect(Object.values(type)).toHaveLength(27);
+  it('should return test type enum as object', () => {
+    const type = mapper.getTestTypeEnums(Object.values(EMISSION_DETAILS_APPLICABLE));
+    expect(typeof type).toEqual('object');
   });
 
   it('should return country of registration code', () => {
@@ -58,14 +47,14 @@ describe('TestRecordMapper', () => {
 
   it('should map form values for PSV', () => {
     const testResultObject = {
-      testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
-      testType: TESTING_TEST_MODELS_UTILS.mockTestType()
+      testRecord: TEST_MODEL_UTILS.mockTestRecord(),
+      testType: TEST_MODEL_UTILS.mockTestType()
     } as TestRecordTestType;
 
     const testResultMapped = mapper.mapFormValues(
       { testType: { testTypeId: '1', seatbeltInstallationCheckDate: true } },
       testResultObject
     );
-    expect(Object.values(testResultMapped).length).toEqual(20);
+    expect(Object.values(testResultMapped).length).toEqual(24);
   });
 });

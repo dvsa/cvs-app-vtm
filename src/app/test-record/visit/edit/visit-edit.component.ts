@@ -17,6 +17,8 @@ export class VisitEditComponent implements OnInit {
 
   testStationsOptions: string[];
   testStationType = '';
+  testStationPNumber = '';
+  testStationName = '';
   testResultChildForm: FormGroupDirective;
 
   constructor(private testRecordMapper: TestRecordMapper, parentForm: FormGroupDirective) {
@@ -27,17 +29,16 @@ export class VisitEditComponent implements OnInit {
     this.testStationType = this.testRecord.testStationType
       ? this.testRecord.testStationType.toUpperCase()
       : '';
+    this.testStationPNumber = !!this.testRecord.testStationPNumber
+      ? ' (' + this.testRecord.testStationPNumber + ')'
+      : '';
+    this.testStationName = !!this.testRecord.testStationName
+      ? this.testRecord.testStationName
+      : '';
 
     this.testResultChildForm.form.addControl(
       'testStationNameNumber',
-      new FormControl(
-        !!this.testRecord.testStationName
-          ? this.testRecord.testStationName
-          : '' + !!this.testRecord.testStationPNumber
-          ? ' (' + this.testRecord.testStationPNumber + ')'
-          : '',
-        Validators.required
-      )
+      new FormControl(this.testStationName + ' ' + this.testStationPNumber, Validators.required)
     );
     this.testResultChildForm.form.addControl(
       'testStationType',
@@ -62,21 +63,21 @@ export class VisitEditComponent implements OnInit {
 
     this.testStationsOptions = !!this.testStations
       ? this.testStations.map(
-          ({ testStationName, testStationPNumber }) =>
-            `${!!testStationName ? testStationName : ''} ${
-              !!testStationPNumber ? '(' + testStationPNumber + ')' : ''
-            }`
-        )
+        ({ testStationName, testStationPNumber }) =>
+          `${!!testStationName ? testStationName : ''} ${
+            !!testStationPNumber ? '(' + testStationPNumber + ')' : ''
+          }`
+      )
       : [''];
 
     this.testResultChildForm.form
       .get('testStationNameNumber')
       .valueChanges.subscribe((testStationVal) => {
-        const testStationPNumberMatch = testStationVal.match(/\((.*)\)/);
-        const testStationPNumber = !!testStationPNumberMatch ? testStationPNumberMatch.pop() : '';
-        this.testStationType = this.searchTestStationType(testStationPNumber);
-        this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
-      });
+      const testStationPNumberMatch = testStationVal.match(/\((.*)\)/);
+      const testStationPNumber = !!testStationPNumberMatch ? testStationPNumberMatch.pop() : '';
+      this.testStationType = this.searchTestStationType(testStationPNumber);
+      this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
+    });
   }
 
   searchTestStationType(testStationPNumber: string) {

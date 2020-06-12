@@ -3,7 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestSectionComponent } from './test-section.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
+import { TEST_TYPE_APPLICABLE_UTILS } from '@app/utils/test-type-applicable-models.utils';
 
 describe('TestSectionComponent', () => {
   let component: TestSectionComponent;
@@ -20,10 +21,9 @@ describe('TestSectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestSectionComponent);
     component = fixture.componentInstance;
-    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType();
-    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
-    component.applicableTestTypeIds1 = { 43: 'test' };
-    component.applicableTestTypeIds2 = { 43: 'test' };
+    component.testType = TEST_MODEL_UTILS.mockTestType();
+    component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
+    component.testTypesApplicable = TEST_TYPE_APPLICABLE_UTILS.mockTestTypesApplicable();
     fixture.detectChanges();
   });
 

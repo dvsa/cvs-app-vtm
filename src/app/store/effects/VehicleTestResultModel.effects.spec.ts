@@ -14,7 +14,6 @@ import { VehicleTestResultModelEffects } from '@app/store/effects/VehicleTestRes
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 import { VIEW_STATE } from '@app/app.enums';
 import { ClearErrorMessage } from '@app/store/actions/Error.actions';
 import { UserService } from '@app/app-user.service';
@@ -22,8 +21,9 @@ import { UserDetails } from '@app/models/user-details';
 import { MockStore } from '@app/utils/mockStore';
 import { DownloadCertificate } from '../actions/VehicleTestResultModel.actions';
 import * as FileSaver from 'file-saver';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
-const testResult = [TESTING_TEST_MODELS_UTILS.mockTestRecord()];
+const testResult = [TEST_MODEL_UTILS.mockTestRecord()];
 const mockSelector = new BehaviorSubject<any>(undefined);
 
 describe('VehicleTestResultModelEffects', () => {
@@ -77,7 +77,7 @@ describe('VehicleTestResultModelEffects', () => {
       action = new GetVehicleTestResultModel('123');
       actions$ = hot('-a--', { a: action });
 
-      const getTestResults$ = cold('(b|)', { b: [TESTING_TEST_MODELS_UTILS.mockTestRecord()] });
+      const getTestResults$ = cold('(b|)', { b: [TEST_MODEL_UTILS.mockTestRecord()] });
       getTestResults.mockReturnValue(getTestResults$);
 
       const testResultSuccessAction = new GetVehicleTestResultModelSuccess(testResult);
@@ -95,15 +95,15 @@ describe('VehicleTestResultModelEffects', () => {
     } as UserDetails;
 
     const testResultTestTypeNumber = {
-      testResultUpdated: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
+      testResultUpdated: TEST_MODEL_UTILS.mockTestRecord(),
       testTypeNumber: '1',
-      testResultsUpdated: [TESTING_TEST_MODELS_UTILS.mockTestRecord()],
+      testResultsUpdated: [TEST_MODEL_UTILS.mockTestRecord()],
       msUserDetails: userDetails
     } as TestResultTestTypeNumber;
 
     beforeEach(() => {
       mockSelector.next({
-        getVehicleTestResultModel: [TESTING_TEST_MODELS_UTILS.mockTestRecord()]
+        getVehicleTestResultModel: [TEST_MODEL_UTILS.mockTestRecord()]
       });
       action = new UpdateTestResult(testResultTestTypeNumber);
       actions$ = hot('-a--', { a: action });

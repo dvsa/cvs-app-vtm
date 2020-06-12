@@ -6,7 +6,7 @@ import { TestResultModel } from '@app/models/test-result.model';
 import { Component, Input } from '@angular/core';
 import { VIEW_STATE } from '@app/app.enums';
 import { TestStation } from '@app/models/test-station';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('VisitComponent', () => {
   let component: VisitComponent;
@@ -22,7 +22,7 @@ describe('VisitComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VisitComponent);
     component = fixture.componentInstance;
-    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
+    component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
     component.editState = VIEW_STATE.VIEW_ONLY;
     component.testStations = [{ testStationId: '123', testStationPNumber: '11' } as TestStation];
     fixture.detectChanges();

@@ -39,8 +39,14 @@
       {{ testType.additionalCommentsForAbandon | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>
-  <ng-container *ngIf="applicableTestTypeIds1">
-    <div *ngIf="applicableTestTypeIds1[testType.testTypeId]" class="govuk-summary-list__row">
+  <ng-container *ngIf="testTypesApplicable">
+    <div
+      *ngIf="
+        testTypesApplicable.anniversaryDateApplicable[testType.testTypeId] ||
+        testTypesApplicable.certificateExtraApplicable[testType.testTypeId]
+      "
+      class="govuk-summary-list__row"
+    >
       <dt class="govuk-summary-list__key">
         Certificate number
       </dt>
@@ -57,8 +63,14 @@
       {{ testType.testNumber | DefaultNullOrEmpty }}
     </dd>
   </div>
-  <ng-container *ngIf="applicableTestTypeIds1">
-    <div *ngIf="applicableTestTypeIds1[testType.testTypeId]" class="govuk-summary-list__row">
+  <ng-container *ngIf="testTypesApplicable">
+    <div
+      *ngIf="
+        testTypesApplicable.anniversaryDateApplicable[testType.testTypeId] ||
+        testTypesApplicable.expiryDateExtraApplicable[testType.testTypeId]
+      "
+      class="govuk-summary-list__row"
+    >
       <dt class="govuk-summary-list__key">
         Expiry date
       </dt>
@@ -68,7 +80,10 @@
         </span>
       </dd>
     </div>
-    <div *ngIf="applicableTestTypeIds1[testType.testTypeId]" class="govuk-summary-list__row">
+    <div
+      *ngIf="testTypesApplicable.anniversaryDateApplicable[testType.testTypeId]"
+      class="govuk-summary-list__row"
+    >
       <dt class="govuk-summary-list__key">
         Anniversary date
       </dt>
@@ -102,13 +117,13 @@
   <div class="govuk-summary-list__row">
     <dt
       class="govuk-summary-list__key"
-      [class.border--bottom-none]="!applicableTestTypeIds2[testType.testTypeId]"
+      [class.border--bottom-none]="!testTypesApplicable.defectsApplicable[testType.testTypeId]"
     >
       End time
     </dt>
     <dd
       class="govuk-summary-list__value"
-      [class.border--bottom-none]="!applicableTestTypeIds2[testType.testTypeId]"
+      [class.border--bottom-none]="!testTypesApplicable.defectsApplicable[testType.testTypeId]"
       id="test-testTypeEndTimestamp"
     >
       <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
@@ -116,8 +131,11 @@
       </span>
     </dd>
   </div>
-  <ng-container *ngIf="applicableTestTypeIds2">
-    <div *ngIf="applicableTestTypeIds2[testType.testTypeId]" class="govuk-summary-list__row">
+  <ng-container *ngIf="testTypesApplicable">
+    <div
+      *ngIf="testTypesApplicable.defectsApplicable[testType.testTypeId]"
+      class="govuk-summary-list__row"
+    >
       <dt class="govuk-summary-list__key border--bottom-none">
         Prohibition issued
       </dt>

@@ -1,0 +1,16 @@
+import { TestTypesApplicable } from '@app/test-record/test-record.mapper';
+
+export const TEST_TYPE_APPLICABLE_UTILS = {
+  mockTestTypesApplicable
+};
+
+function mockTestTypesApplicable() {
+  return {
+    seatBeltApplicable: { 1: 'test' },
+    defectsApplicable: { 44: 'test' },
+    emissionDetailsApplicable: { 44: 'test' },
+    anniversaryDateApplicable: { 3: 'test' },
+    expiryDateExtraApplicable: { 50: 'test' },
+    certificateExtraApplicable: { 50: 'test' }
+  } as TestTypesApplicable;
+}
