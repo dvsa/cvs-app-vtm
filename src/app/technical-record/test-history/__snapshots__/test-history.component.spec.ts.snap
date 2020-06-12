@@ -113,7 +113,7 @@ exports[`TestHistoryComponent should create view only with populated data 1`] = 
         >
           <a
             class="govuk-link govuk-link--no-visited-state"
-            href="/test-record/123123"
+            href="/test-record/123123?testResultId=123&systemNumber=123"
             id="test-view-123123"
             ng-reflect-query-params="[object Object]"
             ng-reflect-router-link="/test-record,123123"

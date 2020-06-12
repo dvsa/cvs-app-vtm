@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DefectsComponent } from './defects.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { TEST_MODEL_UTILS } from '@app/utils/test-models.utils';
 import { Defect } from '@app/models/defect';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
@@ -20,7 +20,7 @@ describe('DefectsComponent', () => {
     component = fixture.componentInstance;
     const defects = [{ deficiencyId: '123', deficiencySubId: '345' } as Defect];
     component.testType = TEST_MODEL_UTILS.mockTestType({ defects: defects });
-    component.testRecord = TEST_MODEL_UTILS.mockTestResult();
+    component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
   });
 
   it('should create', () => {

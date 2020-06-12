@@ -4,8 +4,8 @@ import { TestResultModel } from '@app/models/test-result.model';
 import { SharedModule } from '@app/shared/shared.module';
 import { Component, Input } from '@angular/core';
 import { Preparer } from '@app/models/preparer';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
-import {VIEW_STATE} from '@app/app.enums';
+import { VIEW_STATE } from '@app/app.enums';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('VehicleComponent', () => {
   let component: VehicleComponent;
@@ -21,7 +21,7 @@ describe('VehicleComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VehicleComponent);
     component = fixture.componentInstance;
-    component.testRecord = component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
+    component.testRecord = component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
     fixture.detectChanges();
   });
 

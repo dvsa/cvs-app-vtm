@@ -4,7 +4,7 @@ import { NotesEditComponent } from './notes-edit.component';
 import { VIEW_STATE } from '@app/app.enums';
 import { FormGroupDirective } from '@angular/forms';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('NotesEditComponent', () => {
   let component: NotesEditComponent;
@@ -27,7 +27,7 @@ describe('NotesEditComponent', () => {
     fixture = TestBed.createComponent(NotesEditComponent);
     component = fixture.componentInstance;
     component.currentState = VIEW_STATE.VIEW_ONLY;
-    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType();
+    component.testType = TEST_MODEL_UTILS.mockTestType();
     fixture.detectChanges();
   });
 

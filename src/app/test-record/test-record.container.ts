@@ -59,15 +59,10 @@ export class TestRecordContainer implements OnInit {
     this.testTypesApplicable = {
       seatBeltApplicable: this.testRecordMapper.getTestTypeApplicable('seatBeltApplicable'),
       defectsApplicable: this.testRecordMapper.getTestTypeApplicable('defectsApplicable'),
-      emissionDetailsApplicable: this.testRecordMapper.getTestTypeApplicable(
-        'emissionDetailsApplicable'
-      ),
-      testSectionApplicable1: this.testRecordMapper.getTestTypeApplicable(
-        'testSectionApplicable1'
-      ),
-      testSectionApplicable2: this.testRecordMapper.getTestTypeApplicable(
-        'testSectionApplicable2'
-      )
+      emissionDetailsApplicable: this.testRecordMapper.getTestTypeApplicable('emissionDetailsApplicable'),
+      anniversaryDateApplicable: this.testRecordMapper.getTestTypeApplicable('anniversaryDateApplicable'),
+      expiryDateExtraApplicable: this.testRecordMapper.getTestTypeApplicable('expiryDateExtraApplicable'),
+      certificateExtraApplicable: this.testRecordMapper.getTestTypeApplicable('certificateExtraApplicable')
     };
 
     this.route.paramMap.subscribe((params) => {

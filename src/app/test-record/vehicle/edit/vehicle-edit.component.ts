@@ -44,11 +44,10 @@ export class VehicleEditComponent implements OnInit {
     );
     this.testResultChildForm.form.addControl(
       'vrm',
-      new FormControl({ value: this.testRecord.vrm, disabled: true }, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(8)
-      ])
+      new FormControl(
+        { value: !!this.testRecord.vrm ? this.testRecord.vrm : '-', disabled: true },
+        [Validators.required, Validators.minLength(1), Validators.maxLength(8)]
+      )
     );
     this.testResultChildForm.form.addControl(
       'trailerId',
