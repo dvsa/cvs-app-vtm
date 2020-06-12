@@ -4,7 +4,7 @@ import { SharedModule } from '@app/shared/shared.module';
 import { TestType } from '@app/models/test.type';
 import { VIEW_STATE } from '@app/app.enums';
 import { Component, Input } from '@angular/core';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('SeatbeltInstallationCheckComponent', () => {
   let component: SeatbeltInstallationCheckComponent;
@@ -20,7 +20,7 @@ describe('SeatbeltInstallationCheckComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SeatbeltInstallationCheckComponent);
     component = fixture.componentInstance;
-    component.testType = TESTING_TEST_MODELS_UTILS.mockTestType();
+    component.testType = TEST_MODEL_UTILS.mockTestType();
     component.editState = VIEW_STATE.VIEW_ONLY;
     fixture.detectChanges();
   });

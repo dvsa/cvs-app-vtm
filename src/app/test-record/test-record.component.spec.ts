@@ -14,8 +14,9 @@ import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
 import { SpyLocation } from '@angular/common/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
 import { Location } from '@angular/common';
+import { TEST_TYPE_APPLICABLE_UTILS } from '@app/utils/test-type-applicable-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
@@ -25,8 +26,8 @@ describe('TestRecordComponent', () => {
   let dialog: MatDialog;
   let testRecordMapper;
   const testObject: TestRecordTestType = {
-    testRecord: TESTING_TEST_MODELS_UTILS.mockTestRecord(),
-    testType: TESTING_TEST_MODELS_UTILS.mockTestType()
+    testRecord: TEST_MODEL_UTILS.mockTestRecord(),
+    testType: TEST_MODEL_UTILS.mockTestType()
   };
   const testResultParentForm = new FormGroup({
     testTypes: new FormGroup({ testTypeId: new FormControl('1') })
@@ -62,15 +63,7 @@ describe('TestRecordComponent', () => {
     testRecordMapper = TestBed.get(TestRecordMapper);
     component = fixture.componentInstance;
     component.testResultObj = testObject;
-    component.testTypesApplicable = {
-      seatBeltApplicable: testRecordMapper.getTestTypeApplicable('seatBeltApplicable'),
-      defectsApplicable: testRecordMapper.getTestTypeApplicable('defectsApplicable'),
-      emissionDetailsApplicable: testRecordMapper.getTestTypeApplicable(
-        'emissionDetailsApplicable'
-      ),
-      testSectionApplicable1: testRecordMapper.getTestTypeApplicable('testSectionApplicable1'),
-      testSectionApplicable2: testRecordMapper.getTestTypeApplicable('testSectionApplicable2')
-    };
+    component.testTypesApplicable = TEST_TYPE_APPLICABLE_UTILS.mockTestTypesApplicable();
     component.editState = VIEW_STATE.VIEW_ONLY;
     component.preparers = [{ preparerName: 'test', preparerId: '11' } as Preparer];
     component.testStations = [{ testStationPNumber: '22' } as TestStation];
@@ -105,4 +98,3 @@ describe('TestRecordComponent', () => {
     expect(component.testResultObj).toEqual(testObject);
   });
 });
-

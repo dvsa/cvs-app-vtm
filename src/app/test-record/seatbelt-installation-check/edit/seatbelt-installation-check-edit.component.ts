@@ -34,7 +34,7 @@ export class SeatbeltInstallationCheckEditComponent implements OnInit {
     if (!!this.testTypeGroup) {
       this.testTypeGroup.addControl(
         'seatbeltInstallationCheckDate',
-        new FormControl(Validators.required)
+        new FormControl(this.testType.seatbeltInstallationCheckDate, Validators.required)
       );
       this.testTypeGroup.addControl(
         'numberOfSeatbeltsFitted',

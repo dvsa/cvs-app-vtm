@@ -124,7 +124,7 @@ exports[`VehicleEditComponent should create 1`] = `
                     <input
                       class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
                       formcontrolname="euVehicleCategory"
-                      id="test-euVehicleCategory-M2"
+                      id="test-euVehicleCategory-0"
                       ng-reflect-form-control-name="euVehicleCategory"
                       ng-reflect-name="euVehicleCategory"
                       ng-reflect-value="m2"
@@ -142,7 +142,7 @@ exports[`VehicleEditComponent should create 1`] = `
                     <input
                       class="govuk-radios__input ng-untouched ng-pristine ng-invalid"
                       formcontrolname="euVehicleCategory"
-                      id="test-euVehicleCategory-M3"
+                      id="test-euVehicleCategory-1"
                       ng-reflect-form-control-name="euVehicleCategory"
                       ng-reflect-name="euVehicleCategory"
                       ng-reflect-value="m3"
@@ -157,6 +157,8 @@ exports[`VehicleEditComponent should create 1`] = `
                 </div>
               </div>
             </div>
+            
+            
             <div
               class="govuk-grid-row govuk-!-margin-bottom-3"
             >
@@ -196,12 +198,14 @@ exports[`VehicleEditComponent should create 1`] = `
                 >
                   
                   <option
+                    id="test-odometerReadingUnit-0"
                     ng-reflect-value="kilometres"
                     value="kilometres"
                   >
                     kilometres
                   </option>
                   <option
+                    id="test-odometerReadingUnit-1"
                     ng-reflect-value="miles"
                     value="miles"
                   >

@@ -22,7 +22,6 @@ exports[`VehicleComponent should create 1`] = `
          - 
       </dd>
     </div>
-    
     <div
       class="govuk-summary-list__row"
     >
@@ -127,7 +126,6 @@ exports[`VehicleComponent should render edit template if editState is EDIT 1`] =
          - 
       </dd>
     </div>
-    
     <div
       class="govuk-summary-list__row"
     >
@@ -232,7 +230,6 @@ exports[`VehicleComponent should render view template if editState is VIEW_ONLY 
          - 
       </dd>
     </div>
-    
     <div
       class="govuk-summary-list__row"
     >

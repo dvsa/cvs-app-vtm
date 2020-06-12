@@ -1,7 +1,7 @@
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestType } from '@app/models/test.type';
 
-export const TESTING_TEST_MODELS_UTILS = {
+export const TEST_MODEL_UTILS = {
   mockTestRecord,
   mockTestType
 };
@@ -12,7 +12,9 @@ function mockTestRecord(args?: Partial<TestResultModel>): TestResultModel {
     testResultId: '123',
     vehicleType: 'hgv',
     systemNumber: '123',
-    testTypes: [this.mockTestType()]
+    testTypes: [this.mockTestType()],
+    testEndTimestamp: '2020-01-16T12:24:38.027Z',
+    testStartTimestamp: '2020-01-16T10:24:38.027Z'
   } as TestResultModel;
 
   return { ...mock, ...args };
@@ -21,9 +23,12 @@ function mockTestRecord(args?: Partial<TestResultModel>): TestResultModel {
 function mockTestType(args?: Partial<TestType>): TestType {
   const mock: TestType = {
     testTypeId: '44',
-    seatbeltInstallationCheckDate: true
+    seatbeltInstallationCheckDate: true,
+    testTypeName: 'first test',
+    testNumber: '123123',
+    testTypeEndTimestamp: '2020-01-16T12:24:38.027Z',
+    testExpiryDate: '2021-01-16T12:24:38.027Z'
   } as TestType;
 
   return { ...mock, ...args };
 }
-

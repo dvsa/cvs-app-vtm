@@ -6,7 +6,7 @@ import { TestStation } from '@app/models/test-station';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { TEST_STATION_TYPE } from '@app/test-record/test-record.enums';
 import { Component, Input } from '@angular/core';
-import { TESTING_TEST_MODELS_UTILS } from '@app/utils/testing-test-models.utils';
+import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 
 describe('VisitEditComponent', () => {
   let component: VisitEditComponent;
@@ -29,7 +29,7 @@ describe('VisitEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VisitEditComponent);
     component = fixture.componentInstance;
-    component.testRecord = TESTING_TEST_MODELS_UTILS.mockTestRecord();
+    component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
     component.testStations = [
       {
         testStationEmails: ['test'],
@@ -39,6 +39,8 @@ describe('VisitEditComponent', () => {
     ];
     component.testStationsOptions = ['test'];
     component.testStationType = 'test';
+    component.testStationName = 'test';
+    component.testStationPNumber = '(123)';
     fixture.detectChanges();
   });
 
