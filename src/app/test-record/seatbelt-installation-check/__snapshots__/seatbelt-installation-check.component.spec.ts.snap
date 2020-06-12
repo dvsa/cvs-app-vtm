@@ -20,7 +20,7 @@ exports[`SeatbeltInstallationCheckComponent should create 1`] = `
         class="govuk-summary-list__value"
         id="test-seatbeltInstallationCheckDate"
       >
-         Yes 
+         - 
       </dd>
     </div>
     <div
@@ -80,7 +80,7 @@ exports[`SeatbeltInstallationCheckComponent should render edit template if editS
         class="govuk-summary-list__value"
         id="test-seatbeltInstallationCheckDate"
       >
-         Yes 
+         - 
       </dd>
     </div>
     <div
@@ -140,7 +140,7 @@ exports[`SeatbeltInstallationCheckComponent should render view template if editS
         class="govuk-summary-list__value"
         id="test-seatbeltInstallationCheckDate"
       >
-         Yes 
+         - 
       </dd>
     </div>
     <div

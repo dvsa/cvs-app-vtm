@@ -6,7 +6,7 @@ exports[`TestRecordComponent should create 1`] = `
   downloadCert={[Function EventEmitter]}
   editState="0"
   fb={[Function FormBuilder]}
-  hasDefectsApplicable={[Function String]}
+  hasDefectsApplicable="undefined"
   hasEmissionApplicable={[Function Boolean]}
   hasSeatBeltApplicable={[Function Boolean]}
   parent={[Function FormGroupDirective]}
@@ -98,9 +98,7 @@ exports[`TestRecordComponent should create 1`] = `
               >
                 <vtm-test-section />
               </vtm-accordion-item>
-              <span
-                hidden=""
-              >
+              <span>
                 <vtm-accordion-item
                   title="Defects"
                 >

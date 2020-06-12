@@ -1,8 +1,8 @@
 interface Location {
-  axleNumber?: any;
-  horizontal?: any;
+  axleNumber?: number;
+  horizontal?: string;
   vertical: string;
-  longitudinal?: any;
+  longitudinal?: string;
   rowNumber: number;
   lateral: string;
   seatNumber: number;

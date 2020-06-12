@@ -18,8 +18,8 @@
                     id="{{ 'test-emissionStandard-' + i }}"
                     type="radio"
                     formControlName="emissionStandard"
-                    value="{{ eOption | lowercase }}"
-                    [checked]="this.testType.emissionStandard === (eOption | lowercase)"
+                    value="{{ eOption }}"
+                    [checked]="this.testType.emissionStandard === eOption"
                   />
                   <label class="govuk-label govuk-radios__label">
                     {{ eOption }}

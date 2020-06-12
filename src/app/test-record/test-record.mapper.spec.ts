@@ -55,6 +55,6 @@ describe('TestRecordMapper', () => {
       { testType: { testTypeId: '1', seatbeltInstallationCheckDate: true } },
       testResultObject
     );
-    expect(Object.values(testResultMapped).length).toEqual(24);
+    expect(Object.values(testResultMapped).length).toEqual(25);
   });
 });
