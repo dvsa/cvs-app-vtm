@@ -37,7 +37,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                id="length"
+                id="test-dimensions-edit-length"
                 maxlength="5"
                 name="length"
                 ng-reflect-maxlength="5"
@@ -58,7 +58,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                id="width"
+                id="test-dimensions-edit-width"
                 maxlength="5"
                 name="width"
                 ng-reflect-maxlength="5"
@@ -79,7 +79,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
               </label>
               <input
                 class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                id="frontAxleToRearAxle"
+                id="test-dimensions-edit-frontAxleToRearAxle"
                 maxlength="5"
                 name="frontAxleToRearAxle"
                 ng-reflect-maxlength="5"
@@ -113,7 +113,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                    id="frontAxleTo5thWheelCouplingMin"
+                    id="test-dimensions-edit-frontAxleTo5thWheelCouplingMin"
                     maxlength="5"
                     name="frontAxleTo5thWheelCouplingMin"
                     ng-reflect-maxlength="5"
@@ -139,7 +139,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                    id="frontAxleTo5thWheelCouplingMax"
+                    id="test-dimensions-edit-frontAxleTo5thWheelCouplingMax"
                     maxlength="5"
                     name="frontAxleTo5thWheelCouplingMax"
                     ng-reflect-maxlength="5"
@@ -175,7 +175,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                    id="frontAxleTo5thWheelMin"
+                    id="test-dimensions-edit-frontAxleTo5thWheelMin"
                     maxlength="5"
                     name="frontAxleTo5thWheelMin"
                     ng-reflect-maxlength="5"
@@ -201,7 +201,7 @@ exports[`DimensionsEditComponent should create with initialized form dimensions 
                   </label>
                   <input
                     class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                    id="frontAxleTo5thWheelMax"
+                    id="test-dimensions-edit-frontAxleTo5thWheelMax"
                     maxlength="5"
                     name="frontAxleTo5thWheelMax"
                     ng-reflect-maxlength="5"

@@ -35,7 +35,7 @@ exports[`DocumentsEditComponent component should render with the given propertie
             <select
               class="govuk-select ng-untouched ng-pristine ng-valid"
               formcontrolname="microfilmDocumentType"
-              id="microfilmDocumentType"
+              id="test-documents-edit-microfilmDocumentType"
               ng-reflect-name="microfilmDocumentType"
             >
               
@@ -371,7 +371,7 @@ exports[`DocumentsEditComponent component should render with the given propertie
             <input
               class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
               formcontrolname="microfilmRollNumber"
-              id="microfilmRollNumber"
+              id="test-documents-edit-microfilmRollNumber"
               maxlength="5"
               ng-reflect-maxlength="5"
               ng-reflect-name="microfilmRollNumber"
@@ -390,7 +390,7 @@ exports[`DocumentsEditComponent component should render with the given propertie
             <input
               class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
               formcontrolname="microfilmSerialNumber"
-              id="microfilmSerialNumber"
+              id="test-documents-edit-microfilmSerialNumber"
               maxlength="4"
               ng-reflect-maxlength="4"
               ng-reflect-name="microfilmSerialNumber"

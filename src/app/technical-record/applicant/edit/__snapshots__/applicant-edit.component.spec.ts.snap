@@ -42,7 +42,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="name"
-                id="make"
+                id="test-applicant-edit-name"
                 ng-reflect-name="name"
                 type="text"
               />
@@ -59,7 +59,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="address1"
-                id="address1"
+                id="test-applicant-edit-address1"
                 ng-reflect-name="address1"
                 type="text"
               />
@@ -74,7 +74,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="address2"
-                id="address2"
+                id="test-applicant-edit-address2"
                 ng-reflect-name="address2"
                 type="text"
               />
@@ -91,7 +91,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="postTown"
-                id="postTown"
+                id="test-applicant-edit-postTown"
                 ng-reflect-name="postTown"
                 type="text"
               />
@@ -108,7 +108,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="address3"
-                id="address3"
+                id="test-applicant-edit-address3"
                 ng-reflect-name="address3"
                 type="text"
               />
@@ -125,7 +125,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="postCode"
-                id="postCode"
+                id="test-applicant-edit-postCode"
                 ng-reflect-name="postCode"
                 type="text"
               />
@@ -142,7 +142,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="telephoneNumber"
-                id="telephoneNumber"
+                id="test-applicant-edit-telephoneNumber"
                 ng-reflect-name="telephoneNumber"
                 type="text"
               />
@@ -159,7 +159,7 @@ exports[`ApplicantEditComponent component should render with the given propertie
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="emailAddress"
-                id="emailAddress"
+                id="test-applicant-edit-emailAddress"
                 ng-reflect-name="emailAddress"
                 type="text"
               />

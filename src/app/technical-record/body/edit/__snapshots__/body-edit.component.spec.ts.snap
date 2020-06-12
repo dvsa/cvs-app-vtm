@@ -38,7 +38,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="make"
-                id="make"
+                id="test-body-edit-make"
                 maxlength="30"
                 ng-reflect-maxlength="30"
                 ng-reflect-name="make"
@@ -57,7 +57,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="model"
-                id="model"
+                id="test-body-edit-model"
                 maxlength="30"
                 ng-reflect-maxlength="30"
                 ng-reflect-name="model"
@@ -77,77 +77,89 @@ exports[`BodyEditComponent component should render with the given properties  1`
               <select
                 class="govuk-select ng-untouched ng-pristine ng-valid"
                 formcontrolname="description"
-                id="description"
+                id="test-body-edit-description"
                 ng-reflect-name="description"
               >
                 
                 <option
+                  id="test-body-edit-articulated"
                   ng-reflect-ng-value="articulated"
                   value="0: articulated"
                 >
                    articulated 
                 </option>
                 <option
+                  id="test-body-edit-single decker"
                   ng-reflect-ng-value="single decker"
                   value="1: single decker"
                 >
                    single decker 
                 </option>
                 <option
+                  id="test-body-edit-double decker"
                   ng-reflect-ng-value="double decker"
                   value="2: double decker"
                 >
                    double decker 
                 </option>
                 <option
+                  id="test-body-edit-other"
                   ng-reflect-ng-value="other"
                   value="3: other"
                 >
                    other 
                 </option>
                 <option
+                  id="test-body-edit-petrol/oil tanker"
                   ng-reflect-ng-value="petrol/oil tanker"
                   value="4: petrol/oil tanker"
                 >
                    petrol/oil tanker 
                 </option>
                 <option
+                  id="test-body-edit-skeletal"
                   ng-reflect-ng-value="skeletal"
                   value="5: skeletal"
                 >
                    skeletal 
                 </option>
                 <option
+                  id="test-body-edit-tipper"
                   ng-reflect-ng-value="tipper"
                   value="6: tipper"
                 >
                    tipper 
                 </option>
                 <option
+                  id="test-body-edit-box"
                   ng-reflect-ng-value="box"
                   value="7: box"
                 >
                    box 
                 </option>
                 <option
+                  id="test-body-edit-flat"
                   ng-reflect-ng-value="flat"
                   value="8: flat"
                 >
                    flat 
                 </option>
                 <option
+                  id="test-body-edit-refuse"
                   ng-reflect-ng-value="refuse"
                   value="9: refuse"
                 >
                    refuse 
                 </option>
                 <option
+                  id="test-body-edit-skip loader"
                   ng-reflect-ng-value="skip loader"
                   value="10: skip loader"
                 >
                    skip loader 
                 </option>
                 <option
+                  id="test-body-edit-refrigerated"
                   ng-reflect-ng-value="refrigerated"
                   value="11: refrigerated"
                 >
@@ -171,7 +183,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="functionCode"
-                  id="functionCode-Articulated"
+                  id="test-body-edit-functionCode-Articulated"
                   name="functionCode"
                   ng-reflect-form-control-name="functionCode"
                   ng-reflect-name="functionCode"
@@ -191,7 +203,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="functionCode"
-                  id="functionCode-Rigid"
+                  id="test-body-edit-functionCode-Rigid"
                   name="functionCode"
                   ng-reflect-form-control-name="functionCode"
                   ng-reflect-name="functionCode"
@@ -218,7 +230,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="conversionRefNo"
-                id="conversionRefNo"
+                id="test-body-edit-conversionRefNo"
                 maxlength="10"
                 ng-reflect-maxlength="10"
                 ng-reflect-name="conversionRefNo"

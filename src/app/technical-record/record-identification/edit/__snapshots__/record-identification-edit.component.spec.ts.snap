@@ -40,7 +40,7 @@ exports[`RecordIdentificationEditComponent should create with initialized form c
                 <input
                   class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                   formcontrolname="vin"
-                  id="vin"
+                  id="test-record-identification-edit-vin"
                   ng-reflect-name="vin"
                   type="text"
                 />
@@ -57,7 +57,7 @@ exports[`RecordIdentificationEditComponent should create with initialized form c
                 <input
                   class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                   formcontrolname="primaryVrm"
-                  id="vrm"
+                  id="test-record-identification-edit-vrm"
                   ng-reflect-name="primaryVrm"
                   type="text"
                 />

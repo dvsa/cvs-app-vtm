@@ -27,7 +27,7 @@ exports[`DocumentsEditComponent component should render with the given propertie
             <textarea
               class="govuk-textarea ng-untouched ng-pristine ng-valid"
               formcontrolname="notes"
-              id="test-notes"
+              id="test-notes-edit-notes"
               ng-reflect-name="notes"
               rows="5"
             />
