@@ -148,12 +148,12 @@ exports[`TestSectionComponent should create 1`] = `
       class="govuk-summary-list__row"
     >
       <dt
-        class="govuk-summary-list__key"
+        class="govuk-summary-list__key border--bottom-none"
       >
          End time 
       </dt>
       <dd
-        class="govuk-summary-list__value"
+        class="govuk-summary-list__value border--bottom-none"
         id="test-testTypeEndTimestamp"
       >
         
@@ -165,21 +165,6 @@ exports[`TestSectionComponent should create 1`] = `
     
     
     
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key border--bottom-none"
-      >
-         Prohibition issued 
-      </dt>
-      <dd
-        class="govuk-summary-list__value border--bottom-none"
-        id="test-prohibitionIssued"
-      >
-         - 
-      </dd>
-    </div>
     
   </dl>
 </vtm-test-section>

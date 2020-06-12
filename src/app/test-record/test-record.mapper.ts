@@ -6,10 +6,10 @@ import { TestType } from '@app/models/test.type';
 import { COUNTRY_OF_REGISTRATION } from '@app/app.enums';
 import {
   ANNIVERSARY_DATE_APPLICABLE,
-  CERTIFICATE_EXTRA_APPLICABLE,
+  CERTIFICATE_APPLICABLE,
   DEFECTS_APPLICABLE,
   EMISSION_DETAILS_APPLICABLE,
-  EXPIRY_DATE_EXTRA_APPLICABLE,
+  EXPIRY_DATE_APPLICABLE,
   SEAT_BELT_APPLICABLE
 } from '@app/test-record/test-types-applicable.enum';
 
@@ -18,8 +18,8 @@ export interface TestTypesApplicable {
   defectsApplicable: {};
   emissionDetailsApplicable: {};
   anniversaryDateApplicable: {};
-  expiryDateExtraApplicable: {};
-  certificateExtraApplicable: {};
+  expiryDateApplicable: {};
+  certificateApplicable: {};
 }
 
 @Injectable({ providedIn: 'root' })
@@ -55,12 +55,8 @@ export class TestRecordMapper {
       anniversaryDateApplicable: this.getTestTypeEnums(
         Object.values(ANNIVERSARY_DATE_APPLICABLE)
       ),
-      expiryDateExtraApplicable: this.getTestTypeEnums(
-        Object.values(EXPIRY_DATE_EXTRA_APPLICABLE)
-      ),
-      certificateExtraApplicable: this.getTestTypeEnums(
-        Object.values(CERTIFICATE_EXTRA_APPLICABLE)
-      )
+      expiryDateApplicable: this.getTestTypeEnums(Object.values(EXPIRY_DATE_APPLICABLE)),
+      certificateApplicable: this.getTestTypeEnums(Object.values(CERTIFICATE_APPLICABLE))
     };
 
     return testTypesApplicable[sectionName];
@@ -81,8 +77,8 @@ export class TestRecordMapper {
       defectsApplicable: this.getTestTypeApplicable('defectsApplicable'),
       emissionDetailsApplicable: this.getTestTypeApplicable('emissionDetailsApplicable'),
       anniversaryDateApplicable: this.getTestTypeApplicable('anniversaryDateApplicable'),
-      expiryDateExtraApplicable: this.getTestTypeApplicable('expiryDateExtraApplicable'),
-      certificateExtraApplicable: this.getTestTypeApplicable('certificateExtraApplicable')
+      expiryDateApplicable: this.getTestTypeApplicable('expiryDateApplicable'),
+      certificateApplicable: this.getTestTypeApplicable('certificateApplicable')
     };
 
     const mapPreparer = !!testResultFormData.preparer
@@ -113,7 +109,7 @@ export class TestRecordMapper {
     testResultMapped.testerName = testResultFormData.testerName;
     testResultMapped.testerEmailAddress = testResultFormData.testerEmailAddress;
     testTypeMapped.seatbeltInstallationCheckDate =
-      testResultFormData.testType.seatbeltInstallationCheckDate;
+      testResultFormData.testType.seatbeltInstallationCheckDate === 'Yes';
     testTypeMapped.numberOfSeatbeltsFitted = testResultFormData.testType.numberOfSeatbeltsFitted;
     testTypeMapped.lastSeatbeltInstallationCheckDate =
       testResultFormData.testType.lastSeatbeltInstallationCheckDate;
@@ -121,7 +117,7 @@ export class TestRecordMapper {
     testTypeMapped.smokeTestKLimitApplied = testResultFormData.testType.smokeTestKLimitApplied;
     testTypeMapped.fuelType = testResultFormData.testType.fuelType;
 
-    if (!!testTypeMapped.modType && testResultMapped.vehicleType === 'trl') {
+    if (!!testTypeMapped.modType && testTypesApplicable.emissionDetailsApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.modType.code = !!testResultFormData.testType.modType.length
         ? testResultFormData.testType.modType.split('-')[0].trim()
         : '';
@@ -154,22 +150,16 @@ export class TestRecordMapper {
     }
 
     if (!testTypesApplicable.anniversaryDateApplicable[testTypeMapped.testTypeId]) {
-      testTypeMapped.certificateNumber = undefined;
-      testTypeMapped.testExpiryDate = undefined;
       testTypeMapped.testAnniversaryDate = undefined;
+    } else {
+      testTypeMapped.testAnniversaryDate = null;
     }
 
-    if (
-      !testTypesApplicable.anniversaryDateApplicable[testTypeMapped.testTypeId] &&
-      !testTypesApplicable.expiryDateExtraApplicable[testTypeMapped.testTypeId]
-    ) {
+    if (!testTypesApplicable.expiryDateApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.testExpiryDate = undefined;
     }
 
-    if (
-      !testTypesApplicable.anniversaryDateApplicable[testTypeMapped.testTypeId] &&
-      !testTypesApplicable.certificateExtraApplicable[testTypeMapped.testTypeId]
-    ) {
+    if (!testTypesApplicable.certificateApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.certificateNumber = undefined;
     }
 

@@ -10,7 +10,7 @@ function mockTestTypesApplicable() {
     defectsApplicable: { 44: 'test' },
     emissionDetailsApplicable: { 44: 'test' },
     anniversaryDateApplicable: { 3: 'test' },
-    expiryDateExtraApplicable: { 50: 'test' },
-    certificateExtraApplicable: { 50: 'test' }
+    expiryDateApplicable: { 50: 'test' },
+    certificateApplicable: { 50: 'test' }
   } as TestTypesApplicable;
 }

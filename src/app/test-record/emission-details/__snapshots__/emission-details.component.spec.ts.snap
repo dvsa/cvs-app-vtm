@@ -69,56 +69,13 @@ exports[`EmissionDetailsComponent should create 1`] = `
         id="test-modType"
       >
         
-        <span>
-          -
-        </span>
+        
+         1 - Test 
       </dd>
     </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Modification type used 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-modificationTypeUsed"
-      >
-         - 
-      </dd>
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Particulate trap fitted 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-particulateTrapFitted"
-      >
-         - 
-      </dd>
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key border--bottom-none"
-      >
-         Particulate trap serial number 
-      </dt>
-      <dd
-        class="govuk-summary-list__value border--bottom-none"
-        id="test-particulateTrapSerialNumber"
-      >
-         - 
-      </dd>
-    </div>
+    
+    
+    
   </dl>
 </vtm-emission-details>
 `;
@@ -193,56 +150,13 @@ exports[`EmissionDetailsComponent should render edit template if editState is ED
         id="test-modType"
       >
         
-        <span>
-          -
-        </span>
+        
+         1 - Test 
       </dd>
     </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Modification type used 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-modificationTypeUsed"
-      >
-         - 
-      </dd>
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Particulate trap fitted 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-particulateTrapFitted"
-      >
-         - 
-      </dd>
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key border--bottom-none"
-      >
-         Particulate trap serial number 
-      </dt>
-      <dd
-        class="govuk-summary-list__value border--bottom-none"
-        id="test-particulateTrapSerialNumber"
-      >
-         - 
-      </dd>
-    </div>
+    
+    
+    
   </dl>
 </vtm-emission-details>
 `;
@@ -317,56 +231,13 @@ exports[`EmissionDetailsComponent should render view template if editState is VI
         id="test-modType"
       >
         
-        <span>
-          -
-        </span>
+        
+         1 - Test 
       </dd>
     </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Modification type used 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-modificationTypeUsed"
-      >
-         - 
-      </dd>
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Particulate trap fitted 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-particulateTrapFitted"
-      >
-         - 
-      </dd>
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key border--bottom-none"
-      >
-         Particulate trap serial number 
-      </dt>
-      <dd
-        class="govuk-summary-list__value border--bottom-none"
-        id="test-particulateTrapSerialNumber"
-      >
-         - 
-      </dd>
-    </div>
+    
+    
+    
   </dl>
 </vtm-emission-details>
 `;

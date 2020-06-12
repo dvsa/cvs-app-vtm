@@ -41,10 +41,7 @@
   </div>
   <ng-container *ngIf="testTypesApplicable">
     <div
-      *ngIf="
-        testTypesApplicable.anniversaryDateApplicable[testType.testTypeId] ||
-        testTypesApplicable.certificateExtraApplicable[testType.testTypeId]
-      "
+      *ngIf="testTypesApplicable.certificateApplicable[testType.testTypeId]"
       class="govuk-summary-list__row"
     >
       <dt class="govuk-summary-list__key">
@@ -65,10 +62,7 @@
   </div>
   <ng-container *ngIf="testTypesApplicable">
     <div
-      *ngIf="
-        testTypesApplicable.anniversaryDateApplicable[testType.testTypeId] ||
-        testTypesApplicable.expiryDateExtraApplicable[testType.testTypeId]
-      "
+      *ngIf="testTypesApplicable.expiryDateApplicable[testType.testTypeId]"
       class="govuk-summary-list__row"
     >
       <dt class="govuk-summary-list__key">
