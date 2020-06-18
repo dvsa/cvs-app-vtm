@@ -120,10 +120,10 @@ export class TestRecordMapper {
     if (!!testTypeMapped.modType && testTypesApplicable.emissionDetailsApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.modType.code = !!testResultFormData.testType.modType.length
         ? testResultFormData.testType.modType.split('-')[0].trim()
-        : '';
+        : testTypeMapped.modType.code;
       testTypeMapped.modType.description = !!testResultFormData.testType.modType.length
         ? testResultFormData.testType.modType.split('-')[1].trim()
-        : '';
+        : testTypeMapped.modType.description;
     }
     testTypeMapped.modificationTypeUsed = testResultFormData.testType.modificationTypeUsed;
     testTypeMapped.particulateTrapFitted = testResultFormData.testType.particulateTrapFitted;
