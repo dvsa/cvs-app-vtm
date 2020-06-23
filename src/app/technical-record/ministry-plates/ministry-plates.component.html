@@ -1,0 +1,29 @@
+<h2 class="govuk-heading-l">Select reason for sending ministry plate</h2>
+<form [formGroup]="platesForm">
+  <div class="govuk-form-group">
+    <fieldset class="govuk-fieldset">
+      <div class="govuk-radios">
+        <div
+          *ngFor="let issue of plateIssueOptions | keyvalue; let i = index"
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input"
+            id="test-issue-{{ i }}"
+            type="radio"
+            formControlName="plateReasonForIssue"
+            value="{{ issue.key }}"
+          />
+          <label class="govuk-label govuk-radios__label" for="test-issue-{{ i }}">
+            {{ issue.value }}
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</form>
+<div class="govuk-inset-text">
+  A digital copy of the ministry plate will be email to the applicant on the tech record ({{
+    platesForm.get('toEmailAddress').value
+  }})
+</div>

@@ -30,6 +30,7 @@ export interface Plate {
   plateIssueDate: string;
   plateReasonForIssue: string;
   plateIssuer: string;
+  toEmailAddress: string;
 }
 
 export interface AuthIntoService {

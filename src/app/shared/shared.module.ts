@@ -23,6 +23,8 @@ import { CapitalizeString } from '@app/pipes/capitalize-string';
 import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
 import { DirectivesModule } from '@app/shared/directives/directives.module';
 import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
+import { DialogMinistryPlatesComponent } from '@app/shared/dialog-ministry-plates/dialog-ministry-plates.component';
+import { MinistryPlatesComponent } from '@app/technical-record/ministry-plates/ministry-plates.component';
 
 export const PIPES_AND_COMPONENTS = [
   AdrReasonModalComponent,
@@ -33,6 +35,8 @@ export const PIPES_AND_COMPONENTS = [
   FormConnectorDirective,
   DialogBoxComponent,
   DialogBoxConfirmationComponent,
+  DialogMinistryPlatesComponent,
+  MinistryPlatesComponent,
 
   IsPrimaryVrmPipe,
   FilterRecordPipe,
@@ -49,7 +53,13 @@ export const PIPES_AND_COMPONENTS = [
   imports: [FormsModule, CommonModule, ReactiveFormsModule, MatDialogModule, DirectivesModule],
   declarations: PIPES_AND_COMPONENTS,
   exports: [PIPES_AND_COMPONENTS, DirectivesModule],
-  entryComponents: [AdrReasonModalComponent, PreventLeavePageModalComponent, DialogBoxComponent, DialogBoxConfirmationComponent],
+  entryComponents: [
+    AdrReasonModalComponent,
+    PreventLeavePageModalComponent,
+    DialogBoxComponent,
+    DialogBoxConfirmationComponent,
+    DialogMinistryPlatesComponent
+  ],
   providers: [FilterRecordPipe, PendingChangesService]
 })
 export class SharedModule {}

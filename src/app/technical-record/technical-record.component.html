@@ -40,6 +40,24 @@
           </span>
         </ng-container>
       </div>
+      <ng-container
+        *ngIf="
+          (activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl') &&
+          activeRecord.statusCode === 'current'
+        "
+      >
+        <div class="govuk-grid-column-one-third govuk-!-margin-left-0 govuk-!-padding-left-0">
+          <button
+            class="govuk-button govuk-button--secondary"
+            id="test-send-ministry-plates"
+            type="button"
+            data-module="govuk-button"
+            (click)="onSendMinistryPlates()"
+          >
+            Send ministry plates
+          </button>
+        </div>
+      </ng-container>
     </div>
 
     <!-- Active record status -->

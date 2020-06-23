@@ -41,6 +41,7 @@ import { VIEW_STATE } from '@app/app.enums';
             [testResultJson]="testResults$ | async"
             (submitVehicleRecord)="vehicleRecordSubmissionHandler($event)"
             (changeViewState)="viewStateHandler($event)"
+            (sendPlates)="sendPlatesHandler($event)"
           >
           </vtm-technical-record>
         </main>
@@ -78,5 +79,9 @@ export class TechnicalRecordsContainer implements OnInit {
 
   viewStateHandler(state: VIEW_STATE): void {
     this.store.dispatch(new SetViewState(state));
+  }
+
+  sendPlatesHandler(editedVehicleRecord: VehicleTechRecordEdit) {
+    this.store.dispatch(new UpdateVehicleTechRecord(editedVehicleRecord));
   }
 }
