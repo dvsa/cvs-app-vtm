@@ -18,7 +18,7 @@
     "test": "jest --coverage",
     "test:dev": "jest --watch",
     "lint": "ng lint",
-    "lint:fix": "ng lint --fix",
+    "lint:fix": "ng lint $npm_package_name --fix",
     "e2e": "cypress open",
     "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
@@ -164,7 +164,7 @@
     "hooks": {
       "commit-msg": "./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "npm run lint && npm run security-checks",
-      "pre-push": "npm run prepush"
+      "pre-push": "npm run lint:fix && npm run prepush"
     }
   },
   "description": "CVS VTM Application"
