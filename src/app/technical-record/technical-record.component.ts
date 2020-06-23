@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { mergeWith, isNil } from 'lodash';
 
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
+import { DialogMinistryPlatesComponent } from '@app/shared/dialog-ministry-plates/dialog-ministry-plates.component';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
 import { TechnicalRecordValuesMapper } from './technical-record-value.mapper';
 import { TechRecord } from './../models/tech-record.model';
@@ -40,6 +41,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   @Input() testResultJson: TestResultModel[];
   @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEditState>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
+  @Output() sendPlates = new EventEmitter<VehicleTechRecordEdit>();
 
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
@@ -188,6 +190,10 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     // }
   }
 
+  getClonedVehicleRecord(): VehicleTechRecordEdit {
+    return JSON.parse(JSON.stringify(this.activeVehicleTechRecord));
+  }
+
   getMergedTechRecord(params): TechRecord {
     const { cloned, edited } = params;
     return mergeWith({}, cloned, edited, (obj, src) => (!isNil(src) ? src : obj));
@@ -200,5 +206,24 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   techRecordViewHandler(record: TechRecord): void {
     this.activeRecord = { ...record };
     this.isArchivedRecord = this.techRecHelper.isArchivedRecord(this.activeRecord.statusCode);
+  }
+
+  onSendMinistryPlates() {
+    const dialogRef = this.dialog.open(DialogMinistryPlatesComponent, {
+      width: '45vw',
+      data: { applicantDetails: this.activeRecord.applicantDetails }
+    });
+
+    dialogRef.afterClosed().subscribe((plate) => {
+      const vehicleRecord = this.getClonedVehicleRecord();
+      if (plate) {
+        if (!!vehicleRecord.techRecord[0].plates) {
+          vehicleRecord.techRecord[0].plates.push(plate);
+        } else {
+          vehicleRecord.techRecord[0].plates = [plate];
+        }
+        this.sendPlates.emit(vehicleRecord);
+      }
+    });
   }
 }

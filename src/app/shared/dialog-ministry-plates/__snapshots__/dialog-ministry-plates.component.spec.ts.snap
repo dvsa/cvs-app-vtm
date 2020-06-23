@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DialogMinistryPlatesComponent should create 1`] = `
+<vtm-dialog-ministry-plates
+  data={[Function Object]}
+  dialogRef={[Function Object]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-full"
+    >
+      <div
+        class="mat-dialog-content"
+        mat-dialog-content=""
+      >
+        <vtm-ministry-plates>
+          <div>
+            
+          </div>
+        </vtm-ministry-plates>
+        <div
+          class="govuk-grid-row"
+        >
+          <div
+            class="govuk-grid-column-one-third govuk-!-margin-right-0 govuk-!-padding-right-0"
+          >
+            <button
+              cdkfocusinitial=""
+              class="govuk-button"
+              data-module="govuk-button"
+              id="test-send-ministry-plate"
+            >
+               Send ministry plate 
+            </button>
+          </div>
+          <div
+            class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0 govuk-!-padding-top-2"
+          >
+            <a
+              class="govuk-link govuk-link--no-visited-state"
+              href="javascript:void(0)"
+              id="test-cancel"
+            >
+              <span>
+                Cancel
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</vtm-dialog-ministry-plates>
+`;

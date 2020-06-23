@@ -139,3 +139,8 @@ export const MICROFILM_DOCUMENT_TYPE = [
   'COF Cert, PRT - Tr Plating Cert paid',
   'Tempo 100 Permit'
 ];
+
+export const PLATE_ISSUE_OPTIONS = {
+  ['Original']: 'Issue original certificate',
+  ['Replacement']: 'Issue replacement'
+};

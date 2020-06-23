@@ -263,7 +263,7 @@ function mockPlates(args?: Partial<Plate>): Plate {
     plateIssueDate: '2019-12-13',
     plateReasonForIssue: '5678',
     plateIssuer: 'Issuer1'
-  };
+  } as Plate;
   return { ...mock, ...args };
 }
 
