@@ -1,0 +1,36 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div mat-dialog-content>
+      <vtm-ministry-plates
+        [applicantDetails]="data.applicantDetails"
+        #plateComponent="plateComponent"
+      ></vtm-ministry-plates>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third govuk-!-margin-right-0 govuk-!-padding-right-0">
+          <button
+            class="govuk-button"
+            id="test-send-ministry-plate"
+            data-module="govuk-button"
+            (click)="save(plateComponent)"
+            cdkFocusInitial
+          >
+            Send ministry plate
+          </button>
+        </div>
+
+        <div
+          class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0 govuk-!-padding-top-2"
+        >
+          <a
+            class="govuk-link govuk-link--no-visited-state"
+            id="test-cancel"
+            (click)="close()"
+            href="javascript:void(0)"
+          >
+            <span>Cancel</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
