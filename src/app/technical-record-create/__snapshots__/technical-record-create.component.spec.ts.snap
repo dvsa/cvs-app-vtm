@@ -132,7 +132,7 @@ exports[`TechnicalRecordSearchComponent should create 1`] = `
                     </div>
                   </div>
                   <div
-                    class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-padding-left-0 govuk-!-margin-left-0 govuk-form-group--error"
+                    class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-padding-left-0 govuk-!-margin-left-0"
                   >
                     <div
                       class="govuk-grid-column-full"
@@ -153,13 +153,10 @@ exports[`TechnicalRecordSearchComponent should create 1`] = `
                         >
                           Error:
                         </span>
-                        <span>
-                          
-                        </span>
                         
                       </span>
                       <input
-                        class="govuk-input govuk-input--width-20 govuk-input--error ng-untouched ng-pristine ng-invalid"
+                        class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-invalid"
                         formcontrolname="vin"
                         id="test-vin"
                         maxlength="21"

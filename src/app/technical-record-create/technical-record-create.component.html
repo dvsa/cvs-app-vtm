@@ -53,7 +53,9 @@
                 </div>
                 <div
                   class="govuk-grid-row govuk-!-margin-bottom-5 govuk-!-padding-left-0 govuk-!-margin-left-0"
-                  [class.govuk-form-group--error]="formErrors.vinErr || formError[0]"
+                  [class.govuk-form-group--error]="
+                    formErrors.vinErr || formError[0]?.includes('VIN')
+                  "
                 >
                   <div class="govuk-grid-column-full">
                     <label class="govuk-label govuk-!-font-weight-bold" for="test-vin">
@@ -65,12 +67,11 @@
                       class="govuk-error-message"
                     >
                       <span class="govuk-visually-hidden">Error:</span>
-                      <span>{{ formErrors.vinErr }}</span>
-                      <span *ngIf="formError[0]?.includes('exists')">{{ formError[0] }}</span>
+                      <span *ngIf="formError[0]?.includes('VIN')">{{ formError[0] }}</span>
                     </span>
                     <input
                       class="govuk-input govuk-input--width-20"
-                      [class.govuk-input--error]="formErrors.vinErr || formError[0]"
+                      [class.govuk-input--error]="formErrors.vinErr || formError[0]?.includes('VIN')"
                       id="test-vin"
                       type="text"
                       formControlName="vin"
