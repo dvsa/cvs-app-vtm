@@ -7,12 +7,11 @@ import { Observable } from 'rxjs';
 import { CREATE_PAGE_LABELS } from '@app/app.enums';
 import { VehicleIdentifiers } from '@app/models/vehicle-tech-record.model';
 import { getErrors } from '@app/store/selectors/error.selectors';
-import { SetErrorMessage } from '@app/store/actions/Error.actions';
+import { ClearErrorMessage, SetErrorMessage } from '@app/store/actions/Error.actions';
 
 @Component({
   selector: 'vtm-technical-record-create',
   templateUrl: './technical-record-create.component.html',
-  styleUrls: ['./technical-record-create.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechnicalRecordCreateComponent implements OnInit {
@@ -64,11 +63,13 @@ export class TechnicalRecordCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    this.formErrors.vinErr = !this.createTechRecordForm.get('vin').valid ? 'Enter a VIN' : '';
-    this.formErrors.vrmErr = !this.createTechRecordForm.get('vrm').valid ? 'Enter a VRM' : '';
+    this._store.dispatch(new ClearErrorMessage());
+
+    this.formErrors.vinErr = !this.createTechRecordForm.get('vin').valid ? 'Enter a VIN' : null;
+    this.formErrors.vrmErr = !this.createTechRecordForm.get('vrm').valid ? 'Enter a VRM' : null;
     this.formErrors.vTypeErr = !this.createTechRecordForm.get('vehicleType').valid
       ? 'Select a vehicle type'
-      : '';
+      : null;
 
     if (!this.formErrors.vinErr && !this.formErrors.vrmErr && !this.formErrors.vTypeErr) {
       const createDetails: VehicleIdentifiers = {
@@ -76,6 +77,7 @@ export class TechnicalRecordCreateComponent implements OnInit {
         vrm: this.createTechRecordForm.get('vrm').value,
         vType: this.createTechRecordForm.get('vehicleType').value
       };
+
       this.formErrors.requestErr = [];
       this._store.dispatch(new SetVehicleTechRecordModelOnCreate(createDetails));
     } else {
