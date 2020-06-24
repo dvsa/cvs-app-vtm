@@ -152,9 +152,9 @@ describe('TechnicalRecordSearchComponent', () => {
     component.createTechRecordForm.controls.vehicleType.setValue('dddd');
 
     component.onSubmit();
-    expect(component.formErrors.vinErr).toEqual('');
-    expect(component.formErrors.vrmErr).toEqual('');
-    expect(component.formErrors.vTypeErr).toEqual('');
+    expect(component.formErrors.vinErr).toEqual(null);
+    expect(component.formErrors.vrmErr).toEqual(null);
+    expect(component.formErrors.vTypeErr).toEqual(null);
   });
 
 });
