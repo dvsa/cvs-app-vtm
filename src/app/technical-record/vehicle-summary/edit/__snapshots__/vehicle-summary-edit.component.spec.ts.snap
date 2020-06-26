@@ -506,7 +506,7 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-fuelPropulsionSystem"
               >
-                 Fuel/propulsion 
+                 Fuel/propulsion system 
               </label>
               <select
                 class="govuk-select ng-untouched ng-pristine ng-valid"
@@ -796,7 +796,7 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
                 class="govuk-label govuk-!-font-weight-bold"
                 for="test-edit-offRoad"
               >
-                 Offroad vehicle 
+                 Off road vehicle 
               </label>
               
               <div
