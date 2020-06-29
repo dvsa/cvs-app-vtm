@@ -32,7 +32,7 @@ exports[`DialogBoxComponent should create 1`] = `
         cdkfocusinitial=""
         class="govuk-button"
         data-module="govuk-button"
-        id="test-"
+        id="test-save-action"
       >
           
       </button>
@@ -43,6 +43,7 @@ exports[`DialogBoxComponent should create 1`] = `
       <a
         class="govuk-link govuk-!-margin-left-2"
         href="javascript:void(0)"
+        id="test-cancel-action"
       >
         <span>
           Cancel

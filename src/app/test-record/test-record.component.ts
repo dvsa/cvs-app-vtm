@@ -4,7 +4,8 @@ import {
   ChangeDetectionStrategy,
   Input,
   EventEmitter,
-  Output
+  Output,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
 import { initAll } from 'govuk-frontend';
@@ -37,6 +38,7 @@ export class TestRecordComponent implements OnInit {
   hasDefectsApplicable: boolean;
   hasEmissionApplicable: boolean;
   hasSeatBeltApplicable: boolean;
+  viewEmissionDetails: boolean;
 
   constructor(
     private parent: FormGroupDirective,
@@ -49,9 +51,10 @@ export class TestRecordComponent implements OnInit {
     this.hasDefectsApplicable = this.testTypesApplicable.defectsApplicable[
       this.testResultObj.testType.testTypeId
     ];
-    this.hasSeatBeltApplicable =
-      !(this.testTypesApplicable.seatBeltApplicable[this.testResultObj.testType.testTypeId] &&
-      this.testResultObj.testRecord.vehicleType === 'psv');
+    this.hasSeatBeltApplicable = !(
+      this.testTypesApplicable.seatBeltApplicable[this.testResultObj.testType.testTypeId] &&
+      this.testResultObj.testRecord.vehicleType === 'psv'
+    );
     this.hasEmissionApplicable = !(
       this.testTypesApplicable.emissionDetailsApplicable[
         this.testResultObj.testType.testTypeId
@@ -60,6 +63,7 @@ export class TestRecordComponent implements OnInit {
         this.testResultObj.testRecord.vehicleType === 'hgv') &&
       this.testResultObj.testType.testResult === 'pass'
     );
+    this.viewEmissionDetails = this.testResultObj.testType.testResult === 'pass';
 
     initAll();
     this.switchState.emit(VIEW_STATE.VIEW_ONLY);
@@ -108,5 +112,10 @@ export class TestRecordComponent implements OnInit {
   downloadCertificate() {
     const fileName = `${this.testResultObj.testType.testNumber}_${this.testResultObj.testRecord.vin}.pdf`;
     this.downloadCert.emit(fileName);
+  }
+
+  testResultHandler(tResult: string) {
+    this.viewEmissionDetails = tResult === 'pass';
+    this.hasEmissionApplicable = tResult !== 'pass';
   }
 }

@@ -144,6 +144,7 @@ export class DateInputComponent
     let year = '';
 
     [year, month, day] = (dateString || '').split('-');
+    day = !!day ? (day.includes('T') ? day.split('T')[0] : day) : '';
 
     this.dateInputs.patchValue({ day, month, year });
   }

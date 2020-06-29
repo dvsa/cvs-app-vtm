@@ -4,14 +4,15 @@ exports[`TestSectionEditComponent should create 1`] = `
 <vtm-test-section-edit
   dialog={[Function MatDialog]}
   isAbandoned="false"
-  prohibitionOptionSelected={[Function String]}
-  prohibitionOptions={[Function Array]}
+  prohibitionOptions={[Function Object]}
   reasonsForAbandoning={[Function Array]}
   reasonsForAbandoningOptions={[Function Array]}
   resultOptions={[Function Array]}
   router={[Function Router]}
+  selectedOptions={[Function Array]}
   testRecord={[Function Object]}
   testRecordMapper={[Function TestRecordMapper]}
+  testResult={[Function EventEmitter]}
   testResultChildForm={[Function FormGroupDirective]}
   testResultSubscription={[Function Subscriber]}
   testType={[Function Object]}
@@ -61,24 +62,6 @@ exports[`TestSectionEditComponent should create 1`] = `
         id="test-testCode"
       >
          - 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-         Test number 
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-testNumber"
-      >
-         123123 
       </dd>
       <dd
         class="govuk-summary-list__value"
@@ -182,118 +165,55 @@ exports[`TestSectionEditComponent should create 1`] = `
     </div>
     
     
-    
-    
-    <div
-      class="govuk-grid-row govuk-!-margin-bottom-3"
+    <dl
+      class="govuk-summary-list"
     >
       <div
-        class="govuk-grid-column-three-quarters"
+        class="govuk-summary-list__row"
       >
-        <label
-          class="govuk-label govuk-!-font-weight-bold"
+        <dt
+          class="govuk-summary-list__key"
+        >
+           Test number 
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-testNumber"
+        >
+           123123 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+    </dl>
+    
+    
+    <dl
+      class="govuk-summary-list"
+    >
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
         >
            Test date 
-        </label>
-        <vtm-date-input
-          ariadescribedby="testTypeEndTimestampDate"
-          class="ng-untouched ng-pristine ng-valid"
-          formcontrolname="testTypeEndTimestampDate"
-          ng-reflect-id="test-testTypeEndTimestampDate"
-          ng-reflect-name="testTypeEndTimestampDate"
-          ngdefaultcontrol=""
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-testTypeEndDate"
         >
           
-          <div
-            class="govuk-date-input"
-          >
-            <div
-              class="govuk-date-input__item"
-            >
-              <div
-                class="govuk-form-group"
-              >
-                <label
-                  class="govuk-label govuk-date-input__label"
-                  for="test-testTypeEndTimestampDate-1-day"
-                >
-                   Day 
-                </label>
-                <input
-                  autocomplete="off"
-                  class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-invalid"
-                  formcontrolname="day"
-                  id="test-testTypeEndTimestampDate-1-day"
-                  maxlength="2"
-                  name="dateDay"
-                  ng-reflect-maxlength="2"
-                  ng-reflect-name="day"
-                  ng-reflect-pattern="[0-9]*"
-                  pattern="[0-9]*"
-                  type="number"
-                />
-              </div>
-            </div>
-            <div
-              class="govuk-date-input__item"
-            >
-              <div
-                class="govuk-form-group"
-              >
-                <label
-                  class="govuk-label govuk-date-input__label"
-                  for="test-testTypeEndTimestampDate-1-month"
-                >
-                   Month 
-                </label>
-                <input
-                  autocomplete="off"
-                  class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
-                  formcontrolname="month"
-                  id="test-testTypeEndTimestampDate-1-month"
-                  maxlength="2"
-                  name="dateMonth"
-                  ng-reflect-maxlength="2"
-                  ng-reflect-name="month"
-                  ng-reflect-pattern="[0-9]*"
-                  pattern="[0-9]*"
-                  type="number"
-                />
-              </div>
-            </div>
-            <div
-              class="govuk-date-input__item"
-            >
-              <div
-                class="govuk-form-group"
-              >
-                <label
-                  class="govuk-label govuk-date-input__label"
-                  for="test-testTypeEndTimestampDate-1-year"
-                >
-                   Year 
-                </label>
-                <input
-                  autocomplete="off"
-                  class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-invalid"
-                  formcontrolname="year"
-                  id="test-testTypeEndTimestampDate-1-year"
-                  maxlength="4"
-                  minlength="4"
-                  name="dateYear"
-                  ng-reflect-maxlength="4"
-                  ng-reflect-minlength="4"
-                  ng-reflect-name="year"
-                  ng-reflect-pattern="[0-9]*"
-                  pattern="[0-9]*"
-                  type="number"
-                />
-              </div>
-            </div>
-          </div>
-        </vtm-date-input>
+          <span>
+             16/01/2020 
+          </span>
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
       </div>
-    </div>
+    </dl>
     <div
       class="govuk-grid-row govuk-!-margin-bottom-3"
     >
@@ -309,7 +229,7 @@ exports[`TestSectionEditComponent should create 1`] = `
           ariadescribedby="testTypeStartTimestamp"
           class="ng-untouched ng-pristine ng-valid"
           formcontrolname="testTypeStartTimestamp"
-          id="test-testTypeStartTimestamp"
+          id="test-testTypeStartTime"
           ng-reflect-name="testTypeStartTimestamp"
           ngdefaultcontrol=""
         />
@@ -330,7 +250,7 @@ exports[`TestSectionEditComponent should create 1`] = `
           ariadescribedby="testTypeEndTimestampTime"
           class="ng-untouched ng-pristine ng-valid"
           formcontrolname="testTypeEndTimestampTime"
-          id="test-testTypeEndTimestampTime"
+          id="test-testTypeEndTime"
           ng-reflect-name="testTypeEndTimestampTime"
           ngdefaultcontrol=""
         />

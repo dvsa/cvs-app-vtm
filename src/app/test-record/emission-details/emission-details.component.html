@@ -36,10 +36,14 @@
     </dd>
   </div>
   <div *ngIf="editModTypeUsed" class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
+    <dt class="govuk-summary-list__key" [class.border--bottom-none]="!editParticulate">
       Modification type used
     </dt>
-    <dd class="govuk-summary-list__value" id="test-modificationTypeUsed">
+    <dd
+      class="govuk-summary-list__value"
+      id="test-modificationTypeUsed"
+      [class.border--bottom-none]="!editParticulate"
+    >
       {{ testType.modificationTypeUsed | DefaultNullOrEmpty | CapitalizeString }}
     </dd>
   </div>

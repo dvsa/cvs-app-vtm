@@ -4,6 +4,7 @@ exports[`TestSectionComponent should create 1`] = `
 <vtm-test-section
   hasCertificateNumber="undefined"
   testRecord={[Function Object]}
+  testResult={[Function EventEmitter]}
   testType={[Function Object]}
   testTypesApplicable={[Function Object]}
 >
@@ -123,7 +124,7 @@ exports[`TestSectionComponent should create 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-testEndTimestamp"
+        id="test-testTypeEndDate"
       >
         
         <span>
@@ -141,7 +142,7 @@ exports[`TestSectionComponent should create 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-testTypeStartTimestamp"
+        id="test-testTypeStartTime"
       >
         
         <span>
@@ -159,7 +160,7 @@ exports[`TestSectionComponent should create 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value border--bottom-none"
-        id="test-testTypeEndTimestamp"
+        id="test-testTypeEndTime"
       >
         
         <span>

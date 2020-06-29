@@ -335,7 +335,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="modType"
                       id="test-modType-0"
                       type="radio"
-                      value="p - particulate trap"
+                      value="P - Particulate trap"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -351,7 +351,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="modType"
                       id="test-modType-1"
                       type="radio"
-                      value="m - modification or change of engine"
+                      value="M - Modification or change of engine"
                     />
                     <label
                       class="govuk-label govuk-radios__label"
@@ -367,7 +367,7 @@ exports[`EmissionDetailsEditComponent should create 1`] = `
                       formcontrolname="modType"
                       id="test-modType-2"
                       type="radio"
-                      value="g - gas engine"
+                      value="G - Gas engine"
                     />
                     <label
                       class="govuk-label govuk-radios__label"

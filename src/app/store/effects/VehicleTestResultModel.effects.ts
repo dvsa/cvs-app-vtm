@@ -84,7 +84,7 @@ export class VehicleTestResultModelEffects {
             ];
           }),
           catchError(({ error }) => {
-            const errorMessage = !!error ? error.errors : [''];
+            const errorMessage = error.errors;
             return [new SetErrorMessage(errorMessage)];
           })
         );

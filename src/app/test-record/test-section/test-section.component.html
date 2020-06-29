@@ -12,7 +12,7 @@
       Test code
     </dt>
     <dd class="govuk-summary-list__value" id="test-testCode">
-      {{ testType.testCode | DefaultNullOrEmpty | CapitalizeString }}
+      {{ testType.testCode | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -20,7 +20,7 @@
       Result
     </dt>
     <dd class="govuk-summary-list__value" id="test-testResult">
-      {{ testType.testResult | DefaultNullOrEmpty | CapitalizeString }}
+      {{ testResultVal | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -28,7 +28,7 @@
       Reason for abandoning
     </dt>
     <dd class="govuk-summary-list__value" id="test-reasonForAbandoning">
-      {{ testType.reasonForAbandoning | DefaultNullOrEmpty | CapitalizeString }}
+      {{ testType.reasonForAbandoning | DefaultNullOrEmpty }}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -105,7 +105,7 @@
     <dt class="govuk-summary-list__key">
       Test date
     </dt>
-    <dd class="govuk-summary-list__value" id="test-testEndTimestamp">
+    <dd class="govuk-summary-list__value" id="test-testTypeEndDate">
       <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
         {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}
       </span>
@@ -115,7 +115,7 @@
     <dt class="govuk-summary-list__key">
       Start time
     </dt>
-    <dd class="govuk-summary-list__value" id="test-testTypeStartTimestamp">
+    <dd class="govuk-summary-list__value" id="test-testTypeStartTime">
       <span *ngIf="testType.testTypeStartTimestamp; else hyphen">
         {{ testType.testTypeStartTimestamp | date: 'shortTime':'UTC' }}
       </span>
@@ -137,7 +137,7 @@
         !testTypesApplicable.defectsApplicable[testType.testTypeId] &&
         !testTypesApplicable.specialistTestApplicable[testType.testTypeId]
       "
-      id="test-testTypeEndTimestamp"
+      id="test-testTypeEndTime"
     >
       <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
         {{ testType.testTypeEndTimestamp | date: 'shortTime':'UTC' }}
@@ -156,7 +156,7 @@
         Prohibition issued
       </dt>
       <dd class="govuk-summary-list__value border--bottom-none" id="test-prohibitionIssued">
-        {{ testType.prohibitionIssued | DefaultNullOrEmpty }}
+        {{ prohibitionIssue | DefaultNullOrEmpty }}
       </dd>
     </div>
   </ng-container>
@@ -170,5 +170,6 @@
     [testRecord]="testRecord"
     [testType]="testType"
     [testTypesApplicable]="testTypesApplicable"
+    (testResult)="testResultHandler($event)"
   ></vtm-test-section-edit>
 </ng-container>

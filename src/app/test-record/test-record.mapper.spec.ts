@@ -69,7 +69,7 @@ describe('TestRecordMapper', () => {
       },
       testResultObject
     );
-    expect(Object.values(testResultMapped).length).toEqual(25);
+    expect(Object.values(testResultMapped).length).toEqual(24);
   });
 
   describe('should return reasons for abandoning based on vehicle type & test type id', () => {
@@ -111,7 +111,7 @@ describe('TestRecordMapper', () => {
       Object.values(REASON_FOR_ABANDONING_PSV)
     );
     expect(reasonsSelected).toEqual(
-      'The vehicle was not submitted for test at the appointed time,The relevant test fee has not been paid'
+      'The vehicle was not submitted for test at the appointed time. The relevant test fee has not been paid'
     );
   });
 });

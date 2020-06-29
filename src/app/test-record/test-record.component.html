@@ -81,6 +81,7 @@
                 [testRecord]="testResultObj.testRecord"
                 [testTypesApplicable]="testTypesApplicable"
                 [editState]="editState"
+                (testResult)="testResultHandler($event)"
               ></vtm-test-section>
             </vtm-accordion-item>
             <span [hidden]="hasDefectsApplicable">
@@ -101,14 +102,16 @@
                 ></vtm-seatbelt-installation-check>
               </vtm-accordion-item>
             </span>
-            <span [hidden]="hasEmissionApplicable">
+            <span [hidden]="hasEmissionApplicable" id="test-emissions">
               <vtm-accordion-item [title]="'Emission details'">
-                <vtm-emission-details
-                  [testRecord]="testResultObj.testRecord"
-                  [testType]="testResultObj.testType"
-                  [editState]="editState"
-                  [hasEmissionApplicable]="hasEmissionApplicable"
-                ></vtm-emission-details>
+                <ng-container *ngIf="viewEmissionDetails">
+                  <vtm-emission-details
+                    [testRecord]="testResultObj.testRecord"
+                    [testType]="testResultObj.testType"
+                    [editState]="editState"
+                    [hasEmissionApplicable]="hasEmissionApplicable"
+                  ></vtm-emission-details>
+                </ng-container>
               </vtm-accordion-item>
             </span>
             <vtm-accordion-item [title]="'Visit'">
