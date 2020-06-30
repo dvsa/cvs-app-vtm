@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
+  debug: true,
   name: 'dev',
   appInsights: {
     instrumentationKey: '#{appInsightsKey}'
@@ -30,10 +31,11 @@ export const environment = {
     APITechnicalRecordServerUri: 'http://localhost:3005',
     APITestResultServerUri: 'http://localhost:3006',
     APIDocumentsServerUri: 'assets/files',
+    APIDocumentBlobUri: '',
     APIPreparersServerUri: 'http://localhost:3003',
     APITestStationsServerUri: 'http://localhost:3004',
-    APIDocumentBlobUri: '',
-    APICertificatesBlobUri: ''
+    APICertificatesBlobUri: '',
+    APITestTypesServerUri: ''
   }
 };
 

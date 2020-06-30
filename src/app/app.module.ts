@@ -52,21 +52,14 @@ export function msAdalAngular6ConfigFactory() {
 export function initializeApp(appConfig: AppConfig) {
   const setAdalCfg = appConfig.load()
     .then((config) => {
-      // TODO Remove once docker image is created, is used to debug
-      // create-docker branch needs to be updated
-      console.log('appConfig');
-      console.log(appConfig);
-      console.log('config');
-      console.log(config);
-
-    adalConfig = {
-      tenant: config.adalConfig.tenant,
-      clientId: config.adalConfig.clientId,
-      redirectUri: config.adalConfig.redirectUri,
-      endpoints: config.adalConfig.endpoints,
-      navigateToLoginRequestUrl: true,
-      cacheLocation: config.adalConfig.cacheLocation
-    };
+      adalConfig = {
+        tenant: config.adalConfig.tenant,
+        clientId: config.adalConfig.clientId,
+        redirectUri: config.adalConfig.redirectUri,
+        endpoints: config.adalConfig.endpoints,
+        navigateToLoginRequestUrl: true,
+        cacheLocation: config.adalConfig.cacheLocation
+      };
   });
   return () => setAdalCfg;
 }

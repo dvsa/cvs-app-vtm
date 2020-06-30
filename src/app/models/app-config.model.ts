@@ -1,4 +1,6 @@
 export interface IAppConfig {
+  production: boolean;
+  debug: boolean;
   name: string;
   appInsights: {
     instrumentationKey: string;

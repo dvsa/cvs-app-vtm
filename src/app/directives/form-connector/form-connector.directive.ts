@@ -2,6 +2,7 @@ import { Directive, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 
 @Directive({
   selector: '[vtmFormConnector]'
@@ -22,7 +23,10 @@ export class FormConnectorDirective implements OnInit, OnDestroy {
     this.formChange = this.formGroupDirective.form.valueChanges
       .pipe(
         debounceTime(this.debounce),
-        tap(value => console.log('VALUE: ', value, 'PATH: ', this.path))
+        tap(value => {
+            if (environment.debug) { console.log('VALUE: ', value, 'PATH: ', this.path); }
+          }
+        )
       )
       .subscribe();
       console.log(this.formGroupDirective.form);

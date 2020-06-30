@@ -1,6 +1,7 @@
 export const environment = {
   name: 'test',
   production: false,
+  debug: false,
   // APIServerUri: 'http://localhost:3005',
   // APITestResultServerUri: 'http://localhost:3006',
   // Add cfg for docker here
@@ -31,9 +32,10 @@ export const environment = {
     APITechnicalRecordServerUri: 'http://localhost:3005',
     APITestResultServerUri: 'http://localhost:3006',
     APIDocumentsServerUri: 'assets/files',
+    APIDocumentBlobUri: '',
     APIPreparersServerUri: 'http://localhost:3003',
     APITestStationsServerUri: 'http://localhost:3004',
-    APIDocumentBlobUri: '',
-    APICertificatesBlobUri: ''
+    APICertificatesBlobUri: '',
+    APITestTypesServerUri: ''
   }
 };
