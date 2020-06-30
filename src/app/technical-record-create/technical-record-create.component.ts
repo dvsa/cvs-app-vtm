@@ -71,8 +71,8 @@ export class TechnicalRecordCreateComponent implements OnInit {
 
     if (!this.formErrors.vinErr && !this.formErrors.vrmErr && !this.formErrors.vTypeErr) {
       const createDetails: VehicleIdentifiers = {
-        vin: this.createTechRecordForm.get('vin').value,
-        vrm: this.createTechRecordForm.get('vrm').value,
+        vin: encodeURIComponent(this.createTechRecordForm.get('vin').value),
+        vrm: encodeURIComponent(this.createTechRecordForm.get('vrm').value),
         vType: this.createTechRecordForm.get('vehicleType').value
       };
       this.formErrors.requestErr = [];
