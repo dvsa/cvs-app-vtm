@@ -104,7 +104,34 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       techRecord: this.fb.group({})
     });
 
+    this.setPanelState(this.createState);
+
     this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
+  }
+
+  setPanelState(toggleState: boolean) {
+    this.allOpened = toggleState;
+    this.panels = [
+      { panel: 'Vehicle summary', isOpened: toggleState },
+      { panel: 'Body', isOpened: toggleState },
+      { panel: 'Weights', isOpened: toggleState },
+      { panel: 'Tyres', isOpened: toggleState },
+      { panel: 'Brakes', isOpened: toggleState },
+      { panel: 'DDA', isOpened: toggleState },
+      { panel: 'Dimensions', isOpened: toggleState },
+      { panel: 'ADR', isOpened: toggleState },
+      { panel: 'Applicant', isOpened: toggleState },
+      { panel: 'Documents', isOpened: toggleState },
+      { panel: 'Purchaser', isOpened: toggleState },
+      { panel: 'Manufacturer', isOpened: toggleState },
+      { panel: 'Authorisation into service', isOpened: toggleState },
+      { panel: 'Letters of authorisation', isOpened: toggleState },
+      { panel: 'Documents', isOpened: toggleState },
+      { panel: 'Notes', isOpened: toggleState },
+      { panel: 'Test history', isOpened: toggleState },
+      { panel: 'Technical record history', isOpened: toggleState },
+      { panel: 'Plates', isOpened: toggleState }
+    ];
   }
 
   togglePanel() {

@@ -168,7 +168,7 @@ exports[`TyresEditComponent should create with initialized form AXLE tyres contr
                           class="govuk-label govuk-!-font-weight-bold"
                           for="test-edit-dataTrAxles-1"
                         >
-                           Load index 
+                           Load index (optional) 
                         </label>
                         <input
                           class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
@@ -296,7 +296,7 @@ exports[`TyresEditComponent should create with initialized form AXLE tyres contr
                           class="govuk-label govuk-!-font-weight-bold"
                           for="test-edit-dataTrAxles-2"
                         >
-                           Load index 
+                           Load index (optional) 
                         </label>
                         <input
                           class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
