@@ -2,7 +2,8 @@
 
 exports[`TechRecHistoryComponent should create view only with populated data 1`] = `
 <vtm-tech-rec-history
-  techRecordsJson={[Function Object]}
+  onViewRecord={[Function EventEmitter]}
+  vehicleRecord={[Function Object]}
 >
   <table
     class="govuk-table"
@@ -63,58 +64,6 @@ exports[`TechRecHistoryComponent should create view only with populated data 1`]
       class="govuk-table__body"
     >
       
-      <tr
-        class="govuk-table__row"
-      >
-        <td
-          class="govuk-table__cell"
-          id="test-statusCode-0"
-        >
-           Current 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-reasonForCreation-0"
-        >
-           Reason For Creation 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-createdByName-0"
-        >
-           Test Name 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-createdAt-0"
-        >
-          
-          <span>
-             01/01/2020 
-          </span>
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-lastUpdatedByName-0"
-        >
-           Test 1 
-        </td>
-        <td
-          class="govuk-table__cell"
-          id="test-lastUpdatedAt-0"
-        >
-          
-          <span>
-             03/12/2020 
-          </span>
-        </td>
-        <td
-          class="govuk-table__cell"
-        />
-        <td
-          class="govuk-table__cell"
-        />
-      </tr>
     </tbody>
   </table>
 </vtm-tech-rec-history>

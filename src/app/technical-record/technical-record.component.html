@@ -41,6 +41,12 @@
           </p>
 
           <p>
+            <a class="govuk-link" (click)="scrollDownToSectionAndOpen()">{{
+              titleOfTechHistorySection
+            }}</a>
+          </p>
+
+          <p>
             <span class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2">
               Record completeness
             </span>
@@ -847,7 +853,12 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <vtm-tech-rec-history [techRecordsJson]="vehicleTechRecord"></vtm-tech-rec-history>
+            <!-- Tech Record History rows -->
+            <vtm-tech-rec-history
+              [focusedRecord]="activeRecord"
+              [vehicleRecord]="vehicleTechRecord"
+              (onViewRecord)="handleSwitchTechRecordOnView($event)"
+            ></vtm-tech-rec-history>
           </mat-expansion-panel>
         </div>
       </ng-container>

@@ -49,6 +49,8 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   createState: boolean;
   isStandardVehicle: boolean;
   panels: { panel: string; isOpened: boolean }[];
+  titleOfTechHistorySection: string = 'Technical record history';
+  indexOfSectionToScrollTo: number;
 
   constructor(
     private fb: FormBuilder,
@@ -91,6 +93,9 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
         { panel: 'Technical record history', isOpened: this.createState },
         { panel: 'Plates', isOpened: this.createState }
       ];
+
+      this.indexOfSectionToScrollTo =
+        this.panels.findIndex((section) => section.panel === this.titleOfTechHistorySection) - 1;
     }
   }
 
@@ -161,5 +166,14 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       }
     });
     // }
+  }
+
+  scrollDownToSectionAndOpen() {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    this.panels[this.indexOfSectionToScrollTo].isOpened = true;
+  }
+
+  handleSwitchTechRecordOnView(record: TechRecord): void {
+    this.activeRecord = { ...record };
   }
 }
