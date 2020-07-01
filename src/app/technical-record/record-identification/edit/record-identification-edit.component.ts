@@ -23,7 +23,10 @@ export class RecordIdentificationEditComponent implements OnInit {
   ngOnInit() {
     this.vehicleRecordFg = this.parent.form;
 
-    this.vehicleRecordFg.addControl('vin', this.fb.control(this.vin));
-    this.vehicleRecordFg.addControl('primaryVrm', this.fb.control(this.primaryVrm));
+    this.vehicleRecordFg.addControl('vin', this.fb.control(decodeURIComponent(this.vin)));
+    this.vehicleRecordFg.addControl(
+      'primaryVrm',
+      this.fb.control(decodeURIComponent(this.primaryVrm))
+    );
   }
 }
