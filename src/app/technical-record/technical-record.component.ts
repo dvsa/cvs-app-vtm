@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { merge } from 'lodash';
+import { mergeWith, isNil } from 'lodash';
 
 import { AdrReasonModalComponent } from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
@@ -154,11 +154,16 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       JSON.parse(JSON.stringify(value))
     );
 
-    const mergedRecord: VehicleTechRecordEdit = merge(
-      {},
-      this.activeVehicleTechRecord,
-      editedVehicleRecord
+    const clonedVehicleRecord: VehicleTechRecordEdit = JSON.parse(
+      JSON.stringify(this.activeVehicleTechRecord)
     );
+
+    const mergeTechRecord: TechRecord = this.mergeTechRecord({
+      cloned: clonedVehicleRecord.techRecord[0],
+      edited: editedVehicleRecord.techRecord[0]
+    });
+
+    clonedVehicleRecord.techRecord = [mergeTechRecord];
 
     const dialogRef = this.dialog.open(AdrReasonModalComponent, {
       width: '600px',
@@ -169,13 +174,18 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.isSave) {
-        mergedRecord.techRecord[0].reasonForCreation = result.data;
+        clonedVehicleRecord.techRecord[0].reasonForCreation = result.data;
         this.submitVehicleRecord.emit({
-          vehicleRecordEdit: mergedRecord,
+          vehicleRecordEdit: clonedVehicleRecord,
           viewState: this.currentState
         });
       }
     });
     // }
+  }
+
+  mergeTechRecord(params): TechRecord {
+    const { cloned, edited } = params;
+    return mergeWith({}, cloned, edited, (obj, src) => (!isNil(src) ? src : obj));
   }
 }
