@@ -8,7 +8,7 @@ export interface ModalState {
 }
 
 export const initialModalState: ModalState = {
-  currentModal: APP_MODALS.NONE,
+  currentModal: APP_MODALS.NONE
 };
 
 export function ModalReducer(
@@ -20,7 +20,8 @@ export function ModalReducer(
       return {
         ...state,
         currentModal: action.payload.currentModal,
-        urlToRedirect: action.payload.urlToRedirect
+        urlToRedirect: action.payload.urlToRedirect,
+        payload: null
       };
     }
 

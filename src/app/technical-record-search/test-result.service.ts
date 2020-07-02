@@ -30,11 +30,13 @@ export class TestResultService {
         `${this._apiServer.APITestResultServerUri}/test-results/${searchIdentifier}`,
       preparers: () => `${this._apiServer.APIPreparersServerUri}/preparers`,
       testStation: () => `${this._apiServer.APITestStationsServerUri}/test-stations`,
-      updateTestResults: (systemNumber: string) =>
-        `${this._apiServer.APITestResultServerUri}/test-results/${systemNumber}`,
+      updateTestResults: (testResultId: string) =>
+        `${this._apiServer.APITestResultServerUri}/test-results/${testResultId}`,
       testResultById: (systemNumber: string, testResultId: string) =>
         `${this._apiServer.APITestResultServerUri}/test-results/${systemNumber}?testResultId=${testResultId}&version=all`,
-      testTypeCategories: () => `${this._apiServer.APITestTypesServerUri}/test-types`
+      testTypeCategories: () => `${this._apiServer.APITestTypesServerUri}/test-types`,
+      archiveById: (testResultId: string) =>
+        `${this._apiServer.APITestResultServerUri}/test-results/archive/${testResultId}`
     };
   }
 
@@ -74,16 +76,17 @@ export class TestResultService {
       );
   }
 
-  updateTestResults(
-    systemNumber: string,
-    testResult: VehicleTestResultUpdate
-  ): Observable<TestResultModel> {
+  updateTestResults(testResult: VehicleTestResultUpdate): Observable<TestResultModel> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     this._store.dispatch(new LoadingTrue());
     return this.httpClient
-      .put<TestResultModel>(this.routes.updateTestResults(systemNumber), testResult, {
-        headers
-      })
+      .put<TestResultModel>(
+        this.routes.updateTestResults(testResult.testResult.testResultId),
+        testResult,
+        {
+          headers
+        }
+      )
       .pipe(
         delayedRetry(),
         shareReplay(),
@@ -98,6 +101,24 @@ export class TestResultService {
       .get<TestResultModel>(this.routes.testResultById(systemNumber, testResultId), {
         headers
       })
+      .pipe(
+        delayedRetry(),
+        shareReplay(),
+        finalize(() => this._store.dispatch(new LoadingFalse()))
+      );
+  }
+
+  archiveTestResult(testResultObject: VehicleTestResultUpdate): Observable<TestResultModel> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    this._store.dispatch(new LoadingTrue());
+    return this.httpClient
+      .put<TestResultModel>(
+        this.routes.archiveById(testResultObject.testResult.testResultId),
+        testResultObject,
+        {
+          headers
+        }
+      )
       .pipe(
         delayedRetry(),
         shareReplay(),

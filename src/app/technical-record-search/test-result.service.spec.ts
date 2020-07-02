@@ -80,11 +80,13 @@ describe('TestResultService', () => {
     const mock = { mockObject: 'mock' };
     spyOn(store, 'dispatch').and.callThrough();
 
-    service.updateTestResults('123', {} as VehicleTestResultUpdate).subscribe((res) => {
-      expect(res).toBeDefined();
-      expect(res).toEqual(mock);
-      done();
-    });
+    service
+      .updateTestResults({ testResult: { testResultId: '123' } } as VehicleTestResultUpdate)
+      .subscribe((res) => {
+        expect(res).toBeDefined();
+        expect(res).toEqual(mock);
+        done();
+      });
     expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
 
     const req = httpMock.expectOne((result) => result.url.includes(`/test-results/123`));
@@ -138,6 +140,24 @@ describe('TestResultService', () => {
     );
     expect(req.request.method).toBe('GET');
     req.flush(mock);
+  });
+
+  it('archiveTestResult should return test result object', (done) => {
+    const mockId = 'testId';
+    spyOn(store, 'dispatch').and.callThrough();
+
+    service
+      .archiveTestResult({ testResult: { testResultId: '23' } } as VehicleTestResultUpdate)
+      .subscribe((res) => {
+        expect(res).toBeDefined();
+        expect(res).toEqual(mockId);
+        done();
+      });
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadingTrue());
+
+    const req = httpMock.expectOne((request) => request.url.includes('/test-results/archive/23'));
+    expect(req.request.method).toBe('PUT');
+    req.flush(mockId);
   });
 
   describe('downloadCertificate', () => {

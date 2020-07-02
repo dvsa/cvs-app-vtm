@@ -9,7 +9,8 @@ import {
   UpdateSelectedTestResultModelSuccess,
   UpdateTestResult,
   UpdateTestResultSuccess,
-  DownloadCertificate
+  DownloadCertificate,
+  ArchiveTestResult
 } from '@app/store/actions/VehicleTestResultModel.actions';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -68,26 +69,24 @@ export class VehicleTestResultModelEffects {
         testResult: testResultUpdated
       };
 
-      return this._testResultService
-        .updateTestResults(testResultObject.testResult.systemNumber, testResultObject)
-        .pipe(
-          switchMap((testRecordResult) => {
-            testResultTestTypeNumberObject.testResultUpdated = testRecordResult;
-            testResultTestTypeNumberObject.testResultsUpdated = this.updateTestResultsInState(
-              testResultsInState,
-              testResultTestTypeNumberObject
-            );
-            return [
-              new SetTestViewState(VIEW_STATE.VIEW_ONLY),
-              new UpdateTestResultSuccess(testResultTestTypeNumberObject),
-              new ClearErrorMessage()
-            ];
-          }),
-          catchError(({ error }) => {
-            const errorMessage = !!error ? error.errors : [''];
-            return [new SetErrorMessage(errorMessage)];
-          })
-        );
+      return this._testResultService.updateTestResults(testResultObject).pipe(
+        switchMap((testRecordResult) => {
+          testResultTestTypeNumberObject.testResultUpdated = testRecordResult;
+          testResultTestTypeNumberObject.testResultsUpdated = this.updateTestResultsInState(
+            testResultsInState,
+            testResultTestTypeNumberObject
+          );
+          return [
+            new SetTestViewState(VIEW_STATE.VIEW_ONLY),
+            new UpdateTestResultSuccess(testResultTestTypeNumberObject),
+            new ClearErrorMessage()
+          ];
+        }),
+        catchError(({ error }) => {
+          const errorMessage = !!error ? error.errors : [''];
+          return [new SetErrorMessage(errorMessage)];
+        })
+      );
     })
   );
 
@@ -147,6 +146,28 @@ export class VehicleTestResultModelEffects {
       });
 
       return [new UpdateSelectedTestResultModelSuccess(updatedTestRecord)];
+    })
+  );
+
+  @Effect()
+  archiveTestResult = this._actions$.pipe(
+    ofType<ArchiveTestResult>(EVehicleTestResultModelActions.ArchiveTestResult),
+    map((action) => action.payload),
+    switchMap((testResultUpdated: TestResultModel) => {
+      const testResultObject: VehicleTestResultUpdate = {
+        msUserDetails: { ...this.loggedUser.getUser() },
+        testResult: testResultUpdated
+      };
+      return this._testResultService.archiveTestResult(testResultObject).pipe(
+        switchMap((testRecordResult: TestResultModel) => {
+          this.router.navigate(['/technical-record']);
+          return of(new GetVehicleTestResultModelSuccess([testRecordResult]));
+        }),
+        catchError(({ error }) => {
+          const errorMessage = !!error ? error.errors : [''];
+          return [new SetErrorMessage(errorMessage)];
+        })
+      );
     })
   );
 

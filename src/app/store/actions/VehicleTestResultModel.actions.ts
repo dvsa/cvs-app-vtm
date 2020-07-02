@@ -15,7 +15,8 @@ export enum EVehicleTestResultModelActions {
   SetSelectedTestResultModelSuccess = '[SetSelectedVehicleTestResultModelSuccess]',
   UpdateSelectedTestResultModel = '[UpdateSelectedTestResultModel]',
   UpdateSelectedTestResultModelSuccess = '[UpdateSelectedTestResultModelSuccess]',
-  DownloadCertificate = '[DownloadCertificate]'
+  DownloadCertificate = '[DownloadCertificate]',
+  ArchiveTestResult = '[ArchiveTestResult] Archive Test Result'
 }
 
 export class GetVehicleTestResultModel implements Action {
@@ -72,6 +73,10 @@ export class UpdateSelectedTestResultModelSuccess implements Action {
   readonly type = EVehicleTestResultModelActions.UpdateSelectedTestResultModelSuccess;
   constructor(public payload: TestResultModel) {}
 }
+export class ArchiveTestResult implements Action {
+  public readonly type = EVehicleTestResultModelActions.ArchiveTestResult;
+  constructor(public payload: TestResultModel) {}
+}
 
 export type VehicleTestResultModelActions =
   | GetVehicleTestResultModel
@@ -84,4 +89,5 @@ export type VehicleTestResultModelActions =
   | SetSelectedTestResultModelSuccess
   | UpdateSelectedTestResultModel
   | UpdateSelectedTestResultModelSuccess
-  | DownloadCertificate;
+  | DownloadCertificate
+  | ArchiveTestResult;

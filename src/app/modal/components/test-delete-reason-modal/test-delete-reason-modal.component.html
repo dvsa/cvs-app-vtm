@@ -1,0 +1,31 @@
+<div mat-dialog-content>
+  <h1 class="govuk-heading-m ">Enter reason for deleting test record</h1>
+  <textarea
+    class="govuk-textarea"
+    id="test-reasonForDelete"
+    rows="8"
+    [(ngModel)]="modalContent.payload"
+    aria-describedby="reasonForDelete"
+  >
+  </textarea>
+</div>
+
+<div class="govuk-inset-text">
+  <h2 class="govuk-heading-m">Any linked tests will also be deleted.</h2>
+</div>
+
+<button
+  class="govuk-button govuk-button--warning"
+  data-module="govuk-button"
+  id="test-delete-confirm-button"
+  cdkFocusInitial
+  (click)="save(modalContent.payload)"
+>
+  Delete test record
+</button>
+
+<span class="govuk-!-font-size-19 govuk-!-margin-left-5">
+  <a href="javascript:void(0)" class="govuk-link govuk-link--no-visited-state " (click)="close()">
+    <span>Cancel</span>
+  </a>
+</span>

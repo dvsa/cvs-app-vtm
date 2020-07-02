@@ -3,7 +3,9 @@
 exports[`TestSectionEditComponent should create 1`] = `
 <vtm-test-section-edit
   dialog={[Function MatDialog]}
+  fb={[Function FormBuilder]}
   isAbandoned="false"
+  parentForm={[Function FormGroupDirective]}
   prohibitionOptionSelected={[Function String]}
   prohibitionOptions={[Function Array]}
   reasonsForAbandoning={[Function Array]}
@@ -12,8 +14,6 @@ exports[`TestSectionEditComponent should create 1`] = `
   router={[Function Router]}
   testRecord={[Function Object]}
   testRecordMapper={[Function TestRecordMapper]}
-  testResultChildForm={[Function FormGroupDirective]}
-  testResultSubscription={[Function Subscriber]}
   testType={[Function Object]}
   testTypeGroup={[Function FormGroup]}
   testTypesApplicable={[Function Object]}
@@ -85,9 +85,8 @@ exports[`TestSectionEditComponent should create 1`] = `
       />
     </div>
   </dl><form
-    class="ng-untouched ng-pristine ng-invalid"
-    formgroupname="testType"
-    ng-reflect-name="testType"
+    class="ng-untouched ng-pristine ng-valid"
+    ng-reflect-form="[object Object]"
     novalidate=""
   >
     <div
@@ -180,7 +179,6 @@ exports[`TestSectionEditComponent should create 1`] = `
         </div>
       </div>
     </div>
-    
     
     
     

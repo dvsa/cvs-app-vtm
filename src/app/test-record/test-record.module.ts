@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormGroupDirective, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from '@app/shared';
@@ -36,6 +36,7 @@ import { TestStationsGuard } from '@app/test-record/guards/test-stations.guard';
 import { TestTypeCategoriesGuard } from '@app/test-record/guards/test-type-categories.guard';
 import { TreeComponent } from '@app/shared/components/tree/tree.component.ts';
 import { FormStateGuard } from '@app/guards/form-state.guard';
+import { TestDeleteReasonModalComponent } from '../modal/components/test-delete-reason-modal/test-delete-reason-modal.component';
 
 export const COMPONENTS = [
   TestRecordComponent,
@@ -68,7 +69,13 @@ export const MODULES = [
     {
       path: 'test-record/:id',
       component: TestRecordContainer,
-      canActivate: [AuthenticationGuard, TestResultGuard, PreparersGuard, TestStationsGuard, FormStateGuard],
+      canActivate: [
+        AuthenticationGuard,
+        TestResultGuard,
+        PreparersGuard,
+        TestStationsGuard,
+        FormStateGuard
+      ]
     },
     {
       path: 'select-test-type/:id',
@@ -80,7 +87,8 @@ export const MODULES = [
   SharedModule,
   LibrariesModule,
   ReactiveFormsModule,
-  MaterialModule
+  MaterialModule,
+  FormsModule
 ];
 
 @NgModule({

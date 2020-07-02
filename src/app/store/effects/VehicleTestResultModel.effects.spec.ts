@@ -27,6 +27,7 @@ import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 import { Router } from '@angular/router';
 import { TestType } from '@app/models/test.type';
 import { KeyValue } from '@angular/common';
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
 
 const testResult = [TEST_MODEL_UTILS.mockTestRecord()];
 
@@ -35,7 +36,6 @@ describe('VehicleTestResultModelEffects', () => {
   let testResultService: TestResultService;
   const mockSelector = new BehaviorSubject<any>(undefined);
   const store: MockStore = new MockStore(mockSelector);
-
 
   let actions$: Observable<Action>;
   let action: Action;
@@ -139,10 +139,10 @@ describe('VehicleTestResultModelEffects', () => {
       });
 
       expect(effects.updateTestResult$).toBeObservable(expected$);
-      expect(updateTestResults).toHaveBeenCalledWith('123', {
+      expect(updateTestResults).toHaveBeenCalledWith({
         msUserDetails: userDetails,
         testResult: testResultTestTypeNumber.testResultsUpdated[0]
-      });
+      } as VehicleTestResultUpdate);
     });
   });
 

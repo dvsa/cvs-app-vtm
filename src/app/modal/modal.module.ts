@@ -5,14 +5,18 @@ import { LoseChangesComponent } from './components/lose-changes/lose-changes.com
 import { ModalComponent } from './modal.component';
 import { ModalEffects } from './modal.effects';
 import { EffectsModule } from '@ngrx/effects';
+import { TestDeleteReasonModalComponent } from '@app/modal/components/test-delete-reason-modal/test-delete-reason-modal.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    EffectsModule.forFeature([ModalEffects]),
+  imports: [CommonModule, FormsModule, EffectsModule.forFeature([ModalEffects])],
+  declarations: [
+    ModalContainerComponent,
+    ModalComponent,
+    LoseChangesComponent,
+    TestDeleteReasonModalComponent
   ],
-  declarations: [ModalContainerComponent, ModalComponent, LoseChangesComponent],
-  entryComponents: [ModalComponent, LoseChangesComponent],
-  exports: [ModalContainerComponent],
+  entryComponents: [ModalComponent, LoseChangesComponent, TestDeleteReasonModalComponent],
+  exports: [ModalContainerComponent]
 })
-export class ModalModule { }
+export class ModalModule {}

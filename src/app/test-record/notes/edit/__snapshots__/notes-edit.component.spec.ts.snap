@@ -3,9 +3,10 @@
 exports[`NotesEditComponent should create 1`] = `
 <vtm-notes-edit
   currentState="0"
-  testResultChildForm={[Function FormGroupDirective]}
+  fb={[Function FormBuilder]}
+  parentForm={[Function FormGroupDirective]}
   testType={[Function Object]}
-  testTypeGroup="null"
+  testTypeGroup={[Function FormGroup]}
 >
   <div
     class="govuk-grid-row"
@@ -14,8 +15,9 @@ exports[`NotesEditComponent should create 1`] = `
       class="govuk-grid-column-full"
     >
       <form
-        class="govuk-form-group"
-        formgroupname="testType"
+        class="govuk-form-group ng-untouched ng-pristine ng-valid"
+        ng-reflect-form="[object Object]"
+        novalidate=""
       >
         <fieldset
           class="govuk-fieldset"
@@ -36,9 +38,10 @@ exports[`NotesEditComponent should create 1`] = `
                    Will not be present in the certificate 
                 </span>
                 <textarea
-                  class="govuk-textarea"
+                  class="govuk-textarea ng-untouched ng-pristine ng-valid"
                   formcontrolname="additionalNotesRecorded"
                   id="test-additionalNotesRecorded"
+                  ng-reflect-name="additionalNotesRecorded"
                   rows="5"
                 />
               </div>

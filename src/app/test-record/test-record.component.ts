@@ -4,7 +4,9 @@ import {
   ChangeDetectionStrategy,
   Input,
   EventEmitter,
-  Output
+  Output,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
 import { initAll } from 'govuk-frontend';
@@ -17,21 +19,25 @@ import { Preparer } from '@app/models/preparer';
 import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component';
 import { TestStation } from '@app/models/test-station';
 import { PreventLeavePageModalComponent } from '@app/shared/prevent-page-leave-modal/prevent-leave-page-modal.component';
+import { TestDeleteReasonModalComponent } from '../modal/components/test-delete-reason-modal/test-delete-reason-modal.component';
 
 @Component({
   selector: 'vtm-test-record',
   templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordComponent implements OnInit {
+export class TestRecordComponent implements OnInit, OnChanges {
   @Input() editState: VIEW_STATE;
   @Input() preparers: Preparer[];
   @Input() testResultObj: TestRecordTestType;
   @Input() testStations: TestStation[];
   @Input() testTypesApplicable: TestTypesApplicable;
+  @Input() reasonForArchive: string;
   @Output() submitTest = new EventEmitter<TestResultModel>();
   @Output() switchState = new EventEmitter<VIEW_STATE>();
   @Output() downloadCert = new EventEmitter<string>();
+  @Output() openReasonModal = new EventEmitter();
+  @Output() archiveTest = new EventEmitter<TestResultModel>();
   testResultParentForm: FormGroup;
 
   hasDefectsApplicable: boolean;
@@ -45,13 +51,22 @@ export class TestRecordComponent implements OnInit {
     private testRecordMapper: TestRecordMapper
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const { reasonForArchive } = changes;
+
+    if (typeof reasonForArchive.currentValue === 'string') {
+      this.deleteTest(reasonForArchive.currentValue);
+    }
+  }
+
   ngOnInit(): void {
     this.hasDefectsApplicable = this.testTypesApplicable.defectsApplicable[
       this.testResultObj.testType.testTypeId
     ];
-    this.hasSeatBeltApplicable =
-      !(this.testTypesApplicable.seatBeltApplicable[this.testResultObj.testType.testTypeId] &&
-      this.testResultObj.testRecord.vehicleType === 'psv');
+    this.hasSeatBeltApplicable = !(
+      this.testTypesApplicable.seatBeltApplicable[this.testResultObj.testType.testTypeId] &&
+      this.testResultObj.testRecord.vehicleType === 'psv'
+    );
     this.hasEmissionApplicable = !(
       this.testTypesApplicable.emissionDetailsApplicable[
         this.testResultObj.testType.testTypeId
@@ -108,5 +123,27 @@ export class TestRecordComponent implements OnInit {
   downloadCertificate() {
     const fileName = `${this.testResultObj.testType.testNumber}_${this.testResultObj.testRecord.vin}.pdf`;
     this.downloadCert.emit(fileName);
+  }
+
+  openArchiveReasonModal(): void {
+    this.openReasonModal.emit();
+  }
+
+  deleteTest(reason: string): void {
+    const newTestType = this.buildTestObjectToBeArchived(reason);
+    this.archiveTest.emit(newTestType);
+  }
+
+  buildTestObjectToBeArchived(reason: string): TestResultModel {
+    const clonedTestResult = { ...this.testResultObj.testRecord, reasonForCreation: reason };
+
+    clonedTestResult.testTypes = clonedTestResult.testTypes.map((testType) => {
+      if (testType.testTypeId === this.testResultObj.testType.testTypeId) {
+        return { ...testType, statusUpdatedFlag: true };
+      }
+      return testType;
+    });
+
+    return clonedTestResult;
   }
 }

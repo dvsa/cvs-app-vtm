@@ -3,6 +3,7 @@
 exports[`ModalReducer LoadModal should set the current modal to lose changes 1`] = `
 Object {
   "currentModal": "lose-changes",
+  "payload": null,
   "urlToRedirect": undefined,
 }
 `;

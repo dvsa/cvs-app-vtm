@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, OnChanges } from '@angular/core';
 import { TestType } from '@app/models/test.type';
 import { TestResultModel } from '@app/models/test-result.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,13 +11,13 @@ import {
   FormControl,
   FormGroup,
   FormGroupDirective,
-  Validators
+  Validators,
+  FormBuilder
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { SelectOption } from '@app/models/select-option';
-import {TestRecordMapper, TestTypesApplicable} from '@app/test-record/test-record.mapper';
-import { FORM_UTILS } from '@app/utils';
+import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
 
 @Component({
   selector: 'vtm-test-section-edit',
@@ -25,12 +25,11 @@ import { FORM_UTILS } from '@app/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
-export class TestSectionEditComponent implements OnInit {
+export class TestSectionEditComponent implements OnChanges, OnInit {
   @Input() testType: TestType;
   @Input() testRecord: TestResultModel;
   @Input() testTypesApplicable: TestTypesApplicable;
   resultOptions: string[] = Object.values(RESULT);
-  testResultChildForm: FormGroupDirective;
   testTypeGroup: FormGroup;
   testResultSubscription: Subscription;
   isAbandoned: boolean;
@@ -42,15 +41,16 @@ export class TestSectionEditComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private router: Router,
-    parentForm: FormGroupDirective,
-    private testRecordMapper: TestRecordMapper
-  ) {
-    this.testResultChildForm = parentForm;
-  }
+    private parentForm: FormGroupDirective,
+    private testRecordMapper: TestRecordMapper,
+    private fb: FormBuilder
+  ) {}
 
   get reasonForAbandoning() {
     return this.testTypeGroup.get('reasonForAbandoning') as FormArray;
   }
+
+  ngOnChanges() {}
 
   ngOnInit() {
     this.isAbandoned = this.testType.testResult === 'abandoned';
@@ -69,83 +69,45 @@ export class TestSectionEditComponent implements OnInit {
       [this.testType.reasonForAbandoning]
     );
 
-    this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
-    if (!this.testTypeGroup) {
-      this.testResultChildForm.form.addControl('testType', new FormGroup({}));
-      this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
-    }
+    this.testTypeGroup = this.parentForm.form.get('testType') as FormGroup;
+    this.testTypeGroup.addControl('testResult', this.fb.control(this.testType.testResult));
+    this.testTypeGroup.addControl(
+      'additionalCommentsForAbandon',
+      this.fb.control(this.testType.additionalCommentsForAbandon)
+    );
+    this.testTypeGroup.addControl(
+      'certificateNumber',
+      this.fb.control(this.testType.certificateNumber)
+    );
+    this.testTypeGroup.addControl(
+      'testExpiryDate',
+      this.fb.control(this.testType.testExpiryDate)
+    );
+    this.testTypeGroup.addControl(
+      'testAnniversaryDate',
+      this.fb.control(this.testType.testAnniversaryDate)
+    );
+    this.testTypeGroup.addControl(
+      'prohibitionIssued',
+      this.fb.control(this.testType.prohibitionIssued)
+    );
+    this.testTypeGroup.addControl(
+      'reasonForAbandoning',
+      this.fb.control(this.mapReasonsToFormGroup(this.reasonsForAbandoningOptions))
+    );
 
-    if (!!this.testTypeGroup) {
-      FORM_UTILS.addControlsToFormGroup(this.testTypeGroup, [
-        {
-          name: 'testResult',
-          fieldState: { value: this.testType.testResult, validators: [Validators.required] }
-        },
-        {
-          name: 'additionalCommentsForAbandon',
-          fieldState: { value: this.testType.additionalCommentsForAbandon }
-        },
-        {
-          name: 'certificateNumber',
-          fieldState: {
-            value: this.testType.certificateNumber,
-            validators: [Validators.required]
-          }
-        },
-        {
-          name: 'testExpiryDate',
-          fieldState: { value: this.testType.testExpiryDate, validators: [Validators.required] }
-        },
-        {
-          name: 'testAnniversaryDate',
-          fieldState: {
-            value: this.testType.testAnniversaryDate,
-            validators: [Validators.required]
-          }
-        },
-        {
-          name: 'prohibitionIssued',
-          fieldState: {
-            value: this.testType.prohibitionIssued,
-            validators: [Validators.required]
-          }
-        },
-        {
-          name: 'reasonForAbandoning',
-          fieldState: {
-            value: this.mapReasonsToFormGroup(this.reasonsForAbandoningOptions),
-            validators: [Validators.required]
-          }
-        },
-        {
-          name: 'testTypeEndTimestampDate',
-          fieldState: {
-            value: this.testType.testTypeEndTimestamp,
-            validators: [Validators.required]
-          }
-        },
-        {
-          name: 'testTypeEndTimestampTime',
-          fieldState: {
-            value: this.testType.testTypeEndTimestamp,
-            validators: [Validators.required]
-          }
-        },
-        {
-          name: 'testTypeStartTimestamp',
-          fieldState: {
-            value: this.testType.testTypeStartTimestamp,
-            validators: [Validators.required]
-          }
-        }
-      ]);
-
-      this.testResultSubscription = this.testTypeGroup
-        .get('testResult')
-        .valueChanges.subscribe((value) => {
-          this.isAbandoned = value === 'abandoned';
-        });
-    }
+    this.testTypeGroup.addControl(
+      'testTypeEndTimestampDate',
+      this.fb.control(this.testType.testTypeEndTimestamp)
+    );
+    this.testTypeGroup.addControl(
+      'testTypeEndTimestampTime',
+      this.fb.control(this.testType.testTypeEndTimestamp)
+    );
+    this.testTypeGroup.addControl(
+      'testTypeStartTimestamp',
+      this.fb.control(this.testType.testTypeStartTimestamp)
+    );
   }
 
   mapReasonsToFormGroup(options: SelectOption[]) {

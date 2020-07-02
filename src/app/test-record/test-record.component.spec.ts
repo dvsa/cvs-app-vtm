@@ -30,16 +30,16 @@ describe('TestRecordComponent', () => {
     testRecord: TEST_MODEL_UTILS.mockTestRecord(),
     testType: TEST_MODEL_UTILS.mockTestType()
   };
-  const testResultParentForm = new FormGroup({
-    testType: new FormGroup({
-      testTypeId: new FormControl('1'),
-      reasonsForAbandoning: new FormControl(['true'])
-    })
-  });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ReactiveFormsModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
+      imports: [
+        SharedModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        BrowserAnimationsModule,
+        RouterTestingModule
+      ],
       declarations: [TestRecordComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -75,10 +75,10 @@ describe('TestRecordComponent', () => {
   });
 
   // TODO: Tests need to be updated in CVSB-12379 as tests are not valid.
-   it('should create', () => {
-     expect(component).toBeTruthy();
-  //   expect(fixture).toMatchSnapshot();
-   });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+    //   expect(fixture).toMatchSnapshot();
+  });
 
   // it('should switch current state to edit', () => {
   //   spyOn(component.switchState, 'emit');
@@ -102,4 +102,20 @@ describe('TestRecordComponent', () => {
 
   //   expect(component.testResultObj).toEqual(testObject);
   // });
+
+  it('should emit on delete test', () => {
+    spyOn(component, 'buildTestObjectToBeArchived').and.returnValue('123');
+    spyOn(component.archiveTest, 'emit');
+    component.deleteTest('123');
+
+    expect(component.buildTestObjectToBeArchived).toHaveBeenCalled();
+    expect(component.archiveTest.emit).toHaveBeenCalledWith('123');
+  });
+
+  it('should emit on pressing delete button', () => {
+    spyOn(component.openReasonModal, 'emit');
+    component.openArchiveReasonModal();
+
+    expect(component.openReasonModal.emit).toHaveBeenCalled();
+  });
 });

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalComponent } from './modal.component';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalContent } from './modal.model';
 import { APP_MODALS } from '../app.enums';
@@ -21,7 +21,7 @@ describe('ModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule],
-      declarations: [ModalComponent, TestLoseChangesComponent],
+      declarations: [ModalComponent, TestLoseChangesComponent, TestDeleteReasonComponent],
       providers: [matDialogProvider, matDialogData]
     }).compileComponents();
   }));
@@ -34,7 +34,8 @@ describe('ModalComponent', () => {
 
   it('should initialse currentModal with correct data', () => {
     expect(component.currentModal).toEqual({
-      modal: APP_MODALS.LOSE_CHANGES
+      modal: APP_MODALS.LOSE_CHANGES,
+      payload: ''
     } as ModalContent);
   });
 
@@ -60,3 +61,13 @@ describe('ModalComponent', () => {
   `
 })
 class TestLoseChangesComponent {}
+
+@Component({
+  selector: 'vtm-test-delete-reason-modal',
+  template: `
+    <div>works</div>
+  `
+})
+class TestDeleteReasonComponent {
+  @Input() modalContent: ModalContent;
+}
