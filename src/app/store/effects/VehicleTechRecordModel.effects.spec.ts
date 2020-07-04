@@ -20,7 +20,7 @@ import {
   UpdateVehicleTechRecord,
   UpdateVehicleTechRecordSuccess
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
+import { GetVehicleTestResultModel } from '../actions/VehicleTestResult.actions';
 import { TechRecord } from './../../models/tech-record.model';
 import {
   VehicleTechRecordModel,

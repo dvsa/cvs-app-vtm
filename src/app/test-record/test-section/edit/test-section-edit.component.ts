@@ -16,7 +16,7 @@ import {
 import { Subscription } from 'rxjs';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { SelectOption } from '@app/models/select-option';
-import {TestRecordMapper, TestTypesApplicable} from '@app/test-record/test-record.mapper';
+import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
 import { FORM_UTILS } from '@app/utils';
 
 @Component({
@@ -64,10 +64,11 @@ export class TestSectionEditComponent implements OnInit {
       ['Yes', 'No'],
       [this.prohibitionOptionSelected]
     );
-    this.reasonsForAbandoningOptions = new DisplayOptionsPipe().transform(
-      this.reasonsForAbandoning,
-      [this.testType.reasonForAbandoning]
-    );
+    this.reasonsForAbandoningOptions = !!this.reasonsForAbandoning
+      ? new DisplayOptionsPipe().transform(this.reasonsForAbandoning, [
+          this.testType.reasonForAbandoning
+        ])
+      : [];
 
     this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
     if (!this.testTypeGroup) {

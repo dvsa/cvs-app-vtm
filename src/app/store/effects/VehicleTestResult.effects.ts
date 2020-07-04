@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  EVehicleTestResultModelActions,
+  CreateTestResult,
+  CreateTestResultSuccess,
+  DownloadCertificate,
+  EVehicleTestResultActions,
   GetVehicleTestResultModel,
   GetVehicleTestResultModelFailure,
   GetVehicleTestResultModelSuccess,
@@ -8,9 +11,8 @@ import {
   UpdateSelectedTestResultModel,
   UpdateSelectedTestResultModelSuccess,
   UpdateTestResult,
-  UpdateTestResultSuccess,
-  DownloadCertificate
-} from '@app/store/actions/VehicleTestResultModel.actions';
+  UpdateTestResultSuccess
+} from '@app/store/actions/VehicleTestResult.actions';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -26,16 +28,17 @@ import { UserService } from '@app/app-user.service';
 import {
   getSelectedVehicleTestResultModel,
   getVehicleTestResultModel
-} from '@app/store/selectors/VehicleTestResultModel.selectors';
+} from '@app/store/selectors/VehicleTestResult.selectors';
 import * as FileSaver from 'file-saver';
 import { Router } from '@angular/router';
 import { getRouterParams } from '@app/store/selectors/route.selectors';
+import { getSelectedVehicleTechRecord } from '@app/store/selectors/VehicleTechRecordModel.selectors';
 
 @Injectable()
-export class VehicleTestResultModelEffects {
+export class VehicleTestResultEffects {
   @Effect()
   getTestResults$: Observable<Action> = this._actions$.pipe(
-    ofType<GetVehicleTestResultModel>(EVehicleTestResultModelActions.GetVehicleTestResultModel),
+    ofType<GetVehicleTestResultModel>(EVehicleTestResultActions.GetVehicleTestResultModel),
     map((action) => action.payload),
     switchMap((searchIdentifier: string) =>
       this._testResultService.getTestResults(searchIdentifier).pipe(
@@ -52,7 +55,7 @@ export class VehicleTestResultModelEffects {
 
   @Effect()
   updateTestResult$ = this._actions$.pipe(
-    ofType<UpdateTestResult>(EVehicleTestResultModelActions.UpdateTestResult),
+    ofType<UpdateTestResult>(EVehicleTestResultActions.UpdateTestResult),
     withLatestFrom(this._store.select(getVehicleTestResultModel)),
     map(([{ testResultTestTypeNumber }, testResultsInState]): [
       TestResultTestTypeNumber,
@@ -93,7 +96,7 @@ export class VehicleTestResultModelEffects {
 
   @Effect({ dispatch: false })
   downloadCertificate$ = this._actions$.pipe(
-    ofType<DownloadCertificate>(EVehicleTestResultModelActions.DownloadCertificate),
+    ofType<DownloadCertificate>(EVehicleTestResultActions.DownloadCertificate),
     map((action) => action.payload),
     switchMap((fileName: string) => {
       return this._testResultService.downloadCertificate(fileName).pipe(
@@ -116,7 +119,7 @@ export class VehicleTestResultModelEffects {
   @Effect()
   updateSelectedTestResult$ = this._actions$.pipe(
     ofType<UpdateSelectedTestResultModel>(
-      EVehicleTestResultModelActions.UpdateSelectedTestResultModel
+      EVehicleTestResultActions.UpdateSelectedTestResultModel
     ),
     withLatestFrom(
       this._store.select(getSelectedVehicleTestResultModel),
@@ -147,6 +150,38 @@ export class VehicleTestResultModelEffects {
       });
 
       return [new UpdateSelectedTestResultModelSuccess(updatedTestRecord)];
+    })
+  );
+
+  @Effect()
+  createTestRecord$ = this._actions$.pipe(
+    ofType<CreateTestResult>(EVehicleTestResultActions.CreateTestResult),
+    withLatestFrom(this._store.select(getSelectedVehicleTechRecord)),
+    map(([{ vTestResultUpdated }, selectedRecord]) => {
+      return { vTestResultUpdated, selectedRecord };
+    }),
+    switchMap((params) => {
+      const { vTestResultUpdated, selectedRecord } = params;
+      let testResult;
+      testResult = {
+        msUserDetails: { ...this.loggedUser.getUser() },
+        vin: selectedRecord.vin,
+        trailerId: selectedRecord.trailerId,
+        systemNumber: selectedRecord.systemNumber,
+        ...vTestResultUpdated
+      };
+
+      this.router.navigate(['/test-record'], {
+        queryParams: {
+          testResultId: vTestResultUpdated.testResultId,
+          systemNumber: selectedRecord.systemNumber
+        }
+      });
+
+      return [
+        new CreateTestResultSuccess(vTestResultUpdated),
+        new SetTestViewState(VIEW_STATE.EDIT)
+      ];
     })
   );
 

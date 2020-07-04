@@ -6,27 +6,48 @@
     vtmFormConnector="vehicleRecordForm"
   >
     <h1 class="govuk-heading-xl title">Technical record</h1>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third govuk-!-margin-right-0 govuk-!-padding-right-0">
+        <div *ngIf="!createState && !editState">
+          <button
+            id="test-change-btn"
+            class="govuk-button"
+            type="button"
+            (click)="editTechRecord()"
+          >
+            Change technical record
+          </button>
+        </div>
 
-    <div *ngIf="!createState && !editState">
-      <button id="test-change-btn" class="govuk-button" type="button" (click)="editTechRecord()">
-        Change technical record
-      </button>
+        <ng-container>
+          <button
+            id="test-save-btn"
+            class="govuk-button"
+            type="submit"
+            *ngIf="editState || createState"
+          >
+            Save technical record
+          </button>
+          <a id="cancel2" (click)="cancelTechRecord()" *ngIf="editState">
+            <span>Cancel</span>
+          </a>
+        </ng-container>
+      </div>
+
+      <ng-container *ngIf="isCurrentOrProvisional && isTestableOrComplete">
+        <div class="govuk-grid-column-one-third govuk-!-margin-left-0 govuk-!-padding-left-0">
+          <button
+            class="govuk-button govuk-button--secondary"
+            id="test-add-test"
+            type="button"
+            data-module="govuk-button"
+            [routerLink]="['/select-test-type']"
+          >
+            Add a test
+          </button>
+        </div>
+      </ng-container>
     </div>
-
-    <ng-container>
-      <button
-        id="test-save-btn"
-        class="govuk-button"
-        type="submit"
-        *ngIf="editState || createState"
-      >
-        Save technical record
-      </button>
-      <a id="cancel2" (click)="cancelTechRecord()" *ngIf="editState">
-        <span>Cancel</span>
-      </a>
-    </ng-container>
-
     <ng-container *ngIf="!createState || editState">
       <div class="govuk-inset-text govuk-!-margin-top-2">
         <div class="govuk-!-padding-top-1">

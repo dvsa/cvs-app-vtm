@@ -10,6 +10,7 @@ import {
   EVehicleTechRecordActions,
   GetVehicleTechRecordHavingStatusAll,
   GetVehicleTechRecordHavingStatusAllSuccess,
+  SelectTestType,
   SetSelectedVehicleTechnicalRecord,
   SetSelectedVehicleTechRecordSuccess,
   SetVehicleTechRecordOnCreate,
@@ -17,22 +18,25 @@ import {
   UpdateVehicleTechRecord,
   UpdateVehicleTechRecordSuccess
 } from '@app/store/actions/VehicleTechRecordModel.actions';
-import { GetVehicleTestResultModel } from '../actions/VehicleTestResultModel.actions';
+import {
+  GetVehicleTestResultModel,
+  SetTestViewState
+} from '../actions/VehicleTestResult.actions';
 import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
 import { VehicleTechRecordState } from '../state/VehicleTechRecordModel.state';
 import { SetErrorMessage } from '../actions/Error.actions';
 import {
   CREATE_PAGE_LABELS,
-  VEHICLE_TECH_RECORD_SEARCH_ERRORS,
-  VIEW_STATE,
   RECORD_STATUS,
-  VEHICLE_TYPES
+  VEHICLE_TECH_RECORD_SEARCH_ERRORS,
+  VEHICLE_TYPES,
+  VIEW_STATE
 } from '@app/app.enums';
 import { getSelectedVehicleTechRecord } from '../selectors/VehicleTechRecordModel.selectors';
 import {
-  VehicleTechRecordModel,
   VehicleIdentifiers,
-  VehicleTechRecordEdit
+  VehicleTechRecordEdit,
+  VehicleTechRecordModel
 } from '@app/models/vehicle-tech-record.model';
 import { TechRecord } from '@app/models/tech-record.model';
 import { SearchParams } from '@app/models/search-params';

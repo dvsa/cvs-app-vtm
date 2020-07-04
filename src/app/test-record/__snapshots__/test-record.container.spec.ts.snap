@@ -6,12 +6,12 @@ exports[`TestRecordContainer should create 1`] = `
   preparers$={[Function AnonymousSubject]}
   route={[Function Object]}
   store={[Function MockStore]}
-  testRecord$={[Function BehaviorSubject]}
+  testRecord$={[Function AnonymousSubject]}
   testRecordMapper={[Function TestRecordMapper]}
   testStations$={[Function AnonymousSubject]}
   testTypeNumber={[Function String]}
   testTypesApplicable={[Function Object]}
 >
-  
+  <vtm-test-record />
 </vtm-test-record-container>
 `;

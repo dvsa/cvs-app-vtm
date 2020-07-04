@@ -1,5 +1,5 @@
 import {
-  EVehicleTestResultModelActions,
+  EVehicleTestResultActions,
   GetVehicleTestResultModel,
   GetVehicleTestResultModelFailure,
   GetVehicleTestResultModelSuccess,
@@ -8,13 +8,16 @@ import {
   SetSelectedTestResultModelSuccess,
   UpdateTestResult,
   UpdateSelectedTestResultModel,
-  UpdateSelectedTestResultModelSuccess
-} from './VehicleTestResultModel.actions';
+  UpdateSelectedTestResultModelSuccess,
+  CreateTestResult,
+  CreateTestResultSuccess
+} from './VehicleTestResult.actions';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
-import { DownloadCertificate } from './VehicleTestResultModel.actions';
+import { DownloadCertificate } from './VehicleTestResult.actions';
 import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 import { KeyValue } from '@angular/common';
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
 
 const testResultModelExample: TestResultModel = TEST_MODEL_UTILS.mockTestRecord({
   testerStaffId: '21',
@@ -28,7 +31,7 @@ describe('GetVehicleTestResultModel', () => {
     const actionInstance = new GetVehicleTestResultModel('23434234');
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.GetVehicleTestResultModel,
+      type: EVehicleTestResultActions.GetVehicleTestResultModel,
       payload: '23434234'
     });
   });
@@ -39,7 +42,7 @@ describe('GetVehicleTestResultModelSuccess', () => {
     const actionInstance = new GetVehicleTestResultModelSuccess([testResultModelExample]);
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess,
+      type: EVehicleTestResultActions.GetVehicleTestResultModelSuccess,
       payload: [testResultModelExample]
     });
   });
@@ -50,7 +53,7 @@ describe('GetVehicleTestResultModelFailure', () => {
     const actionInstance = new GetVehicleTestResultModelFailure('test');
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.GetVehicleTestResultModelFailure,
+      type: EVehicleTestResultActions.GetVehicleTestResultModelFailure,
       payload: 'test'
     });
   });
@@ -61,7 +64,7 @@ describe('SetTestViewState', () => {
     const actionInstance = new SetTestViewState(VIEW_STATE.VIEW_ONLY);
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.SetTestViewState,
+      type: EVehicleTestResultActions.SetTestViewState,
       editState: VIEW_STATE.VIEW_ONLY
     });
   });
@@ -76,7 +79,7 @@ describe('UpdateTestResult', () => {
     });
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.UpdateTestResult,
+      type: EVehicleTestResultActions.UpdateTestResult,
       testResultTestTypeNumber: {
         testResultUpdated: testResultModelExample,
         testTypeNumber: '1',
@@ -91,7 +94,7 @@ describe('SetSelectedTestResultModel', () => {
     const actionInstance = new SetSelectedTestResultModel('');
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.SetSelectedTestResultModel,
+      type: EVehicleTestResultActions.SetSelectedTestResultModel,
       payload: ''
     });
   });
@@ -102,7 +105,7 @@ describe('SetSelectedTestResultModelSuccess', () => {
     const actionInstance = new SetSelectedTestResultModelSuccess(testResultModelExample);
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.SetSelectedTestResultModelSuccess,
+      type: EVehicleTestResultActions.SetSelectedTestResultModelSuccess,
       payload: testResultModelExample
     });
   });
@@ -113,7 +116,7 @@ describe('DownloadCertificate', () => {
     const actionInstance = new DownloadCertificate('');
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.DownloadCertificate,
+      type: EVehicleTestResultActions.DownloadCertificate,
       payload: ''
     });
   });
@@ -129,7 +132,7 @@ describe('UpdateSelectedTestResultModel', () => {
     const actionInstance = new UpdateSelectedTestResultModel(testTreeNode);
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.UpdateSelectedTestResultModel,
+      type: EVehicleTestResultActions.UpdateSelectedTestResultModel,
       payload: testTreeNode
     });
   });
@@ -140,8 +143,30 @@ describe('UpdateSelectedTestResultModelSuccess', () => {
     const actionInstance = new UpdateSelectedTestResultModelSuccess(testResultModelExample);
 
     expect({ ...actionInstance }).toEqual({
-      type: EVehicleTestResultModelActions.UpdateSelectedTestResultModelSuccess,
+      type: EVehicleTestResultActions.UpdateSelectedTestResultModelSuccess,
       payload: testResultModelExample
+    });
+  });
+});
+
+describe('CreateTestResult', () => {
+  it('should create CreateTestResult action', () => {
+    const actionInstance = new CreateTestResult({} as VehicleTestResultUpdate);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultActions.CreateTestResult,
+      vTestResultUpdated: {} as VehicleTestResultUpdate
+    });
+  });
+});
+
+describe('CreateTestResultSuccess', () => {
+  it('should create CreateTestResultSuccess action', () => {
+    const actionInstance = new CreateTestResultSuccess({} as VehicleTestResultUpdate);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultActions.CreateTestResultSuccess,
+      vTestResultUpdated: {} as VehicleTestResultUpdate
     });
   });
 });

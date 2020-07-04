@@ -3,14 +3,16 @@ import {
   getTestViewState,
   getVehicleTestResultModel,
   selectFeature,
-  selectTestTypeById
-} from '@app/store/selectors/VehicleTestResultModel.selectors';
+  selectTestType
+} from '@app/store/selectors/VehicleTestResult.selectors';
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestType } from '@app/models/test.type';
-import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
+import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResult.state';
 import { TEST_MODEL_UTILS } from '@app/utils';
+import { VehicleTechRecordEdit } from '@app/models/vehicle-tech-record.model';
+import { TechRecord } from '@app/models/tech-record.model';
 
-describe('vehicleTestResultModel selectors', () => {
+describe('vehicleTestResult selectors', () => {
   const vehicleTestResultModelState = {
     vehicleTestResultModel: {
       testResultId: '123'
@@ -23,6 +25,10 @@ describe('vehicleTestResultModel selectors', () => {
       vehicleConfiguration: 'rigid'
     } as TestResultModel,
     editState: 1
+  };
+
+  const mockRouterParams = {
+    params: { id: '1' }
   };
 
   const mockTestTypeCategoryMatch = TEST_MODEL_UTILS.mockTestTypeCategory();
@@ -57,24 +63,30 @@ describe('vehicleTestResultModel selectors', () => {
     );
   });
 
-  it('should return an object containing the selected test result and its test type having the specified id', () => {
-    expect(selectTestTypeById('1').projector(vehicleTestResultModelState)).toEqual({
+  it('should return an object containing the selected test result & the test type', () => {
+    expect(selectTestType.projector(vehicleTestResultModelState, mockRouterParams)).toEqual({
       testRecord: vehicleTestResultModelState.selectedTestResultModel,
       testType: vehicleTestResultModelState.selectedTestResultModel.testTypes[0]
     });
   });
 
   it('should return at least a category if attributes match, in node tree format', () => {
-    const matchedCategory = getFilteredTestTypeCategories.projector(vehicleTestResultModelState, [
-      mockTestTypeCategoryMatch
-    ]);
+    const activeTechRec = {} as TechRecord;
+    const matchedCategory = getFilteredTestTypeCategories.projector(
+      vehicleTestResultModelState,
+      [mockTestTypeCategoryMatch],
+      activeTechRec
+    );
     expect(matchedCategory).toEqual([{ id: '1', nodeName: 'Annual test' }]);
   });
 
   it('should return empty array if attribute values from test record don;t match any from taxonomy', () => {
-    const matchedCategory = getFilteredTestTypeCategories.projector(vehicleTestResultModelState, [
-      mockTestTypeCategoryNotMatch
-    ]);
+    const activeTechRec = {} as TechRecord;
+    const matchedCategory = getFilteredTestTypeCategories.projector(
+      vehicleTestResultModelState,
+      [mockTestTypeCategoryNotMatch],
+      activeTechRec
+    );
     expect(matchedCategory).toEqual([]);
   });
 });

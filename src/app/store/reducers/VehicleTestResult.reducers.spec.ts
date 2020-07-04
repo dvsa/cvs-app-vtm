@@ -1,5 +1,5 @@
-import { VehicleTestResultModelReducers } from './VehicleTestResultModel.reducers';
-import { initialVehicleTestResultModelState } from '../state/VehicleTestResultModel.state';
+import { VehicleTestResultReducers } from './VehicleTestResult.reducers';
+import { initialVehicleTestResultModelState } from '../state/VehicleTestResult.state';
 
 import {
   GetVehicleTestResultModel,
@@ -7,18 +7,22 @@ import {
   GetVehicleTestResultModelFailure,
   SetTestViewState,
   UpdateTestResult,
-  UpdateSelectedTestResultModelSuccess
-} from '../actions/VehicleTestResultModel.actions';
+  UpdateSelectedTestResultModelSuccess,
+  CreateTestResultSuccess,
+  CreateTestResult
+} from '../actions/VehicleTestResult.actions';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
 import { TEST_MODEL_UTILS } from '@app/utils';
+import { UserDetails } from '@app/models/user-details';
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
 
-describe('VehicleTestResultModel Reducer', () => {
+describe('VehicleTestResult Reducer', () => {
   describe('undefined action', () => {
     it('should return the default state', () => {
       const action = { type: 'NOOP' } as any;
-      const result = VehicleTestResultModelReducers(undefined, action);
+      const result = VehicleTestResultReducers(undefined, action);
       expect(result).toMatchSnapshot();
     });
   });
@@ -26,7 +30,7 @@ describe('VehicleTestResultModel Reducer', () => {
   describe('[GetTestResultModel]', () => {
     it('should update the VehicleTestResult reducer state with the correct payload once GetTestResultModel is dispatched', () => {
       const action = new GetVehicleTestResultModel('3142435');
-      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
       expect(result).toMatchSnapshot();
     });
   });
@@ -35,7 +39,7 @@ describe('VehicleTestResultModel Reducer', () => {
     it('should update the VehicleTestResult reducer state with the correct payload once GetTestResultModelSuccess is dispatched', () => {
       const vehicleTestResult: TestResultModel[] = [TEST_MODEL_UTILS.mockTestRecord()];
       const action = new GetVehicleTestResultModelSuccess(vehicleTestResult);
-      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
       expect(result).toMatchSnapshot();
     });
   });
@@ -43,7 +47,7 @@ describe('VehicleTestResultModel Reducer', () => {
   describe('[GetTestResultModelFailure]', () => {
     it('should update the VehicleTestResult reducer state with the correct payload once GetTestResultModelFailure is dispatched', () => {
       const action = new GetVehicleTestResultModelFailure('error');
-      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
       expect(result).toMatchSnapshot();
     });
   });
@@ -51,7 +55,7 @@ describe('VehicleTestResultModel Reducer', () => {
   describe('[SetCurrentState]', () => {
     it('should update the VehicleTestResult reducer state with the correct payload once SetCurrentState is dispatched', () => {
       const action = new SetTestViewState(VIEW_STATE.VIEW_ONLY);
-      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
       expect(result).toMatchSnapshot();
     });
   });
@@ -70,7 +74,7 @@ describe('VehicleTestResultModel Reducer', () => {
       ];
 
       const action = new UpdateTestResult(vehicleTestResultTestTypeNumber);
-      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
       expect(result).toMatchSnapshot();
     });
   });
@@ -82,7 +86,23 @@ describe('VehicleTestResultModel Reducer', () => {
       initialVehicleTestResultModelState.selectedTestResultModel = {} as TestResultModel;
 
       const action = new UpdateSelectedTestResultModelSuccess(testRecordPayload);
-      const result = VehicleTestResultModelReducers(initialVehicleTestResultModelState, action);
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe('[CreateTestResultSuccess]', () => {
+    it('should update the VehicleTestResult reducer state with the correct payload once CreateTestResultSuccess is dispatched', () => {
+      const testResult: TestResultModel = TEST_MODEL_UTILS.mockTestRecord();
+      const msUserDetails = { msUser: 'test' } as UserDetails;
+
+      initialVehicleTestResultModelState.selectedTestResultModel = {} as TestResultModel;
+
+      const action = new CreateTestResultSuccess({
+        msUserDetails: msUserDetails,
+        testResult: testResult
+      });
+      const result = VehicleTestResultReducers(initialVehicleTestResultModelState, action);
       expect(result).toMatchSnapshot();
     });
   });

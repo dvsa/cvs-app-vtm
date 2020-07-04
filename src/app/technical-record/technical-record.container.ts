@@ -10,7 +10,7 @@ import {
   getTechViewState,
   getActiveVehicleTechRecord
 } from '@app/store/selectors/VehicleTechRecordModel.selectors';
-import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResult.selectors';
 import { MetaData } from '@app/models/meta-data';
 import {
   SetViewState,

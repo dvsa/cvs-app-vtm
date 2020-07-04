@@ -1,28 +1,39 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { IVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
+
+import { IVehicleTestResultState } from '@app/store/state/VehicleTestResult.state';
+import { TestResultModel } from '@app/models/test-result.model';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestType } from '@app/models/test.type';
-import { TestResultModel } from '@app/models/test-result.model';
 import { TestTypeCategory } from '@app/models/test-type-category';
 import { TreeData } from '@app/models/tree-data';
-import { getTestTypeCategories } from '@app/store/selectors/ReferenceData.selectors';
 
-export const selectFeature = createFeatureSelector<IVehicleTestResultModelState>(
+import { getTestTypeCategories } from '@app/store/selectors/ReferenceData.selectors';
+import { getSelectedVehicleTechRecord } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { TechRecord } from '@app/models/tech-record.model';
+import { RECORD_STATUS } from '@app/app.enums';
+import { getRouterParams } from '@app/store/selectors/route.selectors';
+
+export const selectFeature = createFeatureSelector<IVehicleTestResultState>(
   'vehicleTestResultModel'
 );
 
 export const getVehicleTestResultModel = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.vehicleTestResultModel
+  (state: IVehicleTestResultState) => state.vehicleTestResultModel
 );
 
-export const selectTestTypeById = (id: string) =>
-  createSelector(selectFeature, (state: IVehicleTestResultModelState) => {
+export const selectTestType = createSelector(
+  selectFeature,
+  getRouterParams,
+  (state: IVehicleTestResultState, routerParams) => {
     let testType: TestType;
     let testRecord: TestResultModel;
+    let id: string;
 
     if (state.selectedTestResultModel) {
       testRecord = state.selectedTestResultModel;
+      id = !!routerParams ? routerParams.params.id : '';
 
       testType = state.selectedTestResultModel.testTypes.filter(
         (testTypeRes: TestType) => testTypeRes.testNumber === id
@@ -30,32 +41,65 @@ export const selectTestTypeById = (id: string) =>
     }
     const test: TestRecordTestType = { testType, testRecord };
     return test;
-  });
+  }
+);
 
 export const getTestViewState = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.editState
+  (state: IVehicleTestResultState) => state.editState
 );
 
 export const getSelectedVehicleTestResultModel = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.selectedTestResultModel
+  (state: IVehicleTestResultState) => state.selectedTestResultModel
+);
+
+export const getActiveTechRecord = createSelector(
+  selectFeature,
+  getSelectedVehicleTechRecord,
+  (state: IVehicleTestResultState, selectedRecord: VehicleTechRecordModel) => {
+    let record: TechRecord;
+    if (selectedRecord) {
+      const techRecords = selectedRecord.techRecord;
+
+      record = techRecords.find((tRecord) => tRecord.statusCode === RECORD_STATUS.CURRENT);
+      if (record) {
+        return record;
+      }
+
+      record = techRecords.find((tRecord) => tRecord.statusCode === RECORD_STATUS.PROVISIONAL);
+      if (record) {
+        return record;
+      }
+
+      record = techRecords
+        .filter((tRecord) => tRecord.statusCode === RECORD_STATUS.ARCHIVED)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      if (record) {
+        return record;
+      }
+    }
+  }
 );
 
 export const getFilteredTestTypeCategories = createSelector(
   selectFeature,
   getTestTypeCategories,
-  (state: IVehicleTestResultModelState, testTypeCategories: TestTypeCategory[]) => {
-    let testRecord: TestResultModel;
+  getActiveTechRecord,
+  (state: IVehicleTestResultState, testTypeCategories: TestTypeCategory[], techRecord) => {
+    let record;
     let filteredCategories;
 
-    if (state.selectedTestResultModel) {
-      testRecord = state.selectedTestResultModel;
+    if (testTypeCategories) {
+      record = !!state.selectedTestResultModel
+        ? state.selectedTestResultModel
+        : !!techRecord
+        ? techRecord
+        : [];
       filteredCategories = testTypeCategories.filter((element: TestTypeCategory) => {
-        return filterCategories(element, testRecord);
+        return filterCategories(element, record);
       });
     }
-
     filteredCategories = getTestTypeTree(filteredCategories, 0);
 
     return filteredCategories;

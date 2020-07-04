@@ -6,7 +6,7 @@ import {
   UpdateVehicleTechRecord,
   UpdateVehicleTechRecordSuccess,
   SetSelectedVehicleTechnicalRecord,
-  SetViewState
+  SetViewState, SelectTestType
 } from './VehicleTechRecordModel.actions';
 import {
   VehicleIdentifiers,
@@ -130,6 +130,16 @@ describe('SetViewState', () => {
     expect({ ...action }).toEqual({
       type: EVehicleTechRecordActions.SetViewState,
       viewState
+    });
+  });
+});
+
+describe('SelectTestType', () => {
+  it('should create SelectTestType action', () => {
+    const action = new SelectTestType();
+
+    expect({ ...action }).toEqual({
+      type: EVehicleTechRecordActions.SelectTestType
     });
   });
 });

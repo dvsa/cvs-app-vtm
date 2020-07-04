@@ -51,6 +51,8 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   isStandardVehicle: boolean;
   panels: { panel: string; isOpened: boolean }[];
   recordCompleteness: string;
+  isCurrentOrProvisional: boolean;
+  isTestableOrComplete: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -87,6 +89,12 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       (name) => name === this.activeRecord.recordCompleteness
     );
     this.recordCompleteness = RECORD_COMPLETENESS[completenessKey];
+    this.isCurrentOrProvisional =
+      this.activeRecord.statusCode === 'current' ||
+      this.activeRecord.statusCode === 'provisional';
+    this.isTestableOrComplete =
+      this.activeRecord.recordCompleteness === 'testable' ||
+      this.activeRecord.recordCompleteness === 'complete';
   }
 
   setPanelState(toggleState: boolean) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
@@ -9,6 +9,8 @@ import { TestResultService } from '@app/technical-record-search/test-result.serv
 import { TestTypeCategory } from '@app/models/test-type-category';
 import { LoadTestTypeCategoriesSuccess } from '@app/store/actions/ReferenceData.actions';
 import { getTestTypeCategories } from '@app/store/selectors/ReferenceData.selectors';
+import { SetTestViewState } from '@app/store/actions/VehicleTestResult.actions';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,11 @@ export class TestTypeCategoriesGuard implements CanActivate {
     );
   }
 
-  canActivate(): Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+    const currentState = !!route.params.id ? VIEW_STATE.EDIT : VIEW_STATE.CREATE;
+
+    this.store.dispatch(new SetTestViewState(currentState));
+
     return this.hasTestTypeCategories().pipe(
       switchMap((inStore) => {
         if (inStore) {

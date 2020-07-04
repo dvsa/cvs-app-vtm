@@ -20,7 +20,8 @@ export enum EVehicleTechRecordActions {
   SetVehicleTechRecordOnCreate = '[TechnicalRecordCreateComponent] Set Vehicle Technical Record On Create',
   SetSelectedVehicleTechnicalRecord = '[MultipleTechRecordContainer] Set Selected Vehicle Technical Record',
   SetSelectedVehicleTechRecordSuccess = '[VehicleTechnicalRecordEffect] Set Selected Vehicle Technical Record Sucess',
-  SetViewState = '[VehicleTechnicalRecordEffect] Set ViewState'
+  SetViewState = '[VehicleTechnicalRecordEffect] Set ViewState',
+  SelectTestType = '[VehicleTechnicalRecordEffect] Select TestType'
 }
 
 export class GetVehicleTechRecordHavingStatusAll implements Action {
@@ -70,6 +71,11 @@ export class SetViewState implements Action {
   constructor(public viewState: VIEW_STATE) {}
 }
 
+export class SelectTestType implements Action {
+  readonly type = EVehicleTechRecordActions.SelectTestType;
+  constructor() {}
+}
+
 export type VehicleTechRecordActions =
   | GetVehicleTechRecordHavingStatusAll
   | GetVehicleTechRecordHavingStatusAllSuccess
@@ -79,4 +85,5 @@ export type VehicleTechRecordActions =
   | UpdateVehicleTechRecordSuccess
   | SetSelectedVehicleTechnicalRecord
   | SetSelectedVehicleTechRecordSuccess
-  | SetViewState;
+  | SetViewState
+  | SelectTestType;

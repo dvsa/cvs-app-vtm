@@ -13,8 +13,8 @@ import {
   getSelectedVehicleTestResultModel,
   getTestViewState,
   getVehicleTestResultModel,
-  selectTestTypeById
-} from '@app/store/selectors/VehicleTestResultModel.selectors';
+  selectTestType
+} from '@app/store/selectors/VehicleTestResult.selectors';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
 import { getRouterParams } from '@app/store/selectors/route.selectors';
 import { getCurrentModalState } from '@app/modal/modal.selectors';
@@ -88,10 +88,10 @@ export class MockStore {
           )
         );
 
-      case selectTestTypeById(''):
+      case selectTestType:
         return this.mockSelector.pipe(
           map((value: any) =>
-            value && value.hasOwnProperty('selectTestTypeById') ? value['selectTestTypeById'] : {}
+            value && value.hasOwnProperty('selectTestType') ? value['selectTestType'] : {}
           )
         );
 
@@ -131,22 +131,22 @@ export class MockStore {
             value && value.hasOwnProperty('getRouterParams') ? value['getRouterParams'] : {}
           )
         );
-        case getCurrentModalState:
-          return this.mockSelector.pipe(
-            map((value: any) =>
-              value && value.hasOwnProperty('getCurrentModalState')
-                ? value['getCurrentModalState']
-                : {}
-            )
-          );
-        case getAppFormState:
-          return this.mockSelector.pipe(
-            map((value: any) =>
-              value && value.hasOwnProperty('getCurrentModalState')
-                ? value['getCurrentModalState']
-                : {}
-            )
-          );
+      case getCurrentModalState:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getCurrentModalState')
+              ? value['getCurrentModalState']
+              : {}
+          )
+        );
+      case getAppFormState:
+        return this.mockSelector.pipe(
+          map((value: any) =>
+            value && value.hasOwnProperty('getCurrentModalState')
+              ? value['getCurrentModalState']
+              : {}
+          )
+        );
 
       default:
         return this.mockSelector;

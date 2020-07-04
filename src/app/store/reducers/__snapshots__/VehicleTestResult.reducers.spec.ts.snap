@@ -1,6 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VehicleTestResultModel Reducer [GetTestResultModel] should update the VehicleTestResult reducer state with the correct payload once GetTestResultModel is dispatched 1`] = `
+exports[`VehicleTestResult Reducer [CreateTestResultSuccess] should update the VehicleTestResult reducer state with the correct payload once CreateTestResultSuccess is dispatched 1`] = `
+Object {
+  "editState": 0,
+  "error": null,
+  "selectedTestResultModel": Object {
+    "msUserDetails": Object {
+      "msUser": "test",
+    },
+    "testResult": Object {
+      "reasonForCreation": "",
+      "systemNumber": "123",
+      "testEndTimestamp": "2020-01-16T12:24:38.027Z",
+      "testResultId": "123",
+      "testStartTimestamp": "2020-01-16T10:24:38.027Z",
+      "testTypes": Array [
+        Object {
+          "modType": Object {
+            "code": "1",
+            "description": "test",
+          },
+          "seatbeltInstallationCheckDate": true,
+          "testExpiryDate": "2021-01-16T12:24:38.027Z",
+          "testNumber": "123123",
+          "testTypeEndTimestamp": "2020-01-16T12:24:38.027Z",
+          "testTypeId": "1",
+          "testTypeName": "first test",
+        },
+      ],
+      "vehicleType": "hgv",
+    },
+  },
+  "vehicleTestResultModel": Array [
+    Object {
+      "testTypes": Array [
+        Object {
+          "testNumber": "1",
+        },
+      ],
+    },
+    Object {
+      "testTypes": Array [
+        Object {
+          "testNumber": "2",
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`VehicleTestResult Reducer [GetTestResultModel] should update the VehicleTestResult reducer state with the correct payload once GetTestResultModel is dispatched 1`] = `
 Object {
   "editState": 0,
   "error": null,
@@ -9,7 +59,7 @@ Object {
 }
 `;
 
-exports[`VehicleTestResultModel Reducer [GetTestResultModelFailure] should update the VehicleTestResult reducer state with the correct payload once GetTestResultModelFailure is dispatched 1`] = `
+exports[`VehicleTestResult Reducer [GetTestResultModelFailure] should update the VehicleTestResult reducer state with the correct payload once GetTestResultModelFailure is dispatched 1`] = `
 Object {
   "editState": 0,
   "error": null,
@@ -18,7 +68,7 @@ Object {
 }
 `;
 
-exports[`VehicleTestResultModel Reducer [GetTestResultModelSuccess] should update the VehicleTestResult reducer state with the correct payload once GetTestResultModelSuccess is dispatched 1`] = `
+exports[`VehicleTestResult Reducer [GetTestResultModelSuccess] should update the VehicleTestResult reducer state with the correct payload once GetTestResultModelSuccess is dispatched 1`] = `
 Object {
   "editState": 0,
   "error": null,
@@ -50,7 +100,7 @@ Object {
 }
 `;
 
-exports[`VehicleTestResultModel Reducer [SetCurrentState] should update the VehicleTestResult reducer state with the correct payload once SetCurrentState is dispatched 1`] = `
+exports[`VehicleTestResult Reducer [SetCurrentState] should update the VehicleTestResult reducer state with the correct payload once SetCurrentState is dispatched 1`] = `
 Object {
   "editState": 0,
   "error": null,
@@ -59,7 +109,7 @@ Object {
 }
 `;
 
-exports[`VehicleTestResultModel Reducer [UpdateSelectedTestResultModelSuccess] should update the VehicleTestResult reducer state with the correct payload once UpdateSelectedTestResultModelSuccess is dispatched 1`] = `
+exports[`VehicleTestResult Reducer [UpdateSelectedTestResultModelSuccess] should update the VehicleTestResult reducer state with the correct payload once UpdateSelectedTestResultModelSuccess is dispatched 1`] = `
 Object {
   "editState": 0,
   "error": null,
@@ -104,7 +154,7 @@ Object {
 }
 `;
 
-exports[`VehicleTestResultModel Reducer [UpdateTestResult] should update the VehicleTestResult reducer state with the correct payload once UpdateTestResult is dispatched 1`] = `
+exports[`VehicleTestResult Reducer [UpdateTestResult] should update the VehicleTestResult reducer state with the correct payload once UpdateTestResult is dispatched 1`] = `
 Object {
   "editState": 0,
   "error": null,
@@ -128,7 +178,7 @@ Object {
 }
 `;
 
-exports[`VehicleTestResultModel Reducer undefined action should return the default state 1`] = `
+exports[`VehicleTestResult Reducer undefined action should return the default state 1`] = `
 Object {
   "editState": 0,
   "error": null,
