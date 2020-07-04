@@ -6,8 +6,8 @@ import {
 } from './VehicleTechRecordModel.state';
 import {
   initialVehicleTestResultModelState,
-  IVehicleTestResultModelState
-} from './VehicleTestResultModel.state';
+  IVehicleTestResultState
+} from './VehicleTestResult.state';
 import {
   initialReferenceDataState,
   ReferenceDataState
@@ -26,7 +26,7 @@ export interface IAppState {
   router?: RouterReducerState;
   loader: ILoaderState;
   vehicleTechRecordModel: VehicleTechRecordState;
-  vehicleTestResultModel: IVehicleTestResultModelState;
+  vehicleTestResultModel: IVehicleTestResultState;
   referenceData: ReferenceDataState;
   error: ErrorState;
   appFormState: AppFormState;

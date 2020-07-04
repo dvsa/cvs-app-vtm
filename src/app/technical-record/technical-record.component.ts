@@ -39,6 +39,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   @Input() testResultJson: TestResultModel[];
   @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEditState>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
+  @Output() selectTestType = new EventEmitter();
 
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
@@ -177,5 +178,9 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       }
     });
     // }
+  }
+
+  onAddTestResult() {
+    this.selectTestType.emit();
   }
 }

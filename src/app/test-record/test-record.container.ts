@@ -5,7 +5,7 @@ import { IAppState } from '@app/store/state/app.state';
 import {
   getTestViewState,
   selectTestTypeById
-} from '@app/store/selectors/VehicleTestResultModel.selectors';
+} from '@app/store/selectors/VehicleTestResult.selectors';
 import { ActivatedRoute } from '@angular/router';
 import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
 import { Preparer } from '@app/models/preparer';
@@ -16,7 +16,7 @@ import {
   SetTestViewState,
   UpdateTestResult,
   DownloadCertificate
-} from '@app/store/actions/VehicleTestResultModel.actions';
+} from '@app/store/actions/VehicleTestResult.actions';
 import { TestStation } from '@app/models/test-station';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';

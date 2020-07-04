@@ -10,12 +10,12 @@ import {
   getTechViewState,
   getActiveVehicleTechRecord
 } from '@app/store/selectors/VehicleTechRecordModel.selectors';
-import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { getVehicleTestResultModel } from '@app/store/selectors/VehicleTestResult.selectors';
 import { MetaData } from '@app/models/meta-data';
 import {
   SetViewState,
   CreateVehicleTechRecord,
-  UpdateVehicleTechRecord
+  UpdateVehicleTechRecord, SelectTestType
 } from '@app/store/actions/VehicleTechRecordModel.actions';
 import {
   VehicleTechRecordModel,
@@ -41,6 +41,7 @@ import { VIEW_STATE } from '@app/app.enums';
             [testResultJson]="testResults$ | async"
             (submitVehicleRecord)="vehicleRecordSubmissionHandler($event)"
             (changeViewState)="viewStateHandler($event)"
+            (selectTestType)="selectTestTypeHandler()"
           >
           </vtm-technical-record>
         </main>
@@ -78,5 +79,9 @@ export class TechnicalRecordsContainer implements OnInit {
 
   viewStateHandler(state: VIEW_STATE): void {
     this.store.dispatch(new SetViewState(state));
+  }
+
+  selectTestTypeHandler(): void {
+    this.store.dispatch(new SelectTestType());
   }
 }

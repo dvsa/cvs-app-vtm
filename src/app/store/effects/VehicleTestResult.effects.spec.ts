@@ -11,8 +11,8 @@ import {
   UpdateSelectedTestResultModelSuccess,
   UpdateTestResult,
   UpdateTestResultSuccess
-} from '@app/store/actions/VehicleTestResultModel.actions';
-import { VehicleTestResultModelEffects } from '@app/store/effects/VehicleTestResultModel.effects';
+} from '@app/store/actions/VehicleTestResult.actions';
+import { VehicleTestResultEffects } from '@app/store/effects/VehicleTestResult.effects';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
@@ -21,7 +21,7 @@ import { ClearErrorMessage } from '@app/store/actions/Error.actions';
 import { UserService } from '@app/app-user.service';
 import { UserDetails } from '@app/models/user-details';
 import { MockStore } from '@app/utils/mockStore';
-import { DownloadCertificate } from '../actions/VehicleTestResultModel.actions';
+import { DownloadCertificate } from '../actions/VehicleTestResult.actions';
 import * as FileSaver from 'file-saver';
 import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
 import { Router } from '@angular/router';
@@ -30,8 +30,8 @@ import { KeyValue } from '@angular/common';
 
 const testResult = [TEST_MODEL_UTILS.mockTestRecord()];
 
-describe('VehicleTestResultModelEffects', () => {
-  let effects: VehicleTestResultModelEffects;
+describe('VehicleTestResultEffects', () => {
+  let effects: VehicleTestResultEffects;
   let testResultService: TestResultService;
   const mockSelector = new BehaviorSubject<any>(undefined);
   const store: MockStore = new MockStore(mockSelector);
@@ -57,7 +57,7 @@ describe('VehicleTestResultModelEffects', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        [VehicleTestResultModelEffects, provideMockActions(() => actions$)],
+        [VehicleTestResultEffects, provideMockActions(() => actions$)],
         {
           provide: TestResultService,
           useValue: { updateTestResults, getTestResults, downloadCertificate }
@@ -77,7 +77,7 @@ describe('VehicleTestResultModelEffects', () => {
       ]
     });
 
-    effects = TestBed.get(VehicleTestResultModelEffects);
+    effects = TestBed.get(VehicleTestResultEffects);
     testResultService = TestBed.get(TestResultService);
     spyOn(store, 'dispatch').and.callThrough();
   });

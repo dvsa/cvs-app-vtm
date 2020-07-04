@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { TestResultService } from '@app/technical-record-search/test-result.service';
-import { getSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
+import { getSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResult.selectors';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { TestResultModel } from '@app/models/test-result.model';
-import { SetSelectedTestResultModelSuccess } from '@app/store/actions/VehicleTestResultModel.actions';
+import { SetSelectedTestResultModelSuccess } from '@app/store/actions/VehicleTestResult.actions';
 
 @Injectable({ providedIn: 'root' })
 export class TestResultGuard {
