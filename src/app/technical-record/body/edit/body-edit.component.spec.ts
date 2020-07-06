@@ -11,6 +11,7 @@ import {
 import { BodyEditComponent } from './body-edit.component';
 import { TESTING_UTILS } from '@app/utils';
 import { IBody } from '@app/models/body-type';
+import { SharedModule } from '@app/shared';
 
 describe('BodyEditComponent component', () => {
   let component: BodyEditComponent;
@@ -18,7 +19,7 @@ describe('BodyEditComponent component', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule],
+      imports: [FormsModule, ReactiveFormsModule, SharedModule],
       declarations: [BodyEditComponent],
       providers: [
         FormGroupDirective,
@@ -38,6 +39,7 @@ describe('BodyEditComponent component', () => {
   });
 
   it('should render with the given properties ', () => {
+    component.makeOptions = ['honda', 'aston martin'];
     component.bodyDetails = {
       make: 'Marc',
       model: 'honda',

@@ -24,7 +24,6 @@ import { SeatbeltInstallationCheckEditComponent } from './seatbelt-installation-
 import { EmissionDetailsEditComponent } from './emission-details/edit/emission-details-edit.component';
 import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { VisitEditComponent } from './visit/edit/visit-edit.component';
-import { AutocompleteComponent } from '@app/shared/components/autocomplete/autocomplete.component';
 import { TestSectionEditComponent } from './test-section/edit/test-section-edit.component';
 import { SelectTestTypeComponent } from './select-test-type/select-test-type.component';
 import { TimeInputComponent } from '@app/shared/components/time-input/time-input.component';
@@ -54,7 +53,6 @@ export const COMPONENTS = [
   EmissionDetailsEditComponent,
   NotesEditComponent,
   VisitEditComponent,
-  AutocompleteComponent,
   TimeInputComponent,
   TestSectionEditComponent,
   SelectTestTypeComponent,
@@ -68,7 +66,13 @@ export const MODULES = [
     {
       path: 'test-record/:id',
       component: TestRecordContainer,
-      canActivate: [AuthenticationGuard, TestResultGuard, PreparersGuard, TestStationsGuard, FormStateGuard],
+      canActivate: [
+        AuthenticationGuard,
+        TestResultGuard,
+        PreparersGuard,
+        TestStationsGuard,
+        FormStateGuard
+      ]
     },
     {
       path: 'select-test-type/:id',
