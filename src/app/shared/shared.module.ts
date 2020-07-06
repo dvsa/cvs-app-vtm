@@ -25,10 +25,12 @@ import { DirectivesModule } from '@app/shared/directives/directives.module';
 import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
 import { DialogMinistryPlatesComponent } from '@app/shared/dialog-ministry-plates/dialog-ministry-plates.component';
 import { MinistryPlatesComponent } from '@app/technical-record/ministry-plates/ministry-plates.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 
 export const PIPES_AND_COMPONENTS = [
   AdrReasonModalComponent,
   DateInputComponent,
+  AutocompleteComponent,
   PageNotFoundComponentComponent,
   PreventLeavePageModalComponent,
   ErrorSummaryComponent,

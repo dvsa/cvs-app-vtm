@@ -1,11 +1,12 @@
 <input
-  class="govuk-input autocomplete-input"
+  class="govuk-input govuk-input--width-20 autocomplete-input"
   type="text"
-  name="{{id}}"
-  id="test-{{ id }}"
-  [attr.list]="'autocomplete-'+id"
+  name="{{ id }}"
+  id="{{ id }}"
+ 
+  [attr.list]="id + '-autocomplete'"
   [formControl]="autocompleteInput"
 />
-<datalist id="{{'autocomplete-'+id}}">
+<datalist id="{{ id + '-autocomplete' }}">
   <option *ngFor="let item of autocompleteData" [value]="item">{{ item }}</option>
 </datalist>

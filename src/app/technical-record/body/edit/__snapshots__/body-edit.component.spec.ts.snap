@@ -6,6 +6,7 @@ exports[`BodyEditComponent component should render with the given properties  1`
   bodyTypeDescOptions={[Function Array]}
   fb={[Function FormBuilder]}
   functionOptions={[Function Object]}
+  makeOptions={[Function Array]}
   parent={[Function FormGroupDirective]}
   techRecordFg={[Function FormGroup]}
 >
@@ -35,15 +36,42 @@ exports[`BodyEditComponent component should render with the given properties  1`
               >
                  Make 
               </label>
-              <input
-                class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+              <vtm-autocomplete
+                ariadescribedby="make"
+                class="ng-untouched ng-pristine ng-valid"
                 formcontrolname="make"
-                id="test-edit-make"
-                maxlength="30"
-                ng-reflect-maxlength="30"
+                ng-reflect-autocomplete-data="honda,aston martin"
+                ng-reflect-gov-input-length="20"
+                ng-reflect-id="test-edit-make"
                 ng-reflect-name="make"
-                type="text"
-              />
+                ngdefaultcontrol=""
+              >
+                <input
+                  class="govuk-input govuk-input--width-20 autocomplete-input ng-untouched ng-pristine ng-valid"
+                  id="test-edit-make"
+                  list="test-edit-make-autocomplete"
+                  name="test-edit-make"
+                  ng-reflect-form="[object Object]"
+                  type="text"
+                />
+                <datalist
+                  id="test-edit-make-autocomplete"
+                >
+                  
+                  <option
+                    ng-reflect-value="honda"
+                    value="honda"
+                  >
+                    honda
+                  </option>
+                  <option
+                    ng-reflect-value="aston martin"
+                    value="aston martin"
+                  >
+                    aston martin
+                  </option>
+                </datalist>
+              </vtm-autocomplete>
             </div>
             <div
               class="govuk-form-group"
