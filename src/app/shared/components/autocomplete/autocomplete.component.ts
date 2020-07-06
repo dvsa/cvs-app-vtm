@@ -8,13 +8,7 @@ import {
   Injector,
   Type
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  FormControl,
-  FormGroup,
-  NG_VALUE_ACCESSOR,
-  NgControl
-} from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { FormFieldControl } from '@app/shared/components/control';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -39,6 +33,7 @@ export class AutocompleteComponent
   @Input() autocompleteData;
   @Input('aria-describedby') ariaDescribedBy: string | null;
   @Input('value') _value = '';
+  @Input('govInputLength') govInputLength: string | null;
 
   @HostBinding('attr.id')
   externalId = '';

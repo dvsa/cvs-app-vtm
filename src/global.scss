@@ -82,10 +82,6 @@
   white-space: normal;
 }
 
-.autocomplete-input::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
 .tree-parent-node,
 .tree-child-node {
   color: $govuk-link-colour;
@@ -94,6 +90,12 @@
     background-color: $govuk-brand-colour;
   }
 }
+
+// Autocomplete
+.autocomplete-input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 
 /*********/
 // PAGES //

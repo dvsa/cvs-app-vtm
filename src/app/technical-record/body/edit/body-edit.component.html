@@ -8,13 +8,14 @@
             <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-make">
               Make
             </label>
-            <input
+            <vtm-autocomplete
+              [autocompleteData]="makeOptions"
+              [govInputLength]="20"
               id="test-edit-make"
-              type="text"
-              maxlength="30"
+              ariaDescribedBy="make"
               formControlName="make"
-              class="govuk-input govuk-input--width-20"
-            />
+              ngDefaultControl
+            ></vtm-autocomplete>
           </div>
 
           <!-- Model -->

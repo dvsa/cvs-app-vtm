@@ -14,7 +14,7 @@ exports[`AutocompleteComponent should create 1`] = `
   onchange={[Function Function]}
 >
   <input
-    class="govuk-input autocomplete-input"
+    class="govuk-input govuk-input--width-20 autocomplete-input"
     type="text"
   /><datalist>
     
@@ -40,15 +40,15 @@ exports[`AutocompleteComponent should populate the internal input when an extern
       ngdefaultcontrol=""
     >
       <input
-        class="govuk-input autocomplete-input ng-untouched ng-pristine ng-valid"
-        id="test-testAutocomplete"
-        list="autocomplete-testAutocomplete"
+        class="govuk-input govuk-input--width-20 autocomplete-input ng-untouched ng-pristine ng-valid"
+        id="testAutocomplete"
+        list="testAutocomplete-autocomplete"
         name="testAutocomplete"
         ng-reflect-form="[object Object]"
         type="text"
       />
       <datalist
-        id="autocomplete-testAutocomplete"
+        id="testAutocomplete-autocomplete"
       >
         
         <option

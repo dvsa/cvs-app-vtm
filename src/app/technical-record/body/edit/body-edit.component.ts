@@ -8,6 +8,7 @@ import {
   BODY_TYPE_DESC,
   FUNCTION_OPTIONS
 } from '@app/technical-record/technical-record.constants';
+import { makeOptions } from './../bodyList';
 
 @Component({
   selector: 'vtm-body-edit',
@@ -20,6 +21,7 @@ export class BodyEditComponent implements OnInit {
   techRecordFg: FormGroup;
   bodyTypeDescOptions: SelectOption[];
   functionOptions = FUNCTION_OPTIONS;
+  makeOptions: string[] = makeOptions;
 
   constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}
 
