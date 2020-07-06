@@ -19,13 +19,13 @@ exports[`LoseChangesComponent should create lose changes modal component 1`] = `
        If you leave this page, your changes will be lost. 
     </span>
   </div><button
-    cdkfocusinitial=""
     class="govuk-button"
     data-module="govuk-button"
     id="test-lose-changes"
   >
      Leave and lose changes 
   </button><a
+    cdkfocusinitial=""
     class="cancel"
     id="test-cancel"
   >

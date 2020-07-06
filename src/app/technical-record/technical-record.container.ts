@@ -24,6 +24,7 @@ import {
 } from '@app/models/vehicle-tech-record.model';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
+import { SetTestViewState } from '@app/store/actions/VehicleTestResultModel.actions';
 
 @Component({
   selector: 'vtm-technical-record-container',
@@ -42,6 +43,7 @@ import { VIEW_STATE } from '@app/app.enums';
             (submitVehicleRecord)="vehicleRecordSubmissionHandler($event)"
             (changeViewState)="viewStateHandler($event)"
             (sendPlates)="sendPlatesHandler($event)"
+            (viewTestRecord)="viewTestRecordHandler()"
           >
           </vtm-technical-record>
         </main>
@@ -83,5 +85,9 @@ export class TechnicalRecordsContainer implements OnInit {
 
   sendPlatesHandler(editedVehicleRecord: VehicleTechRecordEdit) {
     this.store.dispatch(new UpdateVehicleTechRecord(editedVehicleRecord));
+  }
+
+  viewTestRecordHandler(): void {
+    this.store.dispatch(new SetTestViewState(VIEW_STATE.VIEW_ONLY));
   }
 }

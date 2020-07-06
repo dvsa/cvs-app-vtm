@@ -1,5 +1,12 @@
 <header class="govuk-header" role="banner" data-module="govuk-header">
   <div class="topnav govuk-header__container govuk-width-container">
+    <a
+      [routerLink]="['/']"
+      id="test-header-nav-item"
+      class="govuk-header__link govuk-header__link--homepage"
+    >
+      <span>Vehicle testing management</span>
+    </a>
     <div id="menuLinks" [ngStyle]="{ display: menuOpen ? 'block' : 'none' }">
       <a href="javascript:void(0)">{{ userName }}</a>
       <a (click)="logOut()">Sign out</a>

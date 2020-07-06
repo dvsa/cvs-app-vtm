@@ -42,6 +42,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
   @Output() submitVehicleRecord = new EventEmitter<VehicleTechRecordEditState>();
   @Output() changeViewState = new EventEmitter<VIEW_STATE>();
   @Output() sendPlates = new EventEmitter<VehicleTechRecordEdit>();
+  @Output() viewTestRecord = new EventEmitter<void>();
 
   showAdrDetails: boolean;
   adrDisplayParams: { [key: string]: boolean };
@@ -225,5 +226,9 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
         this.sendPlates.emit(vehicleRecord);
       }
     });
+  }
+
+  viewTestRecordHandler(): void {
+    this.viewTestRecord.emit();
   }
 }
