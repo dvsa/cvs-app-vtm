@@ -4,6 +4,7 @@ exports[`RecordStatusComponent should create view only with populated data 1`] =
 <test-vtm-record-status
   activeRecord={[Function Object]}
   editState="false"
+  scrollSectionHandler={[Function Function]}
 >
   <vtm-record-status
     ng-reflect-active-record="[object Object]"
@@ -31,6 +32,15 @@ exports[`RecordStatusComponent should create view only with populated data 1`] =
           </span>
         </p>
         <p>
+          <a
+            class="govuk-link"
+            href="javascript:void(0)"
+            id="test-scroll-to-section"
+          >
+            Technical record history
+          </a>
+        </p>
+        <p>
           <span
             class="govuk-!-font-weight-bold govuk-!-font-size-19 govuk-!-padding-right-2"
           >
@@ -54,6 +64,7 @@ exports[`RecordStatusComponent should render the editable component if editState
 <test-vtm-record-status
   activeRecord={[Function Object]}
   editState={[Function Boolean]}
+  scrollSectionHandler={[Function Function]}
 >
   <vtm-record-status
     ng-reflect-active-record="[object Object]"

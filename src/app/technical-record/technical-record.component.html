@@ -47,6 +47,7 @@
       <vtm-record-status
         [activeRecord]="activeRecord"
         [editState]="isEditable"
+        (onScrollToSection)="scrollDownToSection($event)"
       ></vtm-record-status>
     </ng-container>
 
@@ -836,7 +837,11 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <vtm-tech-rec-history [techRecordsJson]="vehicleTechRecord"></vtm-tech-rec-history>
+            <vtm-tech-rec-history
+              [focusedRecord]="activeRecord"
+              [vehicleRecord]="vehicleTechRecord"
+              (onViewRecord)="techRecordViewHandler($event)"
+            ></vtm-tech-rec-history>
           </mat-expansion-panel>
         </div>
       </ng-container>

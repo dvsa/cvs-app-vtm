@@ -1,9 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { RecordStatusComponent } from './record-status.component';
 import { TechRecord } from '@app/models/tech-record.model';
-import { RECORD_STATUS, RECORD_COMPLETENESS, RECORD_COMPLETENESS_skeleton } from '@app/app.enums';
+import {
+  RECORD_STATUS,
+  RECORD_COMPLETENESS,
+  RECORD_COMPLETENESS_skeleton,
+  PANEL_TITLE
+} from '@app/app.enums';
 import { TechRecordHelperService } from '../tech-record-helper.service';
 
 describe('RecordStatusComponent', () => {
@@ -53,17 +59,36 @@ describe('RecordStatusComponent', () => {
 
     expect(fixture).toMatchSnapshot();
   });
+
+  it('should emit the "Tech History Title" ', () => {
+    fixture.detectChanges();
+
+    const selectedElem: HTMLElement = fixture.debugElement.query(
+      By.css('[id=test-scroll-to-section]')
+    ).nativeElement;
+    selectedElem.click();
+
+    expect(component.scrollSectionHandler).toHaveBeenCalledWith({
+      title: PANEL_TITLE.TECHNICAL_RECORD_HISTORY
+    });
+  });
 });
 
 @Component({
   selector: 'test-vtm-record-status',
   template: `
-    <vtm-record-status [activeRecord]="activeRecord" [editState]="editState"> </vtm-record-status>
+    <vtm-record-status
+      [activeRecord]="activeRecord"
+      [editState]="editState"
+      (onScrollToSection)="scrollSectionHandler($event)"
+    >
+    </vtm-record-status>
   `
 })
 class TestRecordStatusComponent {
   activeRecord: TechRecord;
   editState: boolean;
+  scrollSectionHandler = jest.fn();
 }
 
 @Component({

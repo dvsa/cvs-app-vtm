@@ -3,11 +3,14 @@ import {
   ChangeDetectionStrategy,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  EventEmitter,
+  Output
 } from '@angular/core';
 
 import { TechRecord } from '@app/models/tech-record.model';
 import { TechRecordHelperService } from '../tech-record-helper.service';
+import { PANEL_TITLE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-record-status',
@@ -17,7 +20,9 @@ import { TechRecordHelperService } from '../tech-record-helper.service';
 export class RecordStatusComponent implements OnChanges {
   @Input() activeRecord: TechRecord;
   @Input() editState: boolean;
+  @Output() onScrollToSection = new EventEmitter<Object>();
 
+  titleOfTechHistory: string = PANEL_TITLE.TECHNICAL_RECORD_HISTORY;
   recordCompleteness: string;
 
   constructor(private techRecHelper: TechRecordHelperService) {}
@@ -30,5 +35,9 @@ export class RecordStatusComponent implements OnChanges {
         this.activeRecord.recordCompleteness
       );
     }
+  }
+
+  emitPanelTitle() {
+    this.onScrollToSection.emit({ title: this.titleOfTechHistory });
   }
 }

@@ -122,3 +122,24 @@ export enum APP_MODALS {
   LOGOUT = 'logout',
   NONE = 'none'
 }
+
+export enum PANEL_TITLE {
+  VEHICLE_SUMMARY = 'Vehicle summary',
+  BODY = 'Body',
+  WEIGHTS = 'Weights',
+  TYRES = 'Tyres',
+  BRAKES = 'Brakes',
+  DDA = 'DDA',
+  DIMENSIONS = 'Dimensions',
+  ADR = 'ADR',
+  APPLICANT = 'Applicant',
+  DOCUMENTS = 'Documents',
+  PURCHASER = 'Purchaser',
+  MANUFACTURER = 'Manufacturer',
+  AUTH_INTO_SERVICE = 'Authorization into service',
+  LETTERS_OF_AUTH = 'Letters of authorization',
+  NOTES = 'Notes',
+  TEST_HISTORY = 'Test',
+  TECHNICAL_RECORD_HISTORY = 'Technical record history',
+  PLATES = 'Plates'
+}
