@@ -28,7 +28,7 @@ import { AutocompleteComponent } from '@app/shared/components/autocomplete/autoc
 import { TestSectionEditComponent } from './test-section/edit/test-section-edit.component';
 import { SelectTestTypeComponent } from './select-test-type/select-test-type.component';
 import { TimeInputComponent } from '@app/shared/components/time-input/time-input.component';
-import { VehicleTestResultModelEffects } from '@app/store/effects/VehicleTestResultModel.effects';
+import { VehicleTestResultEffects } from '@app/store/effects/VehicleTestResult.effects';
 import { SelectTestTypeContainer } from '@app/test-record/select-test-type/select-test-type.container';
 import { TestResultGuard } from '@app/test-record/guards/test-result.guard';
 import { PreparersGuard } from '@app/test-record/guards/preparers.guard';
@@ -76,7 +76,7 @@ export const MODULES = [
       canActivate: [TestTypeCategoriesGuard]
     }
   ]),
-  EffectsModule.forFeature([VehicleTestResultModelEffects]),
+  EffectsModule.forFeature([VehicleTestResultEffects]),
   SharedModule,
   LibrariesModule,
   ReactiveFormsModule,

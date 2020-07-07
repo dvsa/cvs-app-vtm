@@ -1,16 +1,18 @@
 import {
+  getCreatedTestResult,
   getFilteredTestTypeCategories,
   getTestViewState,
   getVehicleTestResultModel,
   selectFeature,
   selectTestTypeById
-} from '@app/store/selectors/VehicleTestResultModel.selectors';
+} from '@app/store/selectors/VehicleTestResult.selectors';
 import { TestResultModel } from '@app/models/test-result.model';
 import { TestType } from '@app/models/test.type';
-import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
-import { TEST_MODEL_UTILS } from '@app/utils';
+import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResult.state';
+import { TEST_MODEL_UTILS, TESTING_UTILS } from '@app/utils';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
 
-describe('vehicleTestResultModel selectors', () => {
+describe('vehicleTestResult selectors', () => {
   const vehicleTestResultModelState = {
     vehicleTestResultModel: {
       testResultId: '123'
@@ -76,5 +78,33 @@ describe('vehicleTestResultModel selectors', () => {
       mockTestTypeCategoryNotMatch
     ]);
     expect(matchedCategory).toEqual([]);
+  });
+
+  it('should return reshaped vehicle test result used for create CTA ', () => {
+    const mockSelectedTechRecord = {
+      vin: '1',
+      vrms: [{ vrm: '3', isPrimary: true }],
+      systemNumber: '2',
+      techRecord: [TESTING_UTILS.mockTechRecord({ euVehicleCategory: 'test2' })]
+    } as VehicleTechRecordModel;
+
+    const testResultExpected = {
+      euVehicleCategory: 'test2',
+      msUserDetails: null,
+      systemNumber: '2',
+      testResultId: '-1',
+      testTypes: [
+        {
+          testNumber: '-1'
+        }
+      ],
+      trailerId: undefined,
+      vin: '1',
+      vrm: '3'
+    };
+
+    expect(
+      getCreatedTestResult.projector(vehicleTestResultModelState, mockSelectedTechRecord)
+    ).toEqual(testResultExpected);
   });
 });

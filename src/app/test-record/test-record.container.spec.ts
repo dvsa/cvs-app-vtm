@@ -11,7 +11,7 @@ import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { VIEW_STATE } from '@app/app.enums';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
 import { TestResultModel } from '@app/models/test-result.model';
-import { EVehicleTestResultModelActions } from '@app/store/actions/VehicleTestResultModel.actions';
+import { EVehicleTestResultActions } from '@app/store/actions/VehicleTestResult.actions';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
 import { MockStore } from '@app/utils/mockStore';
@@ -72,7 +72,7 @@ describe('TestRecordContainer', () => {
     expect(store.dispatch).toHaveBeenCalled();
     expect(store.dispatch).toHaveBeenCalledWith({
       editState: VIEW_STATE.VIEW_ONLY,
-      type: EVehicleTestResultModelActions.SetTestViewState
+      type: EVehicleTestResultActions.SetTestViewState
     });
   });
 
@@ -86,7 +86,7 @@ describe('TestRecordContainer', () => {
         testTypeNumber: 'W01A34247',
         testResultsUpdated: {}
       },
-      type: EVehicleTestResultModelActions.UpdateTestResult
+      type: EVehicleTestResultActions.UpdateTestResult
     });
   });
 });

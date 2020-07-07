@@ -14,7 +14,7 @@ import {TechnicalRecordService} from './technical-record.service';
 import {TestResultService} from './test-result.service';
 import {AdrReasonModalComponent} from '@app/shared/adr-reason-modal/adr-reason-modal.component';
 import {EffectsModule} from '@ngrx/effects';
-import {VehicleTestResultModelEffects} from '@app/store/effects/VehicleTestResultModel.effects';
+import {VehicleTestResultEffects} from '@app/store/effects/VehicleTestResult.effects';
 import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecordModel.effects';
 
 @NgModule({
@@ -26,7 +26,7 @@ import {VehicleTechRecordModelEffects} from '@app/store/effects/VehicleTechRecor
       {path: '', component: TechnicalRecordSearchComponent, canActivate: [AuthenticationGuard]},
 
     ]),
-    EffectsModule.forFeature([VehicleTechRecordModelEffects, VehicleTestResultModelEffects]),
+    EffectsModule.forFeature([VehicleTechRecordModelEffects, VehicleTestResultEffects]),
     FormsModule,
     SharedModule,
     FontAwesomeModule,

@@ -1,23 +1,29 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { IVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
+
+import { IVehicleTestResultState } from '@app/store/state/VehicleTestResult.state';
+import { TestResultModel } from '@app/models/test-result.model';
+import { VehicleTechRecordModel } from '@app/models/vehicle-tech-record.model';
+import { VrmModel } from '@app/models/vrm.model';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
 import { TestType } from '@app/models/test.type';
-import { TestResultModel } from '@app/models/test-result.model';
 import { TestTypeCategory } from '@app/models/test-type-category';
 import { TreeData } from '@app/models/tree-data';
-import { getTestTypeCategories } from '@app/store/selectors/ReferenceData.selectors';
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
 
-export const selectFeature = createFeatureSelector<IVehicleTestResultModelState>(
+import { getTestTypeCategories } from '@app/store/selectors/ReferenceData.selectors';
+import { getSelectedVehicleTechRecord } from '@app/store/selectors/VehicleTechRecordModel.selectors';
+
+export const selectFeature = createFeatureSelector<IVehicleTestResultState>(
   'vehicleTestResultModel'
 );
 
 export const getVehicleTestResultModel = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.vehicleTestResultModel
+  (state: IVehicleTestResultState) => state.vehicleTestResultModel
 );
 
 export const selectTestTypeById = (id: string) =>
-  createSelector(selectFeature, (state: IVehicleTestResultModelState) => {
+  createSelector(selectFeature, (state: IVehicleTestResultState) => {
     let testType: TestType;
     let testRecord: TestResultModel;
 
@@ -34,31 +40,69 @@ export const selectTestTypeById = (id: string) =>
 
 export const getTestViewState = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.editState
+  (state: IVehicleTestResultState) => state.editState
 );
 
 export const getSelectedVehicleTestResultModel = createSelector(
   selectFeature,
-  (state: IVehicleTestResultModelState) => state.selectedTestResultModel
+  (state: IVehicleTestResultState) => state.selectedTestResultModel
 );
 
 export const getFilteredTestTypeCategories = createSelector(
   selectFeature,
   getTestTypeCategories,
-  (state: IVehicleTestResultModelState, testTypeCategories: TestTypeCategory[]) => {
-    let testRecord: TestResultModel;
+  getSelectedVehicleTechRecord,
+  (
+    state: IVehicleTestResultState,
+    testTypeCategories: TestTypeCategory[],
+    vTechRecord: VehicleTechRecordModel
+  ) => {
+    let record;
     let filteredCategories;
 
-    if (state.selectedTestResultModel) {
-      testRecord = state.selectedTestResultModel;
+    if (testTypeCategories) {
+      record = !!state.selectedTestResultModel
+        ? state.selectedTestResultModel
+        : !!vTechRecord
+        ? vTechRecord.techRecord[0]
+        : null;
       filteredCategories = testTypeCategories.filter((element: TestTypeCategory) => {
-        return filterCategories(element, testRecord);
+        return filterCategories(element, record);
       });
     }
-
     filteredCategories = getTestTypeTree(filteredCategories, 0);
 
     return filteredCategories;
+  }
+);
+
+export const getCreatedTestResult = createSelector(
+  selectFeature,
+  getSelectedVehicleTechRecord,
+  (state: IVehicleTestResultState, vTechRecord) => {
+    const testResultUpdate: VehicleTestResultUpdate = {} as VehicleTestResultUpdate;
+    let createdTestRes;
+
+    if (!!vTechRecord) {
+      const primaryVrm: VrmModel = vTechRecord.vrms.find((vrm) => vrm.isPrimary);
+      createdTestRes = {
+        msUserDetails: null,
+        systemNumber: vTechRecord.systemNumber,
+        testResultId: '-1', // TODO: change to a UUID format
+        vin: vTechRecord.vin,
+        vrm: primaryVrm ? primaryVrm.vrm : '',
+        trailerId: vTechRecord.trailerId,
+        euVehicleCategory: vTechRecord.techRecord[0].euVehicleCategory,
+        testTypes: [
+          {
+            testNumber: '-1'
+          } as TestType
+        ],
+        ...testResultUpdate
+      } as VehicleTestResultUpdate;
+    }
+
+    return createdTestRes;
   }
 );
 

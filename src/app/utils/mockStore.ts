@@ -14,7 +14,7 @@ import {
   getTestViewState,
   getVehicleTestResultModel,
   selectTestTypeById
-} from '@app/store/selectors/VehicleTestResultModel.selectors';
+} from '@app/store/selectors/VehicleTestResult.selectors';
 import { getPreparers, getTestStations } from '@app/store/selectors/ReferenceData.selectors';
 import { getRouterParams } from '@app/store/selectors/route.selectors';
 import { getCurrentModalState } from '@app/modal/modal.selectors';

@@ -7,7 +7,10 @@ import {
   Output
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
+
+import { VIEW_STATE } from '@app/app.enums';
 import { TreeData } from '@app/models/tree-data';
+import { VehicleTestResultUpdate } from '@app/models/vehicle-test-result-update';
 
 @Component({
   selector: 'vtm-select-test-type',
@@ -16,7 +19,11 @@ import { TreeData } from '@app/models/tree-data';
 })
 export class SelectTestTypeComponent implements OnInit {
   @Input() filteredCategories: TreeData[];
-  @Output() testTypeSelected = new EventEmitter<KeyValue<string, string>>();
+  @Output() testTypeSelected = new EventEmitter<
+    KeyValue<string, string> | VehicleTestResultUpdate
+  >();
+  @Input() currentState: VIEW_STATE;
+  @Input() createdTestResult: VehicleTestResultUpdate;
   testTypeData: KeyValue<string, string>;
 
   constructor() {}
@@ -28,6 +35,8 @@ export class SelectTestTypeComponent implements OnInit {
   }
 
   updateSelectedTestResult() {
-    this.testTypeSelected.emit(this.testTypeData);
+    const emitData =
+      this.currentState === VIEW_STATE.CREATE ? this.createdTestResult : this.testTypeData;
+    this.testTypeSelected.emit(emitData);
   }
 }
