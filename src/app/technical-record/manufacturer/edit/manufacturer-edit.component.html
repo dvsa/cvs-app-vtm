@@ -1,0 +1,146 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- <h2 class="govuk-heading-m">Manufacturer</h2> -->
+
+          <ng-container class="govuk-form-group" [formGroup]="manufacturerDetails">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-name--mf">
+                Name
+              </label>
+              <input
+                id="test-edit-name--mf"
+                formControlName="name"
+                type="text"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-address1--mf">
+                Building and street
+              </label>
+              <input
+                id="test-edit-address1--mf"
+                type="text"
+                formControlName="address1"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-address2--mf">
+              </label>
+              <input
+                id="test-edit-address2--mf"
+                type="text"
+                formControlName="address2"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-postTown--mf">
+                Town or city
+              </label>
+              <input
+                id="test-edit-postTown--mf"
+                type="text"
+                formControlName="postTown"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-address3--mf">
+                County (optional)
+              </label>
+              <input
+                id="test-edit-address3--mf"
+                type="text"
+                formControlName="address3"
+                class="govuk-input govuk-input--width-20"
+                vtmNullValue
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-postCode--mf">
+                Postcode (optional)
+              </label>
+              <input
+                id="test-edit-postCode--mf"
+                type="text"
+                formControlName="postCode"
+                class="govuk-input govuk-input--width-20"
+                vtmNullValue
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-telephoneNumber--mf"
+              >
+                Telephone number (optional)
+              </label>
+              <input
+                id="test-edit-telephoneNumber--mf"
+                type="number"
+                formControlName="telephoneNumber"
+                class="govuk-input govuk-input--width-20"
+                vtmNullValue
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-emailAddress--mf"
+              >
+                Email address (optional)
+              </label>
+              <input
+                id="test-edit-emailAddress--mf"
+                type="email"
+                formControlName="emailAddress"
+                class="govuk-input govuk-input--width-20"
+                vtmNullValue
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-faxNumber--mf">
+                Fax number (optional)
+              </label>
+              <input
+                id="test-edit-faxNumber--mf"
+                type="number"
+                formControlName="faxNumber"
+                class="govuk-input govuk-input--width-20"
+                vtmNullValue
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-notes--mf">
+                Manufacturer notes (optional)
+              </label>
+              <fieldset class="govuk-fieldset">
+                <textarea
+                  class="govuk-textarea"
+                  id="test-edit-notes--mf"
+                  rows="5"
+                  formControlName="manufacturerNotes"
+                  vtmNullValue
+                ></textarea>
+              </fieldset>
+            </div>
+          </ng-container>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

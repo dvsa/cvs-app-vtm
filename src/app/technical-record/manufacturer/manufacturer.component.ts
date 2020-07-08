@@ -7,15 +7,14 @@ import { ManufacturerDetails } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManufacturerComponent implements OnInit {
-
+  @Input() editState: boolean;
   @Input() manufacturer: ManufacturerDetails;
   address1And2 = '';
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     if (this.manufacturer) {
       this.address1And2 = `${this.manufacturer.address1} ${this.manufacturer.address2}`;
     }
   }
-
 }

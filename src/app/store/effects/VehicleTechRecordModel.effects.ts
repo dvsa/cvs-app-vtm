@@ -229,7 +229,7 @@ export class VehicleTechRecordModelEffects {
       techRecord: [
         {
           statusCode: RECORD_STATUS.PROVISIONAL,
-          vehicleType: VEHICLE_TYPES[vType]
+          vehicleType: vType
         }
       ] as TechRecord[]
     } as VehicleTechRecordModel;
