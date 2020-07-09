@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 
 import { ManufacturerComponent } from './manufacturer.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import { TechRecord } from '@app/models/tech-record.model';
+import { TechRecord, ManufacturerDetails } from '@app/models/tech-record.model';
 
 describe('ManufacturerComponent', () => {
   let fixture: ComponentFixture<TestManufacturerComponent>;
@@ -13,7 +13,11 @@ describe('ManufacturerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ManufacturerComponent, TestManufacturerComponent],
+      declarations: [
+        ManufacturerComponent,
+        TestManufacturerComponent,
+        TestManufacturerEditComponent
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -32,6 +36,13 @@ describe('ManufacturerComponent', () => {
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
   });
+
+  it('should render the edit components when editState is true', () => {
+    component.editState = true;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
 });
 
 @Component({
@@ -43,4 +54,14 @@ describe('ManufacturerComponent', () => {
 class TestManufacturerComponent {
   activeRecord: TechRecord;
   editState: boolean;
+}
+
+@Component({
+  selector: 'vtm-manufacturer-edit',
+  template: `
+    <div>Manufacturer details is: {{ manufacturerEditDetails | json }}</div>
+  `
+})
+class TestManufacturerEditComponent {
+  @Input() manufacturerEditDetails: ManufacturerDetails;
 }

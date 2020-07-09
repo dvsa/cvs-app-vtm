@@ -1,8 +1,21 @@
-export const AXLE_NUM_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 export const BOOLEAN_RADIO_OPTIONS = { ['Yes']: true, ['No']: false };
 
 export const FUNCTION_OPTIONS = { ['Articulated']: 'a', ['Rigid']: 'r' };
+
+export const PLATE_ISSUE_OPTIONS = {
+  ['Original']: 'Issue original certificate',
+  ['Replacement']: 'Issue replacement'
+};
+
+export const SUSPENSION_TYPE_OPTIONS = {
+  ['Steel']: 'S',
+  ['Rubber']: 'R',
+  ['Air']: 'A',
+  ['Hydraulic']: 'H',
+  ['Other']: 'O'
+};
+
+export const AXLE_NUM_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const FUEL_PROPULSION = [
   'DieselPetrol',
@@ -140,7 +153,14 @@ export const MICROFILM_DOCUMENT_TYPE = [
   'Tempo 100 Permit'
 ];
 
-export const PLATE_ISSUE_OPTIONS = {
-  ['Original']: 'Issue original certificate',
-  ['Replacement']: 'Issue replacement'
-};
+export const FRAME_DESCRIPTION = [
+  'Channel section',
+  'Space frame',
+  'I section',
+  'Tubular',
+  'Frame section',
+  'Other',
+  'integral',
+  'Box section',
+  'U section'
+];

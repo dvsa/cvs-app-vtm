@@ -1,0 +1,54 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <ng-container class="govuk-form-group" [formGroup]="purchaserDetails">
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-name--pcr">
+                Name
+              </label>
+              <input
+                id="test-edit-name--pcr"
+                formControlName="name"
+                type="text"
+                class="govuk-input govuk-input--width-20"
+              />
+            </div>
+
+            <!-- common address form -->
+            <vtm-address-form></vtm-address-form>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-faxNumber--pcr">
+                Fax number (optional)
+              </label>
+              <input
+                id="test-edit-faxNumber--pcr"
+                type="number"
+                formControlName="faxNumber"
+                class="govuk-input govuk-input--width-20"
+                vtmNullValue
+              />
+            </div>
+
+            <div class="govuk-form-group">
+              <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-notes--pcr">
+                Purchaser notes (optional)
+              </label>
+              <fieldset class="govuk-fieldset">
+                <textarea
+                  class="govuk-textarea"
+                  id="test-edit-notes--pcr"
+                  rows="5"
+                  formControlName="purchaserNotes"
+                  vtmNullValue
+                ></textarea>
+              </fieldset>
+            </div>
+          </ng-container>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

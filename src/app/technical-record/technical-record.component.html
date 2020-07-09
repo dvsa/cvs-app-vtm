@@ -40,24 +40,20 @@
           </span>
         </ng-container>
       </div>
-      <ng-container
-        *ngIf="
-          (activeRecord.vehicleType === 'hgv' || activeRecord.vehicleType === 'trl') &&
-          activeRecord.statusCode === 'current'
-        "
-      >
-        <div class="govuk-grid-column-one-third govuk-!-margin-left-0 govuk-!-padding-left-0">
+
+      <div class="govuk-grid-column-one-third govuk-!-margin-left-0 govuk-!-padding-left-0">
+        <ng-container *ngIf="isHgvOrTrlVehicle && activeRecord.statusCode === 'current'">
           <button
             class="govuk-button govuk-button--secondary"
             id="test-send-ministry-plates"
             type="button"
             data-module="govuk-button"
-            (click)="onSendMinistryPlates()"
+            (click)="sendMinistryPlates()"
           >
             Send ministry plates
           </button>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
 
     <!-- Active record status -->
@@ -303,11 +299,12 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-brakes
+          <!-- <vtm-brakes
             [brakes]="activeRecord.brakes"
             [axles]="activeRecord.axles"
             [currentVehicleType]="activeRecord.vehicleType"
-          ></vtm-brakes>
+          ></vtm-brakes> -->
+          <vtm-brakes [techRecord]="activeRecord" [editState]="isEditable"></vtm-brakes>
         </mat-expansion-panel>
       </div>
 
@@ -533,7 +530,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-purchaser [techRecord]="activeRecord"></vtm-purchaser>
+          <vtm-purchaser
+            [purchaser]="activeRecord.purchaserDetails"
+            [editState]="isEditable"
+          ></vtm-purchaser>
         </mat-expansion-panel>
       </div>
 
@@ -576,7 +576,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-manufacturer [techRecord]="activeRecord"></vtm-manufacturer>
+          <vtm-manufacturer
+            [techRecord]="activeRecord"
+            [editState]="isEditable"
+          ></vtm-manufacturer>
         </mat-expansion-panel>
       </div>
 
@@ -621,11 +624,12 @@
 
           <vtm-authorisation-into-service
             [authIntoService]="activeRecord.authIntoService"
+            [editState]="isEditable"
           ></vtm-authorisation-into-service>
         </mat-expansion-panel>
       </div>
 
-      <div [@.disabled]="true" *ngIf="activeRecord.vehicleType === 'trl'">
+      <div [@.disabled]="true" *ngIf="activeRecord.vehicleType === 'trl' && !viewCreateState">
         <mat-expansion-panel
           class="custom-header mat-elevation-z0 "
           hideToggle="true"

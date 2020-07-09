@@ -1,9 +1,9 @@
-<ng-container>
+<ng-container *ngIf="!editState">
   <dl class="govuk-summary-list">
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Name</dt>
       <dd id="test-purchaser-name" class="govuk-summary-list__value">
-        {{  purchaser?.name | DefaultNullOrEmpty }}
+        {{ purchaser?.name | DefaultNullOrEmpty }}
       </dd>
       <dd class="govuk-summary-list__value"></dd>
     </div>
@@ -65,6 +65,16 @@
         {{ purchaser?.purchaserNotes | DefaultNullOrEmpty }}
       </dd>
       <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>
+
+<ng-container *ngIf="editState">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        <vtm-purchaser-edit [purchaser]="purchaser"></vtm-purchaser-edit>
+      </dt>
     </div>
   </dl>
 </ng-container>

@@ -1,5 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { FormGroup, ControlContainer, FormGroupDirective, FormBuilder } from '@angular/forms';
+
+import { AddressFormComponent } from '@app/technical-record/shared/address-form/address-form.component';
 
 import { Applicant } from '@app/models/tech-record.model';
 
@@ -16,6 +18,7 @@ import { Applicant } from '@app/models/tech-record.model';
 })
 export class ApplicantEditComponent implements OnInit {
   @Input() applicant: Applicant;
+  @ViewChild(AddressFormComponent) commonAddressForm: AddressFormComponent;
 
   techRecordFg: FormGroup;
 
@@ -28,19 +31,17 @@ export class ApplicantEditComponent implements OnInit {
   ngOnInit() {
     this.techRecordFg = this.parent.form.get('techRecord') as FormGroup;
 
-    const applicantdDetails: Applicant = !!this.applicant ? this.applicant : ({} as Applicant);
+    const applicantDetails: Applicant = !!this.applicant ? this.applicant : ({} as Applicant);
+
+    const { name, ...addressInfo } = applicantDetails;
+
+    const commonAddressFields = this.commonAddressForm.createControls(addressInfo);
 
     this.techRecordFg.addControl(
       'applicantDetails',
       this.fb.group({
-        name: this.fb.control(applicantdDetails.name),
-        address1: this.fb.control(applicantdDetails.address1),
-        address2: this.fb.control(applicantdDetails.address2),
-        postTown: this.fb.control(applicantdDetails.postTown),
-        address3: this.fb.control(applicantdDetails.address3),
-        postCode: this.fb.control(applicantdDetails.postCode),
-        telephoneNumber: this.fb.control(applicantdDetails.telephoneNumber),
-        emailAddress: this.fb.control(applicantdDetails.emailAddress)
+        name: this.fb.control(applicantDetails.name),
+        ...commonAddressFields
       })
     );
   }

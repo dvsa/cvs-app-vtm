@@ -1,10 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`WeightsEditComponent should create with initialized form weights controls 1`] = `
+exports[`WeightsEditComponent should create with initialized weights controls for HGVs 1`] = `
 <vtm-weights-edit
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
+  isHgvVehicle={[Function Boolean]}
   isPsvVehicle="false"
+  isTrlVehicle="false"
   numberOfAxles$={[Function Observable]}
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
@@ -33,6 +35,8 @@ exports[`WeightsEditComponent should create with initialized form weights contro
             >
               Vehicle weight (kg)
             </h2>
+            
+            
             
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
@@ -122,6 +126,9 @@ exports[`WeightsEditComponent should create with initialized form weights contro
               </div>
             </div>
             
+            
+            
+            
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
               ng-reflect-form="[object Object]"
@@ -210,6 +217,9 @@ exports[`WeightsEditComponent should create with initialized form weights contro
               </div>
             </div>
             
+            
+            
+            
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
               ng-reflect-form="[object Object]"
@@ -297,6 +307,145 @@ exports[`WeightsEditComponent should create with initialized form weights contro
                 </div>
               </div>
             </div>
+            
+            
+            
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-weights-edit>
+`;
+
+exports[`WeightsEditComponent should create with initialized weights controls for TRLs 1`] = `
+<vtm-weights-edit
+  detectChange={[Function ViewRef_]}
+  fb={[Function FormBuilder]}
+  isHgvVehicle="false"
+  isPsvVehicle="false"
+  isTrlVehicle={[Function Boolean]}
+  numberOfAxles$={[Function Observable]}
+  onDestroy$={[Function Subject]}
+  parent={[Function FormGroupDirective]}
+  techRecHelper={[Function TechRecordHelperService]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <div
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+          >
+            <h2
+              class="govuk-heading-m"
+            >
+              Vehicle weight (kg)
+            </h2>
+            
+            
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                 Gross vehicle weight 
+              </label>
+              <div
+                class="govuk-inset-text govuk-!-margin-top-3"
+              >
+                
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-grossGbWeight"
+                  >
+                    <span>
+                      GB
+                    </span>
+                    
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-grossGbWeight"
+                    maxlength="5"
+                    name="grossGbWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossGbWeight"
+                    type="number"
+                    vtmnullvalue=""
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-grossEecWeight"
+                  >
+                    <span>
+                      EEC (optional)
+                    </span>
+                    
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-grossEecWeight"
+                    maxlength="5"
+                    name="grossEecWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossEecWeight"
+                    type="number"
+                    vtmnullvalue=""
+                  />
+                </div>
+                
+                <div
+                  class="govuk-form-group govuk-!-margin-left-3"
+                >
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-grossDesignWeight"
+                  >
+                    <span>
+                      Design
+                    </span>
+                    
+                  </label>
+                  <input
+                    class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
+                    id="test-edit-grossDesignWeight"
+                    maxlength="5"
+                    name="grossDesignWeight"
+                    ng-reflect-maxlength="5"
+                    ng-reflect-name="grossDesignWeight"
+                    type="number"
+                    vtmnullvalue=""
+                  />
+                </div>
+              </div>
+            </div>
+            
+            
+            
             
             
           </div>
@@ -311,7 +460,9 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
 <vtm-weights-edit
   detectChange={[Function ViewRef_]}
   fb={[Function FormBuilder]}
+  isHgvVehicle={[Function Boolean]}
   isPsvVehicle="false"
+  isTrlVehicle="false"
   numberOfAxles$={[Function Observable]}
   onDestroy$={[Function Subject]}
   parent={[Function FormGroupDirective]}
@@ -340,6 +491,8 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
             >
               Vehicle weight (kg)
             </h2>
+            
+            
             
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
@@ -429,6 +582,9 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
               </div>
             </div>
             
+            
+            
+            
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
               ng-reflect-form="[object Object]"
@@ -517,6 +673,9 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
               </div>
             </div>
             
+            
+            
+            
             <div
               class="govuk-form-group ng-untouched ng-pristine ng-valid"
               ng-reflect-form="[object Object]"
@@ -604,6 +763,7 @@ exports[`WeightsEditComponent should render AXLE weights controls on initializat
                 </div>
               </div>
             </div>
+            
             
             
             <h2
