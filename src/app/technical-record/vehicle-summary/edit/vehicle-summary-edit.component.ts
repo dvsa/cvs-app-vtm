@@ -21,7 +21,6 @@ import { VEHICLE_TYPES } from '@app/app.enums';
 import {
   AXLE_NUM_OPTIONS,
   BOOLEAN_RADIO_OPTIONS,
-  FUEL_PROPULSION,
   VEHICLE_CLASS,
   VEHICLE_CONFIGURATION,
   VEHICLE_EUCATEGORY
@@ -44,8 +43,12 @@ export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
   @Input() techRecord: TechRecord;
 
   techRecordFg: FormGroup;
+  // isHgvOrTrlVehicle: boolean;
+  // isStandardVehicle: boolean;
+  // isPsvOrTrlVehicle: boolean;
   numberOfAxles$: Observable<number>;
   onDestroy$ = new Subject();
+  isTrlVehicle: boolean;
 
   vehicleTypeOptions = {
     ['HGV']: VEHICLE_TYPES.HGV,
@@ -54,7 +57,6 @@ export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
   };
   booleanOptions = BOOLEAN_RADIO_OPTIONS;
   axleNoOptions = AXLE_NUM_OPTIONS;
-  fuelPropulsionOptions = new DisplayOptionsPipe().transform(FUEL_PROPULSION);
   vehicleClassOptions = new DisplayOptionsPipe().transform(VEHICLE_CLASS);
   vehicleConfigOptions = new DisplayOptionsPipe().transform(VEHICLE_CONFIGURATION);
   vehicleEUCategoryOptions = new DisplayOptionsPipe().transform(VEHICLE_EUCATEGORY);
@@ -72,6 +74,7 @@ export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
+    this.isTrlVehicle = this.techRecord.vehicleType === VEHICLE_TYPES.TRL;
 
     const { brakes, axles, vehicleClass } = this.techRecord;
     const dtpNumber = brakes ? brakes.dtpNumber : null;
@@ -94,66 +97,78 @@ export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
       })
     );
     this.techRecordFg.addControl('axles', this.buildAxleArrayGroup(techAxles));
-    this.techRecordFg.addControl(
-      'speedLimiterMrk',
-      this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.speedLimiterMrk, BOOLEAN_RADIO_OPTIONS.No)
-      )
-    );
-    this.techRecordFg.addControl(
-      'tachoExemptMrk',
-      this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.tachoExemptMrk, BOOLEAN_RADIO_OPTIONS.No)
-      )
-    );
-    this.techRecordFg.addControl('euroStandard', this.fb.control(this.techRecord.euroStandard));
+    // this.techRecordFg.addControl(
+    //   'speedLimiterMrk',
+    //   this.fb.control(
+    //     this.setDisplayOptionByDefault(this.techRecord.speedLimiterMrk, BOOLEAN_RADIO_OPTIONS.No)
+    //   )
+    // );
+
+    // this.techRecordFg.addControl(
+    //   'tachoExemptMrk',
+    //   this.fb.control(
+    //     this.setDisplayOptionByDefault(this.techRecord.tachoExemptMrk, BOOLEAN_RADIO_OPTIONS.No)
+    //   )
+    // );
+
+    // this.techRecordFg.addControl('euroStandard', this.fb.control(this.techRecord.euroStandard));
+
     this.techRecordFg.addControl(
       'roadFriendly',
       this.fb.control(
         this.setDisplayOptionByDefault(this.techRecord.roadFriendly, BOOLEAN_RADIO_OPTIONS.No)
       )
     );
-    this.techRecordFg.addControl(
-      'fuelPropulsionSystem',
-      this.fb.control(this.techRecord.fuelPropulsionSystem)
-    );
-    this.techRecordFg.addControl(
-      'drawbarCouplingFitted',
-      this.fb.control(
-        this.setDisplayOptionByDefault(
-          this.techRecord.drawbarCouplingFitted,
-          BOOLEAN_RADIO_OPTIONS.No
-        )
-      )
-    );
+
+    // this.techRecordFg.addControl(
+    //   'fuelPropulsionSystem',
+    //   this.fb.control(this.techRecord.fuelPropulsionSystem)
+    // );
+
+    // this.techRecordFg.addControl(
+    //   'drawbarCouplingFitted',
+    //   this.fb.control(
+    //     this.setDisplayOptionByDefault(
+    //       this.techRecord.drawbarCouplingFitted,
+    //       BOOLEAN_RADIO_OPTIONS.No
+    //     )
+    //   )
+    // );
+
     this.techRecordFg.addControl(
       'vehicleClass',
       this.fb.group({
         description: this.fb.control(vehicleClassDesc)
       })
     );
+
     this.techRecordFg.addControl(
       'vehicleConfiguration',
       this.fb.control(this.techRecord.vehicleConfiguration)
     );
-    this.techRecordFg.addControl(
-      'offRoad',
-      this.fb.control(
-        this.setDisplayOptionByDefault(this.techRecord.offRoad, BOOLEAN_RADIO_OPTIONS.No)
-      )
-    );
-    this.techRecordFg.addControl(
-      'numberOfWheelsDriven',
-      this.fb.control(this.techRecord.numberOfWheelsDriven)
-    );
+
+    // this.techRecordFg.addControl(
+    //   'offRoad',
+    //   this.fb.control(
+    //     this.setDisplayOptionByDefault(this.techRecord.offRoad, BOOLEAN_RADIO_OPTIONS.No)
+    //   )
+    // );
+
+    // this.techRecordFg.addControl(
+    //   'numberOfWheelsDriven',
+    //   this.fb.control(this.techRecord.numberOfWheelsDriven)
+    // );
+
     this.techRecordFg.addControl(
       'euVehicleCategory',
       this.fb.control(this.techRecord.euVehicleCategory)
     );
-    this.techRecordFg.addControl(
-      'emissionsLimit',
-      this.fb.control(this.techRecord.emissionsLimit)
-    );
+
+    // this.techRecordFg.addControl(
+    //   'emissionsLimit',
+    //   this.fb.control(this.techRecord.emissionsLimit)
+    // );
+
     this.techRecordFg.addControl(
       'departmentalVehicleMarker',
       this.fb.control(

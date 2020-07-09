@@ -160,9 +160,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
       JSON.parse(JSON.stringify(value))
     );
 
-    const clonedVehicleRecord: VehicleTechRecordEdit = JSON.parse(
-      JSON.stringify(this.activeVehicleTechRecord)
-    );
+    const clonedVehicleRecord: VehicleTechRecordEdit = this.getClonedVehicleRecord();
 
     const mergeTechRecord: TechRecord = this.getMergedTechRecord({
       cloned: clonedVehicleRecord.techRecord[0],
@@ -208,7 +206,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
     this.isArchivedRecord = this.techRecHelper.isArchivedRecord(this.activeRecord.statusCode);
   }
 
-  onSendMinistryPlates() {
+  sendMinistryPlates() {
     const dialogRef = this.dialog.open(DialogMinistryPlatesComponent, {
       width: '45vw',
       data: { applicantDetails: this.activeRecord.applicantDetails }

@@ -30,6 +30,8 @@ import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-ps
 import { VehicleSummaryHgvComponent } from './vehicle-summary/vehicle-summary-hgv/vehicle-summary-hgv.component';
 import { VehicleSummaryTrlComponent } from './vehicle-summary/vehicle-summary-trl/vehicle-summary-trl.component';
 import { VehicleSummaryEditComponent } from './vehicle-summary/edit/vehicle-summary-edit.component';
+import { VehicleSummaryEditHgvComponent } from './vehicle-summary/edit/vehicle-summary-edit-hgv/vehicle-summary-edit-hgv.component';
+import { VehicleSummaryEditTrlComponent } from './vehicle-summary/edit/vehicle-summary-edit-trl/vehicle-summary-edit-trl.component';
 import { TypeApprovalComponent } from './vehicle-summary/edit/type-approval/type-approval.component';
 import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { BodyComponent } from './body/body.component';
@@ -79,6 +81,8 @@ const COMPONENTS = [
   VehicleSummaryHgvComponent,
   VehicleSummaryTrlComponent,
   VehicleSummaryEditComponent,
+  VehicleSummaryEditHgvComponent,
+  VehicleSummaryEditTrlComponent,
   TypeApprovalComponent,
   NotesEditComponent,
   BodyEditComponent,
