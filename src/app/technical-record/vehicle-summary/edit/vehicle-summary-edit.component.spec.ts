@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
@@ -15,17 +15,22 @@ import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { TechRecord } from '@app/models/tech-record.model';
 import { VehicleSummaryEditComponent } from './vehicle-summary-edit.component';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
+import { VEHICLE_TYPES, VIEW_STATE } from '@app/app.enums';
 
 describe('VehicleSummaryEditComponent', () => {
-  let component: VehicleSummaryEditComponent;
   let fixture: ComponentFixture<VehicleSummaryEditComponent>;
+  let component: VehicleSummaryEditComponent;
   let techRecHelper: TechRecordHelperService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, SharedModule],
-      declarations: [VehicleSummaryEditComponent, TestTypeApprovalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [
+        VehicleSummaryEditComponent,
+        TestVehicleSummaryEditHgvComponent,
+        TestVehicleSummaryEditTrlComponent,
+        TestTypeApprovalComponent
+      ],
       providers: [
         TechRecordHelperService,
         FormGroupDirective,
@@ -43,7 +48,9 @@ describe('VehicleSummaryEditComponent', () => {
     techRecHelper = TestBed.get(TechRecordHelperService);
     fixture = TestBed.createComponent(VehicleSummaryEditComponent);
     component = fixture.componentInstance;
+    component.viewState = VIEW_STATE.EDIT;
     component.techRecord = {
+      vehicleType: VEHICLE_TYPES.HGV, // default vehicle type
       approvalType: 'approval',
       regnDate: '2020-06-08',
       manufactureYear: 2003,
@@ -53,10 +60,14 @@ describe('VehicleSummaryEditComponent', () => {
     } as TechRecord;
   });
 
-  it('should create with initialized form controls', () => {
+  it('should create with initialized form controls for HGVs', () => {
     fixture.detectChanges();
+    expect(fixture).toMatchSnapshot();
+  });
 
-    expect(component).toBeDefined();
+  it('should create with initialized form controls for TRLs', () => {
+    component.techRecord.vehicleType = VEHICLE_TYPES.TRL;
+    fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
   });
 
@@ -131,6 +142,26 @@ describe('VehicleSummaryEditComponent', () => {
     });
   });
 });
+
+@Component({
+  selector: 'vtm-vehicle-summary-edit-hgv',
+  template: `
+    <div>Active record HGV: {{ techRecord | json }}</div>
+  `
+})
+class TestVehicleSummaryEditHgvComponent {
+  @Input() techRecord: TechRecord;
+}
+
+@Component({
+  selector: 'vtm-vehicle-summary-edit-trl',
+  template: `
+    <div>Active record TRL: {{ techRecord | json }}</div>
+  `
+})
+class TestVehicleSummaryEditTrlComponent {
+  @Input() techRecord: TechRecord;
+}
 
 @Component({
   selector: 'vtm-type-approval',

@@ -1,0 +1,331 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VehicleSummaryEditHgvComponent should create with empty control states 1`] = `
+<vtm-vehicle-summary-edit-hgv
+  booleanOptions={[Function Object]}
+  fb={[Function FormBuilder]}
+  fuelPropulsionOptions={[Function Array]}
+  parent={[Function FormGroupDirective]}
+  techRecord={[Function Object]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-form-group"
+  >
+    <form
+      class="ng-untouched ng-pristine ng-valid"
+      ng-reflect-form="[object Object]"
+      novalidate=""
+    >
+      
+      <div
+        class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-speedLimiterMrk"
+        >
+           Speed limiter exempt 
+        </label>
+        
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-speedLimiterMrk-Yes"
+            ng-reflect-form-control-name="speedLimiterMrk"
+            ng-reflect-name="speedLimiterMrk"
+            ng-reflect-value="true"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-speedLimiterMrk-Yes"
+          >
+             Yes 
+          </label>
+        </div>
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-speedLimiterMrk-No"
+            ng-reflect-form-control-name="speedLimiterMrk"
+            ng-reflect-name="speedLimiterMrk"
+            ng-reflect-value="false"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-speedLimiterMrk-No"
+          >
+             No 
+          </label>
+        </div>
+      </div>
+      
+      <div
+        class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-tachoExemptMrk"
+        >
+           Tacho exempt 
+        </label>
+        
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-tachoExemptMrk-Yes"
+            ng-reflect-form-control-name="tachoExemptMrk"
+            ng-reflect-name="tachoExemptMrk"
+            ng-reflect-value="true"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-tachoExemptMrk-Yes"
+          >
+             Yes 
+          </label>
+        </div>
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-tachoExemptMrk-No"
+            ng-reflect-form-control-name="tachoExemptMrk"
+            ng-reflect-name="tachoExemptMrk"
+            ng-reflect-value="false"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-tachoExemptMrk-No"
+          >
+             No 
+          </label>
+        </div>
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-euroStandard"
+        >
+           Euro standard 
+        </label>
+        <input
+          class="govuk-input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+          formcontrolname="euroStandard"
+          id="test-edit-euroStandard"
+          name="euroStandard"
+          ng-reflect-name="euroStandard"
+          type="text"
+        />
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-fuelPropulsionSystem"
+        >
+           Fuel/propulsion system 
+        </label>
+        <select
+          class="govuk-select ng-untouched ng-pristine ng-valid"
+          formcontrolname="fuelPropulsionSystem"
+          id="test-edit-fuelPropulsionSystem"
+          ng-reflect-name="fuelPropulsionSystem"
+        >
+          
+          <option
+            ng-reflect-ng-value="DieselPetrol"
+            value="0: DieselPetrol"
+          >
+             DieselPetrol 
+          </option>
+          <option
+            ng-reflect-ng-value="Hybrid"
+            value="1: Hybrid"
+          >
+             Hybrid 
+          </option>
+          <option
+            ng-reflect-ng-value="Electric"
+            value="2: Electric"
+          >
+             Electric 
+          </option>
+          <option
+            ng-reflect-ng-value="CNG"
+            value="3: CNG"
+          >
+             CNG 
+          </option>
+          <option
+            ng-reflect-ng-value="Fuel cell"
+            value="4: Fuel cell"
+          >
+             Fuel cell 
+          </option>
+          <option
+            ng-reflect-ng-value="LNG"
+            value="5: LNG"
+          >
+             LNG 
+          </option>
+          <option
+            ng-reflect-ng-value="Other"
+            value="6: Other"
+          >
+             Other 
+          </option>
+        </select>
+      </div>
+      
+      <div
+        class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-drawbarCouplingFitted"
+        >
+           Drawbar coupling fitted 
+        </label>
+        
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-drawbarCouplingFitted-Yes"
+            ng-reflect-form-control-name="drawbarCouplingFitted"
+            ng-reflect-name="drawbarCouplingFitted"
+            ng-reflect-value="true"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-drawbarCouplingFitted-Yes"
+          >
+             Yes 
+          </label>
+        </div>
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-drawbarCouplingFitted-No"
+            ng-reflect-form-control-name="drawbarCouplingFitted"
+            ng-reflect-name="drawbarCouplingFitted"
+            ng-reflect-value="false"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-drawbarCouplingFitted-No"
+          >
+             No 
+          </label>
+        </div>
+      </div>
+      
+      <div
+        class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-offRoad"
+        >
+           Off road vehicle 
+        </label>
+        
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-offRoad-Yes"
+            ng-reflect-form-control-name="offRoad"
+            ng-reflect-name="offRoad"
+            ng-reflect-value="true"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-offRoad-Yes"
+          >
+             Yes 
+          </label>
+        </div>
+        <div
+          class="govuk-radios__item"
+        >
+          <input
+            class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+            id="test-edit-offRoad-No"
+            ng-reflect-form-control-name="offRoad"
+            ng-reflect-name="offRoad"
+            ng-reflect-value="false"
+            type="radio"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-offRoad-No"
+          >
+             No 
+          </label>
+        </div>
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-numberOfWheelsDriven"
+        >
+           Number of wheels driven 
+        </label>
+        <input
+          class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+          formcontrolname="numberOfWheelsDriven"
+          id="test-edit-numberOfWheelsDriven"
+          name="numberOfWheelsDriven"
+          ng-reflect-name="numberOfWheelsDriven"
+          type="number"
+        />
+      </div>
+      <div
+        class="govuk-form-group"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+          for="test-edit-emissionsLimit"
+        >
+           Emission limit (optional) 
+        </label>
+        <input
+          class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
+          formcontrolname="emissionsLimit"
+          id="test-edit-emissionsLimit"
+          name="emissionsLimit"
+          ng-reflect-name="emissionsLimit"
+          type="number"
+          vtmnullvalue=""
+        />
+      </div>
+      
+    </form>
+  </div>
+</vtm-vehicle-summary-edit-hgv>
+`;

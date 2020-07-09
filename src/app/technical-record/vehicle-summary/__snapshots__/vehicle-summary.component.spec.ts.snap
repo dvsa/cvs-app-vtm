@@ -1110,6 +1110,7 @@ exports[`VehicleSummaryComponent should render the editable component if editSta
   isStandardVehicle="undefined"
   techRecHelper={[Function TechRecordHelperService]}
   vehicleClassDescription={[Function String]}
+  viewState={[Function Number]}
 >
   <dl
     class="govuk-summary-list"
@@ -1122,6 +1123,7 @@ exports[`VehicleSummaryComponent should render the editable component if editSta
       >
         <vtm-vehicle-summary-edit
           ng-reflect-tech-record="[object Object]"
+          ng-reflect-view-state="1"
         >
           <div>
             active record is: {
@@ -1158,6 +1160,9 @@ exports[`VehicleSummaryComponent should render the editable component if editSta
       }
     ]
   }
+          </div>
+          <div>
+            Current view is: 1 Edit mode
           </div>
         </vtm-vehicle-summary-edit>
       </dt>

@@ -30,7 +30,7 @@
           <div class="govuk-form-group">
             <div role="group" aria-describedby="registration-date">
               <label class="govuk-label govuk-!-font-weight-bold" for="test-edit-regnDate">
-                Date of first registration
+                Date of first registration <span *ngIf="isTrlVehicle">(optional)</span>
               </label>
               <vtm-date-input
                 id="test-edit-regnDate"
@@ -113,48 +113,6 @@
             </div>
           </ng-container>
 
-          <!-- Speed limiter exempt -->
-          <ng-container
-            *ngTemplateOutlet="
-              boolTemplate;
-              context: {
-                $implicit: {
-                  label: 'Speed limiter exempt',
-                  field: 'speedLimiterMrk'
-                }
-              }
-            "
-          >
-          </ng-container>
-
-          <!-- Tacho exempt -->
-          <ng-container
-            *ngTemplateOutlet="
-              boolTemplate;
-              context: {
-                $implicit: {
-                  label: 'Tacho exempt',
-                  field: 'tachoExemptMrk'
-                }
-              }
-            "
-          >
-          </ng-container>
-
-          <!-- Euro standard -->
-          <div class="govuk-form-group">
-            <label for="test-edit-euroStandard" class="govuk-label govuk-!-font-weight-bold">
-              Euro standard
-            </label>
-            <input
-              id="test-edit-euroStandard"
-              type="text"
-              name="euroStandard"
-              formControlName="euroStandard"
-              class="govuk-input govuk-input--width-2"
-            />
-          </div>
-
           <!-- Road friendly suspension -->
           <ng-container
             *ngTemplateOutlet="
@@ -163,39 +121,6 @@
                 $implicit: {
                   label: 'Road friendly suspension',
                   field: 'roadFriendly'
-                }
-              }
-            "
-          >
-          </ng-container>
-
-          <!--Fuel propulsion  -->
-          <div class="govuk-form-group">
-            <label
-              for="test-edit-fuelPropulsionSystem"
-              class="govuk-label govuk-!-font-weight-bold"
-            >
-              Fuel/propulsion system
-            </label>
-            <select
-              id="test-edit-fuelPropulsionSystem"
-              formControlName="fuelPropulsionSystem"
-              class="govuk-select"
-            >
-              <option *ngFor="let fuelProp of fuelPropulsionOptions" [ngValue]="fuelProp.name">
-                {{ fuelProp.name }}
-              </option>
-            </select>
-          </div>
-
-          <!-- Drawbar coupling fitted -->
-          <ng-container
-            *ngTemplateOutlet="
-              boolTemplate;
-              context: {
-                $implicit: {
-                  label: 'Drawbar coupling fitted',
-                  field: 'drawbarCouplingFitted'
                 }
               }
             "
@@ -240,37 +165,6 @@
             </select>
           </div>
 
-          <!-- Offroad vehicle -->
-          <ng-container
-            *ngTemplateOutlet="
-              boolTemplate;
-              context: {
-                $implicit: {
-                  label: 'Off road vehicle',
-                  field: 'offRoad'
-                }
-              }
-            "
-          >
-          </ng-container>
-
-          <!-- Number of wheels driven -->
-          <div class="govuk-form-group">
-            <label
-              for="test-edit-numberOfWheelsDriven"
-              class="govuk-label govuk-!-font-weight-bold"
-            >
-              Number of wheels driven
-            </label>
-            <input
-              id="test-edit-numberOfWheelsDriven"
-              type="number"
-              name="numberOfWheelsDriven"
-              formControlName="numberOfWheelsDriven"
-              class="govuk-input govuk-input--width-4"
-            />
-          </div>
-
           <!-- EU vehicle category -->
           <div class="govuk-form-group">
             <label for="test-edit-euVehicleCategory" class="govuk-label govuk-!-font-weight-bold">
@@ -287,21 +181,6 @@
             </select>
           </div>
 
-          <!-- Emission limit -->
-          <div class="govuk-form-group">
-            <label for="test-edit-emissionsLimit" class="govuk-label govuk-!-font-weight-bold">
-              Emission limit (optional)
-            </label>
-            <input
-              id="test-edit-emissionsLimit"
-              type="number"
-              name="emissionsLimit"
-              formControlName="emissionsLimit"
-              class="govuk-input govuk-input govuk-input--width-20"
-              vtmNullValue
-            />
-          </div>
-
           <!-- Departmental vehicle marker -->
           <ng-container
             *ngTemplateOutlet="
@@ -314,6 +193,36 @@
               }
             "
           >
+          </ng-container>
+
+          <!-- Alteration marker -->
+          <ng-container *ngIf="displayInEditView">
+            <ng-container
+              *ngTemplateOutlet="
+                boolTemplate;
+                context: {
+                  $implicit: {
+                    label: 'Alteration marker',
+                    field: 'alterationMarker'
+                  }
+                }
+              "
+            >
+            </ng-container>
+          </ng-container>
+
+          <!-- Vehicle summary HGV Editing -->
+          <ng-container *ngIf="vehicleTypeOptions.HGV === techRecord.vehicleType">
+            <vtm-vehicle-summary-edit-hgv
+              [techRecord]="techRecord"
+            ></vtm-vehicle-summary-edit-hgv>
+          </ng-container>
+
+          <!-- Vehicle summary TRL Editing -->
+          <ng-container *ngIf="vehicleTypeOptions.Trailer === techRecord.vehicleType">
+            <vtm-vehicle-summary-edit-trl
+              [techRecord]="techRecord"
+            ></vtm-vehicle-summary-edit-trl>
           </ng-container>
 
           <ng-template let-boolTemplate #boolTemplate>

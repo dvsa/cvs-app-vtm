@@ -94,7 +94,7 @@ describe('TechRecHistoryComponent', () => {
     <vtm-tech-rec-history
       [focusedRecord]="activeRecord"
       [vehicleRecord]="vehicleTechRecord"
-      (onViewRecord)="viewRecordHandler($event)"
+      (viewRecord)="viewRecordHandler($event)"
     ></vtm-tech-rec-history>
   `
 })

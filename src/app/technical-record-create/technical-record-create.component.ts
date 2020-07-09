@@ -4,10 +4,10 @@ import { SetVehicleTechRecordOnCreate } from '@app/store/actions/VehicleTechReco
 import { Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 import { Observable } from 'rxjs';
-import { CREATE_PAGE_LABELS } from '@app/app.enums';
+import { CREATE_PAGE_LABELS, VEHICLE_TYPES } from '@app/app.enums';
 import { VehicleIdentifiers } from '@app/models/vehicle-tech-record.model';
 import { getErrors } from '@app/store/selectors/error.selectors';
-import { ClearErrorMessage, SetErrorMessage } from '@app/store/actions/Error.actions';
+import { SetErrorMessage } from '@app/store/actions/Error.actions';
 
 @Component({
   selector: 'vtm-technical-record-create',
@@ -15,7 +15,6 @@ import { ClearErrorMessage, SetErrorMessage } from '@app/store/actions/Error.act
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechnicalRecordCreateComponent implements OnInit {
-  vehicleTypes = ['PSV', 'HGV', 'Trailer'];
   createTechRecordForm: FormGroup;
   formError$: Observable<any>;
   formErrors: { vinErr: string; vrmErr: string; vTypeErr: string; requestErr: string[] } = {
@@ -25,6 +24,12 @@ export class TechnicalRecordCreateComponent implements OnInit {
     requestErr: []
   };
   vrmLabel = CREATE_PAGE_LABELS.CREATE_VRM_LABEL;
+
+  vehicleTypeOptions = {
+    ['PSV']: VEHICLE_TYPES.PSV,
+    ['HGV']: VEHICLE_TYPES.HGV,
+    ['Trailer']: VEHICLE_TYPES.TRL
+  };
 
   constructor(private _store: Store<IAppState>) {
     this.formError$ = this._store.select(getErrors);
@@ -81,5 +86,9 @@ export class TechnicalRecordCreateComponent implements OnInit {
       const errors = [this.formErrors.vinErr, this.formErrors.vrmErr, this.formErrors.vTypeErr];
       this._store.dispatch(new SetErrorMessage(errors));
     }
+  }
+
+  unsorted(): number {
+    return 0;
   }
 }

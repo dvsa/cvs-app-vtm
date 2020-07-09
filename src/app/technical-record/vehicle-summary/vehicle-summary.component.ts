@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 
 import { TechRecord } from '@app/models/tech-record.model';
 import { TechRecordHelperService } from '../tech-record-helper.service';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-vehicle-summary',
@@ -11,6 +12,7 @@ import { TechRecordHelperService } from '../tech-record-helper.service';
 export class VehicleSummaryComponent implements OnInit {
   @Input() activeRecord: TechRecord;
   @Input() editState: boolean;
+  @Input() viewState: VIEW_STATE;
 
   vehicleClassDescription: string;
   isStandardVehicle: boolean;

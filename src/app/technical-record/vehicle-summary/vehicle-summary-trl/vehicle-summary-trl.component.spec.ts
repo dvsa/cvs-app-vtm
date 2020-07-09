@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { VehicleSummaryTrlComponent } from './vehicle-summary-trl.component';
 import { SharedModule } from '@app/shared/shared.module';
@@ -12,8 +11,7 @@ describe('VehicleSummaryTrlComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [VehicleSummaryTrlComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      declarations: [VehicleSummaryTrlComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(VehicleSummaryTrlComponent);

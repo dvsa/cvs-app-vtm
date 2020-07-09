@@ -6,7 +6,7 @@ exports[`TechnicalRecordSearchComponent should create 1`] = `
   createTechRecordForm={[Function FormGroup]}
   formError$={[Function Observable]}
   formErrors={[Function Object]}
-  vehicleTypes={[Function Array]}
+  vehicleTypeOptions={[Function Object]}
   vrmLabel={[Function String]}
 >
   <div
@@ -80,7 +80,7 @@ exports[`TechnicalRecordSearchComponent should create 1`] = `
                             id="test-radio-PSV"
                             ng-reflect-form-control-name="vehicleType"
                             ng-reflect-name="vehicleType"
-                            ng-reflect-value="PSV"
+                            ng-reflect-value="psv"
                             type="radio"
                           />
                           <label
@@ -99,7 +99,7 @@ exports[`TechnicalRecordSearchComponent should create 1`] = `
                             id="test-radio-HGV"
                             ng-reflect-form-control-name="vehicleType"
                             ng-reflect-name="vehicleType"
-                            ng-reflect-value="HGV"
+                            ng-reflect-value="hgv"
                             type="radio"
                           />
                           <label
@@ -118,7 +118,7 @@ exports[`TechnicalRecordSearchComponent should create 1`] = `
                             id="test-radio-Trailer"
                             ng-reflect-form-control-name="vehicleType"
                             ng-reflect-name="vehicleType"
-                            ng-reflect-value="Trailer"
+                            ng-reflect-value="trl"
                             type="radio"
                           />
                           <label
