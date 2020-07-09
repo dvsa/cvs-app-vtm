@@ -53,6 +53,7 @@ import { PlatesComponent } from './plates/plates.component';
 import { BrakesComponent } from './brakes/brakes.component';
 import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
 import { PurchaserComponent } from './purchaser/purchaser.component';
+import { PurchaserEditComponent } from './purchaser/edit/purchaser-edit.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 import { ManufacturerEditComponent } from './manufacturer/edit/manufacturer-edit.component';
 import { AuthorisationIntoServiceComponent } from './authorisation-into-service/authorisation-into-service.component';
@@ -103,6 +104,7 @@ const COMPONENTS = [
   BrakesComponent,
   BrakesPsvComponent,
   PurchaserComponent,
+  PurchaserEditComponent,
   ManufacturerComponent,
   ManufacturerEditComponent,
   AuthorisationIntoServiceComponent,

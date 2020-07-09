@@ -7,15 +7,14 @@ import { PurchaserDetails } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PurchaserComponent implements OnInit {
-
+  @Input() editState: boolean;
   @Input() purchaser: PurchaserDetails;
   address1And2 = '';
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     if (this.purchaser) {
       this.address1And2 = `${this.purchaser.address1} ${this.purchaser.address2}`;
     }
   }
-
 }
