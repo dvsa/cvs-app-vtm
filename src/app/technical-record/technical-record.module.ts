@@ -30,6 +30,8 @@ import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-ps
 import { VehicleSummaryHgvComponent } from './vehicle-summary/vehicle-summary-hgv/vehicle-summary-hgv.component';
 import { VehicleSummaryTrlComponent } from './vehicle-summary/vehicle-summary-trl/vehicle-summary-trl.component';
 import { VehicleSummaryEditComponent } from './vehicle-summary/edit/vehicle-summary-edit.component';
+import { VehicleSummaryEditHgvComponent } from './vehicle-summary/edit/vehicle-summary-edit-hgv/vehicle-summary-edit-hgv.component';
+import { VehicleSummaryEditTrlComponent } from './vehicle-summary/edit/vehicle-summary-edit-trl/vehicle-summary-edit-trl.component';
 import { TypeApprovalComponent } from './vehicle-summary/edit/type-approval/type-approval.component';
 import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { BodyComponent } from './body/body.component';
@@ -54,7 +56,9 @@ import { BrakesComponent } from './brakes/brakes.component';
 import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
 import { PurchaserComponent } from './purchaser/purchaser.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
+import { ManufacturerEditComponent } from './manufacturer/edit/manufacturer-edit.component';
 import { AuthorisationIntoServiceComponent } from './authorisation-into-service/authorisation-into-service.component';
+import { AuthIntoServiceEditComponent } from './authorisation-into-service/edit/auth-into-service-edit.component';
 import { LettersOfAuthorisationComponent } from './letters-of-authorisation/letters-of-authorisation.component';
 import { AxleBrakesComponent } from './brakes/axle-brakes/axle-brakes.component';
 import { DdaComponent } from './dda/dda.component';
@@ -79,6 +83,8 @@ const COMPONENTS = [
   VehicleSummaryHgvComponent,
   VehicleSummaryTrlComponent,
   VehicleSummaryEditComponent,
+  VehicleSummaryEditHgvComponent,
+  VehicleSummaryEditTrlComponent,
   TypeApprovalComponent,
   NotesEditComponent,
   BodyEditComponent,
@@ -103,7 +109,9 @@ const COMPONENTS = [
   BrakesPsvComponent,
   PurchaserComponent,
   ManufacturerComponent,
+  ManufacturerEditComponent,
   AuthorisationIntoServiceComponent,
+  AuthIntoServiceEditComponent,
   LettersOfAuthorisationComponent,
   AxleBrakesComponent,
   DdaComponent

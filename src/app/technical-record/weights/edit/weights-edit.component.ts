@@ -37,6 +37,8 @@ export class WeightsEditComponent implements OnInit, OnDestroy {
   techRecordFg: FormGroup;
   numberOfAxles$: Observable<number>;
   onDestroy$ = new Subject();
+  isHgvVehicle: boolean;
+  isTrlVehicle: boolean;
   isPsvVehicle: boolean;
 
   get axlesWeigths() {
@@ -52,6 +54,8 @@ export class WeightsEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
+    this.isHgvVehicle = this.techRecord.vehicleType === VEHICLE_TYPES.HGV;
+    this.isTrlVehicle = this.techRecord.vehicleType === VEHICLE_TYPES.TRL;
     this.isPsvVehicle = this.techRecord.vehicleType === VEHICLE_TYPES.PSV;
 
     const { axles } = this.techRecord;

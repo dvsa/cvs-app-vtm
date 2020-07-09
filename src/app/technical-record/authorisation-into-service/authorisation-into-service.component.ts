@@ -7,6 +7,7 @@ import { AuthIntoService } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthorisationIntoServiceComponent implements OnInit {
+  @Input() editState: boolean;
   @Input() authIntoService: AuthIntoService;
 
   constructor() {}
