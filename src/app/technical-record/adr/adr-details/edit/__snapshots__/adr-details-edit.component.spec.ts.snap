@@ -58,7 +58,7 @@ exports[`AdrDetailsEditComponent should create with initialized form controls 1`
                 <select
                   class="govuk-select ng-untouched ng-pristine ng-valid"
                   formcontrolname="type"
-                  id="vehicleType"
+                  id="test-edit-vehicleType"
                   ng-reflect-name="type"
                 >
                   

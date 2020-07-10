@@ -59,7 +59,7 @@ describe('AdrDetailsEditComponent', () => {
         spyOn(validationMapper, 'vehicleTypeSelected');
 
         const vehicleTypeElement: HTMLSelectElement = fixture.debugElement.query(
-          By.css('[id="vehicleType"]')
+          By.css('[id="test-edit-vehicleType"]')
         ).nativeElement;
 
         const selectedType = TESTING_UTILS.mockMetaData().adrDetails.vehicleDetails.typeFe[0];

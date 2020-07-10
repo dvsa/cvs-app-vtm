@@ -188,7 +188,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="substancesPermitted"
-                  id="test-edit-substancesPermitted_classNumber"
+                  id="test-edit-substancesPermitted-classNumber"
                   name="substancesPermitted"
                   ng-reflect-form-control-name="substancesPermitted"
                   ng-reflect-name="substancesPermitted"
@@ -197,7 +197,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="test-edit-substancesPermitted_classNumber"
+                  for="test-edit-substancesPermitted-classNumber"
                 >
                    Substances (class UN number and if necessary packing group and proper shipping name) may be carried 
                 </label>
@@ -565,7 +565,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="substancesPermitted"
-                  id="test-edit-substancesPermitted_classNumber"
+                  id="test-edit-substancesPermitted-classNumber"
                   name="substancesPermitted"
                   ng-reflect-form-control-name="substancesPermitted"
                   ng-reflect-name="substancesPermitted"
@@ -574,7 +574,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="test-edit-substancesPermitted_classNumber"
+                  for="test-edit-substancesPermitted-classNumber"
                 >
                    Substances (class UN number and if necessary packing group and proper shipping name) may be carried 
                 </label>
