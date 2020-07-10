@@ -73,7 +73,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankManufacturer"
-                id="tankManufacturer"
+                id="test-edit-tankManufacturer"
                 name="tankManufacturer"
                 ng-reflect-name="tankManufacturer"
                 type="text"
@@ -91,7 +91,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
               <input
                 class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
                 formcontrolname="yearOfManufacture"
-                id="yearOfManufacture"
+                id="test-edit-yearOfManufacture"
                 name="yearOfManufacture"
                 ng-reflect-name="yearOfManufacture"
                 ng-reflect-pattern="[0-9]*"
@@ -111,7 +111,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankManufacturerSerialNo"
-                id="tankManufacturerSerialNo"
+                id="test-edit-tankManufacturerSerialNo"
                 name="tankManufacturerSerialNo"
                 ng-reflect-name="tankManufacturerSerialNo"
                 type="text"
@@ -129,7 +129,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankTypeAppNo"
-                id="tankTypeAppNo"
+                id="test-edit-tankTypeAppNo"
                 name="tankTypeAppNo"
                 ng-reflect-name="tankTypeAppNo"
                 type="text"
@@ -147,7 +147,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankCode"
-                id="tankCode"
+                id="test-edit-tankCode"
                 name="tankCode"
                 ng-reflect-name="tankCode"
                 type="text"
@@ -168,7 +168,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="substancesPermitted"
-                  id="substancesPermitted_permitted"
+                  id="test-edit-substancesPermitted-permitted"
                   name="substancesPermitted"
                   ng-reflect-form-control-name="substancesPermitted"
                   ng-reflect-name="substancesPermitted"
@@ -177,7 +177,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="substancesPermitted_permitted"
+                  for="test-edit-substancesPermitted-permitted"
                 >
                    Substances permitted under the tank code and any special provisions specified in 9 may be carried 
                 </label>
@@ -188,7 +188,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="substancesPermitted"
-                  id="substancesPermitted_classNumber"
+                  id="test-edit-substancesPermitted_classNumber"
                   name="substancesPermitted"
                   ng-reflect-form-control-name="substancesPermitted"
                   ng-reflect-name="substancesPermitted"
@@ -197,14 +197,14 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="substancesPermitted_classNumber"
+                  for="test-edit-substancesPermitted_classNumber"
                 >
                    Substances (class UN number and if necessary packing group and proper shipping name) may be carried 
                 </label>
               </div>
               <div
                 class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
-                id="conditional-substancesPermitted_classNumber"
+                id="test-edit-conditional-substancesPermitted_classNumber"
               >
                 
                 <div
@@ -225,7 +225,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                       <input
                         class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                         formcontrolname="substanceReferenceSelect"
-                        id="select_statement_Y"
+                        id="test-edit-select-statement-Y"
                         ng-reflect-form-control-name="substanceReferenceSelect"
                         ng-reflect-name="substanceReferenceSelect"
                         ng-reflect-value="statement"
@@ -253,7 +253,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                         <input
                           class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                           formcontrolname="statement"
-                          id="statementRefNumber"
+                          id="test-edit-statementRefNumber"
                           name="statementRefNumber"
                           ng-reflect-name="statement"
                           type="text"
@@ -266,7 +266,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                       <input
                         class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                         formcontrolname="substanceReferenceSelect"
-                        id="select_productlist_N"
+                        id="test-edit-select-productlist-N"
                         ng-reflect-form-control-name="substanceReferenceSelect"
                         ng-reflect-name="substanceReferenceSelect"
                         ng-reflect-value="productList"
@@ -280,7 +280,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                     </div>
                     <div
                       class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
-                      id="conditional-select_productlist_N"
+                      id="test-edit-conditional-select-productlist-N"
                     >
                       <div
                         class="govuk-form-group govuk-!-margin-left-3"
@@ -297,7 +297,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                           <input
                             class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                             formcontrolname="productListRefNo"
-                            id="productListRefNumber"
+                            id="test-edit-productListRefNumber"
                             name="productListRefNumber"
                             ng-reflect-name="productListRefNo"
                             type="text"
@@ -322,7 +322,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                             </label>
                             <input
                               class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                              id="productListUnNumber_0"
+                              id="test-edit-productListUnNumber-0"
                               name="productListUnNumber_0"
                               ng-reflect-form="[object Object]"
                               type="text"
@@ -353,7 +353,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                             aria-describedby="productList"
                             class="govuk-textarea ng-untouched ng-pristine ng-valid"
                             formcontrolname="productList"
-                            id="productList"
+                            id="test-edit-productList"
                             name="productList"
                             ng-reflect-name="productList"
                             rows="8"
@@ -382,7 +382,7 @@ exports[`TankDetailsEditComponent should create with initialized form controls 1
                 aria-describedby="specialProvisions"
                 class="govuk-textarea govuk-!-margin-bottom-0 ng-untouched ng-pristine ng-valid"
                 formcontrolname="specialProvisions"
-                id="specialProvisions"
+                id="test-edit-specialProvisions"
                 name="specialProvisions"
                 ng-reflect-name="specialProvisions"
                 rows="8"
@@ -450,7 +450,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankManufacturer"
-                id="tankManufacturer"
+                id="test-edit-tankManufacturer"
                 name="tankManufacturer"
                 ng-reflect-name="tankManufacturer"
                 type="text"
@@ -468,7 +468,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
               <input
                 class="govuk-input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
                 formcontrolname="yearOfManufacture"
-                id="yearOfManufacture"
+                id="test-edit-yearOfManufacture"
                 name="yearOfManufacture"
                 ng-reflect-name="yearOfManufacture"
                 ng-reflect-pattern="[0-9]*"
@@ -488,7 +488,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankManufacturerSerialNo"
-                id="tankManufacturerSerialNo"
+                id="test-edit-tankManufacturerSerialNo"
                 name="tankManufacturerSerialNo"
                 ng-reflect-name="tankManufacturerSerialNo"
                 type="text"
@@ -506,7 +506,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankTypeAppNo"
-                id="tankTypeAppNo"
+                id="test-edit-tankTypeAppNo"
                 name="tankTypeAppNo"
                 ng-reflect-name="tankTypeAppNo"
                 type="text"
@@ -524,7 +524,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
               <input
                 class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                 formcontrolname="tankCode"
-                id="tankCode"
+                id="test-edit-tankCode"
                 name="tankCode"
                 ng-reflect-name="tankCode"
                 type="text"
@@ -545,7 +545,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="substancesPermitted"
-                  id="substancesPermitted_permitted"
+                  id="test-edit-substancesPermitted-permitted"
                   name="substancesPermitted"
                   ng-reflect-form-control-name="substancesPermitted"
                   ng-reflect-name="substancesPermitted"
@@ -554,7 +554,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="substancesPermitted_permitted"
+                  for="test-edit-substancesPermitted-permitted"
                 >
                    Substances permitted under the tank code and any special provisions specified in 9 may be carried 
                 </label>
@@ -565,7 +565,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="substancesPermitted"
-                  id="substancesPermitted_classNumber"
+                  id="test-edit-substancesPermitted_classNumber"
                   name="substancesPermitted"
                   ng-reflect-form-control-name="substancesPermitted"
                   ng-reflect-name="substancesPermitted"
@@ -574,14 +574,14 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="substancesPermitted_classNumber"
+                  for="test-edit-substancesPermitted_classNumber"
                 >
                    Substances (class UN number and if necessary packing group and proper shipping name) may be carried 
                 </label>
               </div>
               <div
                 class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
-                id="conditional-substancesPermitted_classNumber"
+                id="test-edit-conditional-substancesPermitted_classNumber"
               >
                 
                 <div
@@ -602,7 +602,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                       <input
                         class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                         formcontrolname="substanceReferenceSelect"
-                        id="select_statement_Y"
+                        id="test-edit-select-statement-Y"
                         ng-reflect-form-control-name="substanceReferenceSelect"
                         ng-reflect-name="substanceReferenceSelect"
                         ng-reflect-value="statement"
@@ -630,7 +630,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                         <input
                           class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                           formcontrolname="statement"
-                          id="statementRefNumber"
+                          id="test-edit-statementRefNumber"
                           name="statementRefNumber"
                           ng-reflect-name="statement"
                           type="text"
@@ -643,7 +643,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                       <input
                         class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                         formcontrolname="substanceReferenceSelect"
-                        id="select_productlist_N"
+                        id="test-edit-select-productlist-N"
                         ng-reflect-form-control-name="substanceReferenceSelect"
                         ng-reflect-name="substanceReferenceSelect"
                         ng-reflect-value="productList"
@@ -657,7 +657,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                     </div>
                     <div
                       class="govuk-inset-text govuk-!-margin-top-0 govuk-radios__conditional--hidden"
-                      id="conditional-select_productlist_N"
+                      id="test-edit-conditional-select-productlist-N"
                     >
                       <div
                         class="govuk-form-group govuk-!-margin-left-3"
@@ -674,7 +674,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                           <input
                             class="govuk-input govuk-input--width-10 ng-untouched ng-pristine ng-valid"
                             formcontrolname="productListRefNo"
-                            id="productListRefNumber"
+                            id="test-edit-productListRefNumber"
                             name="productListRefNumber"
                             ng-reflect-name="productListRefNo"
                             type="text"
@@ -699,7 +699,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                             </label>
                             <input
                               class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                              id="productListUnNumber_0"
+                              id="test-edit-productListUnNumber-0"
                               name="productListUnNumber_0"
                               ng-reflect-form="[object Object]"
                               type="text"
@@ -713,7 +713,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                             
                             <input
                               class="govuk-input govuk-input--width-5 ng-untouched ng-pristine ng-valid"
-                              id="productListUnNumber_1"
+                              id="test-edit-productListUnNumber-1"
                               name="productListUnNumber_1"
                               ng-reflect-form="[object Object]"
                               type="text"
@@ -757,7 +757,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                             aria-describedby="productList"
                             class="govuk-textarea ng-untouched ng-pristine ng-valid"
                             formcontrolname="productList"
-                            id="productList"
+                            id="test-edit-productList"
                             name="productList"
                             ng-reflect-name="productList"
                             rows="8"
@@ -786,7 +786,7 @@ exports[`TankDetailsEditComponent should create with multiple UN number controls
                 aria-describedby="specialProvisions"
                 class="govuk-textarea govuk-!-margin-bottom-0 ng-untouched ng-pristine ng-valid"
                 formcontrolname="specialProvisions"
-                id="specialProvisions"
+                id="test-edit-specialProvisions"
                 name="specialProvisions"
                 ng-reflect-name="specialProvisions"
                 rows="8"

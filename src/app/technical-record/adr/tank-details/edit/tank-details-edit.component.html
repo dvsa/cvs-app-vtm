@@ -11,7 +11,7 @@
                 Make
               </label>
               <input
-                id="tankManufacturer"
+                id="test-edit-tankManufacturer"
                 type="text"
                 name="tankManufacturer"
                 formControlName="tankManufacturer"
@@ -24,7 +24,7 @@
                 Year of manufacture
               </label>
               <input
-                id="yearOfManufacture"
+                id="test-edit-yearOfManufacture"
                 type="number"
                 name="yearOfManufacture"
                 formControlName="yearOfManufacture"
@@ -38,7 +38,7 @@
                 Manufacturer serial number
               </label>
               <input
-                id="tankManufacturerSerialNo"
+                id="test-edit-tankManufacturerSerialNo"
                 type="text"
                 name="tankManufacturerSerialNo"
                 formControlName="tankManufacturerSerialNo"
@@ -52,7 +52,7 @@
                 Tank type approval number
               </label>
               <input
-                id="tankTypeAppNo"
+                id="test-edit-tankTypeAppNo"
                 type="text"
                 name="tankTypeAppNo"
                 formControlName="tankTypeAppNo"
@@ -66,7 +66,7 @@
                 Code
               </label>
               <input
-                id="tankCode"
+                id="test-edit-tankCode"
                 type="text"
                 name="tankCode"
                 formControlName="tankCode"
@@ -81,7 +81,7 @@
             <div class="govuk-radios govuk-radios--conditional">
               <div class="govuk-radios__item">
                 <input
-                  id="substancesPermitted_permitted"
+                  id="test-edit-substancesPermitted-permitted"
                   type="radio"
                   value="{{ permittedSubstance }}"
                   name="substancesPermitted"
@@ -90,7 +90,7 @@
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="substancesPermitted_permitted"
+                  for="test-edit-substancesPermitted-permitted"
                 >
                   Substances permitted under the tank code and any special provisions specified in
                   9 may be carried
@@ -98,7 +98,7 @@
               </div>
               <div class="govuk-radios__item">
                 <input
-                  id="substancesPermitted_classNumber"
+                  id="test-edit-substancesPermitted_classNumber"
                   type="radio"
                   value="{{ classNumberSubstance }}"
                   name="substancesPermitted"
@@ -107,14 +107,14 @@
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="substancesPermitted_classNumber"
+                  for="test-edit-substancesPermitted_classNumber"
                 >
                   Substances (class UN number and if necessary packing group and proper shipping
                   name) may be carried
                 </label>
               </div>
               <div
-                id="conditional-substancesPermitted_classNumber"
+                id="test-edit-conditional-substancesPermitted_classNumber"
                 class="govuk-inset-text govuk-!-margin-top-0"
                 [class.govuk-radios__conditional--hidden]="
                   substancesPermitted.value !== classNumberSubstance
@@ -137,7 +137,7 @@
                   <!-- Statement -->
                   <div class="govuk-radios__item">
                     <input
-                      id="select_statement_Y"
+                      id="test-edit-select-statement-Y"
                       type="radio"
                       value="{{ substanceStatementSelect }}"
                       formControlName="substanceReferenceSelect"
@@ -162,7 +162,7 @@
                         Reference number (optional)
                       </label>
                       <input
-                        id="statementRefNumber"
+                        id="test-edit-statementRefNumber"
                         type="text"
                         name="statementRefNumber"
                         formControlName="statement"
@@ -174,7 +174,7 @@
                   <!-- Product List -->
                   <div class="govuk-radios__item">
                     <input
-                      id="select_productlist_N"
+                      id="test-edit-select-productlist-N"
                       type="radio"
                       value="{{ substanceProductSelect }}"
                       formControlName="substanceReferenceSelect"
@@ -185,7 +185,7 @@
                     </label>
                   </div>
                   <div
-                    id="conditional-select_productlist_N"
+                    id="test-edit-conditional-select-productlist-N"
                     class="govuk-inset-text govuk-!-margin-top-0"
                     [class.govuk-radios__conditional--hidden]="
                       substanceReferenceSelect.value !== substanceProductSelect
@@ -201,7 +201,7 @@
                           Reference number (optional)
                         </label>
                         <input
-                          id="productListRefNumber"
+                          id="test-edit-productListRefNumber"
                           type="text"
                           name="productListRefNumber"
                           formControlName="productListRefNo"
@@ -223,7 +223,7 @@
                               UN number (optional)
                             </label>
                             <input
-                              id="productListUnNumber_{{ i }}"
+                              id="test-edit-productListUnNumber-{{ i }}"
                               type="text"
                               name="productListUnNumber_{{ i }}"
                               [formControl]="unNumberInput"
@@ -262,7 +262,7 @@
                           Additional details (optional)
                         </label>
                         <textarea
-                          id="productList"
+                          id="test-edit-productList"
                           aria-describedby="productList"
                           name="productList"
                           formControlName="productList"
@@ -285,7 +285,7 @@
                 Special provisions (optional)
               </label>
               <textarea
-                id="specialProvisions"
+                id="test-edit-specialProvisions"
                 aria-describedby="specialProvisions"
                 name="specialProvisions"
                 formControlName="specialProvisions"

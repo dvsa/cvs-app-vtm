@@ -32,7 +32,7 @@
                   Date processed
                 </label>
                 <vtm-date-input
-                  id="approvalDate"
+                  id="test-edit-approvalDate"
                   ariaDescribedBy="approvalDate"
                   formControlName="approvalDate"
                 ></vtm-date-input>
@@ -51,13 +51,13 @@
               >
                 <div class="govuk-checkboxes__item">
                   <input
-                    id="permittedGood_{{ i }}"
+                    id="test-edit-permittedGood-{{ i }}"
                     type="checkbox"
                     [value]="permittedDangerousGoodsOptions[i].selected"
                     [formControl]="permittedGood.get('selected')"
                     class="govuk-checkboxes__input"
                   />
-                  <label for="permittedGood_{{ i }}" class="govuk-label govuk-checkboxes__label">
+                  <label for="test-edit-permittedGood-{{ i }}" class="govuk-label govuk-checkboxes__label">
                     {{ permittedGood.get('name').value }}
                   </label>
                 </div>
@@ -82,7 +82,7 @@
                 >
                   <input
                     class="govuk-radios__input"
-                    id="compatibilityGroupJ-{{ option.key }}"
+                    id="test-edit-compatibilityGroupJ-{{ option.key }}"
                     name="compatibilityGroupJ"
                     type="radio"
                     [value]="option.value"
@@ -90,7 +90,7 @@
                   />
                   <label
                     class="govuk-label govuk-radios__label"
-                    for="compatibilityGroupJ-{{ option.key }}"
+                    for="test-edit-compatibilityGroupJ-{{ option.key }}"
                   >
                     {{ option.key }}
                   </label>
@@ -104,7 +104,7 @@
               ADR type approval number (optional)
             </label>
             <input
-              id="adrTypeApprovalNo"
+              id="test-edit-adrTypeApprovalNo"
               type="text"
               formControlName="adrTypeApprovalNo"
               class="govuk-input govuk-input--width-10"
@@ -123,7 +123,7 @@
               >
                 <div class="govuk-checkboxes__item">
                   <input
-                    id="note_{{ i }}"
+                    id="test-edit-note-{{ i }}"
                     type="checkbox"
                     [value]="guidanceNotesOptions[i].selected"
                     [formControl]="note.get('selected')"

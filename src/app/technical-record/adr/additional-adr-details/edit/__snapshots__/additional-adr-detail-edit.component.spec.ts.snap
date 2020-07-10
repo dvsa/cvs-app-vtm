@@ -38,7 +38,7 @@ exports[`AdditionalAdrDetailEditComponent should create with initialized form co
             >
               <label
                 class="govuk-label govuk-!-font-weight-bold"
-                for="additionalExaminerNotes"
+                for="test-edit-additionalExaminerNotes"
               >
                 Additional ADR notes (optional)
               </label>
@@ -53,7 +53,7 @@ exports[`AdditionalAdrDetailEditComponent should create with initialized form co
                 aria-describedby="additionalExaminerNotes-hint"
                 class="govuk-textarea ng-untouched ng-pristine ng-valid"
                 formcontrolname="additionalExaminerNotes"
-                id="additionalExaminerNotes"
+                id="test-edit-additionalExaminerNotes"
                 name="additionalExaminerNotes"
                 ng-reflect-name="additionalExaminerNotes"
                 rows="8"
@@ -66,7 +66,7 @@ exports[`AdditionalAdrDetailEditComponent should create with initialized form co
             >
               <label
                 class="govuk-label govuk-!-font-weight-bold"
-                for="adrCertificateNotes"
+                for="test-edit-adrCertificateNotes"
               >
                 ADR certificate notes (optional)
               </label>
@@ -74,7 +74,7 @@ exports[`AdditionalAdrDetailEditComponent should create with initialized form co
                 aria-describedby="adrCertificateNotes-hint"
                 class="govuk-textarea ng-untouched ng-pristine ng-valid"
                 formcontrolname="adrCertificateNotes"
-                id="adrCertificateNotes"
+                id="test-edit-adrCertificateNotes"
                 name="adrCertificateNotes"
                 ng-reflect-name="adrCertificateNotes"
                 rows="8"

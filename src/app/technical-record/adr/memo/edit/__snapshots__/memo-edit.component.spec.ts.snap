@@ -63,7 +63,7 @@ exports[`MemoEditComponent should create with initialized form controls 1`] = `
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="memosApply"
-                  id="memosApply-Yes"
+                  id="test-edit-memosApply-Yes"
                   name="memosApply"
                   ng-reflect-form-control-name="memosApply"
                   ng-reflect-name="memosApply"
@@ -83,7 +83,7 @@ exports[`MemoEditComponent should create with initialized form controls 1`] = `
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="memosApply"
-                  id="memosApply-No"
+                  id="test-edit-memosApply-No"
                   name="memosApply"
                   ng-reflect-form-control-name="memosApply"
                   ng-reflect-name="memosApply"

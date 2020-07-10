@@ -250,7 +250,7 @@ exports[`TankInspectionsEditComponent should create with initialized form contro
                     </label>
                     <select
                       class="govuk-select govuk-!-width-one-half ng-untouched ng-pristine ng-valid"
-                      id="tc3Type-0"
+                      id="test-edit-tc3Type-0"
                       ng-reflect-form="[object Object]"
                     >
                       

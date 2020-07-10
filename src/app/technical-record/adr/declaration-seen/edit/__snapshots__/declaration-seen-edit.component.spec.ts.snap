@@ -44,14 +44,14 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                   <input
                     class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
                     formcontrolname="brakeDeclarationsSeen"
-                    id="brakeDeclarationsSeen"
+                    id="test-edit-brakeDeclarationsSeen"
                     ng-reflect-name="brakeDeclarationsSeen"
                     type="checkbox"
                     value="true"
                   />
                   <label
                     class="govuk-label govuk-checkboxes__label"
-                    for="brakeDeclarationsSeen"
+                    for="test-edit-brakeDeclarationsSeen"
                   >
                      Manufacturer brake declaration (optional) 
                   </label>
@@ -84,7 +84,7 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                     <input
                       class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
                       formcontrolname="brakeEndurance"
-                      id="brakeEndurance"
+                      id="test-edit-brakeEndurance"
                       ng-reflect-name="brakeEndurance"
                       type="checkbox"
                       value="true"
@@ -126,14 +126,14 @@ exports[`DeclarationSeenEditComponent should create with initialized form contro
                   <input
                     class="govuk-checkboxes__input ng-untouched ng-pristine ng-valid"
                     formcontrolname="declarationsSeen"
-                    id="declarationsSeen"
+                    id="test-edit-declarationsSeen"
                     ng-reflect-name="declarationsSeen"
                     type="checkbox"
                     value="false"
                   />
                   <label
                     class="govuk-label govuk-checkboxes__label"
-                    for="declarationsSeen"
+                    for="test-edit-declarationsSeen"
                   >
                      Owner/operator declaration (optional) 
                   </label>

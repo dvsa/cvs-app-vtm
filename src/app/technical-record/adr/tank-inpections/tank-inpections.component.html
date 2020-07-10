@@ -18,10 +18,10 @@
               {{ tankDetails?.tc2Details?.tc2Type | DefaultNullOrEmpty | titlecase }}
             </td>
 
-            <td id="test-tc2IntermediateApprovalNo" class="govuk-table__cell">
+            <td id="test-edit-tc2IntermediateApprovalNo" class="govuk-table__cell">
               {{ tankDetails?.tc2Details?.tc2IntermediateApprovalNo | DefaultNullOrEmpty }}
             </td>
-            <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
+            <td id="test-edit-tc2IntermediateExpiryDate" class="govuk-table__cell">
               <span *ngIf="tankDetails?.tc2Details?.tc2IntermediateExpiryDate; else hyphen">
                 {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | date:'dd/MM/yyyy' }}
               </span>

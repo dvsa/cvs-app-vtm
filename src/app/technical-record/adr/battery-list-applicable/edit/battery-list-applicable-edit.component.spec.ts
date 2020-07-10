@@ -82,7 +82,7 @@ describe('BatteryListApplicableEditComponent', () => {
     it('should update the battery list reference number field', () => {
       fixture.detectChanges();
 
-      const refInput: HTMLInputElement = ele.query(By.css('[id=batteryListNumber]'))
+      const refInput: HTMLInputElement = ele.query(By.css('[id=test-edit-batteryListNumber]'))
         .nativeElement;
       refInput.value = 'bat124';
       refInput.dispatchEvent(new Event('input'));
@@ -94,7 +94,7 @@ describe('BatteryListApplicableEditComponent', () => {
     it('should reset entered ref number when "no" option is selected', () => {
       fixture.detectChanges();
 
-      const selectedOption: HTMLElement = ele.query(By.css('[id="listStatementApplicable-No"]'))
+      const selectedOption: HTMLElement = ele.query(By.css('[id="test-edit-listStatementApplicable-No"]'))
         .nativeElement;
 
       selectedOption.click();

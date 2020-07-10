@@ -76,7 +76,7 @@ describe('AdrDetailsEditComponent', () => {
       let selectedDangerousGoods: HTMLElement;
 
       it('should show compatibilityGroupJ when dangerous goods of Explosive type is selected', () => {
-        selectedDangerousGoods = fixture.debugElement.query(By.css('[id="permittedGood_2"]'))
+        selectedDangerousGoods = fixture.debugElement.query(By.css('[id="test-edit-permittedGood-2"]'))
           .nativeElement;
         selectedDangerousGoods.click();
 
@@ -84,7 +84,7 @@ describe('AdrDetailsEditComponent', () => {
       });
 
       it('should hide compatibilityGroupJ when dangerous goods of Explosive type is NOT selected', () => {
-        selectedDangerousGoods = fixture.debugElement.query(By.css('[id="permittedGood_1"]'))
+        selectedDangerousGoods = fixture.debugElement.query(By.css('[id="test-edit-permittedGood-1"]'))
           .nativeElement;
         selectedDangerousGoods.click();
 

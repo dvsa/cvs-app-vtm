@@ -45,7 +45,7 @@ exports[`CertificateEditComponent should create with initialized form controls 1
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="guidanceNotes"
-                  id="guidanceNotes-Yes"
+                  id="test-edit-guidanceNotes-Yes"
                   name="guidanceNotes"
                   ng-reflect-form-control-name="guidanceNotes"
                   ng-reflect-name="guidanceNotes"
@@ -54,7 +54,7 @@ exports[`CertificateEditComponent should create with initialized form controls 1
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="guidanceNotes-Yes"
+                  for="test-edit-guidanceNotes-Yes"
                 >
                    Yes 
                 </label>
@@ -65,7 +65,7 @@ exports[`CertificateEditComponent should create with initialized form controls 1
                 <input
                   class="govuk-radios__input ng-untouched ng-pristine ng-valid"
                   formcontrolname="guidanceNotes"
-                  id="guidanceNotes-No"
+                  id="test-edit-guidanceNotes-No"
                   name="guidanceNotes"
                   ng-reflect-form-control-name="guidanceNotes"
                   ng-reflect-name="guidanceNotes"
@@ -74,7 +74,7 @@ exports[`CertificateEditComponent should create with initialized form controls 1
                 />
                 <label
                   class="govuk-label govuk-radios__label"
-                  for="guidanceNotes-No"
+                  for="test-edit-guidanceNotes-No"
                 >
                    No 
                 </label>

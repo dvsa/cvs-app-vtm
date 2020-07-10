@@ -66,13 +66,13 @@ exports[`TankInpectionsComponent should create view only with populated data 1`]
               </td>
               <td
                 class="govuk-table__cell"
-                id="test-tc2IntermediateApprovalNo"
+                id="test-edit-tc2IntermediateApprovalNo"
               >
                  tank123 
               </td>
               <td
                 class="govuk-table__cell"
-                id="test-tc2IntermediateExpiryDate"
+                id="test-edit-tc2IntermediateExpiryDate"
               >
                 
                 <span>

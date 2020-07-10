@@ -10,7 +10,7 @@
             <div class="govuk-radios__item" *ngFor="let option of options | keyvalue: unsorted">
               <input
                 class="govuk-radios__input"
-                id="listStatementApplicable-{{ option.key }}"
+                id="test-edit-listStatementApplicable-{{ option.key }}"
                 name="listStatementApplicable"
                 formControlName="listStatementApplicable"
                 type="radio"
@@ -18,7 +18,7 @@
               />
               <label
                 class="govuk-label govuk-radios__label"
-                for="listStatementApplicable-{{ option.key }}"
+                for="test-edit-listStatementApplicable-{{ option.key }}"
               >
                 {{ option.key }}
               </label>
@@ -35,7 +35,7 @@
                   Reference number
                 </label>
                 <input
-                  id="batteryListNumber"
+                  id="test-edit-batteryListNumber"
                   type="text"
                   name="batteryListNumber"
                   formControlName="batteryListNumber"
