@@ -1,0 +1,566 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthIntoServiceEditComponent: should create with empty control states 1`] = `
+<vtm-auth-into-service-edit
+  authIntoServiceEditDetails={[Function Object]}
+  fb={[Function FormBuilder]}
+  parent={[Function FormGroupDirective]}
+  techRecordFg={[Function FormGroup]}
+>
+  <div
+    class="govuk-grid-row"
+  >
+    <div
+      class="govuk-grid-column-three-quarters"
+    >
+      <div
+        class="govuk-form-group"
+      >
+        <fieldset
+          class="govuk-fieldset"
+        >
+          <form
+            class="ng-untouched ng-pristine ng-valid"
+            ng-reflect-form="[object Object]"
+            novalidate=""
+          >
+            
+            <div
+              class="govuk-form-group ng-untouched ng-pristine ng-valid"
+              ng-reflect-form="[object Object]"
+            >
+              
+              
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-cocIssueDate"
+                >
+                   COC issue date (optional) 
+                </label>
+                <vtm-date-input
+                  class="ng-untouched ng-pristine ng-valid"
+                  ng-reflect-id="test-edit-cocIssueDate"
+                  ng-reflect-name="cocIssueDate"
+                >
+                  
+                  <div
+                    class="govuk-date-input"
+                  >
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-cocIssueDate-5-day"
+                        >
+                           Day 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="day"
+                          id="test-edit-cocIssueDate-5-day"
+                          maxlength="2"
+                          name="dateDay"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="day"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-cocIssueDate-5-month"
+                        >
+                           Month 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="month"
+                          id="test-edit-cocIssueDate-5-month"
+                          maxlength="2"
+                          name="dateMonth"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="month"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-cocIssueDate-5-year"
+                        >
+                           Year 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="year"
+                          id="test-edit-cocIssueDate-5-year"
+                          maxlength="4"
+                          minlength="4"
+                          name="dateYear"
+                          ng-reflect-maxlength="4"
+                          ng-reflect-minlength="4"
+                          ng-reflect-name="year"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </vtm-date-input>
+              </div>
+              
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-dateReceived"
+                >
+                   Date received (optional) 
+                </label>
+                <vtm-date-input
+                  class="ng-untouched ng-pristine ng-valid"
+                  ng-reflect-id="test-edit-dateReceived"
+                  ng-reflect-name="dateReceived"
+                >
+                  
+                  <div
+                    class="govuk-date-input"
+                  >
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateReceived-5-day"
+                        >
+                           Day 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="day"
+                          id="test-edit-dateReceived-5-day"
+                          maxlength="2"
+                          name="dateDay"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="day"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateReceived-5-month"
+                        >
+                           Month 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="month"
+                          id="test-edit-dateReceived-5-month"
+                          maxlength="2"
+                          name="dateMonth"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="month"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateReceived-5-year"
+                        >
+                           Year 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="year"
+                          id="test-edit-dateReceived-5-year"
+                          maxlength="4"
+                          minlength="4"
+                          name="dateYear"
+                          ng-reflect-maxlength="4"
+                          ng-reflect-minlength="4"
+                          ng-reflect-name="year"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </vtm-date-input>
+              </div>
+              
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-datePending"
+                >
+                   Date pending (optional) 
+                </label>
+                <vtm-date-input
+                  class="ng-untouched ng-pristine ng-valid"
+                  ng-reflect-id="test-edit-datePending"
+                  ng-reflect-name="datePending"
+                >
+                  
+                  <div
+                    class="govuk-date-input"
+                  >
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-datePending-5-day"
+                        >
+                           Day 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="day"
+                          id="test-edit-datePending-5-day"
+                          maxlength="2"
+                          name="dateDay"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="day"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-datePending-5-month"
+                        >
+                           Month 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="month"
+                          id="test-edit-datePending-5-month"
+                          maxlength="2"
+                          name="dateMonth"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="month"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-datePending-5-year"
+                        >
+                           Year 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="year"
+                          id="test-edit-datePending-5-year"
+                          maxlength="4"
+                          minlength="4"
+                          name="dateYear"
+                          ng-reflect-maxlength="4"
+                          ng-reflect-minlength="4"
+                          ng-reflect-name="year"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </vtm-date-input>
+              </div>
+              
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-dateAuthorised"
+                >
+                   Date authorized (optional) 
+                </label>
+                <vtm-date-input
+                  class="ng-untouched ng-pristine ng-valid"
+                  ng-reflect-id="test-edit-dateAuthorised"
+                  ng-reflect-name="dateAuthorised"
+                >
+                  
+                  <div
+                    class="govuk-date-input"
+                  >
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateAuthorised-5-day"
+                        >
+                           Day 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="day"
+                          id="test-edit-dateAuthorised-5-day"
+                          maxlength="2"
+                          name="dateDay"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="day"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateAuthorised-5-month"
+                        >
+                           Month 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="month"
+                          id="test-edit-dateAuthorised-5-month"
+                          maxlength="2"
+                          name="dateMonth"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="month"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateAuthorised-5-year"
+                        >
+                           Year 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="year"
+                          id="test-edit-dateAuthorised-5-year"
+                          maxlength="4"
+                          minlength="4"
+                          name="dateYear"
+                          ng-reflect-maxlength="4"
+                          ng-reflect-minlength="4"
+                          ng-reflect-name="year"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </vtm-date-input>
+              </div>
+              
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-!-font-weight-bold"
+                  for="test-edit-dateRejected"
+                >
+                   Date rejected (optional) 
+                </label>
+                <vtm-date-input
+                  class="ng-untouched ng-pristine ng-valid"
+                  ng-reflect-id="test-edit-dateRejected"
+                  ng-reflect-name="dateRejected"
+                >
+                  
+                  <div
+                    class="govuk-date-input"
+                  >
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateRejected-5-day"
+                        >
+                           Day 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="day"
+                          id="test-edit-dateRejected-5-day"
+                          maxlength="2"
+                          name="dateDay"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="day"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateRejected-5-month"
+                        >
+                           Month 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="month"
+                          id="test-edit-dateRejected-5-month"
+                          maxlength="2"
+                          name="dateMonth"
+                          ng-reflect-maxlength="2"
+                          ng-reflect-name="month"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="govuk-date-input__item"
+                    >
+                      <div
+                        class="govuk-form-group"
+                      >
+                        <label
+                          class="govuk-label govuk-date-input__label"
+                          for="test-edit-dateRejected-5-year"
+                        >
+                           Year 
+                        </label>
+                        <input
+                          autocomplete="off"
+                          class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-valid"
+                          formcontrolname="year"
+                          id="test-edit-dateRejected-5-year"
+                          maxlength="4"
+                          minlength="4"
+                          name="dateYear"
+                          ng-reflect-maxlength="4"
+                          ng-reflect-minlength="4"
+                          ng-reflect-name="year"
+                          ng-reflect-pattern="[0-9]*"
+                          pattern="[0-9]*"
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </vtm-date-input>
+              </div>
+            </div>
+            
+          </form>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</vtm-auth-into-service-edit>
+`;

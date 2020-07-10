@@ -57,6 +57,7 @@ import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
 import { PurchaserComponent } from './purchaser/purchaser.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 import { AuthorisationIntoServiceComponent } from './authorisation-into-service/authorisation-into-service.component';
+import { AuthIntoServiceEditComponent } from './authorisation-into-service/edit/auth-into-service-edit.component';
 import { LettersOfAuthorisationComponent } from './letters-of-authorisation/letters-of-authorisation.component';
 import { AxleBrakesComponent } from './brakes/axle-brakes/axle-brakes.component';
 import { DdaComponent } from './dda/dda.component';
@@ -108,6 +109,7 @@ const COMPONENTS = [
   PurchaserComponent,
   ManufacturerComponent,
   AuthorisationIntoServiceComponent,
+  AuthIntoServiceEditComponent,
   LettersOfAuthorisationComponent,
   AxleBrakesComponent,
   DdaComponent

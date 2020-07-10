@@ -1,0 +1,63 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- Date Auth fields -->
+          <ng-container
+            *ngTemplateOutlet="
+              dateTemplate;
+              context: {
+                $implicit: {
+                  group: authIntoService,
+                  dateFields: [
+                    {
+                      label: 'COC issue date (optional)',
+                      field: 'cocIssueDate'
+                    },
+                    {
+                      label: 'Date received (optional)',
+                      field: 'dateReceived'
+                    },
+                    {
+                      label: 'Date pending (optional)',
+                      field: 'datePending'
+                    },
+                    {
+                      label: 'Date authorized (optional)',
+                      field: 'dateAuthorised'
+                    },
+                    {
+                      label: 'Date rejected (optional)',
+                      field: 'dateRejected'
+                    }
+                  ]
+                }
+              }
+            "
+          >
+          </ng-container>
+          <!-- ariaDescribedBy="item" -->
+          <ng-template let-dateTemplate #dateTemplate>
+            <div class="govuk-form-group" [formGroup]="dateTemplate.group">
+              <ng-container *ngFor="let item of dateTemplate.dateFields">
+                <div class="govuk-form-group">
+                  <label
+                    class="govuk-label govuk-!-font-weight-bold"
+                    for="test-edit-{{ item.field }}"
+                  >
+                    {{ item.label }}
+                  </label>
+                  <vtm-date-input
+                    id="test-edit-{{ item.field }}"
+                    formControlName="{{ item.field }}"
+                  ></vtm-date-input>
+                </div>
+              </ng-container>
+            </div>
+          </ng-template>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>
