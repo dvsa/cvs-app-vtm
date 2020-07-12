@@ -19,12 +19,14 @@ import { TechRecord } from '@app/models/tech-record.model';
 export class TechRecHistoryComponent implements OnInit {
   @Input() vehicleRecord: VehicleTechRecordModel;
   @Input() focusedRecord: TechRecord;
+  // tslint:disable-next-line: no-output-on-prefix TODO: need to fix this
   @Output() onViewRecord = new EventEmitter<TechRecord>();
 
   techRecords: TechRecord[];
 
   constructor() {}
 
+  // tslint:disable-next-line: use-life-cycle-interface TODO: Need to remove this
   ngOnChanges(changes: SimpleChanges): void {
     const { focusedRecord, vehicleRecord } = changes;
     if (focusedRecord && vehicleRecord) {

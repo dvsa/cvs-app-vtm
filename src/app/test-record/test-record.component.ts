@@ -62,7 +62,7 @@ export class TestRecordComponent implements OnInit {
     );
 
     initAll();
-    this.switchState.emit(VIEW_STATE.VIEW_ONLY);
+
     this.testResultParentForm = new FormGroup({ testType: new FormGroup({}) });
   }
 

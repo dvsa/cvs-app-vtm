@@ -20,6 +20,7 @@ import { PANEL_TITLE } from '@app/app.enums';
 export class RecordStatusComponent implements OnChanges {
   @Input() activeRecord: TechRecord;
   @Input() editState: boolean;
+  // tslint:disable-next-line: no-output-on-prefix TODO: need to fix this
   @Output() onScrollToSection = new EventEmitter<Object>();
 
   titleOfTechHistory: string = PANEL_TITLE.TECHNICAL_RECORD_HISTORY;
