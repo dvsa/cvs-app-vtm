@@ -1,169 +1,194 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NotesComponent should create view only for hgv or trl with populated data 1`] = `
-<vtm-notes
+<test-vtm-notes
   activeRecord={[Function Object]}
-  notes={[Function String]}
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-notes
+    ng-reflect-tech-record="[object Object]"
   >
     
-    <div
-      class="govuk-summary-list__row"
+    
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      
+      <div
+        class="govuk-summary-list__row"
       >
-        Notes
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-notes"
-      >
-        <span
-          class="notes-section"
+        <dt
+          class="govuk-summary-list__key"
         >
-          some notes
-        </span>
-      </dd>
-    </div>
+          Notes
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-notes"
+        >
+          <span
+            class="notes-section"
+          >
+            some notes
+          </span>
+        </dd>
+      </div>
+      
+      
+    </dl>
     
-    
-  </dl>
-</vtm-notes>
+  </vtm-notes>
+</test-vtm-notes>
 `;
 
 exports[`NotesComponent should create view only for motorcycle populated data 1`] = `
-<vtm-notes
+<test-vtm-notes
   activeRecord={[Function Object]}
-  notes={[Function String]}
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-notes
+    ng-reflect-tech-record="[object Object]"
   >
     
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Notes
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-notes"
-      >
-        <span
-          class="notes-section"
-        >
-          some remarks
-        </span>
-      </dd>
-    </div>
     
-    
-    <div
-      class="govuk-summary-list__row"
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      
+      <div
+        class="govuk-summary-list__row"
       >
-        Dispensations
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-dispensations"
-      >
-        <span
-          class="notes-section"
+        <dt
+          class="govuk-summary-list__key"
         >
-          10/10
-        </span>
-      </dd>
-    </div>
-  </dl>
-</vtm-notes>
+          Notes
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-notes"
+        >
+          <span
+            class="notes-section"
+          >
+            some remarks
+          </span>
+        </dd>
+      </div>
+      
+      
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Dispensations
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-dispensations"
+        >
+          <span
+            class="notes-section"
+          >
+            10/10
+          </span>
+        </dd>
+      </div>
+    </dl>
+    
+  </vtm-notes>
+</test-vtm-notes>
 `;
 
 exports[`NotesComponent should create view only for psv populated data 1`] = `
-<vtm-notes
+<test-vtm-notes
   activeRecord={[Function Object]}
-  notes="undefined"
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-notes
+    ng-reflect-tech-record="[object Object]"
   >
     
     
-    <div
-      class="govuk-summary-list__row"
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      
+      
+      <div
+        class="govuk-summary-list__row"
       >
-        Remarks
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-remarks"
-      >
-        <span
-          class="notes-section"
+        <dt
+          class="govuk-summary-list__key"
         >
-          some remarks
-        </span>
-      </dd>
-    </div>
+          Remarks
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-remarks"
+        >
+          <span
+            class="notes-section"
+          >
+            some remarks
+          </span>
+        </dd>
+      </div>
+      
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Dispensations
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-dispensations"
+        >
+          <span
+            class="notes-section"
+          >
+            10/10
+          </span>
+        </dd>
+      </div>
+    </dl>
     
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Dispensations
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-dispensations"
-      >
-        <span
-          class="notes-section"
-        >
-          10/10
-        </span>
-      </dd>
-    </div>
-  </dl>
-</vtm-notes>
+  </vtm-notes>
+</test-vtm-notes>
 `;
 
 exports[`NotesComponent should render the editable component if editState is true 1`] = `
-<vtm-notes
+<test-vtm-notes
   activeRecord={[Function Object]}
   editState={[Function Boolean]}
-  notes={[Function String]}
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-notes
+    ng-reflect-edit-state="true"
+    ng-reflect-tech-record="[object Object]"
   >
-    <div
-      class="govuk-summary-list__row"
+    
+    
+    
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      <div
+        class="govuk-summary-list__row"
       >
-        <vtm-notes-edit
-          ng-reflect-notes-details="some notes"
+        <dt
+          class="govuk-summary-list__key"
         >
-          <div>
-            Note details: some notes
-          </div>
-        </vtm-notes-edit>
-      </dt>
-    </div>
-  </dl>
-</vtm-notes>
+          <vtm-notes-edit
+            ng-reflect-notes-details="some notes"
+          >
+            <div>
+              Note details: some notes
+            </div>
+          </vtm-notes-edit>
+        </dt>
+      </div>
+    </dl>
+  </vtm-notes>
+</test-vtm-notes>
 `;

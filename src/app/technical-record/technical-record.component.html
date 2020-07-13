@@ -65,7 +65,7 @@
       <vtm-record-status
         [activeRecord]="activeRecord"
         [editState]="isEditable"
-        (onScrollToSection)="scrollDownToSection($event)"
+        (scrollToSection)="scrollDownToSection($event)"
       ></vtm-record-status>
     </ng-container>
 
@@ -126,6 +126,7 @@
           <vtm-vehicle-summary
             [activeRecord]="activeRecord"
             [editState]="isEditable"
+            [viewState]="currentState"
           ></vtm-vehicle-summary>
         </mat-expansion-panel>
       </div>
@@ -489,11 +490,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-applicant
-            [applicantDetails]="activeRecord.applicantDetails"
-            [editState]="isEditable"
-          >
-          </vtm-applicant>
+          <vtm-applicant [techRecord]="activeRecord" [editState]="isEditable"> </vtm-applicant>
         </mat-expansion-panel>
       </div>
 
@@ -536,7 +533,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-purchaser [purchaser]="activeRecord.purchaserDetails"></vtm-purchaser>
+          <vtm-purchaser [techRecord]="activeRecord"></vtm-purchaser>
         </mat-expansion-panel>
       </div>
 
@@ -579,7 +576,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-manufacturer [manufacturer]="activeRecord.manufacturerDetails"></vtm-manufacturer>
+          <vtm-manufacturer [techRecord]="activeRecord"></vtm-manufacturer>
         </mat-expansion-panel>
       </div>
 
@@ -758,11 +755,11 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-notes [activeRecord]="activeRecord" [editState]="isEditable"></vtm-notes>
+          <vtm-notes [techRecord]="activeRecord" [editState]="isEditable"></vtm-notes>
         </mat-expansion-panel>
       </div>
 
-      <ng-container *ngIf="viewOnlyState || viewEditState">
+      <ng-container *ngIf="viewOnlyState">
         <div [@.disabled]="true">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "
@@ -858,13 +855,13 @@
             <vtm-tech-rec-history
               [focusedRecord]="activeRecord"
               [vehicleRecord]="vehicleTechRecord"
-              (onViewRecord)="techRecordViewHandler($event)"
+              (viewRecord)="techRecordViewHandler($event)"
             ></vtm-tech-rec-history>
           </mat-expansion-panel>
         </div>
       </ng-container>
 
-      <ng-container *ngIf="viewOnlyState || viewEditState">
+      <ng-container *ngIf="viewOnlyState">
         <div [@.disabled]="true" *ngIf="isHgvOrTrlVehicle">
           <mat-expansion-panel
             class="custom-header mat-elevation-z0 "

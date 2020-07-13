@@ -1,163 +1,175 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ApplicantComponent should create view only with populated data 1`] = `
-<vtm-applicant
-  address1And2={[Function String]}
-  applicantDetails={[Function Object]}
+<test-vtm-applicant
+  activeRecord={[Function Object]}
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-applicant
+    ng-reflect-tech-record="[object Object]"
   >
-    <div
-      class="govuk-summary-list__row"
+    
+    
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      <div
+        class="govuk-summary-list__row"
       >
-        Name
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-name"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Name
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-name"
+        >
+           Ben 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         Ben 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Building and street
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-address"
+        >
+           Garrets green Birmingham 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        Building and street
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-address"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Town or city
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-postTown"
+        >
+           A town 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         Garrets green Birmingham 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          County
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-address3"
+        >
+           lala land 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        Town or city
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-postTown"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Postcode
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-postCode"
+        >
+           NG4 12Z 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         A town 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Telephone number
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-telephoneNumber"
+        >
+           123123123 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        County
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-address3"
-      >
-         lala land 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Postcode
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-postCode"
-      >
-         NG4 12Z 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Telephone number
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-telephoneNumber"
-      >
-         123123123 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Email address
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-applicantDetails-emailAddress"
-      >
-         test@test.com 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-  </dl>
-</vtm-applicant>
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Email address
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-applicantDetails-emailAddress"
+        >
+           test@test.com 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+    </dl>
+    
+  </vtm-applicant>
+</test-vtm-applicant>
 `;
 
 exports[`ApplicantComponent should render the edit components when editState is true 1`] = `
-<vtm-applicant
-  address1And2={[Function String]}
-  applicantDetails={[Function Object]}
+<test-vtm-applicant
+  activeRecord={[Function Object]}
   editState={[Function Boolean]}
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-applicant
+    ng-reflect-edit-state="true"
+    ng-reflect-tech-record="[object Object]"
   >
-    <div
-      class="govuk-summary-list__row"
+    
+    
+    
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      <div
+        class="govuk-summary-list__row"
       >
-        <vtm-applicant-edit
-          ng-reflect-applicant="[object Object]"
+        <dt
+          class="govuk-summary-list__key"
         >
-          <div>
-            Applicant details is: {
+          <vtm-applicant-edit
+            ng-reflect-applicant="[object Object]"
+          >
+            <div>
+              Applicant details is: {
     "name": "Ben",
     "address1": "Garrets green",
     "address2": "Birmingham",
@@ -167,10 +179,11 @@ exports[`ApplicantComponent should render the edit components when editState is 
     "telephoneNumber": "123123123",
     "emailAddress": "test@test.com"
   }
-          </div>
-        </vtm-applicant-edit>
-      </dt>
-    </div>
-  </dl>
-</vtm-applicant>
+            </div>
+          </vtm-applicant-edit>
+        </dt>
+      </div>
+    </dl>
+  </vtm-applicant>
+</test-vtm-applicant>
 `;

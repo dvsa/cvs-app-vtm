@@ -316,6 +316,22 @@
           >
           </ng-container>
 
+          <!-- Alteration marker -->
+          <ng-container *ngIf="displayInEditView">
+            <ng-container
+              *ngTemplateOutlet="
+                boolTemplate;
+                context: {
+                  $implicit: {
+                    label: 'Alteration marker',
+                    field: 'alterationMarker'
+                  }
+                }
+              "
+            >
+            </ng-container>
+          </ng-container>
+
           <ng-template let-boolTemplate #boolTemplate>
             <div class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5">
               <label
