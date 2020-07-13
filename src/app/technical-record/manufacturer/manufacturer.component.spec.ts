@@ -2,9 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ManufacturerComponent } from './manufacturer.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import { ManufacturerDetails } from '@app/models/tech-record.model';
 
 describe('ManufacturerComponent', () => {
   let component: ManufacturerComponent;
@@ -38,5 +37,12 @@ describe('ManufacturerComponent', () => {
     });
     fixture.detectChanges();
     expect(component.address1And2).toEqual('someone somewhere');
+  });
+
+  it('should render the edit components when editState is true', () => {
+    component.editState = true;
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
   });
 });

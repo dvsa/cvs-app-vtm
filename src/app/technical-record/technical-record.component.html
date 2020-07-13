@@ -576,7 +576,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-manufacturer [manufacturer]="activeRecord.manufacturerDetails"></vtm-manufacturer>
+          <vtm-manufacturer
+            [manufacturer]="activeRecord.manufacturerDetails"
+            [editState]="isEditable"
+          ></vtm-manufacturer>
         </mat-expansion-panel>
       </div>
 
