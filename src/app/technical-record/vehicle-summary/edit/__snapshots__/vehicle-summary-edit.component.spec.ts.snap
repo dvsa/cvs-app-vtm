@@ -5,6 +5,7 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
   axleNoOptions={[Function Array]}
   booleanOptions={[Function Object]}
   detectChange={[Function ViewRef_]}
+  displayInEditView={[Function Boolean]}
   fb={[Function FormBuilder]}
   fuelPropulsionOptions={[Function Array]}
   numberOfAxles$={[Function Observable]}
@@ -17,6 +18,7 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
   vehicleConfigOptions={[Function Array]}
   vehicleEUCategoryOptions={[Function Array]}
   vehicleTypeOptions={[Function Object]}
+  viewState={[Function Number]}
 >
   <div
     class="govuk-grid-row"
@@ -1047,6 +1049,57 @@ exports[`VehicleSummaryEditComponent should create with initialized form control
                 </label>
               </div>
             </div>
+            
+            
+            
+            <div
+              class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5"
+            >
+              <label
+                class="govuk-label govuk-!-font-weight-bold"
+                for="test-edit-alterationMarker"
+              >
+                 Alteration marker 
+              </label>
+              
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  id="test-edit-alterationMarker-Yes"
+                  ng-reflect-form-control-name="alterationMarker"
+                  ng-reflect-name="alterationMarker"
+                  ng-reflect-value="true"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-alterationMarker-Yes"
+                >
+                   Yes 
+                </label>
+              </div>
+              <div
+                class="govuk-radios__item"
+              >
+                <input
+                  class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+                  id="test-edit-alterationMarker-No"
+                  ng-reflect-form-control-name="alterationMarker"
+                  ng-reflect-name="alterationMarker"
+                  ng-reflect-value="false"
+                  type="radio"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-alterationMarker-No"
+                >
+                   No 
+                </label>
+              </div>
+            </div>
+            
             
             <vtm-type-approval
               ng-reflect-tech-record="[object Object]"

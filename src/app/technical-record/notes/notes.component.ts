@@ -1,4 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 import { TechRecord } from '@app/models/tech-record.model';
 
 @Component({
@@ -6,15 +12,19 @@ import { TechRecord } from '@app/models/tech-record.model';
   templateUrl: './notes.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent implements OnChanges {
+  @Input() techRecord: TechRecord;
   @Input() editState: boolean;
-  @Input() activeRecord: TechRecord;
 
   notes: string;
 
   constructor() {}
 
-  ngOnInit() {
-    this.notes = this.activeRecord.notes;
+  ngOnChanges(changes: SimpleChanges): void {
+    const { techRecord } = changes;
+
+    if (techRecord) {
+      this.notes = this.techRecord.notes;
+    }
   }
 }

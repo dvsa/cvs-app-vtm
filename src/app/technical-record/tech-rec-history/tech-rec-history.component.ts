@@ -1,6 +1,6 @@
 import {
   Component,
-  OnInit,
+  OnChanges,
   ChangeDetectionStrategy,
   Input,
   SimpleChanges,
@@ -16,10 +16,10 @@ import { TechRecord } from '@app/models/tech-record.model';
   templateUrl: './tech-rec-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TechRecHistoryComponent implements OnInit {
+export class TechRecHistoryComponent implements OnChanges {
   @Input() vehicleRecord: VehicleTechRecordModel;
   @Input() focusedRecord: TechRecord;
-  @Output() onViewRecord = new EventEmitter<TechRecord>();
+  @Output() viewRecord = new EventEmitter<TechRecord>();
 
   techRecords: TechRecord[];
 
@@ -31,8 +31,6 @@ export class TechRecHistoryComponent implements OnInit {
       this.techRecords = this.vehicleRecord.techRecord;
     }
   }
-
-  ngOnInit() {}
 
   hideLinkForSelectedRecord(current, active) {
     return !(
@@ -46,7 +44,7 @@ export class TechRecHistoryComponent implements OnInit {
   }
 
   onViewTechRecord(techRecord: TechRecord) {
-    this.onViewRecord.emit(techRecord);
+    this.viewRecord.emit(techRecord);
     this.scrollToTop();
   }
 

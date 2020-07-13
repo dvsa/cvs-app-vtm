@@ -80,7 +80,7 @@ describe('RecordStatusComponent', () => {
     <vtm-record-status
       [activeRecord]="activeRecord"
       [editState]="editState"
-      (onScrollToSection)="scrollSectionHandler($event)"
+      (scrollToSection)="scrollSectionHandler($event)"
     >
     </vtm-record-status>
   `

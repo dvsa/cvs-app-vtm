@@ -1,29 +1,43 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 
 import { TechRecord } from '@app/models/tech-record.model';
 import { TechRecordHelperService } from '../tech-record-helper.service';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Component({
   selector: 'vtm-vehicle-summary',
   templateUrl: './vehicle-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VehicleSummaryComponent implements OnInit {
+export class VehicleSummaryComponent implements OnChanges {
   @Input() activeRecord: TechRecord;
   @Input() editState: boolean;
+  @Input() viewState: VIEW_STATE;
 
   vehicleClassDescription: string;
   isStandardVehicle: boolean;
 
   constructor(public techRecHelper: TechRecordHelperService) {}
 
-  ngOnInit() {
-    this.vehicleClassDescription =
-      this.activeRecord.vehicleClass && this.activeRecord.vehicleClass.description
-        ? this.activeRecord.vehicleClass.description
-        : null;
+  ngOnChanges(changes: SimpleChanges): void {
+    const { activeRecord } = changes;
 
-    this.isStandardVehicle = this.techRecHelper.isStandardVehicle(this.activeRecord.vehicleType);
+    if (activeRecord) {
+      this.vehicleClassDescription =
+        this.activeRecord.vehicleClass && this.activeRecord.vehicleClass.description
+          ? this.activeRecord.vehicleClass.description
+          : null;
+
+      this.isStandardVehicle = this.techRecHelper.isStandardVehicle(
+        this.activeRecord.vehicleType
+      );
+    }
   }
 
   axlesHasParkingBrakeMrk(): boolean {

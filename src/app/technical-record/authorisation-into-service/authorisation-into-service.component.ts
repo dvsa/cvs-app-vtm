@@ -7,11 +7,9 @@ import { AuthIntoService } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthorisationIntoServiceComponent implements OnInit {
-
   @Input() authIntoService: AuthIntoService;
-  constructor() { }
 
-  ngOnInit() {
-  }
+  constructor() {}
 
+  ngOnInit() {}
 }

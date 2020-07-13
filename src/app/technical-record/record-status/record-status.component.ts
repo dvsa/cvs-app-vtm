@@ -20,7 +20,7 @@ import { PANEL_TITLE } from '@app/app.enums';
 export class RecordStatusComponent implements OnChanges {
   @Input() activeRecord: TechRecord;
   @Input() editState: boolean;
-  @Output() onScrollToSection = new EventEmitter<Object>();
+  @Output() scrollToSection = new EventEmitter<Object>();
 
   titleOfTechHistory: string = PANEL_TITLE.TECHNICAL_RECORD_HISTORY;
   recordCompleteness: string;
@@ -38,6 +38,6 @@ export class RecordStatusComponent implements OnChanges {
   }
 
   emitPanelTitle() {
-    this.onScrollToSection.emit({ title: this.titleOfTechHistory });
+    this.scrollToSection.emit({ title: this.titleOfTechHistory });
   }
 }

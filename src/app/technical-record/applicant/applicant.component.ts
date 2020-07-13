@@ -1,22 +1,38 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 
-import { Applicant } from '@app/models/tech-record.model';
+import { Applicant, TechRecord } from '@app/models/tech-record.model';
 
 @Component({
   selector: 'vtm-applicant',
   templateUrl: './applicant.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApplicantComponent implements OnInit {
+export class ApplicantComponent implements OnChanges {
+  @Input() techRecord: TechRecord;
   @Input() editState: boolean;
-  @Input() applicantDetails: Applicant;
-  address1And2 = '';
+
+  address1And2: string;
+  applicantDetails: Applicant;
 
   constructor() {}
 
-  ngOnInit() {
-    if (this.applicantDetails) {
-      this.address1And2 = `${this.applicantDetails.address1} ${this.applicantDetails.address2}`;
+  ngOnChanges(changes: SimpleChanges): void {
+    const { techRecord } = changes;
+
+    if (techRecord) {
+      this.applicantDetails = !!this.techRecord.applicantDetails
+        ? this.techRecord.applicantDetails
+        : ({} as Applicant);
+
+      this.address1And2 = Object.keys(this.applicantDetails).length
+        ? `${this.applicantDetails.address1} ${this.applicantDetails.address2}`
+        : '';
     }
   }
 }

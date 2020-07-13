@@ -1,27 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 
 import { ManufacturerComponent } from './manufacturer.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import { ManufacturerDetails } from '@app/models/tech-record.model';
+import { TechRecord } from '@app/models/tech-record.model';
 
 describe('ManufacturerComponent', () => {
-  let component: ManufacturerComponent;
-  let fixture: ComponentFixture<ManufacturerComponent>;
+  let fixture: ComponentFixture<TestManufacturerComponent>;
+  let component: TestManufacturerComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ManufacturerComponent],
+      declarations: [ManufacturerComponent, TestManufacturerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManufacturerComponent);
+    fixture = TestBed.createComponent(TestManufacturerComponent);
     component = fixture.componentInstance;
-    component.manufacturer = TESTING_UTILS.mockManufacturer();
+    component.activeRecord = {
+      manufacturerDetails: TESTING_UTILS.mockManufacturer()
+    } as TechRecord;
   });
 
   it('should create view only with populated data', () => {
@@ -30,13 +32,15 @@ describe('ManufacturerComponent', () => {
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
   });
-
-  it('should have the address1And2 correctly populated', () => {
-    component.manufacturer = TESTING_UTILS.mockManufacturer({
-      address1: 'someone',
-      address2: 'somewhere'
-    });
-    fixture.detectChanges();
-    expect(component.address1And2).toEqual('someone somewhere');
-  });
 });
+
+@Component({
+  selector: 'test-vtm-manufacturer',
+  template: `
+    <vtm-manufacturer [techRecord]="activeRecord" [editState]="editState"> </vtm-manufacturer>
+  `
+})
+class TestManufacturerComponent {
+  activeRecord: TechRecord;
+  editState: boolean;
+}

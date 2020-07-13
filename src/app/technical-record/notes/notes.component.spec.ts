@@ -5,21 +5,22 @@ import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { NotesComponent } from './notes.component';
 import { SharedModule } from '@app/shared';
 import { VEHICLE_TYPES } from '@app/app.enums';
+import { TechRecord } from '@app/models/tech-record.model';
 
 describe('NotesComponent', () => {
-  let component: NotesComponent;
-  let fixture: ComponentFixture<NotesComponent>;
+  let fixture: ComponentFixture<TestNotesComponent>;
+  let component: TestNotesComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [NotesComponent, TestNotesEditComponent],
+      declarations: [NotesComponent, TestNotesComponent, TestNotesEditComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotesComponent);
+    fixture = TestBed.createComponent(TestNotesComponent);
     component = fixture.componentInstance;
     component.activeRecord = TESTING_UTILS.mockTechRecord({
       notes: 'some notes',
@@ -63,6 +64,17 @@ describe('NotesComponent', () => {
     expect(fixture).toMatchSnapshot();
   });
 });
+
+@Component({
+  selector: 'test-vtm-notes',
+  template: `
+    <vtm-notes [techRecord]="activeRecord" [editState]="editState"> </vtm-notes>
+  `
+})
+class TestNotesComponent {
+  activeRecord: TechRecord;
+  editState: boolean;
+}
 
 @Component({
   selector: 'vtm-notes-edit',

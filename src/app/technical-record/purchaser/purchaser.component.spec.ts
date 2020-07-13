@@ -1,27 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 
 import { PurchaserComponent } from './purchaser.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@app/shared/shared.module';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
-import { PurchaserDetails } from '@app/models/tech-record.model';
+import { TechRecord } from '@app/models/tech-record.model';
 
 describe('PurchaserComponent', () => {
-  let component: PurchaserComponent;
-  let fixture: ComponentFixture<PurchaserComponent>;
+  let fixture: ComponentFixture<TestPurchaserComponent>;
+  let component: TestPurchaserComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [PurchaserComponent],
+      declarations: [PurchaserComponent, TestPurchaserComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PurchaserComponent);
+    fixture = TestBed.createComponent(TestPurchaserComponent);
     component = fixture.componentInstance;
-    component.purchaser = TESTING_UTILS.mockPurchaser();
+    component.activeRecord = {
+      purchaserDetails: TESTING_UTILS.mockPurchaser()
+    } as TechRecord;
   });
 
   it('should create view only with populated data', () => {
@@ -30,13 +32,15 @@ describe('PurchaserComponent', () => {
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
   });
-
-  it('should have the address1And2 correctly populated', () => {
-    component.purchaser = TESTING_UTILS.mockPurchaser({
-      address1: 'someone',
-      address2: 'somewhere'
-    });
-    fixture.detectChanges();
-    expect(component.address1And2).toEqual('someone somewhere');
-  });
 });
+
+@Component({
+  selector: 'test-vtm-purchaser',
+  template: `
+    <vtm-purchaser [techRecord]="activeRecord" [editState]="editState"> </vtm-purchaser>
+  `
+})
+class TestPurchaserComponent {
+  activeRecord: TechRecord;
+  editState: boolean;
+}

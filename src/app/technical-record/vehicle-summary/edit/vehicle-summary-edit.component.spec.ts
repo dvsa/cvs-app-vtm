@@ -15,6 +15,7 @@ import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { TechRecord } from '@app/models/tech-record.model';
 import { VehicleSummaryEditComponent } from './vehicle-summary-edit.component';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
+import { VIEW_STATE } from '@app/app.enums';
 
 describe('VehicleSummaryEditComponent', () => {
   let component: VehicleSummaryEditComponent;
@@ -43,6 +44,7 @@ describe('VehicleSummaryEditComponent', () => {
     techRecHelper = TestBed.get(TechRecordHelperService);
     fixture = TestBed.createComponent(VehicleSummaryEditComponent);
     component = fixture.componentInstance;
+    component.viewState = VIEW_STATE.EDIT;
     component.techRecord = {
       approvalType: 'approval',
       regnDate: '2020-06-08',
