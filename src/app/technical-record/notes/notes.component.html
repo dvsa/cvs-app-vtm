@@ -1,26 +1,26 @@
 <ng-container *ngIf="!editState">
   <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType !== 'psv'">
+    <div class="govuk-summary-list__row" *ngIf="techRecord.vehicleType !== 'psv'">
       <dt class="govuk-summary-list__key">Notes</dt>
       <dd id="test-notes" class="govuk-summary-list__value">
         <span class="notes-section">{{ notes | DefaultNullOrEmpty }}</span>
       </dd>
     </div>
 
-    <div class="govuk-summary-list__row" *ngIf="activeRecord.vehicleType === 'psv'">
+    <div class="govuk-summary-list__row" *ngIf="techRecord.vehicleType === 'psv'">
       <dt class="govuk-summary-list__key">Remarks</dt>
       <dd id="test-remarks" class="govuk-summary-list__value">
-        <span class="notes-section">{{ activeRecord.remarks | DefaultNullOrEmpty }}</span>
+        <span class="notes-section">{{ techRecord.remarks | DefaultNullOrEmpty }}</span>
       </dd>
     </div>
 
     <div
       class="govuk-summary-list__row"
-      *ngIf="activeRecord.vehicleType !== 'trl' && activeRecord.vehicleType !== 'hgv'"
+      *ngIf="techRecord.vehicleType !== 'trl' && techRecord.vehicleType !== 'hgv'"
     >
       <dt class="govuk-summary-list__key">Dispensations</dt>
       <dd id="test-dispensations" class="govuk-summary-list__value">
-        <span class="notes-section">{{ activeRecord.dispensations | DefaultNullOrEmpty }}</span>
+        <span class="notes-section">{{ techRecord.dispensations | DefaultNullOrEmpty }}</span>
       </dd>
     </div>
   </dl>

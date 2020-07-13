@@ -1,175 +1,179 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PurchaserComponent should create view only with populated data 1`] = `
-<vtm-purchaser
-  address1And2={[Function String]}
-  purchaser={[Function Object]}
+<test-vtm-purchaser
+  activeRecord={[Function Object]}
 >
-  <dl
-    class="govuk-summary-list"
+  <vtm-purchaser
+    ng-reflect-tech-record="[object Object]"
   >
-    <div
-      class="govuk-summary-list__row"
+    
+    <dl
+      class="govuk-summary-list"
     >
-      <dt
-        class="govuk-summary-list__key"
+      <div
+        class="govuk-summary-list__row"
       >
-        Name
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-name"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Name
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-name"
+        >
+           Ben 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         Ben 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Building and street
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-address"
+        >
+           Garrets green Birmingham 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        Building and street
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-address"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Town or city
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-postTown"
+        >
+           A town 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         Garrets green Birmingham 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          County
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-address3"
+        >
+           lala land 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        Town or city
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-postTown"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Postcode
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-postCode"
+        >
+           NG4 12Z 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         A town 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Telephone number
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-telephoneNumber"
+        >
+           123123123 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        County
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-address3"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Email address
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-emailAddress"
+        >
+           test@test.com 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-         lala land 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Fax Number
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-faxNumber"
+        >
+           1231234 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+      <div
+        class="govuk-summary-list__row"
       >
-        Postcode
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-postCode"
-      >
-         NG4 12Z 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Telephone number
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-telephoneNumber"
-      >
-         123123123 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Email address
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-emailAddress"
-      >
-         test@test.com 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Fax Number
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-faxNumber"
-      >
-         1231234 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-    <div
-      class="govuk-summary-list__row"
-    >
-      <dt
-        class="govuk-summary-list__key"
-      >
-        Purchaser Notes
-      </dt>
-      <dd
-        class="govuk-summary-list__value"
-        id="test-purchaser-purchaserNotes"
-      >
-         some notes 
-      </dd>
-      <dd
-        class="govuk-summary-list__value"
-      />
-    </div>
-  </dl>
-</vtm-purchaser>
+        <dt
+          class="govuk-summary-list__key"
+        >
+          Purchaser Notes
+        </dt>
+        <dd
+          class="govuk-summary-list__value"
+          id="test-purchaser-purchaserNotes"
+        >
+           some notes 
+        </dd>
+        <dd
+          class="govuk-summary-list__value"
+        />
+      </div>
+    </dl>
+  </vtm-purchaser>
+</test-vtm-purchaser>
 `;

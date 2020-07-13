@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { VehicleSummaryComponent } from '@app/technical-record/vehicle-summary/vehicle-summary.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { TESTING_UTILS } from '@app/utils/';
 import { TechRecord } from '@app/models/tech-record.model';
-import { VEHICLE_TYPES } from '@app/app.enums';
+import { VEHICLE_TYPES, VIEW_STATE } from '@app/app.enums';
 import { TechRecordHelperService } from '../tech-record-helper.service';
 
 const getTechRecord = (): TechRecord => {
@@ -21,8 +21,8 @@ const getTechRecord = (): TechRecord => {
 };
 
 describe('VehicleSummaryComponent', () => {
-  let component: VehicleSummaryComponent;
-  let fixture: ComponentFixture<VehicleSummaryComponent>;
+  let fixture: ComponentFixture<TestVehicleSummaryComponent>;
+  let component: TestVehicleSummaryComponent;
   let techRecHelper: TechRecordHelperService;
   let techHelper: jasmine.Spy;
 
@@ -31,17 +31,17 @@ describe('VehicleSummaryComponent', () => {
       imports: [SharedModule],
       declarations: [
         VehicleSummaryComponent,
+        TestVehicleSummaryComponent,
         TestVehicleSummaryHgvComponent,
         TestVehicleSummaryTrlComponent,
         TestVehicleSummaryPsvComponent,
         TestVehicleSummaryEditComponent
       ],
-      providers: [TechRecordHelperService],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      providers: [TechRecordHelperService]
     }).compileComponents();
 
     techRecHelper = TestBed.get(TechRecordHelperService);
-    fixture = TestBed.createComponent(VehicleSummaryComponent);
+    fixture = TestBed.createComponent(TestVehicleSummaryComponent);
     component = fixture.componentInstance;
     component.activeRecord = {
       ...getTechRecord()
@@ -84,18 +84,38 @@ describe('VehicleSummaryComponent', () => {
   });
 
   it('should check if axles has no parking brake mrk', () => {
-    fixture.detectChanges();
+    const componentVS = TestBed.createComponent(VehicleSummaryComponent).componentInstance;
+    componentVS.activeRecord = getTechRecord();
 
-    expect(component.axlesHasParkingBrakeMrk()).toBeTruthy();
+    expect(componentVS.axlesHasParkingBrakeMrk()).toBeTruthy();
   });
 
   it('should render the editable component if editState is true', () => {
     component.editState = true;
+    component.viewState = VIEW_STATE.EDIT;
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
   });
 });
+
+@Component({
+  selector: 'test-vtm-vehicle-summary',
+  template: `
+    <vtm-vehicle-summary
+      [activeRecord]="activeRecord"
+      [editState]="editState"
+      [viewState]="viewState"
+    >
+    </vtm-vehicle-summary>
+  `
+})
+class TestVehicleSummaryComponent {
+  activeRecord: TechRecord;
+  editState: boolean;
+  viewState = VIEW_STATE.VIEW_ONLY;
+}
+
 @Component({
   selector: 'vtm-vehicle-summary-hgv',
   template: `
@@ -130,8 +150,10 @@ class TestVehicleSummaryPsvComponent {
   selector: 'vtm-vehicle-summary-edit',
   template: `
     <div>active record is: {{ techRecord | json }}</div>
+    <div>Current view is: {{ viewState }} Edit mode</div>
   `
 })
 class TestVehicleSummaryEditComponent {
   @Input() techRecord: TechRecord;
+  @Input() viewState: VIEW_STATE;
 }

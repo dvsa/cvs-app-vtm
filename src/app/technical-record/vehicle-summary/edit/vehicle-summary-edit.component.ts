@@ -17,7 +17,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, tap, takeUntil } from 'rxjs/operators';
 
 import { TechRecord, Axle } from '@app/models/tech-record.model';
-import { VEHICLE_TYPES } from '@app/app.enums';
+import { VEHICLE_TYPES, VIEW_STATE } from '@app/app.enums';
 import {
   AXLE_NUM_OPTIONS,
   BOOLEAN_RADIO_OPTIONS,
@@ -42,10 +42,12 @@ import { TechRecordHelperService } from '@app/technical-record/tech-record-helpe
 })
 export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
   @Input() techRecord: TechRecord;
+  @Input() viewState: VIEW_STATE;
 
   techRecordFg: FormGroup;
   numberOfAxles$: Observable<number>;
   onDestroy$ = new Subject();
+  displayInEditView: boolean;
 
   vehicleTypeOptions = {
     ['HGV']: VEHICLE_TYPES.HGV,
@@ -72,6 +74,7 @@ export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.numberOfAxles$ = this.techRecHelper.getNumberOfAxles();
+    this.displayInEditView = this.viewState === VIEW_STATE.EDIT;
 
     const { brakes, axles, vehicleClass } = this.techRecord;
     const dtpNumber = brakes ? brakes.dtpNumber : null;
@@ -161,6 +164,14 @@ export class VehicleSummaryEditComponent implements OnInit, OnDestroy {
           this.techRecord.departmentalVehicleMarker,
           BOOLEAN_RADIO_OPTIONS.No
         )
+      )
+    );
+    this.techRecordFg.addControl(
+      'alterationMarker',
+      this.fb.control(
+        this.techRecord.alterationMarker
+          ? this.techRecord.alterationMarker
+          : BOOLEAN_RADIO_OPTIONS.No
       )
     );
 

@@ -1,21 +1,39 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ManufacturerDetails } from '@app/models/tech-record.model';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
+
+import { ManufacturerDetails, TechRecord } from '@app/models/tech-record.model';
 
 @Component({
   selector: 'vtm-manufacturer',
   templateUrl: './manufacturer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ManufacturerComponent implements OnInit {
+export class ManufacturerComponent implements OnChanges {
+  @Input() techRecord: TechRecord;
+  @Input() editState: boolean;
 
-  @Input() manufacturer: ManufacturerDetails;
-  address1And2 = '';
-  constructor() { }
+  address1And2: string;
+  manufacturer: ManufacturerDetails;
 
-  ngOnInit() {
-    if (this.manufacturer) {
-      this.address1And2 = `${this.manufacturer.address1} ${this.manufacturer.address2}`;
+  constructor() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { techRecord } = changes;
+
+    if (techRecord) {
+      this.manufacturer = !!this.techRecord.manufacturerDetails
+        ? this.techRecord.manufacturerDetails
+        : ({} as ManufacturerDetails);
+
+      this.address1And2 = Object.keys(this.manufacturer).length
+        ? `${this.manufacturer.address1} ${this.manufacturer.address2}`
+        : '';
     }
   }
-
 }
