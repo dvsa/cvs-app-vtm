@@ -3,11 +3,11 @@ import { FormGroup, ControlContainer, FormGroupDirective, FormBuilder } from '@a
 
 import { AddressFormComponent } from '@app/technical-record/shared/address-form/address-form.component';
 
-import { Applicant } from '@app/models/tech-record.model';
+import { PurchaserDetails } from '@app/models/tech-record.model';
 
 @Component({
-  selector: 'vtm-applicant-edit',
-  templateUrl: './applicant-edit.component.html',
+  selector: 'vtm-purchaser-edit',
+  templateUrl: './purchaser-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [
     {
@@ -16,31 +16,35 @@ import { Applicant } from '@app/models/tech-record.model';
     }
   ]
 })
-export class ApplicantEditComponent implements OnInit {
-  @Input() applicant: Applicant;
+export class PurchaserEditComponent implements OnInit {
+  @Input() purchaser: PurchaserDetails;
   @ViewChild(AddressFormComponent) commonAddressForm: AddressFormComponent;
 
   techRecordFg: FormGroup;
 
   constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}
 
-  get applicantDetails() {
-    return this.techRecordFg.get('applicantDetails') as FormGroup;
+  get purchaserDetails() {
+    return this.techRecordFg.get('purchaserDetails') as FormGroup;
   }
 
   ngOnInit() {
     this.techRecordFg = this.parent.form.get('techRecord') as FormGroup;
 
-    const applicantDetails: Applicant = !!this.applicant ? this.applicant : ({} as Applicant);
+    const pcrDetails: PurchaserDetails = !!this.purchaser
+      ? this.purchaser
+      : ({} as PurchaserDetails);
 
-    const { name, ...addressInfo } = applicantDetails;
+    const { name, ...addressInfo } = pcrDetails;
 
     const commonAddressFields = this.commonAddressForm.createControls(addressInfo);
 
     this.techRecordFg.addControl(
-      'applicantDetails',
+      'purchaserDetails',
       this.fb.group({
-        name: this.fb.control(applicantDetails.name),
+        name: this.fb.control(pcrDetails.name),
+        faxNumber: this.fb.control(pcrDetails.faxNumber),
+        purchaserNotes: this.fb.control(pcrDetails.purchaserNotes),
         ...commonAddressFields
       })
     );

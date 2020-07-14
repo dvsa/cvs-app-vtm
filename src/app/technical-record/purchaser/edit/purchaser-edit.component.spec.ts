@@ -8,17 +8,16 @@ import {
 } from '@angular/forms';
 
 import { AddressFormComponent } from '@app/technical-record/shared/address-form/address-form.component';
-import { ManufacturerEditComponent } from './manufacturer-edit.component';
+import { PurchaserEditComponent } from './purchaser-edit.component';
 import { TESTING_UTILS } from '@app/utils';
-
-describe('ManufacturerEditComponent component', () => {
-  let component: ManufacturerEditComponent;
-  let fixture: ComponentFixture<ManufacturerEditComponent>;
+describe('PurchaserEditComponent: ', () => {
+  let component: PurchaserEditComponent;
+  let fixture: ComponentFixture<PurchaserEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [ManufacturerEditComponent, AddressFormComponent],
+      declarations: [PurchaserEditComponent, AddressFormComponent],
       providers: [
         FormGroupDirective,
         {
@@ -32,9 +31,9 @@ describe('ManufacturerEditComponent component', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManufacturerEditComponent);
+    fixture = TestBed.createComponent(PurchaserEditComponent);
     component = fixture.componentInstance;
-    component.manufacturerEditDetails = TESTING_UTILS.mockManufacturer();
+    component.purchaser = TESTING_UTILS.mockPurchaser();
   });
 
   it('should render with the given properties ', () => {

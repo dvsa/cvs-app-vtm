@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ManufacturerEditComponent component should render with the given properties  1`] = `
-<vtm-manufacturer-edit
+exports[`PurchaserEditComponent:  should render with the given properties  1`] = `
+<vtm-purchaser-edit
   commonAddressForm={[Function AddressFormComponent]}
   fb={[Function FormBuilder]}
-  manufacturerEditDetails={[Function Object]}
   parent={[Function FormGroupDirective]}
+  purchaser={[Function Object]}
   techRecordFg={[Function FormGroup]}
 >
   <div
@@ -31,14 +31,14 @@ exports[`ManufacturerEditComponent component should render with the given proper
             >
               <label
                 class="govuk-label govuk-!-font-weight-bold"
-                for="test-edit-name--mf"
+                for="test-edit-name--pcr"
               >
                  Name 
               </label>
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="name"
-                id="test-edit-name--mf"
+                id="test-edit-name--pcr"
                 ng-reflect-name="name"
                 type="text"
               />
@@ -176,14 +176,14 @@ exports[`ManufacturerEditComponent component should render with the given proper
             >
               <label
                 class="govuk-label govuk-!-font-weight-bold"
-                for="test-edit-faxNumber--mf"
+                for="test-edit-faxNumber--pcr"
               >
                  Fax number (optional) 
               </label>
               <input
                 class="govuk-input govuk-input--width-20 ng-untouched ng-pristine ng-valid"
                 formcontrolname="faxNumber"
-                id="test-edit-faxNumber--mf"
+                id="test-edit-faxNumber--pcr"
                 ng-reflect-name="faxNumber"
                 type="number"
                 vtmnullvalue=""
@@ -194,18 +194,18 @@ exports[`ManufacturerEditComponent component should render with the given proper
             >
               <label
                 class="govuk-label govuk-!-font-weight-bold"
-                for="test-edit-notes--mf"
+                for="test-edit-notes--pcr"
               >
-                 Manufacturer notes (optional) 
+                 Purchaser notes (optional) 
               </label>
               <fieldset
                 class="govuk-fieldset"
               >
                 <textarea
                   class="govuk-textarea ng-untouched ng-pristine ng-valid"
-                  formcontrolname="manufacturerNotes"
-                  id="test-edit-notes--mf"
-                  ng-reflect-name="manufacturerNotes"
+                  formcontrolname="purchaserNotes"
+                  id="test-edit-notes--pcr"
+                  ng-reflect-name="purchaserNotes"
                   rows="5"
                   vtmnullvalue=""
                 />
@@ -216,5 +216,5 @@ exports[`ManufacturerEditComponent component should render with the given proper
       </div>
     </div>
   </div>
-</vtm-manufacturer-edit>
+</vtm-purchaser-edit>
 `;

@@ -68,7 +68,8 @@ export const TESTING_UTILS = {
   mockDDA,
   mockBrakeForceWheelsNotLocked,
   mockBrakeForceWheelsUpToHalfLocked,
-  mockDimensions
+  mockDimensions,
+  mockAddressInformation
 };
 
 function mockFormGroupDirective(control = {}): FormGroupDirective {

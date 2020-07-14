@@ -529,7 +529,10 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
 
-          <vtm-purchaser [techRecord]="activeRecord"></vtm-purchaser>
+          <vtm-purchaser
+            [purchaser]="activeRecord.purchaserDetails"
+            [editState]="isEditable"
+          ></vtm-purchaser>
         </mat-expansion-panel>
       </div>
 

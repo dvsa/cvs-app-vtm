@@ -1,5 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild } from '@angular/core';
 import { FormGroup, ControlContainer, FormGroupDirective, FormBuilder } from '@angular/forms';
+
+import { AddressFormComponent } from '@app/technical-record/shared/address-form/address-form.component';
 
 import { ManufacturerDetails } from '@app/models/tech-record.model';
 
@@ -16,6 +18,7 @@ import { ManufacturerDetails } from '@app/models/tech-record.model';
 })
 export class ManufacturerEditComponent implements OnInit {
   @Input() manufacturerEditDetails: ManufacturerDetails;
+  @ViewChild(AddressFormComponent) commonAddressForm: AddressFormComponent;
 
   techRecordFg: FormGroup;
 
@@ -32,19 +35,16 @@ export class ManufacturerEditComponent implements OnInit {
       ? this.manufacturerEditDetails
       : ({} as ManufacturerDetails);
 
+    const { name, ...addressInfo } = manufDetails;
+    const commonAddressFields = this.commonAddressForm.createControls(addressInfo);
+
     this.techRecordFg.addControl(
       'manufacturerDetails',
       this.fb.group({
         name: this.fb.control(manufDetails.name),
-        address1: this.fb.control(manufDetails.address1),
-        address2: this.fb.control(manufDetails.address2),
-        postTown: this.fb.control(manufDetails.postTown),
-        address3: this.fb.control(manufDetails.address3),
-        postCode: this.fb.control(manufDetails.postCode),
-        telephoneNumber: this.fb.control(manufDetails.telephoneNumber),
-        emailAddress: this.fb.control(manufDetails.emailAddress),
         faxNumber: this.fb.control(manufDetails.faxNumber),
-        manufacturerNotes: this.fb.control(manufDetails.manufacturerNotes)
+        manufacturerNotes: this.fb.control(manufDetails.manufacturerNotes),
+        ...commonAddressFields
       })
     );
   }
