@@ -43,7 +43,6 @@ import { SetTestViewState } from '@app/store/actions/VehicleTestResultModel.acti
             (submitVehicleRecord)="vehicleRecordSubmissionHandler($event)"
             (changeViewState)="viewStateHandler($event)"
             (sendPlates)="sendPlatesHandler($event)"
-            (viewTestRecord)="viewTestRecordHandler()"
           >
           </vtm-technical-record>
         </main>
@@ -85,9 +84,5 @@ export class TechnicalRecordsContainer implements OnInit {
 
   sendPlatesHandler(editedVehicleRecord: VehicleTechRecordEdit) {
     this.store.dispatch(new UpdateVehicleTechRecord(editedVehicleRecord));
-  }
-
-  viewTestRecordHandler(): void {
-    this.store.dispatch(new SetTestViewState(VIEW_STATE.VIEW_ONLY));
   }
 }

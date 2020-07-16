@@ -7,7 +7,11 @@ import { TestResultService } from '@app/technical-record-search/test-result.serv
 import { getSelectedVehicleTestResultModel } from '@app/store/selectors/VehicleTestResultModel.selectors';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { TestResultModel } from '@app/models/test-result.model';
-import { SetSelectedTestResultModelSuccess } from '@app/store/actions/VehicleTestResultModel.actions';
+import {
+  SetSelectedTestResultModelSuccess,
+  SetTestViewState
+} from '@app/store/actions/VehicleTestResultModel.actions';
+import { VIEW_STATE } from '@app/app.enums';
 
 @Injectable({ providedIn: 'root' })
 export class TestResultGuard {
@@ -35,6 +39,9 @@ export class TestResultGuard {
   }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+    const currentState = !!route.queryParams ? VIEW_STATE.VIEW_ONLY : VIEW_STATE.EDIT;
+
+    this.store.dispatch(new SetTestViewState(currentState));
     return this.hasSelectedTestResult(route.queryParams.testResultId).pipe(
       switchMap((inStore) => {
         if (inStore) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { TestResultModel } from '@app/models/test-result.model';
 
 @Component({
@@ -8,12 +8,7 @@ import { TestResultModel } from '@app/models/test-result.model';
 })
 export class TestHistoryComponent implements OnInit {
   @Input() testResultJson: TestResultModel[];
-  @Output() viewTestRecord = new EventEmitter<void>();
   constructor() {}
 
   ngOnInit() {}
-
-  viewTest() {
-    this.viewTestRecord.emit();
-  }
 }

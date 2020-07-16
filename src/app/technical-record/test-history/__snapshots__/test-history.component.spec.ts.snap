@@ -3,7 +3,6 @@
 exports[`TestHistoryComponent should create view only with populated data 1`] = `
 <vtm-test-history
   testResultJson={[Function Array]}
-  viewTestRecord={[Function EventEmitter]}
 >
   <table
     class="govuk-table govuk-!-margin-bottom-0"
