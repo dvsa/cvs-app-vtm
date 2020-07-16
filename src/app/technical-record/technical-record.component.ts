@@ -185,6 +185,7 @@ export class TechnicalRecordComponent implements OnChanges, OnInit {
           vehicleRecordEdit: clonedVehicleRecord,
           viewState: this.currentState
         });
+        this.resetVehicleRecordFg();
       }
     });
     // }
