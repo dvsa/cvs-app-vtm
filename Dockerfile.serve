@@ -1,0 +1,16 @@
+FROM nginx:alpine
+
+WORKDIR /usr/share/nginx/html
+
+RUN rm -rf /usr/share/nginx/html/*
+
+# Load image with /dist & Dockerfile
+# Need a docker registry
+# check how we version images/build? Probably not a good idea to get the :latest
+COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
+
+COPY ./dist/ /usr/share/nginx/html
+
+EXPOSE 4200 4200
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
