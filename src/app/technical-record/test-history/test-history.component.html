@@ -24,23 +24,19 @@
         <td id="{{ 'test-testCode-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
           {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}
         </td>
-        <td
-          id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-' + ii }}"
-          class="govuk-table__cell"
-        >
+        <td id="{{ 'test-testTypeEndTimestamp-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
           <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
             {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}
           </span>
         </td>
         <td id="{{ 'test-expiryDate-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
-          <span *ngIf="testType.testExpiryDate && testType.testExpiryDate.trim()!==''; else hyphen">
-            {{ testType.testExpiryDate | date: 'dd/MM/yyyy' : 'UTC' }}
+          <span
+            *ngIf="testType.testExpiryDate && testType.testExpiryDate.trim() !== ''; else hyphen"
+          >
+            {{ testType.testExpiryDate | date: 'dd/MM/yyyy':'UTC' }}
           </span>
         </td>
-        <td
-          id="{{ 'test-certificateNumber-tRes-' + i + '-' + ii }}"
-          class="govuk-table__cell"
-        >
+        <td id="{{ 'test-certificateNumber-tRes-' + i + '-' + ii }}" class="govuk-table__cell">
           {{ testType.certificateNumber | DefaultNullOrEmpty }}
         </td>
         <td
@@ -54,7 +50,7 @@
         >
           {{ testType.testResult | DefaultNullOrEmpty | uppercase }}
         </td>
-        <td id="{{ 'test-testerName-' + i + '-' + ii}}" class="govuk-table__cell">
+        <td id="{{ 'test-testerName-' + i + '-' + ii }}" class="govuk-table__cell">
           {{ testRes.testerName | DefaultNullOrEmpty }}
         </td>
         <td id="{{ 'test-view-' + i }}" class="govuk-table__cell">
@@ -66,7 +62,7 @@
               testResultId: testRes.testResultId,
               systemNumber: testRes.systemNumber
             }"
-            (click)="viewTest()" >View</a
+            >View</a
           >
         </td>
       </tr>

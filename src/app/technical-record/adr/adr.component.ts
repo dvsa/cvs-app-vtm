@@ -85,6 +85,7 @@ export class AdrComponent implements OnChanges, OnInit, OnDestroy {
     } else {
       techRecord.addControl('adrDetails', new FormGroup({}));
     }
+    techRecord.markAsDirty();
   }
 
   unsorted(): number {
