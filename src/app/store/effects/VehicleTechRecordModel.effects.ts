@@ -25,8 +25,7 @@ import {
   CREATE_PAGE_LABELS,
   VEHICLE_TECH_RECORD_SEARCH_ERRORS,
   VIEW_STATE,
-  RECORD_STATUS,
-  VEHICLE_TYPES
+  RECORD_STATUS
 } from '@app/app.enums';
 import {
   getSelectedVehicleTechRecord,
@@ -229,7 +228,7 @@ export class VehicleTechRecordModelEffects {
       techRecord: [
         {
           statusCode: RECORD_STATUS.PROVISIONAL,
-          vehicleType: VEHICLE_TYPES[vType]
+          vehicleType: vType
         }
       ] as TechRecord[]
     } as VehicleTechRecordModel;

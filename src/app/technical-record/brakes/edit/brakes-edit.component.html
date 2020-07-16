@@ -1,0 +1,76 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="techRecordFg">
+          <!-- Load sensing valve -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg.get('brakesVT'),
+                  label: 'Load sensing valve (optional)',
+                  field: 'loadSensingValve'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <!-- Antilock braking system -->
+          <ng-container
+            *ngTemplateOutlet="
+              boolTemplate;
+              context: {
+                $implicit: {
+                  group: techRecordFg.get('brakesVT'),
+                  label: 'Antilock braking system',
+                  field: 'antilockBrakingSystem'
+                }
+              }
+            "
+          >
+          </ng-container>
+
+          <ng-container *ngIf="techRecord.vehicleType === trlVvehicleType">
+            <vtm-brakes-edit-trl [techRecord]="techRecord"> </vtm-brakes-edit-trl>
+          </ng-container>
+
+          <ng-template let-boolTemplate #boolTemplate>
+            <div
+              class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5"
+              [formGroup]="boolTemplate.group"
+            >
+              <label
+                for="test-edit-{{ boolTemplate.field }}"
+                class="govuk-label govuk-!-font-weight-bold"
+              >
+                {{ boolTemplate.label }}
+              </label>
+              <div
+                class="govuk-radios__item"
+                *ngFor="let option of booleanOptions | keyvalue: unsorted"
+              >
+                <input
+                  class="govuk-radios__input"
+                  id="test-edit-{{ boolTemplate.field }}-{{ option.key }}"
+                  name="{{ boolTemplate.field }}"
+                  formControlName="{{ boolTemplate.field }}"
+                  type="radio"
+                  [value]="option.value"
+                />
+                <label
+                  class="govuk-label govuk-radios__label"
+                  for="test-edit-{{ boolTemplate.field }}-{{ option.key }}"
+                >
+                  {{ option.key }}
+                </label>
+              </div>
+            </div>
+          </ng-template>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

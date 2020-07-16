@@ -1,0 +1,148 @@
+<div class="govuk-form-group">
+  <form [formGroup]="techRecordFg">
+    <!-- Speed limiter exempt -->
+    <ng-container
+      *ngTemplateOutlet="
+        boolTemplate;
+        context: {
+          $implicit: {
+            label: 'Speed limiter exempt',
+            field: 'speedLimiterMrk'
+          }
+        }
+      "
+    >
+    </ng-container>
+
+    <!-- Tacho exempt -->
+    <ng-container
+      *ngTemplateOutlet="
+        boolTemplate;
+        context: {
+          $implicit: {
+            label: 'Tacho exempt',
+            field: 'tachoExemptMrk'
+          }
+        }
+      "
+    >
+    </ng-container>
+
+    <!-- Euro standard -->
+    <div class="govuk-form-group">
+      <label for="test-edit-euroStandard" class="govuk-label govuk-!-font-weight-bold">
+        Euro standard
+      </label>
+      <input
+        id="test-edit-euroStandard"
+        type="text"
+        name="euroStandard"
+        formControlName="euroStandard"
+        class="govuk-input govuk-input--width-2"
+      />
+    </div>
+
+    <!--Fuel propulsion  -->
+    <div class="govuk-form-group">
+      <label for="test-edit-fuelPropulsionSystem" class="govuk-label govuk-!-font-weight-bold">
+        Fuel/propulsion system
+      </label>
+      <select
+        id="test-edit-fuelPropulsionSystem"
+        formControlName="fuelPropulsionSystem"
+        class="govuk-select"
+      >
+        <option *ngFor="let fuelProp of fuelPropulsionOptions" [ngValue]="fuelProp.name">
+          {{ fuelProp.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Drawbar coupling fitted -->
+    <ng-container
+      *ngTemplateOutlet="
+        boolTemplate;
+        context: {
+          $implicit: {
+            label: 'Drawbar coupling fitted',
+            field: 'drawbarCouplingFitted'
+          }
+        }
+      "
+    >
+    </ng-container>
+
+    <!-- Offroad vehicle -->
+    <ng-container
+      *ngTemplateOutlet="
+        boolTemplate;
+        context: {
+          $implicit: {
+            label: 'Off road vehicle',
+            field: 'offRoad'
+          }
+        }
+      "
+    >
+    </ng-container>
+
+    <!-- Number of wheels driven -->
+    <div class="govuk-form-group">
+      <label for="test-edit-numberOfWheelsDriven" class="govuk-label govuk-!-font-weight-bold">
+        Number of wheels driven
+      </label>
+      <input
+        id="test-edit-numberOfWheelsDriven"
+        type="number"
+        name="numberOfWheelsDriven"
+        formControlName="numberOfWheelsDriven"
+        class="govuk-input govuk-input--width-4"
+      />
+    </div>
+
+    <!-- Emission limit -->
+    <div class="govuk-form-group">
+      <label for="test-edit-emissionsLimit" class="govuk-label govuk-!-font-weight-bold">
+        Emission limit (optional)
+      </label>
+      <input
+        id="test-edit-emissionsLimit"
+        type="number"
+        name="emissionsLimit"
+        formControlName="emissionsLimit"
+        class="govuk-input govuk-input govuk-input--width-20"
+        vtmNullValue
+      />
+    </div>
+
+    <ng-template let-boolTemplate #boolTemplate>
+      <div class="govuk-radios govuk-radios--inline govuk-!-margin-bottom-5">
+        <label
+          for="test-edit-{{ boolTemplate.field }}"
+          class="govuk-label govuk-!-font-weight-bold"
+        >
+          {{ boolTemplate.label }}
+        </label>
+        <div
+          class="govuk-radios__item"
+          *ngFor="let option of booleanOptions | keyvalue: unsorted"
+        >
+          <input
+            class="govuk-radios__input"
+            id="test-edit-{{ boolTemplate.field }}-{{ option.key }}"
+            name="{{ boolTemplate.field }}"
+            formControlName="{{ boolTemplate.field }}"
+            type="radio"
+            [value]="option.value"
+          />
+          <label
+            class="govuk-label govuk-radios__label"
+            for="test-edit-{{ boolTemplate.field }}-{{ option.key }}"
+          >
+            {{ option.key }}
+          </label>
+        </div>
+      </div>
+    </ng-template>
+  </form>
+</div>

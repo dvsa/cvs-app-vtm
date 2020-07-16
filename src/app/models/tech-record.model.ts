@@ -114,8 +114,8 @@ export interface Axle {
 export interface AddressInformation {
   address1: string;
   address2: string;
-  postTown: string;
   address3: string;
+  postTown: string;
   postCode: string;
   emailAddress: string;
   telephoneNumber: string;

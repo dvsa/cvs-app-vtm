@@ -13,10 +13,11 @@ import { PurchaserDetails, TechRecord } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PurchaserComponent implements OnChanges {
+  @Input() editState: boolean;
+  @Input() purchaser: PurchaserDetails;
   @Input() techRecord: TechRecord;
 
   address1And2: string;
-  purchaser: PurchaserDetails;
 
   constructor() {}
 

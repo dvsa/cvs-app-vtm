@@ -6,88 +6,93 @@
           <h2 class="govuk-heading-m">Vehicle weight (kg)</h2>
 
           <!-- Gross vehicle weight -->
-          <ng-container
-            *ngTemplateOutlet="
-              weightTemplate;
-              context: {
-                $implicit: {
-                  group: techRecordFg,
-                  labelHead: 'Gross vehicle weight',
-                  weightFields: [
-                    {
-                      label: 'GB',
-                      field: 'grossGbWeight'
-                    },
-                    {
-                      label: 'EEC (optional)',
-                      field: 'grossEecWeight'
-                    },
-                    {
-                      label: 'Design',
-                      field: 'grossDesignWeight'
-                    }
-                  ]
+          <ng-container *ngIf="isHgvVehicle || isTrlVehicle">
+            <ng-container
+              *ngTemplateOutlet="
+                weightTemplate;
+                context: {
+                  $implicit: {
+                    group: techRecordFg,
+                    labelHead: 'Gross vehicle weight',
+                    weightFields: [
+                      {
+                        label: 'GB',
+                        field: 'grossGbWeight'
+                      },
+                      {
+                        label: 'EEC (optional)',
+                        field: 'grossEecWeight'
+                      },
+                      {
+                        label: 'Design',
+                        field: 'grossDesignWeight'
+                      }
+                    ]
+                  }
                 }
-              }
-            "
-          >
+              "
+            >
+            </ng-container>
           </ng-container>
 
           <!-- Gross train weight -->
-          <ng-container
-            *ngTemplateOutlet="
-              weightTemplate;
-              context: {
-                $implicit: {
-                  group: techRecordFg,
-                  labelHead: 'Gross train weight',
-                  weightFields: [
-                    {
-                      label: 'GB',
-                      field: 'trainGbWeight'
-                    },
-                    {
-                      label: 'EEC (optional)',
-                      field: 'trainEecWeight'
-                    },
-                    {
-                      label: 'Design (optional)',
-                      field: 'trainDesignWeight'
-                    }
-                  ]
+          <ng-container *ngIf="isHgvVehicle">
+            <ng-container
+              *ngTemplateOutlet="
+                weightTemplate;
+                context: {
+                  $implicit: {
+                    group: techRecordFg,
+                    labelHead: 'Gross train weight',
+                    weightFields: [
+                      {
+                        label: 'GB',
+                        field: 'trainGbWeight'
+                      },
+                      {
+                        label: 'EEC (optional)',
+                        field: 'trainEecWeight'
+                      },
+                      {
+                        label: 'Design (optional)',
+                        field: 'trainDesignWeight'
+                      }
+                    ]
+                  }
                 }
-              }
-            "
-          >
+              "
+            >
+            </ng-container>
           </ng-container>
 
           <!-- Max train weight -->
-          <ng-container
-            *ngTemplateOutlet="
-              weightTemplate;
-              context: {
-                $implicit: {
-                  group: techRecordFg,
-                  labelHead: 'Max train weight',
-                  weightFields: [
-                    {
-                      label: 'GB',
-                      displayOptional: isPsvVehicle,
-                      field: 'maxTrainGbWeight'
-                    },
-                    {
-                      label: 'EEC (optional)',
-                      field: 'maxTrainEecWeight'
-                    },
-                    {
-                      label: 'Design (optional)',
-                      field: 'maxTrainDesignWeight'
-                    }
-                  ]
+          <ng-container *ngIf="isHgvVehicle">
+            <ng-container
+              *ngTemplateOutlet="
+                weightTemplate;
+                context: {
+                  $implicit: {
+                    group: techRecordFg,
+                    labelHead: 'Max train weight',
+                    weightFields: [
+                      {
+                        label: 'GB',
+                        field: 'maxTrainGbWeight'
+                      },
+                      {
+                        label: 'EEC (optional)',
+                        field: 'maxTrainEecWeight'
+                      },
+                      {
+                        label: 'Design (optional)',
+                        field: 'maxTrainDesignWeight'
+                      }
+                    ]
+                  }
                 }
-              }
-            "
-          >
+              "
+            >
+            </ng-container>
           </ng-container>
 
           <!-- Axle weights -->

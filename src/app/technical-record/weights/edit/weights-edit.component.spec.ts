@@ -14,6 +14,7 @@ import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { WeightsEditComponent } from './weights-edit.component';
 import { TechRecordHelperService } from '@app/technical-record/tech-record-helper.service';
 import { TechRecord } from '@app/models/tech-record.model';
+import { VEHICLE_TYPES } from '@app/app.enums';
 
 describe('WeightsEditComponent', () => {
   let component: WeightsEditComponent;
@@ -43,6 +44,7 @@ describe('WeightsEditComponent', () => {
     fixture = TestBed.createComponent(WeightsEditComponent);
     component = fixture.componentInstance;
     component.techRecord = TESTING_UTILS.mockTechRecord({
+      vehicleType: VEHICLE_TYPES.HGV,
       grossGbWeight: 3,
       grossEecWeight: 3,
       grossDesignWeight: 2,
@@ -52,16 +54,21 @@ describe('WeightsEditComponent', () => {
     });
   });
 
-  it('should create with initialized form weights controls', () => {
+  it('should create with initialized weights controls for HGVs', () => {
+    fixture.detectChanges();
+
+    expect(fixture).toMatchSnapshot();
+  });
+
+  it('should create with initialized weights controls for TRLs', () => {
+    component.techRecord.vehicleType = VEHICLE_TYPES.TRL;
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();
   });
 
   it('should render AXLE weights controls on initialization', () => {
-    component.techRecord = TESTING_UTILS.mockTechRecord({
-      axles: [TESTING_UTILS.mockAxle()]
-    });
+    component.techRecord.axles = [TESTING_UTILS.mockAxle()];
     fixture.detectChanges();
 
     expect(fixture).toMatchSnapshot();

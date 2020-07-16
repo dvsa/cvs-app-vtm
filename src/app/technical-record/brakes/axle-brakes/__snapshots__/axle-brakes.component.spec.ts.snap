@@ -3,7 +3,6 @@
 exports[`AxleBrakesComponent should create view only with populated data 1`] = `
 <vtm-axle-brakes
   axle={[Function Object]}
-  vehicleType={[Function String]}
 >
   <dl
     class="govuk-summary-list"

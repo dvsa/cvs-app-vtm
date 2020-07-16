@@ -30,6 +30,8 @@ import { VehicleSummaryPsvComponent } from './vehicle-summary/vehicle-summary-ps
 import { VehicleSummaryHgvComponent } from './vehicle-summary/vehicle-summary-hgv/vehicle-summary-hgv.component';
 import { VehicleSummaryTrlComponent } from './vehicle-summary/vehicle-summary-trl/vehicle-summary-trl.component';
 import { VehicleSummaryEditComponent } from './vehicle-summary/edit/vehicle-summary-edit.component';
+import { VehicleSummaryEditHgvComponent } from './vehicle-summary/edit/vehicle-summary-edit-hgv/vehicle-summary-edit-hgv.component';
+import { VehicleSummaryEditTrlComponent } from './vehicle-summary/edit/vehicle-summary-edit-trl/vehicle-summary-edit-trl.component';
 import { TypeApprovalComponent } from './vehicle-summary/edit/type-approval/type-approval.component';
 import { NotesEditComponent } from './notes/edit/notes-edit.component';
 import { BodyComponent } from './body/body.component';
@@ -52,13 +54,19 @@ import { DocumentsEditComponent } from './documents/edit/documents-edit.componen
 import { PlatesComponent } from './plates/plates.component';
 import { BrakesComponent } from './brakes/brakes.component';
 import { BrakesPsvComponent } from './brakes/brakes-psv/brakes-psv.component';
+import { BrakesEditComponent } from './brakes/edit/brakes-edit.component';
+import { BrakesEditTrlComponent } from './brakes/edit/brakes-edit-trl/brakes-edit-trl.component';
 import { PurchaserComponent } from './purchaser/purchaser.component';
+import { PurchaserEditComponent } from './purchaser/edit/purchaser-edit.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
+import { ManufacturerEditComponent } from './manufacturer/edit/manufacturer-edit.component';
 import { AuthorisationIntoServiceComponent } from './authorisation-into-service/authorisation-into-service.component';
+import { AuthIntoServiceEditComponent } from './authorisation-into-service/edit/auth-into-service-edit.component';
 import { LettersOfAuthorisationComponent } from './letters-of-authorisation/letters-of-authorisation.component';
 import { AxleBrakesComponent } from './brakes/axle-brakes/axle-brakes.component';
 import { DdaComponent } from './dda/dda.component';
 import { AdrModule } from './adr/adr.module';
+import { AddressFormComponent } from './shared/address-form/address-form.component';
 
 const routes: Routes = [
   {
@@ -79,6 +87,8 @@ const COMPONENTS = [
   VehicleSummaryHgvComponent,
   VehicleSummaryTrlComponent,
   VehicleSummaryEditComponent,
+  VehicleSummaryEditHgvComponent,
+  VehicleSummaryEditTrlComponent,
   TypeApprovalComponent,
   NotesEditComponent,
   BodyEditComponent,
@@ -101,12 +111,18 @@ const COMPONENTS = [
   PlatesComponent,
   BrakesComponent,
   BrakesPsvComponent,
+  BrakesEditComponent,
+  BrakesEditTrlComponent,
   PurchaserComponent,
+  PurchaserEditComponent,
   ManufacturerComponent,
+  ManufacturerEditComponent,
   AuthorisationIntoServiceComponent,
+  AuthIntoServiceEditComponent,
   LettersOfAuthorisationComponent,
   AxleBrakesComponent,
-  DdaComponent
+  DdaComponent,
+  AddressFormComponent
 ];
 
 @NgModule({

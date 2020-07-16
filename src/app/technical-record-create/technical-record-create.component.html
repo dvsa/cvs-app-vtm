@@ -32,20 +32,23 @@
                       <span>Select a vehicle type</span>
                     </span>
                     <div class="govuk-radios">
-                      <div class="govuk-radios__item" *ngFor="let vType of vehicleTypes">
+                      <div
+                        class="govuk-radios__item"
+                        *ngFor="let vType of vehicleTypeOptions | keyvalue: unsorted"
+                      >
                         <input
                           class="govuk-radios__input"
-                          id="{{ 'test-radio-' + vType }}"
+                          id="{{ 'test-radio-' + vType.key }}"
                           type="radio"
                           formControlName="vehicleType"
-                          value="{{ vType }}"
+                          [value]="vType.value"
                           (change)="setVrmValidators($event)"
                         />
                         <label
                           class="govuk-label govuk-radios__label"
-                          for="{{ 'test-radio-' + vType }}"
+                          for="{{ 'test-radio-' + vType.key }}"
                         >
-                          {{ vType }}
+                          {{ vType.key }}
                         </label>
                       </div>
                     </div>
@@ -71,7 +74,9 @@
                     </span>
                     <input
                       class="govuk-input govuk-input--width-20"
-                      [class.govuk-input--error]="formErrors.vinErr || formError[0]?.includes('VIN')"
+                      [class.govuk-input--error]="
+                        formErrors.vinErr || formError[0]?.includes('VIN')
+                      "
                       id="test-vin"
                       type="text"
                       formControlName="vin"

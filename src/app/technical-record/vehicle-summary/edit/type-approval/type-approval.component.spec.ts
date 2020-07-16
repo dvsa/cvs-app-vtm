@@ -1,4 +1,3 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ReactiveFormsModule,
@@ -8,7 +7,6 @@ import {
   AbstractControl
 } from '@angular/forms';
 
-import { SharedModule } from '@app/shared';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { TypeApprovalComponent } from './type-approval.component';
 import { TechRecord } from '@app/models/tech-record.model';
@@ -26,9 +24,8 @@ describe('TypeApprovalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, SharedModule],
+      imports: [FormsModule, ReactiveFormsModule],
       declarations: [TypeApprovalComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         FormGroupDirective,
         {
@@ -44,7 +41,6 @@ describe('TypeApprovalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TypeApprovalComponent);
     component = fixture.componentInstance;
-    component.techRecord = mockTechRecord;
   });
 
   it('should create with empty control states', () => {
@@ -61,6 +57,7 @@ describe('TypeApprovalComponent', () => {
   });
 
   it('should create with initialized form controls', () => {
+    component.techRecord = mockTechRecord;
     fixture.detectChanges();
 
     expect(component.techRecordFg.get('approvalType').value).toEqual(mockTechRecord.approvalType);

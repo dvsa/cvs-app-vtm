@@ -7,6 +7,7 @@ import {
   FormGroup
 } from '@angular/forms';
 
+import { AddressFormComponent } from '@app/technical-record/shared/address-form/address-form.component';
 import { ApplicantEditComponent } from './applicant-edit.component';
 import { TESTING_UTILS } from '@app/utils';
 
@@ -17,7 +18,7 @@ describe('ApplicantEditComponent component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [ApplicantEditComponent],
+      declarations: [ApplicantEditComponent, AddressFormComponent],
       providers: [
         FormGroupDirective,
         {

@@ -15,7 +15,7 @@ exports[`TypeApprovalComponent should create with empty control states 1`] = `
       class="govuk-fieldset"
     >
       <h2
-        class="govuk-heading-m govuk-!-margin-bottom-2"
+        class="govuk-heading-m govuk-!-margin-top-6 govuk-!-margin-bottom-2"
       >
         Type approval
       </h2>

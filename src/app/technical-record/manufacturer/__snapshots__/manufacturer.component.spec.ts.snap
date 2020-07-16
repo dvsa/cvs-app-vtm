@@ -8,6 +8,7 @@ exports[`ManufacturerComponent should create view only with populated data 1`] =
     ng-reflect-tech-record="[object Object]"
   >
     
+    
     <dl
       class="govuk-summary-list"
     >
@@ -172,6 +173,53 @@ exports[`ManufacturerComponent should create view only with populated data 1`] =
         <dd
           class="govuk-summary-list__value"
         />
+      </div>
+    </dl>
+    
+  </vtm-manufacturer>
+</test-vtm-manufacturer>
+`;
+
+exports[`ManufacturerComponent should render the edit components when editState is true 1`] = `
+<test-vtm-manufacturer
+  activeRecord={[Function Object]}
+  editState={[Function Boolean]}
+>
+  <vtm-manufacturer
+    ng-reflect-edit-state="true"
+    ng-reflect-tech-record="[object Object]"
+  >
+    
+    
+    
+    <dl
+      class="govuk-summary-list"
+    >
+      <div
+        class="govuk-summary-list__row"
+      >
+        <dt
+          class="govuk-summary-list__key"
+        >
+          <vtm-manufacturer-edit
+            ng-reflect-manufacturer-edit-details="[object Object]"
+          >
+            <div>
+              Manufacturer details is: {
+    "name": "Ben",
+    "faxNumber": "1231234",
+    "manufacturerNotes": "some notes",
+    "address1": "Garrets green",
+    "address2": "Birmingham",
+    "address3": "lala land",
+    "postCode": "NG4 12Z",
+    "postTown": "A town",
+    "telephoneNumber": "123123123",
+    "emailAddress": "test@test.com"
+  }
+            </div>
+          </vtm-manufacturer-edit>
+        </dt>
       </div>
     </dl>
   </vtm-manufacturer>

@@ -8,6 +8,7 @@ exports[`PurchaserComponent should create view only with populated data 1`] = `
     ng-reflect-tech-record="[object Object]"
   >
     
+    
     <dl
       class="govuk-summary-list"
     >
@@ -174,6 +175,7 @@ exports[`PurchaserComponent should create view only with populated data 1`] = `
         />
       </div>
     </dl>
+    
   </vtm-purchaser>
 </test-vtm-purchaser>
 `;
