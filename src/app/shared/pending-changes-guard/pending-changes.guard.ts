@@ -10,7 +10,7 @@ export interface ComponentCanDeactivate {
 
 @Injectable()
 export class PendingChangesGuard implements CanDeactivate<ComponentCanDeactivate> {
-  constructor(private pendingChangesService: PendingChangesService) { }
+  constructor(private pendingChangesService: PendingChangesService) {}
 
   canDeactivate(component: ComponentCanDeactivate): boolean | Observable<boolean> {
     return component.canDeactivate() ? true : this.pendingChangesService.confirm();

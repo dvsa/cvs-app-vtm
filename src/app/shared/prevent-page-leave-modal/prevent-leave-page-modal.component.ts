@@ -8,11 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PreventLeavePageModalComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<PreventLeavePageModalComponent>
-  ) {
-  }
+  constructor(public dialogRef: MatDialogRef<PreventLeavePageModalComponent>) {}
 
   close(): void {
     this.dialogRef.close(false);

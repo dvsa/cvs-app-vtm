@@ -1,4 +1,4 @@
-@import "node_modules/govuk-frontend/govuk/all";
+@import 'node_modules/govuk-frontend/govuk/all';
 
 .enter-reason-for-cha {
   color: #0b0c0c;
@@ -14,7 +14,7 @@ textarea {
 
 .cancel {
   color: #005ea5;
-  font-family: "GDS Transport", Arial, sans-serif;
+  font-family: 'GDS Transport', Arial, sans-serif;
   font-size: 19px;
   font-weight: 300;
   line-height: 44px;

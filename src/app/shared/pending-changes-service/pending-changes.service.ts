@@ -9,9 +9,7 @@ import { PreventLeavePageModalComponent } from '../prevent-page-leave-modal/prev
   providedIn: 'root'
 })
 export class PendingChangesService {
-
-  constructor(private dialog: MatDialog, private router: Router) {
-  }
+  constructor(private dialog: MatDialog, private router: Router) {}
 
   confirm(): Observable<boolean> {
     const destinationLink = window.location.href;
@@ -20,11 +18,11 @@ export class PendingChangesService {
       window.history.pushState({}, '', this.router.url);
     });
     const dialogRef = this.dialog.open(PreventLeavePageModalComponent, {
-      width: '600px',
+      width: '600px'
     });
 
     return dialogRef.afterClosed().pipe(
-      switchMap((res) => res ? of(true) : of(false)),
+      switchMap((res) => (res ? of(true) : of(false))),
       catchError((err) => of(false))
     );
   }

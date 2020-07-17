@@ -4,6 +4,3 @@ export interface TreeData {
   id: string;
   isActive: boolean;
 }
-
-
-

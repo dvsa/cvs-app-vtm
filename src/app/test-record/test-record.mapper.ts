@@ -168,7 +168,10 @@ export class TestRecordMapper {
     testTypeMapped.smokeTestKLimitApplied = testResultFormData.testType.smokeTestKLimitApplied;
     testTypeMapped.fuelType = testResultFormData.testType.fuelType;
 
-    if (!!testTypeMapped.modType && testTypesApplicable.emissionDetailsApplicable[testTypeMapped.testTypeId]) {
+    if (
+      !!testTypeMapped.modType &&
+      testTypesApplicable.emissionDetailsApplicable[testTypeMapped.testTypeId]
+    ) {
       testTypeMapped.modType.code = !!testResultFormData.testType.modType.length
         ? testResultFormData.testType.modType.split('-')[0].trim()
         : testTypeMapped.modType.code;

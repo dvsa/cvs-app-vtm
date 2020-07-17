@@ -23,7 +23,7 @@
             </td>
             <td id="test-tc2IntermediateExpiryDate" class="govuk-table__cell">
               <span *ngIf="tankDetails?.tc2Details?.tc2IntermediateExpiryDate; else hyphen">
-                {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | date:'dd/MM/yyyy' }}
+                {{ tankDetails?.tc2Details?.tc2IntermediateExpiryDate | date: 'dd/MM/yyyy' }}
               </span>
             </td>
           </tr>
@@ -40,7 +40,7 @@
             </td>
             <td id="test-tc3PeriodicExpiryDate-{{ i }}" class="govuk-table__cell">
               <span *ngIf="tc3Details.tc3PeriodicExpiryDate; else hyphen">
-                {{ tc3Details.tc3PeriodicExpiryDate | date:'dd/MM/yyyy' }}
+                {{ tc3Details.tc3PeriodicExpiryDate | date: 'dd/MM/yyyy' }}
               </span>
             </td>
           </tr>

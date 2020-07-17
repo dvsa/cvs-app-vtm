@@ -104,9 +104,13 @@ describe('TreeComponent', () => {
     expect(component.hasChildren(0, treeNode)).toBeTruthy();
   });
 
-
   it('should emit the activeNode', () => {
-    const selectedNode = { nodeName: 'First test', id: '95', children: BehaviorSubject, isActive: false };
+    const selectedNode = {
+      nodeName: 'First test',
+      id: '95',
+      children: BehaviorSubject,
+      isActive: false
+    };
     const emittedNode = { key: selectedNode.id, value: selectedNode.nodeName };
 
     spyOn(component.sendTreeData, 'emit');
@@ -114,5 +118,4 @@ describe('TreeComponent', () => {
 
     expect(component.sendTreeData.emit).toHaveBeenCalledWith(emittedNode);
   });
-
 });

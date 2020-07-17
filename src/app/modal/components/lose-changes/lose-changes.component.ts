@@ -15,7 +15,7 @@ export class LoseChangesComponent implements OnInit {
   ngOnInit() {}
 
   onLoseChangesClick() {
-    this.okCancelAction.emit({ isOk: true});
+    this.okCancelAction.emit({ isOk: true });
   }
 
   onCancelClick() {

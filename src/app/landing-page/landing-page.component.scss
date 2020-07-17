@@ -1,7 +1,6 @@
-@import "node_modules/govuk-frontend/govuk/all";
+@import 'node_modules/govuk-frontend/govuk/all';
 
 .landing-page {
-
   & a {
     color: #1d70b8 !important;
     text-decoration: none;
@@ -19,7 +18,7 @@
   }
 
   & .govuk-grid-column-one-third {
-    background: govuk-colour("light-grey");
+    background: govuk-colour('light-grey');
     margin: 0 0 10px 18px;
     width: 364px !important;
     border-color: $govuk-link-colour !important;

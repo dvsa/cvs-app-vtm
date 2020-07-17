@@ -1,4 +1,4 @@
-import {SortByDatePipe} from '@app/pipes/SortByDatePipe';
+import { SortByDatePipe } from '@app/pipes/SortByDatePipe';
 
 const testResultList = [
   {
@@ -13,7 +13,7 @@ const testResultList = [
   {
     vin: '1234569',
     createdAt: '2019-06-27T10:26:54.903Z'
-  },
+  }
 ];
 
 describe('SortByDatePipe', () => {
@@ -28,5 +28,4 @@ describe('SortByDatePipe', () => {
     expect(orderedTestResults).toBeDefined();
     expect(orderedTestResults[0].vin).toEqual('1234567');
   });
-
 });

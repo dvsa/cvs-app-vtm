@@ -12,6 +12,6 @@ import { Observable } from 'rxjs';
 export class SpinnerLoaderComponent {
   loader$: Observable<boolean>;
   constructor(private _store: Store<IAppState>) {
-    this.loader$ = this._store.pipe(select(state => state.loader.loading));
+    this.loader$ = this._store.pipe(select((state) => state.loader.loading));
   }
 }

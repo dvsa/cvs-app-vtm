@@ -71,7 +71,9 @@
                     </span>
                     <input
                       class="govuk-input govuk-input--width-20"
-                      [class.govuk-input--error]="formErrors.vinErr || formError[0]?.includes('VIN')"
+                      [class.govuk-input--error]="
+                        formErrors.vinErr || formError[0]?.includes('VIN')
+                      "
                       id="test-vin"
                       type="text"
                       formControlName="vin"

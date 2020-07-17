@@ -12,10 +12,9 @@ describe('AxleBrakesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ AxleBrakesComponent ],
+      declarations: [AxleBrakesComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -31,5 +30,4 @@ describe('AxleBrakesComponent', () => {
     expect(component).toBeDefined();
     expect(fixture).toMatchSnapshot();
   });
-
 });

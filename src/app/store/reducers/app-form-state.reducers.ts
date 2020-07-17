@@ -1,11 +1,11 @@
-import { AppFormStateActions, EAppFormStateActions  } from '../actions/app-form-state.actions';
+import { AppFormStateActions, EAppFormStateActions } from '../actions/app-form-state.actions';
 
 export interface AppFormState {
   pristine: boolean;
 }
 
 export const initialAppFormState: AppFormState = {
-  pristine: true,
+  pristine: true
 };
 
 export function AppFormStateReducer(

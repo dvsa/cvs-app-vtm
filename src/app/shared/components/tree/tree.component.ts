@@ -8,10 +8,7 @@ import { TreeData } from '@app/models/tree-data';
 export class TreeNode {
   children: BehaviorSubject<TreeNode[]>;
   isActive?: boolean;
-  constructor(
-    public nodeName: string,
-    public id: string,
-    children?: TreeNode[]) {
+  constructor(public nodeName: string, public id: string, children?: TreeNode[]) {
     this.children = new BehaviorSubject(children === undefined ? [] : children);
   }
 }
@@ -68,7 +65,7 @@ export class TreeComponent implements OnInit {
     }
   }
 
-   sortTreeNodeByChildren(a, b) {
+  sortTreeNodeByChildren(a, b) {
     if (a.children && a.children.value < b.children && b.children.value) {
       return -1;
     }
@@ -100,7 +97,7 @@ export class TreeComponent implements OnInit {
   }
 
   setActiveNode(node) {
-    this.treeControl.dataNodes.forEach(dnode => dnode.isActive = false);
+    this.treeControl.dataNodes.forEach((dnode) => (dnode.isActive = false));
     node.isActive = !node.isActive;
 
     this.activeNode = { key: node.id, value: node.nodeName };

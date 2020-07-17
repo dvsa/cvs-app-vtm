@@ -12,10 +12,9 @@ describe('AuthorisationIntoServiceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ AuthorisationIntoServiceComponent ],
+      declarations: [AuthorisationIntoServiceComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

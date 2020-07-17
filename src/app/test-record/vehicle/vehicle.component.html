@@ -45,7 +45,7 @@
     </dt>
     <dd class="govuk-summary-list__value" id="test-odometerReading">
       {{
-        [testRecord.odometerReading | number:'1.0-2', testRecord.odometerReadingUnits]
+        [testRecord.odometerReading | number: '1.0-2', testRecord.odometerReadingUnits]
           | DisplayByDelimiter: ' '
           | DefaultNullOrEmpty
       }}

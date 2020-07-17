@@ -44,13 +44,11 @@ describe('TimeInputComponent', () => {
 
     expect(hourInput.nativeElement.value).toEqual(testDate.getUTCHours().toString());
     expect(minuteInput.nativeElement.value).toEqual(testDate.getUTCMinutes().toString());
-
   }));
 
   it('should add properly aria-described value', () => {
     expect(hourInput.nativeElement.getAttribute('aria-describedby')).toEqual('test');
   });
-
 });
 
 @Component({
