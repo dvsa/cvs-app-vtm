@@ -1,10 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { TestType } from '@app/models/test.type';
-import { TestResultModel } from '@app/models/test-result.model';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  OnDestroy,
+  EventEmitter,
+  Output
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
 import { Router } from '@angular/router';
-import { RESULT } from '@app/test-record/test-record.enums';
 import {
   ControlContainer,
   FormArray,
@@ -14,10 +18,16 @@ import {
   Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
+import { FORM_UTILS } from '@app/utils';
+import { PROHIBITION_RADIO_OPTIONS } from '@app/test-record/test-record.constants';
+import { TestType } from '@app/models/test.type';
+import { TestResultModel } from '@app/models/test-result.model';
+import { RESULT, RESULT_LEC } from '@app/test-record/test-record.enums';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { SelectOption } from '@app/models/select-option';
-import {TestRecordMapper, TestTypesApplicable} from '@app/test-record/test-record.mapper';
-import { FORM_UTILS } from '@app/utils';
+import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
+import { DialogBoxConfirmationComponent } from '@app/shared/dialog-box-confirmation/dialog-box-confirmation.component';
 
 @Component({
   selector: 'vtm-test-section-edit',
@@ -25,19 +35,20 @@ import { FORM_UTILS } from '@app/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
-export class TestSectionEditComponent implements OnInit {
+export class TestSectionEditComponent implements OnInit, OnDestroy {
   @Input() testType: TestType;
   @Input() testRecord: TestResultModel;
   @Input() testTypesApplicable: TestTypesApplicable;
-  resultOptions: string[] = Object.values(RESULT);
+  @Output() testResult = new EventEmitter<string>();
+  resultOptions: string[];
   testResultChildForm: FormGroupDirective;
   testTypeGroup: FormGroup;
   testResultSubscription: Subscription;
   isAbandoned: boolean;
-  prohibitionOptionSelected: string;
-  prohibitionOptions: SelectOption[];
+  prohibitionOptions;
   reasonsForAbandoning: string[];
   reasonsForAbandoningOptions;
+  selectedOptions: string[];
 
   constructor(
     private dialog: MatDialog,
@@ -53,20 +64,25 @@ export class TestSectionEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.prohibitionOptions = PROHIBITION_RADIO_OPTIONS;
+    this.resultOptions = !this.testTypesApplicable.emissionDetailsApplicable[
+      this.testType.testTypeId
+    ]
+      ? Object.values(RESULT)
+      : Object.values(RESULT_LEC);
     this.isAbandoned = this.testType.testResult === 'abandoned';
-    this.prohibitionOptionSelected = this.testType.prohibitionIssued ? 'Yes' : 'No';
     this.reasonsForAbandoning = this.testRecordMapper.getReasonsForAbandoning(
       this.testRecord.vehicleType,
       this.testType.testTypeId
     );
-
-    this.prohibitionOptions = new DisplayOptionsPipe().transform(
-      ['Yes', 'No'],
-      [this.prohibitionOptionSelected]
-    );
+    this.selectedOptions = !!this.testType.reasonForAbandoning
+      ? this.testType.reasonForAbandoning.includes('. ')
+        ? this.testType.reasonForAbandoning.split('. ')
+        : [this.testType.reasonForAbandoning]
+      : [];
     this.reasonsForAbandoningOptions = new DisplayOptionsPipe().transform(
       this.reasonsForAbandoning,
-      [this.testType.reasonForAbandoning]
+      this.selectedOptions
     );
 
     this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
@@ -144,6 +160,8 @@ export class TestSectionEditComponent implements OnInit {
         .get('testResult')
         .valueChanges.subscribe((value) => {
           this.isAbandoned = value === 'abandoned';
+          document.getElementById('test-emissions').hidden = value !== 'pass';
+          this.testResult.emit(value);
         });
     }
   }
@@ -171,5 +189,9 @@ export class TestSectionEditComponent implements OnInit {
         this.router.navigate(['/select-test-type', this.testType.testNumber]);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.testResultSubscription.unsubscribe();
   }
 }

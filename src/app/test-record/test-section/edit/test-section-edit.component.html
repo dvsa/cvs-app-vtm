@@ -25,15 +25,6 @@
     </dd>
     <dd class="govuk-summary-list__value"></dd>
   </div>
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">
-      Test number
-    </dt>
-    <dd class="govuk-summary-list__value" id="test-testNumber">
-      {{ testType.testNumber | DefaultNullOrEmpty }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
 </dl>
 
 <form formGroupName="testType">
@@ -136,6 +127,18 @@
     </div>
   </div>
 
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Test number
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-testNumber">
+        {{ testType.testNumber | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+
   <div
     *ngIf="testTypesApplicable.expiryDateApplicable[testType.testTypeId]"
     class="govuk-grid-row govuk-!-margin-bottom-3"
@@ -172,20 +175,19 @@
     </div>
   </div>
 
-  <div class="govuk-grid-row govuk-!-margin-bottom-3">
-    <div class="govuk-grid-column-three-quarters">
-      <label class="govuk-label govuk-!-font-weight-bold">
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
         Test date
-      </label>
-      <vtm-date-input
-        id="test-testTypeEndTimestampDate"
-        ariaDescribedBy="testTypeEndTimestampDate"
-        formControlName="testTypeEndTimestampDate"
-        ngDefaultControl
-      >
-      </vtm-date-input>
+      </dt>
+      <dd class="govuk-summary-list__value" id="test-testTypeEndDate">
+        <span *ngIf="testType.testTypeEndTimestamp; else hyphen">
+          {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}
+        </span>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
     </div>
-  </div>
+  </dl>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-3">
     <div class="govuk-grid-column-three-quarters">
@@ -193,7 +195,7 @@
         Start time
       </label>
       <vtm-time-input
-        id="test-testTypeStartTimestamp"
+        id="test-testTypeStartTime"
         ariaDescribedBy="testTypeStartTimestamp"
         formControlName="testTypeStartTimestamp"
         ngDefaultControl
@@ -208,7 +210,7 @@
         End time
       </label>
       <vtm-time-input
-        id="test-testTypeEndTimestampTime"
+        id="test-testTypeEndTime"
         ariaDescribedBy="testTypeEndTimestampTime"
         formControlName="testTypeEndTimestampTime"
         ngDefaultControl
@@ -226,20 +228,27 @@
         Prohibition Issued
       </label>
       <div class="govuk-radios">
-        <div class="govuk-radios__item" *ngFor="let option of prohibitionOptions">
+        <div
+          class="govuk-radios__item"
+          *ngFor="let option of prohibitionOptions | keyvalue; let i = index"
+        >
           <input
             class="govuk-radios__input"
-            id="test-prohibitionIssued-{{ option.id }}"
+            id="test-prohibitionIssued-{{ i }}"
             formControlName="prohibitionIssued"
             type="radio"
-            value="{{ option.selected }}"
-            [checked]="option.selected"
+            value="{{ option.value }}"
+            [checked]="testType.prohibitionIssued === option.value"
           />
           <label class="govuk-label govuk-radios__label">
-            {{ option.name }}
+            {{ option.key }}
           </label>
         </div>
       </div>
     </div>
   </div>
 </form>
+
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>

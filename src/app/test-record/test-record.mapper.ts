@@ -110,14 +110,14 @@ export class TestRecordMapper {
     dateToSave.setUTCMinutes(timeToSave.getUTCMinutes());
     dateToSave.setUTCHours(timeToSave.getUTCHours());
 
-    return !!dateToSave.toJSON() ? dateToSave.toISOString() : '';
+    return !!dateValue ? (!!dateToSave.toJSON() ? dateToSave.toISOString() : '') : '';
   }
 
   getReasonsForAbandoningValue(currentValue: string[], reasonsForAbandoning: string[]): string {
     const selectedReasons = reasonsForAbandoning.map((elem, index) => {
       return !!currentValue ? (currentValue[index] ? elem : '') : '';
     });
-    return selectedReasons.length > 1 ? selectedReasons.filter((item) => item).join(',') : '';
+    return selectedReasons.length > 1 ? selectedReasons.filter((item) => item).join('. ') : '';
   }
 
   mapFormValues(testResultFormData, testResultObject: TestRecordTestType): TestResultModel {
@@ -138,6 +138,7 @@ export class TestRecordMapper {
     const mapTestStation = !!testResultFormData.testStationNameNumber
       ? testResultFormData.testStationNameNumber.match(/\((.*)\)/)
       : '';
+    const testResult = testResultFormData.testType.testResult;
 
     testResultMapped.countryOfRegistration = this.getCountryOfRegistrationCode(
       testResultFormData.countryOfRegistration
@@ -168,7 +169,11 @@ export class TestRecordMapper {
     testTypeMapped.smokeTestKLimitApplied = testResultFormData.testType.smokeTestKLimitApplied;
     testTypeMapped.fuelType = testResultFormData.testType.fuelType;
 
-    if (!!testTypeMapped.modType && testTypesApplicable.emissionDetailsApplicable[testTypeMapped.testTypeId]) {
+    if (
+      !!testTypeMapped.modType &&
+      testTypesApplicable.emissionDetailsApplicable[testTypeMapped.testTypeId] &&
+      testTypeMapped.testResult === 'pass'
+    ) {
       testTypeMapped.modType.code = !!testResultFormData.testType.modType.length
         ? testResultFormData.testType.modType.split('-')[0].trim()
         : testTypeMapped.modType.code;
@@ -181,16 +186,26 @@ export class TestRecordMapper {
     testTypeMapped.particulateTrapSerialNumber =
       testResultFormData.testType.particulateTrapSerialNumber;
     testTypeMapped.additionalNotesRecorded = testResultFormData.testType.additionalNotesRecorded;
-    testTypeMapped.testResult = testResultFormData.testType.testResult;
-    testTypeMapped.reasonForAbandoning = this.getReasonsForAbandoningValue(
-      testResultFormData.testType.reasonForAbandoning,
-      this.getReasonsForAbandoning(testResultMapped.vehicleType, testTypeMapped.testTypeId)
-    );
+    testTypeMapped.testResult = testResult;
+    testTypeMapped.reasonForAbandoning =
+      testResult === 'abandoned'
+        ? this.getReasonsForAbandoningValue(
+            testResultFormData.testType.reasonForAbandoning,
+            this.getReasonsForAbandoning(testResultMapped.vehicleType, testTypeMapped.testTypeId)
+          )
+        : null;
     testTypeMapped.additionalCommentsForAbandon =
       testResultFormData.testType.additionalCommentsForAbandon;
     testTypeMapped.certificateNumber = testResultFormData.testType.certificateNumber;
-    testTypeMapped.testExpiryDate = testResultFormData.testType.testExpiryDate;
-    testTypeMapped.testAnniversaryDate = testResultFormData.testType.testAnniversaryDate;
+    testTypeMapped.testExpiryDate = this.getDateTime(
+      testResultFormData.testType.testExpiryDate,
+      new Date().toISOString()
+    );
+    testTypeMapped.testAnniversaryDate = this.getDateTime(
+      testResultFormData.testType.testAnniversaryDate,
+      new Date().toISOString()
+    );
+
     testTypeMapped.testTypeStartTimestamp = this.getDateTime(
       testResultFormData.testType.testTypeEndTimestampDate,
       testResultFormData.testType.testTypeStartTimestamp
@@ -199,10 +214,6 @@ export class TestRecordMapper {
       testResultFormData.testType.testTypeEndTimestampDate,
       testResultFormData.testType.testTypeEndTimestampTime
     );
-
-    if (!!testTypeMapped.prohibitionIssued) {
-      testTypeMapped.prohibitionIssued = testResultFormData.prohibitionIssued;
-    }
 
     if (!testTypesApplicable.seatBeltApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.seatbeltInstallationCheckDate = undefined;
@@ -218,14 +229,15 @@ export class TestRecordMapper {
       testTypeMapped.modificationTypeUsed = undefined;
       testTypeMapped.particulateTrapFitted = undefined;
       testTypeMapped.particulateTrapSerialNumber = undefined;
-      testTypeMapped.testExpiryDate = undefined;
-      testResultMapped.testExpiryDate = undefined;
     }
 
     if (!testTypesApplicable.anniversaryDateApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.testAnniversaryDate = undefined;
     } else {
-      testTypeMapped.testAnniversaryDate = null;
+      testTypeMapped.testAnniversaryDate = this.getDateTime(
+        testResultFormData.testType.testAnniversaryDate,
+        new Date().toISOString()
+      );
     }
 
     if (!testTypesApplicable.expiryDateApplicable[testTypeMapped.testTypeId]) {
@@ -238,6 +250,7 @@ export class TestRecordMapper {
 
     if (!!testTypesApplicable.defectsApplicable[testTypeMapped.testTypeId]) {
       testTypeMapped.defects = undefined;
+      testTypeMapped.prohibitionIssued = testResultFormData.testType.prohibitionIssued === 'true';
     } else {
       testTypeMapped.prohibitionIssued = undefined;
     }

@@ -37,8 +37,8 @@ describe('TestSectionEditComponent', () => {
     component.testRecord = TEST_MODEL_UTILS.mockTestRecord();
     component.testType = TEST_MODEL_UTILS.mockTestType({
       testResult: 'pass',
-      testTypeStartTimestamp: '22-11-2019',
-      testTypeEndTimestamp: '22-11-2019'
+      testTypeStartTimestamp: '2020-01-16T12:24:38.027Z',
+      reasonForAbandoning: 'test'
     });
     component.testTypesApplicable = TEST_TYPE_APPLICABLE_UTILS.mockTestTypesApplicable();
   });
@@ -52,7 +52,10 @@ describe('TestSectionEditComponent', () => {
   });
 
   it('should update isAbandoned based on test result value', () => {
-    component.testType = TEST_MODEL_UTILS.mockTestType({ testResult: 'abandoned' });
+    component.testType = TEST_MODEL_UTILS.mockTestType({
+      testResult: 'abandoned',
+      reasonForAbandoning: 'test'
+    });
     fixture.detectChanges();
     expect(component.isAbandoned).toEqual(true);
   });
