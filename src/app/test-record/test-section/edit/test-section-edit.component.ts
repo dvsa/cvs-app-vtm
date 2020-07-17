@@ -11,10 +11,8 @@ import {
   FormControl,
   FormGroup,
   FormGroupDirective,
-  Validators,
   FormBuilder
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { SelectOption } from '@app/models/select-option';
 import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
@@ -31,7 +29,6 @@ export class TestSectionEditComponent implements OnChanges, OnInit {
   @Input() testTypesApplicable: TestTypesApplicable;
   resultOptions: string[] = Object.values(RESULT);
   testTypeGroup: FormGroup;
-  testResultSubscription: Subscription;
   isAbandoned: boolean;
   prohibitionOptionSelected: string;
   prohibitionOptions: SelectOption[];
@@ -93,7 +90,7 @@ export class TestSectionEditComponent implements OnChanges, OnInit {
     );
     this.testTypeGroup.addControl(
       'reasonForAbandoning',
-      this.fb.control(this.mapReasonsToFormGroup(this.reasonsForAbandoningOptions))
+      this.fb.array(this.mapReasonsToFormGroup(this.reasonsForAbandoningOptions))
     );
 
     this.testTypeGroup.addControl(
@@ -108,6 +105,10 @@ export class TestSectionEditComponent implements OnChanges, OnInit {
       'testTypeStartTimestamp',
       this.fb.control(this.testType.testTypeStartTimestamp)
     );
+
+    this.testTypeGroup.get('testResult').valueChanges.subscribe((value) => {
+      this.isAbandoned = value === 'abandoned';
+    });
   }
 
   mapReasonsToFormGroup(options: SelectOption[]) {
