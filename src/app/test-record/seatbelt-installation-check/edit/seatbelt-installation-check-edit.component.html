@@ -10,17 +10,20 @@
               </label>
 
               <div class="govuk-radios govuk-radios--inline">
-                <div *ngFor="let option of seatbeltInstallationCheckDateOptions" class="govuk-radios__item">
+                <div
+                  *ngFor="let option of seatbeltInstallationCheckDateOptions"
+                  class="govuk-radios__item"
+                >
                   <input
                     class="govuk-radios__input"
-                    id="test-seatbelt-{{option.id}}"
+                    id="test-seatbelt-{{ option.id }}"
                     formControlName="seatbeltInstallationCheckDate"
                     type="radio"
-                    value="{{option.name}}"
+                    value="{{ option.name }}"
                     [checked]="option.selected"
                   />
                   <label class="govuk-label govuk-radios__label">
-                    {{option.name}}
+                    {{ option.name }}
                   </label>
                 </div>
               </div>
@@ -44,9 +47,7 @@
               </div>
 
               <div class="govuk-grid-row govuk-!-margin-bottom-3">
-                <div
-                  class="govuk-grid-column-three-quarters"
-                >
+                <div class="govuk-grid-column-three-quarters">
                   <label class="govuk-label govuk-!-font-weight-bold">
                     Most recent installation check
                   </label>

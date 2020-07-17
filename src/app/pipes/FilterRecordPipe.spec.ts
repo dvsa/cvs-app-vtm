@@ -1,4 +1,4 @@
-import {FilterRecordPipe} from '@app/pipes/FilterRecordPipe';
+import { FilterRecordPipe } from '@app/pipes/FilterRecordPipe';
 
 const techRecordList1 = [
   {
@@ -13,7 +13,7 @@ const techRecordList1 = [
     vin: '1234569',
     statusCode: 'archived',
     createdAt: '2019-06-25T10:26:54.903Z'
-  },
+  }
 ];
 
 const techRecordList2 = [
@@ -67,7 +67,9 @@ describe('FilterRecordPipe', () => {
 
   it('should return the technical record having status ARCHIVED', () => {
     const record = pipe.transform(techRecordList3);
-    const recordsList = techRecordList3.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const recordsList = techRecordList3.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
     const orderedTechRecList = [
       {
         vin: '1234566',
@@ -87,5 +89,4 @@ describe('FilterRecordPipe', () => {
     expect(record).toBeDefined();
     expect(record.statusCode).toEqual('archived');
   });
-
 });

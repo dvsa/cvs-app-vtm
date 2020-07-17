@@ -47,5 +47,4 @@ describe('DialogBoxConfirmationComponent', () => {
       expect(component.dialogRef.close).toHaveBeenCalledWith(true);
     });
   });
-
 });

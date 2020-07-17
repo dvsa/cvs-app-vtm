@@ -27,5 +27,4 @@ export class DialogBoxConfirmationComponent implements OnInit {
   save(): void {
     this.dialogRef.close(true);
   }
-
 }

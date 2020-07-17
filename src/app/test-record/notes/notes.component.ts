@@ -8,13 +8,10 @@ import { VIEW_STATE } from '@app/app.enums';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotesComponent implements OnInit {
-
   @Input() testType: TestType;
   @Input() editState: VIEW_STATE;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -1,4 +1,9 @@
-import { ELoadingActions, LoadingActions, LoadingFalse, LoadingTrue } from '../actions/Loader.actions';
+import {
+  ELoadingActions,
+  LoadingActions,
+  LoadingFalse,
+  LoadingTrue
+} from '../actions/Loader.actions';
 import { initialLoaderState } from '../state/Loader.state';
 import { LoaderReducer } from './Loader.reducers';
 

@@ -40,9 +40,14 @@ export const initialAppState: IAppState = {
   referenceData: initialReferenceDataState,
   error: initialErrorState,
   appFormState: initialAppFormState,
-  modalState: initialModalState,
+  modalState: initialModalState
 };
 
 export const getInitialState = (): IAppState => initialAppState;
 
-export const ROOT_EFFECTS = [VehicleTechRecordModelEffects, ModalEffects, AppFormEffects, RouterEffects];
+export const ROOT_EFFECTS = [
+  VehicleTechRecordModelEffects,
+  ModalEffects,
+  AppFormEffects,
+  RouterEffects
+];

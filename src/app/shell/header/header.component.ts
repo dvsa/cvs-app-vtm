@@ -12,10 +12,7 @@ export class HeaderComponent implements OnInit {
   userName: string;
   menuOpen = false;
 
-  constructor(
-    private adal: MsAdalAngular6Service,
-    private dialog: MatDialog,
-  ) {}
+  constructor(private adal: MsAdalAngular6Service, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.userName = this.adal.userInfo != null ? this.adal.userInfo.profile.name : '';

@@ -31,7 +31,9 @@
       matTreeNodeToggle
       [attr.aria-label]="'toggle ' + node.nodeName"
     >
-      <i class="material-icons">{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</i>
+      <i class="material-icons">{{
+        treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'
+      }}</i>
       {{ node.nodeName }}
     </button>
   </mat-tree-node>

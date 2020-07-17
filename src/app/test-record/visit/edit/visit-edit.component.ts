@@ -63,21 +63,21 @@ export class VisitEditComponent implements OnInit {
 
     this.testStationsOptions = !!this.testStations
       ? this.testStations.map(
-        ({ testStationName, testStationPNumber }) =>
-          `${!!testStationName ? testStationName : ''} ${
-            !!testStationPNumber ? '(' + testStationPNumber + ')' : ''
-          }`
-      )
+          ({ testStationName, testStationPNumber }) =>
+            `${!!testStationName ? testStationName : ''} ${
+              !!testStationPNumber ? '(' + testStationPNumber + ')' : ''
+            }`
+        )
       : [''];
 
     this.testResultChildForm.form
       .get('testStationNameNumber')
       .valueChanges.subscribe((testStationVal) => {
-      const testStationPNumberMatch = testStationVal.match(/\((.*)\)/);
-      const testStationPNumber = !!testStationPNumberMatch ? testStationPNumberMatch.pop() : '';
-      this.testStationType = this.searchTestStationType(testStationPNumber);
-      this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
-    });
+        const testStationPNumberMatch = testStationVal.match(/\((.*)\)/);
+        const testStationPNumber = !!testStationPNumberMatch ? testStationPNumberMatch.pop() : '';
+        this.testStationType = this.searchTestStationType(testStationPNumber);
+        this.testResultChildForm.form.get('testStationType').setValue(this.testStationType);
+      });
   }
 
   searchTestStationType(testStationPNumber: string) {

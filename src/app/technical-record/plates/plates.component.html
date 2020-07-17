@@ -12,16 +12,16 @@
       class="govuk-table__row"
       *ngFor="let plate of plates | SortByDatePipe: 'plateIssueDate'; let i = index"
     >
-      <td id="test-plateSerialNumber-{{i}}" class="govuk-table__cell">
+      <td id="test-plateSerialNumber-{{ i }}" class="govuk-table__cell">
         {{ plate.plateSerialNumber | DefaultNullOrEmpty }}
       </td>
-      <td id="test-plateReasonForIssue-{{i}}" class="govuk-table__cell">
+      <td id="test-plateReasonForIssue-{{ i }}" class="govuk-table__cell">
         {{ plate.plateReasonForIssue | DefaultNullOrEmpty }}
       </td>
-      <td id="test-plateIssuer-{{i}}" class="govuk-table__cell">
+      <td id="test-plateIssuer-{{ i }}" class="govuk-table__cell">
         {{ plate.plateIssuer | DefaultNullOrEmpty }}
       </td>
-      <td id="test-plateIssueDate-{{i}}" class="govuk-table__cell">
+      <td id="test-plateIssueDate-{{ i }}" class="govuk-table__cell">
         <span *ngIf="plate.plateIssueDate; else hyphen">
           {{ plate.plateIssueDate | date: 'dd/MM/yyyy' }}
         </span>

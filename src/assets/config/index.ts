@@ -1,21 +1,20 @@
-import {merge} from 'lodash';
-
+import { merge } from 'lodash';
 
 const baseConfig = {
-  'appInsights': {
-    'instrumentationKey': '#{appInsightsKey}'
+  appInsights: {
+    instrumentationKey: '#{appInsightsKey}'
   },
-  'logging': {
-    'console': true,
-    'appInsights': true
+  logging: {
+    console: true,
+    appInsights: true
   },
-  'aad': {
-    'requireAuth': true
+  aad: {
+    requireAuth: true
   },
-  'adalConfig': {
-    'cacheLocation': 'localStorage',
-    'endpoints': {
-      'api': 'xxx-bae6-4760-b434-xxx'
+  adalConfig: {
+    cacheLocation: 'localStorage',
+    endpoints: {
+      api: 'xxx-bae6-4760-b434-xxx'
     }
   }
 };

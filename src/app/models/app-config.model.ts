@@ -15,13 +15,13 @@ export interface IAppConfig {
     clientId: string;
   };
   adalConfig: {
-    clientId: string,
-    tenant: string,
-    redirectUri: string,
-    cacheLocation: string,
+    clientId: string;
+    tenant: string;
+    redirectUri: string;
+    cacheLocation: string;
     endpoints: {
-      api: string
-    }
+      api: string;
+    };
   };
   apiServer: {
     APITechnicalRecordServerUri: string;

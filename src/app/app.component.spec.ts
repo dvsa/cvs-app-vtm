@@ -1,7 +1,7 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TestBed, async} from '@angular/core/testing';
-import {AppComponent} from './app.component';
-import {Store} from '@ngrx/store';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TestBed, async } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+import { Store } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
 
 const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
@@ -15,14 +15,12 @@ const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
 };
 
 describe('AppComponent', () => {
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-      ],
+      providers: []
     }).compileComponents();
   }));
 
@@ -35,5 +33,4 @@ describe('AppComponent', () => {
   afterAll(() => {
     TestBed.resetTestingModule();
   });
-
 });

@@ -11,22 +11,46 @@
   </thead>
   <tbody class="govuk-table__body">
     <tr class="govuk-table__row">
-      <td id="test-testVersion-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+      <td
+        id="test-testVersion-curr"
+        class="govuk-table__cell"
+        [class.border--bottom-none]="!testRecord.testHistory"
+      >
         {{ testRecord.testVersion | titlecase | DefaultNullOrEmpty }}
       </td>
-      <td id="test-reasonForCreation-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+      <td
+        id="test-reasonForCreation-curr"
+        class="govuk-table__cell"
+        [class.border--bottom-none]="!testRecord.testHistory"
+      >
         {{ testRecord.reasonForCreation | DefaultNullOrEmpty }}
       </td>
-      <td id="test-createdByName-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+      <td
+        id="test-createdByName-curr"
+        class="govuk-table__cell"
+        [class.border--bottom-none]="!testRecord.testHistory"
+      >
         {{ (testRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}
       </td>
-      <td id="test-createdAt-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+      <td
+        id="test-createdAt-curr"
+        class="govuk-table__cell"
+        [class.border--bottom-none]="!testRecord.testHistory"
+      >
         {{ testRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
       </td>
-      <td id="test-lastUpdatedByName-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+      <td
+        id="test-lastUpdatedByName-curr"
+        class="govuk-table__cell"
+        [class.border--bottom-none]="!testRecord.testHistory"
+      >
         {{ (testRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}
       </td>
-      <td id="test-lastUpdatedAt-curr" class="govuk-table__cell" [class.border--bottom-none]="!testRecord.testHistory">
+      <td
+        id="test-lastUpdatedAt-curr"
+        class="govuk-table__cell"
+        [class.border--bottom-none]="!testRecord.testHistory"
+      >
         {{ testRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
       </td>
     </tr>
@@ -37,22 +61,46 @@
       "
     >
       <tr class="govuk-table__row">
-        <td id="{{ 'test-testVersion-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+        <td
+          id="{{ 'test-testVersion-arch-' + i }}"
+          class="govuk-table__cell"
+          [class.border--bottom-none]="testRecord.testHistory.length === i + 1"
+        >
           {{ archivedTestRecord.testVersion | titlecase | DefaultNullOrEmpty }}
         </td>
-        <td id="{{ 'test-reasonForCreation-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+        <td
+          id="{{ 'test-reasonForCreation-arch-' + i }}"
+          class="govuk-table__cell"
+          [class.border--bottom-none]="testRecord.testHistory.length === i + 1"
+        >
           {{ archivedTestRecord.reasonForCreation | DefaultNullOrEmpty }}
         </td>
-        <td id="{{ 'test-createdByName-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+        <td
+          id="{{ 'test-createdByName-arch-' + i }}"
+          class="govuk-table__cell"
+          [class.border--bottom-none]="testRecord.testHistory.length === i + 1"
+        >
           {{ (archivedTestRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}
         </td>
-        <td id="{{ 'test-createdAt-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+        <td
+          id="{{ 'test-createdAt-arch-' + i }}"
+          class="govuk-table__cell"
+          [class.border--bottom-none]="testRecord.testHistory.length === i + 1"
+        >
           {{ archivedTestRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
         </td>
-        <td id="{{ 'test-lastUpdatedByName-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+        <td
+          id="{{ 'test-lastUpdatedByName-arch-' + i }}"
+          class="govuk-table__cell"
+          [class.border--bottom-none]="testRecord.testHistory.length === i + 1"
+        >
           {{ (archivedTestRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}
         </td>
-        <td id="{{ 'test-lastUpdatedAt-arch-' + i }}" class="govuk-table__cell" [class.border--bottom-none]="testRecord.testHistory.length === i+1">
+        <td
+          id="{{ 'test-lastUpdatedAt-arch-' + i }}"
+          class="govuk-table__cell"
+          [class.border--bottom-none]="testRecord.testHistory.length === i + 1"
+        >
           {{ archivedTestRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}
         </td>
       </tr>

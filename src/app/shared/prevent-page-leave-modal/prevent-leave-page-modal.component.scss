@@ -1,11 +1,11 @@
-@import "node_modules/govuk-frontend/govuk/all";
+@import 'node_modules/govuk-frontend/govuk/all';
 
 .mat-dialog-content {
   overflow: hidden;
 }
 
 .title {
-  color: #0B0C0C;
+  color: #0b0c0c;
   font-size: 36px;
   font-weight: 700;
   line-height: 43px;
@@ -14,8 +14,8 @@
 }
 
 .cancel {
-  color: #005EA5;
-  font-family: "GDS Transport", Arial, sans-serif;
+  color: #005ea5;
+  font-family: 'GDS Transport', Arial, sans-serif;
   font-size: 19px;
   font-weight: 300;
   line-height: 44px;

@@ -14,16 +14,15 @@ describe('PsvWeightsComponent', () => {
     grossKerbWeight: 3,
     grossLadenWeight: 5,
     unladenWeight: 4,
-    axles: [TESTING_UTILS.mockAxle()],
+    axles: [TESTING_UTILS.mockAxle()]
   } as TechRecord;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ WeightsPsvComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-    .compileComponents();
+      declarations: [WeightsPsvComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -7,11 +7,8 @@ import { LettersOfAuth } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LettersOfAuthorisationComponent implements OnInit {
-
   @Input() lettersOfAuth: LettersOfAuth;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

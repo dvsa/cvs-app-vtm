@@ -16,7 +16,7 @@ import {
 import { Subscription } from 'rxjs';
 import { DisplayOptionsPipe } from '@app/pipes/display-options.pipe';
 import { SelectOption } from '@app/models/select-option';
-import {TestRecordMapper, TestTypesApplicable} from '@app/test-record/test-record.mapper';
+import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
 import { FORM_UTILS } from '@app/utils';
 
 @Component({
