@@ -20,6 +20,7 @@ import { DialogBoxComponent } from '@app/shared/dialog-box/dialog-box.component'
 import { TestStation } from '@app/models/test-station';
 import { PreventLeavePageModalComponent } from '@app/shared/prevent-page-leave-modal/prevent-leave-page-modal.component';
 import { TestDeleteReasonModalComponent } from '../modal/components/test-delete-reason-modal/test-delete-reason-modal.component';
+import { ModalPayload } from '@app/modal/modal.model';
 
 @Component({
   selector: 'vtm-test-record',
@@ -54,7 +55,7 @@ export class TestRecordComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { reasonForArchive } = changes;
 
-    if (typeof reasonForArchive.currentValue === 'string') {
+    if (reasonForArchive && typeof (reasonForArchive.currentValue as ModalPayload) === 'string') {
       this.deleteTest(reasonForArchive.currentValue);
     }
   }

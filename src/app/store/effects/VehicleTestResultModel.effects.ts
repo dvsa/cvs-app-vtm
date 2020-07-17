@@ -31,6 +31,7 @@ import {
 import * as FileSaver from 'file-saver';
 import { Router } from '@angular/router';
 import { getRouterParams } from '@app/store/selectors/route.selectors';
+import { ResetModal } from '@app/modal/modal.actions';
 
 @Injectable()
 export class VehicleTestResultModelEffects {
@@ -152,20 +153,39 @@ export class VehicleTestResultModelEffects {
   @Effect()
   archiveTestResult = this._actions$.pipe(
     ofType<ArchiveTestResult>(EVehicleTestResultModelActions.ArchiveTestResult),
-    map((action) => action.payload),
-    switchMap((testResultUpdated: TestResultModel) => {
+    withLatestFrom(this._store.select(getVehicleTestResultModel)),
+    map(([{ payload }, testResultsInState]) => {
+      return { payload, testResultsInState };
+    }),
+    switchMap((params) => {
+      let { payload, testResultsInState } = params;
+
       const testResultObject: VehicleTestResultUpdate = {
         msUserDetails: { ...this.loggedUser.getUser() },
-        testResult: testResultUpdated
+        testResult: payload
       };
       return this._testResultService.archiveTestResult(testResultObject).pipe(
         switchMap((testRecordResult: TestResultModel) => {
           this.router.navigate(['/technical-record']);
-          return of(new GetVehicleTestResultModelSuccess([testRecordResult]));
+          let returnedAction: Action;
+          if (testResultsInState.length === 1) {
+            returnedAction = new GetVehicleTestResultModelFailure();
+          } else {
+            returnedAction = new GetVehicleTestResultModelSuccess(testResultsInState);
+            testResultsInState = this.updateTestResultAfterArchive(
+              testResultsInState,
+              testRecordResult
+            );
+          }
+          return [
+            returnedAction,
+            new UpdateSelectedTestResultModelSuccess(null),
+            new ResetModal(null)
+          ];
         }),
         catchError(({ error }) => {
           const errorMessage = !!error ? error.errors : [''];
-          return [new SetErrorMessage(errorMessage)];
+          return [new SetErrorMessage(errorMessage), new ResetModal(null)];
         })
       );
     })
@@ -211,5 +231,25 @@ export class VehicleTestResultModelEffects {
       }
     });
     return selectedTestResult;
+  }
+
+  updateTestResultAfterArchive(
+    testResultsInState: TestResultModel[],
+    payload: TestResultModel
+  ): TestResultModel[] {
+    let stateTestResult = testResultsInState;
+
+    console.log(stateTestResult);
+    if (stateTestResult.length === 1) {
+      stateTestResult = null;
+    }
+
+    stateTestResult.splice(
+      stateTestResult.indexOf(
+        stateTestResult.find((testResult) => testResult.testResultId === payload.testResultId)
+      ),
+      1
+    );
+    return stateTestResult;
   }
 }

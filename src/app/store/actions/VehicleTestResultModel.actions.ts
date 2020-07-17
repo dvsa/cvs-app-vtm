@@ -31,7 +31,7 @@ export class GetVehicleTestResultModelSuccess implements Action {
 
 export class GetVehicleTestResultModelFailure implements Action {
   public readonly type = EVehicleTestResultModelActions.GetVehicleTestResultModelFailure;
-  constructor(public payload: string) {}
+  constructor(public payload?: string) {}
 }
 
 export class SetTestViewState implements Action {
