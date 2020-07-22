@@ -6,11 +6,8 @@ import { Plate } from '../../models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlatesComponent implements OnInit {
-
   @Input() plates: Plate[];
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

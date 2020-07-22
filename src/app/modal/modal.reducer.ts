@@ -8,7 +8,7 @@ export interface ModalState {
 }
 
 export const initialModalState: ModalState = {
-  currentModal: APP_MODALS.NONE,
+  currentModal: APP_MODALS.NONE
 };
 
 export function ModalReducer(

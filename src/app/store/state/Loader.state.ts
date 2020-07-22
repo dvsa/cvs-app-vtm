@@ -7,5 +7,5 @@ export interface ILoaderState {
 export const initialLoaderState: ILoaderState = {
   loading: false,
   status: null,
-  error: null,
+  error: null
 };

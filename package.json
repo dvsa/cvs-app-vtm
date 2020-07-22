@@ -18,7 +18,8 @@
     "test": "jest --coverage",
     "test:dev": "jest --watch",
     "lint": "ng lint",
-    "lint:fix": "ng lint $npm_package_name --fix",
+    "lint:fix": "ng lint cvs-app-vtm --fix",
+    "lint:format": "node_modules/.bin/prettier --write ./src/**/*.{html,scss,ts,json}",
     "e2e": "cypress open",
     "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
@@ -164,8 +165,8 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint && npm run security-checks",
+      "commit-msg": "npm run lint && ./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint:fix && npm run lint:format && npm run security-checks",
       "pre-push": "npm run prepush"
     }
   },

@@ -1,27 +1,26 @@
-@import "../../../../node_modules/govuk-frontend/govuk/all";
+@import '../../../../node_modules/govuk-frontend/govuk/all';
 
 ::ng-deep .govuk-width-container {
-
-  #header-nav-item{
-    margin-left:0;
-    margin-top:0.3rem;
+  #header-nav-item {
+    margin-left: 0;
+    margin-top: 0.3rem;
   }
 
   .govuk-header__link--homepage {
     font-size: 24px !important;
-    color: govuk-colour("white");
+    color: govuk-colour('white');
     font-weight: 700;
     letter-spacing: 0.86px;
     line-height: 29px;
   }
 
   ul {
-    position:absolute!important;
+    position: absolute !important;
     right: 0;
-    top:1rem!important;
+    top: 1rem !important;
 
     a {
-      color: govuk-colour("white");
+      color: govuk-colour('white');
       font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.57px;
@@ -31,13 +30,11 @@
       font-weight: 800 !important;
       font-size: 18px;
     }
-
   }
 
   .govuk-header__logo {
     width: 50% !important;
   }
-
 }
 
 .topnav {
@@ -68,14 +65,14 @@
   cursor: pointer;
 }
 
-.topnav a:visited, #menuLinks:visited {
+.topnav a:visited,
+#menuLinks:visited {
   color: #fff;
   text-decoration: underline;
   cursor: pointer;
 }
 
 .topnav a:hover {
-
   fa-icon:hover {
     color: white;
     border: solid $govuk-focus-colour;

@@ -4,15 +4,16 @@ export const routes: Routes = [
   { path: '', redirectTo: '/landing-page', pathMatch: 'full' },
   {
     path: 'landing-page',
-    loadChildren: './landing-page/landing-page.module#LandingPageModule',
+    loadChildren: './landing-page/landing-page.module#LandingPageModule'
   },
   {
     path: 'search',
-    loadChildren: './technical-record-search/technical-record-search.module#TechnicalRecordSearchModule',
+    loadChildren:
+      './technical-record-search/technical-record-search.module#TechnicalRecordSearchModule'
   },
   {
     path: 'technical-record',
-    loadChildren: './technical-record/technical-record.module#TechnicalRecordModule',
+    loadChildren: './technical-record/technical-record.module#TechnicalRecordModule'
   },
-  { path: '**', redirectTo: '/landing-page' },
+  { path: '**', redirectTo: '/landing-page' }
 ];

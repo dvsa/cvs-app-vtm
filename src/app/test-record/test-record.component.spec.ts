@@ -39,7 +39,13 @@ describe('TestRecordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, ReactiveFormsModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
+      imports: [
+        SharedModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        BrowserAnimationsModule,
+        RouterTestingModule
+      ],
       declarations: [TestRecordComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -75,10 +81,10 @@ describe('TestRecordComponent', () => {
   });
 
   // TODO: Tests need to be updated in CVSB-12379 as tests are not valid.
-   it('should create', () => {
-     expect(component).toBeTruthy();
-  //   expect(fixture).toMatchSnapshot();
-   });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+    //   expect(fixture).toMatchSnapshot();
+  });
 
   // it('should switch current state to edit', () => {
   //   spyOn(component.switchState, 'emit');

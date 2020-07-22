@@ -11,5 +11,5 @@ export class VehicleSummaryPsvComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 }

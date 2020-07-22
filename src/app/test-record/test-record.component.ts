@@ -49,9 +49,10 @@ export class TestRecordComponent implements OnInit {
     this.hasDefectsApplicable = this.testTypesApplicable.defectsApplicable[
       this.testResultObj.testType.testTypeId
     ];
-    this.hasSeatBeltApplicable =
-      !(this.testTypesApplicable.seatBeltApplicable[this.testResultObj.testType.testTypeId] &&
-      this.testResultObj.testRecord.vehicleType === 'psv');
+    this.hasSeatBeltApplicable = !(
+      this.testTypesApplicable.seatBeltApplicable[this.testResultObj.testType.testTypeId] &&
+      this.testResultObj.testRecord.vehicleType === 'psv'
+    );
     this.hasEmissionApplicable = !(
       this.testTypesApplicable.emissionDetailsApplicable[
         this.testResultObj.testType.testTypeId

@@ -5,7 +5,7 @@ export const errorSource = from([throwError('test'), throwError('test')]);
 
 describe('delayedRetry', () => {
   test('it should create', async (done) => {
-    errorSource.subscribe(res => {
+    errorSource.subscribe((res) => {
       const test = delayedRetry();
       expect(test).toBeTruthy();
       done();

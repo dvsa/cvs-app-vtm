@@ -12,7 +12,7 @@ describe('FormStateGuard', () => {
   let formStateGuard: FormStateGuard;
   const mockSelector = new BehaviorSubject<any>(undefined);
   const store = new MockStore(mockSelector);
-  const routeMock: any = { snapshot: {}};
+  const routeMock: any = { snapshot: {} };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],

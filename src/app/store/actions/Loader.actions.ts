@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 
 export enum ELoadingActions {
   AppIsLoading = '[Loading] True',
-  AppIsNotLoading = '[Loading] False',
+  AppIsNotLoading = '[Loading] False'
 }
 
 export class LoadingTrue implements Action {

@@ -22,4 +22,4 @@ export class ChangeView implements Action {
   constructor(public urlToRedirect: string) {}
 }
 
-export type ModalStateActions = LoadModal  | ResetModal | ChangeView;
+export type ModalStateActions = LoadModal | ResetModal | ChangeView;

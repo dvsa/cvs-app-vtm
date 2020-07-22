@@ -7,10 +7,9 @@ import { DDA } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DdaComponent implements OnInit {
-
   @Input() ddaDetails: DDA;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 }

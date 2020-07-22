@@ -8,10 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LogoutModalComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<LogoutModalComponent>,
-  ) { }
+  constructor(public dialogRef: MatDialogRef<LogoutModalComponent>) {}
 
   cancel(): void {
     this.dialogRef.close(false);
@@ -20,5 +17,4 @@ export class LogoutModalComponent {
   confirm(): void {
     this.dialogRef.close(true);
   }
-
 }

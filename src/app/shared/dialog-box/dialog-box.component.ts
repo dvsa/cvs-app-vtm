@@ -19,7 +19,7 @@ export class DialogBoxComponent implements OnInit {
     this.dialogRef.close(false);
   }
 
-  save(modalData:  string): void {
-    this.dialogRef.close({isSave: true, data: modalData});
+  save(modalData: string): void {
+    this.dialogRef.close({ isSave: true, data: modalData });
   }
 }

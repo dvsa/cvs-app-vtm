@@ -34,7 +34,8 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
       ? this.modTypeValue === 'p - particulate trap'
       : false;
     this.editModTypeUsed = !!this.testType.modType
-      ? this.modTypeValue === 'g - gas engine' || this.modTypeValue === 'm - modification or change of engine'
+      ? this.modTypeValue === 'g - gas engine' ||
+        this.modTypeValue === 'm - modification or change of engine'
       : false;
 
     this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
@@ -71,7 +72,8 @@ export class EmissionDetailsEditComponent implements OnInit, OnDestroy {
         .get('modType')
         .valueChanges.subscribe((value) => {
           this.editParticulate = value === 'p - particulate trap';
-          this.editModTypeUsed = (value === 'g - gas engine') || (value === 'm - modification or change of engine');
+          this.editModTypeUsed =
+            value === 'g - gas engine' || value === 'm - modification or change of engine';
         });
     }
   }

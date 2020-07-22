@@ -11,7 +11,11 @@ import { SelectTestTypeComponent } from '@app/test-record/select-test-type/selec
 import { FormStateGuard } from './guards/form-state.guard';
 
 const routes: Routes = [
-  { path: '', component: LandingPageComponent, canActivate: [AuthenticationGuard, FormStateGuard] },
+  {
+    path: '',
+    component: LandingPageComponent,
+    canActivate: [AuthenticationGuard, FormStateGuard]
+  },
   {
     path: 'search',
     loadChildren:

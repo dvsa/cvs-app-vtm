@@ -1,13 +1,12 @@
-@import "node_modules/govuk-frontend/govuk/all";
+@import 'node_modules/govuk-frontend/govuk/all';
 
 .mt-2 {
   margin-top: 2rem;
 }
 
 .govuk-main-wrapper {
-
   #searchIdentifier {
-    background-color: govuk-colour("white");
+    background-color: govuk-colour('white');
     border: 2px solid $govuk-input-border-colour;
     width: 589px;
     height: 40px;
@@ -35,5 +34,4 @@
   & .govuk-form-group:nth-child(3) {
     margin-top: 2rem;
   }
-
 }

@@ -1,17 +1,16 @@
-import {fakeAsync, getTestBed, TestBed, tick} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AuthTokenInterceptor} from './auth-token-interceptor';
-import {MsAdalAngular6Module, MsAdalAngular6Service} from 'microsoft-adal-angular6';
-import {environment} from '@environments/environment';
-import {TestResultService} from '@app/technical-record-search/test-result.service';
-import {AppConfig} from '@app/app.config';
-import {inject} from '@angular/core';
+import { fakeAsync, getTestBed, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthTokenInterceptor } from './auth-token-interceptor';
+import { MsAdalAngular6Module, MsAdalAngular6Service } from 'microsoft-adal-angular6';
+import { environment } from '@environments/environment';
+import { TestResultService } from '@app/technical-record-search/test-result.service';
+import { AppConfig } from '@app/app.config';
+import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IAppState } from '@app/store/state/app.state';
 
 describe('AuthTokenInterceptor', () => {
-
   const appConfigMock = {
     get settings() {
       return {
@@ -23,7 +22,8 @@ describe('AuthTokenInterceptor', () => {
   };
 
   const routes = {
-    testResults: (searchIdentifier: string) => `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`,
+    testResults: (searchIdentifier: string) =>
+      `${environment.APITestResultServerUri}/test-results/${searchIdentifier}`
   };
 
   let httpMock: HttpTestingController;
@@ -45,24 +45,23 @@ describe('AuthTokenInterceptor', () => {
           },
           navigateToLoginRequestUrl: true,
           cacheLocation: 'localStorage'
-        }),
+        })
       ],
       providers: [
         TestResultService,
         {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthTokenInterceptor,
-          multi: true,
+          multi: true
         },
         {
           provide: Store,
           useValue: {
             select: jest.fn(),
-            dispatch: jest.fn(),
+            dispatch: jest.fn()
           }
         },
-        {provide: AppConfig, useValue: appConfigMock},
-
+        { provide: AppConfig, useValue: appConfigMock }
       ]
     });
 
@@ -71,11 +70,9 @@ describe('AuthTokenInterceptor', () => {
     service = injector.get(TestResultService);
     store = injector.get(Store);
     adal = TestBed.get(MsAdalAngular6Service);
-
   });
 
   it('service should be created', () => {
     expect(service).toBeTruthy();
   });
-
 });

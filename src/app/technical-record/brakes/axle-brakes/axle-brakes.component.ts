@@ -7,11 +7,9 @@ import { Axle } from '@app/models/tech-record.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AxleBrakesComponent implements OnInit {
-
   @Input() vehicleType: string;
   @Input() axle: Axle;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

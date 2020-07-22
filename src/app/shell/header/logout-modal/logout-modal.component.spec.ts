@@ -4,7 +4,6 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../../material.module';
 import { LogoutModalComponent } from './logout-modal.component';
 
-
 describe('AdrReasonModalComponent', () => {
   let component: LogoutModalComponent;
   let fixture: ComponentFixture<LogoutModalComponent>;
@@ -14,11 +13,8 @@ describe('AdrReasonModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LogoutModalComponent],
       imports: [MatDialogModule, MaterialModule, FormsModule],
-      providers: [
-        { provide: MatDialogRef, useValue: dialogMock },
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: MatDialogRef, useValue: dialogMock }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

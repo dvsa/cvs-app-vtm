@@ -7,12 +7,9 @@ import { ModalEffects } from './modal.effects';
 import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    EffectsModule.forFeature([ModalEffects]),
-  ],
+  imports: [CommonModule, EffectsModule.forFeature([ModalEffects])],
   declarations: [ModalContainerComponent, ModalComponent, LoseChangesComponent],
   entryComponents: [ModalComponent, LoseChangesComponent],
-  exports: [ModalContainerComponent],
+  exports: [ModalContainerComponent]
 })
-export class ModalModule { }
+export class ModalModule {}

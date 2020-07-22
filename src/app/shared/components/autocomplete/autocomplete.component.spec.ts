@@ -67,7 +67,6 @@ describe('AutocompleteComponent', () => {
     component.registerOnTouched('');
     expect(component.autocompleteInput.value).toBe(null);
   });
-
 });
 
 @Component({

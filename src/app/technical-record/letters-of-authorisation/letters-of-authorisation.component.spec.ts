@@ -12,10 +12,9 @@ describe('LettersOfAuthorisationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ LettersOfAuthorisationComponent ],
+      declarations: [LettersOfAuthorisationComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,7 +22,6 @@ describe('LettersOfAuthorisationComponent', () => {
     component = fixture.componentInstance;
     component.lettersOfAuth = TESTING_UTILS.mockLettersOfAuth();
   });
-
 
   it('should create view only with populated data', () => {
     fixture.detectChanges();

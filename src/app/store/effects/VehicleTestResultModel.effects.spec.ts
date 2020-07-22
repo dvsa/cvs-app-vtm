@@ -36,7 +36,6 @@ describe('VehicleTestResultModelEffects', () => {
   const mockSelector = new BehaviorSubject<any>(undefined);
   const store: MockStore = new MockStore(mockSelector);
 
-
   let actions$: Observable<Action>;
   let action: Action;
   let updateTestResults: jest.Mock;

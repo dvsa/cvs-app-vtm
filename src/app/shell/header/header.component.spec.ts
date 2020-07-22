@@ -10,7 +10,6 @@ import { HeaderComponent } from './header.component';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let injector: TestBed;
@@ -18,7 +17,7 @@ describe('HeaderComponent', () => {
   let dialog: MatDialog;
   let adal: MsAdalAngular6Service;
 
-  beforeEach((() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       imports: [
@@ -35,7 +34,7 @@ describe('HeaderComponent', () => {
             'https://localhost/Api/': 'xxx-xxx1-1111-x111-xxx'
           },
           navigateToLoginRequestUrl: true,
-          cacheLocation: 'localStorage',
+          cacheLocation: 'localStorage'
         })
       ],
       providers: [
@@ -44,14 +43,13 @@ describe('HeaderComponent', () => {
           useValue: {
             userInfo: { profile: { name: 'test' } },
             isAuthenticated: true,
-            logout: jest.fn(),
+            logout: jest.fn()
           }
         }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
-  }));
+    }).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
@@ -86,7 +84,7 @@ describe('HeaderComponent', () => {
     test('should lougout if user is authenticated', () => {
       adal = injector.get(MsAdalAngular6Service);
       spyOn(adal, 'logout');
-      spyOn(dialog, 'open').and.returnValue({afterClosed: () => of(true)});
+      spyOn(dialog, 'open').and.returnValue({ afterClosed: () => of(true) });
       component.logOut();
       expect(adal.logout).toHaveBeenCalled();
     });
@@ -94,7 +92,7 @@ describe('HeaderComponent', () => {
     test('should not logout if user presses no on modal', () => {
       adal = injector.get(MsAdalAngular6Service);
       spyOn(adal, 'logout');
-      spyOn(dialog, 'open').and.returnValue({afterClosed: () => of(false)});
+      spyOn(dialog, 'open').and.returnValue({ afterClosed: () => of(false) });
       component.logOut();
       expect(adal.logout).not.toHaveBeenCalled();
     });

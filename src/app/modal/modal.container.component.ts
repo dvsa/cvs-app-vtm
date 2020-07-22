@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 
 import { APP_MODALS } from '../app.enums';
@@ -14,7 +10,6 @@ import { Observable } from 'rxjs';
 import { getCurrentModalState } from './modal.selectors';
 import { ResetModal } from './modal.actions';
 import { ModalContent } from './modal.model';
-
 
 @Component({
   selector: 'vtm-modal-container',
@@ -50,8 +45,8 @@ export class ModalContainerComponent implements OnInit {
   }
 
   modalHandler(modalContent: ModalContent) {
-        if (modalContent.status) {
-          this.store.dispatch(new ResetModal());
-        }
+    if (modalContent.status) {
+      this.store.dispatch(new ResetModal());
+    }
   }
 }

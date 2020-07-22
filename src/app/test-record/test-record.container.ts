@@ -25,17 +25,17 @@ import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-numb
   selector: 'vtm-test-record-container',
   template: `
     <ng-container *ngIf="testRecord$ | async as testResultObj">
-        <vtm-test-record
-          [testResultObj]="testResultObj"
-          [preparers]="preparers$ | async"
-          [editState]="editState$ | async"
-          [testStations]="testStations$ | async"
-          [testTypesApplicable]="this.testTypesApplicable"
-          (submitTest)="onTestSubmit($event)"
-          (switchState)="currentStateHandler($event)"
-          (downloadCert)="downloadCertificate($event)"
-        >
-        </vtm-test-record>
+      <vtm-test-record
+        [testResultObj]="testResultObj"
+        [preparers]="preparers$ | async"
+        [editState]="editState$ | async"
+        [testStations]="testStations$ | async"
+        [testTypesApplicable]="this.testTypesApplicable"
+        (submitTest)="onTestSubmit($event)"
+        (switchState)="currentStateHandler($event)"
+        (downloadCert)="downloadCertificate($event)"
+      >
+      </vtm-test-record>
     </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -65,12 +65,8 @@ export class TestRecordContainer implements OnInit {
       anniversaryDateApplicable: this.testRecordMapper.getTestTypeApplicable(
         'anniversaryDateApplicable'
       ),
-      expiryDateApplicable: this.testRecordMapper.getTestTypeApplicable(
-        'expiryDateApplicable'
-      ),
-      certificateApplicable: this.testRecordMapper.getTestTypeApplicable(
-        'certificateApplicable'
-      ),
+      expiryDateApplicable: this.testRecordMapper.getTestTypeApplicable('expiryDateApplicable'),
+      certificateApplicable: this.testRecordMapper.getTestTypeApplicable('certificateApplicable'),
       specialistTestApplicable: this.testRecordMapper.getTestTypeApplicable(
         'specialistTestApplicable'
       ),

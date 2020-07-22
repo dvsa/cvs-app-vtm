@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { initAll } from 'govuk-frontend';
 
 @Component({
@@ -7,7 +7,6 @@ import { initAll } from 'govuk-frontend';
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-
 export class AppComponent {
   constructor() {
     initAll();

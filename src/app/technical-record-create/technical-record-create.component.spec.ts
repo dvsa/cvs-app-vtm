@@ -1,24 +1,30 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {async, ComponentFixture, fakeAsync, getTestBed, TestBed, tick} from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  fakeAsync,
+  getTestBed,
+  TestBed,
+  tick
+} from '@angular/core/testing';
 import { appReducers } from '@app/store/reducers/app.reducers';
 import { IAppState } from '@app/store/state/app.state';
 import { INITIAL_STATE, Store, StoreModule } from '@ngrx/store';
 import { hot } from 'jasmine-marbles';
 import { Subject, of } from 'rxjs';
 import { TechnicalRecordCreateComponent } from './technical-record-create.component';
-import {TechnicalRecordService} from '@app/technical-record-search/technical-record.service';
-import {RouterTestingModule} from '@angular/router/testing';
-import {TechnicalRecordServiceMock} from '../../../testconfig/services-mocks/technical-record-service.mock';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {MatDialogModule} from '@angular/material/dialog';
-import {FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from '@app/material.module';
-import {SharedModule} from '@app/shared/shared.module';
-import {By} from '@angular/platform-browser';
+import { TechnicalRecordService } from '@app/technical-record-search/technical-record.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TechnicalRecordServiceMock } from '../../../testconfig/services-mocks/technical-record-service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from '@app/material.module';
+import { SharedModule } from '@app/shared/shared.module';
+import { By } from '@angular/platform-browser';
 
 describe('TechnicalRecordSearchComponent', () => {
-
   let component: TechnicalRecordCreateComponent;
   let fixture: ComponentFixture<TechnicalRecordCreateComponent>;
   let store: Store<IAppState>;
@@ -37,10 +43,10 @@ describe('TechnicalRecordSearchComponent', () => {
         MaterialModule,
         SharedModule,
         RouterTestingModule,
-        ReactiveFormsModule,
+        ReactiveFormsModule
       ],
       providers: [
-        { provide : TechnicalRecordService, useValue: TechnicalRecordServiceMock },
+        { provide: TechnicalRecordService, useValue: TechnicalRecordServiceMock },
         {
           provide: Store,
           useValue: {
@@ -114,11 +120,10 @@ describe('TechnicalRecordSearchComponent', () => {
     spyOn(element2, 'focus');
     expect(element1).not.toBeNull();
     expect(element2).not.toBeNull();
-
   }));
 
   it('should change VRM label on PSV type select', () => {
-    const event = {currentTarget: {checked: false, id: 'test-radio-PSV'}};
+    const event = { currentTarget: { checked: false, id: 'test-radio-PSV' } };
     const vrmControl = component.createTechRecordForm.get('vrm');
 
     component.setVrmValidators(event);
@@ -127,7 +132,7 @@ describe('TechnicalRecordSearchComponent', () => {
   });
 
   it('should change VRM label on Trailer type select', () => {
-    const event = {currentTarget: {checked: false, id: 'test-radio-Trailer'}};
+    const event = { currentTarget: { checked: false, id: 'test-radio-Trailer' } };
     const vrmControl = component.createTechRecordForm.get('vrm');
 
     component.setVrmValidators(event);
@@ -156,5 +161,4 @@ describe('TechnicalRecordSearchComponent', () => {
     expect(component.formErrors.vrmErr).toEqual(null);
     expect(component.formErrors.vTypeErr).toEqual(null);
   });
-
 });

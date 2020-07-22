@@ -9,7 +9,6 @@ describe('BackButtonDirective', () => {
   let directive: BackButtonDirective;
   let location: Location;
 
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],

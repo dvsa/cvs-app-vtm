@@ -79,7 +79,7 @@ export class TimeInputComponent
     });
     this.timeInputs.valueChanges
       .pipe(
-        map(({hour, minute}) => {
+        map(({ hour, minute }) => {
           const resultDate = new Date();
 
           resultDate.setUTCHours(hour);
@@ -109,7 +109,6 @@ export class TimeInputComponent
   }
 
   writeValue(timeString: string): void {
-
     let hour = '';
     let minute = '';
     const getDate = new Date(timeString);

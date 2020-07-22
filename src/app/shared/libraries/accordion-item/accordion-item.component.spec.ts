@@ -42,6 +42,8 @@ describe('AccordionItemComponent', () => {
 
 @Component({
   selector: 'test-accordion-item',
-  template: ` <p name="testAccordionItem">Test</p> `
+  template: `
+    <p name="testAccordionItem">Test</p>
+  `
 })
 class TestAccordionItemComponent {}

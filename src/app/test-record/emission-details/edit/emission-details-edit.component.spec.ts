@@ -12,7 +12,6 @@ describe('EmissionDetailsEditComponent', () => {
   // const testTypeGroup = new FormGroup({ testType: new FormGroup({}) });
   const testTypeGroup = new FormGroup({});
 
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EmissionDetailsEditComponent],
@@ -52,4 +51,3 @@ describe('EmissionDetailsEditComponent', () => {
     expect(!!component.testTypeGroup).toEqual(true);
   });
 });
-

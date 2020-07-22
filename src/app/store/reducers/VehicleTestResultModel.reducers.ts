@@ -1,6 +1,7 @@
 import { initialVehicleTestResultModelState } from '@app/store/state/VehicleTestResultModel.state';
 import {
-  EVehicleTestResultModelActions, SetSelectedTestResultModelSuccess,
+  EVehicleTestResultModelActions,
+  SetSelectedTestResultModelSuccess,
   VehicleTestResultModelActions
 } from '../actions/VehicleTestResultModel.actions';
 
@@ -12,14 +13,14 @@ export function VehicleTestResultModelReducers(
     case EVehicleTestResultModelActions.GetVehicleTestResultModelSuccess: {
       return {
         ...state,
-        vehicleTestResultModel: action.payload,
+        vehicleTestResultModel: action.payload
       };
     }
 
     case EVehicleTestResultModelActions.GetVehicleTestResultModelFailure: {
       return {
         ...state,
-        vehicleTestResultModel: null,
+        vehicleTestResultModel: null
       };
     }
 
