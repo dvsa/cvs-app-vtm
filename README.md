@@ -6,7 +6,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-You will need a MS Adal `clientId` and `tenantId` in `config.dev.json` file to run the project.
+You will need a MS Adal `clientId` and `tenantId` in `environment.ts` file to run the project.
+Please rename the `env` file to `.env` as well as adding the relevant `clientId` & `tenantId` values to your environment variables (dotenv):
+
+```
+AZURE_CLIENT_ID=
+AZURE_TENANT_ID=
+API_ENDPOINT_LOCAL=
+```
+
 
 ## Code scaffolding
 
@@ -15,6 +23,30 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+### Debug build
+
+Should you need to log information in the console once developing the `debug` environment variable is accessible from the `src/environments` files and its value is set to `false` when developping locally (`npm run start`) by default.
+`debug` environment variable is then accessible by importing `environment` within the application.
+
+
+```
+import { environment } from '@environments/environment';
+
+// environments then returns your configuration object.
+console.log(environment);
+/** 
+* {
+*   debug: false
+*   name: 'local'
+*   production: false
+*   ...
+* }
+**/
+```
+
+Further information about [angular configuration](https://angular.io/guide/build).
+
 
 ## Running unit tests
 
