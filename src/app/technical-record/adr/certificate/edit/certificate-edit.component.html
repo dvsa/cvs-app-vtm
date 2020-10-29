@@ -12,13 +12,13 @@
             <div class="govuk-radios__item" *ngFor="let option of options | keyvalue: unsorted">
               <input
                 class="govuk-radios__input"
-                id="guidanceNotes-{{ option.key }}"
+                id="test-edit-guidanceNotes-{{ option.key }}"
                 name="guidanceNotes"
                 formControlName="guidanceNotes"
                 type="radio"
                 [value]="option.value"
               />
-              <label class="govuk-label govuk-radios__label" for="guidanceNotes-{{ option.key }}">
+              <label class="govuk-label govuk-radios__label" for="test-edit-guidanceNotes-{{ option.key }}">
                 {{ option.key }}
               </label>
             </div>

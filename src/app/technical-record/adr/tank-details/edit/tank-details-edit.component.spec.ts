@@ -99,7 +99,7 @@ describe('TankDetailsEditComponent', () => {
       fixture.detectChanges();
 
       const selectedSubstance: HTMLElement = fixture.debugElement.query(
-        By.css('[id=substancesPermitted_permitted]')
+        By.css('[id=test-edit-substancesPermitted-permitted]')
       ).nativeElement;
       selectedSubstance.click();
 

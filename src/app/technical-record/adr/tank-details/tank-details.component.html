@@ -14,7 +14,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Year of manufacture</dt>
-      <dd id="test-ADR-yearOfManufacture" class="govuk-summary-list__value">
+      <dd id="test-edit-ADR-yearOfManufacture" class="govuk-summary-list__value">
         <span *ngIf="tank && tank.tankDetails; else hyphen">
           {{ tank.tankDetails.yearOfManufacture | DefaultNullOrEmpty }}
         </span>
@@ -34,7 +34,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Tank type approval number</dt>
-      <dd id="test-ADR-tankTypeAppNo" class="govuk-summary-list__value">
+      <dd id="test-edit-ADR-tankTypeAppNo" class="govuk-summary-list__value">
         <span *ngIf="tank && tank.tankDetails; else hyphen">
           {{ tank.tankDetails.tankTypeAppNo | DefaultNullOrEmpty }}
         </span>
@@ -44,7 +44,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Code</dt>
-      <dd id="test-ADR-tankCode" class="govuk-summary-list__value">
+      <dd id="test-edit-ADR-tankCode" class="govuk-summary-list__value">
         <span *ngIf="tank && tank.tankDetails; else hyphen">
           {{ tank.tankDetails.tankCode | DefaultNullOrEmpty }}
         </span>
@@ -116,7 +116,7 @@
 
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Special provisions</dt>
-      <dd id="test-ADR-specialProvisions" class="govuk-summary-list__value">
+      <dd id="test-edit-ADR-specialProvisions" class="govuk-summary-list__value">
         <span *ngIf="tank && tank.tankDetails; else hyphen">
           {{ tank.tankDetails.specialProvisions | DefaultNullOrEmpty }}
         </span>

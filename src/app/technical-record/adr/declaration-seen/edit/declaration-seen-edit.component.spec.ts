@@ -72,7 +72,7 @@ describe('DeclarationSeenEditComponent', () => {
       fixture.detectChanges();
 
       const brakeDeclarationSeen: HTMLInputElement = ele.query(
-        By.css('[id=brakeDeclarationsSeen]')
+        By.css('[id=test-edit-brakeDeclarationsSeen]')
       ).nativeElement;
 
       brakeDeclarationSeen.click(); // unchecked
@@ -85,7 +85,7 @@ describe('DeclarationSeenEditComponent', () => {
       let brakeEdurance: HTMLInputElement;
 
       beforeEach(() => {
-        brakeEdurance = ele.query(By.css('[id=brakeEndurance]')).nativeElement;
+        brakeEdurance = ele.query(By.css('[id=test-edit-brakeEndurance]')).nativeElement;
       });
 
       it('should reset the weight control when brakeEndurance is unchecked', () => {

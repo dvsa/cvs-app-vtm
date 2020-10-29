@@ -22,7 +22,7 @@ exports[`AdrDetailsComponent should create view only with populated data 1`] = `
       </dt>
       <dd
         class="govuk-summary-list__value"
-        id="test-ADR-type"
+        id="test-edit-ADR-type"
       >
          Centre Axle Battery 
       </dd>

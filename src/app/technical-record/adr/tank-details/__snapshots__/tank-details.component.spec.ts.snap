@@ -50,7 +50,7 @@ exports[`TankDetailsComponent should create view only with populated data 1`] = 
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-ADR-yearOfManufacture"
+          id="test-edit-ADR-yearOfManufacture"
         >
           
           <span>
@@ -92,7 +92,7 @@ exports[`TankDetailsComponent should create view only with populated data 1`] = 
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-ADR-tankTypeAppNo"
+          id="test-edit-ADR-tankTypeAppNo"
         >
           
           <span>
@@ -113,7 +113,7 @@ exports[`TankDetailsComponent should create view only with populated data 1`] = 
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-ADR-tankCode"
+          id="test-edit-ADR-tankCode"
         >
           
           <span>
@@ -239,7 +239,7 @@ exports[`TankDetailsComponent should create view only with populated data 1`] = 
         </dt>
         <dd
           class="govuk-summary-list__value"
-          id="test-ADR-specialProvisions"
+          id="test-edit-ADR-specialProvisions"
         >
           
           <span>
