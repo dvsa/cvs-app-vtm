@@ -8,7 +8,8 @@ import {
   SetSelectedTestResultModelSuccess,
   UpdateTestResult,
   UpdateSelectedTestResultModel,
-  UpdateSelectedTestResultModelSuccess
+  UpdateSelectedTestResultModelSuccess,
+  ArchiveTestResult
 } from './VehicleTestResultModel.actions';
 import { TestResultModel } from '@app/models/test-result.model';
 import { VIEW_STATE } from '@app/app.enums';
@@ -142,6 +143,17 @@ describe('UpdateSelectedTestResultModelSuccess', () => {
     expect({ ...actionInstance }).toEqual({
       type: EVehicleTestResultModelActions.UpdateSelectedTestResultModelSuccess,
       payload: testResultModelExample
+    });
+  });
+});
+
+describe('ArchiveCertificate', () => {
+  it('action should have correct type & payload', () => {
+    const actionInstance = new ArchiveTestResult({} as TestResultModel);
+
+    expect({ ...actionInstance }).toEqual({
+      type: EVehicleTestResultModelActions.ArchiveTestResult,
+      payload: {}
     });
   });
 });

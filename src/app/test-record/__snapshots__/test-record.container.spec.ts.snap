@@ -4,6 +4,7 @@ exports[`TestRecordContainer should create 1`] = `
 <vtm-test-record-container
   editState$={[Function AnonymousSubject]}
   preparers$={[Function AnonymousSubject]}
+  reasonForArchive$={[Function BehaviorSubject]}
   route={[Function Object]}
   store={[Function MockStore]}
   testRecord$={[Function BehaviorSubject]}

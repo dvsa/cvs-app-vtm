@@ -8,15 +8,19 @@ import { SharedModule } from '@app/shared/shared.module';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { TestRecordMapper, TestTypesApplicable } from '@app/test-record/test-record.mapper';
 import { TestRecordTestType } from '@app/models/test-record-test-type';
-import { VIEW_STATE } from '@app/app.enums';
+import { VIEW_STATE, APP_MODALS } from '@app/app.enums';
 import { TestResultTestTypeNumber } from '@app/models/test-result-test-type-number';
 import { TestResultModel } from '@app/models/test-result.model';
-import { EVehicleTestResultModelActions } from '@app/store/actions/VehicleTestResultModel.actions';
+import {
+  EVehicleTestResultModelActions,
+  ArchiveTestResult
+} from '@app/store/actions/VehicleTestResultModel.actions';
 import { Preparer } from '@app/models/preparer';
 import { TestStation } from '@app/models/test-station';
 import { MockStore } from '@app/utils/mockStore';
 import { TEST_TYPE_APPLICABLE_UTILS } from '@app/utils/test-type-applicable-models.utils';
 import { TEST_MODEL_UTILS } from '@app/utils/test-model.utils';
+import { LoadModal } from '@app/modal/modal.actions';
 
 const mockSelector = new BehaviorSubject<any>(undefined);
 
@@ -88,6 +92,17 @@ describe('TestRecordContainer', () => {
       },
       type: EVehicleTestResultModelActions.UpdateTestResult
     });
+  });
+
+  it('should open archive reason modal', () => {
+    const modalDataObject = { currentModal: APP_MODALS.REASON_FOR_DELETED };
+    container.openArchivedConfirmation();
+    expect(store.dispatch).toHaveBeenCalledWith(new LoadModal(modalDataObject));
+  });
+
+  it('should archive test type when called', () => {
+    container.archiveTestResult({} as TestResultModel);
+    expect(store.dispatch).toHaveBeenCalledWith(new ArchiveTestResult({} as TestResultModel));
   });
 });
 

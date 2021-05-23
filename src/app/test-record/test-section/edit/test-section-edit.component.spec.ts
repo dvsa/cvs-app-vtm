@@ -5,7 +5,12 @@ import { SharedModule } from '@app/shared/shared.module';
 import { TESTING_UTILS } from '@app/utils/testing.utils';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroupDirective,
+  ReactiveFormsModule,
+  FormGroup,
+  AbstractControl
+} from '@angular/forms';
 import {
   REASON_FOR_ABANDONING_HGV_TRL,
   REASON_FOR_ABANDONING_PSV
@@ -24,7 +29,9 @@ describe('TestSectionEditComponent', () => {
       providers: [
         {
           provide: FormGroupDirective,
-          useValue: TESTING_UTILS.mockFormGroupDirective()
+          useValue: TESTING_UTILS.mockFormGroupDirective({
+            testType: new FormGroup({}) as AbstractControl
+          })
         }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]

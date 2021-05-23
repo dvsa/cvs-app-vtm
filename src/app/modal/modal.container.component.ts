@@ -51,7 +51,7 @@ export class ModalContainerComponent implements OnInit {
 
   modalHandler(modalContent: ModalContent) {
         if (modalContent.status) {
-          this.store.dispatch(new ResetModal());
+          this.store.dispatch(new ResetModal(modalContent.payload));
         }
   }
 }

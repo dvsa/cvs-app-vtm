@@ -8,6 +8,9 @@ import { ModalContent, ModalPayload } from './modal.model';
     <ng-container *ngIf="currentModal.modal === 'lose-changes'">
       <vtm-lose-changes (okCancelAction)="okCancelAction($event)"></vtm-lose-changes>
     </ng-container>
+    <ng-container *ngIf="currentModal.modal === 'reason-for-delete'">
+      <vtm-test-delete-reason-modal [modalContent]="currentModal" (okCancelAction)="okCancelAction($event)"></vtm-test-delete-reason-modal>
+    </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -16,7 +19,8 @@ export class ModalComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) data, public dialogRef: MatDialogRef<ModalComponent>) {
     this.currentModal = {
-      modal: data.currentModal
+      modal: data.currentModal,
+      payload: ''
     } as ModalContent;
   }
 

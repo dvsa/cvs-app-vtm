@@ -8,12 +8,12 @@
       </div>
     </div>
 
-    <div class="govuk-grid-row">
+    <div class="govuk-grid-row govuk-!-margin-left-0">
       <ng-container *ngIf="!editState">
-        <div class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0">
+        <div class="govuk-grid-column-one-quarter govuk-!-padding-left-0">
           <button
             id="test-change-test-record"
-            class="govuk-button govuk-button--secondary govuk-!-padding-left-3 govuk-!-padding-right-3"
+            class="govuk-button govuk-button--secondary "
             data-module="govuk-button"
             (click)="switchCurrentState('edit')"
           >
@@ -23,7 +23,7 @@
       </ng-container>
 
       <ng-container *ngIf="editState">
-        <div class="govuk-grid-column-one-quarter govuk-!-margin-right-0 govuk-!-padding-right-0">
+        <div class="govuk-grid-column-one-quarter govuk-!-padding-left-0">
           <button
             id="test-save-test-record"
             class="govuk-button govuk-!-padding-left-3 govuk-!-padding-right-3"
@@ -52,11 +52,22 @@
       >
         <button
           id="test-view-certificate"
-          class="govuk-button govuk-button--secondary govuk-!-padding-left-3 govuk-!-padding-right-3"
+          class="govuk-button govuk-button--secondary govuk-!-padding-left-5 govuk-!-padding-right-5"
           data-module="govuk-button"
           (click)="downloadCertificate()"
         >
           View certificate
+        </button>
+      </div>
+
+      <div class="govuk-grid-column-one-quarter govuk-!-padding-left-0">
+        <button
+          id="test-delete-test-result"
+          class="govuk-button govuk-button--secondary govuk-!-padding-left-7 govuk-!-padding-right-7"
+          data-module="govuk-button"
+          (click)="openArchiveReasonModal()"
+        >
+          Delete test
         </button>
       </div>
     </div>

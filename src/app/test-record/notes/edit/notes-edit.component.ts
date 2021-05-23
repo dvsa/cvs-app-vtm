@@ -1,7 +1,6 @@
-
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { VIEW_STATE } from '@app/app.enums';
-import { ControlContainer, FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormGroup, FormGroupDirective, FormBuilder } from '@angular/forms';
 import { TestType } from '@app/models/test.type';
 
 @Component({
@@ -15,21 +14,16 @@ export class NotesEditComponent implements OnInit {
   @Input() testType: TestType;
   @Input() isSubmitted: boolean;
 
-  testResultChildForm: FormGroupDirective;
   testTypeGroup: FormGroup;
 
-  constructor(parentForm: FormGroupDirective) {
-    this.testResultChildForm = parentForm;
-  }
+  constructor(private parentForm: FormGroupDirective, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.testTypeGroup = this.testResultChildForm.form.get('testType') as FormGroup;
+    this.testTypeGroup = this.parentForm.form.get('testType') as FormGroup;
 
-    if (!!this.testTypeGroup) {
-      this.testTypeGroup.addControl(
-        'additionalNotesRecorded',
-        new FormControl(this.testType.additionalNotesRecorded)
-      );
-    }
+    this.testTypeGroup.addControl(
+      'additionalNotesRecorded',
+      this.fb.control(this.testType.additionalNotesRecorded)
+    );
   }
 }
