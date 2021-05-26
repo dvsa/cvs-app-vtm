@@ -65,7 +65,7 @@
     "ngrx-store-freeze": "^0.2.4",
     "ngx-filesaver": "^2.2.1",
     "ngx-json-viewer": "^2.4.0",
-    "rxjs": "6.2.2",
+    "rxjs": "6.6.7",
     "rxjs-compat": "^6.5.3",
     "uuid": "^7.0.2",
     "zone.js": "0.8.25"
