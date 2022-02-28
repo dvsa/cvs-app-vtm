@@ -1,0 +1,175 @@
+{
+  "name": "cvs-app-vtm",
+  "version": "0.0.1",
+  "author": "CVS VTM Team",
+  "contributors": [
+    "Irina, Catlin, Arup"
+  ],
+  "engines": {
+    "node": ">=10.0.0 <13.0.0",
+    "npm": "6.9.0"
+  },
+  "homepage": "",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
+    "build:prod": "npm run ng build -- --prod --configuration=deploy",
+    "test": "jest --coverage",
+    "test:dev": "jest --watch",
+    "lint": "ng lint",
+    "lint:fix": "ng lint cvs-app-vtm --fix",
+    "lint:format": "node_modules/.bin/prettier --write ./src/**/*.{html,scss,ts,json}",
+    "e2e": "cypress open",
+    "sonar-scanner": "npm run test && sonar-scanner",
+    "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
+    "prepush": "npm run build && npm test",
+    "security-checks": "git secrets --scan && git log -p | scanrepo",
+    "coverage": "jest --coverage"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "6.1.0-rc.3",
+    "@angular/cdk": "6.4.0",
+    "@angular/common": "6.1.0-rc.3",
+    "@angular/compiler": "6.1.0-rc.3",
+    "@angular/core": "6.1.0-rc.3",
+    "@angular/forms": "6.1.0-rc.3",
+    "@angular/http": "6.1.0-rc.3",
+    "@angular/material": "6.4.0",
+    "@angular/platform-browser": "6.1.0-rc.3",
+    "@angular/platform-browser-dynamic": "6.1.0-rc.3",
+    "@angular/router": "6.1.0-rc.3",
+    "@azure/msal-angular": "^0.1.4",
+    "@fortawesome/angular-fontawesome": "^0.3.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-brands-svg-icons": "^5.11.2",
+    "@fortawesome/free-regular-svg-icons": "^5.11.2",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@ngrx/effects": "6.0.1",
+    "@ngrx/router-store": "6.0.1",
+    "@ngrx/store": "6.0.1",
+    "@ngrx/store-devtools": "6.0.1",
+    "core-js": "^2.6.11",
+    "faker": "^4.1.0",
+    "file-saver": "^2.0.2",
+    "govuk-frontend": "^3.3.0",
+    "hammerjs": "^2.0.8",
+    "husky": "^3.0.9",
+    "install": "^0.13.0",
+    "jasmine-core": "^2.8.0",
+    "jasmine-marbles": "^0.4.0",
+    "jest-preset-angular": "^7.1.1",
+    "material-design-icons": "^3.0.1",
+    "microsoft-adal-angular6": "^1.3.0",
+    "ngrx-forms": "3.2.1",
+    "ngrx-store-freeze": "^0.2.4",
+    "ngx-filesaver": "^2.2.1",
+    "ngx-json-viewer": "^2.4.0",
+    "protractor": "^7.0.0",
+    "rxjs": "6.2.2",
+    "rxjs-compat": "^6.5.3",
+    "uuid": "^7.0.2",
+    "zone.js": "0.8.25"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^0.13.4",
+    "@angular/cli": "6.0.8",
+    "@angular/compiler-cli": "6.1.0-rc.3",
+    "@angular/language-service": "6.1.0-rc.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.6.3",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@cypress/webpack-preprocessor": "^4.1.0",
+    "@types/file-saver": "^2.0.1",
+    "@types/jest": "^24.0.19",
+    "@types/node": "~10.9.2",
+    "@types/uuid": "^7.0.2",
+    "chance": "^1.1.3",
+    "codelyzer": "~4.4.2",
+    "cypress": "^4.9.0",
+    "cypress-jest-adapter": "^0.1.1",
+    "jest": "^24.9.0",
+    "jest-plugin-context": "^2.9.0",
+    "jest-runner-tsc": "^1.6.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "prettier": "1.19.1",
+    "reflect-metadata": "^0.1.13",
+    "ts-loader": "^6.2.1",
+    "ts-node": "5.0.1",
+    "tslint": "5.9.1",
+    "typescript": "2.9.2"
+  },
+  "jestSonar": {
+    "reportPath": ".reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
+  "jest-runner-tsc": {
+    "tsconfigPath": "./tsconfig.json"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupJest.ts"
+    ],
+    "coverageDirectory": "./coverage",
+    "collectCoverage": false,
+    "testResultsProcessor": "jest-sonar-reporter",
+    "testURL": "http://localhost",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/src/assets/config/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/",
+      "<rootDir>/src/test.ts",
+      "<rootDir>/test-config"
+    ],
+    "modulePathIgnorePatterns": [
+      "cypress"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ionic)"
+    ],
+    "moduleNameMapper": {
+      "@app/(.*)": "<rootDir>/src/app/$1",
+      "@environments/(.*)": "<rootDir>/src/environments/$1",
+      "@testconfig/(.*)": "<rootDir>/src/testconfig/$1"
+    },
+    "globals": {
+      "ts-jest": {
+        "babelConfig": {
+          "presets": [
+            [
+              "@babel/preset-env",
+              {
+                "targets": {
+                  "node": true
+                },
+                "modules": "commonjs"
+              }
+            ]
+          ],
+          "plugins": [
+            "@babel/plugin-syntax-dynamic-import"
+          ]
+        },
+        "stringifyContentPathRegex": "\\.html$",
+        "astTransformers": [
+          "<rootDir>/node_modules/jest-preset-angular/InlineHtmlStripStylesTransformer"
+        ]
+      }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "npm run lint && ./node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint:fix && npm run lint:format && npm run security-checks",
+      "pre-push": "npm run prepush"
+    }
+  },
+  "description": "CVS VTM Application"
+}
