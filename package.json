@@ -1,0 +1,19 @@
+{
+  "name": "cvs-app-vtm",
+  "version": "0.2.0",
+  "description": "CVS VTM App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvsa/cvs-app-vtm.git"
+  },
+  "author": "DVSA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dvsa/cvs-app-vtm/issues"
+  },
+  "homepage": "https://github.com/dvsa/cvs-app-vtm#readme"
+}
