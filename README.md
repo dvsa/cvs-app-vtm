@@ -1,5 +1,13 @@
 # cvs-vtm-app
 
+This is the angular code for the VTM frontend application.
+
+---
+
+# BELOW IS THE OLD README
+
+---
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.3.
 
 ## Development server
