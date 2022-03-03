@@ -1,0 +1,70 @@
+<ng-container>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Name</dt>
+      <dd id="test-purchaser-name" class="govuk-summary-list__value">
+        {{ purchaser?.name | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Building and street</dt>
+      <dd id="test-purchaser-address" class="govuk-summary-list__value">
+        {{ address1And2 | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Town or city</dt>
+      <dd id="test-purchaser-postTown" class="govuk-summary-list__value">
+        {{ purchaser?.postTown | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">County</dt>
+      <dd id="test-purchaser-address3" class="govuk-summary-list__value">
+        {{ purchaser?.address3 | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Postcode</dt>
+      <dd id="test-purchaser-postCode" class="govuk-summary-list__value">
+        {{ purchaser?.postCode | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Telephone number</dt>
+      <dd id="test-purchaser-telephoneNumber" class="govuk-summary-list__value">
+        {{ purchaser?.telephoneNumber | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Email address</dt>
+      <dd id="test-purchaser-emailAddress" class="govuk-summary-list__value">
+        {{ purchaser?.emailAddress | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Fax Number</dt>
+      <dd id="test-purchaser-faxNumber" class="govuk-summary-list__value">
+        {{ purchaser?.faxNumber | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Purchaser Notes</dt>
+      <dd id="test-purchaser-purchaserNotes" class="govuk-summary-list__value">
+        {{ purchaser?.purchaserNotes | DefaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</ng-container>

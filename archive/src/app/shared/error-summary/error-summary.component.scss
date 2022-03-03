@@ -1,0 +1,12 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+#errorBox {
+  padding-bottom: 0;
+}
+
+.govuk-error-summary {
+  width: 57rem;
+  .govuk-error-message {
+    text-decoration: underline;
+  }
+}

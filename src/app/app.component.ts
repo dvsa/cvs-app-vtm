@@ -1,15 +1,10 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import { initAll } from 'govuk-frontend';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'vtm-app',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
-
 export class AppComponent {
-  constructor() {
-    initAll();
-  }
+  title = 'vtm';
 }

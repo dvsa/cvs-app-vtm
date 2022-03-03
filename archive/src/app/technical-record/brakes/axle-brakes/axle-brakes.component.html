@@ -1,0 +1,29 @@
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt id="test-axleNumber-{{ axle.axleNumber }}" class="govuk-summary-list__key">
+      Axle ({{ axle.axleNumber }})
+    </dt>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Brake actuator</dt>
+    <dd id="test-brakeActuator-{{ axle.axleNumber }}" class="govuk-summary-list__value">
+      {{ axle?.brakes?.brakeActuator | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Lever length</dt>
+    <dd id="test-leverLength-{{ axle.axleNumber }}" class="govuk-summary-list__value">
+      {{ axle?.brakes?.leverLength | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Spring brake parking</dt>
+    <dd id="test-springBrakeParking-{{ axle.axleNumber }}" class="govuk-summary-list__value">
+      {{ axle?.brakes?.springBrakeParking | DefaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+</dl>

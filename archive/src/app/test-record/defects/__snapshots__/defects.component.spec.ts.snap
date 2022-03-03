@@ -1,0 +1,354 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefectsComponent should create 1`] = `
+<vtm-defects
+  testRecord={[Function Object]}
+  testType={[Function Object]}
+  testTypesApplicable={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <h2
+      class="govuk-heading-l govuk-!-width-full"
+    >
+      <span
+        class="govuk-!-margin-top-3"
+        id="test-deficiencyRef-0"
+      >
+         - 
+        
+        <span>
+            (123) 
+        </span>
+        
+        <span>
+            (345) 
+        </span>
+      </span>
+       - 
+      <span
+        class="govuk-tag govuk-!-font-size-24 govuk-!-padding-top-0 govuk-!-padding-bottom-0 govuk-!-padding-left-1 govuk-!-padding-right-1"
+      >
+          
+      </span>
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Category 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-imNumber-imDescription-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Item 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-itemNumber-itemDescription-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Description 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-deficiencyId-0"
+      >
+        
+        <span>
+            (123) 
+        </span>
+        
+        <span>
+            (345)  
+        </span>
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Location 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-location-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Repaired during test 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-defect-prs-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Prohibition issued 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-prohibition-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Additional defect details 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-additionalInfo-0"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-defects>
+`;
+
+exports[`DefectsComponent should generate test type for specialist tests 1`] = `
+<vtm-defects
+  testRecord={[Function Object]}
+  testType={[Function Object]}
+  testTypesApplicable={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <h2
+      class="govuk-heading-l govuk-!-width-full"
+    >
+      <span
+        class="govuk-!-margin-top-3"
+        id="test-referenceNumber-0"
+      >
+         - 
+      </span>
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Defect name 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-defectName-0"
+      >
+         test 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Defect notes 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-defectNotes-0"
+      >
+         test 
+      </dd>
+    </div>
+  </dl>
+</vtm-defects>
+`;
+
+exports[`DefectsComponent should generate test type for test type doesn t have defects with deficiencyId & deficiencySubId 1`] = `
+<vtm-defects
+  testRecord={[Function Object]}
+  testType={[Function Object]}
+  testTypesApplicable={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <h2
+      class="govuk-heading-l govuk-!-width-full"
+    >
+      <span
+        class="govuk-!-margin-top-3"
+        id="test-deficiencyRef-0"
+      >
+         - 
+        
+        <span>
+           
+        </span>
+        
+        <span>
+           
+        </span>
+      </span>
+       - 
+      <span
+        class="govuk-tag govuk-!-font-size-24 govuk-!-padding-top-0 govuk-!-padding-bottom-0 govuk-!-padding-left-1 govuk-!-padding-right-1"
+      >
+          
+      </span>
+    </h2>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Category 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-imNumber-imDescription-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Item 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-itemNumber-itemDescription-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Description 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-deficiencyId-0"
+      >
+        
+        <span>
+           
+        </span>
+        
+        <span>
+           
+        </span>
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Location 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-location-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Repaired during test 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-defect-prs-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Prohibition issued 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-prohibition-0"
+      >
+         - 
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key border--bottom-none"
+      >
+         Additional defect details 
+      </dt>
+      <dd
+        class="govuk-summary-list__value border--bottom-none"
+        id="test-additionalInfo-0"
+      >
+         - 
+      </dd>
+    </div>
+  </dl>
+</vtm-defects>
+`;

@@ -1,0 +1,32 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
+.landing-page {
+  & a {
+    color: #1d70b8 !important;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 25px;
+  }
+
+  & .govuk-grid-column-one-third p {
+    font-size: 20px !important;
+  }
+
+  & .govuk-heading-xl {
+    font-size: 50px;
+    margin-top: 20px;
+  }
+
+  & .govuk-grid-column-one-third {
+    background: govuk-colour('light-grey');
+    margin: 0 0 10px 18px;
+    width: 364px !important;
+    border-color: $govuk-link-colour !important;
+    border-bottom: solid;
+    height: 180px;
+  }
+
+  & .govuk-grid-row {
+    margin-bottom: 10rem;
+  }
+}

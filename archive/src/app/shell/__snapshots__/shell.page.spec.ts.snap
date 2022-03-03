@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShellPage should create shell component 1`] = `
+<vtm-shell>
+  <div
+    class="grid-container"
+  >
+    <vtm-loader />
+    <div
+      class="header"
+    >
+      <vtm-header />
+    </div>
+    <div
+      class="main"
+    >
+      <vtm-error-summary />
+      <router-outlet />
+    </div>
+    <div
+      class="footer"
+    >
+      <vtm-footer />
+    </div>
+  </div><vtm-modal-container />
+</vtm-shell>
+`;

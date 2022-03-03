@@ -1,0 +1,30 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="adrForm">
+          <h2 class="govuk-heading-m">Certificate required (optional)</h2>
+
+          <div
+            class="govuk-radios govuk-radios--inline"
+            [formGroup]="adrForm.get('additionalNotes')"
+          >
+            <div class="govuk-radios__item" *ngFor="let option of options | keyvalue: unsorted">
+              <input
+                class="govuk-radios__input"
+                id="guidanceNotes-{{ option.key }}"
+                name="guidanceNotes"
+                formControlName="guidanceNotes"
+                type="radio"
+                [value]="option.value"
+              />
+              <label class="govuk-label govuk-radios__label" for="guidanceNotes-{{ option.key }}">
+                {{ option.key }}
+              </label>
+            </div>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

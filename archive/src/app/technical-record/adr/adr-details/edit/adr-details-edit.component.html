@@ -1,0 +1,143 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <form [formGroup]="adrForm">
+          <!-- ADR DETAILS -->
+          <h2 class="govuk-heading-m">ADR details</h2>
+
+          <div [formGroup]="vehicleDetails">
+            <div class="govuk-form-group">
+              <label for="vehicleType" class="govuk-label govuk-!-font-weight-bold">
+                Vehicle type
+              </label>
+              <select id="vehicleType" formControlName="type" class="govuk-select">
+                <option
+                  *ngFor="let vehicleType of vehicleTypeOptions"
+                  [ngValue]="vehicleType.name.toLowerCase()"
+                >
+                  {{ vehicleType.name }}
+                </option>
+              </select>
+            </div>
+
+            <div
+              class="govuk-form-group"
+              [class.govuk-form-group--error]="
+                submitted && adrForm.get('vehicleDetails.approvalDate').invalid
+              "
+            >
+              <fieldset class="govuk-fieldset" role="group" aria-describedby="approval-date">
+                <label class="govuk-label govuk-!-font-weight-bold">
+                  Date processed
+                </label>
+                <vtm-date-input
+                  id="approvalDate"
+                  ariaDescribedBy="approvalDate"
+                  formControlName="approvalDate"
+                ></vtm-date-input>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="govuk-form-group govuk-!-margin-top-6">
+            <label class="govuk-label govuk-!-font-weight-bold">
+              Permitted dangerous goods
+            </label>
+            <div class="govuk-checkboxes" formArrayName="permittedDangerousGoods">
+              <ng-container
+                *ngFor="let permittedGood of permittedDangerousGoods.controls; let i = index"
+                [formGroup]="permittedGood"
+              >
+                <div class="govuk-checkboxes__item">
+                  <input
+                    id="permittedGood_{{ i }}"
+                    type="checkbox"
+                    [value]="permittedDangerousGoodsOptions[i].selected"
+                    [formControl]="permittedGood.get('selected')"
+                    class="govuk-checkboxes__input"
+                  />
+                  <label for="permittedGood_{{ i }}" class="govuk-label govuk-checkboxes__label">
+                    {{ permittedGood.get('name').value }}
+                  </label>
+                </div>
+              </ng-container>
+              <div
+                id="conditional-permittedGood"
+                class="govuk-inset-text govuk-!-margin-top-0"
+                [class.govuk-checkboxes__conditional--hidden]="!showCompatibilityGroupJ"
+              >
+                <ng-container *ngTemplateOutlet="compatibilityGroup"></ng-container>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #compatibilityGroup>
+            <div class="govuk-form-group govuk-!-margin-left-3">
+              <h4 class="govuk-heading-m">Compatibility group J (optional)</h4>
+              <div class="govuk-radios govuk-radios--inline">
+                <div
+                  class="govuk-radios__item"
+                  *ngFor="let option of options | keyvalue: unsorted"
+                >
+                  <input
+                    class="govuk-radios__input"
+                    id="compatibilityGroupJ-{{ option.key }}"
+                    name="compatibilityGroupJ"
+                    type="radio"
+                    [value]="option.value"
+                    formControlName="compatibilityGroupJ"
+                  />
+                  <label
+                    class="govuk-label govuk-radios__label"
+                    for="compatibilityGroupJ-{{ option.key }}"
+                  >
+                    {{ option.key }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-!-font-weight-bold" for="adrTypeApprovalNo">
+              ADR type approval number (optional)
+            </label>
+            <input
+              id="adrTypeApprovalNo"
+              type="text"
+              formControlName="adrTypeApprovalNo"
+              class="govuk-input govuk-input--width-10"
+            />
+          </div>
+
+          <!-- Guidance notes -->
+          <div class="govuk-form-group" [formGroup]="additionalNotes">
+            <label class="govuk-label govuk-!-font-weight-bold">
+              Guidance notes (optional)
+            </label>
+            <div class="govuk-checkboxes" formArrayName="number">
+              <ng-container
+                *ngFor="let note of number.controls; let i = index"
+                [formGroup]="note"
+              >
+                <div class="govuk-checkboxes__item">
+                  <input
+                    id="note_{{ i }}"
+                    type="checkbox"
+                    [value]="guidanceNotesOptions[i].selected"
+                    [formControl]="note.get('selected')"
+                    class="govuk-checkboxes__input"
+                  />
+                  <label class="govuk-label govuk-checkboxes__label" for="permittedGood_{{ i }}">
+                    {{ note.get('name').value }}
+                  </label>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </div>
+</div>

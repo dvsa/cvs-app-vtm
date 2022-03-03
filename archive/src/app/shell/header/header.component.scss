@@ -1,0 +1,105 @@
+@import '../../../../node_modules/govuk-frontend/govuk/all';
+
+::ng-deep .govuk-width-container {
+  #header-nav-item {
+    margin-left: 0;
+    margin-top: 0.3rem;
+  }
+
+  .govuk-header__link--homepage {
+    font-size: 24px !important;
+    color: govuk-colour('white');
+    font-weight: 700;
+    letter-spacing: 0.86px;
+    line-height: 29px;
+  }
+
+  ul {
+    position: absolute !important;
+    right: 0;
+    top: 1rem !important;
+
+    a {
+      color: govuk-colour('white');
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.57px;
+      line-height: 19px;
+    }
+    span {
+      font-weight: 800 !important;
+      font-size: 18px;
+    }
+  }
+
+  .govuk-header__logo {
+    width: 50% !important;
+  }
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: black;
+  position: relative;
+  display: none;
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.topnav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  line-height: 2.5rem;
+  cursor: pointer;
+}
+
+.topnav a:visited,
+#menuLinks:visited {
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.topnav a:hover {
+  fa-icon:hover {
+    color: white;
+    border: solid $govuk-focus-colour;
+    padding: 5px;
+  }
+
+  span:hover {
+    color: $govuk-text-colour;
+    background-color: $govuk-focus-colour;
+    text-decoration: underline;
+    padding: 5px;
+  }
+  cursor: pointer;
+}
+
+.active {
+  color: $govuk-focus-colour;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 1313px) {
+  .topnav {
+    display: block !important;
+  }
+
+  .govuk-header__container {
+    display: none;
+  }
+}

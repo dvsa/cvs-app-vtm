@@ -1,0 +1,342 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TestSectionEditComponent should create 1`] = `
+<vtm-test-section-edit
+  dialog={[Function MatDialog]}
+  isAbandoned="false"
+  prohibitionOptionSelected={[Function String]}
+  prohibitionOptions={[Function Array]}
+  reasonsForAbandoning={[Function Array]}
+  reasonsForAbandoningOptions={[Function Array]}
+  resultOptions={[Function Array]}
+  router={[Function Router]}
+  testRecord={[Function Object]}
+  testRecordMapper={[Function TestRecordMapper]}
+  testResultChildForm={[Function FormGroupDirective]}
+  testResultSubscription={[Function Subscriber]}
+  testType={[Function Object]}
+  testTypeGroup={[Function FormGroup]}
+  testTypesApplicable={[Function Object]}
+>
+  <dl
+    class="govuk-summary-list"
+  >
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test type 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testTypeName"
+      >
+         First Test 
+      </dd>
+      <dd
+        class="govuk-summary-list__actions"
+      >
+        <a
+          class="govuk-link govuk-!-font-size-19"
+          href="javascript:void(0)"
+        >
+          <span>
+            Change
+          </span>
+        </a>
+      </dd>
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test code 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testCode"
+      >
+         - 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+    <div
+      class="govuk-summary-list__row"
+    >
+      <dt
+        class="govuk-summary-list__key"
+      >
+         Test number 
+      </dt>
+      <dd
+        class="govuk-summary-list__value"
+        id="test-testNumber"
+      >
+         123123 
+      </dd>
+      <dd
+        class="govuk-summary-list__value"
+      />
+    </div>
+  </dl><form
+    class="ng-untouched ng-pristine ng-invalid"
+    formgroupname="testType"
+    ng-reflect-name="testType"
+    novalidate=""
+  >
+    <div
+      class="govuk-grid-row govuk-!-margin-bottom-3"
+    >
+      <div
+        class="govuk-grid-column-full"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+        >
+           Result 
+        </label>
+        <div
+          class="govuk-radios"
+        >
+          
+          <div
+            class="govuk-radios__item"
+          >
+            <input
+              class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+              formcontrolname="testResult"
+              id="test-testResult-Fail"
+              ng-reflect-form-control-name="testResult"
+              ng-reflect-name="testResult"
+              ng-reflect-value="fail"
+              type="radio"
+            />
+            <label
+              class="govuk-label govuk-radios__label"
+            >
+               Fail 
+            </label>
+          </div>
+          <div
+            class="govuk-radios__item"
+          >
+            <input
+              class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+              formcontrolname="testResult"
+              id="test-testResult-Pass"
+              ng-reflect-form-control-name="testResult"
+              ng-reflect-name="testResult"
+              ng-reflect-value="pass"
+              type="radio"
+            />
+            <label
+              class="govuk-label govuk-radios__label"
+            >
+               Pass 
+            </label>
+          </div>
+          <div
+            class="govuk-radios__item"
+          >
+            <input
+              class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+              formcontrolname="testResult"
+              id="test-testResult-PRS"
+              ng-reflect-form-control-name="testResult"
+              ng-reflect-name="testResult"
+              ng-reflect-value="prs"
+              type="radio"
+            />
+            <label
+              class="govuk-label govuk-radios__label"
+            >
+               PRS 
+            </label>
+          </div>
+          <div
+            class="govuk-radios__item"
+          >
+            <input
+              class="govuk-radios__input ng-untouched ng-pristine ng-valid"
+              formcontrolname="testResult"
+              id="test-testResult-Abandoned"
+              ng-reflect-form-control-name="testResult"
+              ng-reflect-name="testResult"
+              ng-reflect-value="abandoned"
+              type="radio"
+            />
+            <label
+              class="govuk-label govuk-radios__label"
+            >
+               Abandoned 
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    <div
+      class="govuk-grid-row govuk-!-margin-bottom-3"
+    >
+      <div
+        class="govuk-grid-column-three-quarters"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+        >
+           Test date 
+        </label>
+        <vtm-date-input
+          ariadescribedby="testTypeEndTimestampDate"
+          class="ng-untouched ng-pristine ng-valid"
+          formcontrolname="testTypeEndTimestampDate"
+          ng-reflect-id="test-testTypeEndTimestampDate"
+          ng-reflect-name="testTypeEndTimestampDate"
+          ngdefaultcontrol=""
+        >
+          
+          <div
+            class="govuk-date-input"
+          >
+            <div
+              class="govuk-date-input__item"
+            >
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-date-input__label"
+                  for="test-testTypeEndTimestampDate-1-day"
+                >
+                   Day 
+                </label>
+                <input
+                  autocomplete="off"
+                  class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="day"
+                  id="test-testTypeEndTimestampDate-1-day"
+                  maxlength="2"
+                  name="dateDay"
+                  ng-reflect-maxlength="2"
+                  ng-reflect-name="day"
+                  ng-reflect-pattern="[0-9]*"
+                  pattern="[0-9]*"
+                  type="number"
+                />
+              </div>
+            </div>
+            <div
+              class="govuk-date-input__item"
+            >
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-date-input__label"
+                  for="test-testTypeEndTimestampDate-1-month"
+                >
+                   Month 
+                </label>
+                <input
+                  autocomplete="off"
+                  class="govuk-input govuk-date-input__input govuk-input--width-2 ng-untouched ng-pristine ng-valid"
+                  formcontrolname="month"
+                  id="test-testTypeEndTimestampDate-1-month"
+                  maxlength="2"
+                  name="dateMonth"
+                  ng-reflect-maxlength="2"
+                  ng-reflect-name="month"
+                  ng-reflect-pattern="[0-9]*"
+                  pattern="[0-9]*"
+                  type="number"
+                />
+              </div>
+            </div>
+            <div
+              class="govuk-date-input__item"
+            >
+              <div
+                class="govuk-form-group"
+              >
+                <label
+                  class="govuk-label govuk-date-input__label"
+                  for="test-testTypeEndTimestampDate-1-year"
+                >
+                   Year 
+                </label>
+                <input
+                  autocomplete="off"
+                  class="govuk-input govuk-date-input__input govuk-input--width-4 ng-untouched ng-pristine ng-invalid"
+                  formcontrolname="year"
+                  id="test-testTypeEndTimestampDate-1-year"
+                  maxlength="4"
+                  minlength="4"
+                  name="dateYear"
+                  ng-reflect-maxlength="4"
+                  ng-reflect-minlength="4"
+                  ng-reflect-name="year"
+                  ng-reflect-pattern="[0-9]*"
+                  pattern="[0-9]*"
+                  type="number"
+                />
+              </div>
+            </div>
+          </div>
+        </vtm-date-input>
+      </div>
+    </div>
+    <div
+      class="govuk-grid-row govuk-!-margin-bottom-3"
+    >
+      <div
+        class="govuk-grid-column-three-quarters"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+        >
+           Start time 
+        </label>
+        <vtm-time-input
+          ariadescribedby="testTypeStartTimestamp"
+          class="ng-untouched ng-pristine ng-valid"
+          formcontrolname="testTypeStartTimestamp"
+          id="test-testTypeStartTimestamp"
+          ng-reflect-name="testTypeStartTimestamp"
+          ngdefaultcontrol=""
+        />
+      </div>
+    </div>
+    <div
+      class="govuk-grid-row govuk-!-margin-bottom-3"
+    >
+      <div
+        class="govuk-grid-column-three-quarters"
+      >
+        <label
+          class="govuk-label govuk-!-font-weight-bold"
+        >
+           End time 
+        </label>
+        <vtm-time-input
+          ariadescribedby="testTypeEndTimestampTime"
+          class="ng-untouched ng-pristine ng-valid"
+          formcontrolname="testTypeEndTimestampTime"
+          id="test-testTypeEndTimestampTime"
+          ng-reflect-name="testTypeEndTimestampTime"
+          ngdefaultcontrol=""
+        />
+      </div>
+    </div>
+    
+  </form>
+</vtm-test-section-edit>
+`;

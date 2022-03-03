@@ -1,0 +1,17 @@
+<div class="govuk-accordion__section">
+  <div class="govuk-accordion__section-header">
+    <h2 class="govuk-accordion__section-heading">
+      <span class="govuk-link govuk-!-font-size-36 govuk-!-font-weight-bold">{{ title }}</span>
+      <span
+        class="govuk-accordion__section-button"
+        id="test-accordion-default-heading-{{ this.titleTrimmed }}"
+      ></span>
+    </h2>
+  </div>
+  <div
+    id="test-accordion-default-content-{{ this.titleTrimmed }}"
+    class="govuk-accordion__section-content"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>

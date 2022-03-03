@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalComponent should create modal component 1`] = `
+<vtm-modal
+  currentModal={[Function Object]}
+  dialogRef={[Function Object]}
+>
+  <vtm-lose-changes>
+    <div>
+      works
+    </div>
+  </vtm-lose-changes>
+</vtm-modal>
+`;

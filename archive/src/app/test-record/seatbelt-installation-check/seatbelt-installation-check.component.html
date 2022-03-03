@@ -1,0 +1,38 @@
+<dl *ngIf="!editState" class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Carried out during test
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-seatbeltInstallationCheckDate">
+      {{ seatbeltOptionSelected | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+      Number of seatbelts fitted
+    </dt>
+    <dd class="govuk-summary-list__value" id="test-numberOfSeatbeltsFitted">
+      {{ testType.numberOfSeatbeltsFitted | DefaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key border--bottom-none">
+      Most recent installation check
+    </dt>
+    <dd
+      class="govuk-summary-list__value border--bottom-none"
+      id="test-lastSeatbeltInstallationCheckDate"
+    >
+      <span *ngIf="testType.lastSeatbeltInstallationCheckDate; else hyphen">
+        {{ testType.lastSeatbeltInstallationCheckDate | date: 'dd/MM/yyyy' }}
+      </span>
+    </dd>
+  </div>
+</dl>
+<ng-template #hyphen><span>-</span></ng-template>
+
+<ng-container *ngIf="editState && !hasSeatBeltApplicable">
+  <vtm-seatbelt-installation-check-edit
+    [testType]="testType"
+  ></vtm-seatbelt-installation-check-edit>
+</ng-container>

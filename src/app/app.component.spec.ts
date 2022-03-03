@@ -1,39 +1,35 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TestBed, async} from '@angular/core/testing';
-import {AppComponent} from './app.component';
-import {Store} from '@ngrx/store';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
-const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
-  const obj: any = {};
-
-  for (let i = 0; i < methodNames.length; i++) {
-    obj[methodNames[i]] = jest.fn();
-  }
-
-  return obj;
-};
+import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule
+      ],
+      declarations: [
+        AppComponent
       ],
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+    const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  afterAll(() => {
-    TestBed.resetTestingModule();
+  it(`should have as title 'vtm'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app.title).toEqual('vtm');
   });
 
+  it('should render title', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.content span')?.textContent).toContain('vtm app is running!');
+  });
 });

@@ -1,0 +1,36 @@
+{
+  "env": {
+    "name": "dev"
+  },
+  "appInsights": {
+    "instrumentationKey": "#{appInsightsKey}"
+  },
+  "logging": {
+    "console": true,
+    "appInsights": true
+  },
+  "aad": {
+    "requireAuth": true,
+    "clientId": "",
+    "tenant": ""
+  },
+  "adalConfig": {
+    "clientId": "54d151b6-2ca8-4018-8c70-f9ee600d91c7",
+    "tenant": "6c448d90-4ca1-4caf-ab59-0a2aa67d7801",
+    "redirectUri": "http://localhost:4200",
+    "cacheLocation": "localStorage",
+    "endpoints": {
+      "api": ""
+    }
+  },
+  "apiServer": {
+    "APITechnicalRecordServerUri": "http://localhost:3005",
+    "APITestResultServerUri": "http://localhost:3006",
+    "APIDocumentsServerUri": "assets/files",
+    "APIPreparersServerUri": "http://localhost:3003",
+    "APITestStationsServerUri": "http://localhost:3004",
+    "APITestTypesServerUri": "http://localhost:3002",
+    "APIDocumentBlobUri": "",
+    "APICertificatesBlobUri": ""
+  }
+}

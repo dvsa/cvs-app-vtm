@@ -1,0 +1,104 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <div [formGroup]="adrForm">
+          <h2 class="govuk-heading-m">Declarations seen</h2>
+
+          <div class="govuk-form-group">
+            <!-- Manufacturer brake declaration -->
+            <div class="govuk-checkboxes">
+              <div class="govuk-checkboxes__item">
+                <input
+                  id="brakeDeclarationsSeen"
+                  type="checkbox"
+                  [value]="adrForm.get('brakeDeclarationsSeen').value"
+                  formControlName="brakeDeclarationsSeen"
+                  class="govuk-checkboxes__input"
+                />
+                <label for="brakeDeclarationsSeen" class="govuk-label govuk-checkboxes__label">
+                  Manufacturer brake declaration (optional)
+                </label>
+              </div>
+              <!-- Issuer -->
+              <div
+                id="conditional-brakeDeclarationsSeen"
+                class="govuk-inset-text govuk-!-margin-top-0"
+                [class.govuk-checkboxes__conditional--hidden]="
+                  !adrForm.get('brakeDeclarationsSeen').value
+                "
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    declarationInput;
+                    context: {
+                      $implicit: { input: 'brakeDeclarationIssuer', label: 'Issuer (optional)' }
+                    }
+                  "
+                ></ng-container>
+
+                <!-- Brake endurance -->
+                <div class="govuk-checkboxes__item govuk-!-margin-left-3">
+                  <input
+                    id="brakeEndurance"
+                    type="checkbox"
+                    [value]="adrForm.get('brakeEndurance').value"
+                    formControlName="brakeEndurance"
+                    class="govuk-checkboxes__input"
+                  />
+                  <label for="brakeEndurance" class="govuk-label govuk-checkboxes__label">
+                    Brake endurance (optional)
+                  </label>
+                </div>
+                <!-- Weight(kg) -->
+                <div
+                  id="conditional-brakeEndurance"
+                  class="govuk-inset-text govuk-!-margin-top-0 govuk-!-margin-left-3"
+                  [class.govuk-checkboxes__conditional--hidden]="
+                    !adrForm.get('brakeEndurance').value
+                  "
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      declarationInput;
+                      context: { $implicit: { input: 'weight', label: 'Weight(kg)' } }
+                    "
+                  ></ng-container>
+                </div>
+              </div>
+
+              <!-- Owner/operator declaration -->
+              <div class="govuk-checkboxes__item">
+                <input
+                  id="declarationsSeen"
+                  type="checkbox"
+                  [value]="adrForm.get('declarationsSeen').value"
+                  formControlName="declarationsSeen"
+                  class="govuk-checkboxes__input"
+                />
+                <label for="declarationsSeen" class="govuk-label govuk-checkboxes__label">
+                  Owner/operator declaration (optional)
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <ng-template let-decInput #declarationInput>
+            <div class="govuk-form-group govuk-!-margin-left-3">
+              <label class="govuk-label govuk-!-font-weight-bold" for="{{ decInput.input }}">
+                {{ decInput.label }}
+              </label>
+              <input
+                id="{{ decInput.input }}"
+                type="text"
+                name="{{ decInput.input }}"
+                formControlName="{{ decInput.input }}"
+                class="govuk-input govuk-input--width-10"
+              />
+            </div>
+          </ng-template>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
