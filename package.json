@@ -10,9 +10,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "jest --coverage",
+    "sonar-scanner": "npm run test && sonar-scanner",
+    "security-checks": "git secrets --scan && git log -p | scanrepo",
+    "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --quiet --fix -o reports/eslint/eslint-report.json",
+    "format": "npx prettier 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write"
   },
   "private": true,
   "dependencies": {
@@ -30,9 +34,21 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.4",
+    "@angular-eslint/builder": "13.1.0",
+    "@angular-eslint/eslint-plugin": "13.1.0",
+    "@angular-eslint/eslint-plugin-template": "13.1.0",
+    "@angular-eslint/schematics": "13.1.0",
+    "@angular-eslint/template-parser": "13.1.0",
     "@angular/cli": "~13.2.4",
     "@angular/compiler-cli": "~13.2.0",
     "@types/node": "^12.11.1",
+    "@typescript-eslint/eslint-plugin": "5.11.0",
+    "@typescript-eslint/parser": "5.11.0",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
     "typescript": "~4.5.2"
   },
   "repository": {

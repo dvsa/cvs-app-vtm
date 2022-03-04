@@ -1,6 +1,7 @@
 # Add files here to ignore them from prettier formatting
 /dist
 /coverage
+/reports
 **/.idea
 **/.ng_pkg_build
 **/.vscode
