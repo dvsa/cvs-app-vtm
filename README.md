@@ -19,3 +19,13 @@ Prerequisites:
 This talks to the following backends:
 * cvs-svc-technical-records
 * cvs-svc-test-results
+
+# Running storybook
+
+Storybook lets you view components without the rest of the application.
+
+To run storybook:
+
+`npm run storybook`
+
+Then view it on `localhost:6006`.
