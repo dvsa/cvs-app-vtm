@@ -1,4 +1,6 @@
+///<reference path="govuk.d.ts">
 import { Component } from '@angular/core';
+import { initAll } from 'govuk-frontend/govuk/all';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'vtm';
+
+  ngOnInit() {
+    initAll();
+  }
 }
