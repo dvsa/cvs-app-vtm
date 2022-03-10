@@ -15,6 +15,7 @@ import { reducers } from './reducers';
 import { UserService } from './user-service/user-service';
 import { LandingPageComponent } from './layout/landing-page/landing-page.component';
 import { LandingPageButtonComponent } from './layout/landing-page-button/landing-page-button.component';
+import { SearchComponent } from './search/search.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -62,7 +63,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     HeaderComponent,
     FooterComponent,
     LandingPageComponent,
-    LandingPageButtonComponent
+    LandingPageButtonComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
