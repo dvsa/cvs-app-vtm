@@ -24,8 +24,8 @@ import { environment } from '../environments/environment';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
-        clientId: environment.VTM_CLIENT_ID ? environment.VTM_CLIENT_ID : '',
-        authority: environment.VTM_AUTHORITY_ID ? environment.VTM_AUTHORITY_ID : '',
+        clientId: environment.VTM_CLIENT_ID,
+        authority: environment.VTM_AUTHORITY_ID,
         redirectUri: '/',
 
     },

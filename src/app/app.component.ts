@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 import { initAll } from 'govuk-frontend/govuk/all';
 import { EventMessage, EventType } from '@azure/msal-browser';
-
+import { MsalService, MsalBroadcastService, } from "@azure/msal-angular";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,15 @@ import { EventMessage, EventType } from '@azure/msal-browser';
 export class AppComponent {
   title = 'vtm';
 
+  constructor(private msalBroadcastService: MsalBroadcastService) {}
+
   ngOnInit() {
     initAll();
+
+
+    this.msalBroadcastService.msalSubject$
+        .subscribe((result: any) => {
+            console.log(result);
+        });
   }
 }
