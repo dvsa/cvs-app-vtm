@@ -1,10 +1,10 @@
 import { Meta, Story } from '@storybook/angular';
 
-import { LandingPageComponent } from './landing-page.component';
+import { HomeButtonComponent } from './home-button.component';
 
 export default {
-  title: 'Landing Page',
-  component: LandingPageComponent,
+  title: 'Home Button',
+  component: HomeButtonComponent,
 } as Meta;
 
 export const Primary: Story = () => ({

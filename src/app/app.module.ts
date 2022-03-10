@@ -13,8 +13,8 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { reducers } from './reducers';
 import { UserService } from './user-service/user-service';
-import { LandingPageComponent } from './layout/landing-page/landing-page.component';
-import { LandingPageButtonComponent } from './layout/landing-page-button/landing-page-button.component';
+import { HomeComponent } from './home/home.component';
+import { HomeButtonComponent } from './home/home-button/home-button.component';
 import { SearchComponent } from './search/search.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
@@ -62,8 +62,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    LandingPageComponent,
-    LandingPageButtonComponent,
+    HomeComponent,
+    HomeButtonComponent,
     SearchComponent
   ],
   imports: [

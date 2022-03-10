@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { AppComponent } from './app.component';
-import { LandingPageComponent } from './layout/landing-page/landing-page.component';
+import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent,
+    component: HomeComponent,
     canActivate: [MsalGuard]
   },
   {
