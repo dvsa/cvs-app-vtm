@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "csv-app-vtm": {
+    "cvs-app-vtm": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/csv-app-vtm",
+            "outputPath": "dist/cvs-app-vtm",
+            "baseHref" : "./",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -42,53 +43,56 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
+            "deploy": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.deploy.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
               "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "buildOptimizer": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "deploy"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "csv-app-vtm:build:production"
+              "browserTarget": "cvs-app-vtm:build:production"
             },
-            "development": {
-              "browserTarget": "csv-app-vtm:build:development"
+            "deploy": {
+              "browserTarget": "cvs-app-vtm:build:deploy"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "deploy"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "csv-app-vtm:build"
+            "browserTarget": "cvs-app-vtm:build"
           }
         },
         "lint": {
@@ -103,7 +107,7 @@
       }
     }
   },
-  "defaultProject": "csv-app-vtm",
+  "defaultProject": "cvs-app-vtm",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }
