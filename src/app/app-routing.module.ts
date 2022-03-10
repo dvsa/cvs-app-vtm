@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: AppComponent,
-    canActivate: [MsalGuard, MsalGuard]
+    canActivate: [MsalGuard]
   },
 ];
 
