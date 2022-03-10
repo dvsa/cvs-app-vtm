@@ -1,5 +1,11 @@
 <app-header [username]="userService.userName$ | async" (logOutEvent)="userService.logOut()"></app-header>
 
-<app-landing-page></app-landing-page>
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper">
+
+    <router-outlet></router-outlet>
+
+  </main>
+</div>
 
 <app-footer></app-footer>
