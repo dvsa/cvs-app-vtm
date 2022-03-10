@@ -7,8 +7,8 @@
         <a href="/" class="govuk-header__link govuk-header__link--homepage">Vehicle testing management</a>
       </div>
       <div class="govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19">
-        <span id="username">Username</span>
-        <a id="sign-out" class="govuk-link govuk-link--inverse govuk-!-font-weight-bold" href="#">Sign out</a>
+        <span id="username">{{ username }}</span>
+        <a id="sign-out" class="govuk-link govuk-link--inverse govuk-!-font-weight-bold" href="#" (click)="logout()">Sign out</a>
       </div>
     </div>
   </div>
