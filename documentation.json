@@ -1854,33 +1854,7 @@
         },
         {
             "name": "DialogData",
-            "id": "interface-DialogData-f392a02fe1535828bce085457d16245bfb9b94600b35b002e3de49072d5b8e41600901c5c4c43ce6015fffdc7a91c4440c60c7b2b914543605a65072b60ce2c8-2",
-            "file": "archive/src/app/shared/dialog-ministry-plates/dialog-ministry-plates.component.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "interface",
-            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';\nimport { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';\n\nimport { Applicant } from '@app/models/tech-record.model';\n\nexport interface DialogData {\n  applicantDetails: Applicant;\n}\n\n@Component({\n  selector: 'vtm-dialog-ministry-plates',\n  templateUrl: './dialog-ministry-plates.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DialogMinistryPlatesComponent implements OnInit {\n  constructor(\n    public dialogRef: MatDialogRef<DialogMinistryPlatesComponent>,\n    @Inject(MAT_DIALOG_DATA) public data: DialogData\n  ) {}\n\n  ngOnInit() {}\n\n  close(): void {\n    this.dialogRef.close(false);\n  }\n\n  save(plateComponent): void {\n    const plate = plateComponent.platesForm.getRawValue();\n    this.dialogRef.close(plate);\n  }\n}\n",
-            "properties": [
-                {
-                    "name": "applicantDetails",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Applicant",
-                    "optional": false,
-                    "description": "",
-                    "line": 7
-                }
-            ],
-            "indexSignatures": [],
-            "kind": 165,
-            "methods": [],
-            "isDuplicate": true,
-            "duplicateId": 2,
-            "duplicateName": "DialogData-2"
-        },
-        {
-            "name": "DialogData",
-            "id": "interface-DialogData-d73c4cbb164c48e53576b8def292213c35c9b6e2696ab44b0eca048f6123b30be2e307d830c43c6ba4d65fd7d67d52bd7d51d696fa64ee952b5cc6d8de38e2ed-3",
+            "id": "interface-DialogData-d73c4cbb164c48e53576b8def292213c35c9b6e2696ab44b0eca048f6123b30be2e307d830c43c6ba4d65fd7d67d52bd7d51d696fa64ee952b5cc6d8de38e2ed-2",
             "file": "archive/src/app/shared/dialog-box-confirmation/dialog-box-confirmation.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
@@ -1904,6 +1878,32 @@
                     "optional": false,
                     "description": "",
                     "line": 6
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": [],
+            "isDuplicate": true,
+            "duplicateId": 2,
+            "duplicateName": "DialogData-2"
+        },
+        {
+            "name": "DialogData",
+            "id": "interface-DialogData-f392a02fe1535828bce085457d16245bfb9b94600b35b002e3de49072d5b8e41600901c5c4c43ce6015fffdc7a91c4440c60c7b2b914543605a65072b60ce2c8-3",
+            "file": "archive/src/app/shared/dialog-ministry-plates/dialog-ministry-plates.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';\nimport { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';\n\nimport { Applicant } from '@app/models/tech-record.model';\n\nexport interface DialogData {\n  applicantDetails: Applicant;\n}\n\n@Component({\n  selector: 'vtm-dialog-ministry-plates',\n  templateUrl: './dialog-ministry-plates.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DialogMinistryPlatesComponent implements OnInit {\n  constructor(\n    public dialogRef: MatDialogRef<DialogMinistryPlatesComponent>,\n    @Inject(MAT_DIALOG_DATA) public data: DialogData\n  ) {}\n\n  ngOnInit() {}\n\n  close(): void {\n    this.dialogRef.close(false);\n  }\n\n  save(plateComponent): void {\n    const plate = plateComponent.platesForm.getRawValue();\n    this.dialogRef.close(plate);\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "applicantDetails",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Applicant",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
                 }
             ],
             "indexSignatures": [],
@@ -5670,18 +5670,6 @@
             "methods": []
         },
         {
-            "name": "User",
-            "id": "interface-User-9c7e5f1bbbab702cb032307d130876cb68969b0cd4eedef32a0c8cad8081a54e5f8f577ed6ad4539c1b99a1d246cb34031d198c2ea8eba440e64e91b14f01fdc",
-            "file": "src/stories/User.ts",
-            "deprecated": false,
-            "deprecationMessage": "",
-            "type": "interface",
-            "sourceCode": "export interface User {}\n",
-            "properties": [],
-            "indexSignatures": [],
-            "methods": []
-        },
-        {
             "name": "UserDetails",
             "id": "interface-UserDetails-35178e534230e93c1c762763e330f8c6d74837fca9fdf9c0149abab81a79123c2a09909e2c9e9651df04fc16ace1a109886c607056aa5d109fff85285a9761c2",
             "file": "archive/src/app/models/user-details.ts",
@@ -8072,7 +8060,135 @@
         },
         {
             "name": "UserService",
-            "id": "injectable-UserService-3a2e55f1b63a3eee930ea112292e58b3f10bc7348b7e8acba22eea21521ea4b1535a38ce7461581b95aa4e6b6ffd216ac8051c7340e075ebf3dfe6f109c9ee60",
+            "id": "injectable-UserService-6eb0502852a8cd01ef9b0fc1645d77622e797eaa5668019a93cbadd5eae4c8ebe1050fd7d166421123348293e94b1e7ab125d8daf40e357ceaaad96fce231fd0",
+            "file": "src/app/user-service.ts",
+            "properties": [
+                {
+                    "name": "_destroying$",
+                    "defaultValue": "new Subject<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        121,
+                        144
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "getUserName",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "string",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "logOut",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 35,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "ngOnDestroy",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 22,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "setUserName",
+                    "args": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "name",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { MsalService, MsalBroadcastService } from '@azure/msal-angular';\nimport { Subject } from 'rxjs';\nimport { filter, takeUntil } from 'rxjs/operators';\nimport { Injectable } from '@angular/core';\nimport { EventMessage, EventType } from '@azure/msal-browser';\n\n@Injectable({ providedIn: 'root' })\nexport class UserService {\n  private readonly _destroying$ = new Subject<void>();\n\n  constructor(private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {\n    this.msalBroadcastService.msalSubject$\n      .pipe(\n        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),\n        takeUntil(this._destroying$)\n      )\n      .subscribe((result: any) => {\n        this.setUserName(result.payload.account.name);\n      });\n  }\n\n  ngOnDestroy(): void {\n    this._destroying$.next();\n    this._destroying$.complete();\n  }\n\n  setUserName(name: string): void {\n    localStorage.setItem('username', name);\n  }\n\n  getUserName(): string {\n    return localStorage.getItem('username') || '';\n  }\n\n  logOut(): void {\n    this.msal.logout();\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "msalBroadcastService",
+                        "type": "MsalBroadcastService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "msal",
+                        "type": "MsalService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 9,
+                "jsdoctags": [
+                    {
+                        "name": "msalBroadcastService",
+                        "type": "MsalBroadcastService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "msal",
+                        "type": "MsalService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "UserService",
+            "id": "injectable-UserService-3a2e55f1b63a3eee930ea112292e58b3f10bc7348b7e8acba22eea21521ea4b1535a38ce7461581b95aa4e6b6ffd216ac8051c7340e075ebf3dfe6f109c9ee60-1",
             "file": "archive/src/app/app-user.service.ts",
             "properties": [
                 {
@@ -8141,7 +8257,10 @@
                 "args": [],
                 "line": 7
             },
-            "type": "injectable"
+            "type": "injectable",
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "UserService-1"
         },
         {
             "name": "ValidationMapper",
@@ -14164,7 +14283,7 @@
         },
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-51d222bdac148f4299ad3a66df016e27d2be1dbfbca962097feca58e3ec556aaa429d88c72f78b78b6288efa008cc2a40201c414797dcc0bb7227761244ef482",
+            "id": "component-AppComponent-c819f17dba83f28c80713076b169894dec28bd2e6965712b86f20a9b96657ee2431212d976d60d08d55d7a4532e8a80b4484f1984c848a970dc660d91a2ee259",
             "file": "src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -14191,7 +14310,19 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 12
+                },
+                {
+                    "name": "userService",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "UserService",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        123
+                    ]
                 }
             ],
             "methodsClass": [
@@ -14201,7 +14332,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 13,
+                    "line": 16,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -14213,7 +14344,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { initAll } from 'govuk-frontend/govuk/all';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent {\n  title = 'vtm';\n\n  ngOnInit() {\n    initAll();\n  }\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { initAll } from 'govuk-frontend/govuk/all';\nimport { UserService } from './user-service';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent {\n  title = 'vtm';\n\n  constructor(public userService: UserService) {}\n\n  ngOnInit() {\n    initAll();\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -14222,7 +14353,33 @@
                 }
             ],
             "stylesData": "",
-            "templateData": "<app-header></app-header>\n\n<div class=\"govuk-width-container\">\n  <main class=\"govuk-main-wrapper\" id=\"main-content\" role=\"main\">\n    <h1 class=\"govuk-heading-xl\">Default page template</h1>\n  </main>\n</div>\n\n<app-footer></app-footer>\n"
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "userService",
+                        "type": "UserService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 12,
+                "jsdoctags": [
+                    {
+                        "name": "userService",
+                        "type": "UserService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "templateData": "<app-header [username]=\"userService.getUserName()\" (logOutEvent)=\"userService.logOut()\"></app-header>\n\n<app-landing-page></app-landing-page>\n\n<app-footer></app-footer>\n"
         },
         {
             "name": "AppComponent",
@@ -16336,130 +16493,6 @@
                 "OnInit"
             ],
             "templateData": "<dl class=\"govuk-summary-list\">\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Brake code</dt>\n    <dd id=\"test-brakeCode\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeCode | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Service brake information</dt>\n    <dd id=\"test-dataTrBrakeOne\" class=\"govuk-summary-list__value\">\n      {{ brakes?.dataTrBrakeOne | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Secondary brake information</dt>\n    <dd id=\"test-dataTrBrakeTwo\" class=\"govuk-summary-list__value\">\n      {{ brakes?.dataTrBrakeTwo | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Parking brake information</dt>\n    <dd id=\"test-dataTrBrakeThree\" class=\"govuk-summary-list__value\">\n      {{ brakes?.dataTrBrakeThree | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Retarder brake one</dt>\n    <dd id=\"test-retarderBrakeOne\" class=\"govuk-summary-list__value\">\n      {{ brakes?.retarderBrakeOne | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Retarder brake two</dt>\n    <dd id=\"test-retarderBrakeTwo\" class=\"govuk-summary-list__value\">\n      {{ brakes?.retarderBrakeTwo | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <br />\n  <h2 class=\"govuk-heading-m\">Brake force wheels not locked</h2>\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Service</dt>\n    <dd id=\"test-serviceBrakeForceA\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeForceWheelsNotLocked?.serviceBrakeForceA | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Secondary</dt>\n    <dd id=\"test-secondaryBrakeForceA\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeForceWheelsNotLocked?.secondaryBrakeForceA | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Parking</dt>\n    <dd id=\"test-parkingBrakeForceA\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeForceWheelsNotLocked?.parkingBrakeForceA | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <br />\n  <h2 class=\"govuk-heading-m\">Brake force wheels up to half locked</h2>\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Service</dt>\n    <dd id=\"test-serviceBrakeForceB\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeForceWheelsUpToHalfLocked?.serviceBrakeForceB | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Secondary</dt>\n    <dd id=\"test-secondaryBrakeForceB\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeForceWheelsUpToHalfLocked?.secondaryBrakeForceB | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Parking</dt>\n    <dd id=\"test-parkingBrakeForceB\" class=\"govuk-summary-list__value\">\n      {{ brakes?.brakeForceWheelsUpToHalfLocked?.parkingBrakeForceB | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n</dl>\n"
-        },
-        {
-            "name": "ButtonComponent",
-            "id": "component-ButtonComponent-4ef205c97a334c309aa4001c8ab4a6d9571dcae18d0e85aaf0d367467ab5d3a9f13ab3573726f1fcb409bc9b49894dadfb80b1bbe1b6ba7041455ad9d4922004",
-            "file": "src/stories/button.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-button",
-            "styleUrls": [
-                "./button.css"
-            ],
-            "styles": [],
-            "template": "<button   type=\"button\"\n   (click)=\"onClick.emit($event)\"\n   [ngClass]=\"classes\"\n   [ngStyle]=\"{ 'background-color': backgroundColor }\"\n >\n   {{ label }}\n </button>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "backgroundColor",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nWhat background color to use\n",
-                    "description": "<p>What background color to use</p>\n",
-                    "line": 26,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "label",
-                    "defaultValue": "'Button'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "pos": 711,
-                            "end": 724,
-                            "flags": 4227072,
-                            "modifierFlagsCache": 0,
-                            "transformFlags": 0,
-                            "kind": 325,
-                            "tagName": {
-                                "pos": 712,
-                                "end": 720,
-                                "flags": 4227072,
-                                "modifierFlagsCache": 0,
-                                "transformFlags": 0,
-                                "kind": 79,
-                                "escapedText": "required"
-                            },
-                            "comment": ""
-                        }
-                    ],
-                    "rawdescription": "\n\nButton contents\n\n",
-                    "description": "<p>Button contents</p>\n",
-                    "line": 40,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "primary",
-                    "defaultValue": "false",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nIs this the principal call to action on the page?\n",
-                    "description": "<p>Is this the principal call to action on the page?</p>\n",
-                    "line": 20,
-                    "type": "boolean",
-                    "decorators": []
-                },
-                {
-                    "name": "size",
-                    "defaultValue": "'medium'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nHow large should the button be?\n",
-                    "description": "<p>How large should the button be?</p>\n",
-                    "line": 32,
-                    "type": "\"small\" | \"medium\" | \"large\"",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onClick",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "rawdescription": "\n\nOptional click handler\n",
-                    "description": "<p>Optional click handler</p>\n",
-                    "line": 46,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\n\n@Component({\n  selector: 'storybook-button',\n  template: ` <button\n    type=\"button\"\n    (click)=\"onClick.emit($event)\"\n    [ngClass]=\"classes\"\n    [ngStyle]=\"{ 'background-color': backgroundColor }\"\n  >\n    {{ label }}\n  </button>`,\n  styleUrls: ['./button.css'],\n})\nexport default class ButtonComponent {\n  /**\n   * Is this the principal call to action on the page?\n   */\n  @Input()\n  primary = false;\n\n  /**\n   * What background color to use\n   */\n  @Input()\n  backgroundColor?: string;\n\n  /**\n   * How large should the button be?\n   */\n  @Input()\n  size: 'small' | 'medium' | 'large' = 'medium';\n\n  /**\n   * Button contents\n   *\n   * @required\n   */\n  @Input()\n  label = 'Button';\n\n  /**\n   * Optional click handler\n   */\n  @Output()\n  onClick = new EventEmitter<Event>();\n\n  public get classes(): string[] {\n    const mode = this.primary ? 'storybook-button--primary' : 'storybook-button--secondary';\n\n    return ['storybook-button', `storybook-button--${this.size}`, mode];\n  }\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".storybook-button {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  border: 0;\n  border-radius: 3em;\n  cursor: pointer;\n  display: inline-block;\n  line-height: 1;\n}\n.storybook-button--primary {\n  color: white;\n  background-color: #1ea7fd;\n}\n.storybook-button--secondary {\n  color: #333;\n  background-color: transparent;\n  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;\n}\n.storybook-button--small {\n  font-size: 12px;\n  padding: 10px 16px;\n}\n.storybook-button--medium {\n  font-size: 14px;\n  padding: 11px 20px;\n}\n.storybook-button--large {\n  font-size: 16px;\n  padding: 12px 24px;\n}\n",
-                    "styleUrl": "./button.css"
-                }
-            ],
-            "stylesData": "",
-            "accessors": {
-                "classes": {
-                    "name": "classes",
-                    "getSignature": {
-                        "name": "classes",
-                        "type": "[]",
-                        "returnType": "string[]",
-                        "line": 48
-                    }
-                }
-            }
         },
         {
             "name": "CertificateComponent",
@@ -19390,7 +19423,7 @@
         },
         {
             "name": "FooterComponent",
-            "id": "component-FooterComponent-372883ecd9ce67b24222ea4f41d0dc7bf97cc8b169ea0dccb7355cbd8de599ffa033c7013c0a3d1f9a1372479afaf5ad997085814365923159b5fcb7fc9b4e3f",
+            "id": "component-FooterComponent-2f4d276c5236c2337da6d83e0fb289c7a91cf59313f752d83fcc1896efc574e4ee2393c647a9a8815f7f55858b973afa7b2da04a56ecaeb55344da3d63e1967c",
             "file": "src/app/layout/footer/footer.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -19409,18 +19442,7 @@
             "inputsClass": [],
             "outputsClass": [],
             "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 12,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
+            "methodsClass": [],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -19428,7 +19450,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-footer',\n  templateUrl: './footer.component.html',\n  styleUrls: ['./footer.component.scss']\n})\nexport class FooterComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-footer',\n  templateUrl: './footer.component.html',\n  styleUrls: ['./footer.component.scss']\n})\nexport class FooterComponent {\n  constructor() {}\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -19445,10 +19467,7 @@
                 "args": [],
                 "line": 8
             },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<footer class=\"govuk-footer\" role=\"contentinfo\">\n  <div class=\"govuk-width-container \">\n    <div class=\"govuk-footer__meta\">\n      <div class=\"govuk-footer__meta-item govuk-footer__meta-item--grow\">\n\n        <h2 class=\"govuk-visually-hidden\">Support links</h2>\n        <ul class=\"govuk-footer__inline-list\">\n          <li class=\"govuk-footer__inline-list-item\">\n            <a class=\"govuk-footer__link\" href=\"https://dvsaintranet.dft.gov.uk/task/protective-monitoring-of-dvsa-it/\">\n              Privacy notice\n            </a>\n        </ul>\n\n        <svg aria-hidden=\"true\" focusable=\"false\" class=\"govuk-footer__licence-logo\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 483.2 195.7\" height=\"17\" width=\"41\">\n          <path fill=\"currentColor\" d=\"M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145\" />\n        </svg>\n        <span class=\"govuk-footer__licence-description\">\n          All content is available under the\n          <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated\n        </span>\n      </div>\n      <div class=\"govuk-footer__meta-item\">\n        <a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">© Crown copyright</a>\n      </div>\n    </div>\n  </div>\n</footer>\n"
+            "templateData": "<footer class=\"govuk-footer\" role=\"contentinfo\">\n  <div class=\"govuk-width-container\">\n    <div class=\"govuk-footer__meta\">\n      <div class=\"govuk-footer__meta-item govuk-footer__meta-item--grow\">\n        <h2 class=\"govuk-visually-hidden\">Support links</h2>\n        <ul class=\"govuk-footer__inline-list\">\n          <li class=\"govuk-footer__inline-list-item\">\n            <a class=\"govuk-footer__link\" href=\"https://dvsaintranet.dft.gov.uk/task/protective-monitoring-of-dvsa-it/\"> Privacy notice </a>\n          </li>\n        </ul>\n\n        <svg aria-hidden=\"true\" focusable=\"false\" class=\"govuk-footer__licence-logo\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 483.2 195.7\" height=\"17\" width=\"41\">\n          <path fill=\"currentColor\" d=\"M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145\" />\n        </svg>\n        <span class=\"govuk-footer__licence-description\">\n          All content is available under the\n          <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated\n        </span>\n      </div>\n      <div class=\"govuk-footer__meta-item\">\n        <a class=\"govuk-footer__link govuk-footer__copyright-logo\" href=\"https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/\">© Crown copyright</a>\n      </div>\n    </div>\n  </div>\n</footer>\n"
         },
         {
             "name": "FooterComponent",
@@ -19510,80 +19529,7 @@
         },
         {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-a557eec14f72c438a8033301f4d6ce023e0a1844a3b06ec2b38794a612acc31735ae78a5ee10071b230c8c20d699eb914554e69d07ade54adb371da8efb464cc",
-            "file": "src/stories/header.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-header",
-            "styleUrls": [
-                "./header.css"
-            ],
-            "styles": [],
-            "template": "<header>    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "user",
-                    "defaultValue": "null",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 65,
-                    "type": "User | null",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [
-                {
-                    "name": "onCreateAccount",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 74,
-                    "type": "EventEmitter"
-                },
-                {
-                    "name": "onLogin",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 68,
-                    "type": "EventEmitter"
-                },
-                {
-                    "name": "onLogout",
-                    "defaultValue": "new EventEmitter<Event>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 71,
-                    "type": "EventEmitter"
-                }
-            ],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\nimport { User } from './User';\n\n@Component({\n  selector: 'storybook-header',\n  template: `<header>\n    <div class=\"wrapper\">\n      <div>\n        <svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z\"\n              fill=\"#FFF\"\n            />\n            <path\n              d=\"M5.3 10.6l10.4 6v11.1l-10.4-6v-11zm11.4-6.2l9.7 5.5-9.7 5.6V4.4z\"\n              fill=\"#555AB9\"\n            />\n            <path\n              d=\"M27.2 10.6v11.2l-10.5 6V16.5l10.5-6zM15.7 4.4v11L6 10l9.7-5.5z\"\n              fill=\"#91BAF8\"\n            />\n          </g>\n        </svg>\n        <h1>Acme</h1>\n      </div>\n      <div>\n        <div *ngIf=\"user\">\n          <span class=\"welcome\">\n            Welcome, <b>{{ user.name }}</b\n            >!\n          </span>\n          <storybook-button\n            *ngIf=\"user\"\n            size=\"small\"\n            (onClick)=\"onLogout.emit($event)\"\n            label=\"Log out\"\n          ></storybook-button>\n        </div>\n        <div *ngIf=\"!user\">\n          <storybook-button\n            *ngIf=\"!user\"\n            size=\"small\"\n            class=\"margin-left\"\n            (onClick)=\"onLogin.emit($event)\"\n            label=\"Log in\"\n          ></storybook-button>\n          <storybook-button\n            *ngIf=\"!user\"\n            primary\n            size=\"small\"\n            primary=\"true\"\n            class=\"margin-left\"\n            (onClick)=\"onCreateAccount.emit($event)\"\n            label=\"Sign up\"\n          ></storybook-button>\n        </div>\n      </div>\n    </div>\n  </header>`,\n  styleUrls: ['./header.css'],\n})\nexport default class HeaderComponent {\n  @Input()\n  user: User | null = null;\n\n  @Output()\n  onLogin = new EventEmitter<Event>();\n\n  @Output()\n  onLogout = new EventEmitter<Event>();\n\n  @Output()\n  onCreateAccount = new EventEmitter<Event>();\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": ".wrapper {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.1);\n  padding: 15px 20px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}\n\nsvg {\n  display: inline-block;\n  vertical-align: top;\n}\n\nh1 {\n  font-weight: 900;\n  font-size: 20px;\n  line-height: 1;\n  margin: 6px 0 6px 10px;\n  display: inline-block;\n  vertical-align: top;\n}\n\nbutton + button {\n  margin-left: 10px;\n}\n\n.welcome {\n  color: #333;\n  font-size: 14px;\n  margin-right: 10px;\n}\n",
-                    "styleUrl": "./header.css"
-                }
-            ],
-            "stylesData": ""
-        },
-        {
-            "name": "HeaderComponent",
-            "id": "component-HeaderComponent-fa2aa27e4139e9793b910068b910e321596a2d195bfa0fd7b8f5f3b804a9b0685cdd9f1a71b7fbe6a9f73526113a68baf80e312c4440dab15890fd39dc4c0aac-1",
+            "id": "component-HeaderComponent-2f6c1caa7ce2f287aebe0312a99830cbefb8d6bbdb0d2925aacd31eb81e2bd2c2a5a9d4fe36beb1a263382168ee8a409025c68040b752809a70a5b45de9022f6",
             "file": "src/app/layout/header/header.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -19599,17 +19545,36 @@
                 "./header.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "username",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 9,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "logOutEvent",
+                    "defaultValue": "new EventEmitter<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "EventEmitter"
+                }
+            ],
             "propertiesClass": [],
             "methodsClass": [
                 {
-                    "name": "ngOnInit",
+                    "name": "logout",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 12,
+                    "line": 13,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -19621,7 +19586,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-header',\n  templateUrl: './header.component.html',\n  styleUrls: ['./header.component.scss']\n})\nexport class HeaderComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, Input, Output, EventEmitter } from '@angular/core';\n\n@Component({\n  selector: 'app-header',\n  templateUrl: './header.component.html',\n  styleUrls: ['./header.component.scss']\n})\nexport class HeaderComponent {\n  @Input() username = '';\n\n  @Output() logOutEvent = new EventEmitter<void>();\n\n  logout() {\n    this.logOutEvent.emit();\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -19630,25 +19595,11 @@
                 }
             ],
             "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [],
-                "line": 8
-            },
-            "implements": [
-                "OnInit"
-            ],
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "HeaderComponent-1",
-            "templateData": "<a href=\"#main-content\" class=\"govuk-skip-link\" data-module=\"govuk-skip-link\">Skip to main content</a>\n\n<header class=\"govuk-header\" role=\"banner\" data-module=\"govuk-header\">\n  <div class=\"govuk-header__container govuk-width-container\">\n    <div class=\"govuk-grid-row govuk-!-margin-bottom-2\">\n      <div class=\"govuk-grid-column-one-half\">\n        <a href=\"/\" class=\"govuk-header__link govuk-header__link--homepage\">Vehicle testing management</a>\n      </div>\n      <div class=\"govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19\">\n        <span id=\"username\">Username</span>\n        <a id=\"sign-out\" class=\"govuk-link govuk-link--inverse govuk-!-font-weight-bold\" href=\"#\">Sign out</a>\n      </div>\n    </div>\n  </div>\n</header>\n"
+            "templateData": "<a href=\"#main-content\" class=\"govuk-skip-link\" data-module=\"govuk-skip-link\">Skip to main content</a>\n\n<header class=\"govuk-header\" role=\"banner\" data-module=\"govuk-header\">\n  <div class=\"govuk-header__container govuk-width-container\">\n    <div class=\"govuk-grid-row govuk-!-margin-bottom-2\">\n      <div class=\"govuk-grid-column-one-half\">\n        <a href=\"/\" class=\"govuk-header__link govuk-header__link--homepage\">Vehicle testing management</a>\n      </div>\n      <div class=\"govuk-grid-column-one-half govuk-!-text-align-right govuk-!-font-size-19\">\n        <span id=\"username\">{{ username }}</span>\n        <a id=\"sign-out\" class=\"govuk-link govuk-link--inverse govuk-!-font-weight-bold\" href=\"#\" (click)=\"logout()\">Sign out</a>\n      </div>\n    </div>\n  </div>\n</header>\n"
         },
         {
             "name": "HeaderComponent",
-            "id": "component-HeaderComponent-6c3064df8af3e18b55096b40e06cab351d6246993fc8723759b5151892096ce00fd13f0dd2278268557af2b2a9c562a6f226c17c93f1ea41f446bd5a0fd3ead6-2",
+            "id": "component-HeaderComponent-6c3064df8af3e18b55096b40e06cab351d6246993fc8723759b5151892096ce00fd13f0dd2278268557af2b2a9c562a6f226c17c93f1ea41f446bd5a0fd3ead6-1",
             "file": "archive/src/app/shell/header/header.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -19798,9 +19749,99 @@
                 "OnInit"
             ],
             "isDuplicate": true,
-            "duplicateId": 2,
-            "duplicateName": "HeaderComponent-2",
+            "duplicateId": 1,
+            "duplicateName": "HeaderComponent-1",
             "templateData": "<header class=\"govuk-header\" role=\"banner\" data-module=\"govuk-header\">\n  <div class=\"topnav govuk-header__container govuk-width-container\">\n    <div id=\"menuLinks\" [ngStyle]=\"{ display: menuOpen ? 'block' : 'none' }\">\n      <a href=\"javascript:void(0)\">{{ userName }}</a>\n      <a (click)=\"logOut()\">Sign out</a>\n    </div>\n    <a class=\"icon\" (click)=\"onClick($event)\">\n      <fa-icon [icon]=\"['fa', 'bars']\" size=\"lg\"></fa-icon>\n    </a>\n  </div>\n  <div class=\"govuk-header__container govuk-width-container\">\n    <div class=\"govuk-header__logo\">\n      <a\n        [routerLink]=\"['/']\"\n        id=\"header-nav-item\"\n        class=\"govuk-header__link govuk-header__link--homepage\"\n      >\n        <span>Vehicle testing management</span>\n      </a>\n      <button\n        type=\"button\"\n        class=\"govuk-header__menu-button govuk-js-header-toggle\"\n        aria-controls=\"navigation\"\n        aria-label=\"Show or hide Top Level Navigation\"\n      >\n        Menu\n      </button>\n      <nav>\n        <ul id=\"navigation\" class=\"govuk-header__navigation\" aria-label=\"Top Level Navigation\">\n          <li class=\"govuk-header__navigation-item\">\n            <a class=\"govuk-header__link\" href=\"#1\">\n              {{ userName }}\n            </a>\n          </li>\n          <li class=\"govuk-header__navigation-item\">\n            <a class=\"govuk-header__link\" (click)=\"logOut()\">\n              <span>Sign out</span>\n            </a>\n          </li>\n        </ul>\n      </nav>\n    </div>\n  </div>\n</header>\n"
+        },
+        {
+            "name": "LandingPageButtonComponent",
+            "id": "component-LandingPageButtonComponent-c26e1a1dda330fc95f871a02fb11f2ce99ec16b6b6fd43e34e6e721c93ca4d79c0117701f0b90a8d46abc22e50eaa9d838c80271d782f93dac0c4bcd57c51a95",
+            "file": "src/app/layout/landing-page-button/landing-page-button.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-landing-page-button",
+            "styleUrls": [
+                "./landing-page-button.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./landing-page-button.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "description",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "linkText",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 10,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "url",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 9,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 15,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-landing-page-button',\n  templateUrl: './landing-page-button.component.html',\n  styleUrls: ['./landing-page-button.component.scss']\n})\nexport class LandingPageButtonComponent implements OnInit {\n  @Input() url: string = '';\n  @Input() linkText: string = '';\n  @Input() description: string = '';\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "@import 'node_modules/govuk-frontend/govuk/all';\n\n.landing-page-button {\n  background: govuk-colour('light-grey');\n  margin: 0 0 10px 18px;\n  width: 364px !important;\n  border-color: $govuk-link-colour !important;\n  border-bottom: solid;\n  min-height: 180px;\n  padding-top: 0.5rem;\n}\n",
+                    "styleUrl": "./landing-page-button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 11
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"govuk-grid-column-one-third landing-page-button\">\n  <h2 class=\"govuk-heading-m\">\n    <a\n      class=\"govuk-link\"\n      data-module=\"govuk-button\"\n      [routerLink]=\"[url]\">{{linkText}}</a>\n  </h2>\n  <p class=\"govuk-body\">{{description}}</p>\n</div>\n"
         },
         {
             "name": "LandingPageComponent",
@@ -19864,6 +19905,71 @@
                 "OnInit"
             ],
             "templateData": "<div class=\"govuk-width-container landing-page\">\n  <main class=\"govuk-main-wrapper\">\n    <div class=\"govuk-grid-row\">\n      <div class=\"govuk-grid-column-full\">\n        <p class=\"govuk-heading-xl govuk-!-font-weight-bold\">\n          Select activity\n        </p>\n\n        <div class=\"govuk-grid-row\">\n          <div class=\"govuk-grid-column-one-third\">\n            <h2 class=\"govuk-heading-m\">\n              <a\n                id=\"test-search-vehicle\"\n                class=\"govuk-link\"\n                data-module=\"govuk-button\"\n                [routerLink]=\"['search']\"\n                >Search for a technical record</a\n              >\n            </h2>\n            <p class=\"govuk-body\">\n              Manage technical records, test records and issue certificates or documents\n            </p>\n          </div>\n          <div class=\"govuk-grid-column-one-third\">\n            <h2 class=\"govuk-heading-m\">\n              <a\n                id=\"test-create-new-vehicle\"\n                class=\"govuk-link\"\n                data-module=\"govuk-button\"\n                [routerLink]=\"['create']\"\n                >Create a new technical record</a\n              >\n            </h2>\n            <p class=\"govuk-body\">Create records for PSVs, HGVs and trailers</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n</div>\n"
+        },
+        {
+            "name": "LandingPageComponent",
+            "id": "component-LandingPageComponent-cb304790b1b7f4bf7d57f6bcb0a6cd64a8728663acf09fa45600e8e21a9be0e5d9fab1692400de898328b608e42b26def778f8a7b9a50e8ffdd867b66ae3696a-1",
+            "file": "src/app/layout/landing-page/landing-page.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-landing-page",
+            "styleUrls": [
+                "./landing-page.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./landing-page.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-landing-page',\n  templateUrl: './landing-page.component.html',\n  styleUrls: ['./landing-page.component.scss']\n})\nexport class LandingPageComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ".landing-page {\n  & .govuk-grid-row {\n    margin-bottom: 10rem;\n  }\n}\n",
+                    "styleUrl": "./landing-page.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "LandingPageComponent-1",
+            "templateData": "<div class=\"govuk-width-container landing-page\">\n  <main class=\"govuk-main-wrapper\">\n    <div class=\"govuk-grid-row\">\n      <div class=\"govuk-grid-column-full\">\n        <p class=\"govuk-heading-xl govuk-!-font-weight-bold\">\n          Select activity\n        </p>\n\n        <div class=\"govuk-grid-row\">\n          <app-landing-page-button\n            url=\"search\"\n            linkText=\"Search for a technical record\"\n            description=\"Manage technical records, test records and issue certificates or documents\"\n          ></app-landing-page-button>\n\n          <app-landing-page-button\n            url=\"create\"\n            linkText=\"Create a new technical record\"\n            description=\"Create records for PSVs, HGVs and trailers\"\n          ></app-landing-page-button>\n        </div>\n      </div>\n    </div>\n  </main>\n</div>\n"
         },
         {
             "name": "LettersOfAuthorisationComponent",
@@ -21774,86 +21880,6 @@
             "duplicateId": 1,
             "duplicateName": "NotesEditComponent-1",
             "templateData": "<div class=\"govuk-grid-row\">\n  <div class=\"govuk-grid-column-full\">\n    <form class=\"govuk-form-group\" formGroupName=\"testType\">\n      <fieldset class=\"govuk-fieldset\">\n        <div class=\"govuk-form-group\">\n          <div class=\"govuk-grid-row govuk-!-margin-bottom-3\">\n            <div class=\"govuk-grid-column-one-half\">\n              <span id=\"more-detail-hint\" class=\"govuk-hint\">\n                Will not be present in the certificate\n              </span>\n              <textarea\n                class=\"govuk-textarea\"\n                id=\"test-additionalNotesRecorded\"\n                formControlName=\"additionalNotesRecorded\"\n                rows=\"5\"\n              ></textarea>\n            </div>\n          </div>\n        </div>\n      </fieldset>\n    </form>\n  </div>\n</div>\n"
-        },
-        {
-            "name": "PageComponent",
-            "id": "component-PageComponent-7126d8c2607c946741c651482413b43feb72b2d63cac9d3ac173fde206a5e635eb4cdbf7ca7ac9327c7d4d05cf7ef619144c34c11609ad677081d0ee4e855064",
-            "file": "src/stories/page.component.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "storybook-page",
-            "styleUrls": [
-                "./page.css"
-            ],
-            "styles": [],
-            "template": "<article>    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>",
-            "templateUrl": [],
-            "viewProviders": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [
-                {
-                    "name": "user",
-                    "defaultValue": "null",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "User | null",
-                    "optional": false,
-                    "description": "",
-                    "line": 64
-                }
-            ],
-            "methodsClass": [
-                {
-                    "name": "doCreateAccount",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 74,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "doLogin",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 70,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "doLogout",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 66,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { User } from './User';\n\n@Component({\n  selector: 'storybook-page',\n  template: `<article>\n    <storybook-header\n      [user]=\"user\"\n      (onLogout)=\"doLogout()\"\n      (onLogin)=\"doLogin()\"\n      (onCreateAccount)=\"doCreateAccount()\"\n    ></storybook-header>\n    <section>\n      <h2>Pages in Storybook</h2>\n      <p>\n        We recommend building UIs with a\n        <a href=\"https://componentdriven.org\" target=\"_blank\" rel=\"noopener noreferrer\">\n          <strong>component-driven</strong>\n        </a>\n        process starting with atomic components and ending with pages.\n      </p>\n      <p>\n        Render pages with mock data. This makes it easy to build and review page states without\n        needing to navigate to them in your app. Here are some handy patterns for managing page data\n        in Storybook:\n      </p>\n      <ul>\n        <li>\n          Use a higher-level connected component. Storybook helps you compose such data from the\n          \"args\" of child component stories\n        </li>\n        <li>\n          Assemble data in the page component from your services. You can mock these services out\n          using Storybook.\n        </li>\n      </ul>\n      <p>\n        Get a guided tutorial on component-driven development at\n        <a href=\"https://storybook.js.org/tutorials/\" target=\"_blank\" rel=\"noopener noreferrer\">\n          Storybook tutorials\n        </a>\n        . Read more in the\n        <a href=\"https://storybook.js.org/docs\" target=\"_blank\" rel=\"noopener noreferrer\"> docs </a>\n        .\n      </p>\n      <div class=\"tip-wrapper\">\n        <span class=\"tip\">Tip</span> Adjust the width of the canvas with the\n        <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" xmlns=\"http://www.w3.org/2000/svg\">\n          <g fill=\"none\" fillRule=\"evenodd\">\n            <path\n              d=\"M1.5 5.2h4.8c.3 0 .5.2.5.4v5.1c-.1.2-.3.3-.4.3H1.4a.5.5 0 01-.5-.4V5.7c0-.3.2-.5.5-.5zm0-2.1h6.9c.3 0 .5.2.5.4v7a.5.5 0 01-1 0V4H1.5a.5.5 0 010-1zm0-2.1h9c.3 0 .5.2.5.4v9.1a.5.5 0 01-1 0V2H1.5a.5.5 0 010-1zm4.3 5.2H2V10h3.8V6.2z\"\n              id=\"a\"\n              fill=\"#999\"\n            />\n          </g>\n        </svg>\n        Viewports addon in the toolbar\n      </div>\n    </section>\n  </article>`,\n  styleUrls: ['./page.css'],\n})\nexport default class PageComponent {\n  user: User | null = null;\n\n  doLogout() {\n    this.user = null;\n  }\n\n  doLogin() {\n    this.user = { name: 'Jane Doe' };\n  }\n\n  doCreateAccount() {\n    this.user = { name: 'Jane Doe' };\n  }\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": [
-                {
-                    "data": "section {\n  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 24px;\n  padding: 48px 20px;\n  margin: 0 auto;\n  max-width: 600px;\n  color: #333;\n}\n\nsection h2 {\n  font-weight: 900;\n  font-size: 32px;\n  line-height: 1;\n  margin: 0 0 4px;\n  display: inline-block;\n  vertical-align: top;\n}\n\nsection p {\n  margin: 1em 0;\n}\n\nsection a {\n  text-decoration: none;\n  color: #1ea7fd;\n}\n\nsection ul {\n  padding-left: 30px;\n  margin: 1em 0;\n}\n\nsection li {\n  margin-bottom: 8px;\n}\n\nsection .tip {\n  display: inline-block;\n  border-radius: 1em;\n  font-size: 11px;\n  line-height: 12px;\n  font-weight: 700;\n  background: #e7fdd8;\n  color: #66bf3c;\n  padding: 4px 12px;\n  margin-right: 10px;\n  vertical-align: top;\n}\n\nsection .tip-wrapper {\n  font-size: 13px;\n  line-height: 20px;\n  margin-top: 40px;\n  margin-bottom: 40px;\n}\n\nsection .tip-wrapper svg {\n  display: inline-block;\n  height: 12px;\n  width: 12px;\n  margin-right: 4px;\n  vertical-align: top;\n  margin-top: 3px;\n}\n\nsection .tip-wrapper svg path {\n  fill: #1ea7fd;\n}\n",
-                    "styleUrl": "./page.css"
-                }
-            ],
-            "stylesData": ""
         },
         {
             "name": "PageNotFoundComponentComponent",
@@ -31115,17 +31141,21 @@
         },
         {
             "name": "AppModule",
-            "id": "module-AppModule-56de9ac22fb1eb01f4fb29585215a44e73555a170b99985b7130490fffb59bf67e7ca231110deff09bd96cd004d1fc83f0917b2c4c8a17968e70c4cc50223b43",
+            "id": "module-AppModule-02ab53f0504cedc9705060322d506319b5f2e7b3a56d69852cd1b2211d98b1d5e3ead54dea1e6ba53f7181f2251915a475f664997733451955fe56dae4f03383",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\n\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { FooterComponent } from './layout/footer/footer.component';\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    HeaderComponent,\n    FooterComponent\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n  ],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';\nimport { MSAL_INSTANCE, MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';\n\nimport { MsalModule, MsalService, MsalInterceptor, MsalInterceptorConfiguration, MsalGuard, MsalGuardConfiguration, MsalBroadcastService, MsalRedirectComponent } from '@azure/msal-angular';\nimport { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation } from '@azure/msal-browser';\n\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { FooterComponent } from './layout/footer/footer.component';\nimport { LandingPageComponent } from './layout/landing-page/landing-page.component';\nimport { LandingPageButtonComponent } from './layout/landing-page-button/landing-page-button.component';\nimport { environment } from '../environments/environment';\nimport { UserService } from './user-service';\n\nexport function MSALInstanceFactory(): IPublicClientApplication {\n  return new PublicClientApplication({\n    auth: {\n      clientId: environment.VTM_CLIENT_ID,\n      authority: environment.VTM_AUTHORITY_ID,\n      redirectUri: environment.VTM_REDIRECT_URI\n    },\n    cache: {\n      cacheLocation: BrowserCacheLocation.LocalStorage,\n      storeAuthStateInCookie: true\n    }\n  });\n}\n\nexport function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {\n  const protectedResourceMap = new Map<string, Array<string>>();\n  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);\n\n  return {\n    interactionType: InteractionType.Redirect,\n    protectedResourceMap\n  };\n}\n\nexport function MSALGuardConfigFactory(): MsalGuardConfiguration {\n  return {\n    interactionType: InteractionType.Redirect,\n    authRequest: {\n      scopes: ['user.read']\n    },\n    loginFailedRoute: ''\n  };\n}\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    HeaderComponent,\n    FooterComponent,\n    LandingPageComponent,\n    LandingPageButtonComponent\n  ],\n  imports: [BrowserModule, AppRoutingModule, MsalModule],\n  providers: [\n    {\n      provide: HTTP_INTERCEPTORS,\n      useClass: MsalInterceptor,\n      multi: true\n    },\n    {\n      provide: MSAL_INSTANCE,\n      useFactory: MSALInstanceFactory\n    },\n    {\n      provide: MSAL_GUARD_CONFIG,\n      useFactory: MSALGuardConfigFactory\n    },\n    {\n      provide: MSAL_INTERCEPTOR_CONFIG,\n      useFactory: MSALInterceptorConfigFactory\n    },\n    MsalService,\n    MsalGuard,\n    MsalBroadcastService,\n    UserService,\n  ],\n  bootstrap: [AppComponent, MsalRedirectComponent]\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "UserService"
+                        }
+                    ]
                 },
                 {
                     "type": "declarations",
@@ -31135,6 +31165,12 @@
                         },
                         {
                             "name": "FooterComponent"
+                        },
+                        {
+                            "name": "HeaderComponent"
+                        },
+                        {
+                            "name": "LandingPageButtonComponent"
                         }
                     ]
                 },
@@ -31189,9 +31225,6 @@
                     "type": "declarations",
                     "elements": [
                         {
-                            "name": "LandingPageComponent"
-                        },
-                        {
                             "name": "LogoutModalComponent"
                         },
                         {
@@ -31238,9 +31271,6 @@
                     "type": "exports",
                     "elements": [
                         {
-                            "name": "LandingPageComponent"
-                        },
-                        {
                             "name": "LogoutModalComponent"
                         },
                         {
@@ -31276,13 +31306,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-b52442d614739267db6121d5bd926fde5284f9b25aec5af423a5419066e95f51f7f47ffd43c4d5a52b44bd8f99a90288d30de6d37337da98e7feaab2f2224caa",
+            "id": "module-AppRoutingModule-d6b60f930d2bf6a9fbb5c880997752b777cc7a4ecd2cf820673f2a390092be1054f27dbd5ae2087c099c80a9f106e1ddd2b2add17d735a64b598c9b01b42bd62",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule],\n})\nexport class AppRoutingModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { MsalGuard } from '@azure/msal-angular';\nimport { AppComponent } from './app.component';\n\nconst routes: Routes = [\n  {\n    path: '',\n    component: AppComponent,\n    canActivate: [MsalGuard]\n  }\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -31935,9 +31965,6 @@
                     "type": "declarations",
                     "elements": [
                         {
-                            "name": "LandingPageComponent"
-                        },
-                        {
                             "name": "LogoutModalComponent"
                         },
                         {
@@ -32068,9 +32095,6 @@
                     "type": "declarations",
                     "elements": [
                         {
-                            "name": "LandingPageComponent"
-                        },
-                        {
                             "name": "LogoutModalComponent"
                         },
                         {
@@ -32107,9 +32131,6 @@
                 {
                     "type": "exports",
                     "elements": [
-                        {
-                            "name": "LandingPageComponent"
-                        },
                         {
                             "name": "LogoutModalComponent"
                         },
@@ -32253,16 +32274,6 @@
                 "defaultValue": "[\n  AdrComponent,\n  ApplicantDetailsComponent,\n  ApplicantDetailsEditComponent,\n  AdrDetailsComponent,\n  AdrDetailsEditComponent,\n  TankDetailsComponent,\n  TankDetailsEditComponent,\n  TankInpectionsComponent,\n  TankInspectionsEditComponent,\n  MemoComponent,\n  MemoEditComponent,\n  TankDocumentsComponent,\n  BatteryListApplicableComponent,\n  BatteryListApplicableEditComponent,\n  DeclarationSeenComponent,\n  DeclarationSeenEditComponent,\n  CertificateComponent,\n  CertificateEditComponent,\n  AdditionalAdrDetailsComponent,\n  AdditionalAdrDetailEditComponent\n]"
             },
             {
-                "name": "context",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-            },
-            {
                 "name": "createConfig",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -32296,11 +32307,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/environments/environment.deploy.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/environments/environment.prod.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: true,\n}"
+                "defaultValue": "{\n  production: true,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
             },
             {
                 "name": "environment",
@@ -32310,7 +32331,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: false,\n}"
+                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
             },
             {
                 "name": "environment",
@@ -32326,21 +32347,21 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "archive/src/environments/environment.prod.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  name: 'prod',\n  production: true,\n  APIServerUri: 'http://localhost:3005',\n  APITestResultServerUri: 'http://localhost:3006'\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "archive/src/environments/environment.dev.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  name: 'dev'\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "archive/src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  name: 'prod',\n  production: true,\n  APIServerUri: 'http://localhost:3005',\n  APITestResultServerUri: 'http://localhost:3006'\n}"
             },
             {
                 "name": "environment",
@@ -32743,56 +32764,6 @@
                 "defaultValue": "{\n  vehicleTestResultModel: null,\n  selectedTestResultModel: null,\n  editState: VIEW_STATE.VIEW_ONLY,\n  error: null\n}"
             },
             {
-                "name": "Large",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedIn",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedIn",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
                 "name": "makeOptions",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -32870,17 +32841,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "() => ({\n  props: {\n  },\n})"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
+                "defaultValue": "() => ({\n  props: {}\n})"
             },
             {
                 "name": "Primary",
@@ -32890,13 +32851,33 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "() => ({\n  props: {\n  },\n})"
+                "defaultValue": "() => ({\n  props: {}\n})"
             },
             {
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/layout/header/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {\n    username: 'username'\n  }\n})"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/layout/landing-page/landing-page.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {\n  },\n})"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/layout/landing-page-button/landing-page-button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -32943,15 +32924,6 @@
                 "defaultValue": "'testable'"
             },
             {
-                "name": "require",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "literal type"
-            },
-            {
                 "name": "ROOT_EFFECTS",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -32960,16 +32932,6 @@
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\r\n  VehicleTechRecordModelEffects,\r\n  ModalEffects,\r\n  AppFormEffects,\r\n  RouterEffects\r\n]"
-            },
-            {
-                "name": "Secondary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "selectFeature",
@@ -33062,16 +33024,6 @@
                 "defaultValue": "createSelector(\r\n  selectFeature,\r\n  (state: VehicleTechRecordState) => state.vehicleTechRecordModel\r\n)"
             },
             {
-                "name": "Small",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
                 "name": "STATEMENT",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -33085,31 +33037,11 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
+                "file": "src/app/layout/header/header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<Header>",
-                "defaultValue": "(args: Header) => ({\n  props: args,\n})"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Page>",
-                "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+                "defaultValue": "(args: Header) => ({\n  props: args\n})"
             },
             {
                 "name": "TEST_MODEL_UTILS",
@@ -34615,6 +34547,39 @@
                 "deprecationMessage": "",
                 "description": "",
                 "args": []
+            },
+            {
+                "name": "MSALGuardConfigFactory",
+                "file": "src/app/app.module.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [],
+                "returnType": "MsalGuardConfiguration"
+            },
+            {
+                "name": "MSALInstanceFactory",
+                "file": "src/app/app.module.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [],
+                "returnType": "IPublicClientApplication"
+            },
+            {
+                "name": "MSALInterceptorConfigFactory",
+                "file": "src/app/app.module.ts",
+                "ctype": "miscellaneous",
+                "subtype": "function",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "args": [],
+                "returnType": "MsalInterceptorConfiguration"
             },
             {
                 "name": "pad",
@@ -38681,27 +38646,6 @@
                     "defaultValue": "[\n  AdrComponent,\n  ApplicantDetailsComponent,\n  ApplicantDetailsEditComponent,\n  AdrDetailsComponent,\n  AdrDetailsEditComponent,\n  TankDetailsComponent,\n  TankDetailsEditComponent,\n  TankInpectionsComponent,\n  TankInspectionsEditComponent,\n  MemoComponent,\n  MemoEditComponent,\n  TankDocumentsComponent,\n  BatteryListApplicableComponent,\n  BatteryListApplicableEditComponent,\n  DeclarationSeenComponent,\n  DeclarationSeenEditComponent,\n  CertificateComponent,\n  CertificateEditComponent,\n  AdditionalAdrDetailsComponent,\n  AdditionalAdrDetailEditComponent\n]"
                 }
             ],
-            "src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
-                }
-            ],
             "archive/src/app/shared/delayed-retry/delayed-retry.ts": [
                 {
                     "name": "defaultDelay",
@@ -38734,6 +38678,18 @@
                     "defaultValue": "{\n  error: `Unable to load data. Please contact the help desk or refresh the page to try again.`\n}"
                 }
             ],
+            "src/environments/environment.deploy.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.deploy.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
+                }
+            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -38743,7 +38699,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: true,\n}"
+                    "defaultValue": "{\n  production: true,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
                 }
             ],
             "src/environments/environment.ts": [
@@ -38755,7 +38711,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: false,\n}"
+                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
                 }
             ],
             "archive/src/environments/environment.deploy.ts": [
@@ -38770,18 +38726,6 @@
                     "defaultValue": "{\n  name: 'deploy'\n}"
                 }
             ],
-            "archive/src/environments/environment.prod.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "archive/src/environments/environment.prod.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  name: 'prod',\n  production: true,\n  APIServerUri: 'http://localhost:3005',\n  APITestResultServerUri: 'http://localhost:3006'\n}"
-                }
-            ],
             "archive/src/environments/environment.dev.ts": [
                 {
                     "name": "environment",
@@ -38792,6 +38736,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  name: 'dev'\n}"
+                }
+            ],
+            "archive/src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "archive/src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  name: 'prod',\n  production: true,\n  APIServerUri: 'http://localhost:3005',\n  APITestResultServerUri: 'http://localhost:3006'\n}"
                 }
             ],
             "archive/src/environments/environment.ts": [
@@ -39324,122 +39280,6 @@
                     "defaultValue": "{\n  vehicleTestResultModel: null,\n  selectedTestResultModel: null,\n  editState: VIEW_STATE.VIEW_ONLY,\n  error: null\n}"
                 }
             ],
-            "src/stories/Button.stories.ts": [
-                {
-                    "name": "Large",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Secondary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Small",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Button.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Button>",
-                    "defaultValue": "(args: Button) => ({\n  props: args,\n})"
-                }
-            ],
-            "src/stories/Header.stories.ts": [
-                {
-                    "name": "LoggedIn",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Header>",
-                    "defaultValue": "(args: Header) => ({\n  props: args,\n})"
-                }
-            ],
-            "src/stories/Page.stories.ts": [
-                {
-                    "name": "LoggedIn",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
-                    "name": "Template",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story<Page>",
-                    "defaultValue": "(args: Page) => ({\n  props: args,\n})"
-                }
-            ],
             "archive/src/app/technical-record/body/bodyList.ts": [
                 {
                     "name": "makeOptions",
@@ -39497,7 +39337,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "() => ({\n  props: {\n  },\n})"
+                    "defaultValue": "() => ({\n  props: {}\n})"
                 }
             ],
             "src/app/layout/footer/footer.stories.ts": [
@@ -39509,7 +39349,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "() => ({\n  props: {\n  },\n})"
+                    "defaultValue": "() => ({\n  props: {}\n})"
                 }
             ],
             "src/app/layout/header/header.stories.ts": [
@@ -39518,6 +39358,40 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/app/layout/header/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {\n    username: 'username'\n  }\n})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/layout/header/header.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story<Header>",
+                    "defaultValue": "(args: Header) => ({\n  props: args\n})"
+                }
+            ],
+            "src/app/layout/landing-page/landing-page.stories.ts": [
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/layout/landing-page/landing-page.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {\n  },\n})"
+                }
+            ],
+            "src/app/layout/landing-page-button/landing-page-button.stories.ts": [
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/layout/landing-page-button/landing-page-button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -41049,6 +40923,41 @@
                             }
                         }
                     ]
+                }
+            ],
+            "src/app/app.module.ts": [
+                {
+                    "name": "MSALGuardConfigFactory",
+                    "file": "src/app/app.module.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [],
+                    "returnType": "MsalGuardConfiguration"
+                },
+                {
+                    "name": "MSALInstanceFactory",
+                    "file": "src/app/app.module.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [],
+                    "returnType": "IPublicClientApplication"
+                },
+                {
+                    "name": "MSALInterceptorConfigFactory",
+                    "file": "src/app/app.module.ts",
+                    "ctype": "miscellaneous",
+                    "subtype": "function",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "args": [],
+                    "returnType": "MsalInterceptorConfiguration"
                 }
             ],
             "archive/src/app/shared/components/date-input/date-input.component.ts": [
@@ -44948,7 +44857,15 @@
                 "name": "routes",
                 "filename": "src/app/app-routing.module.ts",
                 "module": "AppRoutingModule",
-                "children": [],
+                "children": [
+                    {
+                        "path": "",
+                        "component": "AppComponent",
+                        "canActivate": [
+                            "MsalGuard"
+                        ]
+                    }
+                ],
                 "kind": "module"
             }
         ]
@@ -48736,7 +48653,37 @@
                 "linktype": "component",
                 "name": "AppComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.module.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "MSALGuardConfigFactory",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.module.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "MSALInstanceFactory",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.module.ts",
+                "type": "function",
+                "linktype": "miscellaneous",
+                "linksubtype": "function",
+                "name": "MSALInterceptorConfigFactory",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -48755,7 +48702,7 @@
                 "linktype": "component",
                 "name": "FooterComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/2",
                 "status": "low"
             },
             {
@@ -48774,7 +48721,7 @@
                 "linktype": "component",
                 "name": "HeaderComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -48783,6 +48730,73 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/header/header.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/landing-page-button/landing-page-button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LandingPageButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/landing-page-button/landing-page-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/landing-page/landing-page.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "LandingPageComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/layout/landing-page/landing-page.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/user-service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "UserService",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/environments/environment.deploy.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "environment",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -48803,172 +48817,6 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "environment",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Large",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Primary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Secondary",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Small",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Button.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedIn",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedOut",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Header.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedIn",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "LoggedOut",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/Page.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/User.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "User",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/button.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ButtonComponent",
-                "coveragePercent": 83,
-                "coverageCount": "5/6",
-                "status": "very-good"
-            },
-            {
-                "filePath": "src/stories/header.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "HeaderComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
-                "filePath": "src/stories/page.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "PageComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "context",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "require",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

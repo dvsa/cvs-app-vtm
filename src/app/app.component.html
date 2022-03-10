@@ -1,9 +1,5 @@
 <app-header [username]="userService.userName$ | async" (logOutEvent)="userService.logOut()"></app-header>
 
-<div class="govuk-width-container">
-  <main class="govuk-main-wrapper" id="main-content" role="main">
-    <h1 class="govuk-heading-xl">Default page template</h1>
-  </main>
-</div>
+<app-landing-page></app-landing-page>
 
 <app-footer></app-footer>
