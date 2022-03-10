@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingPageButtonComponent } from './landing-page-button.component';
+import { HomeButtonComponent } from './home-button.component';
 
-describe('LandingPageButtonComponent', () => {
-  let component: LandingPageButtonComponent;
-  let fixture: ComponentFixture<LandingPageButtonComponent>;
+describe('HomeButtonComponent', () => {
+  let component: HomeButtonComponent;
+  let fixture: ComponentFixture<HomeButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LandingPageButtonComponent ]
+      declarations: [ HomeButtonComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LandingPageButtonComponent);
+    fixture = TestBed.createComponent(HomeButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
