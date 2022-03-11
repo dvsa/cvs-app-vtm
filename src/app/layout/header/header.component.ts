@@ -12,10 +12,10 @@ export class HeaderComponent implements OnInit {
 
   @Input() username = '';
 
-  @Output() loggedOut = new EventEmitter<string>();
+  @Output() logOut = new EventEmitter<string>();
 
   logout() {
-    this.loggedOut.emit();
+    this.logOut.emit();
   }
 
 }
