@@ -1,5 +1,4 @@
 {
-  "printWidth": 98,
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
@@ -8,17 +7,25 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "arrowParens": "always",
+  "endOfLine": "auto",
+  "printWidth": 3000,
   "overrides": [
     {
       "files": "*.html",
       "options": {
-        "parser": "html"
-      }
+        "parser": "html",
+    }
     },
     {
       "files": "*.component.html",
       "options": {
         "parser": "angular"
+      }
+    },
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss"
       }
     }
   ]
