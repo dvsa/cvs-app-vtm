@@ -7,7 +7,6 @@ import { EventMessage, EventType } from '@azure/msal-browser';
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  username = "Unknown";
   private readonly _destroying$ = new Subject<void>();
 
   constructor(private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
@@ -27,11 +26,11 @@ export class UserService {
   }
 
   setUserName(name: string): void {
-   this.username = name;
+   localStorage.setItem('username', name);
   }
 
   getUserName(): string {
-    return this.username;
+    return localStorage.getItem('username') || '';
   }
 
   logOut(): void {
