@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { initAll } from 'govuk-frontend/govuk/all';
 import { EventMessage, EventType } from '@azure/msal-browser';
 import { MsalService, MsalBroadcastService, } from "@azure/msal-angular";
+import { filter, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +13,23 @@ import { MsalService, MsalBroadcastService, } from "@azure/msal-angular";
 
 export class AppComponent {
   title = 'vtm';
+  userName = 'test';
 
-  constructor(private msalBroadcastService: MsalBroadcastService) {}
+  constructor(private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {}
 
   ngOnInit() {
     initAll();
 
-
     this.msalBroadcastService.msalSubject$
+        .pipe(
+            filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS)
+        )
         .subscribe((result: any) => {
-            console.log(result);
+            this.userName = result.payload.account.name;
         });
+  }
+
+  logOut() {
+    this.msal.logout();
   }
 }
