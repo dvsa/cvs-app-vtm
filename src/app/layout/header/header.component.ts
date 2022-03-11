@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   constructor() { }
-
+  /* eslint-disable @angular-eslint/no-empty-lifecycle-method*/
   ngOnInit(): void {
   }
 
