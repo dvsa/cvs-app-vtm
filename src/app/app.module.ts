@@ -21,8 +21,9 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { environment } from '../environments/environment';
 import { UserService } from './user-service';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { StoreModule, ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { reducers } from './reducers';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -59,6 +60,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({keys: ['todos']})(reducer);
+}
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,9 +75,10 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     BrowserModule,
     AppRoutingModule,
     MsalModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    })
+    StoreModule.forRoot(
+        reducers,
+        {metaReducers}
+    )
   ],
   providers: [
     {
