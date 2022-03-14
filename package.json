@@ -13,7 +13,7 @@
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "watch": "ng build --watch --configuration development",
     "sonar-scanner": "npm run test && sonar-scanner",
-    "security-checks": "git secrets --scan && git log --stat -100 | scanrepo",
+    "security-checks": "git secrets --scan && git log -p -100 | grep -A 1 ^diff | scanrepo",
     "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html,css,scss}'",
     "format": "npx prettier 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
