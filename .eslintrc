@@ -36,12 +36,12 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ],
+        ]
       }
     },
     {
       "files": [
-        "*.html"
+        "*.html", "*.scss"
       ],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
@@ -49,8 +49,9 @@
       ],
       "plugins": ["prettier"],
       "rules": {
-        "prettier/prettier": "error"
-      }
+        "prettier/prettier": ["error", {}, {   
+        }]
+        }
     }
   ]
 }
