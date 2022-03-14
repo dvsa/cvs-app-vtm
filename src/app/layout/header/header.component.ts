@@ -1,13 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-
   @Input() username = '';
 
   @Output() logOutEvent = new EventEmitter<void>();
@@ -15,5 +13,4 @@ export class HeaderComponent {
   logout() {
     this.logOutEvent.emit();
   }
-
 }
