@@ -27,7 +27,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     auth: {
         clientId: environment.VTM_CLIENT_ID,
         authority: environment.VTM_AUTHORITY_ID,
-        redirectUri: '/',
+        redirectUri: environment.VTM_REDIRECT_URI,
 
     },
     cache: {
