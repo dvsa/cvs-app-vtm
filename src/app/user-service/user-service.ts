@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { EventMessage, EventType } from '@azure/msal-browser';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
-import { setUsername } from './user-service.actions';
+import { setUsername, resetUserService } from './user-service.actions';
 import { UserServiceState } from './user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +14,8 @@ export class UserService {
   private userName: Observable<UserServiceState>;
   private readonly _destroying$ = new Subject<void>();
 
-  constructor(private store: Store<{ username: UserServiceState }>, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
+  constructor(private store: Store<{ userservice: UserServiceState }>, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
+
     this.msalBroadcastService.msalSubject$
         .pipe(
             filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
@@ -24,7 +25,7 @@ export class UserService {
             this.setUserName(result.payload.account.name);
         });
 
-    this.userName = this.store.select('username');
+    this.userName = this.store.select('userservice');
   }
 
   ngOnDestroy(): void {
@@ -41,7 +42,7 @@ export class UserService {
   }
 
   logOut(): void {
-    this.setUserName('');
+    this.store.dispatch(resetUserService());
     this.msal.logout();
   }
 }
