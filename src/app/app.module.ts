@@ -61,7 +61,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['todos']})(reducer);
+  return localStorageSync({keys: ['username'], rehydrate: true})(reducer);
 }
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 

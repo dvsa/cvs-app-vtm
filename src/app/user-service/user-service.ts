@@ -4,16 +4,17 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { EventMessage, EventType } from '@azure/msal-browser';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { setUsername } from './user-service.actions';
+import { UserServiceState } from './user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  private userName: Observable<string>;
+  private userName: Observable<UserServiceState>;
   private readonly _destroying$ = new Subject<void>();
 
-  constructor(private store: Store<{ userName: string }>, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
+  constructor(private store: Store<{ username: UserServiceState }>, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
     this.msalBroadcastService.msalSubject$
         .pipe(
             filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
@@ -23,7 +24,7 @@ export class UserService {
             this.setUserName(result.payload.account.name);
         });
 
-    this.userName = store.select('userName');
+    this.userName = this.store.select('username');
   }
 
   ngOnDestroy(): void {
@@ -36,7 +37,7 @@ export class UserService {
   }
 
   getUserNameObservable(): Observable<string> {
-   return this.userName;
+   return this.userName.pipe(map((state: UserServiceState) => state.username));
   }
 
   logOut(): void {
