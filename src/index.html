@@ -14,8 +14,7 @@
   </head>
   <body>
     <app-root></app-root>
-    <script>
-      document.body.className = document.body.className ? document.body.className + ' js-enabled' : 'js-enabled';
-    </script>
+    <app-redirect></app-redirect>
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
   </body>
 </html>
