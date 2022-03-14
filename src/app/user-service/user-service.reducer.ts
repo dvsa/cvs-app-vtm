@@ -12,7 +12,7 @@ const initialState: UserServiceState = {
 const _userServiceReducer = createReducer(
   initialState,
   on(setUsername, (state, { name }) => ({ username: name })),
-  //on(reset, (state) => (initialState)),
+  on(resetUserService, (state) => (initialState)),
 );
  
 export function UserServiceReducer(state: UserServiceState, action: any) {

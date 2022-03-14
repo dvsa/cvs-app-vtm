@@ -11,7 +11,7 @@ import { UserServiceState } from './user-service.reducer';
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  private userName: Observable<UserServiceState>;
+  private userServiceOb: Observable<UserServiceState>;
   private readonly _destroying$ = new Subject<void>();
 
   constructor(private store: Store<{ userservice: UserServiceState }>, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
@@ -25,7 +25,7 @@ export class UserService {
             this.setUserName(result.payload.account.name);
         });
 
-    this.userName = this.store.select('userservice');
+    this.userServiceOb = this.store.select('userservice');
   }
 
   ngOnDestroy(): void {
@@ -38,7 +38,7 @@ export class UserService {
   }
 
   getUserNameObservable(): Observable<string> {
-   return this.userName.pipe(map((state: UserServiceState) => state.username));
+   return this.userServiceOb.pipe(map((state: UserServiceState) => state.username));
   }
 
   logOut(): void {
