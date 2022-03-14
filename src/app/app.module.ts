@@ -16,6 +16,8 @@ import { UserService } from './user-service/user-service';
 import { HomeComponent } from './home/home.component';
 import { HomeButtonComponent } from './home/home-button/home-button.component';
 import { SearchComponent } from './search/search.component';
+import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
+import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmptyPipe';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -57,6 +59,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
 
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +67,9 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     FooterComponent,
     HomeComponent,
     HomeButtonComponent,
-    SearchComponent
+    SearchComponent,
+    VehicleTechnicalRecordComponent,
+    DefaultNullOrEmpty
   ],
   imports: [
     BrowserModule,
