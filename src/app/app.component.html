@@ -1,5 +1,5 @@
 <app-header
-  [username]="userService.getUserName()"
+  [usernameObservable]="userService.getUserNameObservable()"
   (logOutEvent)="userService.logOut()"
 ></app-header>
 

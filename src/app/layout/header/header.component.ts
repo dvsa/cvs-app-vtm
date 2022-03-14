@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -7,12 +8,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  ngOnInit(): void {
-  }
-
-  @Input() username = '';
-
+  @Input() usernameObservable!: Observable<string>;
   @Output() logOutEvent = new EventEmitter<void>();
+  username = "";
+
+  ngOnInit(): void {
+    this.usernameObservable.subscribe((value: string) => { this.username = value; });
+  }
 
   logout() {
     this.logOutEvent.emit();
