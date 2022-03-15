@@ -5,5 +5,8 @@ module.exports = {
     globalSetup: 'jest-preset-angular/global-setup',
     transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
 
-    testPathIgnorePatterns: ["/node_modules/", "/archive/"]
+    testPathIgnorePatterns: ["/node_modules/", "/archive/"],
+    globals: {
+        crypto: require("crypto")
+    }
   };
