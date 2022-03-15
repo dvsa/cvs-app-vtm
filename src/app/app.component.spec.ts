@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 describe('AppComponent', () => {
 
   const MockUserService = {
-    getUserNameObservable: jest.fn().mockReturnValue(new Observable()),
+    getUserName$: jest.fn().mockReturnValue(new Observable()),
   };
 
   beforeEach(async () => {

@@ -8,12 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
 
-  @Input() usernameObservable!: Observable<string>;
+  @Input() username$!: Observable<string>;
   @Output() logOutEvent = new EventEmitter<void>();
   username = "";
 
   ngOnInit(): void {
-    this.usernameObservable.subscribe((value: string) => { this.username = value; });
+    this.username$.subscribe((value: string) => { this.username = value; });
   }
 
   logout() {

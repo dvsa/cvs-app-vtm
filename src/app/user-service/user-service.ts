@@ -37,7 +37,7 @@ export class UserService implements OnDestroy {
    this.store.dispatch(setUsername({'name': name }));
   }
 
-  getUserNameObservable(): Observable<string> {
+  getUserName$(): Observable<string> {
    return this.userServiceOb.pipe(map((state: UserServiceState) => state.username));
   }
 

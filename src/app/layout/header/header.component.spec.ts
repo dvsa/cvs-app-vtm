@@ -20,7 +20,7 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
-    component.usernameObservable = new Observable<string>();
+    component.username$ = new Observable<string>();
     fixture.detectChanges();
 
     userNameText = fixture.debugElement.nativeElement.querySelector('#username');
@@ -32,7 +32,7 @@ describe('HeaderComponent', () => {
   });
 
   it('Change username updates page', () => {
-    component.usernameObservable = new Observable<string>(subscriber => { subscriber.next("Test"); subscriber.complete(); });
+    component.username$ = new Observable<string>(subscriber => { subscriber.next("Test"); subscriber.complete(); });
 
     component.ngOnInit();
     fixture.detectChanges();
