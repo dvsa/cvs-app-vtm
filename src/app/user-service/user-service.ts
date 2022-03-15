@@ -1,7 +1,7 @@
-import { MsalService, MsalBroadcastService, } from "@azure/msal-angular";
+import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { EventMessage, EventType } from '@azure/msal-browser';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
@@ -9,7 +9,7 @@ import { setUsername, resetUserService } from './user-service.actions';
 import { UserServiceState } from './user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class UserService implements OnDestroy {
 
   private userServiceOb: Observable<UserServiceState>;
   private readonly _destroying$ = new Subject<void>();
@@ -29,8 +29,8 @@ export class UserService {
   }
 
   ngOnDestroy(): void {
-      this._destroying$.next();
-      this._destroying$.complete();
+    this._destroying$.next();
+    this._destroying$.complete();
   }
 
   setUserName(name: string): void {

@@ -4,10 +4,9 @@ import { FooterComponent } from './footer.component';
 
 export default {
   title: 'Footer',
-  component: FooterComponent,
+  component: FooterComponent
 } as Meta;
 
 export const Primary: Story = () => ({
-  props: {
-  },
+  props: {}
 });

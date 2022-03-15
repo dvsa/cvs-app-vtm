@@ -3,17 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MSAL_INSTANCE, MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 
-import {
-  MsalModule,
-  MsalService,
-  MsalInterceptor,
-  MsalInterceptorConfiguration,
-  MsalGuard,
-  MsalGuardConfiguration,
-  MsalBroadcastService, 
-  MsalRedirectComponent
-} from "@azure/msal-angular";
-import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation } from "@azure/msal-browser";
+import { MsalModule, MsalService, MsalInterceptor, MsalInterceptorConfiguration, MsalGuard, MsalGuardConfiguration, MsalBroadcastService, MsalRedirectComponent } from '@azure/msal-angular';
+import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation } from '@azure/msal-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,35 +19,34 @@ import { reducers } from './reducers';
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
-        clientId: environment.VTM_CLIENT_ID,
-        authority: environment.VTM_AUTHORITY_ID,
-        redirectUri: environment.VTM_REDIRECT_URI,
-
+      clientId: environment.VTM_CLIENT_ID,
+      authority: environment.VTM_AUTHORITY_ID,
+      redirectUri: environment.VTM_REDIRECT_URI
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
-      storeAuthStateInCookie: true,
-    },
+      storeAuthStateInCookie: true
+    }
   });
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
-  protectedResourceMap.set("https://graph.microsoft.com/v1.0/me", ["user.read"]);
+  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
 
   return {
     interactionType: InteractionType.Redirect,
-    protectedResourceMap,
+    protectedResourceMap
   };
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return { 
+  return {
     interactionType: InteractionType.Redirect,
     authRequest: {
       scopes: ['user.read']
     },
-    loginFailedRoute: ""
+    loginFailedRoute: ''
   };
 }
 
@@ -83,9 +73,9 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
   ],
   providers: [
     {
-        provide: HTTP_INTERCEPTORS,
-        useClass: MsalInterceptor,
-        multi: true
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true
     },
     {
       provide: MSAL_INSTANCE,
@@ -104,6 +94,6 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MsalBroadcastService,
     UserService
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent],
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
-export class AppModule { }
+export class AppModule {}

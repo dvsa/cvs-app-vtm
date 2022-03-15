@@ -19,5 +19,4 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.logOutEvent.emit();
   }
-
 }

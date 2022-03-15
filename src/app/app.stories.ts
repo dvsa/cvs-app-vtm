@@ -4,10 +4,9 @@ import { AppComponent } from './app.component';
 
 export default {
   title: 'App',
-  component: AppComponent,
+  component: AppComponent
 } as Meta;
 
 export const Primary: Story = () => ({
-  props: {
-  },
+  props: {}
 });

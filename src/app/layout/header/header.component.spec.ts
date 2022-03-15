@@ -13,9 +13,8 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
-    })
-    .compileComponents();
+      declarations: [HeaderComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -37,8 +36,8 @@ describe('HeaderComponent', () => {
 
     component.ngOnInit();
     fixture.detectChanges();
-    expect(userNameText.innerHTML).toBe("Test");
-  }); 
+    expect(userNameText.innerHTML).toBe('Test');
+  });
 
   it('Clicking logout fires off event', (done) => {
     component.logOutEvent.subscribe(() => {
@@ -46,5 +45,5 @@ describe('HeaderComponent', () => {
     });
 
     logOutButton.triggerEventHandler('click', null);
-  }); 
+  });
 });
