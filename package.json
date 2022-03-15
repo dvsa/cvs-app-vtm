@@ -11,7 +11,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch",
     "sonar-scanner": "npm run test && sonar-scanner",
     "security-checks": "git secrets --scan && git log -p -100 | grep -A 1 ^diff | scanrepo",
     "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html,css,scss}'",
