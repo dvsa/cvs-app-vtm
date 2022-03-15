@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { Observable, skip } from 'rxjs';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 
 import { UserService } from './user-service';
@@ -26,13 +26,13 @@ describe('User-Service', () => {
         RouterTestingModule
       ],
       providers: [
-        provideMockStore({ }),
+        Store,
         MsalService,
         MsalBroadcastService,
       ],
     });
 
-    mockStore = TestBed.inject(MockStore);
+    mockStore = TestBed.inject(Store);
     mockBroadcast = TestBed.inject(MsalBroadcastService);
     mockMsal = TestBed.inject(MsalService);
 
@@ -41,6 +41,16 @@ describe('User-Service', () => {
 
   it('should create the user service', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should get and set the username', (done) => {
+    // Skip the default value being set
+    service.getUserNameObservable().pipe(skip(1)).subscribe((data) => {
+      expect(data).toBe('you reading this?');
+      done();
+    });
+
+    service.setUserName('you reading this?');
   });
 
 });
