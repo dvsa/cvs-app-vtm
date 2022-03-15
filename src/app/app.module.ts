@@ -17,7 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { HomeButtonComponent } from './home/home-button/home-button.component';
 import { SearchComponent } from './search/search.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
-import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmptyPipe';
+import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -109,6 +109,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MsalBroadcastService,
     UserService,
   ],
+  exports: [DefaultNullOrEmpty],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule {}

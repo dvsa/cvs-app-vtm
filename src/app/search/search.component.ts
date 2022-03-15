@@ -9,7 +9,7 @@ import { TechnicalRecordService } from '../services/technical-record.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  searchError: string = '';
+  searchError: string | undefined;
   vehicleTechRecord?: VehicleTechRecordModel;
   techRecord?: TechRecord;
 
@@ -25,7 +25,9 @@ export class SearchComponent implements OnInit {
   }
 
   public searchTechRecords(searchTerm: string) {
-    this.technicalRecordService.getByVIN(searchTerm)
+    this.searchError = undefined;
+    if (searchTerm) {
+      this.technicalRecordService.getByVIN(searchTerm)
       .subscribe((data: VehicleTechRecordModel[]) => {
         if (data.length === 1) {
           this.vehicleTechRecord = data[0];
@@ -36,6 +38,9 @@ export class SearchComponent implements OnInit {
 
         // TODO: handle zero or many.. when we have ngRx
       });
+    } else {
+      this.searchError = "Enter a vehicle registration mark, trailer ID or vehicle identification number"
+    }
   }
 
   // public searchTechRecords(searchIdentifier: string, searchCriteria: string) {

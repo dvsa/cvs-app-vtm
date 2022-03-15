@@ -30,6 +30,6 @@ export interface TankDetails {
 }
 
 export interface Tank {
-  tankDetails: TankDetails;
+  tankDetails?: TankDetails;
   tankStatement: TankStatement;
 }

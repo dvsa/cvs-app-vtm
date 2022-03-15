@@ -8,8 +8,6 @@ import { TechRecord } from '../models/tech-record.model';
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent implements OnInit {
-
-
   @Input() technicalRecord?: TechRecord;
 
   constructor() { }

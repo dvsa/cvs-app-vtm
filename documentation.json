@@ -46,7 +46,7 @@
         {
             "name": "DefaultNullOrEmpty",
             "id": "pipe-DefaultNullOrEmpty-09861037ff49f610c67de7b8c93c8466b39f3b04b01b04d2d059bfa8d60971448b9ee4850f90f2bf01b1b22ac4d618877ac2ad902ff49ba61954c487ac05ab09",
-            "file": "src/app/pipes/DefaultNullOrEmptyPipe.ts",
+            "file": "src/app/pipes/DefaultNullOrEmpty.pipe.ts",
             "type": "pipe",
             "deprecated": false,
             "deprecationMessage": "",
@@ -4641,19 +4641,19 @@
         },
         {
             "name": "Tank",
-            "id": "interface-Tank-9661d49c30eaeec292f6b46c109e0d9aa5f812926b953b3eae6de8d8319a443ed4e1c74e78387f7d303c6ca04c76421c0e384777af78256de7d8b800a170de71",
+            "id": "interface-Tank-606e4eae1529555719ae0f4cac4865b0eefecc48b26777dbfa6feed834a302a4ce6614d96a55cd0cb329df162e076e3da5599601911a97c5f679977c7d7128ed",
             "file": "src/app/models/tank.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails: TankDetails;\n  tankStatement: TankStatement;\n}\n",
+            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails?: TankDetails;\n  tankStatement: TankStatement;\n}\n",
             "properties": [
                 {
                     "name": "tankDetails",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "TankDetails",
-                    "optional": false,
+                    "optional": true,
                     "description": "",
                     "line": 33
                 },
@@ -4734,12 +4734,12 @@
         },
         {
             "name": "TankDetails",
-            "id": "interface-TankDetails-9661d49c30eaeec292f6b46c109e0d9aa5f812926b953b3eae6de8d8319a443ed4e1c74e78387f7d303c6ca04c76421c0e384777af78256de7d8b800a170de71",
+            "id": "interface-TankDetails-606e4eae1529555719ae0f4cac4865b0eefecc48b26777dbfa6feed834a302a4ce6614d96a55cd0cb329df162e076e3da5599601911a97c5f679977c7d7128ed",
             "file": "src/app/models/tank.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails: TankDetails;\n  tankStatement: TankStatement;\n}\n",
+            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails?: TankDetails;\n  tankStatement: TankStatement;\n}\n",
             "properties": [
                 {
                     "name": "specialProvisions",
@@ -4932,12 +4932,12 @@
         },
         {
             "name": "TankStatement",
-            "id": "interface-TankStatement-9661d49c30eaeec292f6b46c109e0d9aa5f812926b953b3eae6de8d8319a443ed4e1c74e78387f7d303c6ca04c76421c0e384777af78256de7d8b800a170de71-1",
+            "id": "interface-TankStatement-606e4eae1529555719ae0f4cac4865b0eefecc48b26777dbfa6feed834a302a4ce6614d96a55cd0cb329df162e076e3da5599601911a97c5f679977c7d7128ed-1",
             "file": "src/app/models/tank.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails: TankDetails;\n  tankStatement: TankStatement;\n}\n",
+            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails?: TankDetails;\n  tankStatement: TankStatement;\n}\n",
             "properties": [
                 {
                     "name": "productList",
@@ -5082,12 +5082,12 @@
         },
         {
             "name": "Tc2Details",
-            "id": "interface-Tc2Details-9661d49c30eaeec292f6b46c109e0d9aa5f812926b953b3eae6de8d8319a443ed4e1c74e78387f7d303c6ca04c76421c0e384777af78256de7d8b800a170de71",
+            "id": "interface-Tc2Details-606e4eae1529555719ae0f4cac4865b0eefecc48b26777dbfa6feed834a302a4ce6614d96a55cd0cb329df162e076e3da5599601911a97c5f679977c7d7128ed",
             "file": "src/app/models/tank.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails: TankDetails;\n  tankStatement: TankStatement;\n}\n",
+            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails?: TankDetails;\n  tankStatement: TankStatement;\n}\n",
             "properties": [
                 {
                     "name": "tc2IntermediateApprovalNo",
@@ -5167,12 +5167,12 @@
         },
         {
             "name": "Tc3Details",
-            "id": "interface-Tc3Details-9661d49c30eaeec292f6b46c109e0d9aa5f812926b953b3eae6de8d8319a443ed4e1c74e78387f7d303c6ca04c76421c0e384777af78256de7d8b800a170de71",
+            "id": "interface-Tc3Details-606e4eae1529555719ae0f4cac4865b0eefecc48b26777dbfa6feed834a302a4ce6614d96a55cd0cb329df162e076e3da5599601911a97c5f679977c7d7128ed",
             "file": "src/app/models/tank.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails: TankDetails;\n  tankStatement: TankStatement;\n}\n",
+            "sourceCode": "export interface Tc3Details {\n  tc3Type: string;\n  tc3PeriodicNumber: string;\n  tc3PeriodicExpiryDate: string;\n}\n\nexport interface Tc2Details {\n  tc2Type: string;\n  tc2IntermediateApprovalNo: string;\n  tc2IntermediateExpiryDate: string;\n}\n\nexport interface TankStatement {\n  substancesPermitted: string;\n  statement: string;\n  productListRefNo: string;\n  productListUnNo: string[];\n  productList: string;\n}\n\nexport interface TankDetails {\n  tankManufacturer: string;\n  yearOfManufacture: number;\n  tankCode: string;\n  specialProvisions: string;\n  tankManufacturerSerialNo: string;\n  tankTypeAppNo: string;\n  tc2Details: Tc2Details;\n  tc3Details: Tc3Details[];\n}\n\nexport interface Tank {\n  tankDetails?: TankDetails;\n  tankStatement: TankStatement;\n}\n",
             "properties": [
                 {
                     "name": "tc3PeriodicExpiryDate",
@@ -25930,7 +25930,7 @@
         },
         {
             "name": "SearchComponent",
-            "id": "component-SearchComponent-9b2a7ac720e3f018c0d45ff1e8d009b280be024e496a146337e4ff495e419502359b6ffd17c06164d8cb5ccdd5411078fa108f67aed22edcc6260b37c0c16d96",
+            "id": "component-SearchComponent-daa208081892af8138a3adb81b4208ac5e7c9cb2f0f13ba8e8dd224e05c0a8c3bacb94aed114cf7008fe5a4ae506ede9f0ec220039f68732db9056256bdd2ad5",
             "file": "src/app/search/search.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -25951,10 +25951,9 @@
             "propertiesClass": [
                 {
                     "name": "searchError",
-                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "string",
+                    "type": "string | undefined",
                     "optional": false,
                     "description": "",
                     "line": 12
@@ -26028,7 +26027,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { TechRecord } from '../models/tech-record.model';\nimport { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';\nimport { TechnicalRecordService } from '../services/technical-record.service';\n\n@Component({\n  selector: 'app-search',\n  templateUrl: './search.component.html',\n  styleUrls: ['./search.component.scss']\n})\nexport class SearchComponent implements OnInit {\n  searchError: string = '';\n  vehicleTechRecord?: VehicleTechRecordModel;\n  techRecord?: TechRecord;\n\n  // isLoading: boolean = false;\n  // searchTerm: SearchParams = { searchIdentifier: '{none searched}', searchCriteria: 'all' };\n  // searchError: Observable<string[]>;\n\n  constructor(private technicalRecordService: TechnicalRecordService) { }\n  // constructor(private store: Store<IAppState>) {}\n\n  ngOnInit() {\n    // this.searchError = this.store.select(getErrors);\n  }\n\n  public searchTechRecords(searchTerm: string) {\n    this.technicalRecordService.getByVIN(searchTerm)\n      .subscribe((data: VehicleTechRecordModel[]) => {\n        if (data.length === 1) {\n          this.vehicleTechRecord = data[0];\n          if (this.vehicleTechRecord.techRecord.length > 0) {\n            this.techRecord = this.vehicleTechRecord.techRecord[0];\n          }\n        };\n\n        // TODO: handle zero or many.. when we have ngRx\n      });\n  }\n\n  // public searchTechRecords(searchIdentifier: string, searchCriteria: string) {\n    // this.isLoading = true;\n    // this.searchParams.searchIdentifier = encodeURIComponent(searchIdentifier);\n\n    // switch (searchCriteria) {\n    //   case SEARCH_CRITERIA.VRM_CRITERIA:\n    //     this.searchParams.searchCriteria = 'vrm';\n    //     break;\n    //   case SEARCH_CRITERIA.FULL_VIN_CRITERIA:\n    //     this.searchParams.searchCriteria = 'vin';\n    //     break;\n    //   case SEARCH_CRITERIA.PARTIAL_VIN_CRITERIA:\n    //     this.searchParams.searchCriteria = 'partialVin';\n    //     break;\n    //   case SEARCH_CRITERIA.TRL_CRITERIA:\n    //     this.searchParams.searchCriteria = 'trailerId';\n    //     break;\n    //   case SEARCH_CRITERIA.ALL_CRITERIA:\n    //   default:\n    //     this.searchParams.searchCriteria = 'all';\n    // }\n\n    // this.store.dispatch(new GetVehicleTechRecordHavingStatusAll(this.searchTerm));\n  // }\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { TechRecord } from '../models/tech-record.model';\nimport { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';\nimport { TechnicalRecordService } from '../services/technical-record.service';\n\n@Component({\n  selector: 'app-search',\n  templateUrl: './search.component.html',\n  styleUrls: ['./search.component.scss']\n})\nexport class SearchComponent implements OnInit {\n  searchError: string | undefined;\n  vehicleTechRecord?: VehicleTechRecordModel;\n  techRecord?: TechRecord;\n\n  // isLoading: boolean = false;\n  // searchTerm: SearchParams = { searchIdentifier: '{none searched}', searchCriteria: 'all' };\n  // searchError: Observable<string[]>;\n\n  constructor(private technicalRecordService: TechnicalRecordService) { }\n  // constructor(private store: Store<IAppState>) {}\n\n  ngOnInit() {\n    // this.searchError = this.store.select(getErrors);\n  }\n\n  public searchTechRecords(searchTerm: string) {\n    this.searchError = undefined;\n    if (searchTerm) {\n      this.technicalRecordService.getByVIN(searchTerm)\n      .subscribe((data: VehicleTechRecordModel[]) => {\n        if (data.length === 1) {\n          this.vehicleTechRecord = data[0];\n          if (this.vehicleTechRecord.techRecord.length > 0) {\n            this.techRecord = this.vehicleTechRecord.techRecord[0];\n          }\n        };\n\n        // TODO: handle zero or many.. when we have ngRx\n      });\n    } else {\n      this.searchError = \"Enter a vehicle registration mark, trailer ID or vehicle identification number\"\n    }\n  }\n\n  // public searchTechRecords(searchIdentifier: string, searchCriteria: string) {\n    // this.isLoading = true;\n    // this.searchParams.searchIdentifier = encodeURIComponent(searchIdentifier);\n\n    // switch (searchCriteria) {\n    //   case SEARCH_CRITERIA.VRM_CRITERIA:\n    //     this.searchParams.searchCriteria = 'vrm';\n    //     break;\n    //   case SEARCH_CRITERIA.FULL_VIN_CRITERIA:\n    //     this.searchParams.searchCriteria = 'vin';\n    //     break;\n    //   case SEARCH_CRITERIA.PARTIAL_VIN_CRITERIA:\n    //     this.searchParams.searchCriteria = 'partialVin';\n    //     break;\n    //   case SEARCH_CRITERIA.TRL_CRITERIA:\n    //     this.searchParams.searchCriteria = 'trailerId';\n    //     break;\n    //   case SEARCH_CRITERIA.ALL_CRITERIA:\n    //   default:\n    //     this.searchParams.searchCriteria = 'all';\n    // }\n\n    // this.store.dispatch(new GetVehicleTechRecordHavingStatusAll(this.searchTerm));\n  // }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -26066,7 +26065,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"govuk-grid-row search-page\">\n  <div class=\"govuk-grid-column-full\">\n\n    <div *ngIf=\"searchError\" class=\"govuk-error-summary\" aria-labelledby=\"error-summary-title\" role=\"alert\" data-module=\"govuk-error-summary\">\n      <h2 class=\"govuk-error-summary__title\" id=\"error-summary-title\">\n        There is a problem\n      </h2>\n      <div class=\"govuk-error-summary__body\">\n        <ul class=\"govuk-list govuk-error-summary__list\">\n          <li>\n            <a href=\"#passport-issued-day\">The date your passport was issued must be in the past</a>\n          </li>\n          <li>\n            <a href=\"#search-term\">Enter a postcode, like AA1 1AA</a>\n          </li>\n        </ul>\n      </div>\n    </div>\n\n    <p class=\"govuk-heading-xl govuk-!-font-weight-bold\">\n      Search for a technical record\n    </p>\n\n    <div class=\"govuk-grid-row\">\n      <div class=\"govuk-form-group\" [ngClass]=\"{ 'govuk-form-group--error': searchError.length > 0 }\">\n\n        <label class=\"govuk-label govuk-!-font-weight-bold\" for=\"searchIdentifier\">\n          Vehicle registration mark, trailer ID or vehicle identification number\n        </label>\n        <span *ngIf=\"searchError.length\" id=\"search-term\" class=\"govuk-error-message\">\n          <span class=\"govuk-visually-hidden\">Error:</span>\n          <p class=\"white-space--normal\">{{ searchError }}</p>\n        </span>\n\n        <input\n          #searchTerm\n          class=\"govuk-input govuk-!-width-two-thirds\"\n          [ngClass]=\"{ 'govuk-input--error': searchError.length > 0 }\"\n          id=\"search-term\"\n          name=\"search-term\"\n          type=\"text\"\n          aria-describedby=\"search-term\"\n        />\n      </div>\n\n      <button\n        class=\"govuk-button\"\n        data-module=\"govuk-button\"\n        (click)=\"searchTechRecords(searchTerm.value)\">\n        Search\n      </button>\n\n    </div>\n\n    <app-vehicle-technical-record *ngIf=\"techRecord\" [technicalRecord]=\"techRecord\"></app-vehicle-technical-record>\n\n  </div>\n</div>\n"
+            "templateData": "<div class=\"govuk-grid-row search-page\">\n  <div class=\"govuk-grid-column-full\">\n    <div *ngIf=\"searchError\" class=\"govuk-error-summary\" aria-labelledby=\"error-summary-title\" role=\"alert\" data-module=\"govuk-error-summary\">\n      <h2 class=\"govuk-error-summary__title\" id=\"error-summary-title\">\n        There is a problem\n      </h2>\n      <div class=\"govuk-error-summary__body\">\n        <ul class=\"govuk-list govuk-error-summary__list\">\n          <li>\n            <a href=\"#search-term\">{{ searchError }}</a>\n          </li>\n        </ul>\n      </div>\n    </div>\n\n    <p class=\"govuk-heading-xl govuk-!-font-weight-bold\">\n      Search for a technical record\n    </p>\n  </div>\n\n  <div class=\"govuk-grid-column-full\">\n    <div class=\"govuk-form-group\" [ngClass]=\"{ 'govuk-form-group--error': searchError }\">\n\n      <label class=\"govuk-label govuk-!-font-weight-bold\" for=\"searchIdentifier\">\n        Vehicle registration mark, trailer ID or vehicle identification number\n      </label>\n      <span *ngIf=\"searchError\" id=\"search-term\" class=\"govuk-error-message\">\n        <span class=\"govuk-visually-hidden\">Error:</span>\n        <p class=\"white-space--normal\">{{ searchError }}</p>\n      </span>\n\n      <input\n        #searchTerm\n        class=\"govuk-input govuk-!-width-two-thirds\"\n        [ngClass]=\"{ 'govuk-input--error': searchError }\"\n        id=\"search-term\"\n        name=\"search-term\"\n        type=\"text\"\n        aria-describedby=\"search-term\"\n      />\n    </div>\n\n    <button\n      class=\"govuk-button\"\n      data-module=\"govuk-button\"\n      (click)=\"searchTechRecords(searchTerm.value)\">\n      Search\n    </button>\n\n  </div>\n\n  <app-vehicle-technical-record *ngIf=\"techRecord\" [technicalRecord]=\"techRecord\"></app-vehicle-technical-record>\n\n</div>\n"
         },
         {
             "name": "SeatbeltInstallationCheckComponent",
@@ -33550,7 +33549,7 @@
         },
         {
             "name": "VehicleTechnicalRecordComponent",
-            "id": "component-VehicleTechnicalRecordComponent-9e5f97943b90767f378acb14c6404da182df7b2e5b37666faec6c8d5e05f24766495028cda40ca74e4211583696a184ee130447dfac608278ddd0f9e57111931",
+            "id": "component-VehicleTechnicalRecordComponent-b70c6498347f6e2a27188086d6e337ce3e9770420b95716893fa89f167bce631e60b53db92401e8b3386a6af6c308126095774810ace1946d186b86b95b69da7",
             "file": "src/app/vehicle-technical-record/vehicle-technical-record.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -33571,7 +33570,7 @@
                     "name": "technicalRecord",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 13,
+                    "line": 11,
                     "type": "TechRecord",
                     "decorators": []
                 }
@@ -33585,7 +33584,7 @@
                     "optional": false,
                     "returnType": "boolean",
                     "typeParameters": [],
-                    "line": 31,
+                    "line": 29,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -33595,7 +33594,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 15,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -33607,7 +33606,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { TechRecord } from '../models/tech-record.model';\n\n// largely copied from  archive/../vehicle-summary.component.ts\n@Component({\n  selector: 'app-vehicle-technical-record',\n  templateUrl: './vehicle-technical-record.component.html',\n  styleUrls: ['./vehicle-technical-record.component.scss']\n})\nexport class VehicleTechnicalRecordComponent implements OnInit {\n\n\n  @Input() technicalRecord?: TechRecord;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  get vehicleClassDescription(): string | undefined {\n    return this.technicalRecord?.vehicleClass.description;\n  }\n\n  get isStandardVehicle(): boolean {\n    return (\n      'hgv' === this.technicalRecord?.vehicleType ||\n      'trl' === this.technicalRecord?.vehicleType ||\n      'psv' === this.technicalRecord?.vehicleType);\n  }\n\n  axlesHasParkingBrakeMrk(): boolean {\n    return (\n      this.technicalRecord != undefined &&\n      this.technicalRecord.axles &&\n      this.technicalRecord.axles.length > 0 &&\n      this.technicalRecord.axles.some((x) => x.parkingBrakeMrk)\n    );\n  }\n\n  // export enum VEHICLE_TYPES {\n  //   PSV = 'psv',\n  //   HGV = 'hgv',\n  //   TRL = 'trl',\n  //   Car = 'car',\n  //   LGV = 'lgv',\n  //   Moto = 'motorcycle'\n  // }\n\n}\n",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport { TechRecord } from '../models/tech-record.model';\n\n// largely copied from  archive/../vehicle-summary.component.ts\n@Component({\n  selector: 'app-vehicle-technical-record',\n  templateUrl: './vehicle-technical-record.component.html',\n  styleUrls: ['./vehicle-technical-record.component.scss']\n})\nexport class VehicleTechnicalRecordComponent implements OnInit {\n  @Input() technicalRecord?: TechRecord;\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n  get vehicleClassDescription(): string | undefined {\n    return this.technicalRecord?.vehicleClass.description;\n  }\n\n  get isStandardVehicle(): boolean {\n    return (\n      'hgv' === this.technicalRecord?.vehicleType ||\n      'trl' === this.technicalRecord?.vehicleType ||\n      'psv' === this.technicalRecord?.vehicleType);\n  }\n\n  axlesHasParkingBrakeMrk(): boolean {\n    return (\n      this.technicalRecord != undefined &&\n      this.technicalRecord.axles &&\n      this.technicalRecord.axles.length > 0 &&\n      this.technicalRecord.axles.some((x) => x.parkingBrakeMrk)\n    );\n  }\n\n  // export enum VEHICLE_TYPES {\n  //   PSV = 'psv',\n  //   HGV = 'hgv',\n  //   TRL = 'trl',\n  //   Car = 'car',\n  //   LGV = 'lgv',\n  //   Moto = 'motorcycle'\n  // }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -33622,7 +33621,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 13
+                "line": 11
             },
             "implements": [
                 "OnInit"
@@ -33634,7 +33633,7 @@
                         "name": "vehicleClassDescription",
                         "type": "",
                         "returnType": "string | undefined",
-                        "line": 20
+                        "line": 18
                     }
                 },
                 "isStandardVehicle": {
@@ -33643,11 +33642,11 @@
                         "name": "isStandardVehicle",
                         "type": "boolean",
                         "returnType": "boolean",
-                        "line": 24
+                        "line": 22
                     }
                 }
             },
-            "templateData": "<dl class=\"govuk-summary-list\">\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Vehicle type\n    </dt>\n    <dd id=\"test-vehicleType\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.vehicleType | DefaultNullOrEmpty | uppercase }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Date of first registration\n    </dt>\n    <dd id=\"test-regnDate\" class=\"govuk-summary-list__value\">\n      <span *ngIf=\"technicalRecord?.regnDate; else hyphen\">\n        {{ technicalRecord?.regnDate | date: 'dd/MM/yyyy' }}\n      </span>\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Year of manufacture\n    </dt>\n    <dd id=\"test-manufactureYear\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.manufactureYear | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Number of axles\n    </dt>\n    <dd id=\"test-noOfaxles\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.noOfAxles | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      DTP number\n    </dt>\n    <dd id=\"test-dtpNumber\" class=\"govuk-summary-list__value\">\n      <div *ngIf=\"technicalRecord?.brakes; else hyphen\">\n        {{ technicalRecord?.brakes?.dtpNumber | DefaultNullOrEmpty }}\n      </div>\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Axles fitted with a parking brake\n    </dt>\n    <dd class=\"govuk-summary-list__value\" id=\"test-parkingBrakeMrk\">\n      <ng-container *ngIf=\"axlesHasParkingBrakeMrk(); else hyphen\">\n        <div *ngFor=\"let axel of technicalRecord?.axles\">\n          <div *ngIf=\"axel.parkingBrakeMrk\">\n            <span id=\"{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}\"\n              >Axle {{ axel.axleNumber }}</span\n            >\n          </div>\n        </div>\n      </ng-container>\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Vehicle class\n    </dt>\n    <dd id=\"test-vehicleClassDescription\" class=\"govuk-summary-list__value\">\n      {{ vehicleClassDescription | DefaultNullOrEmpty | titlecase }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Vehicle configuration\n    </dt>\n    <dd id=\"test-vehicleConfiguration\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.vehicleConfiguration | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      EU vehicle category\n    </dt>\n    <dd id=\"test-euVehicleCategory\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.euVehicleCategory | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Departmental vehicle marker\n    </dt>\n    <dd id=\"test-departmentalVehicleMarker\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.departmentalVehicleMarker | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Alteration marker\n    </dt>\n    <dd id=\"test-alterationMarker\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.alterationMarker | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n</dl>\n\n<!--\n<ng-container *ngIf=\"technicalRecord?.vehicleType === 'hgv'\">\n  <vtm-vehicle-summary-hgv [activeRecord]=\"activeRecord\"></vtm-vehicle-summary-hgv>\n</ng-container>\n\n<ng-container *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n  <vtm-vehicle-summary-psv [activeRecord]=\"activeRecord\"></vtm-vehicle-summary-psv>\n</ng-container>\n\n<ng-container *ngIf=\"technicalRecord?.vehicleType === 'trl'\">\n  <vtm-vehicle-summary-trl [activeRecord]=\"activeRecord\"></vtm-vehicle-summary-trl>\n</ng-container>\n-->\n\n<dl class=\"govuk-summary-list\" *ngIf=\"isStandardVehicle\">\n  <h2 class=\"govuk-heading-m\">Type Approval</h2>\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Approval type</dt>\n    <dd id=\"test-approvalType\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.approvalType | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Approval type number</dt>\n    <dd id=\"test-approvalTypeNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.approvalTypeNumber | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">National type approval number</dt>\n    <dd id=\"test-ntaNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.ntaNumber | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Variant number</dt>\n    <dd id=\"test-variantNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.variantNumber | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Variant version number</dt>\n    <dd id=\"test-variantVersionNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.variantVersionNumber | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n    <dt class=\"govuk-summary-list__key\">\n      COIF serial number\n    </dt>\n    <dd id=\"test-coifSerialNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.coifSerialNumber | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n    <dt class=\"govuk-summary-list__key\">\n      COIF certifier name\n    </dt>\n    <dd id=\"test-coifCertifierName\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.coifCertifierName | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n    <dt class=\"govuk-summary-list__key\">\n      COIF date\n    </dt>\n    <dd id=\"test-coifDate\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.coifDate | DefaultNullOrEmpty }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n</dl>\n\n<ng-template #hyphen>\n  <span>-</span>\n</ng-template>"
+            "templateData": "<dl class=\"govuk-summary-list\">\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Vehicle type\n    </dt>\n    <dd id=\"test-vehicleType\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.vehicleType | uppercase }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Date of first registration\n    </dt>\n    <dd id=\"test-regnDate\" class=\"govuk-summary-list__value\">\n      <span *ngIf=\"technicalRecord?.regnDate; else hyphen\">\n        {{ technicalRecord?.regnDate | date: 'dd/MM/yyyy' }}\n      </span>\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Year of manufacture\n    </dt>\n    <dd id=\"test-manufactureYear\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.manufactureYear }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Number of axles\n    </dt>\n    <dd id=\"test-noOfaxles\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.noOfAxles }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      DTP number\n    </dt>\n    <dd id=\"test-dtpNumber\" class=\"govuk-summary-list__value\">\n      <div *ngIf=\"technicalRecord?.brakes; else hyphen\">\n        {{ technicalRecord?.brakes?.dtpNumber }}\n      </div>\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Axles fitted with a parking brake\n    </dt>\n    <dd class=\"govuk-summary-list__value\" id=\"test-parkingBrakeMrk\">\n      <ng-container *ngIf=\"axlesHasParkingBrakeMrk(); else hyphen\">\n        <div *ngFor=\"let axel of technicalRecord?.axles\">\n          <div *ngIf=\"axel.parkingBrakeMrk\">\n            <span id=\"{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}\"\n              >Axle {{ axel.axleNumber }}</span\n            >\n          </div>\n        </div>\n      </ng-container>\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      Vehicle class\n    </dt>\n    <dd id=\"test-vehicleClassDescription\" class=\"govuk-summary-list__value\">\n      {{ vehicleClassDescription   | titlecase }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Vehicle configuration\n    </dt>\n    <dd id=\"test-vehicleConfiguration\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.vehicleConfiguration }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">\n      EU vehicle category\n    </dt>\n    <dd id=\"test-euVehicleCategory\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.euVehicleCategory }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Departmental vehicle marker\n    </dt>\n    <dd id=\"test-departmentalVehicleMarker\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.departmentalVehicleMarker }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"isStandardVehicle\">\n    <dt class=\"govuk-summary-list__key\">\n      Alteration marker\n    </dt>\n    <dd id=\"test-alterationMarker\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.alterationMarker }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n</dl>\n\n<!--\n<ng-container *ngIf=\"technicalRecord?.vehicleType === 'hgv'\">\n  <vtm-vehicle-summary-hgv [activeRecord]=\"activeRecord\"></vtm-vehicle-summary-hgv>\n</ng-container>\n\n<ng-container *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n  <vtm-vehicle-summary-psv [activeRecord]=\"activeRecord\"></vtm-vehicle-summary-psv>\n</ng-container>\n\n<ng-container *ngIf=\"technicalRecord?.vehicleType === 'trl'\">\n  <vtm-vehicle-summary-trl [activeRecord]=\"activeRecord\"></vtm-vehicle-summary-trl>\n</ng-container>\n-->\n\n<dl class=\"govuk-summary-list\" *ngIf=\"isStandardVehicle\">\n  <h2 class=\"govuk-heading-m\">Type Approval</h2>\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Approval type</dt>\n    <dd id=\"test-approvalType\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.approvalType }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Approval type number</dt>\n    <dd id=\"test-approvalTypeNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.approvalTypeNumber }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">National type approval number</dt>\n    <dd id=\"test-ntaNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.ntaNumber }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Variant number</dt>\n    <dd id=\"test-variantNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.variantNumber }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\">\n    <dt class=\"govuk-summary-list__key\">Variant version number</dt>\n    <dd id=\"test-variantVersionNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.variantVersionNumber }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n    <dt class=\"govuk-summary-list__key\">\n      COIF serial number\n    </dt>\n    <dd id=\"test-coifSerialNumber\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.coifSerialNumber }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n    <dt class=\"govuk-summary-list__key\">\n      COIF certifier name\n    </dt>\n    <dd id=\"test-coifCertifierName\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.coifCertifierName }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n\n  <div class=\"govuk-summary-list__row\" *ngIf=\"technicalRecord?.vehicleType === 'psv'\">\n    <dt class=\"govuk-summary-list__key\">\n      COIF date\n    </dt>\n    <dd id=\"test-coifDate\" class=\"govuk-summary-list__value\">\n      {{ technicalRecord?.coifDate }}\n    </dd>\n    <dd class=\"govuk-summary-list__value\"></dd>\n  </div>\n</dl>\n\n<ng-template #hyphen>\n  <span>-</span>\n</ng-template>"
         },
         {
             "name": "VisitComponent",
@@ -34582,13 +34581,13 @@
         },
         {
             "name": "AppModule",
-            "id": "module-AppModule-975f00f7475bf4dc8037a7196f6f8de61729e82262d9259858bd82da633ec5385d369d2cc21826eecde5fbaa04694531d4d5548f2913a6cac388c91a7fef12a8",
+            "id": "module-AppModule-b485b2006c413dbac935548a7fca89116879d71bca9bf02fe2b14780d730d2ff5900325f008e3d3324a554cdf37c61568bdcd9541e0a5581d4b1b023493de260",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';\nimport { MSAL_INSTANCE, MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';\n\nimport { MsalModule, MsalService, MsalInterceptor, MsalInterceptorConfiguration, MsalGuard, MsalGuardConfiguration, MsalBroadcastService, MsalRedirectComponent } from '@azure/msal-angular';\nimport { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation } from '@azure/msal-browser';\n\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { FooterComponent } from './layout/footer/footer.component';\nimport { HomeComponent } from './home/home.component';\nimport { HomeButtonComponent } from './home/home-button/home-button.component';\nimport { SearchComponent } from './search/search.component';\nimport { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';\nimport { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmptyPipe';\nimport { environment } from '../environments/environment';\nimport { UserService } from './user-service';\n\nexport function MSALInstanceFactory(): IPublicClientApplication {\n  return new PublicClientApplication({\n    auth: {\n      clientId: environment.VTM_CLIENT_ID,\n      authority: environment.VTM_AUTHORITY_ID,\n      redirectUri: environment.VTM_REDIRECT_URI\n    },\n    cache: {\n      cacheLocation: BrowserCacheLocation.LocalStorage,\n      storeAuthStateInCookie: true\n    }\n  });\n}\n\nexport function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {\n  const protectedResourceMap = new Map<string, Array<string>>();\n  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);\n\n  return {\n    interactionType: InteractionType.Redirect,\n    protectedResourceMap\n  };\n}\n\nexport function MSALGuardConfigFactory(): MsalGuardConfiguration {\n  return {\n    interactionType: InteractionType.Redirect,\n    authRequest: {\n      scopes: ['user.read']\n    },\n    loginFailedRoute: ''\n  };\n}\n\n\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    HeaderComponent,\n    FooterComponent,\n    HomeComponent,\n    HomeButtonComponent,\n    SearchComponent,\n    VehicleTechnicalRecordComponent,\n    DefaultNullOrEmpty\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    MsalModule,\n    HttpClientModule],\n  providers: [\n    {\n      provide: HTTP_INTERCEPTORS,\n      useClass: MsalInterceptor,\n      multi: true\n    },\n    {\n      provide: MSAL_INSTANCE,\n      useFactory: MSALInstanceFactory\n    },\n    {\n      provide: MSAL_GUARD_CONFIG,\n      useFactory: MSALGuardConfigFactory\n    },\n    {\n      provide: MSAL_INTERCEPTOR_CONFIG,\n      useFactory: MSALInterceptorConfigFactory\n    },\n    MsalService,\n    MsalGuard,\n    MsalBroadcastService,\n    UserService,\n  ],\n  bootstrap: [AppComponent, MsalRedirectComponent]\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';\nimport { MSAL_INSTANCE, MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';\n\nimport { MsalModule, MsalService, MsalInterceptor, MsalInterceptorConfiguration, MsalGuard, MsalGuardConfiguration, MsalBroadcastService, MsalRedirectComponent } from '@azure/msal-angular';\nimport { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation } from '@azure/msal-browser';\n\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { FooterComponent } from './layout/footer/footer.component';\nimport { HomeComponent } from './home/home.component';\nimport { HomeButtonComponent } from './home/home-button/home-button.component';\nimport { SearchComponent } from './search/search.component';\nimport { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';\nimport { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';\nimport { environment } from '../environments/environment';\nimport { UserService } from './user-service';\n\nexport function MSALInstanceFactory(): IPublicClientApplication {\n  return new PublicClientApplication({\n    auth: {\n      clientId: environment.VTM_CLIENT_ID,\n      authority: environment.VTM_AUTHORITY_ID,\n      redirectUri: environment.VTM_REDIRECT_URI\n    },\n    cache: {\n      cacheLocation: BrowserCacheLocation.LocalStorage,\n      storeAuthStateInCookie: true\n    }\n  });\n}\n\nexport function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {\n  const protectedResourceMap = new Map<string, Array<string>>();\n  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);\n\n  return {\n    interactionType: InteractionType.Redirect,\n    protectedResourceMap\n  };\n}\n\nexport function MSALGuardConfigFactory(): MsalGuardConfiguration {\n  return {\n    interactionType: InteractionType.Redirect,\n    authRequest: {\n      scopes: ['user.read']\n    },\n    loginFailedRoute: ''\n  };\n}\n\n\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    HeaderComponent,\n    FooterComponent,\n    HomeComponent,\n    HomeButtonComponent,\n    SearchComponent,\n    VehicleTechnicalRecordComponent,\n    DefaultNullOrEmpty\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    MsalModule,\n    HttpClientModule,\n  ],\n  providers: [\n    {\n      provide: HTTP_INTERCEPTORS,\n      useClass: MsalInterceptor,\n      multi: true\n    },\n    {\n      provide: MSAL_INSTANCE,\n      useFactory: MSALInstanceFactory\n    },\n    {\n      provide: MSAL_GUARD_CONFIG,\n      useFactory: MSALGuardConfigFactory\n    },\n    {\n      provide: MSAL_INTERCEPTOR_CONFIG,\n      useFactory: MSALInterceptorConfigFactory\n    },\n    MsalService,\n    MsalGuard,\n    MsalBroadcastService,\n    UserService,\n  ],\n  exports: [DefaultNullOrEmpty],\n  bootstrap: [AppComponent, MsalRedirectComponent]\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -34637,7 +34636,11 @@
                 },
                 {
                     "type": "exports",
-                    "elements": []
+                    "elements": [
+                        {
+                            "name": "DefaultNullOrEmpty"
+                        }
+                    ]
                 },
                 {
                     "type": "bootstrap",
@@ -35761,7 +35764,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
+                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '6226576d-37e9-49eb-b201-ec1eeb0029b6',\n  VTM_AUTHORITY_ID: 'https://login.microsoftonline.com/6c448d90-4ca1-4caf-ab59-0a2aa67d7801',\n  VTM_REDIRECT_URI: 'http://localhost:4200',\n  apiUrl: 'http://localhost:3005',\n}"
             },
             {
                 "name": "environment",
@@ -35781,7 +35784,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: 'http://localhost:3005',\n}"
+                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: 'http://localhost:3005',\n  // apiUrl: 'https://api.develop.cvs.dvsacloud.uk'\n}"
             },
             {
                 "name": "environment",
@@ -36467,21 +36470,21 @@
                 "name": "selectFeature",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "archive/src/app/store/selectors/app-form-state.selectors.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "createFeatureSelector<AppFormState>('appFormState')"
-            },
-            {
-                "name": "selectFeature",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "archive/src/app/store/selectors/error.selectors.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createFeatureSelector<ErrorState>('error')"
+            },
+            {
+                "name": "selectFeature",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "archive/src/app/store/selectors/app-form-state.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createFeatureSelector<AppFormState>('appFormState')"
             },
             {
                 "name": "selectReducerState",
@@ -36527,7 +36530,7 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/search/search.stories.ts",
+                "file": "src/app/vehicle-technical-record/vehicle-technical-record.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -36537,7 +36540,7 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/vehicle-technical-record/vehicle-technical-record.stories.ts",
+                "file": "src/app/search/search.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -36550,8 +36553,8 @@
                 "file": "src/app/layout/header/header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Story<Header>",
-                "defaultValue": "(args: Header) => ({\n  props: args\n})"
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {}\n})"
             },
             {
                 "name": "TEST_MODEL_UTILS",
@@ -42197,7 +42200,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/'\n}"
+                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '6226576d-37e9-49eb-b201-ec1eeb0029b6',\n  VTM_AUTHORITY_ID: 'https://login.microsoftonline.com/6c448d90-4ca1-4caf-ab59-0a2aa67d7801',\n  VTM_REDIRECT_URI: 'http://localhost:4200',\n  apiUrl: 'http://localhost:3005',\n}"
                 }
             ],
             "src/environments/environment.prod.ts": [
@@ -42221,7 +42224,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: 'http://localhost:3005',\n}"
+                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: 'http://localhost:3005',\n  // apiUrl: 'https://api.develop.cvs.dvsacloud.uk'\n}"
                 }
             ],
             "archive/src/environments/environment.deploy.ts": [
@@ -42968,8 +42971,8 @@
                     "file": "src/app/layout/header/header.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Story<Header>",
-                    "defaultValue": "(args: Header) => ({\n  props: args\n})"
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {}\n})"
                 }
             ],
             "archive/src/app/app.enums.ts": [
@@ -52733,7 +52736,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/pipes/DefaultNullOrEmptyPipe.ts",
+                "filePath": "src/app/pipes/DefaultNullOrEmpty.pipe.ts",
                 "type": "pipe",
                 "linktype": "pipe",
                 "name": "DefaultNullOrEmpty",
