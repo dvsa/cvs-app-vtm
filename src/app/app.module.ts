@@ -1,20 +1,18 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { MSAL_INSTANCE, MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
-
-import { MsalModule, MsalService, MsalInterceptor, MsalInterceptorConfiguration, MsalGuard, MsalGuardConfiguration, MsalBroadcastService, MsalRedirectComponent } from '@azure/msal-angular';
-import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation } from '@azure/msal-browser';
-
+import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
+import { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
+import { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
-import { environment } from '../environments/environment';
-import { UserService } from './user-service/user-service';
-import { StoreModule, ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
-import { localStorageSync } from 'ngrx-store-localstorage';
+import { HeaderComponent } from './layout/header/header.component';
 import { reducers } from './reducers';
+import { UserService } from './user-service/user-service';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -69,7 +67,12 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     StoreModule.forRoot(
         reducers,
         {metaReducers}
-    )
+    ),
+    StoreDevtoolsModule.instrument({
+      name: "VTM Web Dev Tools",
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, //Log-only mode in production
+    }),
   ],
   providers: [
     {

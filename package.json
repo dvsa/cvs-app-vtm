@@ -37,6 +37,7 @@
     "@azure/msal-angular": "^2.1.2",
     "@azure/msal-browser": "^2.22.1",
     "@ngrx/store": "^13.0.2",
+    "@ngrx/store-devtools": "^13.0.2",
     "@storybook/cli": "^6.4.19",
     "govuk-frontend": "^4.0.1",
     "ngrx-store-localstorage": "^13.0.0",
