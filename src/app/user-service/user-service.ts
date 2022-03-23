@@ -1,11 +1,10 @@
-import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
 import { Injectable, OnDestroy } from '@angular/core';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType } from '@azure/msal-browser';
 import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
-import { setUsername, resetUserService } from './user-service.actions';
+import { map, Observable, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import * as UserServiceActions from './user-service.actions';
 import { UserServiceState } from './user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
@@ -22,7 +21,7 @@ export class UserService implements OnDestroy {
             takeUntil(this._destroying$)
         )
         .subscribe((result: any) => {
-            this.setUserName(result.payload.account.name);
+            this.logIn(result.payload.account.name);
         });
 
     this.userServiceOb = this.store.select('userservice');
@@ -33,8 +32,8 @@ export class UserService implements OnDestroy {
     this._destroying$.complete();
   }
 
-  setUserName(name: string): void {
-   this.store.dispatch(setUsername({'name': name }));
+  logIn(name: string): void {
+   this.store.dispatch(UserServiceActions.Login({'name': name }));
   }
 
   getUserName$(): Observable<string> {
@@ -42,7 +41,7 @@ export class UserService implements OnDestroy {
   }
 
   logOut(): void {
-    this.store.dispatch(resetUserService());
+    this.store.dispatch(UserServiceActions.Logout());
     this.msal.logout();
   }
 }

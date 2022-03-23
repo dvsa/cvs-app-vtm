@@ -1,16 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { Observable, skip } from 'rxjs';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-
+import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
+import { Store } from '@ngrx/store';
+import { skip } from 'rxjs';
+import { AppModule } from "../app.module";
 import { UserService } from './user-service';
 import { UserServiceState } from './user-service.reducer';
-import { Store, StoreModule } from '@ngrx/store';
-import { MsalModule, MsalService, MsalBroadcastService, } from "@azure/msal-angular";
-import { AppModule } from "../app.module";
-import { PublicClientApplication, InteractionType } from "@azure/msal-browser";
+
 
 describe('User-Service', () => {
   let service: UserService;
@@ -50,7 +46,7 @@ describe('User-Service', () => {
       done();
     });
 
-    service.setUserName('you reading this?');
+    service.logIn('you reading this?');
   });
 
 });

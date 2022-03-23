@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setUsername, resetUserService } from './user-service.actions';
+import * as UserServiceActions from './user-service.actions';
 
 export interface UserServiceState {
   username: string;
@@ -11,8 +11,8 @@ const initialState: UserServiceState = {
  
 const _userServiceReducer = createReducer(
   initialState,
-  on(setUsername, (state, { name }) => ({ username: name })),
-  on(resetUserService, (state) => (initialState)),
+  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),
+  on(UserServiceActions.Logout, (state) => (initialState)),
 );
  
 export function UserServiceReducer(state: UserServiceState, action: any) {
