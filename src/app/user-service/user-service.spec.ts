@@ -41,7 +41,7 @@ describe('User-Service', () => {
 
   it('should get and set the username', (done) => {
     // Skip the default value being set
-    service.getUserName$().pipe(skip(1)).subscribe((data) => {
+    service.userName$.pipe(skip(1)).subscribe((data) => {
       expect(data).toBe('you reading this?');
       done();
     });

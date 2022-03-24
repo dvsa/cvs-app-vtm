@@ -1,19 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { EventMessage, EventType } from '@azure/msal-browser';
-import { Store } from '@ngrx/store';
-import { map, Observable, Subject } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import * as UserServiceActions from './user-service.actions';
-import { UserServiceState } from './user-service.reducer';
+import * as UserServiceState from './user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {
-
-  private userServiceOb: Observable<UserServiceState>;
   private readonly _destroying$ = new Subject<void>();
 
-  constructor(private store: Store<{ userservice: UserServiceState }>, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
+  constructor(private store: Store, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
 
     this.msalBroadcastService.msalSubject$
         .pipe(
@@ -23,8 +21,6 @@ export class UserService implements OnDestroy {
         .subscribe((result: any) => {
             this.logIn(result.payload.account.name);
         });
-
-    this.userServiceOb = this.store.select('userservice');
   }
 
   ngOnDestroy(): void {
@@ -36,8 +32,8 @@ export class UserService implements OnDestroy {
    this.store.dispatch(UserServiceActions.Login({'name': name }));
   }
 
-  getUserName$(): Observable<string> {
-   return this.userServiceOb.pipe(map((state: UserServiceState) => state.username));
+  get userName$(): Observable<string> {
+    return this.store.pipe(select(UserServiceState.username))
   }
 
   logOut(): void {
