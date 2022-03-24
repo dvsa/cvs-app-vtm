@@ -1,9 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
-
 import { HeaderComponent } from './header.component';
+
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
