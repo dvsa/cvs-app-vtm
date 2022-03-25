@@ -42,6 +42,11 @@ This talks to the following backends:
 ### Running Locally End-2-End
 
 ```
+cvs-app-vtm
+Populate environment.deploy.ts with the required environment variables for your setup.
+```
+
+```
 cvs-svc-technical-records
 1. npm install
 2. npm run tools-setup
