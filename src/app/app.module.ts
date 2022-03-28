@@ -59,7 +59,6 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
 
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
-
 @NgModule({
   declarations: [
     AppComponent,
