@@ -10,6 +10,18 @@ Prerequisites:
 * Node 16
 * Git Secrets
 
+### Using Make
+
+To get setup on the project you can run: `make init`, `make install` and `make run`.
+
+Then to run tests run:
+`make all`
+
+To just run the application run:
+`make run`
+
+### Using Node commands
+
 1. Run `npm install`
 2. Serve with `npm start`
 3. Find more commands with `npm run`
@@ -28,6 +40,11 @@ This talks to the following backends:
 * cvs-svc-test-results
 
 ### Running Locally End-2-End
+
+```
+cvs-app-vtm
+Populate environment.deploy.ts with the required environment variables for your setup.
+```
 
 ```
 cvs-svc-technical-records
