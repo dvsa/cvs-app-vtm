@@ -1,4 +1,4 @@
-<app-header [username]="userService.getUserName()" (logOutEvent)="userService.logOut()"></app-header>
+<app-header [username]="userService.userName$ | async" (logOutEvent)="userService.logOut()"></app-header>
 
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" id="main-content" role="main">

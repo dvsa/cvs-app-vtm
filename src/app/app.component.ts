@@ -1,7 +1,7 @@
 ///<reference path="govuk.d.ts">
 import { Component } from '@angular/core';
 import { initAll } from 'govuk-frontend/govuk/all';
-import { UserService } from './user-service';
+import { UserService } from './user-service/user-service';
 
 @Component({
   selector: 'app-root',
