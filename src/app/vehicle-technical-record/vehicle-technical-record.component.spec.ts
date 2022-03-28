@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 
 describe('VehicleTechnicalRecordComponent', () => {

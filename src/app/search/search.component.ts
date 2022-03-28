@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TechRecord } from '../models/tech-record.model';
 import { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '../services/technical-record.service';
@@ -8,21 +8,12 @@ import { TechnicalRecordService } from '../services/technical-record.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
   searchError: string | undefined;
   vehicleTechRecord?: VehicleTechRecordModel;
   techRecord?: TechRecord;
 
-  // isLoading: boolean = false;
-  // searchTerm: SearchParams = { searchIdentifier: '{none searched}', searchCriteria: 'all' };
-  // searchError: Observable<string[]>;
-
   constructor(private technicalRecordService: TechnicalRecordService) { }
-  // constructor(private store: Store<IAppState>) {}
-
-  ngOnInit() {
-    // this.searchError = this.store.select(getErrors);
-  }
 
   public searchTechRecords(searchTerm: string) {
     this.searchError = undefined;
@@ -35,8 +26,6 @@ export class SearchComponent implements OnInit {
             this.techRecord = this.vehicleTechRecord.techRecord[0];
           }
         };
-
-        // TODO: handle zero or many.. when we have ngRx
       });
     } else {
       this.searchError = "Enter a vehicle registration mark, trailer ID or vehicle identification number"

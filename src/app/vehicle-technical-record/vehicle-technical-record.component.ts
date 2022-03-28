@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TechRecord } from '../models/tech-record.model';
 
 // largely copied from  archive/../vehicle-summary.component.ts
@@ -7,13 +7,10 @@ import { TechRecord } from '../models/tech-record.model';
   templateUrl: './vehicle-technical-record.component.html',
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
-export class VehicleTechnicalRecordComponent implements OnInit {
+export class VehicleTechnicalRecordComponent{
   @Input() technicalRecord?: TechRecord;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   get vehicleClassDescription(): string | undefined {
     return this.technicalRecord?.vehicleClass.description;
