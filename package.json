@@ -22,7 +22,8 @@
     "test": "jest --maxWorkers=3 --colors --coverage",
     "test:watch": "jest --watch",
     "test:ci": "jest -ci --runInBand --watchAll=false --reporters=default",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "mock-api": "npx json-server ./src/mocks/mock-api-server.ts --port 3005"
   },
   "private": true,
   "dependencies": {
@@ -36,6 +37,7 @@
     "@angular/router": "~13.2.0",
     "@azure/msal-angular": "^2.1.2",
     "@azure/msal-browser": "^2.22.1",
+    "@ngrx/effects": "^13.1.0",
     "@ngrx/store": "^13.0.2",
     "@ngrx/store-devtools": "^13.0.2",
     "@storybook/cli": "^6.4.19",
@@ -75,14 +77,15 @@
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-ngrx": "^2.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-storybook": "^0.5.7",
     "husky": "^7.0.0",
     "jest": "^27.5.1",
     "jest-preset-angular": "^11.1.1",
-    "typescript": "~4.5.2",
-    "eslint-plugin-ngrx": "^2.0.0",
-    "prettier": "^2.5.1"
+    "json-server": "^0.17.0",
+    "prettier": "^2.5.1",
+    "typescript": "~4.5.2"
   },
   "repository": {
     "type": "git",

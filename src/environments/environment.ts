@@ -7,8 +7,7 @@ export const environment = {
   VTM_CLIENT_ID: '',
   VTM_AUTHORITY_ID: '',
   VTM_REDIRECT_URI: '/',
-  apiUrl: 'http://localhost:3005',
-  // apiUrl: 'https://api.develop.cvs.dvsacloud.uk'
+  VTM_API_URI: 'http://localhost:3005',
 };
 
 /*
