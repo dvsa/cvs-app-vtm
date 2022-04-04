@@ -19,7 +19,7 @@ import { SearchComponent } from './search/search.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
 import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';
 import { EffectsModule } from '@ngrx/effects';
-// import { TechnicalRecordServiceEffects } from './services/technical-record-service.effects';
+import { TechnicalRecordServiceEffects } from './services/technical-record-service.effects';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -86,7 +86,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, //Log-only mode in production
     }),
-    // EffectsModule.forRoot([TechnicalRecordServiceEffects])
+    EffectsModule.forRoot([TechnicalRecordServiceEffects])
   ],
   providers: [
     {
