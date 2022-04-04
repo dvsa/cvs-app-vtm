@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
+import { TestRecordSummaryComponent } from './components/test-record-summary/test-record-summary.component';
 import { reducers } from './reducers';
 import { UserService } from './user-service/user-service';
 import { HomeComponent } from './home/home.component';
@@ -71,6 +72,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SearchComponent,
     VehicleTechnicalRecordComponent,
     DefaultNullOrEmpty
+    TestRecordSummaryComponent,
   ],
   imports: [
     BrowserModule,
