@@ -1,4 +1,8 @@
-<table class="govuk-table">
+<div *ngIf="!testRecords || testRecords.length == 0">
+  <h2 class="govuk-heading-m">Test Records</h2>
+  <h3 class="govuk-heading-s">No test records found.</h3>
+</div>
+<table class="govuk-table" *ngIf="testRecords.length > 0">
   <caption class="govuk-table__caption govuk-table__caption--m">Test Records</caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
@@ -9,8 +13,8 @@
   </thead>
   <tbody class="govuk-table__body">
     <tr class="govuk-table__row" *ngFor="let testRecord of testRecords">
-      <th scope="row" class="govuk-table__header">{{ testRecord.createdAt }}</th>
-      <td class="govuk-table__cell">{{ testRecord.reasonForCreation }} (TODO)</td>
+      <th scope="row" class="govuk-table__header">{{ testRecord.testStartTimestamp }} (TODO)</th>
+      <td class="govuk-table__cell">{{ testRecord.vin }} (TODO)</td>
       <td class="govuk-table__cell">{{ testRecord.testStatus }}</td>
     </tr>
   </tbody>
