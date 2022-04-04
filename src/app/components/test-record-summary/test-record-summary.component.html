@@ -1,5 +1,5 @@
 <table class="govuk-table">
-  <caption class="govuk-table__caption govuk-table__caption--m">Dates and amounts</caption>
+  <caption class="govuk-table__caption govuk-table__caption--m">Test Records</caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Date</th>
@@ -8,20 +8,10 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">2022-01-01</th>
-      <td class="govuk-table__cell">Big test</td>
-      <td class="govuk-table__cell">Pass</td>
-    </tr>
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">2022-01-01</th>
-      <td class="govuk-table__cell">Big test</td>
-      <td class="govuk-table__cell">Pass</td>
-    </tr>
-    <tr class="govuk-table__row">
-      <th scope="row" class="govuk-table__header">2022-01-01</th>
-      <td class="govuk-table__cell">Big test</td>
-      <td class="govuk-table__cell">Pass</td>
+    <tr class="govuk-table__row" *ngFor="let testRecord of testRecords">
+      <th scope="row" class="govuk-table__header">{{ testRecord.createdAt }}</th>
+      <td class="govuk-table__cell">{{ testRecord.reasonForCreation }} (TODO)</td>
+      <td class="govuk-table__cell">{{ testRecord.testStatus }}</td>
     </tr>
   </tbody>
 </table>

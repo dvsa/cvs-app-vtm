@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { TestResultModel } from '../../models/test-result.model';
 
 @Component({
   selector: 'test-record-summary',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./test-record-summary.component.scss']
 })
 export class TestRecordSummaryComponent {
+ 
+  @Input() testRecords: TestResultModel[] = [];
+
   constructor() {}
 }

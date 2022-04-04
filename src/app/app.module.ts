@@ -71,8 +71,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     HomeButtonComponent,
     SearchComponent,
     VehicleTechnicalRecordComponent,
-    DefaultNullOrEmpty
-    TestRecordSummaryComponent,
+    DefaultNullOrEmpty,
+    TestRecordSummaryComponent
   ],
   imports: [
     BrowserModule,
