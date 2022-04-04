@@ -7,6 +7,6 @@ export default {
   component: TestRecordSummaryComponent
 } as Meta;
 
-export const Primary: Story = () => ({
+export const Primary: TestRecordSummaryComponent = () => ({
   props: {}
 });

@@ -8,7 +8,7 @@ export default {
   argTypes: { logOut: { action: 'clicked' } }
 } as Meta;
 
-const Template: Story<Header> = (args: Header) => ({
+const Template: Story<HeaderComponent> = (args: HeaderComponent) => ({
   props: args
 });
 
