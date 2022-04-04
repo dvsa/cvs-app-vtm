@@ -10,9 +10,9 @@ const initialState: TechnicalRecordServiceState = {
   vehicleTechRecord: undefined,
 };
 
-const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>('vehicletechrecord');
+const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>('vehicleTechRecord');
 
-export const vehicleTechRecord = createSelector(getVehicleTechRecordState, (state) => state.vehicleTechRecord);
+export const vehicleTechRecord = createSelector(getVehicleTechRecordState, (state) => state);
 
 const _vehicleTechRecordReducer = createReducer(
   initialState,
