@@ -3,23 +3,20 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 import { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
-import { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { ActionReducer, MetaReducer } from '@ngrx/store';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeButtonComponent } from './features/home/components/home-button/home-button.component';
+import { HomeComponent } from './features/home/home.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
-import { reducers } from './reducers';
-import { UserService } from './user-service/user-service';
-import { HomeComponent } from './home/home.component';
-import { HomeButtonComponent } from './home/home-button/home-button.component';
-import { SearchComponent } from './search/search.component';
-import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
 import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';
-import { EffectsModule } from '@ngrx/effects';
-import { TechnicalRecordServiceEffects } from './services/technical-record-service.effects';
+import { SearchComponent } from './features/search/search.component';
+import { AppStoreModule } from './store/app-store.module';
+import { UserService } from './services/user-service/user-service';
+import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -56,38 +53,14 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['userservice'], rehydrate: true})(reducer);
+  return localStorageSync({ keys: ['userservice'], rehydrate: true })(reducer);
 }
 
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    HomeComponent,
-    HomeButtonComponent,
-    SearchComponent,
-    VehicleTechnicalRecordComponent,
-    DefaultNullOrEmpty
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    MsalModule,
-    HttpClientModule,
-    StoreModule.forRoot(
-        reducers,
-        {metaReducers}
-    ),
-    StoreDevtoolsModule.instrument({
-      name: "VTM Web Dev Tools",
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, //Log-only mode in production
-    }),
-    EffectsModule.forRoot([TechnicalRecordServiceEffects])
-  ],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, DefaultNullOrEmpty],
+  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -109,7 +82,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MsalService,
     MsalGuard,
     MsalBroadcastService,
-    UserService,
+    UserService
   ],
   exports: [DefaultNullOrEmpty],
   bootstrap: [AppComponent, MsalRedirectComponent]

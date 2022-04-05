@@ -8,7 +8,7 @@ server.use(middlewares);
 
 // Add custom routes before JSON Server router
 server.get('/vehicles/*', (req, res) => {
-  res.jsonp(mockTechRecord.default);
+  res.jsonp([mockTechRecord.default]);
 });
 
 server.use(router);

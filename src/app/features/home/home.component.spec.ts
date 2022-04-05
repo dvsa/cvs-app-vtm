@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HomeButtonComponent } from './components/home-button/home-button.component';
 
 import { HomeComponent } from './home.component';
 
@@ -8,7 +10,8 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      declarations: [ HomeComponent, HomeButtonComponent ],
+      imports: [RouterTestingModule]
     })
     .compileComponents();
   });
