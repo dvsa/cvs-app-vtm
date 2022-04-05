@@ -8,7 +8,7 @@ import { TestResultModel } from '../../models/test-result.model';
 })
 export class TestRecordSummaryComponent {
  
-  @Input() testRecords: TestResultModel[] = [];
+  @Input() testRecords: TestResultModel[] | null = [];
 
   constructor() {}
 }
