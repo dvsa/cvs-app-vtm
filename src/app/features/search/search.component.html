@@ -27,6 +27,9 @@
 
     <button class="govuk-button" data-module="govuk-button" (click)="searchTechRecords(searchTerm.value)">Search</button>
   </div>
-
-  <app-vehicle-technical-record *ngIf="techRecord" [technicalRecord]="techRecord"></app-vehicle-technical-record>
+  <ng-container *ngFor="let vehicleRecord of vehicleTechRecords | async">
+    <ng-container *ngFor="let record of vehicleRecord.techRecord">
+      <app-vehicle-technical-record [technicalRecord]="record"></app-vehicle-technical-record>
+    </ng-container>
+  </ng-container>
 </div>

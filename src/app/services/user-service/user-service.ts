@@ -4,8 +4,8 @@ import { EventMessage, EventType } from '@azure/msal-browser';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import * as UserServiceActions from './user-service.actions';
-import * as UserServiceState from './user-service.reducer';
+import * as UserServiceActions from '../../store/user/user-service.actions';
+import * as UserServiceState from '../../store/user/user-service.reducer';
 
 @Injectable({ providedIn: 'root' })
 export class UserService implements OnDestroy {

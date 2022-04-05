@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
-import { getByVIN, getByVINSuccess, getByVINFailure } from './technical-record-service.actions';
-import { TechnicalRecordService } from './technical-record.service'
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { map, mergeMap } from 'rxjs/operators';
+import { getByVIN, getByVINSuccess } from './technical-record-service.actions';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
-
   getByVin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getByVIN),
-      mergeMap(action => this.technicalRecordService.getByVIN(action.vin)
-        .pipe(
-          map(vehicleTechRecords => getByVINSuccess({ vehicleTechRecord: vehicleTechRecords[0] }))),
-          // catchError(() => getByVINFailure('There was a problem getting the Tech Record by VIN'))
-        )
+      mergeMap(
+        (action) => this.technicalRecordService.getByVIN(action.vin).pipe(map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })))
+        // catchError(() => getByVINFailure('There was a problem getting the Tech Record by VIN'))
       )
-    );
+    )
+  );
 
   // example from: https://github.com/ngrx/platform/blob/a3fdfb47fc177c49a461a1613c11df4040dfcc49/projects/example-app/src/app/books/effects/book.effects.ts
   // search$ = createEffect(
@@ -46,8 +43,5 @@ export class TechnicalRecordServiceEffects {
   //     )
   // );
 
-  constructor(
-    private actions$: Actions,
-    private technicalRecordService: TechnicalRecordService
-  ) {}
+  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService) {}
 }
