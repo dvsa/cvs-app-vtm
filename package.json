@@ -23,7 +23,7 @@
     "sonar-scanner": "npm run test && sonar-scanner",
     "test:deploy": "npm run build && npx http-server ./dist -p 4200 -c-1",
     "prepush": "npm run build && npm test",
-    "security-checks": "git secrets --scan && git log -p | scanrepo",
+    "security-checks": "git secrets --scan",
     "coverage": "jest --coverage",
     "audit-dep": "npm audit --audit-level=high --json | audit-filter --nsp-config=.nsprc --audit=-"
   },
