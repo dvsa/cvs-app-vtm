@@ -1,24 +1,22 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import * as UserServiceActions from './user-service.actions';
 
+export const STORE_FEATURE_USER_KEY = "user"
+
 export interface UserServiceState {
   username: string;
 }
  
-const initialState: UserServiceState = {
+export const initialState: UserServiceState = {
   username: "(Not logged in)",
 };
 
-const getUserState = createFeatureSelector<UserServiceState>('userservice');
+const getUserState = createFeatureSelector<UserServiceState>(STORE_FEATURE_USER_KEY);
  
 export const username = createSelector(getUserState, (state) => state.username);
 
-const _userServiceReducer = createReducer(
+export const userServiceReducer = createReducer(
   initialState,
   on(UserServiceActions.Login, (state, { name }) => ({ username: name })),
   on(UserServiceActions.Logout, (state) => (initialState)),
 );
- 
-export function UserServiceReducer(state: UserServiceState, action: any) {
-  return _userServiceReducer(state, action);
-}
