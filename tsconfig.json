@@ -26,7 +26,10 @@
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
       "@store/*": ["src/app/store/*"]
-    }
+    },
+    "plugins": [
+      { "transform": "ts-auto-mock/transformer" }
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

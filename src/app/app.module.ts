@@ -10,12 +10,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeButtonComponent } from './features/home/components/home-button/home-button.component';
 import { HomeComponent } from './features/home/home.component';
+import { SearchComponent } from './features/search/search.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';
-import { SearchComponent } from './features/search/search.component';
-import { AppStoreModule } from './store/app-store.module';
 import { UserService } from './services/user-service/user-service';
+import { AppStoreModule } from './store/app-store.module';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {

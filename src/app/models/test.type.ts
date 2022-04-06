@@ -1,4 +1,4 @@
-import { Defect } from '../models/defect';
+import { Defect } from './defect';
 
 export interface ModType {
   code: string;

@@ -4,7 +4,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
+import { RouterStateModule } from './router/router-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
+import { TestResultsStateModule } from './test-results/test-results.module';
 import { UserStateModule } from './user/user-state.module';
 
 @NgModule({
@@ -19,7 +21,9 @@ import { UserStateModule } from './user/user-state.module';
       logOnly: environment.production //Log-only mode in production
     }),
     UserStateModule,
-    TechnicalRecordsStateModule
+    TechnicalRecordsStateModule,
+    TestResultsStateModule,
+    RouterStateModule
   ]
 })
 export class AppStoreModule {}

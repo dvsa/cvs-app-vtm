@@ -1,0 +1,25 @@
+<div>
+  <ng-container *ngIf="testResult$ | async as testResult">
+    <dl>
+      <dt>Vin:</dt>
+      <dd>{{ testResult.vin }}</dd>
+      <dt>Creation date:</dt>
+      <dd>{{ testResult.createdAt | date: 'dd/mm/yyyy HH:mm' }}</dd>
+      <dt>Test type:</dt>
+      <dd>
+        <ul>
+          <li *ngFor="let type of testResult.testTypes">
+            <dl>
+              <dt>Code:</dt>
+              <dd>{{ type.testCode }}</dd>
+              <dt>Description:</dt>
+              <dd>{{ type.modType.description }}</dd>
+            </dl>
+          </li>
+        </ul>
+      </dd>
+      <dl>Status:</dl>
+      <dd>{{ testResult.testResult }}</dd>
+    </dl>
+  </ng-container>
+</div>

@@ -1,5 +1,5 @@
-import { TestType } from '../models/test.type';
-import { BodyType } from '../models/body-type';
+import { TestType } from './test.type';
+import { BodyType } from './body-type';
 
 export interface TestResultModel {
   reasonForCreation: string;

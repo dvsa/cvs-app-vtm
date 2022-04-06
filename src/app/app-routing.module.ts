@@ -4,18 +4,22 @@ import { MsalGuard } from '@azure/msal-angular';
 import { HomeComponent } from './features/home/home.component';
 import { SearchComponent } from './features/search/search.component';
 
-
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: HomeComponent
     // canActivate: [MsalGuard]
   },
   {
     path: 'search',
-    component: SearchComponent,
+    component: SearchComponent
     // canActivate: [MsalGuard]
   },
+  {
+    path: 'test-results',
+    // canLoad: [MsalGuard],
+    loadChildren: () => import('./features/test-results/test-results.module').then((m) => m.TestResultsModule)
+  }
 ];
 
 @NgModule({
