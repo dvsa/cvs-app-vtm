@@ -9,12 +9,12 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    // canActivate: [MsalGuard]
+    canActivate: [MsalGuard]
   },
   {
     path: 'search',
     component: SearchComponent,
-    // canActivate: [MsalGuard]
+    canActivate: [MsalGuard]
   },
 ];
 

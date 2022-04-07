@@ -4,7 +4,7 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
     globalSetup: 'jest-preset-angular/global-setup',
     transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
-    testPathIgnorePatterns: ["/node_modules/", "/archive/"],
+    testPathIgnorePatterns: ["/node_modules/", "/archive/", "/dist/"],
     globals: {
         crypto: require("crypto")
     },
