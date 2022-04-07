@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { TestResultModel } from '@models/test-result.model';
-import { Store } from '@ngrx/store';
 import { TestResultsService } from '@services/test-results/test-results.service';
-import { State } from '@store/.';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,7 +12,7 @@ import { Observable } from 'rxjs';
 export class TestResultComponent {
   testResult$?: Observable<TestResultModel | undefined>;
 
-  constructor(private testResultsService: TestResultsService) {
+  constructor(private testResultsService: TestResultsService, private titleService: Title) {
     this.testResult$ = this.testResultsService.testResult$;
   }
 }

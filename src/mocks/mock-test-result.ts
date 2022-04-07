@@ -4,7 +4,7 @@ import { createMock, createMockList } from 'ts-auto-mock';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
-    return createMock<TestType>({ testCode: `Test${i}`, modType: { description: `test type ${i + 1}` } });
+    return createMock<TestType>({ testCode: `Test${i}`, name: 'Test type name' });
   });
 
 export const mockTestResult = (i: number = 0) =>
@@ -13,6 +13,7 @@ export const mockTestResult = (i: number = 0) =>
     reasonForCreation: 'mock test result data',
     testResultId: '123FJD-23JDDD',
     vin: 'XMGDE02FS0H012345',
+    vrm: 'KP01 ABC',
     testStartTimestamp: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     testTypes: [...mockTestTypeList()],

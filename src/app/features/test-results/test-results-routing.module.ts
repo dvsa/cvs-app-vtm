@@ -12,7 +12,8 @@ const routes: Routes = [
     children: [
       {
         path: ':systemId',
-        component: TestResultComponent
+        component: TestResultComponent,
+        data: {title: 'Test Results'}
       }
     ]
   }

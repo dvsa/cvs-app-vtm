@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'DefaultNullOrEmpty' })
+@Pipe({ name: 'defaultNullOrEmpty' })
 export class DefaultNullOrEmpty implements PipeTransform {
   transform(value: any): any {
     if (typeof value === 'string') {

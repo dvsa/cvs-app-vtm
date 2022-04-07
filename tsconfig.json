@@ -25,7 +25,8 @@
     "paths": {
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
-      "@store/*": ["src/app/store/*"]
+      "@store/*": ["src/app/store/*"],
+      "@shared/*": ["src/app/shared/*"]
     },
     "plugins": [
       { "transform": "ts-auto-mock/transformer" }
