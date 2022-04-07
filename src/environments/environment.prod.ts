@@ -4,4 +4,5 @@ export const environment = {
   VTM_AUTHORITY_ID: '',
   VTM_REDIRECT_URI: '/',
   VTM_API_URI: '',
+  VTM_TEST_URI: '',
 };

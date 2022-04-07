@@ -13,11 +13,7 @@ export class TestRecordService {
   constructor(private store: Store, private http: HttpClient) { }
 
   getBySystemId(systemId: string): Observable<TestResultModel[]> {
-    console.log("service");
-    //const queryStr = `${vin}/tech-records?status=all&metadata=true&searchCriteria=vin`;
-    //const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
-    //TODO
-    const url = `http://localhost:3006/test-results/11000001`;
+    const url = `${environment.VTM_TEST_URI}/test-results/${systemId}`;
 
     return this.http
       .get<TestResultModel[]>(url, { responseType: 'json' })
@@ -26,8 +22,6 @@ export class TestRecordService {
 
  
   getTestRecords(id: string): Observable<TestResultModel[]> {
-    this.store.dispatch(TestRecordServiceActions.getBySystemId({'systemId': id}));
-
     return this.store.pipe(select(TestRecordServiceState.testRecords)).pipe(map((value) => value.testRecords || []));
   }
 

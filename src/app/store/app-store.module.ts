@@ -6,6 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
 import { UserStateModule } from './user/user-state.module';
+import { TestRecordStateModule } from './test-records/test-record.module';
 
 @NgModule({
   declarations: [],
@@ -19,7 +20,8 @@ import { UserStateModule } from './user/user-state.module';
       logOnly: environment.production //Log-only mode in production
     }),
     UserStateModule,
-    TechnicalRecordsStateModule
+    TechnicalRecordsStateModule,
+    TestRecordStateModule
   ]
 })
 export class AppStoreModule {}
