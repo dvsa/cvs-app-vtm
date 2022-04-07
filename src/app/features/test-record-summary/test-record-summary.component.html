@@ -1,9 +1,11 @@
-<div *ngIf="!testRecords || testRecords.length == 0">
+<div *ngIf="!testRecords || testRecords.length === 0">
   <h2 class="govuk-heading-m">Test Records</h2>
   <h3 class="govuk-heading-s">No test records found.</h3>
 </div>
 <table class="govuk-table" *ngIf="testRecords && testRecords.length > 0">
-  <caption class="govuk-table__caption govuk-table__caption--m">Test Records</caption>
+  <caption class="govuk-table__caption govuk-table__caption--m">
+    Test Records
+  </caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
       <th scope="col" class="govuk-table__header">Date</th>
