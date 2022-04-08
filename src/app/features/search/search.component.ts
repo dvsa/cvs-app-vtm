@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TechRecord } from '@models/tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
@@ -11,11 +10,10 @@ import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 })
 export class SearchComponent {
   searchError: string | undefined;
-  vehicleTechRecords: Observable<Array<VehicleTechRecordModel>>;
-  techRecords?: Array<TechRecord>;
+  vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
 
   constructor(private technicalRecordService: TechnicalRecordService) {
-    this.vehicleTechRecords = this.technicalRecordService.vehicleTechRecords;
+    this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords;
   }
 
   public searchTechRecords(searchTerm: string) {
