@@ -8,8 +8,8 @@ export default {
   argTypes: { logOut: { action: 'clicked' } }
 } as Meta;
 
-const Template: Story<Header> = (args: Header) => ({
-  props: args
+const Template: Story = () => ({
+  props: {}
 });
 
 export const Primary: Story = () => ({

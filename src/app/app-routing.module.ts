@@ -1,14 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { AppComponent } from './app.component';
+import { HomeComponent } from './features/home/home.component';
+import { SearchComponent } from './features/search/search.component';
+
 
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
+    component: HomeComponent,
     canActivate: [MsalGuard]
-  }
+  },
+  {
+    path: 'search',
+    component: SearchComponent,
+    canActivate: [MsalGuard]
+  },
 ];
 
 @NgModule({

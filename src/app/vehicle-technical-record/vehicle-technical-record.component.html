@@ -1,0 +1,24 @@
+<div class="govuk-grid-column-full">
+  <dl class="govuk-summary-list">
+    <h2 class="govuk-heading-m">Vehicle Summary</h2>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VRM</dt>
+      <dd id="current-vrm" class="govuk-summary-list__value">
+        {{ currentVrm }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+      <dd id="vin" class="govuk-summary-list__value">
+        {{ vehicleTechRecord?.vin }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</div>
+
+<ng-template #hyphen>
+  <span>-</span>
+</ng-template>

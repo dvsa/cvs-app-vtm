@@ -1,0 +1,33 @@
+<div class="govuk-grid-row search-page">
+  <div class="govuk-grid-column-full">
+    <div *ngIf="searchError" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+      <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <li>
+            <a href="#search-term">{{ searchError }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="govuk-heading-xl govuk-!-font-weight-bold">Search for a technical record</p>
+  </div>
+
+  <div class="govuk-grid-column-full">
+    <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': searchError }">
+      <label class="govuk-label govuk-!-font-weight-bold" for="searchIdentifier"> Vehicle registration mark, trailer ID or vehicle identification number </label>
+      <span *ngIf="searchError" id="search-term" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span>
+        <p class="white-space--normal">{{ searchError }}</p>
+      </span>
+
+      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': searchError }" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
+    </div>
+
+    <button class="govuk-button" data-module="govuk-button" (click)="searchTechRecords(searchTerm.value)">Search</button>
+  </div>
+  <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
+    <app-vehicle-technical-record [vehicleTechRecord]="vehicleTechRecord"></app-vehicle-technical-record>
+  </ng-container>
+</div>

@@ -3,9 +3,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 import { Store } from '@ngrx/store';
 import { skip } from 'rxjs';
-import { AppModule } from "../app.module";
+import { AppModule } from "../../app.module";
+import { UserServiceState } from '../../store/user/user-service.reducer';
 import { UserService } from './user-service';
-import { UserServiceState } from './user-service.reducer';
 
 
 describe('User-Service', () => {
