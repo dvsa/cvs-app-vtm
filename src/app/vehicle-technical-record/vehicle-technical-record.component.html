@@ -1,183 +1,23 @@
-<dl class="govuk-summary-list">
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Vehicle type</dt>
-    <dd id="test-vehicleType" class="govuk-summary-list__value">
-      {{ technicalRecord?.vehicleType | uppercase }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
+<div class="govuk-grid-column-full">
+  <dl class="govuk-summary-list">
+    <h2 class="govuk-heading-m">Vehicle Summary</h2>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VRM</dt>
+      <dd id="current-vrm" class="govuk-summary-list__value">
+        {{ currentVrm }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
 
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Date of first registration</dt>
-    <dd id="test-regnDate" class="govuk-summary-list__value">
-      <span *ngIf="technicalRecord?.regnDate; else hyphen">
-        {{ technicalRecord?.regnDate | date: 'dd/MM/yyyy' }}
-      </span>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Year of manufacture</dt>
-    <dd id="test-manufactureYear" class="govuk-summary-list__value">
-      {{ technicalRecord?.manufactureYear }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Number of axles</dt>
-    <dd id="test-noOfaxles" class="govuk-summary-list__value">
-      {{ technicalRecord?.noOfAxles }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle">
-    <dt class="govuk-summary-list__key">DTP number</dt>
-    <dd id="test-dtpNumber" class="govuk-summary-list__value">
-      <div *ngIf="technicalRecord?.brakes; else hyphen">
-        {{ technicalRecord?.brakes?.dtpNumber }}
-      </div>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle">
-    <dt class="govuk-summary-list__key">Axles fitted with a parking brake</dt>
-    <dd class="govuk-summary-list__value" id="test-parkingBrakeMrk">
-      <ng-container *ngIf="axlesHasParkingBrakeMrk(); else hyphen">
-        <div *ngFor="let axel of technicalRecord?.axles">
-          <div *ngIf="axel.parkingBrakeMrk">
-            <span id="{{ 'test-parkingBrakeMrkAxle-' + axel.axleNumber }}">Axle {{ axel.axleNumber }}</span>
-          </div>
-        </div>
-      </ng-container>
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Vehicle class</dt>
-    <dd id="test-vehicleClassDescription" class="govuk-summary-list__value">
-      {{ vehicleClassDescription | titlecase }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle">
-    <dt class="govuk-summary-list__key">Vehicle configuration</dt>
-    <dd id="test-vehicleConfiguration" class="govuk-summary-list__value">
-      {{ technicalRecord?.vehicleConfiguration }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">EU vehicle category</dt>
-    <dd id="test-euVehicleCategory" class="govuk-summary-list__value">
-      {{ technicalRecord?.euVehicleCategory }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle">
-    <dt class="govuk-summary-list__key">Departmental vehicle marker</dt>
-    <dd id="test-departmentalVehicleMarker" class="govuk-summary-list__value">
-      {{ technicalRecord?.departmentalVehicleMarker }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="isStandardVehicle">
-    <dt class="govuk-summary-list__key">Alteration marker</dt>
-    <dd id="test-alterationMarker" class="govuk-summary-list__value">
-      {{ technicalRecord?.alterationMarker }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-</dl>
-
-<!--
-<ng-container *ngIf="technicalRecord?.vehicleType === 'hgv'">
-  <vtm-vehicle-summary-hgv [activeRecord]="activeRecord"></vtm-vehicle-summary-hgv>
-</ng-container>
-
-<ng-container *ngIf="technicalRecord?.vehicleType === 'psv'">
-  <vtm-vehicle-summary-psv [activeRecord]="activeRecord"></vtm-vehicle-summary-psv>
-</ng-container>
-
-<ng-container *ngIf="technicalRecord?.vehicleType === 'trl'">
-  <vtm-vehicle-summary-trl [activeRecord]="activeRecord"></vtm-vehicle-summary-trl>
-</ng-container>
--->
-
-<dl class="govuk-summary-list" *ngIf="isStandardVehicle">
-  <h2 class="govuk-heading-m">Type Approval</h2>
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Approval type</dt>
-    <dd id="test-approvalType" class="govuk-summary-list__value">
-      {{ technicalRecord?.approvalType }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Approval type number</dt>
-    <dd id="test-approvalTypeNumber" class="govuk-summary-list__value">
-      {{ technicalRecord?.approvalTypeNumber }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">National type approval number</dt>
-    <dd id="test-ntaNumber" class="govuk-summary-list__value">
-      {{ technicalRecord?.ntaNumber }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Variant number</dt>
-    <dd id="test-variantNumber" class="govuk-summary-list__value">
-      {{ technicalRecord?.variantNumber }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Variant version number</dt>
-    <dd id="test-variantVersionNumber" class="govuk-summary-list__value">
-      {{ technicalRecord?.variantVersionNumber }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="technicalRecord?.vehicleType === 'psv'">
-    <dt class="govuk-summary-list__key">COIF serial number</dt>
-    <dd id="test-coifSerialNumber" class="govuk-summary-list__value">
-      {{ technicalRecord?.coifSerialNumber }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="technicalRecord?.vehicleType === 'psv'">
-    <dt class="govuk-summary-list__key">COIF certifier name</dt>
-    <dd id="test-coifCertifierName" class="govuk-summary-list__value">
-      {{ technicalRecord?.coifCertifierName }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-
-  <div class="govuk-summary-list__row" *ngIf="technicalRecord?.vehicleType === 'psv'">
-    <dt class="govuk-summary-list__key">COIF date</dt>
-    <dd id="test-coifDate" class="govuk-summary-list__value">
-      {{ technicalRecord?.coifDate }}
-    </dd>
-    <dd class="govuk-summary-list__value"></dd>
-  </div>
-</dl>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+      <dd id="vin" class="govuk-summary-list__value">
+        {{ vehicleTechRecord?.vin }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </dl>
+</div>
 
 <ng-template #hyphen>
   <span>-</span>

@@ -14,5 +14,5 @@ const Template: Story = (args) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  technicalRecord: vtrMock.default.techRecord[0],
+  vehicleTechRecord: vtrMock.default,
 };

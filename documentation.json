@@ -4641,14 +4641,34 @@
         },
         {
             "name": "State",
-            "id": "interface-State-c7944a62e59bba4ffc96e9b78aa30e49867628a1219d52e7e73bd450b52b402b11365532b2accd64280290111c3ae3fec3ff88d024c1e3e3ae5529281dd4fd73",
-            "file": "src/app/reducers/index.ts",
+            "id": "interface-State-3db01e7158aa2f60488ba3996e188a537f168dbe005c4d2bf9c8b7e15c1c0ad714e1ead4e43bdec68ab4b00e65f61a50a54e009746d10e639c4d389646408cc1",
+            "file": "src/app/store/index.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import {\n  ActionReducer,\n  ActionReducerMap,\n  createFeatureSelector,\n  createSelector,\n  MetaReducer\n} from '@ngrx/store';\nimport { environment } from '../../environments/environment';\nimport { UserServiceReducer } from '../user-service/user-service.reducer';\n\nexport interface State {\n\n}\n\nexport const reducers: ActionReducerMap<State> = {\n  \"userservice\": UserServiceReducer\n};\n\nexport const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];\n",
-            "properties": [],
+            "sourceCode": "import { ActionReducerMap, MetaReducer } from '@ngrx/store';\nimport { environment } from '../../environments/environment';\nimport { initialState as initialTechnicalRecordsState, STORE_FEATURE_TECHNICAL_RECORDS_KEY, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-records/technical-record-service.reducer';\nimport { initialState as initialUserState, STORE_FEATURE_USER_KEY, userServiceReducer, UserServiceState } from './user/user-service.reducer';\n\nexport interface State {\n  [STORE_FEATURE_USER_KEY]: UserServiceState;\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: TechnicalRecordServiceState;\n}\n\nexport const initialAppState = {\n  [STORE_FEATURE_USER_KEY]: initialUserState,\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState\n}\n\nexport const reducers: ActionReducerMap<State> = {\n  [STORE_FEATURE_USER_KEY]: userServiceReducer,\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,\n};\n\nexport const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];\n",
+            "properties": [
+                {
+                    "name": "STORE_FEATURE_TECHNICAL_RECORDS_KEY",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TechnicalRecordServiceState",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "STORE_FEATURE_USER_KEY",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "UserServiceState",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                }
+            ],
             "indexSignatures": [],
+            "kind": 165,
             "methods": []
         },
         {
@@ -5261,6 +5281,29 @@
             "isDuplicate": true,
             "duplicateId": 1,
             "duplicateName": "Tc3Details-1"
+        },
+        {
+            "name": "TechnicalRecordServiceState",
+            "id": "interface-TechnicalRecordServiceState-a6a00994dd0d4d9f2f6d3451ccab18db056b9b73e690e8f77062f4e0ece2f07a0d6163f1efba1b35863e593d3ab38b7ee784ac8a8571fbd6a3aef35eadb2571d",
+            "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';\nimport { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';\nimport * as TechnicalRecordServiceActions from './technical-record-service.actions';\n\nexport const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';\n\nexport interface TechnicalRecordServiceState {\n  vehicleTechRecords: Array<VehicleTechRecordModel>;\n}\n\nexport const initialState: TechnicalRecordServiceState = {\n  vehicleTechRecords: []\n};\n\nexport const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);\n\nexport const vehicleTechRecordReducer = createReducer(\n  initialState,\n  on(TechnicalRecordServiceActions.getByVIN, (state) => ({ ...state, vehicleTechRecords: [] })),\n  on(TechnicalRecordServiceActions.getByVINSuccess, (state, { vehicleTechRecords }) => ({ ...state, vehicleTechRecords }))\n);\n",
+            "properties": [
+                {
+                    "name": "vehicleTechRecords",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Array<VehicleTechRecordModel>",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 165,
+            "methods": []
         },
         {
             "name": "TechRecord",
@@ -8548,12 +8591,12 @@
         },
         {
             "name": "UserServiceState",
-            "id": "interface-UserServiceState-f69a5cacfb7227deabc0afd3b40fd51cc8e5e123b3984ba174264c382e5ffd2924ab174c28def6ac2eab0eaf40848e25fbf303d6c87049e009db83dd1a6d3f94",
-            "file": "src/app/user-service/user-service.reducer.ts",
+            "id": "interface-UserServiceState-042562f62858133b76758ead9093b238a95471788eb7e0b585bed009e24f79708feac3c37016827c799eeb97b1b7457dbfa4e38fb4caf2970be4fcb5ce2c434c",
+            "file": "src/app/store/user/user-service.reducer.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';\nimport * as UserServiceActions from './user-service.actions';\n\nexport interface UserServiceState {\n  username: string;\n}\n \nconst initialState: UserServiceState = {\n  username: \"(Not logged in)\",\n};\n\nconst getUserState = createFeatureSelector<UserServiceState>('userservice');\n \nexport const username = createSelector(getUserState, (state) => state.username);\n\nconst _userServiceReducer = createReducer(\n  initialState,\n  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),\n  on(UserServiceActions.Logout, (state) => (initialState)),\n);\n \nexport function UserServiceReducer(state: UserServiceState, action: any) {\n  return _userServiceReducer(state, action);\n}\n",
+            "sourceCode": "import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';\nimport * as UserServiceActions from './user-service.actions';\n\nexport const STORE_FEATURE_USER_KEY = \"user\"\n\nexport interface UserServiceState {\n  username: string;\n}\n \nexport const initialState: UserServiceState = {\n  username: \"(Not logged in)\",\n};\n\nconst getUserState = createFeatureSelector<UserServiceState>(STORE_FEATURE_USER_KEY);\n \nexport const username = createSelector(getUserState, (state) => state.username);\n\nexport const userServiceReducer = createReducer(\n  initialState,\n  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),\n  on(UserServiceActions.Logout, (state) => (initialState)),\n);\n",
             "properties": [
                 {
                     "name": "username",
@@ -8562,7 +8605,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 5
+                    "line": 7
                 }
             ],
             "indexSignatures": [],
@@ -9807,75 +9850,7 @@
         },
         {
             "name": "TechnicalRecordService",
-            "id": "injectable-TechnicalRecordService-e4a42b7fae40282eb5220431a01d53bcc142206e12b29e5617508768fd8f87bb7ce8594b350fe22c02b4055177fc57c4fc29e813c71be70a898965bc22317b3c",
-            "file": "src/app/services/technical-record.service.ts",
-            "properties": [],
-            "methods": [
-                {
-                    "name": "getByVIN",
-                    "args": [
-                        {
-                            "name": "vin",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "Observable<VehicleTechRecordModel[]>",
-                    "typeParameters": [],
-                    "line": 15,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "vin",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "description": "",
-            "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\nimport { HttpClient } from '@angular/common/http';\nimport { Observable } from 'rxjs';\nimport { retry } from 'rxjs/operators';\nimport { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';\nimport { environment } from 'src/environments/environment';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class TechnicalRecordService {\n\n  constructor(private http: HttpClient) { }\n\n  getByVIN(vin: string): Observable<VehicleTechRecordModel[]> {\n    const queryStr = `${vin}/tech-records?status=all&metadata=true&searchCriteria=vin`;\n    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;\n\n    return this.http\n      .get<VehicleTechRecordModel[]>(\n        url,\n        { responseType: 'json' }\n      )\n      .pipe(\n        retry(3), // retry a failed request up to 3 times\n        // catchError(this.handleError) // then handle the error\n      );\n\n      // Original implementation from archive/../technical-record-search/technical-record.service.ts:\n      // )\n      // .pipe(\n      //   delayedRetry(),\n      //   shareReplay(),\n      //   finalize(() => this._store.dispatch(new LoadingFalse()))\n      // );\n  }\n}\n",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "http",
-                        "type": "HttpClient",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 11,
-                "jsdoctags": [
-                    {
-                        "name": "http",
-                        "type": "HttpClient",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "type": "injectable"
-        },
-        {
-            "name": "TechnicalRecordService",
-            "id": "injectable-TechnicalRecordService-b52f41ef454e1328319d5d335b18ecfa9f7f78a965f71f46bee721b4caedc99499f8e73d446ce548390a57799f08a2949ed772838fd96fd6fe00fa7089967de6-1",
+            "id": "injectable-TechnicalRecordService-b52f41ef454e1328319d5d335b18ecfa9f7f78a965f71f46bee721b4caedc99499f8e73d446ce548390a57799f08a2949ed772838fd96fd6fe00fa7089967de6",
             "file": "archive/src/app/technical-record-search/technical-record.service.ts",
             "properties": [
                 {
@@ -10123,10 +10098,197 @@
                     }
                 ]
             },
+            "type": "injectable"
+        },
+        {
+            "name": "TechnicalRecordService",
+            "id": "injectable-TechnicalRecordService-7283a17609a3d43a58d44dcc800193be25396cd60ac2f12ef185ba28a235da4eecbfd2da954cabd06296b5d4b4d5b6482ca9d7c3b24b11fe7663cef01be786d2-1",
+            "file": "src/app/services/technical-record/technical-record.service.ts",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "getByVIN",
+                    "args": [
+                        {
+                            "name": "vin",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "Observable<VehicleTechRecordModel[]>",
+                    "typeParameters": [],
+                    "line": 13,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "vin",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "searchBy",
+                    "args": [
+                        {
+                            "name": "criteria",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 24,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "criteria",
+                            "type": "literal type",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { HttpClient } from '@angular/common/http';\nimport { Injectable } from '@angular/core';\nimport { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';\nimport { select, Store } from '@ngrx/store';\nimport { getByVIN, vehicleTechRecords } from '@store/technical-records';\nimport { Observable } from 'rxjs';\nimport { environment } from '../../../environments/environment';\n\n@Injectable({ providedIn: 'root' })\nexport class TechnicalRecordService {\n  constructor(private store: Store, private http: HttpClient) {}\n\n  getByVIN(vin: string): Observable<VehicleTechRecordModel[]> {\n    const queryStr = `${vin}/tech-records?status=all&metadata=true&searchCriteria=vin`;\n    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;\n\n    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });\n  }\n\n  get vehicleTechRecords() {\n    return this.store.pipe(select(vehicleTechRecords));\n  }\n\n  searchBy(criteria: { type: 'vin'; searchTerm: string }) {\n    const { type, searchTerm } = criteria;\n    this.store.dispatch(getByVIN({ [type]: searchTerm }));\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 10,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "http",
+                        "type": "HttpClient",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "accessors": {
+                "vehicleTechRecords": {
+                    "name": "vehicleTechRecords",
+                    "getSignature": {
+                        "name": "vehicleTechRecords",
+                        "type": "",
+                        "returnType": "",
+                        "line": 20
+                    }
+                }
+            },
             "type": "injectable",
             "isDuplicate": true,
             "duplicateId": 1,
             "duplicateName": "TechnicalRecordService-1"
+        },
+        {
+            "name": "TechnicalRecordServiceEffects",
+            "id": "injectable-TechnicalRecordServiceEffects-44f4175a90b291d0e6bdd12d980328eed12ed305bb6d1b692677b52c6cdc0ae6b7daf56c60a12ab48c9ac4e84a986b172b02976f5d0a5a277c04d8a855140d40",
+            "file": "src/app/store/technical-records/technical-record-service.effects.ts",
+            "properties": [
+                {
+                    "name": "getByVin$",
+                    "defaultValue": "createEffect(() =>\n    this.actions$.pipe(\n      ofType(getByVIN),\n      mergeMap(\n        (action) => this.technicalRecordService.getByVIN(action.vin).pipe(map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })))\n        // catchError(() => getByVINFailure('There was a problem getting the Tech Record by VIN'))\n      )\n    )\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\nimport { TechnicalRecordService } from '@services/technical-record/technical-record.service';\nimport { map, mergeMap } from 'rxjs/operators';\nimport { getByVIN, getByVINSuccess } from './technical-record-service.actions';\n\n@Injectable()\nexport class TechnicalRecordServiceEffects {\n  getByVin$ = createEffect(() =>\n    this.actions$.pipe(\n      ofType(getByVIN),\n      mergeMap(\n        (action) => this.technicalRecordService.getByVIN(action.vin).pipe(map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })))\n        // catchError(() => getByVINFailure('There was a problem getting the Tech Record by VIN'))\n      )\n    )\n  );\n\n  // example from: https://github.com/ngrx/platform/blob/a3fdfb47fc177c49a461a1613c11df4040dfcc49/projects/example-app/src/app/books/effects/book.effects.ts\n  // search$ = createEffect(\n  //   () => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>\n  //     this.actions$.pipe(\n  //       ofType(FindBookPageActions.searchBooks),\n  //       debounceTime(debounce, scheduler),\n  //       switchMap(({ query }) => {\n  //         if (query === '') {\n  //           return empty;\n  //         }\n\n  //         const nextSearch$ = this.actions$.pipe(\n  //           ofType(FindBookPageActions.searchBooks),\n  //           skip(1)\n  //         );\n\n  //         return this.googleBooks.searchBooks(query).pipe(\n  //           takeUntil(nextSearch$),\n  //           map((books: Book[]) => BooksApiActions.searchSuccess({ books })),\n  //           catchError((err) =>\n  //             of(BooksApiActions.searchFailure({ errorMsg: err.message }))\n  //           )\n  //         );\n  //       })\n  //     )\n  // );\n\n  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "technicalRecordService",
+                        "type": "TechnicalRecordService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 17,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "technicalRecordService",
+                        "type": "TechnicalRecordService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
         },
         {
             "name": "TechnicalRecordValuesMapper",
@@ -11298,135 +11460,7 @@
         },
         {
             "name": "UserService",
-            "id": "injectable-UserService-0c388abdc94e938a0ddb74178e9faeb53f37bf19cf32765bc92dc1f8f7b85fb065ed391056a83651f288d8f7d0d205190e5bb3a7ed5bdb0eaf9b5ecef4720e02",
-            "file": "src/app/user-service.ts",
-            "properties": [
-                {
-                    "name": "_destroying$",
-                    "defaultValue": "new Subject<void>()",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "optional": false,
-                    "description": "",
-                    "line": 9,
-                    "modifierKind": [
-                        121,
-                        144
-                    ]
-                }
-            ],
-            "methods": [
-                {
-                    "name": "getUserName",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "string",
-                    "typeParameters": [],
-                    "line": 31,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "logOut",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 35,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "ngOnDestroy",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 22,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                },
-                {
-                    "name": "setUserName",
-                    "args": [
-                        {
-                            "name": "name",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 27,
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "jsdoctags": [
-                        {
-                            "name": "name",
-                            "type": "string",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "description": "",
-            "rawdescription": "\n",
-            "sourceCode": "import { MsalService, MsalBroadcastService } from '@azure/msal-angular';\nimport { Subject } from 'rxjs';\nimport { filter, takeUntil } from 'rxjs/operators';\nimport { Injectable, OnDestroy } from '@angular/core';\nimport { EventMessage, EventType } from '@azure/msal-browser';\n\n@Injectable({ providedIn: 'root' })\nexport class UserService implements OnDestroy {\n  private readonly _destroying$ = new Subject<void>();\n\n  constructor(private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {\n    this.msalBroadcastService.msalSubject$\n      .pipe(\n        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),\n        takeUntil(this._destroying$)\n      )\n      .subscribe((result: any) => {\n        this.setUserName(result.payload.account.name);\n      });\n  }\n\n  ngOnDestroy(): void {\n    this._destroying$.next();\n    this._destroying$.complete();\n  }\n\n  setUserName(name: string): void {\n    localStorage.setItem('username', name);\n  }\n\n  getUserName(): string {\n    return localStorage.getItem('username') || '';\n  }\n\n  logOut(): void {\n    this.msal.logout();\n  }\n}\n",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "msalBroadcastService",
-                        "type": "MsalBroadcastService",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    },
-                    {
-                        "name": "msal",
-                        "type": "MsalService",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 9,
-                "jsdoctags": [
-                    {
-                        "name": "msalBroadcastService",
-                        "type": "MsalBroadcastService",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
-                    {
-                        "name": "msal",
-                        "type": "MsalService",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "type": "injectable"
-        },
-        {
-            "name": "UserService",
-            "id": "injectable-UserService-3a2e55f1b63a3eee930ea112292e58b3f10bc7348b7e8acba22eea21521ea4b1535a38ce7461581b95aa4e6b6ffd216ac8051c7340e075ebf3dfe6f109c9ee60-1",
+            "id": "injectable-UserService-3a2e55f1b63a3eee930ea112292e58b3f10bc7348b7e8acba22eea21521ea4b1535a38ce7461581b95aa4e6b6ffd216ac8051c7340e075ebf3dfe6f109c9ee60",
             "file": "archive/src/app/app-user.service.ts",
             "properties": [
                 {
@@ -11495,15 +11529,12 @@
                 "args": [],
                 "line": 7
             },
-            "type": "injectable",
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "UserService-1"
+            "type": "injectable"
         },
         {
             "name": "UserService",
-            "id": "injectable-UserService-0d36cbc47997460d15d827722f850ba3c13aaa1f62553694a44a1923d4c6fc868b561547eaa6711a7b713443e920bdce986c447d69f82a61dec999e894af5e66-2",
-            "file": "src/app/user-service/user-service.ts",
+            "id": "injectable-UserService-2d775df6652fbce9cdaf163cf3dc53d4b4c53be58bc1e621e50df5f21d61d6b59cfd037e7907c917f19ae6bfa6fbcb0070235abd4444e756134b61ea995a31dd-1",
+            "file": "src/app/services/user-service/user-service.ts",
             "properties": [
                 {
                     "name": "_destroying$",
@@ -11574,7 +11605,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable, OnDestroy } from '@angular/core';\nimport { MsalBroadcastService, MsalService } from '@azure/msal-angular';\nimport { EventMessage, EventType } from '@azure/msal-browser';\nimport { select, Store } from '@ngrx/store';\nimport { Observable, Subject } from 'rxjs';\nimport { filter, takeUntil } from 'rxjs/operators';\nimport * as UserServiceActions from './user-service.actions';\nimport * as UserServiceState from './user-service.reducer';\n\n@Injectable({ providedIn: 'root' })\nexport class UserService implements OnDestroy {\n  private readonly _destroying$ = new Subject<void>();\n\n  constructor(private store: Store, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {\n\n    this.msalBroadcastService.msalSubject$\n        .pipe(\n            filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),\n            takeUntil(this._destroying$)\n        )\n        .subscribe((result: any) => {\n            this.logIn(result.payload.account.name);\n        });\n  }\n\n  ngOnDestroy(): void {\n    this._destroying$.next();\n    this._destroying$.complete();\n  }\n\n  logIn(name: string): void {\n   this.store.dispatch(UserServiceActions.Login({'name': name }));\n  }\n\n  get userName$(): Observable<string> {\n    return this.store.pipe(select(UserServiceState.username))\n  }\n\n  logOut(): void {\n    this.store.dispatch(UserServiceActions.Logout());\n    this.msal.logout();\n  }\n}\n",
+            "sourceCode": "import { Injectable, OnDestroy } from '@angular/core';\nimport { MsalBroadcastService, MsalService } from '@azure/msal-angular';\nimport { EventMessage, EventType } from '@azure/msal-browser';\nimport { select, Store } from '@ngrx/store';\nimport { Observable, Subject } from 'rxjs';\nimport { filter, takeUntil } from 'rxjs/operators';\nimport * as UserServiceActions from '../../store/user/user-service.actions';\nimport * as UserServiceState from '../../store/user/user-service.reducer';\n\n@Injectable({ providedIn: 'root' })\nexport class UserService implements OnDestroy {\n  private readonly _destroying$ = new Subject<void>();\n\n  constructor(private store: Store, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {\n\n    this.msalBroadcastService.msalSubject$\n        .pipe(\n            filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),\n            takeUntil(this._destroying$)\n        )\n        .subscribe((result: any) => {\n            this.logIn(result.payload.account.name);\n        });\n  }\n\n  ngOnDestroy(): void {\n    this._destroying$.next();\n    this._destroying$.complete();\n  }\n\n  logIn(name: string): void {\n   this.store.dispatch(UserServiceActions.Login({'name': name }));\n  }\n\n  get userName$(): Observable<string> {\n    return this.store.pipe(select(UserServiceState.username))\n  }\n\n  logOut(): void {\n    this.store.dispatch(UserServiceActions.Logout());\n    this.msal.logout();\n  }\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -11644,8 +11675,8 @@
             },
             "type": "injectable",
             "isDuplicate": true,
-            "duplicateId": 2,
-            "duplicateName": "UserService-2"
+            "duplicateId": 1,
+            "duplicateName": "UserService-1"
         },
         {
             "name": "ValidationMapper",
@@ -17668,7 +17699,7 @@
         },
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-b77381b8d9b709cef4f4b323d18bff49f1ab3aafc1d43c2941926db88dfd146c83d31d5d7ceb8141f95ed0ca81d7fb52b30fc1d4d62c6490d45decb37fd54142",
+            "id": "component-AppComponent-e2335d8a909f404c56ec83955a00d912c207ce7324ebfc331a882d6963dbb8b7389d53b9e41596917b76b4e78c92e5a47ef6462f675ce0c14799b71ba057b1b2",
             "file": "src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -17688,23 +17719,13 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
-                    "name": "title",
-                    "defaultValue": "'vtm'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "string",
-                    "optional": false,
-                    "description": "",
-                    "line": 12
-                },
-                {
                     "name": "userService",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "UserService",
                     "optional": false,
                     "description": "",
-                    "line": 14,
+                    "line": 12,
                     "modifierKind": [
                         123
                     ]
@@ -17717,7 +17738,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 16,
+                    "line": 14,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -17729,7 +17750,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { initAll } from 'govuk-frontend/govuk/all';\nimport { UserService } from './user-service/user-service';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent implements OnInit {\n  title = 'vtm';\n\n  constructor(public userService: UserService) {}\n\n  ngOnInit() {\n    initAll();\n  }\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { UserService } from '@services/user-service/user-service';\nimport { initAll } from 'govuk-frontend/govuk/all';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent implements OnInit {\n  constructor(public userService: UserService) {}\n\n  ngOnInit() {\n    initAll();\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -17751,7 +17772,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 12,
+                "line": 11,
                 "jsdoctags": [
                     {
                         "name": "userService",
@@ -23144,7 +23165,7 @@
         {
             "name": "HomeButtonComponent",
             "id": "component-HomeButtonComponent-3ccfca985d5e42b66aee4ba9d88d5f7022873c6a5ed7264bfb86e10dcff11a182fd43da0c24a11d96ed1d2db05a1ca721320f16c3a731c108d182febacc2469b",
-            "file": "src/app/home/home-button/home-button.component.ts",
+            "file": "src/app/features/home/components/home-button/home-button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -23220,7 +23241,7 @@
         {
             "name": "HomeComponent",
             "id": "component-HomeComponent-43e9d0136965a2f3926a7587027408da0e45bf3631bf804ed64518b7bdbd85ee3c5f3182ea9bcd28e8388b27f7eaa43d817cbb9a4cc6ffb93f625a0b886b77ed",
-            "file": "src/app/home/home.component.ts",
+            "file": "src/app/features/home/home.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -24824,80 +24845,7 @@
         },
         {
             "name": "NotesComponent",
-            "id": "component-NotesComponent-1313a79cce6b980bcaa56f9a33cbf917b9589b13065a0a71d0b073f9a49777a970016930f405eb5740a750762dd5645ebc58d369a8d3c52e16ef0ce8c7247eb5",
-            "file": "archive/src/app/test-record/notes/notes.component.ts",
-            "changeDetection": "ChangeDetectionStrategy.OnPush",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "vtm-notes",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./notes.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "editState",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 12,
-                    "type": "VIEW_STATE",
-                    "decorators": []
-                },
-                {
-                    "name": "testType",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 11,
-                    "type": "TestType",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 16,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';\nimport { TestType } from '@app/models/test.type';\nimport { VIEW_STATE } from '@app/app.enums';\n\n@Component({\n  selector: 'vtm-notes',\n  templateUrl: './notes.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class NotesComponent implements OnInit {\n  @Input() testType: TestType;\n  @Input() editState: VIEW_STATE;\n\n  constructor() {}\n\n  ngOnInit() {}\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [],
-                "line": 12
-            },
-            "implements": [
-                "OnInit"
-            ],
-            "templateData": "<dl *ngIf=\"!editState\" class=\"govuk-summary-list\">\n  <div class=\"govuk-summary-list__row\">\n    <dd class=\"govuk-summary-list__value border--bottom-none\" id=\"test-additionalNotesRecorded\">\n      {{ testType.additionalNotesRecorded | DefaultNullOrEmpty }}\n    </dd>\n  </div>\n</dl>\n\n<ng-container *ngIf=\"editState\">\n  <vtm-notes-edit [currentState]=\"editState\" [testType]=\"testType\"></vtm-notes-edit>\n</ng-container>\n"
-        },
-        {
-            "name": "NotesComponent",
-            "id": "component-NotesComponent-df23a6e6d66f57a2fb9700144020db8a92e519300da79e7a2c0818afab4e3b7803ae39c3199fffebceb507fc7cda99ac86782d4b6f3099617cf4677e8f1feede-1",
+            "id": "component-NotesComponent-df23a6e6d66f57a2fb9700144020db8a92e519300da79e7a2c0818afab4e3b7803ae39c3199fffebceb507fc7cda99ac86782d4b6f3099617cf4677e8f1feede",
             "file": "archive/src/app/technical-record/notes/notes.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -24994,14 +24942,200 @@
             "implements": [
                 "OnChanges"
             ],
-            "isDuplicate": true,
-            "duplicateId": 1,
-            "duplicateName": "NotesComponent-1",
             "templateData": "<ng-container *ngIf=\"!editState\">\n  <dl class=\"govuk-summary-list\">\n    <div class=\"govuk-summary-list__row\" *ngIf=\"techRecord.vehicleType !== 'psv'\">\n      <dt class=\"govuk-summary-list__key\">Notes</dt>\n      <dd id=\"test-notes\" class=\"govuk-summary-list__value\">\n        <span class=\"notes-section\">{{ notes | DefaultNullOrEmpty }}</span>\n      </dd>\n    </div>\n\n    <div class=\"govuk-summary-list__row\" *ngIf=\"techRecord.vehicleType === 'psv'\">\n      <dt class=\"govuk-summary-list__key\">Remarks</dt>\n      <dd id=\"test-remarks\" class=\"govuk-summary-list__value\">\n        <span class=\"notes-section\">{{ techRecord.remarks | DefaultNullOrEmpty }}</span>\n      </dd>\n    </div>\n\n    <div\n      class=\"govuk-summary-list__row\"\n      *ngIf=\"techRecord.vehicleType !== 'trl' && techRecord.vehicleType !== 'hgv'\"\n    >\n      <dt class=\"govuk-summary-list__key\">Dispensations</dt>\n      <dd id=\"test-dispensations\" class=\"govuk-summary-list__value\">\n        <span class=\"notes-section\">{{ techRecord.dispensations | DefaultNullOrEmpty }}</span>\n      </dd>\n    </div>\n  </dl>\n</ng-container>\n\n<ng-container *ngIf=\"editState\">\n  <dl class=\"govuk-summary-list\">\n    <div class=\"govuk-summary-list__row\">\n      <dt class=\"govuk-summary-list__key\">\n        <vtm-notes-edit [notesDetails]=\"notes\"></vtm-notes-edit>\n      </dt>\n    </div>\n  </dl>\n</ng-container>\n"
         },
         {
+            "name": "NotesComponent",
+            "id": "component-NotesComponent-1313a79cce6b980bcaa56f9a33cbf917b9589b13065a0a71d0b073f9a49777a970016930f405eb5740a750762dd5645ebc58d369a8d3c52e16ef0ce8c7247eb5-1",
+            "file": "archive/src/app/test-record/notes/notes.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "vtm-notes",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./notes.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "editState",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "VIEW_STATE",
+                    "decorators": []
+                },
+                {
+                    "name": "testType",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 11,
+                    "type": "TestType",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';\nimport { TestType } from '@app/models/test.type';\nimport { VIEW_STATE } from '@app/app.enums';\n\n@Component({\n  selector: 'vtm-notes',\n  templateUrl: './notes.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class NotesComponent implements OnInit {\n  @Input() testType: TestType;\n  @Input() editState: VIEW_STATE;\n\n  constructor() {}\n\n  ngOnInit() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 12
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "NotesComponent-1",
+            "templateData": "<dl *ngIf=\"!editState\" class=\"govuk-summary-list\">\n  <div class=\"govuk-summary-list__row\">\n    <dd class=\"govuk-summary-list__value border--bottom-none\" id=\"test-additionalNotesRecorded\">\n      {{ testType.additionalNotesRecorded | DefaultNullOrEmpty }}\n    </dd>\n  </div>\n</dl>\n\n<ng-container *ngIf=\"editState\">\n  <vtm-notes-edit [currentState]=\"editState\" [testType]=\"testType\"></vtm-notes-edit>\n</ng-container>\n"
+        },
+        {
             "name": "NotesEditComponent",
-            "id": "component-NotesEditComponent-80cf45b9c3448a24f8a33be6949db741cbd2c4b8bfde8a76892aba7c69fe268dba41dca35ce964c7e1e5d042e5f549537cd1027bfb2d0eaa715f4f18b4793a6f",
+            "id": "component-NotesEditComponent-c336cbb6a880f401fbcccfe64004aaab63247942c86d52381c4bfc4088c04a74f99ba07981e780f1dde19789175ad8582844e15f161938bc436588b36afee089",
+            "file": "archive/src/app/technical-record/notes/edit/notes-edit.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "vtm-notes-edit",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./notes-edit.component.html"
+            ],
+            "viewProviders": [
+                {
+                    "name": "{\n    provide: ControlContainer, useExisting: FormGroupDirective\n}",
+                    "type": "directive"
+                }
+            ],
+            "inputsClass": [
+                {
+                    "name": "notesDetails",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 16,
+                    "type": "string",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "techRecordFg",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FormGroup",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 22,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';\nimport { FormGroup, ControlContainer, FormGroupDirective, FormBuilder } from '@angular/forms';\n\n@Component({\n  selector: 'vtm-notes-edit',\n  templateUrl: './notes-edit.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  viewProviders: [\n    {\n      provide: ControlContainer,\n      useExisting: FormGroupDirective\n    }\n  ]\n})\nexport class NotesEditComponent implements OnInit {\n  @Input() notesDetails: string;\n\n  techRecordFg: FormGroup;\n\n  constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}\n\n  ngOnInit() {\n    this.techRecordFg = this.parent.form.get('techRecord') as FormGroup;\n\n    const notes: string = !!this.notesDetails ? this.notesDetails : null;\n\n    this.techRecordFg.addControl('notes', this.fb.control(notes));\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "parent",
+                        "type": "FormGroupDirective",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "fb",
+                        "type": "FormBuilder",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 18,
+                "jsdoctags": [
+                    {
+                        "name": "parent",
+                        "type": "FormGroupDirective",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "fb",
+                        "type": "FormBuilder",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"govuk-grid-row\">\n  <div class=\"govuk-grid-column-three-quarters\">\n    <div class=\"govuk-form-group\">\n      <fieldset class=\"govuk-fieldset\">\n        <form [formGroup]=\"techRecordFg\">\n          <textarea\n            class=\"govuk-textarea\"\n            id=\"test-edit-notes\"\n            rows=\"5\"\n            formControlName=\"notes\"\n            vtmNullValue\n          ></textarea>\n        </form>\n      </fieldset>\n    </div>\n  </div>\n</div>\n"
+        },
+        {
+            "name": "NotesEditComponent",
+            "id": "component-NotesEditComponent-80cf45b9c3448a24f8a33be6949db741cbd2c4b8bfde8a76892aba7c69fe268dba41dca35ce964c7e1e5d042e5f549537cd1027bfb2d0eaa715f4f18b4793a6f-1",
             "file": "archive/src/app/test-record/notes/edit/notes-edit.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -25120,123 +25254,10 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"govuk-grid-row\">\n  <div class=\"govuk-grid-column-full\">\n    <form class=\"govuk-form-group\" formGroupName=\"testType\">\n      <fieldset class=\"govuk-fieldset\">\n        <div class=\"govuk-form-group\">\n          <div class=\"govuk-grid-row govuk-!-margin-bottom-3\">\n            <div class=\"govuk-grid-column-one-half\">\n              <span id=\"more-detail-hint\" class=\"govuk-hint\">\n                Will not be present in the certificate\n              </span>\n              <textarea\n                class=\"govuk-textarea\"\n                id=\"test-additionalNotesRecorded\"\n                formControlName=\"additionalNotesRecorded\"\n                rows=\"5\"\n              ></textarea>\n            </div>\n          </div>\n        </div>\n      </fieldset>\n    </form>\n  </div>\n</div>\n"
-        },
-        {
-            "name": "NotesEditComponent",
-            "id": "component-NotesEditComponent-c336cbb6a880f401fbcccfe64004aaab63247942c86d52381c4bfc4088c04a74f99ba07981e780f1dde19789175ad8582844e15f161938bc436588b36afee089-1",
-            "file": "archive/src/app/technical-record/notes/edit/notes-edit.component.ts",
-            "changeDetection": "ChangeDetectionStrategy.OnPush",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "vtm-notes-edit",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./notes-edit.component.html"
-            ],
-            "viewProviders": [
-                {
-                    "name": "{\n    provide: ControlContainer, useExisting: FormGroupDirective\n}",
-                    "type": "directive"
-                }
-            ],
-            "inputsClass": [
-                {
-                    "name": "notesDetails",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 16,
-                    "type": "string",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [
-                {
-                    "name": "techRecordFg",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "FormGroup",
-                    "optional": false,
-                    "description": "",
-                    "line": 18
-                }
-            ],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 22,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';\nimport { FormGroup, ControlContainer, FormGroupDirective, FormBuilder } from '@angular/forms';\n\n@Component({\n  selector: 'vtm-notes-edit',\n  templateUrl: './notes-edit.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  viewProviders: [\n    {\n      provide: ControlContainer,\n      useExisting: FormGroupDirective\n    }\n  ]\n})\nexport class NotesEditComponent implements OnInit {\n  @Input() notesDetails: string;\n\n  techRecordFg: FormGroup;\n\n  constructor(private parent: FormGroupDirective, private fb: FormBuilder) {}\n\n  ngOnInit() {\n    this.techRecordFg = this.parent.form.get('techRecord') as FormGroup;\n\n    const notes: string = !!this.notesDetails ? this.notesDetails : null;\n\n    this.techRecordFg.addControl('notes', this.fb.control(notes));\n  }\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [
-                    {
-                        "name": "parent",
-                        "type": "FormGroupDirective",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    },
-                    {
-                        "name": "fb",
-                        "type": "FormBuilder",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "line": 18,
-                "jsdoctags": [
-                    {
-                        "name": "parent",
-                        "type": "FormGroupDirective",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
-                    {
-                        "name": "fb",
-                        "type": "FormBuilder",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            "implements": [
-                "OnInit"
-            ],
             "isDuplicate": true,
             "duplicateId": 1,
             "duplicateName": "NotesEditComponent-1",
-            "templateData": "<div class=\"govuk-grid-row\">\n  <div class=\"govuk-grid-column-three-quarters\">\n    <div class=\"govuk-form-group\">\n      <fieldset class=\"govuk-fieldset\">\n        <form [formGroup]=\"techRecordFg\">\n          <textarea\n            class=\"govuk-textarea\"\n            id=\"test-edit-notes\"\n            rows=\"5\"\n            formControlName=\"notes\"\n            vtmNullValue\n          ></textarea>\n        </form>\n      </fieldset>\n    </div>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"govuk-grid-row\">\n  <div class=\"govuk-grid-column-full\">\n    <form class=\"govuk-form-group\" formGroupName=\"testType\">\n      <fieldset class=\"govuk-fieldset\">\n        <div class=\"govuk-form-group\">\n          <div class=\"govuk-grid-row govuk-!-margin-bottom-3\">\n            <div class=\"govuk-grid-column-one-half\">\n              <span id=\"more-detail-hint\" class=\"govuk-hint\">\n                Will not be present in the certificate\n              </span>\n              <textarea\n                class=\"govuk-textarea\"\n                id=\"test-additionalNotesRecorded\"\n                formControlName=\"additionalNotesRecorded\"\n                rows=\"5\"\n              ></textarea>\n            </div>\n          </div>\n        </div>\n      </fieldset>\n    </form>\n  </div>\n</div>\n"
         },
         {
             "name": "PageNotFoundComponentComponent",
@@ -26087,8 +26108,8 @@
         },
         {
             "name": "SearchComponent",
-            "id": "component-SearchComponent-55e4cdf4c1db270ec0f40b7e272c7ee2bd4f9147ffcfe911c96d222853a142ee86c65c7b06a66899d303ad95ad90b614b4bb7627798f432fe3e22b18423dc2ec",
-            "file": "src/app/search/search.component.ts",
+            "id": "component-SearchComponent-5e247f855d0ffb2b0309d661c8b593b2c4d30ff9780012d66a5f68656c01ab6e38c662c7aada2b320d85ad013f1928676aed2b1d7337c2e3fcaaaa2c599da8c3",
+            "file": "src/app/features/search/search.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -26113,25 +26134,25 @@
                     "type": "string | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 12
+                    "line": 13
                 },
                 {
-                    "name": "techRecord",
+                    "name": "techRecords",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "TechRecord",
+                    "type": "Array<TechRecord>",
                     "optional": true,
+                    "description": "",
+                    "line": 15
+                },
+                {
+                    "name": "vehicleTechRecords",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<Array<VehicleTechRecordModel>>",
+                    "optional": false,
                     "description": "",
                     "line": 14
-                },
-                {
-                    "name": "vehicleTechRecord",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "VehicleTechRecordModel",
-                    "optional": true,
-                    "description": "",
-                    "line": 13
                 }
             ],
             "methodsClass": [
@@ -26148,7 +26169,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 18,
+                    "line": 21,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -26174,7 +26195,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { TechRecord } from '../models/tech-record.model';\nimport { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';\nimport { TechnicalRecordService } from '../services/technical-record.service';\n\n@Component({\n  selector: 'app-search',\n  templateUrl: './search.component.html',\n  styleUrls: ['./search.component.scss']\n})\nexport class SearchComponent {\n  searchError: string | undefined;\n  vehicleTechRecord?: VehicleTechRecordModel;\n  techRecord?: TechRecord;\n\n  constructor(private technicalRecordService: TechnicalRecordService) { }\n\n  public searchTechRecords(searchTerm: string) {\n    this.searchError = undefined;\n    if (searchTerm) {\n      this.technicalRecordService.getByVIN(searchTerm)\n      .subscribe((data: VehicleTechRecordModel[]) => {\n        if (data.length === 1) {\n          this.vehicleTechRecord = data[0];\n          if (this.vehicleTechRecord.techRecord.length > 0) {\n            this.techRecord = this.vehicleTechRecord.techRecord[0];\n          }\n        };\n      });\n    } else {\n      this.searchError = \"Enter a vehicle registration mark, trailer ID or vehicle identification number\"\n    }\n  }\n\n  // public searchTechRecords(searchIdentifier: string, searchCriteria: string) {\n    // this.isLoading = true;\n    // this.searchParams.searchIdentifier = encodeURIComponent(searchIdentifier);\n\n    // switch (searchCriteria) {\n    //   case SEARCH_CRITERIA.VRM_CRITERIA:\n    //     this.searchParams.searchCriteria = 'vrm';\n    //     break;\n    //   case SEARCH_CRITERIA.FULL_VIN_CRITERIA:\n    //     this.searchParams.searchCriteria = 'vin';\n    //     break;\n    //   case SEARCH_CRITERIA.PARTIAL_VIN_CRITERIA:\n    //     this.searchParams.searchCriteria = 'partialVin';\n    //     break;\n    //   case SEARCH_CRITERIA.TRL_CRITERIA:\n    //     this.searchParams.searchCriteria = 'trailerId';\n    //     break;\n    //   case SEARCH_CRITERIA.ALL_CRITERIA:\n    //   default:\n    //     this.searchParams.searchCriteria = 'all';\n    // }\n\n    // this.store.dispatch(new GetVehicleTechRecordHavingStatusAll(this.searchTerm));\n  // }\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { TechRecord } from '@models/tech-record.model';\nimport { TechnicalRecordService } from '@services/technical-record/technical-record.service';\nimport { Observable } from 'rxjs';\nimport { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';\n\n@Component({\n  selector: 'app-search',\n  templateUrl: './search.component.html',\n  styleUrls: ['./search.component.scss']\n})\nexport class SearchComponent {\n  searchError: string | undefined;\n  vehicleTechRecords: Observable<Array<VehicleTechRecordModel>>;\n  techRecords?: Array<TechRecord>;\n\n  constructor(private technicalRecordService: TechnicalRecordService) {\n    this.vehicleTechRecords = this.technicalRecordService.vehicleTechRecords;\n  }\n\n  public searchTechRecords(searchTerm: string) {\n    this.searchError = undefined;\n    if (searchTerm) {\n      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -26196,7 +26217,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 14,
+                "line": 15,
                 "jsdoctags": [
                     {
                         "name": "technicalRecordService",
@@ -26209,7 +26230,7 @@
                     }
                 ]
             },
-            "templateData": "<div class=\"govuk-grid-row search-page\">\n  <div class=\"govuk-grid-column-full\">\n    <div *ngIf=\"searchError\" class=\"govuk-error-summary\" aria-labelledby=\"error-summary-title\" role=\"alert\" data-module=\"govuk-error-summary\">\n      <h2 class=\"govuk-error-summary__title\" id=\"error-summary-title\">There is a problem</h2>\n      <div class=\"govuk-error-summary__body\">\n        <ul class=\"govuk-list govuk-error-summary__list\">\n          <li>\n            <a href=\"#search-term\">{{ searchError }}</a>\n          </li>\n        </ul>\n      </div>\n    </div>\n\n    <p class=\"govuk-heading-xl govuk-!-font-weight-bold\">Search for a technical record</p>\n  </div>\n\n  <div class=\"govuk-grid-column-full\">\n    <div class=\"govuk-form-group\" [ngClass]=\"{ 'govuk-form-group--error': searchError }\">\n      <label class=\"govuk-label govuk-!-font-weight-bold\" for=\"searchIdentifier\"> Vehicle registration mark, trailer ID or vehicle identification number </label>\n      <span *ngIf=\"searchError\" id=\"search-term\" class=\"govuk-error-message\">\n        <span class=\"govuk-visually-hidden\">Error:</span>\n        <p class=\"white-space--normal\">{{ searchError }}</p>\n      </span>\n\n      <input #searchTerm class=\"govuk-input govuk-!-width-two-thirds\" [ngClass]=\"{ 'govuk-input--error': searchError }\" id=\"search-term\" name=\"search-term\" type=\"text\" aria-describedby=\"search-term\" />\n    </div>\n\n    <button class=\"govuk-button\" data-module=\"govuk-button\" (click)=\"searchTechRecords(searchTerm.value)\">Search</button>\n  </div>\n\n  <app-vehicle-technical-record *ngIf=\"techRecord\" [technicalRecord]=\"techRecord\"></app-vehicle-technical-record>\n</div>\n"
+            "templateData": "<div class=\"govuk-grid-row search-page\">\n  <div class=\"govuk-grid-column-full\">\n    <div *ngIf=\"searchError\" class=\"govuk-error-summary\" aria-labelledby=\"error-summary-title\" role=\"alert\" data-module=\"govuk-error-summary\">\n      <h2 class=\"govuk-error-summary__title\" id=\"error-summary-title\">There is a problem</h2>\n      <div class=\"govuk-error-summary__body\">\n        <ul class=\"govuk-list govuk-error-summary__list\">\n          <li>\n            <a href=\"#search-term\">{{ searchError }}</a>\n          </li>\n        </ul>\n      </div>\n    </div>\n\n    <p class=\"govuk-heading-xl govuk-!-font-weight-bold\">Search for a technical record</p>\n  </div>\n\n  <div class=\"govuk-grid-column-full\">\n    <div class=\"govuk-form-group\" [ngClass]=\"{ 'govuk-form-group--error': searchError }\">\n      <label class=\"govuk-label govuk-!-font-weight-bold\" for=\"searchIdentifier\"> Vehicle registration mark, trailer ID or vehicle identification number </label>\n      <span *ngIf=\"searchError\" id=\"search-term\" class=\"govuk-error-message\">\n        <span class=\"govuk-visually-hidden\">Error:</span>\n        <p class=\"white-space--normal\">{{ searchError }}</p>\n      </span>\n\n      <input #searchTerm class=\"govuk-input govuk-!-width-two-thirds\" [ngClass]=\"{ 'govuk-input--error': searchError }\" id=\"search-term\" name=\"search-term\" type=\"text\" aria-describedby=\"search-term\" />\n    </div>\n\n    <button class=\"govuk-button\" data-module=\"govuk-button\" (click)=\"searchTechRecords(searchTerm.value)\">Search</button>\n  </div>\n  <ng-container *ngFor=\"let vehicleRecord of vehicleTechRecords | async\">\n    <ng-container *ngFor=\"let record of vehicleRecord.techRecord\">\n      <app-vehicle-technical-record [technicalRecord]=\"record\"></app-vehicle-technical-record>\n    </ng-container>\n  </ng-container>\n</div>\n"
         },
         {
             "name": "SeatbeltInstallationCheckComponent",
@@ -30206,7 +30227,72 @@
         },
         {
             "name": "TestHistoryComponent",
-            "id": "component-TestHistoryComponent-a4242472c35f3c1b6d7821e861f2931a9ae0f1a87987191abee970ce1d6ca1e2e003754668c8477498c40e58e754d3b2f4af9bdb6cdad8864af513c3f5c08c35",
+            "id": "component-TestHistoryComponent-c9609143083b05e6b33d632e002cc55adeca54e2b9752c3e04fe16c9ef407cb8bc1ad7d0a20416fcd1ff4011ed2e86bfe1f1106765a83d608c9c01bdb6f3649a",
+            "file": "archive/src/app/technical-record/test-history/test-history.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "vtm-test-history",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./test-history.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [
+                {
+                    "name": "testResultJson",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 10,
+                    "type": "TestResultModel[]",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';\nimport { TestResultModel } from '@app/models/test-result.model';\n\n@Component({\n  selector: 'vtm-test-history',\n  templateUrl: './test-history.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class TestHistoryComponent implements OnInit {\n  @Input() testResultJson: TestResultModel[];\n\n  constructor() {}\n\n  ngOnInit() {}\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 10
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<table class=\"govuk-table govuk-!-margin-bottom-0\">\n  <thead class=\"govuk-table__head\">\n    <tr class=\"govuk-table__row\">\n      <th scope=\"col\" class=\"govuk-table__header\">Test type</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Test date</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Expiry date</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Certificate number</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Result</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Tester name</th>\n      <th scope=\"col\" class=\"govuk-table__header\"></th>\n    </tr>\n  </thead>\n  <tbody class=\"govuk-table__body\" *ngIf=\"testResultJson; else noTestHistory\">\n    <ng-container\n      *ngFor=\"let testRes of testResultJson | SortByDatePipe: 'testEndTimestamp'; let i = index\"\n    >\n      <tr\n        class=\"govuk-table__row\"\n        *ngFor=\"\n          let testType of testRes.testTypes | SortByDatePipe: 'testTypeEndTimestamp';\n          let ii = index\n        \"\n      >\n        <td id=\"{{ 'test-testCode-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}\n        </td>\n        <td id=\"{{ 'test-testTypeEndTimestamp-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          <span *ngIf=\"testType.testTypeEndTimestamp; else hyphen\">\n            {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}\n          </span>\n        </td>\n        <td id=\"{{ 'test-expiryDate-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          <span\n            *ngIf=\"testType.testExpiryDate && testType.testExpiryDate.trim() !== ''; else hyphen\"\n          >\n            {{ testType.testExpiryDate | date: 'dd/MM/yyyy':'UTC' }}\n          </span>\n        </td>\n        <td id=\"{{ 'test-certificateNumber-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          {{ testType.certificateNumber | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-testResult-tRes-' + i + '-' + ii }}\"\n          class=\"govuk-table__cell govuk-!-font-weight-bold\"\n          [class.font--green]=\"testType.testResult === 'pass'\"\n          [class.font--blue]=\"testType.testResult === 'prs'\"\n          [class.font--red]=\"\n            testType.testResult === 'fail' || testType.testResult === 'abandoned'\n          \"\n        >\n          {{ testType.testResult | DefaultNullOrEmpty | uppercase }}\n        </td>\n        <td id=\"{{ 'test-testerName-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          {{ testRes.testerName | DefaultNullOrEmpty }}\n        </td>\n        <td id=\"{{ 'test-view-' + i }}\" class=\"govuk-table__cell\">\n          <a\n            class=\"govuk-link govuk-link--no-visited-state\"\n            id=\"{{ 'test-view-' + testType.testNumber }}\"\n            [routerLink]=\"['/test-record', testType.testNumber]\"\n            [queryParams]=\"{\n              testResultId: testRes.testResultId,\n              systemNumber: testRes.systemNumber\n            }\"\n            >View</a\n          >\n        </td>\n      </tr>\n    </ng-container>\n  </tbody>\n  <ng-template #noTestHistory>\n    <tbody class=\"govuk-table__body\">\n      <tr>\n        <td id=\"test-testCode-tRes-0-0\">-</td>\n        <td id=\"test-testTypeEndTimestamp-tRes-0-0\">-</td>\n        <td id=\"test-expiryDate-tRes-0-0\">-</td>\n        <td id=\"test-certificateNumber-tRes-0-0\">-</td>\n        <td id=\"test-testResult-tRes-0-0\">-</td>\n        <td id=\"test-testerName-0-0\">-</td>\n      </tr>\n    </tbody>\n  </ng-template>\n</table>\n<ng-template #hyphen>\n  <span>-</span>\n</ng-template>\n"
+        },
+        {
+            "name": "TestHistoryComponent",
+            "id": "component-TestHistoryComponent-a4242472c35f3c1b6d7821e861f2931a9ae0f1a87987191abee970ce1d6ca1e2e003754668c8477498c40e58e754d3b2f4af9bdb6cdad8864af513c3f5c08c35-1",
             "file": "archive/src/app/test-record/test-history/test-history.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -30275,75 +30361,10 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<table *ngIf=\"!editState\" class=\"govuk-table govuk-!-padding-bottom-0 govuk-!-margin-bottom-0\">\n  <thead class=\"govuk-table__head\">\n    <tr class=\"govuk-table__row\">\n      <th scope=\"col\" class=\"govuk-table__header\">Status</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Reason for creation</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Created by</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Created at</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Last updated by</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Last updated at</th>\n    </tr>\n  </thead>\n  <tbody class=\"govuk-table__body\">\n    <tr class=\"govuk-table__row\">\n      <td\n        id=\"test-testVersion-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.testVersion | titlecase | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-reasonForCreation-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.reasonForCreation | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-createdByName-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ (testRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-createdAt-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-lastUpdatedByName-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ (testRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-lastUpdatedAt-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n      </td>\n    </tr>\n    <ng-container\n      *ngFor=\"\n        let archivedTestRecord of testRecord.testHistory | SortByDatePipe: 'createdAt';\n        let i = index\n      \"\n    >\n      <tr class=\"govuk-table__row\">\n        <td\n          id=\"{{ 'test-testVersion-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.testVersion | titlecase | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-reasonForCreation-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.reasonForCreation | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-createdByName-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ (archivedTestRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-createdAt-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-lastUpdatedByName-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ (archivedTestRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-lastUpdatedAt-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n        </td>\n      </tr>\n    </ng-container>\n  </tbody>\n</table>\n"
-        },
-        {
-            "name": "TestHistoryComponent",
-            "id": "component-TestHistoryComponent-c9609143083b05e6b33d632e002cc55adeca54e2b9752c3e04fe16c9ef407cb8bc1ad7d0a20416fcd1ff4011ed2e86bfe1f1106765a83d608c9c01bdb6f3649a-1",
-            "file": "archive/src/app/technical-record/test-history/test-history.component.ts",
-            "changeDetection": "ChangeDetectionStrategy.OnPush",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "vtm-test-history",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./test-history.component.html"
-            ],
-            "viewProviders": [],
-            "inputsClass": [
-                {
-                    "name": "testResultJson",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 10,
-                    "type": "TestResultModel[]",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [
-                {
-                    "name": "ngOnInit",
-                    "args": [],
-                    "optional": false,
-                    "returnType": "void",
-                    "typeParameters": [],
-                    "line": 14,
-                    "deprecated": false,
-                    "deprecationMessage": ""
-                }
-            ],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';\nimport { TestResultModel } from '@app/models/test-result.model';\n\n@Component({\n  selector: 'vtm-test-history',\n  templateUrl: './test-history.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class TestHistoryComponent implements OnInit {\n  @Input() testResultJson: TestResultModel[];\n\n  constructor() {}\n\n  ngOnInit() {}\n}\n",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "constructorObj": {
-                "name": "constructor",
-                "description": "",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "args": [],
-                "line": 10
-            },
-            "implements": [
-                "OnInit"
-            ],
             "isDuplicate": true,
             "duplicateId": 1,
             "duplicateName": "TestHistoryComponent-1",
-            "templateData": "<table class=\"govuk-table govuk-!-margin-bottom-0\">\n  <thead class=\"govuk-table__head\">\n    <tr class=\"govuk-table__row\">\n      <th scope=\"col\" class=\"govuk-table__header\">Test type</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Test date</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Expiry date</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Certificate number</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Result</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Tester name</th>\n      <th scope=\"col\" class=\"govuk-table__header\"></th>\n    </tr>\n  </thead>\n  <tbody class=\"govuk-table__body\" *ngIf=\"testResultJson; else noTestHistory\">\n    <ng-container\n      *ngFor=\"let testRes of testResultJson | SortByDatePipe: 'testEndTimestamp'; let i = index\"\n    >\n      <tr\n        class=\"govuk-table__row\"\n        *ngFor=\"\n          let testType of testRes.testTypes | SortByDatePipe: 'testTypeEndTimestamp';\n          let ii = index\n        \"\n      >\n        <td id=\"{{ 'test-testCode-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          {{ testType.testTypeName | DefaultNullOrEmpty | titlecase }}\n        </td>\n        <td id=\"{{ 'test-testTypeEndTimestamp-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          <span *ngIf=\"testType.testTypeEndTimestamp; else hyphen\">\n            {{ testType.testTypeEndTimestamp | date: 'dd/MM/yyyy' }}\n          </span>\n        </td>\n        <td id=\"{{ 'test-expiryDate-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          <span\n            *ngIf=\"testType.testExpiryDate && testType.testExpiryDate.trim() !== ''; else hyphen\"\n          >\n            {{ testType.testExpiryDate | date: 'dd/MM/yyyy':'UTC' }}\n          </span>\n        </td>\n        <td id=\"{{ 'test-certificateNumber-tRes-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          {{ testType.certificateNumber | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-testResult-tRes-' + i + '-' + ii }}\"\n          class=\"govuk-table__cell govuk-!-font-weight-bold\"\n          [class.font--green]=\"testType.testResult === 'pass'\"\n          [class.font--blue]=\"testType.testResult === 'prs'\"\n          [class.font--red]=\"\n            testType.testResult === 'fail' || testType.testResult === 'abandoned'\n          \"\n        >\n          {{ testType.testResult | DefaultNullOrEmpty | uppercase }}\n        </td>\n        <td id=\"{{ 'test-testerName-' + i + '-' + ii }}\" class=\"govuk-table__cell\">\n          {{ testRes.testerName | DefaultNullOrEmpty }}\n        </td>\n        <td id=\"{{ 'test-view-' + i }}\" class=\"govuk-table__cell\">\n          <a\n            class=\"govuk-link govuk-link--no-visited-state\"\n            id=\"{{ 'test-view-' + testType.testNumber }}\"\n            [routerLink]=\"['/test-record', testType.testNumber]\"\n            [queryParams]=\"{\n              testResultId: testRes.testResultId,\n              systemNumber: testRes.systemNumber\n            }\"\n            >View</a\n          >\n        </td>\n      </tr>\n    </ng-container>\n  </tbody>\n  <ng-template #noTestHistory>\n    <tbody class=\"govuk-table__body\">\n      <tr>\n        <td id=\"test-testCode-tRes-0-0\">-</td>\n        <td id=\"test-testTypeEndTimestamp-tRes-0-0\">-</td>\n        <td id=\"test-expiryDate-tRes-0-0\">-</td>\n        <td id=\"test-certificateNumber-tRes-0-0\">-</td>\n        <td id=\"test-testResult-tRes-0-0\">-</td>\n        <td id=\"test-testerName-0-0\">-</td>\n      </tr>\n    </tbody>\n  </ng-template>\n</table>\n<ng-template #hyphen>\n  <span>-</span>\n</ng-template>\n"
+            "templateData": "<table *ngIf=\"!editState\" class=\"govuk-table govuk-!-padding-bottom-0 govuk-!-margin-bottom-0\">\n  <thead class=\"govuk-table__head\">\n    <tr class=\"govuk-table__row\">\n      <th scope=\"col\" class=\"govuk-table__header\">Status</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Reason for creation</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Created by</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Created at</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Last updated by</th>\n      <th scope=\"col\" class=\"govuk-table__header\">Last updated at</th>\n    </tr>\n  </thead>\n  <tbody class=\"govuk-table__body\">\n    <tr class=\"govuk-table__row\">\n      <td\n        id=\"test-testVersion-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.testVersion | titlecase | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-reasonForCreation-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.reasonForCreation | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-createdByName-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ (testRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-createdAt-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-lastUpdatedByName-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ (testRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}\n      </td>\n      <td\n        id=\"test-lastUpdatedAt-curr\"\n        class=\"govuk-table__cell\"\n        [class.border--bottom-none]=\"!testRecord.testHistory\"\n      >\n        {{ testRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n      </td>\n    </tr>\n    <ng-container\n      *ngFor=\"\n        let archivedTestRecord of testRecord.testHistory | SortByDatePipe: 'createdAt';\n        let i = index\n      \"\n    >\n      <tr class=\"govuk-table__row\">\n        <td\n          id=\"{{ 'test-testVersion-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.testVersion | titlecase | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-reasonForCreation-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.reasonForCreation | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-createdByName-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ (archivedTestRecord.createdByName?.split('@'))[0] | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-createdAt-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.createdAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-lastUpdatedByName-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ (archivedTestRecord.lastUpdatedByName?.split('@'))[0] | DefaultNullOrEmpty }}\n        </td>\n        <td\n          id=\"{{ 'test-lastUpdatedAt-arch-' + i }}\"\n          class=\"govuk-table__cell\"\n          [class.border--bottom-none]=\"testRecord.testHistory.length === i + 1\"\n        >\n          {{ archivedTestRecord.lastUpdatedAt | date: 'dd/MM/yyyy' | DefaultNullOrEmpty }}\n        </td>\n      </tr>\n    </ng-container>\n  </tbody>\n</table>\n"
         },
         {
             "name": "TestRecordComponent",
@@ -34712,13 +34733,13 @@
         },
         {
             "name": "AppModule",
-            "id": "module-AppModule-1c6362dffdc9e4256cfa82dd9427701ac07c0a24e6834c23b7855d60dac6d47c616ef74533ad6f53fedd2410d90f82482a0e2e6f763a7b992edd7c9a94c6f7e0",
+            "id": "module-AppModule-ebd24290a26bfe6f7dd073c70df433f0ebafb9f2044625ead34c422f2094a9026292d54d3a54456ed27a2df501c359312cf7c615dab926ba8a195f4f93cf75e5",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';\nimport { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';\nimport { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from \"@ngrx/store-devtools\";\nimport { localStorageSync } from 'ngrx-store-localstorage';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { FooterComponent } from './layout/footer/footer.component';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { reducers } from './reducers';\nimport { UserService } from './user-service/user-service';\nimport { HomeComponent } from './home/home.component';\nimport { HomeButtonComponent } from './home/home-button/home-button.component';\nimport { SearchComponent } from './search/search.component';\nimport { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';\nimport { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';\n\nexport function MSALInstanceFactory(): IPublicClientApplication {\n  return new PublicClientApplication({\n    auth: {\n      clientId: environment.VTM_CLIENT_ID,\n      authority: environment.VTM_AUTHORITY_ID,\n      redirectUri: environment.VTM_REDIRECT_URI\n    },\n    cache: {\n      cacheLocation: BrowserCacheLocation.LocalStorage,\n      storeAuthStateInCookie: true\n    }\n  });\n}\n\nexport function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {\n  const protectedResourceMap = new Map<string, Array<string>>();\n  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);\n\n  return {\n    interactionType: InteractionType.Redirect,\n    protectedResourceMap\n  };\n}\n\nexport function MSALGuardConfigFactory(): MsalGuardConfiguration {\n  return {\n    interactionType: InteractionType.Redirect,\n    authRequest: {\n      scopes: ['user.read']\n    },\n    loginFailedRoute: ''\n  };\n}\n\nexport function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {\n  return localStorageSync({keys: ['userservice'], rehydrate: true})(reducer);\n}\n\nconst metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];\n\n\n@NgModule({\n  declarations: [\n    AppComponent,\n    HeaderComponent,\n    FooterComponent,\n    HomeComponent,\n    HomeButtonComponent,\n    SearchComponent,\n    VehicleTechnicalRecordComponent,\n    DefaultNullOrEmpty\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    MsalModule,\n    HttpClientModule,\n    StoreModule.forRoot(\n        reducers,\n        {metaReducers}\n    ),\n    StoreDevtoolsModule.instrument({\n      name: \"VTM Web Dev Tools\",\n      maxAge: 25, // Retains last 25 states\n      logOnly: environment.production, //Log-only mode in production\n    }),\n  ],\n  providers: [\n    {\n      provide: HTTP_INTERCEPTORS,\n      useClass: MsalInterceptor,\n      multi: true\n    },\n    {\n      provide: MSAL_INSTANCE,\n      useFactory: MSALInstanceFactory\n    },\n    {\n      provide: MSAL_GUARD_CONFIG,\n      useFactory: MSALGuardConfigFactory\n    },\n    {\n      provide: MSAL_INTERCEPTOR_CONFIG,\n      useFactory: MSALInterceptorConfigFactory\n    },\n    MsalService,\n    MsalGuard,\n    MsalBroadcastService,\n    UserService,\n  ],\n  exports: [DefaultNullOrEmpty],\n  bootstrap: [AppComponent, MsalRedirectComponent]\n})\nexport class AppModule {}\n",
+            "sourceCode": "import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';\nimport { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';\nimport { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';\nimport { ActionReducer, MetaReducer } from '@ngrx/store';\nimport { localStorageSync } from 'ngrx-store-localstorage';\nimport { environment } from '../environments/environment';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\nimport { HomeButtonComponent } from './features/home/components/home-button/home-button.component';\nimport { HomeComponent } from './features/home/home.component';\nimport { FooterComponent } from './layout/footer/footer.component';\nimport { HeaderComponent } from './layout/header/header.component';\nimport { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';\nimport { SearchComponent } from './features/search/search.component';\nimport { AppStoreModule } from './store/app-store.module';\nimport { UserService } from './services/user-service/user-service';\nimport { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';\n\nexport function MSALInstanceFactory(): IPublicClientApplication {\n  return new PublicClientApplication({\n    auth: {\n      clientId: environment.VTM_CLIENT_ID,\n      authority: environment.VTM_AUTHORITY_ID,\n      redirectUri: environment.VTM_REDIRECT_URI\n    },\n    cache: {\n      cacheLocation: BrowserCacheLocation.LocalStorage,\n      storeAuthStateInCookie: true\n    }\n  });\n}\n\nexport function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {\n  const protectedResourceMap = new Map<string, Array<string>>();\n  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);\n\n  return {\n    interactionType: InteractionType.Redirect,\n    protectedResourceMap\n  };\n}\n\nexport function MSALGuardConfigFactory(): MsalGuardConfiguration {\n  return {\n    interactionType: InteractionType.Redirect,\n    authRequest: {\n      scopes: ['user.read']\n    },\n    loginFailedRoute: ''\n  };\n}\n\nexport function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {\n  return localStorageSync({ keys: ['userservice'], rehydrate: true })(reducer);\n}\n\nconst metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];\n\n@NgModule({\n  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, DefaultNullOrEmpty],\n  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule],\n  providers: [\n    {\n      provide: HTTP_INTERCEPTORS,\n      useClass: MsalInterceptor,\n      multi: true\n    },\n    {\n      provide: MSAL_INSTANCE,\n      useFactory: MSALInstanceFactory\n    },\n    {\n      provide: MSAL_GUARD_CONFIG,\n      useFactory: MSALGuardConfigFactory\n    },\n    {\n      provide: MSAL_INTERCEPTOR_CONFIG,\n      useFactory: MSALInterceptorConfigFactory\n    },\n    MsalService,\n    MsalGuard,\n    MsalBroadcastService,\n    UserService\n  ],\n  exports: [DefaultNullOrEmpty],\n  bootstrap: [AppComponent, MsalRedirectComponent]\n})\nexport class AppModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -34762,6 +34783,9 @@
                     "elements": [
                         {
                             "name": "AppRoutingModule"
+                        },
+                        {
+                            "name": "AppStoreModule"
                         }
                     ]
                 },
@@ -34899,13 +34923,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-8ce24d057ca2b860267b4888750bfd34a19da640b7c5d1ad5f72e1d321e58fce3520556ca8333bcde9a4f6ef59397517f2603495c827480723e379479fc2dad2",
+            "id": "module-AppRoutingModule-c30d058e34458c1d86e0fafee26754dc5e9e1e1126f60b6229818b9a306823835b1edb2d6c8831304088070bb837c830e0cd32a2f84da331189ea67081ec4b73",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { MsalGuard } from '@azure/msal-angular';\nimport { HomeComponent } from './home/home.component';\nimport { SearchComponent } from './search/search.component';\n\n\nconst routes: Routes = [\n  {\n    path: '',\n    component: HomeComponent,\n    canActivate: [MsalGuard]\n  },\n  {\n    path: 'search',\n    component: SearchComponent,\n    canActivate: [MsalGuard]\n  },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule {}\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\nimport { MsalGuard } from '@azure/msal-angular';\nimport { HomeComponent } from './features/home/home.component';\nimport { SearchComponent } from './features/search/search.component';\n\n\nconst routes: Routes = [\n  {\n    path: '',\n    component: HomeComponent,\n    canActivate: [MsalGuard]\n  },\n  {\n    path: 'search',\n    component: SearchComponent,\n    canActivate: [MsalGuard]\n  },\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\nexport class AppRoutingModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -34954,6 +34978,49 @@
                 {
                     "type": "imports",
                     "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "AppStoreModule",
+            "id": "module-AppStoreModule-07c7eff684e7bb8176f4b155049a9b9644732377233eeb271981a769c29eb62397ca336d4fa1d4723cd6ec79ab7bc94da534ad08563caa82b5026271605fe1ec",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/store/app-store.module.ts",
+            "methods": [],
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { NgModule } from '@angular/core';\nimport { EffectsModule } from '@ngrx/effects';\nimport { StoreModule } from '@ngrx/store';\nimport { StoreDevtoolsModule } from '@ngrx/store-devtools';\nimport { environment } from '../../environments/environment';\nimport { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';\nimport { UserStateModule } from './user/user-state.module';\n\n@NgModule({\n  declarations: [],\n  imports: [\n    CommonModule,\n    StoreModule.forRoot({}),\n    EffectsModule.forRoot([]),\n    StoreDevtoolsModule.instrument({\n      name: 'VTM Web Dev Tools',\n      maxAge: 25, // Retains last 25 states\n      logOnly: environment.production //Log-only mode in production\n    }),\n    UserStateModule,\n    TechnicalRecordsStateModule\n  ]\n})\nexport class AppStoreModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": [
+                        {
+                            "name": "TechnicalRecordsStateModule"
+                        },
+                        {
+                            "name": "UserStateModule"
+                        }
+                    ]
                 },
                 {
                     "type": "exports",
@@ -35656,6 +35723,42 @@
             ]
         },
         {
+            "name": "TechnicalRecordsStateModule",
+            "id": "module-TechnicalRecordsStateModule-84080fc1756a891c4f2e52b909f8289f1496d91a77dfc4affc2bd887d0a87a4735ee1416c7de7e84fd907bc483a53327f2d7f633ead646dddda68c732ff18c02",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/store/technical-records/technical-records-state.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { StoreModule } from '@ngrx/store';\nimport { STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer } from './technical-record-service.reducer';\nimport { EffectsModule } from '@ngrx/effects';\nimport { TechnicalRecordServiceEffects } from './technical-record-service.effects';\n\n\n\n@NgModule({\n  declarations: [],\n  imports: [\n    CommonModule,\n    StoreModule.forFeature(STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer),\n    EffectsModule.forFeature([TechnicalRecordServiceEffects])\n  ]\n})\nexport class TechnicalRecordsStateModule { }\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
             "name": "TestRecordModule",
             "id": "module-TestRecordModule-a93e166f4392d478763578f60d13c01c06f4d1e67c17eb2a4fbea42dad4ecc10953a411838b512840f28def6196f0b2de0e1db04eb13151efc93fc9cf300f278",
             "description": "",
@@ -35744,20 +35847,46 @@
                     "elements": []
                 }
             ]
+        },
+        {
+            "name": "UserStateModule",
+            "id": "module-UserStateModule-9a16f20f871b1912168cb5f570c2bdab00b3ef0db5907e04a711a4184f50fb11f1328481974db1e2e2456dd88dc948cfc952f9ce4cff736c08f4e75ec21212dc",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/store/user/user-state.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { StoreModule } from '@ngrx/store';\nimport { STORE_FEATURE_USER_KEY, userServiceReducer } from './user-service.reducer';\n\n@NgModule({\n  declarations: [],\n  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_USER_KEY, userServiceReducer)]\n})\nexport class UserStateModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
         }
     ],
     "miscellaneous": {
         "variables": [
-            {
-                "name": "_userServiceReducer",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/app/user-service/user-service.reducer.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "createReducer(\n  initialState,\n  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),\n  on(UserServiceActions.Logout, (state) => (initialState)),\n)"
-            },
             {
                 "name": "adalConfig",
                 "ctype": "miscellaneous",
@@ -35841,21 +35970,21 @@
                 "name": "COMPONENTS",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "archive/src/app/test-record/test-record.module.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[\n  TestRecordComponent,\n  VehicleComponent,\n  TestSectionComponent,\n  DefectsComponent,\n  SeatbeltInstallationCheckComponent,\n  EmissionDetailsComponent,\n  VisitComponent,\n  NotesComponent,\n  TestHistoryComponent,\n  TestRecordContainer,\n  DefectsEditComponent,\n  VehicleEditComponent,\n  SeatbeltInstallationCheckEditComponent,\n  EmissionDetailsEditComponent,\n  NotesEditComponent,\n  VisitEditComponent,\n  TimeInputComponent,\n  TestSectionEditComponent,\n  SelectTestTypeComponent,\n  SelectTestTypeContainer,\n  TreeComponent\n]"
-            },
-            {
-                "name": "COMPONENTS",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "archive/src/app/technical-record/technical-record.module.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\n  TechnicalRecordsContainer,\n  TechnicalRecordComponent,\n  RecordStatusComponent,\n  RecordStatusEditComponent,\n  RecordIdentificationComponent,\n  RecordIdentificationEditComponent,\n  VehicleSummaryComponent,\n  VehicleSummaryPsvComponent,\n  VehicleSummaryHgvComponent,\n  VehicleSummaryTrlComponent,\n  VehicleSummaryEditComponent,\n  TypeApprovalComponent,\n  NotesEditComponent,\n  BodyEditComponent,\n  BodyComponent,\n  BodyPsvComponent,\n  WeightsComponent,\n  WeightsPsvComponent,\n  WeightsEditComponent,\n  TyresComponent,\n  TyresEditComponent,\n  DimensionsComponent,\n  DimensionsEditComponent,\n  NotesComponent,\n  TestHistoryComponent,\n  TechRecHistoryComponent,\n  ApplicantComponent,\n  ApplicantEditComponent,\n  DocumentsComponent,\n  DocumentsEditComponent,\n  PlatesComponent,\n  BrakesComponent,\n  BrakesPsvComponent,\n  PurchaserComponent,\n  ManufacturerComponent,\n  AuthorisationIntoServiceComponent,\n  LettersOfAuthorisationComponent,\n  AxleBrakesComponent,\n  DdaComponent\n]"
+            },
+            {
+                "name": "COMPONENTS",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "archive/src/app/test-record/test-record.module.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "[]",
+                "defaultValue": "[\n  TestRecordComponent,\n  VehicleComponent,\n  TestSectionComponent,\n  DefectsComponent,\n  SeatbeltInstallationCheckComponent,\n  EmissionDetailsComponent,\n  VisitComponent,\n  NotesComponent,\n  TestHistoryComponent,\n  TestRecordContainer,\n  DefectsEditComponent,\n  VehicleEditComponent,\n  SeatbeltInstallationCheckEditComponent,\n  EmissionDetailsEditComponent,\n  NotesEditComponent,\n  VisitEditComponent,\n  TimeInputComponent,\n  TestSectionEditComponent,\n  SelectTestTypeComponent,\n  SelectTestTypeContainer,\n  TreeComponent\n]"
             },
             {
                 "name": "COMPOSABLE",
@@ -35905,7 +36034,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: ''\n}"
+                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: 'http://localhost:4200',\n  VTM_API_URI: 'http://localhost:3005'\n}"
             },
             {
                 "name": "environment",
@@ -35915,7 +36044,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: true,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: '',\n}"
+                "defaultValue": "{\n  production: true,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  VTM_API_URI: '',\n}"
             },
             {
                 "name": "environment",
@@ -35925,17 +36054,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: 'http://localhost:3005',\n  // apiUrl: 'https://api.develop.cvs.dvsacloud.uk'\n}"
-            },
-            {
-                "name": "environment",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "archive/src/environments/environment.dev.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\n  name: 'dev'\n}"
+                "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  VTM_API_URI: 'http://localhost:3005',\n}"
             },
             {
                 "name": "environment",
@@ -35946,6 +36065,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\n  name: 'deploy'\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "archive/src/environments/environment.dev.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  name: 'dev'\n}"
             },
             {
                 "name": "environment",
@@ -35971,7 +36100,7 @@
                 "name": "Error",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/search/search.stories.ts",
+                "file": "src/app/features/search/search.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -36076,6 +36205,36 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createSelector(\n  selectFeature,\n  (state: AppFormState) => state.pristine\n)"
+            },
+            {
+                "name": "getByVIN",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Technical Record Service] GetByVIN', props<{ vin: string }>())"
+            },
+            {
+                "name": "getByVINFailure",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Technical Record Service] GetByVIN Failure', props<{ message: string }>())"
+            },
+            {
+                "name": "getByVINSuccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Technical Record Service] GetByVIN Success', props<{ vehicleTechRecords: Array<VehicleTechRecordModel> }>())"
             },
             {
                 "name": "getCurrentModalState",
@@ -36251,11 +36410,11 @@
                 "name": "getUserState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/user-service/user-service.reducer.ts",
+                "file": "src/app/store/user/user-service.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createFeatureSelector<UserServiceState>('userservice')"
+                "defaultValue": "createFeatureSelector<UserServiceState>(STORE_FEATURE_USER_KEY)"
             },
             {
                 "name": "getVehicleTechRecordMetaData",
@@ -36266,6 +36425,16 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createSelector(\r\n  getSelectedVehicleTechRecord,\r\n  (vRecord: VehicleTechRecordModel) => vRecord.metadata\r\n)"
+            },
+            {
+                "name": "getVehicleTechRecordState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY)"
             },
             {
                 "name": "getVehicleTestResultModel",
@@ -36301,7 +36470,7 @@
                 "name": "Initial",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/search/search.stories.ts",
+                "file": "src/app/features/search/search.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -36316,6 +36485,16 @@
                 "deprecationMessage": "",
                 "type": "AppFormState",
                 "defaultValue": "{\n  pristine: true\n}"
+            },
+            {
+                "name": "initialAppState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/index.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\n  [STORE_FEATURE_USER_KEY]: initialUserState,\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState\n}"
             },
             {
                 "name": "initialAppState",
@@ -36371,11 +36550,21 @@
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/user-service/user-service.reducer.ts",
+                "file": "src/app/store/user/user-service.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "UserServiceState",
                 "defaultValue": "{\n  username: \"(Not logged in)\",\n}"
+            },
+            {
+                "name": "initialState",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "TechnicalRecordServiceState",
+                "defaultValue": "{\n  vehicleTechRecords: []\n}"
             },
             {
                 "name": "initialVehicleTechRecordModelState",
@@ -36401,7 +36590,7 @@
                 "name": "Loading",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/search/search.stories.ts",
+                "file": "src/app/features/search/search.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -36411,7 +36600,7 @@
                 "name": "Login",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/user-service/user-service.actions.ts",
+                "file": "src/app/store/user/user-service.actions.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -36421,7 +36610,7 @@
                 "name": "Logout",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/user-service/user-service.actions.ts",
+                "file": "src/app/store/user/user-service.actions.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -36451,7 +36640,7 @@
                 "name": "metaReducers",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/reducers/index.ts",
+                "file": "src/app/store/index.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "MetaReducer[]",
@@ -36466,6 +36655,16 @@
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\r\n  'PSV Miscellaneous',\r\n  'AAT - Trailer Annual Test',\r\n  'AIV - HGV International App',\r\n  'COIF Modification',\r\n  'Trailer COC + Int Plate',\r\n  'RCT - Trailer Test Cert paid',\r\n  'HGV COC + Int Plate',\r\n  'PSV Carry/Auth, OMO Report',\r\n  'AIT - Trailer International App',\r\n  'IPV - HGV EEC Plate/Cert',\r\n  'XCV - HGV Test Cert free',\r\n  'AAV - HGV Annual Test',\r\n  'COIF Master',\r\n  'Tempo 100 Sp Ord',\r\n  'Deleted',\r\n  'PSV N/ALT',\r\n  'XPT - Tr Plating Cert paid',\r\n  'FFV - HGV First Test',\r\n  'Repl Vitesse 100',\r\n  'TCV - HGV Test Cert',\r\n  'ZZZ - Miscellaneous',\r\n  'Test Certificate',\r\n  'XCT - Trailer Test Cert free',\r\n  'C52 - COC and VTG52A',\r\n  'Tempo 100 Report',\r\n  'Main File Amendment',\r\n  'PSV Doc',\r\n  'PSV COC',\r\n  'PSV Repl COC',\r\n  'TAV - COC',\r\n  'NPT - Trailer Alteration',\r\n  'OMO Certificate',\r\n  'PSV Repl COIF',\r\n  'PSV Repl COF',\r\n  'COIF Application',\r\n  'XPV - HGV Plating Cert Free',\r\n  'TCT - Trailer Test Cert',\r\n  'Tempo 100 App',\r\n  'PSV Decision on N/ALT',\r\n  'Special Order PSV',\r\n  'NPV - HGV Alteration',\r\n  'No Description Found',\r\n  'Vitesse 100 Sp Ord',\r\n  'Brake Test Details',\r\n  'COIF Productional',\r\n  'RDT - Test Disc Paid',\r\n  'RCV - HGV Test Cert',\r\n  'FFT - Trailer First Test',\r\n  'IPT - Trailer EEC Plate/Cert',\r\n  'XDT - Test Disc Free',\r\n  'PRV - HGV Plating Cert paid',\r\n  'COF Cert, PRT - Tr Plating Cert paid',\r\n  'Tempo 100 Permit'\r\n]"
+            },
+            {
+                "name": "middlewares",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "mock-api/mock-api-server.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "jsonServer.defaults()"
             },
             {
                 "name": "MODULES",
@@ -36531,16 +36730,6 @@
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/home/home.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story",
-                "defaultValue": "() => ({\n  props: {\n  },\n})"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
                 "file": "src/app/vehicle-technical-record/vehicle-technical-record.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
@@ -36551,11 +36740,21 @@
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/home/home-button/home-button.stories.ts",
+                "file": "src/app/features/home/home.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "() => ({\n  props: {\n  },\n})"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/layout/header/header.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "() => ({\n  props: {\n    username: 'username'\n  }\n})"
             },
             {
                 "name": "Primary",
@@ -36571,11 +36770,11 @@
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/layout/header/header.stories.ts",
+                "file": "src/app/features/home/components/home-button/home-button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "() => ({\n  props: {\n    username: 'username'\n  }\n})"
+                "defaultValue": "() => ({\n  props: {\n  },\n})"
             },
             {
                 "name": "PRODUCT_LIST",
@@ -36621,11 +36820,11 @@
                 "name": "reducers",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/reducers/index.ts",
+                "file": "src/app/store/index.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "ActionReducerMap<State>",
-                "defaultValue": "{\n  \"userservice\": UserServiceReducer\n}"
+                "defaultValue": "{\n  [STORE_FEATURE_USER_KEY]: userServiceReducer,\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,\n}"
             },
             {
                 "name": "ROOT_EFFECTS",
@@ -36636,6 +36835,16 @@
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\r\n  VehicleTechRecordModelEffects,\r\n  ModalEffects,\r\n  AppFormEffects,\r\n  RouterEffects\r\n]"
+            },
+            {
+                "name": "router",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "mock-api/mock-api-server.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "jsonServer.router('{}')"
             },
             {
                 "name": "selectFeature",
@@ -36728,6 +36937,16 @@
                 "defaultValue": "createSelector(\r\n  selectFeature,\r\n  (state: VehicleTechRecordState) => state.vehicleTechRecordModel\r\n)"
             },
             {
+                "name": "server",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "mock-api/mock-api-server.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "jsonServer.create()"
+            },
+            {
                 "name": "STATEMENT",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -36738,10 +36957,30 @@
                 "defaultValue": "'statement'"
             },
             {
+                "name": "STORE_FEATURE_TECHNICAL_RECORDS_KEY",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "string",
+                "defaultValue": "'TechnicalRecords'"
+            },
+            {
+                "name": "STORE_FEATURE_USER_KEY",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/user/user-service.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "string",
+                "defaultValue": "\"user\""
+            },
+            {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/search/search.stories.ts",
+                "file": "src/app/vehicle-technical-record/vehicle-technical-record.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -36751,7 +36990,7 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/vehicle-technical-record/vehicle-technical-record.stories.ts",
+                "file": "src/app/features/search/search.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -36803,11 +37042,21 @@
                 "name": "username",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/user-service/user-service.reducer.ts",
+                "file": "src/app/store/user/user-service.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "createSelector(getUserState, (state) => state.username)"
+            },
+            {
+                "name": "userServiceReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/user/user-service.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer(\n  initialState,\n  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),\n  on(UserServiceActions.Logout, (state) => (initialState)),\n)"
             },
             {
                 "name": "UUID_REGEX",
@@ -36848,6 +37097,26 @@
                 "deprecationMessage": "",
                 "type": "[]",
                 "defaultValue": "[\r\n  'm1',\r\n  'm2',\r\n  'm3',\r\n  'n1',\r\n  'n2',\r\n  'n3',\r\n  'o1',\r\n  'o2',\r\n  'o3',\r\n  'o4',\r\n  'l1e-a',\r\n  'l1e',\r\n  'l2e',\r\n  'l3e',\r\n  'l4e',\r\n  'l5e',\r\n  'l6e',\r\n  'l7e'\r\n]"
+            },
+            {
+                "name": "vehicleTechRecordReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer(\n  initialState,\n  on(TechnicalRecordServiceActions.getByVIN, (state) => ({ ...state, vehicleTechRecords: [] })),\n  on(TechnicalRecordServiceActions.getByVINSuccess, (state, { vehicleTechRecords }) => ({ ...state, vehicleTechRecords }))\n)"
+            },
+            {
+                "name": "vehicleTechRecords",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/store/technical-records/technical-record-service.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(getVehicleTechRecordState, (state) => state.vehicleTechRecords)"
             }
         ],
         "functions": [
@@ -38453,49 +38722,6 @@
                     {
                         "name": "sectionTitle",
                         "type": "",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    }
-                ]
-            },
-            {
-                "name": "UserServiceReducer",
-                "file": "src/app/user-service/user-service.reducer.ts",
-                "ctype": "miscellaneous",
-                "subtype": "function",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "description": "",
-                "args": [
-                    {
-                        "name": "state",
-                        "type": "UserServiceState",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    },
-                    {
-                        "name": "action",
-                        "type": "any",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    }
-                ],
-                "jsdoctags": [
-                    {
-                        "name": "state",
-                        "type": "UserServiceState",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
-                    {
-                        "name": "action",
-                        "type": "any",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -42229,48 +42455,6 @@
             }
         ],
         "groupedVariables": {
-            "src/app/user-service/user-service.reducer.ts": [
-                {
-                    "name": "_userServiceReducer",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/user-service/user-service.reducer.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "createReducer(\n  initialState,\n  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),\n  on(UserServiceActions.Logout, (state) => (initialState)),\n)"
-                },
-                {
-                    "name": "getUserState",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/user-service/user-service.reducer.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "createFeatureSelector<UserServiceState>('userservice')"
-                },
-                {
-                    "name": "initialState",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/user-service/user-service.reducer.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "UserServiceState",
-                    "defaultValue": "{\n  username: \"(Not logged in)\",\n}"
-                },
-                {
-                    "name": "username",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/user-service/user-service.reducer.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "createSelector(getUserState, (state) => state.username)"
-                }
-            ],
             "archive/src/app/app.module.ts": [
                 {
                     "name": "adalConfig",
@@ -42448,6 +42632,18 @@
                     "defaultValue": "(config) => merge({}, baseConfig, config)"
                 }
             ],
+            "archive/src/app/technical-record/technical-record.module.ts": [
+                {
+                    "name": "COMPONENTS",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "archive/src/app/technical-record/technical-record.module.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "[]",
+                    "defaultValue": "[\n  TechnicalRecordsContainer,\n  TechnicalRecordComponent,\n  RecordStatusComponent,\n  RecordStatusEditComponent,\n  RecordIdentificationComponent,\n  RecordIdentificationEditComponent,\n  VehicleSummaryComponent,\n  VehicleSummaryPsvComponent,\n  VehicleSummaryHgvComponent,\n  VehicleSummaryTrlComponent,\n  VehicleSummaryEditComponent,\n  TypeApprovalComponent,\n  NotesEditComponent,\n  BodyEditComponent,\n  BodyComponent,\n  BodyPsvComponent,\n  WeightsComponent,\n  WeightsPsvComponent,\n  WeightsEditComponent,\n  TyresComponent,\n  TyresEditComponent,\n  DimensionsComponent,\n  DimensionsEditComponent,\n  NotesComponent,\n  TestHistoryComponent,\n  TechRecHistoryComponent,\n  ApplicantComponent,\n  ApplicantEditComponent,\n  DocumentsComponent,\n  DocumentsEditComponent,\n  PlatesComponent,\n  BrakesComponent,\n  BrakesPsvComponent,\n  PurchaserComponent,\n  ManufacturerComponent,\n  AuthorisationIntoServiceComponent,\n  LettersOfAuthorisationComponent,\n  AxleBrakesComponent,\n  DdaComponent\n]"
+                }
+            ],
             "archive/src/app/test-record/test-record.module.ts": [
                 {
                     "name": "COMPONENTS",
@@ -42468,18 +42664,6 @@
                     "deprecationMessage": "",
                     "type": "[]",
                     "defaultValue": "[\n  CommonModule,\n  RouterModule.forChild([\n    {\n      path: 'test-record/:id',\n      component: TestRecordContainer,\n      canActivate: [\n        AuthenticationGuard,\n        TestResultGuard,\n        PreparersGuard,\n        TestStationsGuard,\n        FormStateGuard\n      ]\n    },\n    {\n      path: 'select-test-type/:id',\n      component: SelectTestTypeContainer,\n      canActivate: [TestTypeCategoriesGuard]\n    }\n  ]),\n  EffectsModule.forFeature([VehicleTestResultModelEffects]),\n  SharedModule,\n  LibrariesModule,\n  ReactiveFormsModule,\n  MaterialModule\n]"
-                }
-            ],
-            "archive/src/app/technical-record/technical-record.module.ts": [
-                {
-                    "name": "COMPONENTS",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "archive/src/app/technical-record/technical-record.module.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "[]",
-                    "defaultValue": "[\n  TechnicalRecordsContainer,\n  TechnicalRecordComponent,\n  RecordStatusComponent,\n  RecordStatusEditComponent,\n  RecordIdentificationComponent,\n  RecordIdentificationEditComponent,\n  VehicleSummaryComponent,\n  VehicleSummaryPsvComponent,\n  VehicleSummaryHgvComponent,\n  VehicleSummaryTrlComponent,\n  VehicleSummaryEditComponent,\n  TypeApprovalComponent,\n  NotesEditComponent,\n  BodyEditComponent,\n  BodyComponent,\n  BodyPsvComponent,\n  WeightsComponent,\n  WeightsPsvComponent,\n  WeightsEditComponent,\n  TyresComponent,\n  TyresEditComponent,\n  DimensionsComponent,\n  DimensionsEditComponent,\n  NotesComponent,\n  TestHistoryComponent,\n  TechRecHistoryComponent,\n  ApplicantComponent,\n  ApplicantEditComponent,\n  DocumentsComponent,\n  DocumentsEditComponent,\n  PlatesComponent,\n  BrakesComponent,\n  BrakesPsvComponent,\n  PurchaserComponent,\n  ManufacturerComponent,\n  AuthorisationIntoServiceComponent,\n  LettersOfAuthorisationComponent,\n  AxleBrakesComponent,\n  DdaComponent\n]"
                 }
             ],
             "archive/src/app/technical-record/adr/adr.module.ts": [
@@ -42535,7 +42719,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: ''\n}"
+                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: 'http://localhost:4200',\n  VTM_API_URI: 'http://localhost:3005'\n}"
                 }
             ],
             "src/environments/environment.prod.ts": [
@@ -42547,7 +42731,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: true,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: '',\n}"
+                    "defaultValue": "{\n  production: true,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  VTM_API_URI: '',\n}"
                 }
             ],
             "src/environments/environment.ts": [
@@ -42559,19 +42743,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  apiUrl: 'http://localhost:3005',\n  // apiUrl: 'https://api.develop.cvs.dvsacloud.uk'\n}"
-                }
-            ],
-            "archive/src/environments/environment.dev.ts": [
-                {
-                    "name": "environment",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "archive/src/environments/environment.dev.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\n  name: 'dev'\n}"
+                    "defaultValue": "{\n  production: false,\n  VTM_CLIENT_ID: '',\n  VTM_AUTHORITY_ID: '',\n  VTM_REDIRECT_URI: '/',\n  VTM_API_URI: 'http://localhost:3005',\n}"
                 }
             ],
             "archive/src/environments/environment.deploy.ts": [
@@ -42584,6 +42756,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  name: 'deploy'\n}"
+                }
+            ],
+            "archive/src/environments/environment.dev.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "archive/src/environments/environment.dev.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  name: 'dev'\n}"
                 }
             ],
             "archive/src/environments/environment.prod.ts": [
@@ -42610,12 +42794,12 @@
                     "defaultValue": "{\n  name: 'dev',\n  production: false,\n  APIServerUri: 'http://localhost:3005',\n  APITestResultServerUri: `http://localhost:3006`\n}"
                 }
             ],
-            "src/app/search/search.stories.ts": [
+            "src/app/features/search/search.stories.ts": [
                 {
                     "name": "Error",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/search/search.stories.ts",
+                    "file": "src/app/features/search/search.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -42625,7 +42809,7 @@
                     "name": "Initial",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/search/search.stories.ts",
+                    "file": "src/app/features/search/search.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -42635,7 +42819,7 @@
                     "name": "Loading",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/search/search.stories.ts",
+                    "file": "src/app/features/search/search.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -42645,7 +42829,7 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/search/search.stories.ts",
+                    "file": "src/app/features/search/search.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -42838,6 +43022,38 @@
                     "deprecationMessage": "",
                     "type": "",
                     "defaultValue": "createFeatureSelector<AppFormState>('appFormState')"
+                }
+            ],
+            "src/app/store/technical-records/technical-record-service.actions.ts": [
+                {
+                    "name": "getByVIN",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Technical Record Service] GetByVIN', props<{ vin: string }>())"
+                },
+                {
+                    "name": "getByVINFailure",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Technical Record Service] GetByVIN Failure', props<{ message: string }>())"
+                },
+                {
+                    "name": "getByVINSuccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Technical Record Service] GetByVIN Success', props<{ vehicleTechRecords: Array<VehicleTechRecordModel> }>())"
                 }
             ],
             "archive/src/app/modal/modal.selectors.ts": [
@@ -43062,6 +43278,100 @@
                     "defaultValue": "createFeatureSelector<RouterReducerState<RouterStateUrl>>(\r\n  'router'\r\n)"
                 }
             ],
+            "src/app/store/user/user-service.reducer.ts": [
+                {
+                    "name": "getUserState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/user/user-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createFeatureSelector<UserServiceState>(STORE_FEATURE_USER_KEY)"
+                },
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/user/user-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "UserServiceState",
+                    "defaultValue": "{\n  username: \"(Not logged in)\",\n}"
+                },
+                {
+                    "name": "STORE_FEATURE_USER_KEY",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/user/user-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "defaultValue": "\"user\""
+                },
+                {
+                    "name": "username",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/user/user-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(getUserState, (state) => state.username)"
+                },
+                {
+                    "name": "userServiceReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/user/user-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer(\n  initialState,\n  on(UserServiceActions.Login, (state, { name }) => ({ username: name })),\n  on(UserServiceActions.Logout, (state) => (initialState)),\n)"
+                }
+            ],
+            "src/app/store/technical-records/technical-record-service.reducer.ts": [
+                {
+                    "name": "getVehicleTechRecordState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY)"
+                },
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TechnicalRecordServiceState",
+                    "defaultValue": "{\n  vehicleTechRecords: []\n}"
+                },
+                {
+                    "name": "STORE_FEATURE_TECHNICAL_RECORDS_KEY",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "defaultValue": "'TechnicalRecords'"
+                },
+                {
+                    "name": "vehicleTechRecordReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer(\n  initialState,\n  on(TechnicalRecordServiceActions.getByVIN, (state) => ({ ...state, vehicleTechRecords: [] })),\n  on(TechnicalRecordServiceActions.getByVINSuccess, (state, { vehicleTechRecords }) => ({ ...state, vehicleTechRecords }))\n)"
+                }
+            ],
             "archive/src/app/shared/components/date-input/date-input.component.ts": [
                 {
                     "name": "index",
@@ -43096,6 +43406,38 @@
                     "deprecationMessage": "",
                     "type": "AppFormState",
                     "defaultValue": "{\n  pristine: true\n}"
+                }
+            ],
+            "src/app/store/index.ts": [
+                {
+                    "name": "initialAppState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\n  [STORE_FEATURE_USER_KEY]: initialUserState,\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState\n}"
+                },
+                {
+                    "name": "metaReducers",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MetaReducer[]",
+                    "defaultValue": "!environment.production ? [] : []"
+                },
+                {
+                    "name": "reducers",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/index.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ActionReducerMap<State>",
+                    "defaultValue": "{\n  [STORE_FEATURE_USER_KEY]: userServiceReducer,\n  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,\n}"
                 }
             ],
             "archive/src/app/store/reducers/error.reducers.ts": [
@@ -43170,12 +43512,12 @@
                     "defaultValue": "{\n  vehicleTestResultModel: null,\n  selectedTestResultModel: null,\n  editState: VIEW_STATE.VIEW_ONLY,\n  error: null\n}"
                 }
             ],
-            "src/app/user-service/user-service.actions.ts": [
+            "src/app/store/user/user-service.actions.ts": [
                 {
                     "name": "Login",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/user-service/user-service.actions.ts",
+                    "file": "src/app/store/user/user-service.actions.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -43185,7 +43527,7 @@
                     "name": "Logout",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/user-service/user-service.actions.ts",
+                    "file": "src/app/store/user/user-service.actions.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -43216,26 +43558,36 @@
                     "defaultValue": "[localStorageSyncReducer]"
                 }
             ],
-            "src/app/reducers/index.ts": [
+            "mock-api/mock-api-server.ts": [
                 {
-                    "name": "metaReducers",
+                    "name": "middlewares",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/reducers/index.ts",
+                    "file": "mock-api/mock-api-server.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "MetaReducer[]",
-                    "defaultValue": "!environment.production ? [] : []"
+                    "type": "",
+                    "defaultValue": "jsonServer.defaults()"
                 },
                 {
-                    "name": "reducers",
+                    "name": "router",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/reducers/index.ts",
+                    "file": "mock-api/mock-api-server.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "ActionReducerMap<State>",
-                    "defaultValue": "{\n  \"userservice\": UserServiceReducer\n}"
+                    "type": "",
+                    "defaultValue": "jsonServer.router('{}')"
+                },
+                {
+                    "name": "server",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "mock-api/mock-api-server.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "jsonServer.create()"
                 }
             ],
             "archive/src/app/shared/shared.module.ts": [
@@ -43286,18 +43638,6 @@
                     "defaultValue": "() => ({\n  props: {}\n})"
                 }
             ],
-            "src/app/home/home.stories.ts": [
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/home/home.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "() => ({\n  props: {\n  },\n})"
-                }
-            ],
             "src/app/vehicle-technical-record/vehicle-technical-record.stories.ts": [
                 {
                     "name": "Primary",
@@ -43320,28 +43660,16 @@
                     "defaultValue": "(args) => ({\n  props: args,\n})"
                 }
             ],
-            "src/app/home/home-button/home-button.stories.ts": [
+            "src/app/features/home/home.stories.ts": [
                 {
                     "name": "Primary",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/home/home-button/home-button.stories.ts",
+                    "file": "src/app/features/home/home.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "() => ({\n  props: {\n  },\n})"
-                }
-            ],
-            "src/app/layout/footer/footer.stories.ts": [
-                {
-                    "name": "Primary",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/app/layout/footer/footer.stories.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "Story",
-                    "defaultValue": "() => ({\n  props: {}\n})"
                 }
             ],
             "src/app/layout/header/header.stories.ts": [
@@ -43364,6 +43692,30 @@
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "() => ({\n  props: {}\n})"
+                }
+            ],
+            "src/app/layout/footer/footer.stories.ts": [
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/layout/footer/footer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {}\n})"
+                }
+            ],
+            "src/app/features/home/components/home-button/home-button.stories.ts": [
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/features/home/components/home-button/home-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "() => ({\n  props: {\n  },\n})"
                 }
             ],
             "archive/src/app/app.enums.ts": [
@@ -43434,6 +43786,18 @@
                     "defaultValue": "{\n  mockApplicantDetails,\n  mockFormGroupDirective,\n  mockVehicleDetails,\n  mockAdrDetails,\n  mockTank,\n  mockTankDetails,\n  mockTc2Details,\n  mockTc3Details,\n  mockMetaData,\n  mockTechRecord,\n  mockApplicant,\n  mockMicrofilm,\n  mockPlates,\n  mockAuthoIntoService,\n  mockLettersOfAuth,\n  mockPurchaser,\n  mockManufacturer,\n  mockAxle,\n  mockBrakes,\n  mockBodyType,\n  mockAxleSpacing,\n  mockDDA,\n  mockBrakeForceWheelsNotLocked,\n  mockBrakeForceWheelsUpToHalfLocked,\n  mockDimensions\n}",
                     "rawdescription": "*******************SOME GROUND RULES*************************************\n\n\nWe use this util file essentially for unit testing to enable a clean mock object provision\nfor our unit testing. Ideally more simplified object should/can be added.\nAmendments of returned object should be done less often or not at ALL. We use\npartial<T> object implementation hence the required object update(s) should be\npassed in from the specific unit test of interest.",
                     "description": "<p><em><strong><strong><strong><strong><strong><strong><strong><strong><strong>SOME GROUND RULES</strong></strong></strong></strong></strong></strong></strong></strong></strong></em>******************</p>\n<p>We use this util file essentially for unit testing to enable a clean mock object provision\nfor our unit testing. Ideally more simplified object should/can be added.\nAmendments of returned object should be done less often or not at ALL. We use\npartial<T> object implementation hence the required object update(s) should be\npassed in from the specific unit test of interest.</p>\n"
+                }
+            ],
+            "src/app/store/technical-records/technical-record-service.selectors.ts": [
+                {
+                    "name": "vehicleTechRecords",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/store/technical-records/technical-record-service.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(getVehicleTechRecordState, (state) => state.vehicleTechRecords)"
                 }
             ]
         },
@@ -45071,51 +45435,6 @@
                         {
                             "name": "sectionTitle",
                             "type": "",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "src/app/user-service/user-service.reducer.ts": [
-                {
-                    "name": "UserServiceReducer",
-                    "file": "src/app/user-service/user-service.reducer.ts",
-                    "ctype": "miscellaneous",
-                    "subtype": "function",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "description": "",
-                    "args": [
-                        {
-                            "name": "state",
-                            "type": "UserServiceState",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        },
-                        {
-                            "name": "action",
-                            "type": "any",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        }
-                    ],
-                    "jsdoctags": [
-                        {
-                            "name": "state",
-                            "type": "UserServiceState",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        },
-                        {
-                            "name": "action",
-                            "type": "any",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -52697,12 +53016,42 @@
                 "status": "low"
             },
             {
+                "filePath": "mock-api/mock-api-server.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "middlewares",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "mock-api/mock-api-server.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "router",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "mock-api/mock-api-server.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "server",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/app.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "AppComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -52766,7 +53115,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/home/home-button/home-button.component.ts",
+                "filePath": "src/app/features/home/components/home-button/home-button.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "HomeButtonComponent",
@@ -52775,7 +53124,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/home/home-button/home-button.stories.ts",
+                "filePath": "src/app/features/home/components/home-button/home-button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -52785,7 +53134,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/home/home.component.ts",
+                "filePath": "src/app/features/home/home.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "HomeComponent",
@@ -52794,11 +53143,60 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/home/home.stories.ts",
+                "filePath": "src/app/features/home/home.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
                 "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/features/search/search.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SearchComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/features/search/search.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Error",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/features/search/search.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Initial",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/features/search/search.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Loading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/features/search/search.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -53230,16 +53628,44 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/reducers/index.ts",
+                "filePath": "src/app/services/technical-record/technical-record.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "TechnicalRecordService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/user-service/user-service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "UserService",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/index.ts",
                 "type": "interface",
                 "linktype": "interface",
                 "name": "State",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/index.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialAppState",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/reducers/index.ts",
+                "filePath": "src/app/store/index.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -53249,7 +53675,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/reducers/index.ts",
+                "filePath": "src/app/store/index.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -53259,133 +53685,65 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/search/search.component.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "SearchComponent",
-                "coveragePercent": 0,
-                "coverageCount": "0/6",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/search/search.stories.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.actions.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Error",
+                "name": "getByVIN",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/search/search.stories.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.actions.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Initial",
+                "name": "getByVINFailure",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/search/search.stories.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.actions.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Loading",
+                "name": "getByVINSuccess",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/search/search.stories.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Template",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/services/technical-record.service.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.effects.ts",
                 "type": "injectable",
                 "linktype": "injectable",
-                "name": "TechnicalRecordService",
+                "name": "TechnicalRecordServiceEffects",
                 "coveragePercent": 0,
                 "coverageCount": "0/3",
                 "status": "low"
             },
             {
-                "filePath": "src/app/user-service.ts",
-                "type": "injectable",
-                "linktype": "injectable",
-                "name": "UserService",
-                "coveragePercent": 0,
-                "coverageCount": "0/7",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/user-service/user-service.actions.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Login",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/user-service/user-service.actions.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "Logout",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/user-service/user-service.reducer.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.reducer.ts",
                 "type": "interface",
                 "linktype": "interface",
-                "name": "UserServiceState",
+                "name": "TechnicalRecordServiceState",
                 "coveragePercent": 0,
                 "coverageCount": "0/2",
                 "status": "low"
             },
             {
-                "filePath": "src/app/user-service/user-service.reducer.ts",
-                "type": "function",
-                "linktype": "miscellaneous",
-                "linksubtype": "function",
-                "name": "UserServiceReducer",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/user-service/user-service.reducer.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.reducer.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "_userServiceReducer",
+                "name": "getVehicleTechRecordState",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/user-service/user-service.reducer.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "getUserState",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/user-service/user-service.reducer.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.reducer.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -53395,7 +53753,96 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/user-service/user-service.reducer.ts",
+                "filePath": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "STORE_FEATURE_TECHNICAL_RECORDS_KEY",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/technical-records/technical-record-service.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "vehicleTechRecordReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/technical-records/technical-record-service.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "vehicleTechRecords",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Login",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Logout",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.reducer.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "UserServiceState",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getUserState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "STORE_FEATURE_USER_KEY",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/store/user/user-service.reducer.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -53405,12 +53852,13 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/user-service/user-service.ts",
-                "type": "injectable",
-                "linktype": "injectable",
-                "name": "UserService",
+                "filePath": "src/app/store/user/user-service.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "userServiceReducer",
                 "coveragePercent": 0,
-                "coverageCount": "0/6",
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
