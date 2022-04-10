@@ -8,7 +8,7 @@ export interface TestRecordServiceState {
   testRecords?: TestResultModel[];
 }
 
-const initialState: TestRecordServiceState = {
+export const initialState: TestRecordServiceState = {
   testRecords: [],
 };
 

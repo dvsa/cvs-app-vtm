@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { TestResultModel } from '../../models/test-result.model';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import *  as TestRecordServiceState from '../../store/test-records/test-record-service.reducer';
 import *  as TestRecordServiceActions from '../../store/test-records/test-record-service.actions';
 

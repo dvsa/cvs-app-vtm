@@ -4,7 +4,7 @@ import { TestRecordSummaryComponent } from './test-record-summary.component';
 
 describe('TestRecordSummaryComponent', () => {
   let component: TestRecordSummaryComponent;
-  let fixture: ComponentFixture<FooterComponent>;
+  let fixture: ComponentFixture<TestRecordSummaryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
