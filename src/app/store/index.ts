@@ -19,7 +19,7 @@ export const initialAppState = {
 export const reducers: ActionReducerMap<State> = {
   [STORE_FEATURE_USER_KEY]: userServiceReducer,
   [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,
-  [STORE_FEATURE_TEST_RECORD_KEY]: testRecordServiceReducer,
+  [STORE_FEATURE_TEST_RECORD_KEY]: testRecordServiceReducer
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

@@ -16,12 +16,8 @@ const getVehicleTestRecordState = createFeatureSelector<TestRecordServiceState>(
 
 export const testRecords = createSelector(getVehicleTestRecordState, (state) => state);
 
-const _vehicleTestRecordReducer = createReducer(
+export const testRecordServiceReducer = createReducer(
   initialState,
-  on(TestRecordServiceActions.getBySystemId, (state) => {console.log(state); return state}),
+  on(TestRecordServiceActions.getBySystemId, (state) => (state)),
   on(TestRecordServiceActions.getBySystemIdSuccess, (state, props) => ({ testRecords: props.testRecords })),
 );
-
-export function testRecordServiceReducer(state: TestRecordServiceState, action: any) {
-  return _vehicleTestRecordReducer(state, action);
-}
