@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { HeaderComponent } from './header.component';
 
-
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
@@ -30,7 +29,7 @@ describe('HeaderComponent', () => {
   });
 
   it('Change username updates page', () => {
-    component.username = "Test";
+    component.username = 'Test';
     fixture.detectChanges();
     expect(userNameText.innerHTML).toBe('Test');
   });

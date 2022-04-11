@@ -7,9 +7,8 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VehicleTechnicalRecordComponent ]
-    })
-    .compileComponents();
+      declarations: [VehicleTechnicalRecordComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

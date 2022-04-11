@@ -1,4 +1,3 @@
-import { TestResultModel } from '@models/test-result.model';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';
 import * as TechnicalRecordServiceActions from './technical-record-service.actions';
@@ -10,7 +9,7 @@ export interface TechnicalRecordServiceState {
 }
 
 export const initialState: TechnicalRecordServiceState = {
-  vehicleTechRecords: [],
+  vehicleTechRecords: []
 };
 
 export const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);

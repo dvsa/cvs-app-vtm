@@ -1,22 +1,13 @@
-import { VrmModel } from './vrm.model';
-import { TechRecord } from './tech-record.model';
-import { MetaData } from './meta-data';
-// import { UserDetails } from './user-details';
-// import { VIEW_STATE } from './app.enums';
-
 export interface VehicleTechRecordModel {
   vrms: VrmModel[];
   vin: string;
   trailerId?: string;
   systemNumber: string;
-  techRecord: TechRecord[];
-  metadata: MetaData;
 }
 
-export interface VehicleIdentifiers {
-  vin: string;
+export interface VrmModel {
   vrm: string;
-  vType: string;
+  isPrimary: boolean;
 }
 
 // export interface VehicleTechRecordEdit {

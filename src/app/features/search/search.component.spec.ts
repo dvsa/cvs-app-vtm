@@ -9,6 +9,7 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let technicalRecordService: TechnicalRecordService;
+  let searchBySpy = jest.fn();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,10 +23,20 @@ describe('SearchComponent', () => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     technicalRecordService = TestBed.inject(TechnicalRecordService);
+    technicalRecordService.searchBy = searchBySpy;
     fixture.detectChanges();
+
+    jest.clearAllMocks();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call the service to search by VIN', () => {
+    const searchParams = { searchTerm: 'A_VIN_', type: 'vin' };
+    component.searchTechRecords(searchParams.searchTerm);
+
+    expect(searchBySpy).toBeCalledWith(searchParams);
   });
 });

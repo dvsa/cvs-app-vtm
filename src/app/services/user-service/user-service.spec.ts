@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { Store } from '@ngrx/store';
 import { skip } from 'rxjs';
-import { AppModule } from "../../app.module";
+import { AppModule } from '../../app.module';
 import { UserServiceState } from '../../store/user/user-service.reducer';
 import { UserService } from './user-service';
-
 
 describe('User-Service', () => {
   let service: UserService;
@@ -17,15 +16,8 @@ describe('User-Service', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [
-        AppModule,
-        RouterTestingModule
-      ],
-      providers: [
-        Store,
-        MsalService,
-        MsalBroadcastService,
-      ],
+      imports: [AppModule, RouterTestingModule],
+      providers: [Store, MsalService, MsalBroadcastService]
     });
 
     mockStore = TestBed.inject(Store);
@@ -48,5 +40,4 @@ describe('User-Service', () => {
 
     service.logIn('you reading this?');
   });
-
 });

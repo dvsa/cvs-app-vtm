@@ -10,10 +10,9 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeComponent, HomeButtonComponent ],
+      declarations: [HomeComponent, HomeButtonComponent],
       imports: [RouterTestingModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
