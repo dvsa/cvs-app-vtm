@@ -13,18 +13,18 @@ const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
-        data: {title: 'Home'}
-        // canActivate: [MsalGuard]
+        data: { title: 'Home' },
+        canActivate: [MsalGuard]
       },
       {
         path: 'search',
         component: SearchComponent,
-        data: {title: 'Technical record search'}
-        // canActivate: [MsalGuard]
+        data: { title: 'Technical record search' },
+        canActivate: [MsalGuard]
       },
       {
         path: 'test-results',
-        // canLoad: [MsalGuard],
+        canLoad: [MsalGuard],
         loadChildren: () => import('./features/test-results/test-results.module').then((m) => m.TestResultsModule)
       }
     ]

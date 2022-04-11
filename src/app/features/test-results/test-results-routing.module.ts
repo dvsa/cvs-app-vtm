@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: TestResultsComponent,
-    // canActivateChild: [MsalGuard],
+    canActivateChild: [MsalGuard],
     children: [
       {
         path: ':systemId',

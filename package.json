@@ -9,7 +9,8 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "config": "ts-node ./setenv.ts",
+    "start": "npm run config -- --environment=dev && ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "watch": "ng build --watch",
     "sonar-scanner": "npm run test && sonar-scanner",
@@ -72,11 +73,12 @@
     "@storybook/testing-library": "0.0.9",
     "@types/jest": "^27.4.1",
     "@types/json-server": "^0.14.4",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.20.47",
     "@typescript-eslint/eslint-plugin": "5.11.0",
     "@typescript-eslint/parser": "5.11.0",
     "babel-loader": "^8.2.3",
     "commitlint-plugin-function-rules": "^1.6.0",
+    "dotenv": "^16.0.0",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
@@ -91,7 +93,8 @@
     "ts-auto-mock": "^3.5.0",
     "ts-node": "^10.7.0",
     "ts-patch": "^2.0.1",
-    "typescript": "~4.5.2"
+    "typescript": "~4.5.2",
+    "yargs": "^17.4.1"
   },
   "repository": {
     "type": "git",
