@@ -1,33 +1,87 @@
 # cvs-vtm-app
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.3.
+This is the angular code for the VTM frontend application.
 
-## Development server
+This is used by the DVSA staff to create and update technical records & test results.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Getting started
 
-You will need a MS Adal `clientId` and `tenantId` in `config.dev.json` file to run the project.
+Prerequisites:
+* Node 16
+* Git Secrets
 
-## Code scaffolding
+### Using Make
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To get setup on the project you can run: `make init`, `make install` and `make run`.
 
-## Build
+Then to run tests run:
+`make all`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+To just run the application run:
+`make run`
 
-## Running unit tests
+### Using Node commands
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Run `npm install`
+2. Serve with `npm start`
+3. Find more commands with `npm run`
 
-## Running end-to-end tests
+### Testing
+The test coverage requirement for this project is 80% and automation tests can be found in a java project named `cvs-vtm-auto`
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+The framework used is Jest.
 
-## Contributing to the repository
+To run the test coverage run `npm run test`
 
-We use [commitlint](https://github.com/conventional-changelog/commitlint) to create standardised commit messages that will be used for automated releases.
+### Backend Requirements
 
-## Further help
+This talks to the following backends:
+* cvs-svc-technical-records
+* cvs-svc-test-results
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Running Locally End-2-End
+
+```
+cvs-app-vtm
+Populate environment.deploy.ts with the required environment variables for your setup.
+```
+
+```
+cvs-svc-technical-records
+1. npm install
+2. npm run tools-setup
+3. build & start
+
+Service is running on listening on http://localhost:3005
+
+For viewing the seed test data in the local dynamodb - `npm i -G dynamodb-admin`
+
+DYNAMO_ENDPOINT=http://localhost:8003 npx dynamodb-admin
+which exposes a dynamo admin web front-end on http://localhost:8001
+```
+
+```
+cvs-svc-test-results
+
+```
+
+# Running storybook
+
+Storybook lets you view components without the rest of the application.
+
+To run storybook:
+
+`npm run storybook`
+
+Then view it on `localhost:6006`.
+
+# Atomic Design
+This project aims to follow atomic design principles and is structured as follows:
+
+Atoms - atoms make up everything these are the smallest core components e.g. Label
+
+Molecules - molecules are made up of atoms and provide a more complex component e.g. Nav-Bar
+
+Organisms - organisms are made up of molecules are showcase complex ideas/logic e.g. Calendar with Search logic
+
+More information can be found here: https://bradfrost.com/blog/post/atomic-web-design/

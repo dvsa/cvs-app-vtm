@@ -1,15 +1,17 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import { initAll } from 'govuk-frontend';
+///<reference path="govuk.d.ts">
+import { Component, OnInit } from '@angular/core';
+import { UserService } from '@services/user-service/user-service';
+import { initAll } from 'govuk-frontend/govuk/all';
 
 @Component({
-  selector: 'vtm-app',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
+export class AppComponent implements OnInit {
+  constructor(public userService: UserService) {}
 
-export class AppComponent {
-  constructor() {
+  ngOnInit() {
     initAll();
   }
 }

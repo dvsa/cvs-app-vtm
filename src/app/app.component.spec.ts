@@ -1,39 +1,29 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TestBed, async} from '@angular/core/testing';
-import {AppComponent} from './app.component';
-import {Store} from '@ngrx/store';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
-const createSpyObj = (baseName, methodNames): { [key: string]: any } => {
-  const obj: any = {};
-
-  for (let i = 0; i < methodNames.length; i++) {
-    obj[methodNames[i]] = jest.fn();
-  }
-
-  return obj;
-};
+import { UserService } from './services/user-service/user-service';
+import { StoreModule } from '@ngrx/store';
+import { AppComponent } from './app.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { MsalModule, MsalBroadcastService } from '@azure/msal-angular';
+import { Observable } from 'rxjs';
 
 describe('AppComponent', () => {
+  const MockUserService = {
+    getUserName$: jest.fn().mockReturnValue(new Observable())
+  };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-      ],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule, StoreModule.forRoot({}), MsalModule],
+      declarations: [AppComponent, HeaderComponent, FooterComponent],
+      providers: [{ provide: UserService, useValue: MockUserService }]
     }).compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
+    const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
-
-  afterAll(() => {
-    TestBed.resetTestingModule();
-  });
-
 });

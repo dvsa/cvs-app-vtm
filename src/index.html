@@ -1,31 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="govuk-template">
   <head>
     <meta charset="utf-8" />
     <title>CVS VTM Application</title>
 
     <base href="/" />
 
-    <meta
-      name="viewport"
-      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
 
     <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
-
-    <meta
-      name="pipeline-investigation-test"
-      jira="CB2-2945"
-      content="https://jira.dvsacloud.uk/browse/CB2-2945"
-      remove-when="visible at https://vtm.develop.cvs.dvsacloud.uk/"
-    />
   </head>
-  <body>
-    <vtm-app></vtm-app>
+  <body class="govuk-template__body">
+    <app-root></app-root>
+    <app-redirect></app-redirect>
     <script>
-      document.body.classList.add('js-enabled');
+      document.body.className = document.body.className ? document.body.className + ' js-enabled' : 'js-enabled';
     </script>
   </body>
 </html>

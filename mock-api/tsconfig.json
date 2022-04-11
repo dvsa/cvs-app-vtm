@@ -1,0 +1,17 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "lib": ["ES6"],
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+  },
+  "include": [
+    "**.ts",
+    "../src/mocks/*.ts",
+    "../src/models/*.ts"
+  ]
+}

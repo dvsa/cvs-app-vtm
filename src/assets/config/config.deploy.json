@@ -30,6 +30,7 @@
     "APIPreparersServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH",
     "APITestStationsServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH",
     "APIDocumentBlobUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH/cvs-nonprod-adr-pdfs/BRANCH%2F",
-    "APICertificatesBlobUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH/cvs-cert-nonprod/BRANCH%2F"
+    "APICertificatesBlobUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH/cvs-cert-nonprod/BRANCH%2F",
+    "APITestTypesServerUri": "https://api.nonprod.cvs.dvsacloud.uk/BRANCH"
   }
 }

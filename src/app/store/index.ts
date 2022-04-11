@@ -1,30 +1,21 @@
-import {Params, RouterStateSnapshot} from '@angular/router';
-import {Injectable} from '@angular/core';
-import {RouterStateSerializer} from '@ngrx/router-store';
+import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { environment } from '../../environments/environment';
+import { initialState as initialTechnicalRecordsState, STORE_FEATURE_TECHNICAL_RECORDS_KEY, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-records/technical-record-service.reducer';
+import { initialState as initialUserState, STORE_FEATURE_USER_KEY, userServiceReducer, UserServiceState } from './user/user-service.reducer';
 
-export interface RouterStateUrl {
-  url: string;
-  params: Params;
-  queryParams: Params;
+export interface State {
+  [STORE_FEATURE_USER_KEY]: UserServiceState;
+  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: TechnicalRecordServiceState;
 }
 
-@Injectable()
-export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
-  serialize(routerState: RouterStateSnapshot): RouterStateUrl {
-    let route = routerState.root;
+export const initialAppState = {
+  [STORE_FEATURE_USER_KEY]: initialUserState,
+  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState
+};
 
-    while (route.firstChild) {
-      route = route.firstChild;
-    }
+export const reducers: ActionReducerMap<State> = {
+  [STORE_FEATURE_USER_KEY]: userServiceReducer,
+  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer
+};
 
-    const {
-      url,
-      root: { queryParams }
-    } = routerState;
-    const { params } = route;
-
-    // Only return an object including the URL, params and query params
-    // instead of the entire snapshot
-    return { url, params, queryParams };
-  }
-}
+export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

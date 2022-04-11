@@ -1,6 +1,7 @@
 export const environment = {
-  name: 'prod',
   production: true,
-  APIServerUri: 'http://localhost:3005',
-  APITestResultServerUri: 'http://localhost:3006'
+  VTM_CLIENT_ID: '',
+  VTM_AUTHORITY_ID: '',
+  VTM_REDIRECT_URI: '/',
+  VTM_API_URI: ''
 };
