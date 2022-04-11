@@ -5,14 +5,14 @@ import * as vtrMock from '../../mocks/vehicleTechnicalRecord.mock';
 
 export default {
   title: 'Vehicle Tech Record',
-  component: VehicleTechnicalRecordComponent,
+  component: VehicleTechnicalRecordComponent
 } as Meta;
 
 const Template: Story = (args) => ({
-  props: args,
+  props: args
 });
 
 export const Primary = Template.bind({});
 Primary.args = {
-  vehicleTechRecord: vtrMock.default,
+  vehicleTechRecord: vtrMock.default
 };

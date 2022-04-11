@@ -10,10 +10,10 @@ export class TechnicalRecordServiceEffects {
   getByVin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getByVIN),
-      mergeMap(
-        (action) => this.technicalRecordService.getByVIN(action.vin).pipe(
+      mergeMap((action) =>
+        this.technicalRecordService.getByVIN(action.vin).pipe(
           map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })),
-          catchError(() => of(getByVINFailure({ message: 'There was a problem getting the Tech Record by VIN'})))
+          catchError(() => of(getByVINFailure({ message: 'There was a problem getting the Tech Record by VIN' })))
         )
       )
     )

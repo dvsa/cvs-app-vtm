@@ -5,14 +5,8 @@ import { STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer } from '.
 import { EffectsModule } from '@ngrx/effects';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 
-
-
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    StoreModule.forFeature(STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer),
-    EffectsModule.forFeature([TechnicalRecordServiceEffects])
-  ]
+  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_TECHNICAL_RECORDS_KEY, vehicleTechRecordReducer), EffectsModule.forFeature([TechnicalRecordServiceEffects])]
 })
-export class TechnicalRecordsStateModule { }
+export class TechnicalRecordsStateModule {}

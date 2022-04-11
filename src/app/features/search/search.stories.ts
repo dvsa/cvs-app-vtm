@@ -8,25 +8,24 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [SearchComponent],
-      imports: [HttpClientModule],
-    }),
-  ],
+      imports: [HttpClientModule]
+    })
+  ]
 } as Meta;
 
 const Template: Story = (args) => ({
-  props: args,
+  props: args
 });
 
 export const Initial = Template.bind({});
-Initial.args = {
-};
+Initial.args = {};
 
 export const Loading = Template.bind({});
 Loading.args = {
-  isLoading: true,
-}
+  isLoading: true
+};
 
 export const Error = Template.bind({});
 Error.args = {
-  searchError: 'This is an error',
-}
+  searchError: 'This is an error'
+};

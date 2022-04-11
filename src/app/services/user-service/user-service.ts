@@ -12,15 +12,14 @@ export class UserService implements OnDestroy {
   private readonly _destroying$ = new Subject<void>();
 
   constructor(private store: Store, private msalBroadcastService: MsalBroadcastService, private msal: MsalService) {
-
     this.msalBroadcastService.msalSubject$
-        .pipe(
-            filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
-            takeUntil(this._destroying$)
-        )
-        .subscribe((result: any) => {
-            this.logIn(result.payload.account.name);
-        });
+      .pipe(
+        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS),
+        takeUntil(this._destroying$)
+      )
+      .subscribe((result: any) => {
+        this.logIn(result.payload.account.name);
+      });
   }
 
   ngOnDestroy(): void {
@@ -29,11 +28,11 @@ export class UserService implements OnDestroy {
   }
 
   logIn(name: string): void {
-   this.store.dispatch(UserServiceActions.Login({'name': name }));
+    this.store.dispatch(UserServiceActions.Login({ name: name }));
   }
 
   get userName$(): Observable<string> {
-    return this.store.pipe(select(UserServiceState.username))
+    return this.store.pipe(select(UserServiceState.username));
   }
 
   logOut(): void {

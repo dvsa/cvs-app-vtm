@@ -6,9 +6,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-
   @Output() logOutEvent = new EventEmitter<void>();
-  @Input() username: string | null = "";
+  @Input() username: string | null = '';
 
   logout() {
     this.logOutEvent.emit();

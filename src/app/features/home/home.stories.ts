@@ -4,10 +4,9 @@ import { HomeComponent } from './home.component';
 
 export default {
   title: 'Home Page',
-  component: HomeComponent,
+  component: HomeComponent
 } as Meta;
 
 export const Primary: Story = () => ({
-  props: {
-  },
+  props: {}
 });

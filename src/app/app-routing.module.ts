@@ -4,7 +4,6 @@ import { MsalGuard } from '@azure/msal-angular';
 import { HomeComponent } from './features/home/home.component';
 import { SearchComponent } from './features/search/search.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -15,7 +14,7 @@ const routes: Routes = [
     path: 'search',
     component: SearchComponent,
     canActivate: [MsalGuard]
-  },
+  }
 ];
 
 @NgModule({

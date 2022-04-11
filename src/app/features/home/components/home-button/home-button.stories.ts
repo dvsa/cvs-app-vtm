@@ -4,10 +4,9 @@ import { HomeButtonComponent } from './home-button.component';
 
 export default {
   title: 'Home Button',
-  component: HomeButtonComponent,
+  component: HomeButtonComponent
 } as Meta;
 
 export const Primary: Story = () => ({
-  props: {
-  },
+  props: {}
 });

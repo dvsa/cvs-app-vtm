@@ -6,12 +6,12 @@ import { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';
   templateUrl: './vehicle-technical-record.component.html',
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
-export class VehicleTechnicalRecordComponent{
+export class VehicleTechnicalRecordComponent {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
 
-  constructor() { }
+  constructor() {}
 
-  get currentVrm(): string | undefined{
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary)?.vrm
+  get currentVrm(): string | undefined {
+    return this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm;
   }
 }

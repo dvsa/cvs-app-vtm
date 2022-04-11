@@ -10,6 +10,5 @@ export class HomeButtonComponent {
   @Input() linkText: string = '';
   @Input() description: string = '';
 
-  constructor() { }
-
+  constructor() {}
 }

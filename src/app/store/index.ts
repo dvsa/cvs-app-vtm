@@ -11,11 +11,11 @@ export interface State {
 export const initialAppState = {
   [STORE_FEATURE_USER_KEY]: initialUserState,
   [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState
-}
+};
 
 export const reducers: ActionReducerMap<State> = {
   [STORE_FEATURE_USER_KEY]: userServiceReducer,
-  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,
+  [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
