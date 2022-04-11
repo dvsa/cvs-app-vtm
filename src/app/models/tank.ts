@@ -1,3 +1,8 @@
+export interface Tank {
+  tankDetails?: TankDetails;
+  tankStatement: TankStatement;
+}
+
 export interface Tc3Details {
   tc3Type: string;
   tc3PeriodicNumber: string;
@@ -27,9 +32,4 @@ export interface TankDetails {
   tankTypeAppNo: string;
   tc2Details: Tc2Details;
   tc3Details: Tc3Details[];
-}
-
-export interface Tank {
-  tankDetails?: TankDetails;
-  tankStatement: TankStatement;
 }

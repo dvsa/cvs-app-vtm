@@ -8,6 +8,7 @@ import { RouterStateModule } from './router/router-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
 import { TestResultsStateModule } from './test-results/test-results.module';
 import { UserStateModule } from './user/user-state.module';
+import { TestRecordStateModule } from './test-records/test-record.module';
 
 @NgModule({
   declarations: [],
@@ -23,7 +24,8 @@ import { UserStateModule } from './user/user-state.module';
     UserStateModule,
     TechnicalRecordsStateModule,
     TestResultsStateModule,
-    RouterStateModule
+    RouterStateModule,
+    TestRecordStateModule
   ]
 })
 export class AppStoreModule {}

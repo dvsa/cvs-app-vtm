@@ -1,4 +1,4 @@
-import { DefaultNullOrEmpty } from './DefaultNullOrEmpty.pipe';
+import { DefaultNullOrEmpty } from "./DefaultNullOrEmpty.pipe";
 
 describe('DefaultNullOrEmpty pipe tests', () => {
   // This pipe is a pure, stateless function so no need for BeforeEach
@@ -13,7 +13,7 @@ describe('DefaultNullOrEmpty pipe tests', () => {
   });
 
   it('transforms "     " to "-"', () => {
-    expect(pipe.transform('     ')).toBe('-');
+    expect(pipe.transform('')).toBe('-');
   });
 
   it('transforms boolean "true" to "Yes"', () => {

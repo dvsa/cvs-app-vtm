@@ -16,6 +16,7 @@ import { HeaderComponent } from './layout/header/header.component';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
+import { TestRecordSummaryComponent } from './features/test-record-summary/test-record-summary.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -58,7 +59,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent],
   imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule],
   providers: [
     {
