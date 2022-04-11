@@ -6,14 +6,14 @@ import { TestResultComponent } from './views/test-result/test-result.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':systemId',
     component: TestResultsComponent,
     canActivateChild: [MsalGuard],
     children: [
       {
-        path: ':systemId',
+        path: 'test-result/:testResultId',
         component: TestResultComponent,
-        data: {title: 'Test Results'}
+        data: {title: 'Test Result'}
       }
     ]
   }

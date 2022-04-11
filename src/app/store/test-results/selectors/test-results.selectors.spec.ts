@@ -8,7 +8,7 @@ describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
     it('should return the correct test result', () => {
       const state: TestResultsState = { ids: ['testResult1'], entities: { testResult1: mockTestResult() } };
-      const selectedState = selectedTestResultState.projector(state.entities, { systemId: 'testResult1' } as Params);
+      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1' } as Params);
       expect(selectedState).toEqual(state.entities['testResult1']);
     });
   });

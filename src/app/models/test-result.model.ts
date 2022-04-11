@@ -1,5 +1,5 @@
-import { TestType } from './test.type';
 import { BodyType } from './body-type';
+import { TestType } from './test.type';
 
 /*
 export interface TestResultModel {

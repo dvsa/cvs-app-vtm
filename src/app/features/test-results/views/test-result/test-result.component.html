@@ -18,7 +18,7 @@
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Test result:</dt>
-      <dd id="test-testResult" class="govuk-summary-list__value">{{ testResult.testResult | defaultNullOrEmpty }}</dd>
+      <dd id="test-testResult" class="govuk-summary-list__value">{{ testResult.testStatus | defaultNullOrEmpty }}</dd>
     </div>
     <ng-container *ngFor="let type of testResult.testTypes; let i = index">
       <div class="govuk-summary-list__row">

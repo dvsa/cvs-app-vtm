@@ -1,5 +1,5 @@
 import * as jsonServer from 'json-server';
-import { mockTestResult } from '../src/mocks/mock-test-result';
+import { mockTestResult, mockTestResultList } from '../src/mocks/mock-test-result';
 import * as mockTechRecord from '../src/mocks/vehicleTechnicalRecord.mock';
 const server = jsonServer.create();
 const router = jsonServer.router('{}');
@@ -13,7 +13,7 @@ server.get('/vehicles/*', (req, res) => {
 });
 
 server.get('/test-results/:systemId', (req, res) => {
-  res.jsonp(mockTestResult())
+  res.jsonp(mockTestResultList())
 })
 
 server.use(router);

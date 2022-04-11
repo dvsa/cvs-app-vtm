@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TestResultsService } from '@services/test-results/test-results.service';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import { fetchTestResultBySystemId, fetchTestResultBySystemIdFailed, fetchTestResultBySystemIdSuccess } from '../actions/test-results.actions';
+import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-results.actions';
 
 @Injectable()
 export class TestResultsEffects {
-  fetchTestResultBySystemId$ = createEffect(() =>
+  fetchTestResultsBySystemId$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(fetchTestResultBySystemId),
+      ofType(fetchTestResultsBySystemId),
       mergeMap(({ systemId }) =>
         this.testResultsService.fetchTestResultbyServiceId(systemId).pipe(
-          map((testResult) => fetchTestResultBySystemIdSuccess({ payload: testResult })),
-          catchError((e) => of(fetchTestResultBySystemIdFailed({ error: e })))
+          map((testResults) => fetchTestResultsBySystemIdSuccess({ payload: testResults })),
+          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e })))
         )
       )
     )

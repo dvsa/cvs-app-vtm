@@ -18,4 +18,7 @@ export const selectTestResultsTotal = selectTotal;
 
 export const testResultsEnitities = createSelector(testResultsFeatureState, selectTestResultsEntities);
 
-export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { systemId }) => entities[systemId]);
+export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { testResultId }) => {
+  console.log(testResultId);
+  return entities[testResultId];
+});

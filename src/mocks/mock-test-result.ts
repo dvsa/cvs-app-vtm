@@ -11,13 +11,13 @@ export const mockTestResult = (i: number = 0) =>
   createMock<TestResultModel>({
     systemNumber: `SYS${String(i + 1).padStart(4, '0')}`,
     reasonForCreation: 'mock test result data',
-    testResultId: '123FJD-23JDDD',
+    testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP01 ABC',
     testStartTimestamp: new Date().toISOString(),
     createdAt: new Date().toISOString(),
     testTypes: [...mockTestTypeList()],
-    testResult: 'Pass'
+    testStatus: 'Pass'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

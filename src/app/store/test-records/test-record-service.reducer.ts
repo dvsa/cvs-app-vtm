@@ -5,7 +5,7 @@ import * as TestRecordServiceActions from './test-record-service.actions';
 export const STORE_FEATURE_TEST_RECORD_KEY = "testRecords";
 
 export interface TestRecordServiceState {
-  testRecords?: TestResultModel[];
+  testRecords: TestResultModel[];
 }
 
 export const initialState: TestRecordServiceState = {
@@ -14,7 +14,7 @@ export const initialState: TestRecordServiceState = {
 
 const getVehicleTestRecordState = createFeatureSelector<TestRecordServiceState>(STORE_FEATURE_TEST_RECORD_KEY);
 
-export const testRecords = createSelector(getVehicleTestRecordState, (state) => state);
+export const testRecords = createSelector(getVehicleTestRecordState, (state) => state.testRecords);
 
 export const testRecordServiceReducer = createReducer(
   initialState,

@@ -22,7 +22,7 @@ export class TestRecordService {
 
  
   getTestRecords(id: string): Observable<TestResultModel[]> {
-    return this.store.pipe(select(TestRecordServiceState.testRecords)).pipe(map((value) => value.testRecords || []));
+    return this.store.pipe(select(TestRecordServiceState.testRecords));
   }
 
 }

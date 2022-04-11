@@ -14,7 +14,8 @@ const environmentFileContent =
   VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",
   VTM_AUTHORITY_ID: "${process.env['VTM_AUTHORITY_ID']}",
   VTM_REDIRECT_URI: 'http://localhost:4200',
-  VTM_API_URI: 'http://localhost:3005'
+  VTM_API_URI: 'http://localhost:3005',
+  VTM_TEST_URI: 'http://localhost:3005',
 };
 `;
 // write the content to the respective file

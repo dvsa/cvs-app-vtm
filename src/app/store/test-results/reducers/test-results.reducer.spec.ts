@@ -1,5 +1,5 @@
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-results.actions';
+import { fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-results.actions';
 import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-results.reducer';
 
 describe('Test Results Reducer', () => {
@@ -18,8 +18,8 @@ describe('Test Results Reducer', () => {
     it('should set all test result records', () => {
       const testResults = mockTestResultList(3);
       const newState: TestResultsState = {
-        ids: ['SYS0001', 'SYS0002', 'SYS0003'],
-        entities: { SYS0001: testResults[0], SYS0002: testResults[1], SYS0003: testResults[2] }
+        ids: ['TestResultId0001', 'TestResultId0002', 'TestResultId0003'],
+        entities: { TestResultId0001: testResults[0], TestResultId0002: testResults[1], TestResultId0003: testResults[2] }
       };
       const action = fetchTestResultsSuccess({ payload: [...testResults] });
       const state = testResultsReducer(initialTestResultsState, action);
@@ -29,11 +29,11 @@ describe('Test Results Reducer', () => {
     });
   });
 
-  describe('fetchTestResultBySystemIdSuccess', () => {
-    it('should upsert one test result record', () => {
-      const testResult = mockTestResult();
-      const newState: TestResultsState = { ids: ['SYS0001'], entities: { SYS0001: testResult } };
-      const action = fetchTestResultBySystemIdSuccess({ payload: testResult });
+  describe('fetchTestResultsBySystemIdSuccess', () => {
+    it('should set all test result records', () => {
+      const testResults = mockTestResultList();
+      const newState: TestResultsState = { ids: ['TestResultId0001'], entities: { ['TestResultId0001']: testResults[0] } };
+      const action = fetchTestResultsBySystemIdSuccess({ payload: testResults });
       const state = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toEqual(newState);

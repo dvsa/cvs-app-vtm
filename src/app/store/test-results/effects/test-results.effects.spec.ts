@@ -7,8 +7,8 @@ import { TestResultsService } from '@services/test-results/test-results.service'
 import { initialAppState } from '@store/.';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mockTestResult } from '../../../../mocks/mock-test-result';
-import { fetchTestResultBySystemId, fetchTestResultBySystemIdSuccess } from '../actions/test-results.actions';
+import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
+import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdSuccess } from '../actions/test-results.actions';
 import { TestResultsEffects } from './test-results.effects';
 
 describe('TestResultsEffects', () => {
@@ -36,17 +36,17 @@ describe('TestResultsEffects', () => {
   describe('fetchTestResultBySystemId$', () => {
     it('should return fetchTestResultBySystemIdSuccess action', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const testResult = mockTestResult();
+        const testResults = mockTestResultList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: fetchTestResultBySystemId });
+        actions$ = hot('-a--', { a: fetchTestResultsBySystemId });
 
         // mock service call
-        jest.spyOn(testResultsService, 'fetchTestResultbyServiceId').mockReturnValue(cold('--a|', { a: testResult }));
+        jest.spyOn(testResultsService, 'fetchTestResultbyServiceId').mockReturnValue(cold('--a|', { a: testResults }));
 
         // expect effect to return success action
-        expectObservable(effects.fetchTestResultBySystemId$).toBe('---b', {
-          b: fetchTestResultBySystemIdSuccess({ payload: testResult })
+        expectObservable(effects.fetchTestResultsBySystemId$).toBe('---b', {
+          b: fetchTestResultsBySystemIdSuccess({ payload: testResults })
         });
       });
     });

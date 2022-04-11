@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { fetchTestResultBySystemId, fetchTestResults, selectedTestResultState, TestResultsState } from '@store/test-results';
+import { fetchTestResultsBySystemId, fetchTestResults, selectedTestResultState, TestResultsState } from '@store/test-results';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -13,7 +13,7 @@ import { environment } from '../../../environments/environment';
 export class TestResultsService {
   constructor(private http: HttpClient, private store: Store<State>) {}
 
-  fetchTestResultbyServiceId(serviceId: string, queryparams?: { testResultId?: string }): Observable<TestResultModel> {
+  fetchTestResultbyServiceId(serviceId: string, queryparams?: { testResultId?: string }): Observable<Array<TestResultModel>> {
     if (!serviceId) {
       return throwError(() => new Error('serviceId is requuired'));
     }
@@ -25,7 +25,7 @@ export class TestResultsService {
 
     const url = `${environment.VTM_API_URI}/test-results/${serviceId}`;
 
-    return this.http.get<TestResultModel>(url, { params });
+    return this.http.get<Array<TestResultModel>>(url, { params });
   }
 
   loadTestResults(): void {
@@ -33,7 +33,7 @@ export class TestResultsService {
   }
 
   loadTestResultBySystemId(systemId: string): void {
-    this.store.dispatch(fetchTestResultBySystemId({ systemId }));
+    this.store.dispatch(fetchTestResultsBySystemId({ systemId }));
   }
 
   get testResult$() {

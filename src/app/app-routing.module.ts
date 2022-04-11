@@ -23,7 +23,7 @@ const routes: Routes = [
         canActivate: [MsalGuard]
       },
       {
-        path: 'test-results',
+        path: 'test-records',
         canLoad: [MsalGuard],
         loadChildren: () => import('./features/test-results/test-results.module').then((m) => m.TestResultsModule)
       }
