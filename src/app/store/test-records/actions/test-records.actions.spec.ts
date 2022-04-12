@@ -1,4 +1,4 @@
-import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResults, fetchTestResultsFailed, fetchTestResultsSuccess } from './test-results.actions';
+import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResults, fetchTestResultsFailed, fetchTestResultsSuccess } from './test-records.actions';
 
 describe('Test Result Actions', () => {
   it('should return correct types', () => {

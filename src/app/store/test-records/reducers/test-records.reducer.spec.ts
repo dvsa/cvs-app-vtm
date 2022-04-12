@@ -1,6 +1,6 @@
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-results.actions';
-import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-results.reducer';
+import { fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
+import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
 
 describe('Test Results Reducer', () => {
   describe('unknown action', () => {

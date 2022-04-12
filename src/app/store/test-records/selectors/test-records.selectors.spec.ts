@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Params } from '@angular/router';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
-import { TestResultsState } from '../reducers/test-results.reducer';
-import { selectedTestResultState } from './test-results.selectors';
+import { TestResultsState } from '../reducers/test-records.reducer';
+import { selectedTestResultState } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {

@@ -3,28 +3,28 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { TestResultsService } from '@services/test-results/test-results.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdSuccess } from '../actions/test-results.actions';
-import { TestResultsEffects } from './test-results.effects';
+import { mockTestResultList } from '../../../../mocks/mock-test-result';
+import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
+import { TestResultsEffects } from './test-records.effects';
 
 describe('TestResultsEffects', () => {
   let effects: TestResultsEffects;
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
-  let testResultsService: TestResultsService;
+  let testResultsService: TestRecordsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestResultsEffects, provideMockActions(() => actions$), TestResultsService, provideMockStore({ initialState: initialAppState })]
+      providers: [TestResultsEffects, provideMockActions(() => actions$), TestRecordsService, provideMockStore({ initialState: initialAppState })]
     });
 
     effects = TestBed.inject(TestResultsEffects);
-    testResultsService = TestBed.inject(TestResultsService);
+    testResultsService = TestBed.inject(TestRecordsService);
   });
 
   beforeEach(() => {
@@ -42,10 +42,10 @@ describe('TestResultsEffects', () => {
         actions$ = hot('-a--', { a: fetchTestResultsBySystemId });
 
         // mock service call
-        jest.spyOn(testResultsService, 'fetchTestResultbyServiceId').mockReturnValue(cold('--a|', { a: testResults }));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: testResults }));
 
         // expect effect to return success action
-        expectObservable(effects.fetchTestResultsBySystemId$).toBe('---b', {
+        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
           b: fetchTestResultsBySystemIdSuccess({ payload: testResults })
         });
       });

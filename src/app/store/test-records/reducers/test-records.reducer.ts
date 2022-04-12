@@ -1,9 +1,9 @@
 import { TestResultModel } from '@models/test-result.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-results.actions';
+import { fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
 
-export const STORE_FEATURE_TEST_RESULTS_KEY = 'testResults';
+export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
 
 export interface TestResultsState extends EntityState<TestResultModel> {}
 

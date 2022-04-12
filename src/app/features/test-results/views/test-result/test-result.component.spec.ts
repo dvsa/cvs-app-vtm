@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { TestResultsService } from '@services/test-results/test-results.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
 import { TestResultComponent } from './test-result.component';
 
@@ -13,7 +13,7 @@ describe('TestResultComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TestResultComponent],
       imports: [HttpClientTestingModule],
-      providers: [TestResultsService, provideMockStore({initialState: initialAppState})]
+      providers: [TestRecordsService, provideMockStore({initialState: initialAppState})]
     }).compileComponents();
   });
 

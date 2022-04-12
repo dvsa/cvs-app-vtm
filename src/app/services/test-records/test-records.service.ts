@@ -2,20 +2,19 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
-import { State } from '@store/.';
-import { fetchTestResultsBySystemId, fetchTestResults, selectedTestResultState, TestResultsState } from '@store/test-results';
+import { fetchTestResults, fetchTestResultsBySystemId, selectAllTestResults, selectedTestResultState, TestResultsState } from '@store/test-records';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TestResultsService {
-  constructor(private http: HttpClient, private store: Store<State>) {}
+export class TestRecordsService {
+  constructor(private http: HttpClient, private store: Store<TestResultsState>) {}
 
-  fetchTestResultbyServiceId(serviceId: string, queryparams?: { testResultId?: string }): Observable<Array<TestResultModel>> {
-    if (!serviceId) {
-      return throwError(() => new Error('serviceId is requuired'));
+  fetchTestResultbySystemId(systemId: string, queryparams?: { testResultId?: string }): Observable<Array<TestResultModel>> {
+    if (!systemId) {
+      return throwError(() => new Error('systemId is requuired'));
     }
 
     let params = {};
@@ -23,7 +22,7 @@ export class TestResultsService {
       params = new HttpParams({ fromObject: queryparams });
     }
 
-    const url = `${environment.VTM_API_URI}/test-results/${serviceId}`;
+    const url = `${environment.VTM_API_URI}/test-results/${systemId}`;
 
     return this.http.get<Array<TestResultModel>>(url, { params });
   }
@@ -38,5 +37,9 @@ export class TestResultsService {
 
   get testResult$() {
     return this.store.pipe(select(selectedTestResultState));
+  }
+
+  get testRecords$() {
+    return this.store.pipe(select(selectAllTestResults));
   }
 }

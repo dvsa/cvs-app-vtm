@@ -6,9 +6,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 import { RouterStateModule } from './router/router-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
-import { TestResultsStateModule } from './test-results/test-results.module';
+import { TestRecordsStateModule } from './test-records/test-records.module';
 import { UserStateModule } from './user/user-state.module';
-import { TestRecordStateModule } from './test-records/test-record.module';
 
 @NgModule({
   declarations: [],
@@ -23,9 +22,8 @@ import { TestRecordStateModule } from './test-records/test-record.module';
     }),
     UserStateModule,
     TechnicalRecordsStateModule,
-    TestResultsStateModule,
+    TestRecordsStateModule,
     RouterStateModule,
-    TestRecordStateModule
   ]
 })
 export class AppStoreModule {}

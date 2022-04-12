@@ -4,20 +4,20 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { environment } from '../../../environments/environment';
 import { mockTestResult } from '../../../mocks/mock-test-result';
-import { TestResultsService } from './test-results.service';
+import { TestRecordsService } from './test-records.service';
 
-describe('TestResultsService', () => {
-  let service: TestResultsService;
+describe('TestRecordsService', () => {
+  let service: TestRecordsService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestResultsService, provideMockStore({ initialState: initialAppState })]
+      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(TestResultsService);
+    service = TestBed.inject(TestRecordsService);
   });
 
   afterEach(() => {
@@ -34,7 +34,7 @@ describe('TestResultsService', () => {
       it('should get a single test result', () => {
         const systemId = 'SYS0001';
         const mockData = mockTestResult();
-        service.fetchTestResultbyServiceId(systemId).subscribe((response) => {
+        service.fetchTestResultbySystemId(systemId).subscribe((response) => {
           expect(response).toEqual(mockData);
         });
 
