@@ -43,7 +43,7 @@ This talks to the following backends:
 
 ```
 cvs-app-vtm
-Populate environment.deploy.ts with the required environment variables for your setup.
+create .env with environment variables required by Azure SSO. These variables will be used to update `environment.deploy.ts` using `setenv.ts` script by npm start script.
 ```
 
 ```
