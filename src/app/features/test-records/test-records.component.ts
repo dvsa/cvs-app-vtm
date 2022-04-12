@@ -4,11 +4,11 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-test-results',
-  templateUrl: './test-results.component.html',
-  styleUrls: ['./test-results.component.scss']
+  selector: 'app-test-records',
+  templateUrl: './test-records.component.html',
+  styleUrls: ['./test-records.component.scss']
 })
-export class TestResultsComponent implements OnDestroy {
+export class TestRecordsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private testRecordsService: TestRecordsService, private route: ActivatedRoute) {

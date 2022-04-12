@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { TestResultsComponent } from './test-results.component';
-import { TestResultComponent } from './views/test-result/test-result.component';
+import { TestRecordsComponent } from './test-records.component';
+import { TestRecordComponent } from './views/test-result/test-records.component';
 
 const routes: Routes = [
   {
     path: ':systemId',
-    component: TestResultsComponent,
+    component: TestRecordsComponent,
     canActivateChild: [MsalGuard],
     children: [
       {
         path: 'test-result/:testResultId',
-        component: TestResultComponent,
+        component: TestRecordComponent,
         data: {title: 'Test Result'}
       }
     ]
@@ -23,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TestResultsRoutingModule {}
+export class TestRecordsRoutingModule {}

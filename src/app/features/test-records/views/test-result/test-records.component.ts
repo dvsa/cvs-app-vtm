@@ -4,11 +4,11 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-test-result',
-  templateUrl: './test-result.component.html',
-  styleUrls: ['./test-result.component.scss']
+  selector: 'app-test-records',
+  templateUrl: './test-records.component.html',
+  styleUrls: ['./test-records.component.scss']
 })
-export class TestResultComponent {
+export class TestRecordComponent {
   testResult$?: Observable<TestResultModel | undefined>;
 
   constructor(private testRecordsService: TestRecordsService) {

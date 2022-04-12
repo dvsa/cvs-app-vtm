@@ -3,22 +3,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
-import { TestResultComponent } from './test-result.component';
+import { TestRecordComponent } from './test-records.component';
 
-describe('TestResultComponent', () => {
-  let component: TestResultComponent;
-  let fixture: ComponentFixture<TestResultComponent>;
+describe('TestRecordComponent', () => {
+  let component: TestRecordComponent;
+  let fixture: ComponentFixture<TestRecordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestResultComponent],
+      declarations: [TestRecordComponent],
       imports: [HttpClientTestingModule],
       providers: [TestRecordsService, provideMockStore({initialState: initialAppState})]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestResultComponent);
+    fixture = TestBed.createComponent(TestRecordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

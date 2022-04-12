@@ -4,22 +4,22 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
-import { TestResultsComponent } from './test-results.component';
+import { TestRecordsComponent } from './test-records.component';
 
-describe('TestResultsComponent', () => {
-  let component: TestResultsComponent;
-  let fixture: ComponentFixture<TestResultsComponent>;
+describe('TestRecordsComponent', () => {
+  let component: TestRecordsComponent;
+  let fixture: ComponentFixture<TestRecordsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestResultsComponent],
+      declarations: [TestRecordsComponent],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestResultsComponent);
+    fixture = TestBed.createComponent(TestRecordsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
