@@ -13,7 +13,7 @@ describe('DefaultNullOrEmpty pipe tests', () => {
   });
 
   it('transforms "     " to "-"', () => {
-    expect(pipe.transform('')).toBe('-');
+    expect(pipe.transform(`     `)).toBe('-');
   });
 
   it('transforms boolean "true" to "Yes"', () => {
