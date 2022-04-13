@@ -1,14 +1,17 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
+import { getByVINSuccess } from '@store/technical-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
+import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
 import { TestResultsEffects } from './test-records.effects';
 
 describe('TestResultsEffects', () => {
@@ -33,8 +36,8 @@ describe('TestResultsEffects', () => {
     });
   });
 
-  describe('fetchTestResultBySystemId$', () => {
-    it('should return fetchTestResultBySystemIdSuccess action', () => {
+  describe('fetchTestResultsBySystemNumber$', () => {
+    it('should return fetchTestResultBySystemIdSuccess action on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const testResults = mockTestResultList();
 
@@ -50,5 +53,57 @@ describe('TestResultsEffects', () => {
         });
       });
     });
+
+    it('should return fetchTestResultsBySystemIdFailed action on API error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a--', { a: fetchTestResultsBySystemId });
+
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', { b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' }) });
+      });
+    });
+  });
+
+  describe('fetchTestResultsBySystemNumberAfterSearchByVinSucces$', () => {
+    it('should return fetchTestResultBySystemIdSuccess action', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResults = mockTestResultList();
+        const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByVINSuccess({ vehicleTechRecords }) });
+
+        // mock service call
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: testResults }));
+
+        // expect effect to return success action
+        expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
+          b: fetchTestResultsBySystemIdSuccess({ payload: testResults })
+        });
+      });
+    });
+
+    it('should return fetchTestResultBySystemIdSuccess action', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByVINSuccess({ vehicleTechRecords }) });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', { b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' }) });
+      });
+    });
+
+    
   });
 });

@@ -13,19 +13,19 @@ export class TestResultsEffects {
       mergeMap(({ systemId }) =>
         this.testRecordsService.fetchTestResultbySystemId(systemId).pipe(
           map((testResults) => fetchTestResultsBySystemIdSuccess({ payload: testResults })),
-          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e })))
+          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e.message })))
         )
       )
     )
   );
 
-  getByVin$ = createEffect(() =>
+  fetchTestResultsBySystemNumberAfterSearchByVinSucces$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getByVINSuccess),
       mergeMap((action) =>
         this.testRecordsService.fetchTestResultbySystemId(action.vehicleTechRecords[0].systemNumber).pipe(
           map((vehicleTestRecords) => fetchTestResultsBySystemIdSuccess({ payload: vehicleTestRecords })),
-          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e })))
+          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e.message })))
         )
       )
     )
