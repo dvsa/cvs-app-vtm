@@ -14,7 +14,7 @@ export class TestRecordsService {
 
   fetchTestResultbySystemId(systemId: string, queryparams?: { testResultId?: string }): Observable<Array<TestResultModel>> {
     if (!systemId) {
-      return throwError(() => new Error('systemId is requuired'));
+      return throwError(() => new Error('systemId is required'));
     }
 
     let params = {};

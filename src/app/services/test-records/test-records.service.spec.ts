@@ -31,6 +31,26 @@ describe('TestRecordsService', () => {
 
   describe('API', () => {
     describe('fetchTestResultbyServiceId', () => {
+      it('should throw error when systemId is empty', (done) => {
+        service.fetchTestResultbySystemId('').subscribe({
+          error: (e) => {
+            expect(e.message).toBe('systemId is required');
+            done();
+          }
+        });
+      });
+
+      it('should add query params to url', () => {
+        service.fetchTestResultbySystemId('SystemId', { testResultId: 'TEST_RESULT_ID' }).subscribe({ next: () => {} });
+
+        // Check for correct requests: should have made one request to POST search from expected URL
+        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-results/SystemId?testResultId=TEST_RESULT_ID`);
+        expect(req.request.method).toEqual('GET');
+
+        // Provide each request with a mock response
+        req.flush([]);
+      });
+
       it('should get a single test result', () => {
         const systemId = 'SYS0001';
         const mockData = mockTestResult();

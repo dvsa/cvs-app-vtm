@@ -1,5 +1,5 @@
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
+import { fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
 import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
 
 describe('Test Results Reducer', () => {
@@ -18,6 +18,7 @@ describe('Test Results Reducer', () => {
     it('should set all test result records', () => {
       const testResults = mockTestResultList(3);
       const newState: TestResultsState = {
+        ...initialTestResultsState,
         ids: ['TestResultId0001', 'TestResultId0002', 'TestResultId0003'],
         entities: { TestResultId0001: testResults[0], TestResultId0002: testResults[1], TestResultId0003: testResults[2] }
       };
@@ -29,15 +30,29 @@ describe('Test Results Reducer', () => {
     });
   });
 
-  describe('fetchTestResultsBySystemIdSuccess', () => {
-    it('should set all test result records', () => {
-      const testResults = mockTestResultList();
-      const newState: TestResultsState = { ids: ['TestResultId0001'], entities: { ['TestResultId0001']: testResults[0] } };
-      const action = fetchTestResultsBySystemIdSuccess({ payload: testResults });
-      const state = testResultsReducer(initialTestResultsState, action);
+  describe('fetchTestResultsBySystemId actions', () => {
+    describe('fetchTestResultsBySystemIdSuccess', () => {
+      it('should set all test result records', () => {
+        const testResults = mockTestResultList();
+        const newState: TestResultsState = { ...initialTestResultsState, ids: ['TestResultId0001'], entities: { ['TestResultId0001']: testResults[0] } };
+        const action = fetchTestResultsBySystemIdSuccess({ payload: testResults });
+        const state = testResultsReducer(initialTestResultsState, action);
 
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
+    });
+
+    describe('fetchTestResultsBySystemIdFailed', () => {
+      it('should set error state', () => {
+        const error = 'fetching test records failed';
+        const newState = { ...initialTestResultsState, error };
+        const action = fetchTestResultsBySystemIdFailed({ error });
+        const state = testResultsReducer(initialTestResultsState, action);
+
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
     });
   });
 });
