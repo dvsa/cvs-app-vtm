@@ -11,8 +11,6 @@ describe('SearchComponent', () => {
   let technicalRecordService: TechnicalRecordService;
   let searchBySpy = jest.fn();
 
-  // need a spy on the service here...
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SearchComponent],
