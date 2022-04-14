@@ -46,7 +46,7 @@
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <app-text-input [label]="control.key" [name]="control.key" [formControlName]="control.key"></app-text-input>
+    <app-text-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-input>
   </ng-container>
 </ng-template>
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { FormNode } from '../components/dynamic-form-group/dynamic-form-group.component';
+import { AsyncValidatorFn, FormControl, FormControlOptions, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,7 @@ export class DynamicFormService {
       if ('group' === type) {
         control = this.createForm(child);
       } else {
-        control = new FormControl(value);
+        control = new CustomFormControl(child, value);
       }
       if (!control) {
         throw new Error('invalid control type');
@@ -37,5 +36,28 @@ export class DynamicFormService {
     validators.forEach((v: string) => {
       control.addValidators(this.validatorMap[v]);
     });
+  }
+}
+
+export interface FormNode {
+  name: string;
+  children: FormNode[];
+  type: 'control' | 'group' | 'array';
+  label?: string;
+  value?: string;
+  path?: string;
+  validators?: string[];
+}
+
+interface CustomControl extends FormControl {
+  meta: FormNode;
+}
+
+class CustomFormControl extends FormControl implements CustomControl {
+  meta: FormNode;
+
+  constructor(meta: FormNode, formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
+    super(formState, validatorOrOpts, asyncValidator);
+    this.meta = meta;
   }
 }

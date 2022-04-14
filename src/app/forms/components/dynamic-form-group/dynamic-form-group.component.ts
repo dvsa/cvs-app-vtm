@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, ValidatorFn } from '@angular/forms';
-import { DynamicFormService } from '../../services/dynamic-form.service';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { DynamicFormService, FormNode } from '../../services/dynamic-form.service';
 
 @Component({
   selector: 'app-dynamic-form-group',
@@ -71,14 +71,4 @@ export class DynamicFormGroupComponent implements OnInit {
   trackByFn(index: number) {
     return index;
   }
-}
-
-export interface FormNode {
-  name: string;
-  label?: string;
-  value?: string;
-  path?: string;
-  type: 'control' | 'group' | 'array';
-  validators?: string[];
-  children: FormNode[];
 }
