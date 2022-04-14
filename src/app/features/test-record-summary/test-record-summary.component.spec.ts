@@ -4,31 +4,13 @@ import { TestRecordSummaryComponent } from './test-record-summary.component';
 import { TestResultModel } from '../../models/test-result.model';
 
 const fakeRecord: TestResultModel = {
-  testResultId: "test",
-  systemNumber: "test",
-  testerStaffId: "test",
-  testStartTimestamp: "testStartTimestamp",
-  odometerReadingUnits: "test",
-  testEndTimestamp: "test",
-  testStatus: "testStatus",
+  testResultId: 'test',
+  systemNumber: 'test',
+  testStartTimestamp: 'testStartTimestamp',
+  testStatus: 'testStatus',
   testTypes: [],
-  vehicleClass: {code: "code", description: "test"},
-  vin: "vin",
-  testStationName: "test",
-  vehicleType: "test",
-  countryOfRegistration: "test",
-  preparerId: "test",
-  preparerName: "test",
-  odometerReading: 1,
-  vehicleConfiguration: "test",
-  testStationType: "test",
-  reasonForCancellation: null,
-  testerName: "test",
-  testStationPNumber: "test",
-  noOfAxles: 1,
-  testerEmailAddress: "test",
-  euVehicleCategory: "test",
-}
+  vin: 'vin'
+};
 
 describe('TestRecordSummaryComponent', () => {
   let component: TestRecordSummaryComponent;
@@ -55,7 +37,7 @@ describe('TestRecordSummaryComponent', () => {
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
     expect(heading).toBeTruthy();
-    expect(heading.nativeElement.innerHTML).toBe("No test records found.");
+    expect(heading.nativeElement.innerHTML).toBe('No test records found.');
 
     const table = fixture.debugElement.query(By.css('.govuk-table__body'));
     expect(table).toBeFalsy();

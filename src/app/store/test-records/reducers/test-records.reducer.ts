@@ -21,7 +21,7 @@ export const testResultsReducer = createReducer(
   initialTestResultsState,
   on(fetchTestResultsSuccess, (state, action) => testResultAdapter.setAll(action.payload, state)),
   on(fetchTestResultsBySystemIdSuccess, (state, action) => testResultAdapter.setAll(action.payload, state)),
-  on(fetchTestResultsBySystemIdFailed, (state, { error }) => ({ ...state, error: error }))
+  on(fetchTestResultsBySystemIdFailed, (state, { error }) => ({ ...testResultAdapter.setAll([], state), error }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

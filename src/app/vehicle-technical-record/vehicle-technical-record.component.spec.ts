@@ -12,10 +12,9 @@ describe('VehicleTechnicalRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [ VehicleTechnicalRecordComponent, TestRecordSummaryComponent ],
+      declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

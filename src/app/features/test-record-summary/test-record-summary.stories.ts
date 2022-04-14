@@ -3,31 +3,13 @@ import { TestRecordSummaryComponent } from './test-record-summary.component';
 import { TestResultModel } from '../../models/test-result.model';
 
 const fakeRecord: TestResultModel = {
-  testResultId: "test",
-  systemNumber: "test",
-  testerStaffId: "test",
-  testStartTimestamp: "testStartTimestamp",
-  odometerReadingUnits: "test",
-  testEndTimestamp: "test",
-  testStatus: "testStatus",
+  testResultId: 'test',
+  systemNumber: 'test',
+  testStartTimestamp: 'testStartTimestamp',
+  testStatus: 'testStatus',
   testTypes: [],
-  vehicleClass: {},
-  vin: "vin",
-  testStationName: "test",
-  vehicleType: "test",
-  countryOfRegistration: "test",
-  preparerId: "test",
-  preparerName: "test",
-  odometerReading: 1,
-  vehicleConfiguration: "test",
-  testStationType: "test",
-  reasonForCancellation: null,
-  testerName: "test",
-  testStationPNumber: "test",
-  noOfAxles: 1,
-  testerEmailAddress: "test",
-  euVehicleCategory: "test",
-}
+  vin: 'vin'
+};
 
 export default {
   title: 'Test Record Summary',
@@ -39,9 +21,9 @@ export const NoRecords: Story = () => ({
 });
 
 export const Record: Story = () => ({
-  props: {testRecords: [fakeRecord]}
+  props: { testRecords: [fakeRecord] }
 });
 
 export const Records: Story = () => ({
-  props: {testRecords: [fakeRecord, {...fakeRecord, testStartTimestamp: "2022-02-02:13.23", vin: "xthoeu213", testStatus: "PASSED"}]}
+  props: { testRecords: [fakeRecord, { ...fakeRecord, testStartTimestamp: '2022-02-02:13.23', vin: 'xthoeu213', testStatus: 'PASSED' }] }
 });
