@@ -3,39 +3,67 @@
   "type": "group",
   "children": [
     {
-      "name": "address",
-      "type": "group",
-      "path": "address",
-      "children": [
-        {
-          "name": "street",
-          "label": "Street",
-          "type": "group",
-          "children": [
-            {
-              "name": "house",
-              "label": "House",
-              "type": "control",
-              "children": []
-            }
-          ],
-          "value": ""
-        },
-        {
-          "name": "postcode",
-          "label": "Postcode",
-          "value": "NE8",
-          "type": "control",
-          "children": []
-        }
-      ]
-    },
-    {
-      "name": "name",
-      "label": "Name",
+      "name": "createdAt",
+      "label": "Created",
       "value": "",
       "children": [],
       "type": "control"
+    },
+    {
+      "name": "vrm",
+      "label": "VRM",
+      "value": "",
+      "children": [],
+      "type": "control"
+    },
+    {
+      "name": "vin",
+      "label": "VIN/chassis number",
+      "value": "",
+      "children": [],
+      "type": "control"
+    },
+    {
+      "name": "testStatus",
+      "label": "Test result",
+      "value": "",
+      "children": [],
+      "type": "control"
+    },
+    {
+      "name": "Code",
+      "label": "VIN/chassis number",
+      "value": "",
+      "children": [],
+      "type": "control"
+    },
+    {
+      "name": "vin",
+      "label": "VIN/chassis number",
+      "value": "",
+      "children": [],
+      "type": "control"
+    },
+    {
+      "name": "testTypes",
+      "type": "group",
+      "path": "testTypes",
+      "children": [
+        {
+          "name": "testCode",
+          "label": "Code",
+          "value": "",
+          "children": [],
+          "type": "control"
+        },
+        {
+          "name": "testTypeName",
+          "label": "Description",
+          "value": "",
+          "children": [],
+          "type": "control"
+        }
+      ]
     }
   ]
 }
