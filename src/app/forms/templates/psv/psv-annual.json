@@ -1,0 +1,41 @@
+{
+  "name": "form",
+  "type": "group",
+  "children": [
+    {
+      "name": "address",
+      "type": "group",
+      "path": "address",
+      "children": [
+        {
+          "name": "street",
+          "label": "Street",
+          "type": "group",
+          "children": [
+            {
+              "name": "house",
+              "label": "House",
+              "type": "control",
+              "children": []
+            }
+          ],
+          "value": ""
+        },
+        {
+          "name": "postcode",
+          "label": "Postcode",
+          "value": "NE8",
+          "type": "control",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "name",
+      "label": "Name",
+      "value": "",
+      "children": [],
+      "type": "control"
+    }
+  ]
+}
