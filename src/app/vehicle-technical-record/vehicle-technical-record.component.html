@@ -17,8 +17,5 @@
       <dd class="govuk-summary-list__value"></dd>
     </div>
   </dl>
+  <app-test-record-summary [testRecords]="(records | async) || []"></app-test-record-summary>
 </div>
-
-<ng-template #hyphen>
-  <span>-</span>
-</ng-template>

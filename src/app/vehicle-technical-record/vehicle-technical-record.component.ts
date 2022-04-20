@@ -1,4 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { TestRecordsService } from '@services/test-records/test-records.service';
+import { Observable, of } from 'rxjs';
+import { TestResultModel } from '../models/test-result.model';
 import { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';
 
 @Component({
@@ -9,7 +12,11 @@ import { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';
 export class VehicleTechnicalRecordComponent {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
 
-  constructor() {}
+  records: Observable<TestResultModel[]> = of([]);
+
+  constructor(testRecordService: TestRecordsService) {
+    this.records = testRecordService.testRecords$;
+  }
 
   get currentVrm(): string | undefined {
     return this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm;
