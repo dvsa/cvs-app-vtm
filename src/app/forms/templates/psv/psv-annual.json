@@ -1,5 +1,6 @@
 {
-  "name": "form",
+  "name": "testDetails",
+  "label": "Test Details",
   "type": "group",
   "children": [
     {
@@ -25,33 +26,34 @@
     },
     {
       "name": "testStatus",
-      "label": "Test result",
+      "label": "Test status",
       "value": "",
       "children": [],
       "type": "control"
     },
     {
-      "name": "Code",
-      "label": "VIN/chassis number",
-      "value": "",
-      "children": [],
-      "type": "control"
-    },
-    {
-      "name": "vin",
-      "label": "VIN/chassis number",
+      "name": "testStartTimestamp",
+      "label": "Test Date",
       "value": "",
       "children": [],
       "type": "control"
     },
     {
       "name": "testTypes",
+      "label": "Test Types",
       "type": "group",
       "path": "testTypes",
       "children": [
         {
+          "name": "testResult",
+          "label": "Test result",
+          "value": "",
+          "children": [],
+          "type": "control"
+        },
+        {
           "name": "testCode",
-          "label": "Code",
+          "label": "Test Code",
           "value": "",
           "children": [],
           "type": "control"
@@ -59,6 +61,27 @@
         {
           "name": "testTypeName",
           "label": "Description",
+          "value": "",
+          "children": [],
+          "type": "control"
+        },
+        {
+          "name": "certificateNumber",
+          "label": "Certificate number",
+          "value": "",
+          "children": [],
+          "type": "control"
+        },
+        {
+          "name": "testNumber",
+          "label": "Test Number",
+          "value": "",
+          "children": [],
+          "type": "control"
+        },
+        {
+          "name": "testExpiryDate",
+          "label": "Expiry Date",
           "value": "",
           "children": [],
           "type": "control"

@@ -1,36 +1,3 @@
-<!-- Initiate the recursive template rendering. -->
-<!-- <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ node: data }"> </ng-template> -->
-
-<!-- Define the recursive template. -->
-<!-- <ng-template #nodeTemplateRef let-node="node">
-  <ng-container [ngSwitch]="node.type">
-    <ng-container *ngSwitchCase="'control'">
-      <ng-template [ngTemplateOutlet]="control" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'group'">
-      <h2>{{ node.name }}</h2>
-      <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ $implicit: node }"></ng-template>
-    </ng-container>
-  </ng-container>
-</ng-template>
-
-<ng-template #control let-control>
-  <app-text-input [label]="control.label" [name]="control.name" [formControlName]="control.name"></app-text-input>
-</ng-template>
-
-<ng-template #childNode let-childNode>
-  <ng-template ngFor let-child [ngForOf]="childNode.children">
-    <div class="node">
-      <div class="node__children">
-        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ node: child }"> </ng-template>
-      </div>
-    </div>
-  </ng-template>
-</ng-template>
-
-<pre>{{ form.value | json }}</pre> -->
-
 <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: myForm }"> </ng-template>
 
 <ng-template #nodeTemplateRef let-form="form">
@@ -46,7 +13,7 @@
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <app-text-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-input>
+    <app-list-item-output [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-list-item-output>
   </ng-container>
 </ng-template>
 

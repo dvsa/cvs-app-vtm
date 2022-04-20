@@ -16,39 +16,88 @@ export class DynamicFormGroupComponent implements OnInit {
     type: 'group',
     children: [
       {
-        name: 'address',
-        type: 'group',
-        path: 'address',
-        children: [
-          {
-            name: 'street',
-            label: 'Street',
-            type: 'group',
-            children: [
-              {
-                name: 'house',
-                label: 'House',
-                type: 'control',
-                children: []
-              }
-            ],
-            value: ''
-          },
-          {
-            name: 'postcode',
-            label: 'Postcode',
-            value: 'NE8',
-            type: 'control',
-            children: []
-          }
-        ]
-      },
-      {
-        name: 'name',
-        label: 'Name',
+        name: 'createdAt',
+        label: 'Created',
         value: '',
         children: [],
         type: 'control'
+      },
+      {
+        name: 'vrm',
+        label: 'VRM',
+        value: '',
+        children: [],
+        type: 'control'
+      },
+      {
+        name: 'vin',
+        label: 'VIN/chassis number',
+        value: '',
+        children: [],
+        type: 'control'
+      },
+      {
+        name: 'testStatus',
+        label: 'Test status',
+        value: '',
+        children: [],
+        type: 'control'
+      },
+      {
+        name: 'testStartTimestamp',
+        label: 'Test Date',
+        value: '',
+        children: [],
+        type: 'control'
+      },
+      {
+        name: 'testTypes',
+        type: 'group',
+        path: 'testTypes',
+        children: [
+          {
+            name: 'testResult',
+            label: 'Test result',
+            value: '',
+            children: [],
+            type: 'control'
+          },
+          {
+            name: 'testCode',
+            label: 'Test Code',
+            value: '',
+            children: [],
+            type: 'control'
+          },
+          {
+            name: 'testTypeName',
+            label: 'Description',
+            value: '',
+            children: [],
+            type: 'control'
+          },
+          {
+            name: 'certificateNumber',
+            label: 'Certificate number',
+            value: '',
+            children: [],
+            type: 'control'
+          },
+          {
+            name: 'testNumber',
+            label: 'Test Number',
+            value: '',
+            children: [],
+            type: 'control'
+          },
+          {
+            name: 'testExpiryDate',
+            label: 'Expiry Date',
+            value: '',
+            children: [],
+            type: 'control'
+          }
+        ]
       }
     ]
   };

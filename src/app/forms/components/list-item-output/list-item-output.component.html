@@ -1,12 +1,18 @@
-<section *ngIf="testResult$ | async as testResult">
-  <h1 class="govuk-heading-xl title">Annual test</h1>
-  <h2 class="govuk-heading-m">Vehicle summary</h2>
-  <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Created:</dt>
-      <dd id="test-createdAt" class="govuk-summary-list__value">{{ testResult.createdAt | date: 'dd/MM/yyyy' }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
+<!-- <div class="govuk-form-group">
+  <h1 *ngIf="label" class="govuk-label-wrapper">
+    <label class="govuk-label govuk-label--l" for="{{ name }}">{{ label }} (list-item-output)</label>
+  </h1>
+  <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
+  <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  <input class="govuk-input" id="{{ name }}" name="{{ name }}" type="text" [(ngModel)]="value" (ngModelChange)="onChange($event)" (blur)="onTouched()" />
+</div>
+-->
+
+<div class="govuk-summary-list__row">
+  <dt class="govuk-summary-list__key">{{ label }}:</dt>
+  <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value }}</dd>
+</div>
+<!-- <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VRM:</dt>
       <dd id="test-vrm" class="govuk-summary-list__value">{{ testResult.vrm | defaultNullOrEmpty }}</dd>
     </div>
@@ -29,12 +35,4 @@
       </div>
     </ng-container>
   </dl>
-</section>
-
-<section *ngIf="testResult$ | async as testResult">
-  <h1 class="govuk-heading-xl title">Annual test</h1>
-  <h2 class="govuk-heading-m">Vehicle summary</h2>
-  <dl class="govuk-summary-list">
-    <app-dynamic-form-group></app-dynamic-form-group>
-  </dl>
-</section>
+</section> -->

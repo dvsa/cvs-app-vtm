@@ -4,10 +4,11 @@ import { BaseControlComponent } from './components/base-control/base-control.com
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
+import { ListItemOutputComponent } from './components/list-item-output/list-item-output.component';
 
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, DynamicFormGroupComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ListItemOutputComponent, DynamicFormGroupComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  exports: [TextInputComponent, DynamicFormGroupComponent]
+  exports: [TextInputComponent, ListItemOutputComponent, DynamicFormGroupComponent]
 })
 export class DynamicFormsModule {}
