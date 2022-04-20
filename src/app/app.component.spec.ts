@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserService } from './services/user-service/user-service';
+import { MsalModule } from '@azure/msal-angular';
 import { StoreModule } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
-import { MsalModule, MsalBroadcastService } from '@azure/msal-angular';
-import { Observable } from 'rxjs';
+import { UserService } from './services/user-service/user-service';
 
 describe('AppComponent', () => {
   const MockUserService = {

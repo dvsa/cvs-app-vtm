@@ -1,4 +1,4 @@
-import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
+import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';
 import * as TechnicalRecordServiceActions from './technical-record-service.actions';
 

@@ -1,4 +1,3 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -23,10 +22,15 @@
       "dom"
     ],
     "paths": {
+      "@mocks/*": ["src/mocks/*"],
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
-      "@store/*": ["src/app/store/*"]
-    }
+      "@store/*": ["src/app/store/*"],
+      "@shared/*": ["src/app/shared/*"]
+    },
+    "plugins": [
+      { "transform": "ts-auto-mock/transformer" }
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

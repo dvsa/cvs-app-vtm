@@ -10,13 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeButtonComponent } from './features/home/components/home-button/home-button.component';
 import { HomeComponent } from './features/home/home.component';
+import { SearchComponent } from './features/search/search.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
-import { DefaultNullOrEmpty } from './pipes/DefaultNullOrEmpty.pipe';
-import { SearchComponent } from './features/search/search.component';
-import { AppStoreModule } from './store/app-store.module';
 import { UserService } from './services/user-service/user-service';
+import { AppStoreModule } from './store/app-store.module';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
+import { TestRecordSummaryComponent } from './features/test-record-summary/test-record-summary.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -60,7 +60,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, DefaultNullOrEmpty],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent],
   imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule],
   providers: [
     {
@@ -85,7 +85,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MsalBroadcastService,
     UserService
   ],
-  exports: [DefaultNullOrEmpty],
+  exports: [],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule {}

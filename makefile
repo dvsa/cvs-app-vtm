@@ -1,6 +1,6 @@
 # Commake (v0.0.1) - https://niallbunting.com/commake/common/makefile/2022/03/09/commake-common-makefile.html
 
-.PHONY: all help init install build run lint test e2e plan deploy
+.PHONY: all help init install build run lint test e2e plan deploy versioncheck
 all: lint test run #help Full check
 
 help:
@@ -13,13 +13,16 @@ init: #help Run through dependencies and check
 	node -v
 	echo "If so, OK!"
 
-install: #help Install packages
+versioncheck:
+	if [ `node -v | cut -c 2-3` -lt 16 ]; then echo "Less than node v16."; exit 1; fi
+
+install: versioncheck #help Install packages
 	npm i
 
 build: #help Bulid the project files
 	npm run build
 
-run: #help Run Locally
+run: versioncheck #help Run Locally
 	npm run start
 
 storybook: #help Run Storybook

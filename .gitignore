@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+.env
+/src/environments/environment.deploy.ts
+
 # Compiled output
 /dist
 /tmp
@@ -39,6 +42,7 @@ yarn-error.log
 testem.log
 /typings
 .reports/
+{}
 
 # System files
 .DS_Store
