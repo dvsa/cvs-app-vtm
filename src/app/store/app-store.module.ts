@@ -8,6 +8,7 @@ import { RouterStateModule } from './router/router-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
 import { TestRecordsStateModule } from './test-records/test-records.module';
 import { UserStateModule } from './user/user-state.module';
+import { GlobalErrorStateModule } from '@store/global-error/global-error-state.module';
 
 @NgModule({
   declarations: [],
@@ -23,6 +24,7 @@ import { UserStateModule } from './user/user-state.module';
     UserStateModule,
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
+    GlobalErrorStateModule,
     RouterStateModule,
   ]
 })

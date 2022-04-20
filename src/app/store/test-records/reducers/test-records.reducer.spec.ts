@@ -1,4 +1,4 @@
-import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
+import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import { fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
 import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
 
