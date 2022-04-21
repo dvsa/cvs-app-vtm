@@ -6,11 +6,33 @@
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
   <input class="govuk-input" id="{{ name }}" name="{{ name }}" type="text" [(ngModel)]="value" (ngModelChange)="onChange($event)" (blur)="onTouched()" />
 </div>
+
+
+<div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Created:</dt>
+      <dd id="test-createdAt" class="govuk-summary-list__value">{{ testResult.createdAt | date: 'dd/MM/yyyy' }}</dd>
+    </div>
 -->
 
 <div class="govuk-summary-list__row">
   <dt class="govuk-summary-list__key">{{ label }}:</dt>
-  <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value }}</dd>
+  <ng-container [ngSwitch]="viewType">
+    <ng-container *ngSwitchCase="'string'">
+      <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'date'">
+      <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy'}} (date)</dd>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'dateTime'">
+      <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy HH:mm'}} (dateTime)</dd>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'time'">
+      <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | date: 'HH:mm'}} (time)</dd>
+    </ng-container>
+  </ng-container>
 </div>
 <!-- <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VRM:</dt>

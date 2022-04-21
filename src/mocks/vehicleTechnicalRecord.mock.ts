@@ -6,7 +6,7 @@ export default <VehicleTechRecordModel>{
   trailerId: '09876543',
   vrms: [
     {
-      vrm: 'JY58FPP',
+      vrm: 'KP01 ABC',
       isPrimary: true
     },
     {

@@ -13,7 +13,7 @@
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <app-list-item-output [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-list-item-output>
+    <app-list-item-output [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-list-item-output>
   </ng-container>
 </ng-template>
 

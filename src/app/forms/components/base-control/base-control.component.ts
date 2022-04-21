@@ -9,6 +9,7 @@ import { ControlValueAccessor } from '@angular/forms';
 export class BaseControlComponent implements ControlValueAccessor {
   @Input() label?: string;
   @Input() name?: string;
+  @Input() viewType?: string;
   @Input() hint?: string;
   errorMessage?: string;
 

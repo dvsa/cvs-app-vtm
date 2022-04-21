@@ -39,10 +39,21 @@ export class DynamicFormService {
   }
 }
 
+export enum FormNodeViewTypes {
+  STRING = 'string',
+  DATE = 'date',
+  DATETIME = 'dateTime',
+  TIME = 'time'
+}
+export enum FormNodeTypes {
+  GROUP = 'group',
+  CONTROL = 'control'
+}
 export interface FormNode {
   name: string;
   children: FormNode[];
-  type: 'control' | 'group' | 'array';
+  type: FormNodeTypes; // maybe updateType?
+  viewType?: FormNodeViewTypes;
   label?: string;
   value?: string;
   path?: string;
