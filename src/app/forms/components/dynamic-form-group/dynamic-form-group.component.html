@@ -13,7 +13,7 @@
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <app-list-item-output [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-list-item-output>
+    <app-view-list-item [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list__row"></app-view-list-item>
   </ng-container>
 </ng-template>
 
@@ -25,4 +25,4 @@
   </div>
 </ng-template>
 
-<pre>{{ myForm.value | json }}</pre>
+<!-- <pre>{{ myForm.value | json }}</pre> -->

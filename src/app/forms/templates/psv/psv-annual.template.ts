@@ -6,14 +6,6 @@ export const PsvAnnual: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
-      name: 'createdAt',
-      label: 'Created',
-      value: '',
-      children: [],
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE
-    },
-    {
       name: 'vrm',
       label: 'VRM',
       value: '',
@@ -28,6 +20,14 @@ export const PsvAnnual: FormNode = {
       children: [],
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
+    },
+    {
+      name: 'createdAt',
+      label: 'Created',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE
     },
     {
       name: 'testStatus',
@@ -51,14 +51,6 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.GROUP,
       path: 'testTypes',
       children: [
-        {
-          name: 'testResult',
-          label: 'Test result',
-          value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
         {
           name: 'testCode',
           label: 'Test Code',

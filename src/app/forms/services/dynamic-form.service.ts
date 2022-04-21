@@ -14,7 +14,7 @@ export class DynamicFormService {
   createForm(f: FormNode): FormGroup {
     let form: FormGroup = new FormGroup({});
 
-    f.children.forEach((child) => {
+    f?.children.forEach((child) => {
       const { name, type, value } = child;
       let control;
       if ('group' === type) {
@@ -60,11 +60,11 @@ export interface FormNode {
   validators?: string[];
 }
 
-interface CustomControl extends FormControl {
+export interface CustomControl extends FormControl {
   meta: FormNode;
 }
 
-class CustomFormControl extends FormControl implements CustomControl {
+export class CustomFormControl extends FormControl implements CustomControl {
   meta: FormNode;
 
   constructor(meta: FormNode, formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {

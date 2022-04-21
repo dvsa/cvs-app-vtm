@@ -1,40 +1,5 @@
 <section *ngIf="testResult$ | async as testResult">
   <h1 class="govuk-heading-xl title">Annual test</h1>
   <h2 class="govuk-heading-m">Vehicle summary</h2>
-  <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Created:</dt>
-      <dd id="test-createdAt" class="govuk-summary-list__value">{{ testResult.createdAt | date: 'dd/MM/yyyy' }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VRM:</dt>
-      <dd id="test-vrm" class="govuk-summary-list__value">{{ testResult.vrm | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">VIN/chassis number:</dt>
-      <dd id="test-vin" class="govuk-summary-list__value">{{ testResult.vin | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Test result:</dt>
-      <dd id="test-testResult" class="govuk-summary-list__value">{{ testResult.testStatus | defaultNullOrEmpty }}</dd>
-    </div>
-    <ng-container *ngFor="let type of testResult.testTypes; let i = index">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Code:</dt>
-        <dd id="test--type-{{ i + 1 }}-testCode" class="govuk-summary-list__value">{{ type.testCode }}</dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Description:</dt>
-        <dd id="test--type-{{ i + 1 }}-testTypeName" class="govuk-summary-list__value">{{ type.testTypeName }}</dd>
-      </div>
-    </ng-container>
-  </dl>
-</section>
-
-<section *ngIf="testResult$ | async as testResult">
-  <h1 class="govuk-heading-xl title">Annual test</h1>
-  <h2 class="govuk-heading-m">Vehicle summary</h2>
-  <dl class="govuk-summary-list">
-    <app-dynamic-form-group [schema]="schema" [data]="testResult"></app-dynamic-form-group>
-  </dl>
+  <app-dynamic-form-group [template]="template" [data]="testResult" class="govuk-summary-list"></app-dynamic-form-group>
 </section>

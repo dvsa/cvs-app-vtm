@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListItemOutputComponent } from './list-item-output.component';
+import { ViewListItemComponent } from './view-list-item.component';
 
 describe('ListItemOutputComponent', () => {
-  let component: ListItemOutputComponent;
-  let fixture: ComponentFixture<ListItemOutputComponent>;
+  let component: ViewListItemComponent;
+  let fixture: ComponentFixture<ViewListItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ListItemOutputComponent]
+      declarations: [ViewListItemComponent]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListItemOutputComponent);
+    fixture = TestBed.createComponent(ViewListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
