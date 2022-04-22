@@ -29,7 +29,7 @@ describe('Vehicle Technical Record Reducer', () => {
     });
   });
 
-  describe('getByVINSuccess', () => {
+  describe('getByVINFailure', () => {
     it('should set error state', () => {
       const error = 'fetching vehicle tech records failed';
       const newState = { ...initialState, message: error };
