@@ -35,7 +35,9 @@ export class DynamicFormGroupComponent implements OnInit {
     // NiallB: This populates data without respecting where in the hierarchy it is (see unit tests)
     Object.keys(data).forEach((dataKey) => {
       if (typeof data[dataKey] === 'object') {
-        this.populateData(data[dataKey], template);
+        if (data[dataKey] !== null) {
+          this.populateData(data[dataKey], template);
+        }
       } else {
         if (dataKey === template.name) {
           template.value = data[dataKey];
