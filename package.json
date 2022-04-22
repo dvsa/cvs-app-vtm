@@ -24,7 +24,8 @@
     "test:watch": "jest --watch",
     "test:ci": "jest -ci --runInBand --watchAll=false --reporters=default",
     "mock-api": "npx ts-node ./mock-api/mock-api-server.ts",
-    "prepare": "husky install && ts-patch install -s"
+    "prepare": "husky install && ts-patch install -s",
+    "postinstall": "ngcc"
   },
   "private": true,
   "dependencies": {
@@ -36,7 +37,7 @@
     "@angular/platform-browser": "^13.2.0",
     "@angular/platform-browser-dynamic": "^13.2.0",
     "@angular/router": "^13.2.0",
-    "@azure/msal-angular": "^2.1.2",
+    "@azure/msal-angular": "^2.2.0",
     "@azure/msal-browser": "^2.22.1",
     "@ngrx/effects": "^13.1.0",
     "@ngrx/entity": "^13.1.0",
