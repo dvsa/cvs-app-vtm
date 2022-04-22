@@ -29,16 +29,15 @@ describe('Vehicle Technical Record Reducer', () => {
     });
   });
 
-  // describe('getByVin actions', () => {
-  //     it('should get the technical record', () => {
-  //       const testResults = mockTestResultList();
-  //       const newState: TestResultsState = { ...initialTestResultsState, ids: ['TestResultId0001'], entities: { ['TestResultId0001']: testResults[0] } };
-  //       const action = fetchTestResultsBySystemIdSuccess({ payload: testResults });
-  //       const state = testResultsReducer(initialTestResultsState, action);
+  describe('getByVINSuccess', () => {
+    it('should set error state', () => {
+      const error = 'fetching vehicle tech records failed';
+      const newState = { ...initialState, message: error };
+      const action = getByVINFailure({ message: error });
+      const state = vehicleTechRecordReducer(initialState, action);
 
-  //       expect(state).toEqual(newState);
-  //       expect(state).not.toBe(newState);
-  //     });
-  //   });
-  // });
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
 });
