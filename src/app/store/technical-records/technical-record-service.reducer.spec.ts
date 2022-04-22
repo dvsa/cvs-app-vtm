@@ -32,8 +32,8 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('getByVINFailure', () => {
     it('should set error state', () => {
       const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, message: error };
-      const action = getByVINFailure({ message: error });
+      const newState = { ...initialState, error };
+      const action = getByVINFailure({ error });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);

@@ -18,5 +18,5 @@ export const vehicleTechRecordReducer = createReducer(
   initialState,
   on(getByVIN, (state) => ({ ...state, vehicleTechRecords: [] })),
   on(getByVINSuccess, (state, { vehicleTechRecords }) => ({ ...state, vehicleTechRecords })),
-  on(getByVINFailure, (state, { message }) => ({ ...state, vehicleTechRecords: [], message }))
+  on(getByVINFailure, (state, { error }) => ({ ...state, vehicleTechRecords: [], error }))
 );
