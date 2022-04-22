@@ -20,4 +20,26 @@ describe('BaseControlComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should register a change', () => {
+    component.registerOnChange('FUNCTION');
+    expect(component.onChange).toEqual('FUNCTION');
+  });
+
+  it('should register it has been touched', () => {
+    component.registerOnTouched('FUNCTION');
+    expect(component.onTouched).toEqual('FUNCTION');
+  });
+
+  describe('interacting with the value', () => {
+    it('writeValue should set the value', () => {
+      component.writeValue('anything');
+      expect(component.value).toEqual('anything');
+    });
+
+    it('set should set the value', () => {
+      component.value = 'anything';
+      expect(component.value).toEqual('anything');
+    });
+  });
 });

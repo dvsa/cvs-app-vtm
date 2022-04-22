@@ -1,18 +1,18 @@
 <dt class="govuk-summary-list__key">{{ label }}:</dt>
 <ng-container [ngSwitch]="viewType">
   <ng-container *ngSwitchCase="'string'">
-    <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
+    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
   </ng-container>
 
   <ng-container *ngSwitchCase="'date'">
-    <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
+    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
   </ng-container>
 
   <ng-container *ngSwitchCase="'dateTime'">
-    <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
+    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
   </ng-container>
 
   <ng-container *ngSwitchCase="'time'">
-    <dd id="test-{{name}}" class="govuk-summary-list__value">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</dd>
+    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</dd>
   </ng-container>
 </ng-container>

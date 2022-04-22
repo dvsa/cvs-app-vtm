@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl } from './dynamic-form.service';
+import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes } from './dynamic-form.service';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 describe('DynamicFormService', () => {
@@ -15,28 +15,63 @@ describe('DynamicFormService', () => {
   });
 
   describe('createForm', () => {
-    it('should create a control', () => {
+    it('should return an empty FormGroup if the root node has no children', () => {
       const node: FormNode = {
-        name: 'test',
-        children: [],
-        type: FormNodeTypes.CONTROL,
-        value: 'This is the Value'
+        name: 'empty',
+        type: FormNodeTypes.GROUP,
+        children: []
       };
 
-      // const group: FormNode = {
-      //   name: 'group',
-      //   type: FormNodeTypes.GROUP,
-      //   children: [node]
-      // };
+      expect(service.createForm(node)).toMatchObject({});
+    });
+  });
 
-      // const { name, value } = node;
+  describe('createForm', () => {
+    it('should return a FormGroup containing a single control', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          <FormNode>{
+            name: 'vin',
+            label: 'Vechile Identification Number',
+            type: FormNodeTypes.CONTROL,
+            viewType: FormNodeViewTypes.STRING
+          }
+        ]
+      };
 
-      // const expectedOutput: FormGroup = new FormGroup({});
-      // const control = new CustomFormControl(node, value);
-      // expectedOutput.addControl(name, control);
+      const outputGroup = service.createForm(node);
 
-      // const output = service.createForm(group);
-      expect(service.createForm(node)).toMatchObject(new FormGroup({}));
+      expect(outputGroup.controls[node.children[0].name]).toBeTruthy();
+    });
+  });
+
+  describe('createForm', () => {
+    it('should return a FormGroup mirroring the nested structure of the controls it was created with', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          <FormNode>{
+            name: 'sub-group',
+            type: FormNodeTypes.GROUP,
+            children: [
+              <FormNode>{
+                name: 'vin',
+                label: 'Vechile Identification Number',
+                type: FormNodeTypes.CONTROL,
+                viewType: FormNodeViewTypes.STRING
+              }
+            ]
+          }
+        ]
+      };
+
+      const outputGroup = service.createForm(node);
+      const subGroup = outputGroup.controls[node.children[0].name] as FormGroup;
+
+      expect(subGroup.controls[node.children[0].children[0].name]).toBeTruthy();
     });
   });
 

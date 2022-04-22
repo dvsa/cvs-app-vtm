@@ -25,7 +25,7 @@ import { GlobalErrorStateModule } from '@store/global-error/global-error-state.m
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
     GlobalErrorStateModule,
-    RouterStateModule,
+    RouterStateModule
   ]
 })
 export class AppStoreModule {}
