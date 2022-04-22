@@ -1,23 +1,40 @@
 import { TestResultModel } from '@models/test-result.model';
-import { TestType } from '@models/test.type';
+import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
-    return createMock<TestType>({ testCode: `Test${i}`, testTypeName: 'Test type name' });
+    const now = new Date();
+    const nextYear = new Date().setFullYear(now.getFullYear());
+
+    return createMock<TestType>({
+      testNumber: `TestNumber${String(i + 1).padStart(4, '0')}`,
+
+      testCode: `Test${i}`,
+      testTypeName: `Test Type Name ${i}`,
+
+      testTypeStartTimestamp: now.toISOString(),
+      testExpiryDate: nextYear,
+
+      certificateNumber: `CertNumber${String(i + 1).padStart(4, '0')}`
+    });
   });
 
 export const mockTestResult = (i: number = 0) =>
   createMock<TestResultModel>({
-    systemNumber: `SYS${String(i + 1).padStart(4, '0')}`,
-    reasonForCreation: 'mock test result data',
     testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
+
+    systemNumber: 'SYS0001',
     vin: 'XMGDE02FS0H012345',
-    vrm: 'KP01 ABC',
-    testStartTimestamp: new Date().toISOString(),
+    vrm: 'KP02 ABC',
+
     createdAt: new Date().toISOString(),
+    testStartTimestamp: new Date().toISOString(),
+    testStatus: 'Pass',
+
     testTypes: [...mockTestTypeList()],
-    testStatus: 'Pass'
+
+    reasonForCreation: 'mock test result data'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

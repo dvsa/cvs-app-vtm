@@ -103,7 +103,5 @@ describe('TestResultsEffects', () => {
         expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', { b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' }) });
       });
     });
-
-    
   });
 });

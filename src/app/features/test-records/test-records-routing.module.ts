@@ -13,7 +13,7 @@ const routes: Routes = [
       {
         path: 'test-result/:testResultId',
         component: TestRecordComponent,
-        data: {title: 'Test Result'}
+        data: { title: 'Test Result' }
       }
     ]
   }
