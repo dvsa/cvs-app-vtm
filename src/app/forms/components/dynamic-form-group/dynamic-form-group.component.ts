@@ -33,6 +33,7 @@ export class DynamicFormGroupComponent implements OnInit {
 
   populateData(data: any, template: FormNode) {
     // NiallB: This populates data without respecting where in the hierarchy it is (see unit tests)
+    // MauricioC: Once we are able to handle every data structure e.g. Arrays, we should adopt `form.patchValue(data)`
     Object.keys(data).forEach((dataKey) => {
       if (typeof data[dataKey] === 'object') {
         if (data[dataKey] !== null) {

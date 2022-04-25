@@ -15,15 +15,20 @@ export class DynamicFormService {
     let form: FormGroup = new FormGroup({});
 
     f?.children.forEach((child) => {
-      const { name, type, value } = child;
+      const { name, type, value, validators } = child;
       let control;
       if ('group' === type) {
         control = this.createForm(child);
       } else {
         control = new CustomFormControl(child, value);
       }
+
       if (!control) {
         throw new Error('invalid control type');
+      }
+
+      if (validators && validators.length > 0) {
+        this.addValidators(control, validators);
       }
 
       form.addControl(name, control);
@@ -32,7 +37,7 @@ export class DynamicFormService {
     return form;
   }
 
-  addValidators(control: FormControl, validators: Array<string> = []) {
+  addValidators(control: FormGroup | CustomFormControl, validators: Array<string> = []) {
     validators.forEach((v: string) => {
       control.addValidators(this.validatorMap[v]);
     });

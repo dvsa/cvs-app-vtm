@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Host, Optional, Self, SkipSelf, Injector } from '@angular/core';
+import { NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -15,7 +15,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class ViewListItemComponent extends BaseControlComponent {
-  constructor() {
-    super();
+  constructor(injector: Injector) {
+    super(injector);
   }
 }
