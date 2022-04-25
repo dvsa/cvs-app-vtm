@@ -20,6 +20,9 @@ Then to run tests run:
 To just run the application run:
 `make run`
 
+To run the mock api run:
+`make api`
+
 ### Using Node commands
 
 1. Run `npm install`
