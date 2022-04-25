@@ -11,7 +11,7 @@
         <p class="white-space--normal">{{ searchError }}</p>
       </span>
 
-      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': searchError }" (keyup.enter)="searchTechRecords(searchTerm.value)"  id="search-term" name="search-term" type="text" aria-describedby="search-term" />
+      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': searchError }" (keyup.enter)="searchTechRecords(searchTerm.value)" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
     </div>
 
     <button class="govuk-button" data-module="govuk-button" (click)="searchTechRecords(searchTerm.value)">Search</button>

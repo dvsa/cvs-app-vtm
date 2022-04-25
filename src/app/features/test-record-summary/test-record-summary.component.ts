@@ -11,4 +11,9 @@ export class TestRecordSummaryComponent {
   @Input() testRecords: TestResultModel[] = [];
 
   constructor() {}
+
+  getTestTypeName(testResult: TestResultModel) {
+    const testNames = testResult.testTypes.map(t => t.testTypeName).join(',');
+    return testNames
+  }
 }
