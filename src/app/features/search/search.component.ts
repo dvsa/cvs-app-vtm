@@ -19,7 +19,7 @@ export class SearchComponent {
   public searchTechRecords(searchTerm: string) {
     this.searchError = undefined;
     if (searchTerm) {
-      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
+      this.technicalRecordService.searchBy({ type: 'vin', searchTerm: searchTerm.trim() });
     }
   }
 }
