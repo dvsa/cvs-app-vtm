@@ -11,5 +11,5 @@ export const NoErrors: Story = () => ({
 });
 
 export const Error: Story = () => ({
-  props: {errorMessage$: 'error'}
+  props: { errorMessage$: 'error' }
 });
