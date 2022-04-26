@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { GlobalError, GlobalErrorService } from './global-error.service';
 
 @Component({
@@ -8,10 +7,9 @@ import { GlobalError, GlobalErrorService } from './global-error.service';
   styleUrls: ['./global-error.component.scss']
 })
 export class GlobalErrorComponent {
-  constructor(public globalErrorService: GlobalErrorService, private router: Router) {}
+  constructor(public globalErrorService: GlobalErrorService) {}
 
   goto(error: GlobalError) {
-    error.anchorLink && this.router.navigate([], { fragment: error.anchorLink });
     const el = document.getElementById(error.anchorLink);
     el && el.focus({ preventScroll: false });
   }

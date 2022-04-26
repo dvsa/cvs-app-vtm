@@ -19,12 +19,11 @@ describe('GlobalErrorComponent', () => {
   let hostComponent: MockComponent;
   let component: GlobalErrorComponent;
   let fixture: ComponentFixture<MockComponent>;
-  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GlobalErrorComponent, MockComponent],
-      imports: [RouterTestingModule],
+      imports: [],
       providers: [GlobalErrorService, provideMockStore({ initialState: initialGlobalErrorState })]
     }).compileComponents();
   });
@@ -33,7 +32,6 @@ describe('GlobalErrorComponent', () => {
     fixture = TestBed.createComponent(MockComponent);
     hostComponent = fixture.componentInstance;
     component = fixture.debugElement.query(By.directive(GlobalErrorComponent)).componentInstance;
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -42,23 +40,11 @@ describe('GlobalErrorComponent', () => {
   });
 
   describe('goto', () => {
-    it('should navigate to fragment', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+    it('should focus element', () => {
       const input: HTMLInputElement = fixture.debugElement.query(By.css('#test-input')).nativeElement;
       component.goto({ message: 'navigate', anchorLink: 'test-input' });
 
-      expect(navigateSpy).toHaveBeenCalledWith([], { fragment: 'test-input' });
-      console.log(document.activeElement?.outerHTML);
       expect(document.activeElement).toBe(input);
-    });
-    it('should not navigate to fragment', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
-      const input: HTMLInputElement = fixture.debugElement.query(By.css('#test-input')).nativeElement;
-      component.goto({ message: `don't navigate`, anchorLink: '' });
-
-      expect(navigateSpy).not.toHaveBeenCalled();
-      console.log(document.activeElement?.outerHTML);
-      expect(document.activeElement).not.toBe(input);
     });
   });
 });
