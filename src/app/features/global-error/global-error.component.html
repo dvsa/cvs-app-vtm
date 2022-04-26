@@ -4,7 +4,7 @@
     <div class="govuk-error-summary__body">
       <ul class="govuk-list govuk-error-summary__list">
         <li *ngFor="let error of errorMessages">
-          <a [routerLink]="" queryParamsHandling="preserve" (click)="goto(error)">{{ error.message }}</a>
+          <a [routerLink]="" queryParamsHandling="preserve" [fragment]="error.anchorLink" (click)="goto(error)">{{ error.message }}</a>
         </li>
       </ul>
     </div>
