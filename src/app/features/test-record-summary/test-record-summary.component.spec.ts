@@ -6,7 +6,7 @@ import { TestResultModel } from '../../models/test-result.model';
 const fakeRecord: TestResultModel = {
   testResultId: 'test',
   systemNumber: 'test',
-  testStartTimestamp: 'testStartTimestamp',
+  testStartTimestamp: new Date(),
   testStatus: 'testStatus',
   testTypes: [],
   vin: 'vin'
