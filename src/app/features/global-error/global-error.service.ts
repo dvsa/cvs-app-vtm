@@ -12,15 +12,7 @@ export class GlobalErrorService {
   errors$: Observable<GlobalError[]>;
 
   constructor(private store: Store<State>) {
-    this.errors$ = combineLatest([this.errors_.asObservable(), this.store.select(globalErrorState)]).pipe(
-      map(([errors, err]) => {
-        const combinedErrors: GlobalError[] = [...errors];
-        if (err) {
-          combinedErrors.push({ message: err, anchorLink: '' } as GlobalError);
-        }
-        return combinedErrors;
-      })
-    );
+    this.errors$ = this.errors_.asObservable();
   }
 
   set errors(errors: GlobalError[]) {
