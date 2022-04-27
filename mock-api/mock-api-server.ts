@@ -5,15 +5,46 @@ const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
 
+const args = require('minimist')(process.argv.slice(2));
+
 server.use(middlewares);
 
 // Add custom routes before JSON Server router
 server.get('/vehicles/*', (req, res) => {
-  res.jsonp(mockVehicleTecnicalRecordList());
+  switch (args['tech-record']) {
+    case 'NotFound':
+      res.status(404);
+      res.statusMessage = 'NotFound';
+      res.jsonp('Error no vehicle found');
+      break;
+    case 'ServiceError':
+      res.status(500);
+      res.statusMessage = 'Unavailable';
+      res.jsonp('Error service unavailable');
+      break;
+    default:
+      res.jsonp(mockVehicleTecnicalRecordList());
+      break;
+  };
 });
 
 server.get('/test-results/:systemId', (req, res) => {
-  res.jsonp(mockTestResultList());
+
+  switch (args['test-result']) {
+    case 'NotFound':
+      res.status(404);
+      res.statusMessage = 'NotFound';
+      res.jsonp('Error no test records found');
+      break;
+    case 'ServiceError':
+      res.status(500);
+      res.statusMessage = 'Unavailable';
+      res.jsonp('Error service unavailable');
+      break;
+    default:
+      res.jsonp(mockTestResultList());
+      break;
+  }
 });
 
 server.use(router);

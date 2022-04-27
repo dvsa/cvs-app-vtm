@@ -25,6 +25,9 @@ build: #help Bulid the project files
 run: versioncheck #help Run Locally
 	npm run start
 
+api: versioncheck #help Run Locally
+	npm run mock-api
+
 storybook: #help Run Storybook
 	npm run storybook
 

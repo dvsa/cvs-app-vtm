@@ -55,7 +55,7 @@ describe('TestRecordComponent', () => {
       ['Created:']: formatDate(details.createdAt!!, 'dd/MM/yyy', 'en'),
       ['VRM:']: details.vrm!!,
       ['VIN/chassis number:']: details.vin,
-      ['Test result:']: details.testStatus!!,
+      ['Test result:']: details.testResult!!,
       ['Code:']: details.testTypes[0].testCode,
       ['Description:']: details.testTypes[0].testTypeName
     };
