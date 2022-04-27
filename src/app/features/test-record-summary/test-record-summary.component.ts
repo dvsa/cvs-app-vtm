@@ -13,7 +13,6 @@ export class TestRecordSummaryComponent {
   constructor() {}
 
   getTestTypeName(testResult: TestResultModel) {
-    const testNames = testResult.testTypes.map(t => t.testTypeName).join(',');
-    return testNames
+    return testResult.testTypes.map(t => t.testTypeName).join(',');
   }
 }

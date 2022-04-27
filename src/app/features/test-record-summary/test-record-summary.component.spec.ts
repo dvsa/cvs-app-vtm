@@ -1,35 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
-import { TestResultModel } from '../../models/test-result.model';
-import { TestType } from '../../models/test-type.model';
-
-const fakeRecord: TestResultModel = {
-  testResultId: 'test',
-  systemNumber: 'test',
-  testStartTimestamp: new Date(),
-  testResult: 'testStatus',
-  testTypes: [],
-  vin: 'vin'
-};
-
-const testType: TestType = {
-  testTypeName: 'name',
-  testCode: '',
-  testNumber: '',
-  testExpiryDate: '',
-  testTypeStartTimestamp: '01/01/2001',
-  certificateNumber: ''
-}
-
-const fakeRecordMultipleTestTypes: TestResultModel = {
-  testResultId: 'test',
-  systemNumber: 'test',
-  testStartTimestamp: '12/05/2000',
-  testResult: 'testStatus',
-  testTypes: [testType,testType],
-  vin: 'vin'
-};
+import { createMock, createMockList } from 'ts-auto-mock';
+import { TestResultModel } from '@models/test-result.model';
+import { TestType } from '@models/test-type.model';
 
 describe('TestRecordSummaryComponent', () => {
   let component: TestRecordSummaryComponent;
@@ -63,7 +37,7 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should show table if records found', () => {
-    component.testRecords = [fakeRecord];
+    component.testRecords = [createMock<TestResultModel>()];
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
@@ -74,7 +48,11 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should concatinate multiple test types', () => {
-    const testTypeNames = component.getTestTypeName(fakeRecordMultipleTestTypes)
+    const testTypeNames = component.getTestTypeName(createMock<TestResultModel>({
+      testTypes: createMockList<TestType>(2, (itr) => createMock<TestType>({
+        testTypeName: 'name',
+      }))
+    }))
     expect(testTypeNames).toEqual('name,name')
   });
 });
