@@ -21,7 +21,17 @@ To just run the application run:
 `make run`
 
 To run the mock api run:
-`make api`
+`make api` or use `npm run mock-api` if you need to pass arguments.
+this comes with the following optional arguments:
+
+| Argument                      | Tech Record API | Test Record API |
+|-------------------------------|-----------------|-----------------|
+| -- --tech-record=NotFound     | 404             | -               |
+| -- --tech-record=ServiceError | 500             | -               |
+| -- --test-result=NotFound     | 200             | 404             |
+| -- --test-result=ServiceError | 200             | 500             |
+
+
 
 ### Using Node commands
 

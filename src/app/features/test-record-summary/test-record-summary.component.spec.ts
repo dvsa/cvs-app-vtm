@@ -18,14 +18,14 @@ const testType: TestType = {
   testCode: '',
   testNumber: '',
   testExpiryDate: '',
-  testTypeStartTimestamp: '',
+  testTypeStartTimestamp: '01/01/2001',
   certificateNumber: ''
 }
 
 const fakeRecordMultipleTestTypes: TestResultModel = {
   testResultId: 'test',
   systemNumber: 'test',
-  testStartTimestamp: 'testStartTimestamp',
+  testStartTimestamp: '12/05/2000',
   testResult: 'testStatus',
   testTypes: [testType,testType],
   vin: 'vin'
