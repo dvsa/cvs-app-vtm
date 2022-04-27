@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { PsvTechRecord } from '../../forms/templates/psv/psv-tech-record.template';
 import { FormNode } from '../../forms/services/dynamic-form.service';
 
@@ -9,12 +9,21 @@ import { FormNode } from '../../forms/services/dynamic-form.service';
   styleUrls: ['./tech-record-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TechRecordSummaryComponent {
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
+export class TechRecordSummaryComponent implements OnInit {
+  @Input() vehicleTechRecord!: VehicleTechRecordModel;
   template!: FormNode;
+  currentRecord!: TechRecordModel;
+
+  ngOnInit(): void {
+    this.vehicleTemplate();
+    this.currentRecord = this.currentTechRecord(this.vehicleTechRecord)
+  }
 
   constructor() {
-    this.vehicleTemplate();
+  }
+
+  currentTechRecord(record: VehicleTechRecordModel): TechRecordModel {
+    return record.techRecord.find(record => record.statusCode === 'current')!
   }
   
   get vehicleType(): string | undefined {
@@ -22,7 +31,8 @@ export class TechRecordSummaryComponent {
   }
 
   vehicleTemplate(): void  {
-    switch(this.vehicleType) {
+    let currentRecord = this.currentTechRecord(this.vehicleTechRecord)
+    switch(currentRecord?.vehicleType) {
       case('psv'): {
         this.template = PsvTechRecord;
         break;

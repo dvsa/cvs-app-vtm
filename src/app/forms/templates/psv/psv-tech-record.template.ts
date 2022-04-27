@@ -102,8 +102,8 @@ export const PsvTechRecord: FormNode = {
             viewType: FormNodeViewTypes.STRING
         },
         {
-            name: 'EU vehicle category',
-            label: 'euVehicleCategory',
+            name: 'euVehicleCategory',
+            label: 'EU vehicle category',
             value: '',
             children: [],
             type: FormNodeTypes.CONTROL,
@@ -134,8 +134,8 @@ export const PsvTechRecord: FormNode = {
             viewType: FormNodeViewTypes.STRING
         },
         {
-            name: 'Standing capacity',
-            label: 'standingCapacity',
+            name: 'standingCapacity',
+            label: 'Standing capacity',
             value: '',
             children: [],
             type: FormNodeTypes.CONTROL,

@@ -1,4 +1,5 @@
 <div class="govuk-grid-column-full">
-  <app-tech-record-summary [vehicleTechRecord]="vehicleTechRecord"></app-tech-record-summary>
+  <p>{{ vehicleTechRecord.techRecord[0].statusCode }}</p>
+  <app-tech-record-summary [vehicleTechRecord]="vehicleTechRecord || []"></app-tech-record-summary>
   <app-test-record-summary [testRecords]="(records | async) || []"></app-test-record-summary>
 </div>

@@ -10,7 +10,7 @@ import { VehicleTechRecordModel } from '../models/vehicle-tech-record.model';
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent {
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
+  @Input() vehicleTechRecord!: VehicleTechRecordModel;
 
   records: Observable<TestResultModel[]> = of([]);
 
@@ -19,6 +19,6 @@ export class VehicleTechnicalRecordComponent {
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm;
+    return this.vehicleTechRecord?.primaryVrm;
   }
 }

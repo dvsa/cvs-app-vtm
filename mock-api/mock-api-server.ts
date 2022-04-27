@@ -1,6 +1,6 @@
 import * as jsonServer from 'json-server';
 import { mockTestResultList } from '../src/mocks/mock-test-result';
-import { mockVehicleTecnicalRecordList } from '../src/mocks/mock-vehicle-technical-record.mock';
+import { mockVehicleTechnicalRecordList } from '../src/mocks/mock-vehicle-technical-record.mock';
 const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
@@ -9,7 +9,7 @@ server.use(middlewares);
 
 // Add custom routes before JSON Server router
 server.get('/vehicles/*', (req, res) => {
-  res.jsonp(mockVehicleTecnicalRecordList());
+  res.jsonp(mockVehicleTechnicalRecordList());
 });
 
 server.get('/test-results/:systemId', (req, res) => {

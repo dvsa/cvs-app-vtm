@@ -1,5 +1,6 @@
 export interface VehicleTechRecordModel {
-  vrms: VrmModel[];
+  primaryVrm: string;
+  secondaryVrms: VrmModel[]
   vin: string;
   trailerId?: string;
   systemNumber: string;
@@ -8,7 +9,12 @@ export interface VehicleTechRecordModel {
 
 export interface VrmModel {
   vrm: string;
-  isPrimary: boolean;
+}
+
+export enum StatusCodes {
+  ARCHIVED = 'archived',
+  CURRENT = 'current',
+  PROVISIONAL = 'provisional'
 }
 
 export enum VehicleTypes {
@@ -94,6 +100,7 @@ export enum VehicleSizes {
 }
 
 export interface TechRecordModel {
+  statusCode: StatusCodes;
   vehicleType: VehicleTypes;
   regnDate: string;
   firstUseDate?: string;
@@ -127,5 +134,5 @@ export interface TechRecordModel {
   vehicleSize?: VehicleSizes;
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
-  departmentalVehicleMaker: boolean;
+  departmentalVehicleMarker: boolean;
 }
