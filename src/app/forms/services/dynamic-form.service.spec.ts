@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes } from './dynamic-form.service';
+import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes, CustomControl } from './dynamic-form.service';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 describe('DynamicFormService', () => {
@@ -77,7 +77,7 @@ describe('DynamicFormService', () => {
 
   describe('addValidators', () => {
     it('should add validators', () => {
-      const control: FormControl = new FormControl({});
+      const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
       const validators: Array<string> = ['required'];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);

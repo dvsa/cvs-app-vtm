@@ -18,8 +18,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public onTouched = () => {};
   public focused = false;
   public errorMessage?: string;
-
-  protected control?: CustomControl;
+  public control?: CustomControl;
 
   private value_: any;
 
@@ -57,10 +56,6 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     this.value_ = value;
   }
 
-  get hasError() {
-    return this.control?.valid;
-  }
-
   get meta() {
     return this.control?.meta;
   }
@@ -68,11 +63,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   public handleEvent(event: Event) {
     switch (event.type) {
       case 'focus':
-        console.log('focus');
         this.focused = true;
         break;
       case 'blur':
-        console.log('blur');
         this.focused = false;
         break;
       default:
@@ -83,9 +76,11 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   writeValue(obj: any): void {
     this.value_ = obj;
   }
+
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }

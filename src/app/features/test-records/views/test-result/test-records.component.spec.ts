@@ -10,6 +10,7 @@ import { mockTestResult } from '@mocks/mock-test-result';
 import { TestRecordComponent } from './test-records.component';
 import { SharedModule } from '@shared/shared.module';
 import { formatDate } from '@angular/common';
+import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
@@ -19,7 +20,7 @@ describe('TestRecordComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestRecordComponent],
-      imports: [HttpClientTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   }));
@@ -55,9 +56,14 @@ describe('TestRecordComponent', () => {
       ['Created:']: formatDate(details.createdAt!!, 'dd/MM/yyy', 'en'),
       ['VRM:']: details.vrm!!,
       ['VIN/chassis number:']: details.vin,
-      ['Test result:']: details.testStatus!!,
+      ['Test status:']: details.testStatus!!,
       ['Code:']: details.testTypes[0].testCode,
-      ['Description:']: details.testTypes[0].testTypeName
+      ['Description:']: details.testTypes[0].testTypeName,
+      ['Test Date:']: formatDate(details.testStartTimestamp, 'dd/MM/yyy HH:mm', 'en'),
+      ['Test Code:']: details.testTypes[0].testCode,
+      ['Certificate number:']: details.testTypes[0].certificateNumber,
+      ['Test Number:']: details.testTypes[0].testNumber,
+      ['Expiry Date:']: formatDate(details.testTypes[0].testExpiryDate, 'dd/MM/yyy', 'en')
     };
 
     dtList.forEach((e, i) => {

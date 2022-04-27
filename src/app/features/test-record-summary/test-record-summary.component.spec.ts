@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 import { TestResultModel } from '../../models/test-result.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const fakeRecord: TestResultModel = {
   testResultId: 'test',
@@ -18,7 +19,8 @@ describe('TestRecordSummaryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestRecordSummaryComponent]
+      declarations: [TestRecordSummaryComponent],
+      imports: [RouterTestingModule]
     }).compileComponents();
   });
 
