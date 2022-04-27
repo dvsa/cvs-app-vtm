@@ -17,7 +17,7 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  get vehicleTechRecords() {
+  get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
   }
 

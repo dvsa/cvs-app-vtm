@@ -8,7 +8,7 @@ import { DynamicFormService, FormNode } from '../../services/dynamic-form.servic
   styleUrls: ['./dynamic-form-group.component.scss']
 })
 export class DynamicFormGroupComponent implements OnInit {
-  @Input() data: object = {};
+  @Input() data?: object = {};
   @Input() template!: FormNode;
 
   myForm: FormGroup = new FormGroup({});

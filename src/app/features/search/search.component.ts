@@ -13,7 +13,7 @@ export class SearchComponent {
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
 
   constructor(private technicalRecordService: TechnicalRecordService) {
-    this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords;
+    this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
   }
 
   public searchTechRecords(searchTerm: string) {
