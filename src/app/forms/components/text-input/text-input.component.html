@@ -1,8 +1,8 @@
 <div class="govuk-form-group">
   <h1 *ngIf="label" class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="{{ name }}">{{ label }}</label>
+    <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
   </h1>
   <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-  <input class="govuk-input" id="{{ name }}" name="{{ name }}" type="text" [(ngModel)]="value" (ngModelChange)="onChange($event)" (blur)="onTouched(); handleEvent($event)" (focus)="handleEvent($event)" />
+  <input class="govuk-input" id="{{ name }}" name="{{ name }}" type="text" [(ngModel)]="value" [disabled]="disabled ?? false" (ngModelChange)="onChange($event)" (blur)="onTouched(); handleEvent($event)" (focus)="handleEvent($event)" />
 </div>

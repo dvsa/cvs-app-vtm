@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, DoCheck, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { CustomControl } from '../../services/dynamic-form.service';
+import { CustomControl, FormNodeViewTypes } from '../../services/dynamic-form.service';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
@@ -11,7 +11,7 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit, DoCheck {
   @Input() label?: string;
   @Input() name?: string;
-  @Input() viewType?: string;
+  @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() hint?: string;
 
   public onChange = (event: any) => {};
@@ -54,6 +54,10 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   set value(value) {
     this.value_ = value;
+  }
+
+  get disabled() {
+    return this.control?.disabled;
   }
 
   get meta() {

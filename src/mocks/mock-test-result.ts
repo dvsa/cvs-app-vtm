@@ -16,7 +16,9 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       testTypeStartTimestamp: now.toISOString(),
       testExpiryDate: nextYear,
 
-      certificateNumber: `CertNumber${String(i + 1).padStart(4, '0')}`
+      certificateNumber: `CertNumber${String(i + 1).padStart(4, '0')}`,
+      reasonForAbandoning: ['The vehicle was not submitted for test at the appointed time', 'The relevant test fee has not been paid'],
+      additionalDetailsForAbandoning: 'The vehicle was not submitted for test at the appointed time'
     });
   });
 

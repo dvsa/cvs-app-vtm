@@ -8,4 +8,6 @@ export interface TestType {
   testExpiryDate: string | Date;
 
   certificateNumber: string;
+  reasonForAbandoning: string[];
+  additionalDetailsForAbandoning?: string;
 }

@@ -1,5 +1,6 @@
-import { Component, Host, Optional, Self, SkipSelf, Injector } from '@angular/core';
-import { NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Injector } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormNodeViewTypes } from '../../services/dynamic-form.service';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -17,5 +18,9 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 export class ViewListItemComponent extends BaseControlComponent {
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  get formNodeViewTypes(): typeof FormNodeViewTypes {
+    return FormNodeViewTypes;
   }
 }

@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormNodeTypes } from '../../services/dynamic-form.service';
-
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
@@ -46,26 +44,5 @@ describe('DynamicFormGroupComponent', () => {
     ]
   ])('entriesOf: should split the keys out into values', (input: any, expected: any) => {
     expect(component.entriesOf(input)).toStrictEqual(expected);
-  });
-
-  describe('populateData: ', () => {
-    it('populate the form data - single item', () => {
-      let template = { name: 'testname', children: [], type: FormNodeTypes.CONTROL, value: '' };
-      component.populateData({ testname: 'new value' }, template);
-      expect(template.value).toBe('new value');
-    });
-
-    it('populate the form data - children', () => {
-      let template = { name: 'testname', children: [{ name: 'testchildname', children: [], type: FormNodeTypes.CONTROL, value: '' }], type: FormNodeTypes.CONTROL, value: '' };
-      component.populateData({ testname: 'new value', testchildname: 'testchildname' }, template);
-      expect(template.value).toBe('new value');
-      expect(template.children[0].value).toBe('testchildname');
-    });
-
-    it('populate the form data - child objects', () => {
-      let template = { name: 'innertestobj', children: [], type: FormNodeTypes.CONTROL, value: '' };
-      component.populateData({ testobj: { innertestobj: 'innertestobj' } }, template);
-      expect(template.value).toBe('innertestobj');
-    });
   });
 });

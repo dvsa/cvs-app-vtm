@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormControl, FormControlOptions, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormArray, FormControl, FormControlOptions, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +11,17 @@ export class DynamicFormService {
     required: Validators.required
   };
 
-  createForm(f: FormNode): FormGroup {
-    let form: FormGroup = new FormGroup({});
+  createForm(f: FormNode): FormGroup | FormArray {
+    const { type } = f;
+    let form: FormGroup | FormArray = FormNodeTypes.ARRAY === type ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
 
     f?.children.forEach((child) => {
-      const { name, type, value, validators } = child;
+      const { name, type, value, validators, disabled, readonly } = child;
       let control;
-      if ('group' === type) {
+      if (FormNodeTypes.CONTROL !== type) {
         control = this.createForm(child);
       } else {
-        control = new CustomFormControl(child, value);
+        control = new CustomFormControl({ ...child, readonly: true }, { value, disabled: !!disabled });
       }
 
       if (!control) {
@@ -31,13 +32,17 @@ export class DynamicFormService {
         this.addValidators(control, validators);
       }
 
-      form.addControl(name, control);
+      if (form instanceof FormGroup) {
+        form.addControl(name, control);
+      } else if (form instanceof FormArray) {
+        form.push(control);
+      }
     });
 
     return form;
   }
 
-  addValidators(control: FormGroup | CustomFormControl, validators: Array<string> = []) {
+  addValidators(control: FormGroup | FormArray | CustomFormControl, validators: Array<string> = []) {
     validators.forEach((v: string) => {
       control.addValidators(this.validatorMap[v]);
     });
@@ -50,9 +55,11 @@ export enum FormNodeViewTypes {
   DATETIME = 'dateTime',
   TIME = 'time'
 }
+
 export enum FormNodeTypes {
   GROUP = 'group',
-  CONTROL = 'control'
+  CONTROL = 'control',
+  ARRAY = 'array'
 }
 export interface FormNode {
   name: string;
@@ -63,6 +70,8 @@ export interface FormNode {
   value?: string;
   path?: string;
   validators?: string[];
+  disabled?: boolean;
+  readonly?: boolean;
 }
 
 export interface CustomControl extends FormControl {
@@ -74,6 +83,39 @@ export class CustomFormControl extends FormControl implements CustomControl {
 
   constructor(meta: FormNode, formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(formState, validatorOrOpts, asyncValidator);
+    this.meta = meta;
+  }
+}
+
+export interface CustomGroup extends FormGroup {
+  meta: FormNode;
+}
+
+export class CustomFormGroup extends FormGroup implements CustomGroup {
+  meta: FormNode;
+
+  constructor(
+    meta: FormNode,
+    controls: {
+      [key: string]: AbstractControl;
+    },
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+  ) {
+    super(controls, validatorOrOpts, asyncValidator);
+    this.meta = meta;
+  }
+}
+
+export interface CustomArray extends FormArray {
+  meta: FormNode;
+}
+
+export class CustomFormArray extends FormArray implements CustomArray {
+  meta: FormNode;
+
+  constructor(meta: FormNode, controls: AbstractControl[], validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
+    super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
   }
 }

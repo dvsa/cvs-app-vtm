@@ -10,16 +10,14 @@ export const PsvAnnual: FormNode = {
       label: 'VRM',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'createdAt',
@@ -34,8 +32,7 @@ export const PsvAnnual: FormNode = {
       label: 'Test status',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'testStartTimestamp',
@@ -48,48 +45,77 @@ export const PsvAnnual: FormNode = {
     {
       name: 'testTypes',
       label: 'Test Types',
-      type: FormNodeTypes.GROUP,
-      path: 'testTypes',
+      type: FormNodeTypes.ARRAY,
       children: [
         {
-          name: 'testCode',
-          label: 'Test Code',
-          value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
-        {
-          name: 'testTypeName',
-          label: 'Description',
-          value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
-        {
-          name: 'certificateNumber',
-          label: 'Certificate number',
-          value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
-        {
-          name: 'testNumber',
-          label: 'Test Number',
-          value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
-        {
-          name: 'testExpiryDate',
-          label: 'Expiry Date',
-          value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.DATE
+          name: 'test0',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testCode',
+              label: 'Test Code',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testTypeName',
+              label: 'Description',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testNumber',
+              label: 'Test Number',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE
+            },
+            {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.ARRAY,
+              label: 'Reason for abandoning',
+              children: [
+                {
+                  name: '0',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Reason for abandoning',
+                  value: '',
+                  children: []
+                },
+                {
+                  name: '0',
+                  type: FormNodeTypes.CONTROL,
+                  label: 'Reason for abandoning',
+                  value: '',
+                  children: []
+                }
+              ]
+            },
+            {
+              name: 'additionalDetailsForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'Additional details for abandoning',
+              children: []
+            }
+          ]
         }
       ]
     }

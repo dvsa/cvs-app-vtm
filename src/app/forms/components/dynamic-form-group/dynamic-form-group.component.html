@@ -1,27 +1,28 @@
-<ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: myForm }"> </ng-template>
+<ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
 
 <ng-template #nodeTemplateRef let-form="form">
   <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">
-    <ng-container *ngIf="!control.value.controls">
-      <ng-template [ngTemplateOutlet]="controlTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="control.value.controls">
-      <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+    <ng-container [ngSwitch]="control.value.meta.type">
+      <ng-container *ngSwitchCase="formNodeViewTypes.CONTROL">
+        <ng-template [ngTemplateOutlet]="controlTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeViewTypes.GROUP">
+        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeViewTypes.ARRAY">
+        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+      </ng-container>
     </ng-container>
   </ng-container>
 </ng-template>
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <app-view-list-item [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list__row"></app-view-list-item>
-    <!-- <app-text-input [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input> -->
+    <ng-container [ngSwitch]="control.value.meta.readonly">
+      <app-view-list-item *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list__row"></app-view-list-item>
+      <app-text-input *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input>
+    </ng-container>
   </ng-container>
-</ng-template>
-
-<ng-template #childNode let-form>
-  <div class="node">
-    <div class="node__children">
-      <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
-    </div>
-  </div>
 </ng-template>

@@ -1,5 +1,4 @@
 <section *ngIf="testResult$ | async as testResult">
   <h1 class="govuk-heading-xl title">Annual test</h1>
-  <h2 class="govuk-heading-m">Vehicle summary</h2>
   <app-dynamic-form-group [template]="template" [data]="testResult" class="govuk-summary-list"></app-dynamic-form-group>
 </section>
