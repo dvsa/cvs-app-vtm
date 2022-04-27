@@ -7,7 +7,7 @@ import { TestType } from '@models/test-type.model';
 const fakeRecord: TestResultModel = {
   testResultId: 'test',
   systemNumber: 'test',
-  testStartTimestamp: 'testStartTimestamp',
+  testStartTimestamp: new Date(),
   testResult: 'testStatus',
   testTypes: [],
   vin: 'vin'
