@@ -3,12 +3,12 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { GlobalErrorStateModule } from '@store/global-error/global-error-state.module';
 import { environment } from '../../environments/environment';
 import { RouterStateModule } from './router/router-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
 import { TestRecordsStateModule } from './test-records/test-records.module';
 import { UserStateModule } from './user/user-state.module';
-import { GlobalErrorStateModule } from '@store/global-error/global-error-state.module';
 
 @NgModule({
   declarations: [],
