@@ -32,7 +32,7 @@ export const mockTestResult = (i: number = 0) =>
 
     createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
-    testStatus: 'Pass',
+    testResult: 'Pass',
 
     testTypes: [...mockTestTypeList()],
 

@@ -8,7 +8,7 @@ import { GlobalErrorService } from './global-error.service';
 
 @Component({
   selector: 'app-mock-component',
-  template: `<app-global-error></app-global-error><input id="test-input" type="text" />`,
+  template: '<app-global-error></app-global-error><input id="test-input" type="text" />',
   styles: []
 })
 class MockComponent {}

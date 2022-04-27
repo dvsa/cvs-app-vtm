@@ -28,7 +28,7 @@ export const PsvAnnual: FormNode = {
       viewType: FormNodeViewTypes.DATE
     },
     {
-      name: 'testStatus',
+      name: 'testResult',
       label: 'Test status',
       value: '',
       children: [],
