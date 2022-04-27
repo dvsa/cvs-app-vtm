@@ -1,6 +1,6 @@
 import * as jsonServer from 'json-server';
 import { mockTestResultList } from '../src/mocks/mock-test-result';
-import { mockVehicleTechnicalRecordList } from '../src/mocks/mock-vehicle-technical-record.mock';
+import { mockVehicleTecnicalRecordList } from '../src/mocks/mock-vehicle-technical-record.mock';
 const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
@@ -23,7 +23,7 @@ server.get('/vehicles/*', (req, res) => {
       res.jsonp('Error service unavailable');
       break;
     default:
-      res.jsonp(mockVehicleTechnicalRecordList());
+      res.jsonp(mockVehicleTecnicalRecordList());
       break;
   };
 });

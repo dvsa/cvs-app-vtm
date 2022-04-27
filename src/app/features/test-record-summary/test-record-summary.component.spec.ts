@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 import { TestResultModel } from '../../models/test-result.model';
-import { TestType } from '@models/test-type.model';
+import { TestType } from '../../models/test-type.model';
 
 const fakeRecord: TestResultModel = {
   testResultId: 'test',
