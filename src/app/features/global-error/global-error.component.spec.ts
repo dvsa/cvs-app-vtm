@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { GlobalErrorComponent } from './global-error.component';
@@ -10,7 +8,7 @@ import { GlobalErrorService } from './global-error.service';
 
 @Component({
   selector: 'app-mock-component',
-  template: `<app-global-error></app-global-error><input id="test-input" type="text" />`,
+  template: '<app-global-error></app-global-error><input id="test-input" type="text" />',
   styles: []
 })
 class MockComponent {}

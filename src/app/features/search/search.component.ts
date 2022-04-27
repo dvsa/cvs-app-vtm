@@ -19,11 +19,13 @@ export class SearchComponent {
 
   public searchTechRecords(searchTerm: string) {
     const searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
-    const trimmedSearchTerm = searchTerm.trim();
     this.globalErrorService.errors = [];
     this.searchError = undefined;
-    if (trimmedSearchTerm) {
-      this.technicalRecordService.searchBy({ type: 'vin', searchTerm: searchTerm });
+
+    searchTerm = searchTerm.trim();
+
+    if (searchTerm) {
+      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
     } else {
       this.searchError = searchErrorMessage;
       this.globalErrorService.errors = [{ message: searchErrorMessage, anchorLink: 'search-term' }];
