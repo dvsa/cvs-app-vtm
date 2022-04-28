@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { PsvTechRecord } from '../../forms/templates/psv/psv-tech-record.template';
+import { HgvTechRecord } from '../../forms/templates/hgv/hgv-tech-record.template';
+import { TrlTechRecord } from '../../forms/templates/trl/trl-tech-record.template';
 import { FormNode } from '../../forms/services/dynamic-form.service';
 
 @Component({
@@ -35,6 +37,14 @@ export class TechRecordSummaryComponent implements OnInit {
     switch(currentRecord?.vehicleType) {
       case('psv'): {
         this.template = PsvTechRecord;
+        break;
+      }
+      case('hgv'): {
+        this.template = HgvTechRecord;
+        break;
+      }
+      case('trl'): {
+        this.template = TrlTechRecord;
         break;
       }
       default: {
