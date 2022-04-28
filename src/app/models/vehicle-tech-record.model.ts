@@ -1,14 +1,10 @@
 export interface VehicleTechRecordModel {
   primaryVrm: string;
-  secondaryVrms: VrmModel[]
+  secondaryVrms: string[];
   vin: string;
   trailerId?: string;
   systemNumber: string;
   techRecord: TechRecordModel[]
-}
-
-export interface VrmModel {
-  vrm: string;
 }
 
 export enum StatusCodes {
