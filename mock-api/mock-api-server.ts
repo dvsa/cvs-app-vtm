@@ -25,9 +25,17 @@ server.get('/vehicles/:id/*', (req, res) => {
     default:
       // Switch on VIN
       switch (req.params.id) {
-        case 'delay':
+        case 'delayfound':
           console.log('Delaying request');
           setTimeout(() => {res.jsonp(mockVehicleTecnicalRecordList())}, 2500);
+          break;
+        case 'delaynotfound':
+          console.log('Delaying not found request');
+          setTimeout(() => {
+            res.status(500);
+            res.statusMessage = 'Unavailable';
+            res.jsonp('Error service unavailable');
+          }, 2500);
           break;
         default:
           res.jsonp(mockVehicleTecnicalRecordList());
