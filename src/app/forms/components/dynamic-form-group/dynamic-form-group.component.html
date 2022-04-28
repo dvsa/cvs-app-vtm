@@ -3,6 +3,9 @@
 </div>
 
 <ng-template #nodeTemplateRef let-form="form">
+  <h1 *ngIf="form.meta.type === 'root'" class="govuk-heading-xl title">{{ form.meta.label }}</h1>
+  <h2 *ngIf="form.meta.type === 'group'" class="govuk-heading-m title">{{ form.meta.label }}</h2>
+
   <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">
     <ng-container [ngSwitch]="control.value.meta.type">
       <ng-container *ngSwitchCase="formNodeViewTypes.CONTROL">
@@ -16,8 +19,13 @@
       <ng-container *ngSwitchCase="formNodeViewTypes.ARRAY">
         <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
       </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeViewTypes.SECTION">
+        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+      </ng-container>
     </ng-container>
   </ng-container>
+
 </ng-template>
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">

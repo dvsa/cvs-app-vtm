@@ -1,4 +1,4 @@
-import { Injectable, Optional } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormArray, FormControl, FormControlOptions, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class DynamicFormService {
       if (FormNodeTypes.CONTROL !== type) {
         control = this.createForm(child);
       } else {
-        control = new CustomFormControl({ ...child, readonly: !!readonly }, { value, disabled: !!disabled });
+        control = new CustomFormControl({ ...child, readonly: !readonly }, { value, disabled: !!disabled });
       }
 
       if (validators && validators.length > 0) {
@@ -57,15 +57,18 @@ export enum FormNodeViewTypes {
 }
 
 export enum FormNodeTypes {
+  ROOT = 'root',
   GROUP = 'group',
   CONTROL = 'control',
-  ARRAY = 'array'
+  ARRAY = 'array',
+  SECTION = 'section'
 }
 
 export interface FormNodeOption<T> {
   value: T;
   label: string;
 }
+
 export interface FormNode {
   name: string;
   children: FormNode[];
