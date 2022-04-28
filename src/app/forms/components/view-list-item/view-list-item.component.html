@@ -17,6 +17,6 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="'vehicleType'">
-    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value.length === 3 ? (value | uppercase) : (value | defaultNullOrEmpty) }}</dd>
+    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | uppercase | defaultNullOrEmpty }}</dd>
   </ng-container>
 </ng-container>

@@ -7,6 +7,7 @@ import { By } from '@angular/platform-browser';
 describe('TechRecordSummaryComponent', () => {
     let component: TechRecordSummaryComponent;
     let fixture: ComponentFixture<TechRecordSummaryComponent>;
+
     const fakeTechRecord: TechRecordModel = {
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.PSV,
@@ -35,6 +36,7 @@ describe('TechRecordSummaryComponent', () => {
         seatbeltInstallationApprovalDate: "1234",
         departmentalVehicleMarker: true,
     }
+
     const fakeRecord = {
         systemNumber: `SYS`,
         vin: `XMGDE02FS0H0`,
@@ -43,7 +45,7 @@ describe('TechRecordSummaryComponent', () => {
         '609859Z',
         '609959Z'
         ],
-        techRecord: [fakeTechRecord]
+        techRecord: [fakeTechRecord, fakeTechRecord]
     }
 
     beforeEach(async () => {
@@ -61,6 +63,11 @@ describe('TechRecordSummaryComponent', () => {
         expect(component).toBeTruthy();
     });
 
+    it('should get the tech record vehicle type', () => {
+        component.vehicleTechRecord = fakeRecord;
+        expect(component.vehicleType).toEqual('psv')
+    })
+    
     it('should show record found', () => {
         component.vehicleTechRecord = fakeRecord;
         fixture.detectChanges();

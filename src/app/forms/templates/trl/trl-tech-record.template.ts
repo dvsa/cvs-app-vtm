@@ -11,7 +11,7 @@ export const TrlTechRecord: FormNode = {
             value: '',
             children: [],
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING
+            viewType: FormNodeViewTypes.VEHICLETYPE
         },
         {
             name: 'regnDate',

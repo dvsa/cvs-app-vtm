@@ -59,9 +59,7 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
 
     primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
     secondaryVrms: [
-      {
-        vrm: '609859Z',
-      }
+      '609859Z'
     ],
     techRecord: [{
       statusCode: StatusCodes.CURRENT,
@@ -97,9 +95,7 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
 
     primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
     secondaryVrms: [
-      {
-        vrm: '609859Z',
-      }
+      '609859Z'
     ],
     techRecord: [{
       statusCode: StatusCodes.CURRENT,
