@@ -43,7 +43,8 @@ export enum FormNodeViewTypes {
   STRING = 'string',
   DATE = 'date',
   DATETIME = 'dateTime',
-  TIME = 'time'
+  TIME = 'time',
+  VEHICLETYPE = 'vehicleType'
 }
 export enum FormNodeTypes {
   GROUP = 'group',

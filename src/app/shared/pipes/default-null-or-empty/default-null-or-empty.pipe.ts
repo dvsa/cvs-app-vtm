@@ -2,9 +2,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'defaultNullOrEmpty' })
 export class DefaultNullOrEmpty implements PipeTransform {
+  titleCaseFirstWord(value: string) {
+    return value[0].toUpperCase() + value.substr(1);
+  }
+
   transform(value: any): any {
     if (typeof value === 'string') {
-      return value.trim().length > 0 ? value : '-';
+      return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
     } else if (typeof value === 'boolean') {
       return value ? 'Yes' : 'No';
     } else {

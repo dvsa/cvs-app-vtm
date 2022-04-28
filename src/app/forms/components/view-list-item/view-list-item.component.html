@@ -15,4 +15,8 @@
   <ng-container *ngSwitchCase="'time'">
     <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</dd>
   </ng-container>
+
+  <ng-container *ngSwitchCase="'vehicleType'">
+    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value.length === 3 ? (value | uppercase) : (value | defaultNullOrEmpty) }}</dd>
+  </ng-container>
 </ng-container>

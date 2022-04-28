@@ -17,7 +17,7 @@ import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
 import { TestRecordSummaryComponent } from './features/test-record-summary/test-record-summary.component';
-import { TechRecordSummaryComponent } from './vehicle-technical-record/tech-record-summary/tech-record-summary.component';
+import { TechRecordSummaryComponent } from './features/tech-record-summary/tech-record-summary.component';
 import { GlobalErrorComponent } from './features/global-error/global-error.component';
 import { DynamicFormsModule } from './forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
