@@ -1,6 +1,6 @@
 export interface VehicleTechRecordModel {
   primaryVrm: string;
-  secondaryVrms: string[]
+  secondaryVrms: string[];
   vin: string;
   trailerId?: string;
   systemNumber: string;

@@ -23,7 +23,7 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   currentTechRecord(record: VehicleTechRecordModel): TechRecordModel {
-    return record.techRecord.find(record => record.statusCode === 'current')!
+    return record?.techRecord?.find(record => record.statusCode === 'current')!
   }
   
   get vehicleType(): string | undefined {
