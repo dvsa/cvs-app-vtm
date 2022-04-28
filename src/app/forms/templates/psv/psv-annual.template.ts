@@ -109,10 +109,45 @@ export const PsvAnnual: FormNode = {
               ]
             },
             {
-              name: 'additionalDetailsForAbandoning',
+              name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Additional details for abandoning',
+              children: []
+            },
+            {
+              name: 'testAnniversaryDate',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'Anniversary date',
+              viewType: FormNodeViewTypes.DATE,
+              children: []
+            },
+            {
+              name: 'testTypeStartTimestamp',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'Start time',
+              viewType: FormNodeViewTypes.DATETIME,
+              children: []
+            },
+            {
+              name: 'testTypeEndTimestamp',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'End time',
+              viewType: FormNodeViewTypes.DATETIME,
+              children: []
+            },
+            {
+              name: 'prohibitionIssued',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              label: 'Prohibition issued',
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
               children: []
             }
           ]

@@ -5,9 +5,12 @@ export interface TestType {
   testTypeName: string;
 
   testTypeStartTimestamp: string | Date;
+  testTypeEndTimestamp: string | Date;
   testExpiryDate: string | Date;
 
   certificateNumber: string;
   reasonForAbandoning: string[];
-  additionalDetailsForAbandoning?: string;
+  additionalCommentsForAbandon?: string;
+  testAnniversaryDate: string | Date;
+  prohibitionIssued: boolean;
 }

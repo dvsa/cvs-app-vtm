@@ -61,6 +61,11 @@ export enum FormNodeTypes {
   CONTROL = 'control',
   ARRAY = 'array'
 }
+
+export interface FormNodeOption<T> {
+  value: T;
+  label: string;
+}
 export interface FormNode {
   name: string;
   children: FormNode[];
@@ -69,6 +74,7 @@ export interface FormNode {
   label?: string;
   value?: string;
   path?: string;
+  options?: FormNodeOption<string | number | boolean>[];
   validators?: string[];
   disabled?: boolean;
   readonly?: boolean;
