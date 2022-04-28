@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormArray, FormControl, FormControlOptions, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Injectable({
@@ -11,9 +11,13 @@ export class DynamicFormService {
     required: Validators.required
   };
 
-  createForm(f: FormNode): FormGroup | FormArray {
+  createForm(f: FormNode): CustomFormGroup | CustomFormArray {
+    if (!f) {
+      return new CustomFormGroup(f, {});
+    }
+
     const { type } = f;
-    let form: FormGroup | FormArray = FormNodeTypes.ARRAY === type ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
+    let form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === type ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
 
     f?.children.forEach((child) => {
       const { name, type, value, validators, disabled, readonly } = child;
@@ -21,11 +25,7 @@ export class DynamicFormService {
       if (FormNodeTypes.CONTROL !== type) {
         control = this.createForm(child);
       } else {
-        control = new CustomFormControl({ ...child, readonly: true }, { value, disabled: !!disabled });
-      }
-
-      if (!control) {
-        throw new Error('invalid control type');
+        control = new CustomFormControl({ ...child, readonly: !!readonly }, { value, disabled: !!disabled });
       }
 
       if (validators && validators.length > 0) {
@@ -42,7 +42,7 @@ export class DynamicFormService {
     return form;
   }
 
-  addValidators(control: FormGroup | FormArray | CustomFormControl, validators: Array<string> = []) {
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<string> = []) {
     validators.forEach((v: string) => {
       control.addValidators(this.validatorMap[v]);
     });

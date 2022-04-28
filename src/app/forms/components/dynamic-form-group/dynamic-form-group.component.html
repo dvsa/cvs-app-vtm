@@ -1,4 +1,6 @@
-<ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+<div id="{{ 'test-' + form.meta?.name || 'test-dynamic-form' }}">
+  <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+</div>
 
 <ng-template #nodeTemplateRef let-form="form">
   <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">

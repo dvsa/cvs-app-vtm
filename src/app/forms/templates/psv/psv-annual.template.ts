@@ -90,7 +90,7 @@ export const PsvAnnual: FormNode = {
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.ARRAY,
-              label: 'Reason for abandoning',
+              label: 'Reasons for abandoning',
               children: [
                 {
                   name: '0',
