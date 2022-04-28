@@ -10,7 +10,7 @@ const args = require('minimist')(process.argv.slice(2));
 server.use(middlewares);
 
 // Add custom routes before JSON Server router
-server.get('/vehicles/*', (req, res) => {
+server.get('/vehicles/:id/*', (req, res) => {
   switch (args['tech-record']) {
     case 'NotFound':
       res.status(404);
@@ -23,7 +23,15 @@ server.get('/vehicles/*', (req, res) => {
       res.jsonp('Error service unavailable');
       break;
     default:
-      res.jsonp(mockVehicleTecnicalRecordList());
+      // Switch on VIN
+      switch (req.params.id) {
+        case 'delay':
+          console.log('Delaying request');
+          setTimeout(() => {res.jsonp(mockVehicleTecnicalRecordList())}, 2500);
+          break;
+        default:
+          res.jsonp(mockVehicleTecnicalRecordList());
+      }
       break;
   };
 });
