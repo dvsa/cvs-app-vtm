@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable } from 'rxjs';
+import { FormNode } from 'src/app/forms/services/dynamic-form.types';
 import { PsvAnnual } from '../../../../forms/templates/psv/psv-annual.template';
-import { FormNode } from '../../../../forms/services/dynamic-form.service';
+
 @Component({
   selector: 'app-test-records',
   templateUrl: './test-records.component.html',

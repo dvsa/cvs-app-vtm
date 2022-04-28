@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.service';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export const PsvAnnual: FormNode = {
   name: 'psvAnnualTest',

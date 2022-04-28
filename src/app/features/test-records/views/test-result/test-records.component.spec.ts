@@ -6,10 +6,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
-import { mockTestResult } from '@mocks/mock-test-result';
 import { TestRecordComponent } from './test-records.component';
 import { SharedModule } from '@shared/shared.module';
-import { formatDate } from '@angular/common';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 
 describe('TestRecordComponent', () => {
