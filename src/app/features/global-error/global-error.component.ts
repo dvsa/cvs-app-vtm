@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { GlobalErrorService } from '@services/global-error/global-error.service';
-import { Observable } from 'rxjs';
-
+import { Component } from '@angular/core';
+import { GlobalError, GlobalErrorService } from './global-error.service';
 
 @Component({
   selector: 'app-global-error',
@@ -9,11 +7,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./global-error.component.scss']
 })
 export class GlobalErrorComponent {
+  constructor(public globalErrorService: GlobalErrorService) {}
 
-  errorMessage$: Observable<string | null>;
-
-  constructor(private globalErrorService: GlobalErrorService) {
-    this.errorMessage$ = this.globalErrorService.globalError || null;
+  goto(error: GlobalError) {
+    const el = document.getElementById(error.anchorLink);
+    el && el.focus({ preventScroll: false });
   }
-
 }

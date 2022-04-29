@@ -30,7 +30,7 @@
       "@shared/*": ["src/app/shared/*"]
     },
     "plugins": [
-      { "transform": "ts-auto-mock/transformer" }
+      { "transform": "ts-auto-mock/transformer", "cacheBetweenTests": false }
     ]
   },
   "angularCompilerOptions": {
