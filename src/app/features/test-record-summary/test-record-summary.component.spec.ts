@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
+import { TestResultModel } from '../../models/test-result.model';
+import { RouterTestingModule } from '@angular/router/testing';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 
 describe('TestRecordSummaryComponent', () => {
@@ -11,7 +12,8 @@ describe('TestRecordSummaryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestRecordSummaryComponent]
+      declarations: [TestRecordSummaryComponent],
+      imports: [RouterTestingModule]
     }).compileComponents();
   });
 

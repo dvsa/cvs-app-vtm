@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes } from './dynamic-form.service';
-import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes, CustomControl, CustomFormGroup } from './dynamic-form.service';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
@@ -43,11 +43,15 @@ describe('DynamicFormService', () => {
 
       const outputGroup = service.createForm(node);
 
-      expect(outputGroup.controls[node.children[0].name]).toBeTruthy();
+      expect(
+        (
+          outputGroup.controls as {
+            [key: string]: AbstractControl;
+          }
+        )[node.children[0].name]
+      ).toBeTruthy();
     });
-  });
 
-  describe('createForm', () => {
     it('should return a FormGroup mirroring the nested structure of the controls it was created with', () => {
       const node: FormNode = {
         name: 'group',
@@ -69,15 +73,65 @@ describe('DynamicFormService', () => {
       };
 
       const outputGroup = service.createForm(node);
-      const subGroup = outputGroup.controls[node.children[0].name] as FormGroup;
+      const subGroup = (
+        outputGroup.controls as {
+          [key: string]: AbstractControl;
+        }
+      )[node.children[0].name] as CustomFormGroup;
 
       expect(subGroup.controls[node.children[0].children[0].name]).toBeTruthy();
+    });
+
+    it('should return a formGroup with a nested FormArray', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          <FormNode>{
+            name: 'nestedArray',
+            type: FormNodeTypes.ARRAY,
+            children: [
+              <FormNode>{
+                name: 'vin',
+                label: 'Vechile Identification Number',
+                type: FormNodeTypes.CONTROL,
+                viewType: FormNodeViewTypes.STRING
+              }
+            ]
+          }
+        ]
+      };
+
+      const outputGroup = service.createForm(node);
+      const formArray = outputGroup.get('nestedArray');
+      expect(formArray instanceof FormArray).toBeTruthy();
+      expect((formArray as FormArray).controls.length).toBe(1);
+    });
+
+    it('should add correct validators', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          <FormNode>{
+            name: 'foo',
+            type: FormNodeTypes.CONTROL,
+            validators: ['required'],
+            children: []
+          }
+        ]
+      };
+
+      const outputGroup = service.createForm(node);
+      const control = outputGroup.get('foo');
+      expect(control instanceof CustomFormControl).toBeTruthy();
+      expect(control?.hasValidator(Validators.required)).toBeTruthy();
     });
   });
 
   describe('addValidators', () => {
     it('should add validators', () => {
-      const control: FormControl = new FormControl({});
+      const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
       const validators: Array<string> = ['required'];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);
