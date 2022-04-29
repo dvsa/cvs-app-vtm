@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { PsvTechRecord } from '../../forms/templates/psv/psv-tech-record.template';
 import { HgvTechRecord } from '../../forms/templates/hgv/hgv-tech-record.template';
 import { TrlTechRecord } from '../../forms/templates/trl/trl-tech-record.template';
@@ -14,18 +14,25 @@ import { FormNode } from '../../forms/services/dynamic-form.service';
 export class TechRecordSummaryComponent implements OnInit {
   @Input() vehicleTechRecord!: VehicleTechRecordModel;
   template!: FormNode;
-  currentRecord!: TechRecordModel;
+  currentRecord!: TechRecordModel | undefined;
 
   ngOnInit(): void {
     this.vehicleTemplate();
-    this.currentRecord = this.currentTechRecord(this.vehicleTechRecord)
+    this.currentRecord = this.viewableTechRecord(this.vehicleTechRecord)
   }
 
   constructor() {
   }
 
-  currentTechRecord(record: VehicleTechRecordModel): TechRecordModel {
-    return record?.techRecord?.find(record => record.statusCode === 'current')!
+  viewableTechRecord(record: VehicleTechRecordModel): TechRecordModel | undefined {
+    let viewableTechRecord = record?.techRecord?.find(record => record.statusCode === StatusCodes.PROVISIONAL)
+    if (viewableTechRecord == undefined){
+      viewableTechRecord = record?.techRecord?.find(record => record.statusCode === StatusCodes.CURRENT)
+    }
+    if (viewableTechRecord == undefined){
+      viewableTechRecord = record?.techRecord?.find(record => record.statusCode === StatusCodes.ARCHIVED)
+    }
+    return viewableTechRecord
   }
   
   get vehicleType(): string | undefined {
@@ -33,8 +40,8 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   vehicleTemplate(): void  {
-    let currentRecord = this.currentTechRecord(this.vehicleTechRecord)
-    switch(currentRecord?.vehicleType) {
+    let viewableRecord = this.viewableTechRecord(this.vehicleTechRecord)
+    switch(viewableRecord?.vehicleType) {
       case('psv'): {
         this.template = PsvTechRecord;
         break;
