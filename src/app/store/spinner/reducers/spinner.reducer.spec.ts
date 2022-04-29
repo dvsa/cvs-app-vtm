@@ -1,40 +1,40 @@
-import { globalErrorReducer, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
-import { fetchTestResults, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsFailed, fetchTestResultsSuccess, initialTestResultsState, testResultsReducer } from '@store/test-records';
-import { getByVIN, getByVINFailure } from '@store/technical-records';
+import { spinnerReducer, initialSpinnerState } from '@store/spinner/reducers/spinner.reducer';
+import { getByVIN, getByVINFailure, getByVINSuccess } from '@store/technical-records';
 
-describe('Global Error Reducer', () => {
+describe('Spinner Reducer', () => {
+
   describe('unknown action', () => {
     it('should return the default state', () => {
       const action = {
         type: 'Unknown'
       };
 
-      const state = globalErrorReducer(initialGlobalErrorState, action);
-      expect(state).toBe(initialGlobalErrorState);
+      const state = spinnerReducer(initialSpinnerState, action);
+      expect(state).toBe(initialSpinnerState);
     });
   });
 
-  describe('Fail action', () => {
-    it.each([fetchTestResultsBySystemIdFailed, fetchTestResultsFailed, getByVINFailure])('should return the error state', (actionMethod) => {
-      const error = 'fetching test records failed';
-      const newState = { ...initialGlobalErrorState, globalError: error };
-      const action = actionMethod({ error });
-      const state = globalErrorReducer(initialGlobalErrorState, action);
+  describe('Start Loading', () => {
+    it.each([getByVIN])('should start the loading state', (actionMethod) => {
+      const expectedValue = { ...initialSpinnerState, showSpinner: true };
+      const action = actionMethod({} as any);
 
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
+      const state = spinnerReducer(initialSpinnerState, action);
+
+      expect(state).toEqual(expectedValue);
+      expect(state).not.toBe(expectedValue);
     });
   });
 
-  describe('Success action', () => {
-    it.each([fetchTestResultsBySystemId, getByVIN, fetchTestResults])('should reset the error state', (actionMethod) => {
-      const newState = { ...initialGlobalErrorState, globalError: null };
-      //all props must be supplied here
-      const action = actionMethod({ systemId: '', vin: '' });
-      const state = globalErrorReducer(initialGlobalErrorState, action);
+  describe('Stop Loading', () => {
+    it.each([getByVINSuccess, getByVINFailure])('should stop the loading state', (actionMethod) => {
+      const expectedValue = { ...initialSpinnerState, showSpinner: false };
+      const action = actionMethod({} as any);
 
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
+      const state = spinnerReducer(initialSpinnerState, action);
+
+      expect(state).toEqual(expectedValue);
+      expect(state).not.toBe(expectedValue);
     });
   });
 });

@@ -1,12 +1,12 @@
-import { GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
-import { getErrorMessage } from '@store/global-error/selectors/global-error.selectors';
+import { SpinnerState, initialSpinnerState } from '@store/spinner/reducers/spinner.reducer';
+import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
 
-describe('Global Error Selectors', () => {
-  describe('getErrorMessage', () => {
-    it('should return the correct error', () => {
-      const state: GlobalErrorState = { ...initialGlobalErrorState, globalError: 'error' };
-      const selectedState = getErrorMessage.projector(state);
-      expect(selectedState).toEqual(state.globalError);
+describe('Spinner Selectors', () => {
+  describe('getSpinner', () => {
+    it('should return the spinner', () => {
+      const state: SpinnerState = { ...initialSpinnerState, showSpinner: true };
+      const selectedState = getSpinner.projector(state);
+      expect(selectedState).toEqual(state.showSpinner);
     });
   });
 });
