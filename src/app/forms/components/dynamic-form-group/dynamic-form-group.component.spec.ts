@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormNodeTypes } from '../../services/dynamic-form.service';
-
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DynamicFormsModule } from '../../dynamic-forms.module';
+import { DynamicFormService, FormNode, FormNodeTypes } from '../../services/dynamic-form.service';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
@@ -9,7 +10,7 @@ describe('DynamicFormGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DynamicFormGroupComponent]
+      imports: [DynamicFormsModule]
     }).compileComponents();
   });
 
@@ -48,24 +49,61 @@ describe('DynamicFormGroupComponent', () => {
     expect(component.entriesOf(input)).toStrictEqual(expected);
   });
 
-  describe('populateData: ', () => {
-    it('populate the form data - single item', () => {
-      let template = { name: 'testname', children: [], type: FormNodeTypes.CONTROL, value: '' };
-      component.populateData({ testname: 'new value' }, template);
-      expect(template.value).toBe('new value');
+  describe('formNodeViewTypes', () => {
+    it('should return FormNodeViewTypes enum', () => {
+      Object.entries(FormNodeTypes).forEach((entry) => {
+        expect(FormNodeTypes).toEqual(component.formNodeViewTypes);
+        expect(component.formNodeViewTypes[entry[0] as keyof typeof FormNodeTypes]).toBe(entry[1]);
+      });
     });
+  });
 
-    it('populate the form data - children', () => {
-      let template = { name: 'testname', children: [{ name: 'testchildname', children: [], type: FormNodeTypes.CONTROL, value: '' }], type: FormNodeTypes.CONTROL, value: '' };
-      component.populateData({ testname: 'new value', testchildname: 'testchildname' }, template);
-      expect(template.value).toBe('new value');
-      expect(template.children[0].value).toBe('testchildname');
-    });
+  describe('template', () => {
+    const template = (readonly = false) => {
+      return <FormNode>{
+        name: 'myForm',
+        type: FormNodeTypes.GROUP,
+        children: [
+          { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string', readonly: readonly },
+          {
+            name: 'levelOneGroup',
+            type: FormNodeTypes.GROUP,
+            children: [
+              { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string', readonly: readonly },
+              {
+                name: 'levelTwoArray',
+                type: FormNodeTypes.ARRAY,
+                children: [
+                  { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1', readonly: readonly },
+                  { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2', readonly: readonly }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+    };
 
-    it('populate the form data - child objects', () => {
-      let template = { name: 'innertestobj', children: [], type: FormNodeTypes.CONTROL, value: '' };
-      component.populateData({ testobj: { innertestobj: 'innertestobj' } }, template);
-      expect(template.value).toBe('innertestobj');
-    });
+    it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.form = dfs.createForm(template(true));
+
+      fixture.detectChanges();
+
+      const dtList = fixture.debugElement.queryAll(By.css('dt'));
+      const ddList = fixture.debugElement.queryAll(By.css('dd'));
+
+      expect(dtList.length).toBe(4);
+      expect(ddList.length).toBe(4);
+    }));
+
+    it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.form = dfs.createForm(template());
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(4);
+    }));
   });
 });

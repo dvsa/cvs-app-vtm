@@ -4,6 +4,7 @@ import { MsalModule } from '@azure/msal-angular';
 import { StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppComponent } from './app.component';
+import { GlobalErrorComponent } from './features/global-error/global-error.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { UserService } from './services/user-service/user-service';
@@ -16,7 +17,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, StoreModule.forRoot({}), MsalModule],
-      declarations: [AppComponent, HeaderComponent, FooterComponent],
+      declarations: [AppComponent, HeaderComponent, FooterComponent, GlobalErrorComponent],
       providers: [{ provide: UserService, useValue: MockUserService }]
     }).compileComponents();
   });
