@@ -1,18 +1,22 @@
-<dt class="govuk-summary-list__key">{{ label }}:</dt>
-<ng-container [ngSwitch]="viewType">
-  <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
-    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
-  </ng-container>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">{{ label }}:</dt>
+    <ng-container [ngSwitch]="viewType">
+      <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
+        <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy' | defaultNullOrEmpty }}</dd>
+      </ng-container>
 
-  <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
-    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
-  </ng-container>
+      <ng-container *ngSwitchCase="formNodeViewTypes.DATETIME">
+        <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'dd/MM/yyyy HH:mm' | defaultNullOrEmpty }}</dd>
+      </ng-container>
 
-  <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
-    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</dd>
-  </ng-container>
+      <ng-container *ngSwitchCase="formNodeViewTypes.TIME">
+        <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | date: 'HH:mm' | defaultNullOrEmpty }}</dd>
+      </ng-container>
 
-  <ng-container *ngSwitchDefault>
-    <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
-  </ng-container>
-</ng-container>
+      <ng-container *ngSwitchDefault>
+        <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
+      </ng-container>
+    </ng-container>
+  </div>
+</dl>

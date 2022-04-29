@@ -1,11 +1,9 @@
 <div id="{{ 'test-' + form.meta?.name || 'test-dynamic-form' }}">
+  <h1 class="govuk-heading-xl title">{{ form.meta.label }}</h1>
   <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
 </div>
 
 <ng-template #nodeTemplateRef let-form="form">
-  <h1 *ngIf="form.meta.type === 'root'" class="govuk-heading-xl title">{{ form.meta.label }}</h1>
-  <h2 *ngIf="form.meta.type === 'section'" class="govuk-heading-m title">{{ form.meta.label }}</h2>
-
   <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">
     <ng-container [ngSwitch]="control.value.meta.type">
       <ng-container *ngSwitchCase="formNodeViewTypes.CONTROL">
@@ -13,16 +11,16 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeViewTypes.GROUP">
-        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+        <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeViewTypes.ARRAY">
         <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
       </ng-container>
 
-      <div *ngSwitchCase="formNodeViewTypes.SECTION" class="govuk-summary-list">
-        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
-      </div>
+      <ng-container *ngSwitchCase="formNodeViewTypes.SECTION">
+        <ng-template [ngTemplateOutlet]="sectionTemplate" [ngTemplateOutletContext]="{ control: control }"></ng-template>
+      </ng-container>
     </ng-container>
   </ng-container>
 </ng-template>
@@ -30,8 +28,29 @@
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
     <ng-container [ngSwitch]="control.value.meta.readonly">
-      <app-view-list-item *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list__row"></app-view-list-item>
+      <app-view-list-item *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-view-list-item>
       <app-text-input *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input>
     </ng-container>
   </ng-container>
 </ng-template>
+
+<ng-template #childNode let-form="form">
+  <div class="node">
+    <div class="node__children">
+      <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #sectionTemplate let-control="control">
+  <div>
+    <h2 class="govuk-heading-m">{{ control.value.meta.label }}</h2>
+  </div>
+</ng-template>
+
+<!-- new summary list template -->
+
+
+
+
+<pre>{{ form.value | json }}</pre>

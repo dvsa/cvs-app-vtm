@@ -26,7 +26,7 @@ export class DynamicFormService {
       if (FormNodeTypes.CONTROL !== type) {
         control = this.createForm(child);
       } else {
-        control = new CustomFormControl({ ...child, readonly: !readonly }, { value, disabled: !!disabled });
+        control = new CustomFormControl({ ...child, readonly: true }, { value, disabled: !!disabled });
       }
 
       if (validators && validators.length > 0) {
