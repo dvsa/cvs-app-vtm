@@ -21,6 +21,7 @@ import { TechRecordSummaryComponent } from './features/tech-record-summary/tech-
 import { GlobalErrorComponent } from './features/global-error/global-error.component';
 import { DynamicFormsModule } from './forms/dynamic-forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '@shared/shared.module';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -64,7 +65,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent, GlobalErrorComponent],
-  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule, SharedModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
