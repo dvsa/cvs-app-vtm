@@ -1,34 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
+import { getGlobalErrorState, globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { addError, clearError } from '@store/global-error/actions/global-error.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalErrorService {
-  private errors_ = new BehaviorSubject<GlobalError[]>([]);
-  errors$: Observable<GlobalError[]>;
+
+  private errors$: Observable<GlobalError[]>;
 
   constructor(private store: Store<State>) {
-    this.errors$ = this.errors_.asObservable();
-  }
-
-  set errors(errors: GlobalError[]) {
-    this.errors_.next([...errors]);
+    this.errors$ = this.store.pipe(select(globalErrorState))
   }
 
   get errors() {
-    return this.errors_.getValue();
+    return this.errors$;
   }
 
-  addError(error: GlobalError) {
-    this.errors_.next([...this.errors, error]);
+  addError(error: GlobalError){
+    this.store.dispatch(addError(error))
   }
+
+  clearError() : void {
+    this.store.dispatch(clearError())
+  }
+
 }
 
 export interface GlobalError {
-  message: string;
-  anchorLink: string;
+  error: string;
+  anchorLink?: string;
 }

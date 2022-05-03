@@ -13,7 +13,7 @@ export class TechnicalRecordServiceEffects {
       mergeMap((action) =>
         this.technicalRecordService.getByVIN(action.vin).pipe(
           map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })),
-          catchError(() => of(getByVINFailure({ error: 'There was a problem getting the Tech Record by VIN' })))
+          catchError(() => of(getByVINFailure({ error: 'There was a problem getting by VIN', anchorLink: '' })))
         )
       )
     )

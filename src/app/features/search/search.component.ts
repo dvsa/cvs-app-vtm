@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { addError, clearError } from '@store/global-error/actions/global-error.actions';
 import { Observable } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 import { GlobalErrorService } from '../global-error/global-error.service';
@@ -19,8 +21,8 @@ export class SearchComponent {
 
   public searchTechRecords(searchTerm: string) {
     const searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
-    this.globalErrorService.errors = [];
-    this.searchError = undefined;
+      this.globalErrorService.clearError()
+      this.searchError = undefined;
 
     searchTerm = searchTerm.trim();
 
@@ -28,7 +30,7 @@ export class SearchComponent {
       this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
     } else {
       this.searchError = searchErrorMessage;
-      this.globalErrorService.errors = [{ message: searchErrorMessage, anchorLink: 'search-term' }];
+      this.globalErrorService.addError({ error: searchErrorMessage, anchorLink: 'search-term' });
     }
   }
 }
