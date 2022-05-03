@@ -60,23 +60,23 @@ describe('DynamicFormGroupComponent', () => {
   });
 
   describe('template', () => {
-    const template = (readonly = false) => {
+    const template = () => {
       return <FormNode>{
         name: 'myForm',
         type: FormNodeTypes.GROUP,
         children: [
-          { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string', readonly: readonly },
+          { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
           {
             name: 'levelOneGroup',
             type: FormNodeTypes.GROUP,
             children: [
-              { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string', readonly: readonly },
+              { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
               {
                 name: 'levelTwoArray',
                 type: FormNodeTypes.ARRAY,
                 children: [
-                  { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1', readonly: readonly },
-                  { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2', readonly: readonly }
+                  { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
+                  { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
                 ]
               }
             ]
@@ -86,7 +86,7 @@ describe('DynamicFormGroupComponent', () => {
     };
 
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
-      component.form = dfs.createForm(template(true));
+      component.form = dfs.createForm(template());
 
       fixture.detectChanges();
 
@@ -98,6 +98,7 @@ describe('DynamicFormGroupComponent', () => {
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.isReadonly = false;
       component.form = dfs.createForm(template());
 
       fixture.detectChanges();

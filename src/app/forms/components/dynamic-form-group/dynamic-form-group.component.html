@@ -1,5 +1,5 @@
 <div id="{{ 'test-' + form.meta?.name || 'test-dynamic-form' }}">
-  <h1 class="govuk-heading-xl title">{{ form.meta.label }}</h1>
+  <h1 class="govuk-heading-xl title">{{ form?.meta?.label }}</h1>
   <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
 </div>
 
@@ -28,8 +28,10 @@
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
     <ng-container [ngSwitch]="isReadonly">
-      <app-view-list-item *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list"></app-view-list-item>
-      <app-text-input *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input>
+      <div *ngIf="control.value.meta">
+        <app-view-list-item *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list"></app-view-list-item>
+        <app-text-input *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input>
+      </div>
     </ng-container>
   </ng-container>
 </ng-template>
