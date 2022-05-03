@@ -40,10 +40,19 @@ describe('TechRecordSummaryComponent', () => {
     const fakeRecord = {
         systemNumber: `SYS`,
         vin: `XMGDE02FS0H0`,
-        primaryVrm: `KP ABC`,
-        secondaryVrms: [
-        '609859Z',
-        '609959Z'
+        vrms: [
+            {
+                vrm: `KP ABC`,
+                isPrimary: true
+            },
+            {
+                vrm: '609859Z',
+                isPrimary: false
+            },
+            {
+                vrm: '609959Z',
+                isPrimary: false
+            }
         ],
         techRecord: [fakeTechRecord, fakeTechRecord]
     }

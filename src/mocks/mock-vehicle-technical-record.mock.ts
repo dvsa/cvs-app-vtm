@@ -16,11 +16,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
     systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
-
-    primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
-    secondaryVrms: [
-      '609859Z',
-      '609959Z'
+    vrms: [
+      { 
+        vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
+        isPrimary: true
+      },
+      {
+        vrm: '609859Z', 
+        isPrimary: false
+      },
+      {
+        vrm: '609959Z',
+        isPrimary: false
+      }
     ],
     techRecord: [{
       statusCode: StatusCodes.CURRENT,
@@ -56,10 +64,15 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
     systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
-
-    primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
-    secondaryVrms: [
-      '609859Z'
+    vrms: [
+      { 
+        vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
+        isPrimary: true
+      },
+      {
+        vrm: '609859Z', 
+        isPrimary: false
+      }
     ],
     techRecord: [{
       statusCode: StatusCodes.CURRENT,
@@ -92,10 +105,15 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
     systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
-
-    primaryVrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
-    secondaryVrms: [
-      '609859Z'
+    vrms: [
+      { 
+        vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
+        isPrimary: true
+      },
+      {
+        vrm: '609859Z', 
+        isPrimary: false
+      }
     ],
     techRecord: [{
       statusCode: StatusCodes.CURRENT,
