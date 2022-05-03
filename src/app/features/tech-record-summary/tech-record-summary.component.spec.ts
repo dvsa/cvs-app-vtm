@@ -2,59 +2,11 @@ import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TechRecordModel, VehicleTypes, StatusCodes, FuelTypes, VehicleConfigurations, EuVehicleCategories, VehicleSizes } from '@models/vehicle-tech-record.model';
 import { By } from '@angular/platform-browser';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
   let fixture: ComponentFixture<TechRecordSummaryComponent>;
-
-  const fakeTechRecord: TechRecordModel = {
-    statusCode: StatusCodes.CURRENT,
-    vehicleType: VehicleTypes.PSV,
-    regnDate: '1234',
-    manufactureYear: 2022,
-    noOfAxles: 2,
-    dtpNumber: '1234',
-    axles: {
-      parkingBrakeMrk: true
-    },
-    speedLimiterMrk: true,
-    tachoExemptMrk: true,
-    euroStandard: '123',
-    fuelpropulsionsystem: FuelTypes.HYBRID,
-    vehicleClass: {
-      description: 'Description'
-    },
-    vehicleConfiguration: VehicleConfigurations.ARTICULATED,
-    euVehicleCategory: EuVehicleCategories.M1,
-    emissionsLimit: 1234,
-    seatsLowerDeck: 1234,
-    seatsUpperDeck: 1234,
-    standingCapacity: 1234,
-    vehicleSize: VehicleSizes.SMALL,
-    numberOfSeatbelts: '1234',
-    seatbeltInstallationApprovalDate: '1234',
-    departmentalVehicleMarker: true
-  };
-
-  const fakeRecord = {
-    systemNumber: `SYS`,
-    vin: `XMGDE02FS0H0`,
-    vrms: [
-      {
-        vrm: `KP ABC`,
-        isPrimary: true
-      },
-      {
-        vrm: '609859Z',
-        isPrimary: false
-      },
-      {
-        vrm: '609959Z',
-        isPrimary: false
-      }
-    ],
-    techRecord: [fakeTechRecord, fakeTechRecord]
-  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -72,12 +24,12 @@ describe('TechRecordSummaryComponent', () => {
   });
 
   it('should get the tech record vehicle type', () => {
-    component.vehicleTechRecord = fakeRecord;
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
     expect(component.vehicleType).toEqual('psv');
   });
 
   it('should show record found', () => {
-    component.vehicleTechRecord = fakeRecord;
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
