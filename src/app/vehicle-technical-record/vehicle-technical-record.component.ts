@@ -10,7 +10,7 @@ import { VehicleTechRecordModel, vrms } from '../models/vehicle-tech-record.mode
   styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent {
-  @Input() vehicleTechRecord!: VehicleTechRecordModel;
+  @Input() vehicleTechRecord?: VehicleTechRecordModel;
 
   records: Observable<TestResultModel[]> = of([]);
 

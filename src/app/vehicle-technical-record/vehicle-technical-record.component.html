@@ -22,6 +22,6 @@
       <dd class="govuk-summary-list__value"></dd>
     </div>
   </dl>
-  <app-tech-record-summary [vehicleTechRecord]="vehicleTechRecord || []"></app-tech-record-summary>
+  <app-tech-record-summary [vehicleTechRecord]="vehicleTechRecord || undefined"></app-tech-record-summary>
   <app-test-record-summary [testRecords]="(records | async) || []"></app-test-record-summary>
 </div>

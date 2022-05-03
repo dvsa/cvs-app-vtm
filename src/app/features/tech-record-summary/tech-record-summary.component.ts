@@ -12,9 +12,9 @@ import { FormNode } from '../../forms/services/dynamic-form.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechRecordSummaryComponent implements OnInit {
-  @Input() vehicleTechRecord!: VehicleTechRecordModel;
+  @Input() vehicleTechRecord?: VehicleTechRecordModel;
   template!: FormNode;
-  currentRecord!: TechRecordModel | undefined;
+  currentRecord?: TechRecordModel;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -23,7 +23,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   constructor() {}
 
-  viewableTechRecord(record: VehicleTechRecordModel): TechRecordModel | undefined {
+  viewableTechRecord(record?: VehicleTechRecordModel): TechRecordModel | undefined {
     let viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.PROVISIONAL);
     if (viewableTechRecord == undefined) {
       viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.CURRENT);
