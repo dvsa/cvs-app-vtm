@@ -3,7 +3,7 @@ export interface VehicleTechRecordModel {
   vin: string;
   trailerId?: string;
   systemNumber: string;
-  techRecord: TechRecordModel[]
+  techRecord: TechRecordModel[];
 }
 
 export interface vrms {
@@ -119,7 +119,7 @@ export interface TechRecordModel {
   drawbarCouplingFitted?: boolean;
   vehicleClass: {
     description: string;
-  }
+  };
   vehicleConfiguration: VehicleConfigurations;
   couplingType?: string;
   maxLoadOnCoupling?: number;

@@ -19,10 +19,10 @@ export class VehicleTechnicalRecordComponent {
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+    return this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary === true)?.vrm;
   }
 
   get otherVrms(): vrms[] | undefined {
-    return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
+    return this.vehicleTechRecord?.vrms.filter((vrm) => vrm.isPrimary === false);
   }
 }

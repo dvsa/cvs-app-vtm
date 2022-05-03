@@ -18,39 +18,38 @@ export class TechRecordSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.vehicleTemplate();
-    this.currentRecord = this.viewableTechRecord(this.vehicleTechRecord)
+    this.currentRecord = this.viewableTechRecord(this.vehicleTechRecord);
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   viewableTechRecord(record: VehicleTechRecordModel): TechRecordModel | undefined {
-    let viewableTechRecord = record?.techRecord?.find(record => record.statusCode === StatusCodes.PROVISIONAL)
-    if (viewableTechRecord == undefined){
-      viewableTechRecord = record?.techRecord?.find(record => record.statusCode === StatusCodes.CURRENT)
+    let viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.PROVISIONAL);
+    if (viewableTechRecord == undefined) {
+      viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.CURRENT);
     }
-    if (viewableTechRecord == undefined){
-      viewableTechRecord = record?.techRecord?.find(record => record.statusCode === StatusCodes.ARCHIVED)
+    if (viewableTechRecord == undefined) {
+      viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.ARCHIVED);
     }
-    return viewableTechRecord
+    return viewableTechRecord;
   }
-  
+
   get vehicleType(): string | undefined {
     return this.vehicleTechRecord?.techRecord.pop()?.vehicleType;
   }
 
-  vehicleTemplate(): void  {
-    let viewableRecord = this.viewableTechRecord(this.vehicleTechRecord)
-    switch(viewableRecord?.vehicleType) {
-      case('psv'): {
+  vehicleTemplate(): void {
+    let viewableRecord = this.viewableTechRecord(this.vehicleTechRecord);
+    switch (viewableRecord?.vehicleType) {
+      case 'psv': {
         this.template = PsvTechRecord;
         break;
       }
-      case('hgv'): {
+      case 'hgv': {
         this.template = HgvTechRecord;
         break;
       }
-      case('trl'): {
+      case 'trl': {
         this.template = TrlTechRecord;
         break;
       }
