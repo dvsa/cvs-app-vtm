@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes, CustomControl, CustomFormGroup } from './dynamic-form.service';
+import { DynamicFormService } from './dynamic-form.service';
+import { FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes, CustomControl, CustomFormGroup } from './dynamic-form.types';
 import { AbstractControl, FormArray, ValidatorFn, Validators } from '@angular/forms';
 
 describe('DynamicFormService', () => {

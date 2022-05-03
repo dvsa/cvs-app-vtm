@@ -1,7 +1,8 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
-import { DynamicFormService, FormNode, FormNodeTypes } from '../../services/dynamic-form.service';
+import { DynamicFormService } from '../../services/dynamic-form.service';
+import { FormNodeTypes, FormNode } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
