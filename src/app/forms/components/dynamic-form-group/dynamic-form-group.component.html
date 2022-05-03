@@ -1,5 +1,5 @@
 <div id="{{ 'test-' + form.meta?.name || 'test-dynamic-form' }}">
-  <h1 class="govuk-heading-xl title">{{ form?.meta?.label }}</h1>
+  <h1 class="govuk-heading-xl title">{{ form.meta?.label }}</h1>
   <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
 </div>
 

@@ -39,8 +39,7 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should show table if records found', () => {
-    const mock = createMock<TestResultModel>();
-    component.testRecords = [mock];
+    component.testRecords = [createMock<TestResultModel>()];
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
