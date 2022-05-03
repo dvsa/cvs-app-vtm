@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { spinnerState, SpinnerState } from '@store/spinner/reducers/spinner.reducer';
@@ -7,15 +7,9 @@ import { Subject, combineLatest, map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SpinnerService implements OnDestroy {
-  private readonly _destroying$ = new Subject<void>();
+export class SpinnerService {
 
   constructor(private store: Store) {
-  }
-
-  ngOnDestroy(): void {
-    this._destroying$.next();
-    this._destroying$.complete();
   }
 
   get showSpinner$(): Observable<boolean> {

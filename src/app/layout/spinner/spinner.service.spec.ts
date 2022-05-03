@@ -24,11 +24,11 @@ describe('Spinner-Service', () => {
     service = new SpinnerService(mockStore);
   });
 
-  it('should create the user service', () => {
+  it('should create the spinner service', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get and set the username', (done) => {
+  it('Should enable the spinner', (done) => {
     // Skip the default value being set
     service.showSpinner$.pipe(skip(1)).subscribe((data) => {
       expect(data).toBe(true);
