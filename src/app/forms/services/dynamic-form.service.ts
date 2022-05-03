@@ -21,12 +21,12 @@ export class DynamicFormService {
     let form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === type ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
 
     f?.children.forEach((child) => {
-      const { name, type, value, validators, disabled, readonly } = child;
+      const { name, type, value, validators, disabled } = child;
       let control;
       if (FormNodeTypes.CONTROL !== type) {
         control = this.createForm(child);
       } else {
-        control = new CustomFormControl({ ...child, readonly: true }, { value, disabled: !!disabled });
+        control = new CustomFormControl({ ...child }, { value, disabled: !!disabled });
       }
 
       if (validators && validators.length > 0) {

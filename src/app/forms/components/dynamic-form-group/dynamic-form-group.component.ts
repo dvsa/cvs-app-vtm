@@ -11,6 +11,7 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes } from '../..
 export class DynamicFormGroupComponent implements OnInit {
   @Input() data: any = {};
   @Input() template!: FormNode;
+  @Input() isReadonly: boolean = true;
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
 
