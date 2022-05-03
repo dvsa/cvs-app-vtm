@@ -22,7 +22,7 @@ export class TechnicalRecordServiceEffects {
               default:
                 message = 'There was a problem getting the Tech Record by VIN'
             }
-            return of(getByVINFailure({ error: message, anchorLink: '' }))
+            return of(getByVINFailure({ error: message, anchorLink: 'search-term' }))
           })
         )
       )
