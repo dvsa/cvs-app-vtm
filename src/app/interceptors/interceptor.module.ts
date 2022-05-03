@@ -4,6 +4,6 @@ import { DelayedRetryModule, HttpRetryInterceptorConfig } from './delayed-retry/
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, DelayedRetryModule.forRoot(new HttpRetryInterceptorConfig({ count: 3, delay: 2000, httpStatusRetry: [404] }))]
+  imports: [CommonModule, DelayedRetryModule.forRoot(new HttpRetryInterceptorConfig({ count: 3, delay: 2000, httpStatusRetry: [504] }))]
 })
 export class InterceptorModule {}
