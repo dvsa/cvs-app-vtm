@@ -6,21 +6,52 @@ const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
 
+const args = require('minimist')(process.argv.slice(2));
+
 server.use(middlewares);
 
 // Add custom routes before JSON Server router
 server.get('/vehicles/:vin/*', (req, res) => {
-  if (req.params['vin'] === "12345") {
-    res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
-  } else if (req.params['vin'] === "78910") {
-    res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
-  } else {
-    res.jsonp(mockVehicleTechnicalRecordList());
-  }
+  switch (args['tech-record']) {
+    case 'NotFound':
+      res.status(404);
+      res.statusMessage = 'NotFound';
+      res.jsonp('Error no vehicle found');
+      break;
+    case 'ServiceError':
+      res.status(500);
+      res.statusMessage = 'Unavailable';
+      res.jsonp('Error service unavailable');
+      break;
+    default:
+      if (req.params['vin'] === "12345") {
+        res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
+      } else if (req.params['vin'] === "78910") {
+        res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
+      } else {
+        res.jsonp(mockVehicleTechnicalRecordList());
+      }
+      break;
+  };
 });
 
 server.get('/test-results/:systemId', (req, res) => {
-  res.jsonp(mockTestResultList());
+
+  switch (args['test-result']) {
+    case 'NotFound':
+      res.status(404);
+      res.statusMessage = 'NotFound';
+      res.jsonp('Error no test records found');
+      break;
+    case 'ServiceError':
+      res.status(500);
+      res.statusMessage = 'Unavailable';
+      res.jsonp('Error service unavailable');
+      break;
+    default:
+      res.jsonp(mockTestResultList());
+      break;
+  }
 });
 
 server.use(router);
