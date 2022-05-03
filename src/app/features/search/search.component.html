@@ -8,7 +8,7 @@
       <label class="govuk-label govuk-!-font-weight-bold" for="searchIdentifier"> Vehicle registration mark, trailer ID or vehicle identification number </label>
       <span *ngIf="globalErrorService.errors | async as errorMessage" id="search-term-error" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span>
-        <p class="white-space--normal" *ngIf="errorMessage.length>0">{{ errorMessage[0].error }}</p>
+        <p class="white-space--normal" *ngIf="errorMessage.length > 0">{{ errorMessage[0].error }}</p>
       </span>
 
       <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage() | async }" (keyup.enter)="searchTechRecords(searchTerm.value)" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
