@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { addError, clearError } from '@store/global-error/actions/global-error.actions';
 import { map, Observable } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 import { GlobalErrorService } from '../global-error/global-error.service';
@@ -32,6 +30,6 @@ export class SearchComponent {
   }
 
   public getInlineErrorMessage(): Observable<number> {
-    return this.globalErrorService.errors.pipe(map(errors => errors.length))
+    return this.globalErrorService.errors$.pipe(map(errors => errors.length))
   }
 }

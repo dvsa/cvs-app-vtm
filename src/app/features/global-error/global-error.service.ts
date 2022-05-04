@@ -10,14 +10,14 @@ import { addError, clearError } from '@store/global-error/actions/global-error.a
 })
 export class GlobalErrorService {
 
-  private errors$: Observable<GlobalError[]>;
+  private errors: Observable<GlobalError[]>;
 
   constructor(private store: Store<State>) {
-    this.errors$ = this.store.pipe(select(globalErrorState))
+    this.errors = this.store.pipe(select(globalErrorState))
   }
 
-  get errors() {
-    return this.errors$;
+  get errors$() {
+    return this.errors;
   }
 
   addError(error: GlobalError){
