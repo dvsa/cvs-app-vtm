@@ -46,19 +46,37 @@ export const TrlTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING
     },
     {
-      name: 'dtpNumber',
+      name: 'brakes',
       label: 'DTP number',
       value: '',
-      children: [],
-      type: FormNodeTypes.CONTROL,
+      children: [
+        {
+          name: 'dtpNumber',
+          label: 'DTP number',
+          value: '',
+          children: [],
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.STRING
+        }
+      ],
+      type: FormNodeTypes.GROUP,
       viewType: FormNodeViewTypes.STRING
     },
     {
-      name: 'parkingBrakeMrk',
+      name: 'axles',
       label: 'Axles fitted with a parking brake',
       value: '',
-      children: [],
-      type: FormNodeTypes.CONTROL,
+      children: [
+        {
+          name: 'parkingBrakeMrk',
+          label: 'Axles fitted with a parking brake',
+          value: '',
+          children: [],
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.STRING
+        }
+      ],
+      type: FormNodeTypes.GROUP,
       viewType: FormNodeViewTypes.STRING
     },
     {
@@ -78,12 +96,20 @@ export const TrlTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING
     },
     {
-      name: 'description',
+      name: 'vehicleClass',
       label: 'Vehicle class',
       value: '',
-      children: [],
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'description',
+          label: 'Vehicle class',
+          value: '',
+          children: [],
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.STRING
+        }
+      ]
     },
     {
       name: 'vehicleConfiguration',
