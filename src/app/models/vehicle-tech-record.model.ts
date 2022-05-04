@@ -1,12 +1,12 @@
 export interface VehicleTechRecordModel {
-  vrms: vrms[];
+  vrms: vrm[];
   vin: string;
   trailerId?: string;
   systemNumber: string;
   techRecord: TechRecordModel[];
 }
 
-export interface vrms {
+export interface vrm {
   vrm: string;
   isPrimary: boolean;
 }
