@@ -1,8 +1,7 @@
-import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { TestBed} from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { addError, clearError } from '@store/global-error/actions/global-error.actions';
-import { firstValueFrom } from 'rxjs';
 import { GlobalError, GlobalErrorService } from './global-error.service';
 
 describe('GlobalErrorService', () => {
