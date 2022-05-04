@@ -25,7 +25,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   /**
    * A function to get the correct tech record to create the summary display, this has a hierarchy
-   * which is PROVISIONAL -> CURRENT -> ARCHIVED. 
+   * which is PROVISIONAL -> CURRENT -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
