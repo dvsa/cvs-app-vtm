@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.service';
 import { TextInputComponent } from './text-input.component';
 
 @Component({
