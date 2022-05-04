@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, of } from 'rxjs';
 import { TestResultModel } from '../models/test-result.model';
-import { VehicleTechRecordModel, vrms } from '../models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, vrm } from '../models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -22,7 +22,7 @@ export class VehicleTechnicalRecordComponent {
     return this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary === true)?.vrm;
   }
 
-  get otherVrms(): vrms[] | undefined {
+  get otherVrms(): vrm[] | undefined {
     return this.vehicleTechRecord?.vrms.filter((vrm) => vrm.isPrimary === false);
   }
 }
