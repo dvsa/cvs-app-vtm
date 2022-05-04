@@ -106,16 +106,18 @@ export interface TechRecordModel {
   firstUseDate?: string;
   manufactureYear: number;
   noOfAxles: number;
-  dtpNumber: string;
   axles: {
     parkingBrakeMrk: boolean;
+  };
+  brakes: {
+    dtpNumber: string;
   };
   suspensionType?: string;
   speedLimiterMrk?: boolean;
   tachoExemptMrk?: boolean;
   euroStandard?: string;
   roadFriendly?: boolean;
-  fuelpropulsionsystem?: FuelTypes;
+  fuelPropulsionSystem?: FuelTypes; //TODO test
   drawbarCouplingFitted?: boolean;
   vehicleClass: {
     description: string;

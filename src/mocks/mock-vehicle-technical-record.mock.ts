@@ -37,14 +37,16 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         regnDate: '1234',
         manufactureYear: 2022,
         noOfAxles: 2,
-        dtpNumber: '1234',
+        brakes: {
+          dtpNumber: '1234'
+        },
         axles: {
           parkingBrakeMrk: true
         },
         speedLimiterMrk: true,
         tachoExemptMrk: true,
         euroStandard: '123',
-        fuelpropulsionsystem: FuelTypes.HYBRID,
+        fuelPropulsionSystem: FuelTypes.HYBRID,
         vehicleClass: {
           description: 'Description'
         },
@@ -83,15 +85,17 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         regnDate: '1234',
         manufactureYear: 2022,
         noOfAxles: 2,
-        dtpNumber: '1234',
         axles: {
           parkingBrakeMrk: true
+        },
+        brakes: {
+          dtpNumber: '1234'
         },
         speedLimiterMrk: true,
         tachoExemptMrk: true,
         euroStandard: '123',
         roadFriendly: true,
-        fuelpropulsionsystem: FuelTypes.HYBRID,
+        fuelPropulsionSystem: FuelTypes.HYBRID,
         drawbarCouplingFitted: true,
         vehicleClass: {
           description: 'Description'
@@ -127,7 +131,9 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         firstUseDate: '1234',
         manufactureYear: 2022,
         noOfAxles: 2,
-        dtpNumber: '1234',
+        brakes: {
+          dtpNumber: '1234'
+        },
         axles: {
           parkingBrakeMrk: true
         },
