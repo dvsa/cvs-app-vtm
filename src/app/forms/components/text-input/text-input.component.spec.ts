@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.service';
 import { TextInputComponent } from './text-input.component';
 
 @Component({
   selector: 'app-host-component',
-  template: ` <form [formGroup]="form">
-    <app-text-input name="foo" formControlName="foo"></app-text-input>
+  template: `<form [formGroup]="form">
+  <app-text-input name="foo" formControlName="foo"></app-text-input>
   </form>`,
   styles: []
 })
