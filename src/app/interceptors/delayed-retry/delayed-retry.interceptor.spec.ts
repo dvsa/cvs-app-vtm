@@ -2,7 +2,7 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { DelayedRetryInterceptor } from './delayed-retry.interceptor';
-import { HttpRetryInterceptorConfig } from './delayed-retry.module';
+import { HTTP_RETRY_CONFIG } from './delayed-retry.module';
 
 describe('DelayedRetryInterceptor', () => {
   let httpTestingController: HttpTestingController;
@@ -20,14 +20,22 @@ describe('DelayedRetryInterceptor', () => {
           provide: HTTP_INTERCEPTORS,
           useClass: DelayedRetryInterceptor,
           multi: true
-        },
-        { provide: HttpRetryInterceptorConfig, useValue: new HttpRetryInterceptorConfig({ delay: 500, count: 3, httpStatusRetry: [504] }) }
+        }
       ]
+    });
+  });
+
+  describe('default config', () => {
+    it('should be created', () => {
+      interceptor = TestBed.inject(DelayedRetryInterceptor);
+      expect(interceptor).toBeTruthy();
+      expect(interceptor.config).toEqual({ count: 3, delay: 2000, backoff: false });
     });
   });
 
   describe('no backof', () => {
     beforeEach(() => {
+      TestBed.overrideProvider(HTTP_RETRY_CONFIG, { useValue: { delay: 500, count: 3, httpStatusRetry: [504] } });
       client = TestBed.inject(HttpClient);
       httpTestingController = TestBed.inject(HttpTestingController);
       interceptor = TestBed.inject(DelayedRetryInterceptor);
@@ -36,10 +44,6 @@ describe('DelayedRetryInterceptor', () => {
     afterEach(() => {
       // After every test, assert that there are no more pending requests.
       httpTestingController.verify();
-    });
-
-    it('should be created', () => {
-      expect(interceptor).toBeTruthy();
     });
 
     it('should throw error "Request timed out. Check connectivity and try again." after final retry', fakeAsync(() => {
@@ -74,7 +78,7 @@ describe('DelayedRetryInterceptor', () => {
 
   describe('backoff', () => {
     beforeEach(() => {
-      TestBed.overrideProvider(HttpRetryInterceptorConfig, { useValue: new HttpRetryInterceptorConfig({ count: 3, delay: 500, backoff: true }) });
+      TestBed.overrideProvider(HTTP_RETRY_CONFIG, { useValue: { count: 3, delay: 500, backoff: true } });
       client = TestBed.inject(HttpClient);
       httpTestingController = TestBed.inject(HttpTestingController);
     });
