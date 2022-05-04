@@ -50,14 +50,15 @@ describe('TestRecordSummaryComponent', () => {
   });
 
   it('should concatinate multiple test types', () => {
-    const result = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(2, (itr) =>
-        createMock<TestType>({
-          testTypeName: 'name'
-        })
-      )
-    });
-    const testTypeNames = component.getTestTypeName(result);
+    const testTypeNames = component.getTestTypeName(
+      createMock<TestResultModel>({
+        testTypes: createMockList<TestType>(2, (itr) =>
+          createMock<TestType>({
+            testTypeName: 'name'
+          })
+        )
+      })
+    );
     expect(testTypeNames).toEqual('name,name');
   });
 });

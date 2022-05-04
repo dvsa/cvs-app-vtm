@@ -1,4 +1,4 @@
-import { mockVehicleTechnicalRecordList} from '../../../mocks/mock-vehicle-technical-record.mock';
+import { mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
 import { getByVINFailure, getByVINSuccess } from './technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 

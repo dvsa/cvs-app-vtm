@@ -4,7 +4,7 @@ import { getErrorMessage } from '@store/global-error/selectors/global-error.sele
 describe('Global Error Selectors', () => {
   describe('getErrorMessage', () => {
     it('should return the correct error', () => {
-      const state: GlobalErrorState = { ...initialGlobalErrorState, globalError: [{error: 'ejrk'}] };
+      const state: GlobalErrorState = { ...initialGlobalErrorState, globalError: [{error: 'err'}] };
       const selectedState = getErrorMessage.projector(state);
       expect(selectedState).toEqual(state.globalError);
     });
