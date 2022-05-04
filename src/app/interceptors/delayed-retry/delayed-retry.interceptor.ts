@@ -16,17 +16,17 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
   }
 
   retryHandler(error: any, retryCount: number, config: HttpRetryInterceptorConfig) {
-    const { delay, count, httpStatusRetry } = config;
+    const { delay, count, httpStatusRetry, backoff } = config;
     const { status } = error;
 
-    if (httpStatusRetry.includes(status)) {
-      if (retryCount < count) {
-        return timer(delay);
-      } else {
-        throw `Request timed out. Check connectivity and try again.`;
-      }
+    if (httpStatusRetry && !httpStatusRetry.includes(status)) {
+      throw error;
     }
 
-    throw error;
+    if (retryCount >= count) {
+      throw 'Request timed out. Check connectivity and try again.';
+    }
+
+    return timer(backoff ? delay * retryCount : delay);
   }
 }
