@@ -117,7 +117,7 @@ export interface TechRecordModel {
   tachoExemptMrk?: boolean;
   euroStandard?: string;
   roadFriendly?: boolean;
-  fuelPropulsionSystem?: FuelTypes; //TODO test
+  fuelPropulsionSystem?: FuelTypes;
   drawbarCouplingFitted?: boolean;
   vehicleClass: {
     description: string;
