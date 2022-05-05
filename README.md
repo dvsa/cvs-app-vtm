@@ -23,15 +23,13 @@ To just run the application run:
 To run the mock api run:
 `make api` 
 
-or use `npm run mock-api` if you need to pass arguments to affect the HTTP response:
+To get different responses use custom VINs/IDs. Also see `mock-api/mock-api-server.ts` for more details about custom endpoints.
 
 | Argument                      | Tech Record API | Test Record API |
 |-------------------------------|-----------------|-----------------|
-| -- --tech-record=NotFound     | 404             | -               |
-| -- --tech-record=ServiceError | 500             | -               |
-| -- --test-result=NotFound     | 200             | 404             |
-| -- --test-result=ServiceError | 200             | 500             |
-
+| `.*`                          | 200             | 200             |
+| `notfound`                    | 400             | 400             |
+| `servererror`                 | 500             | 500             |
 
 
 ### Using Node commands

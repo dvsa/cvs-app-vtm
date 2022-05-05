@@ -9,6 +9,7 @@ import { RouterStateModule } from './router/router-state.module';
 import { TechnicalRecordsStateModule } from './technical-records/technical-records-state.module';
 import { TestRecordsStateModule } from './test-records/test-records.module';
 import { UserStateModule } from './user/user-state.module';
+import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 
 @NgModule({
   declarations: [],
@@ -25,7 +26,8 @@ import { UserStateModule } from './user/user-state.module';
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
     GlobalErrorStateModule,
-    RouterStateModule
+    RouterStateModule,
+    SpinnerStateModule
   ]
 })
 export class AppStoreModule {}
