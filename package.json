@@ -13,7 +13,7 @@
     "start": "npm run config -- --environment=dev && ng serve",
     "build": "ng build --build-optimizer --delete-output-path --optimization --progress --vendor-chunk --aot",
     "watch": "ng build --watch",
-    "sonar-scanner": "npm run test && sonar-scanner",
+    "sonar-scanner": "sonar-scanner",
     "security-checks": "git secrets --scan",
     "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html,css,scss}'",
     "format": "npx prettier 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write",
