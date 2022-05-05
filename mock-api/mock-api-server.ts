@@ -30,11 +30,6 @@ server.get('/vehicles/:id/*', (req, res) => {
         break;
       case 'notfound':
         res.status(404);
-        res.statusMessage = 'NotFound';
-        res.jsonp('Error no vehicle found');
-        break;
-      case 'vinNotFound':
-        res.status(404);
         res.statusMessage = 'Not Found'
         res.jsonp({"errors":["No resources match the search criteria."]})
         break;
