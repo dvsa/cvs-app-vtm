@@ -4,6 +4,6 @@ import { DelayedRetryModule } from './delayed-retry/delayed-retry.module';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, DelayedRetryModule.forRoot({ count: 3, delay: 2000, httpStatusRetry: [404, 504], backoff: true })]
+  imports: [CommonModule, DelayedRetryModule.forRoot({ count: 3, delay: 2000, httpStatusRetry: [504], backoff: true })]
 })
 export class InterceptorModule {}
