@@ -10,7 +10,9 @@ export class GlobalErrorComponent {
   constructor(public globalErrorService: GlobalErrorService) {}
 
   goto(error: GlobalError) {
-    const el = document.getElementById(error.anchorLink);
-    el && el.focus({ preventScroll: false });
+    if (error.anchorLink) {
+      const el = document.getElementById(error.anchorLink);
+      el && el.focus({ preventScroll: false });
+    }
   }
 }

@@ -42,11 +42,10 @@ describe('SearchComponent', () => {
       expect(searchBySpy).toBeCalledWith(searchParams);
     });
 
-    it('should not call service and display error', () => {
+    it('should not call service', () => {
       component.searchTechRecords('');
       fixture.detectChanges();
       expect(searchBySpy).not.toHaveBeenCalled();
-      expect(component.searchError).toBe('You must provide a vehicle registration mark, trailer ID or vehicle identification number.');
     });
   });
 });

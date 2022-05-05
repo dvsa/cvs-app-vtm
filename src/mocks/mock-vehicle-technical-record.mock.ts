@@ -18,4 +18,4 @@ export const mockVehicleTecnicalRecord = (systemNumber: number = 0) =>
     ]
   });
 
-export const mockVehicleTecnicalRecordList = (items: number = 1) => createMockList<VehicleTechRecordModel>(items, (systemNumber) => mockVehicleTecnicalRecord(systemNumber));
+export const mockVehicleTechnicalRecordList = (items: number = 1) => createMockList<VehicleTechRecordModel>(items, (systemNumber) => mockVehicleTecnicalRecord(systemNumber));
