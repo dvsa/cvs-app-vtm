@@ -14,8 +14,6 @@ export class TechnicalRecordServiceEffects {
         this.technicalRecordService.getByVIN(action.vin).pipe(
           map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })),
           catchError((error) => {
-            console.log(error);
-            console.log('Error is type of', typeof error);
             let message = error;
 
             if (typeof error === 'object') {
