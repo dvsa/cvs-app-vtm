@@ -14,15 +14,19 @@ export class TechnicalRecordServiceEffects {
         this.technicalRecordService.getByVIN(action.vin).pipe(
           map((vehicleTechRecords) => getByVINSuccess({ vehicleTechRecords })),
           catchError((error) => {
-            let message = ''
-            switch(error.status){
-              case 404:
-                message = 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number'
-                break;
-              default:
-                message = 'There was a problem getting the Tech Record by VIN'
+            let message = error;
+
+            if (typeof error === 'object') {
+              switch (error.status) {
+                case 404:
+                  message = 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number';
+                  break;
+                default:
+                  message = 'There was a problem getting the Tech Record by VIN';
+              }
             }
-            return of(getByVINFailure({ error: message, anchorLink: 'search-term' }))
+
+            return of(getByVINFailure({ error: message, anchorLink: 'search-term' }));
           })
         )
       )
