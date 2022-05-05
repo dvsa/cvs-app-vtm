@@ -1,4 +1,5 @@
-<div class="govuk-summary-list__row">
+
+<div *ngIf='viewType !== formNodeViewTypes.HIDDEN' class="govuk-summary-list__row">
   <dt class="govuk-summary-list__key">{{ label }}:</dt>
   <ng-container [ngSwitch]="viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.DATE">

@@ -47,32 +47,58 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
+      name: 'odometerCombination',
+      label: 'Odometer',
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'odometerReading',
+        rightComponentName: 'odometerReadingUnits',
+        separator: ' '
+      },
+      children: []
+    },
+    {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'preparerCombination',
+      label: 'Preparer',
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'preparerName',
+        rightComponentName: 'preparerId',
+        separator: ' - '
+      },
+      children: []
     },
     {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
       children: [],
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'testSection',

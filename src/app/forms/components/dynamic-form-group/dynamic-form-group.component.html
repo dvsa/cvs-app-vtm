@@ -21,6 +21,10 @@
       <ng-container *ngSwitchCase="formNodeViewTypes.SECTION">
         <ng-template [ngTemplateOutlet]="sectionTemplate" [ngTemplateOutletContext]="{ control: control }"></ng-template>
       </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeViewTypes.COMBINATION">
+        <ng-template [ngTemplateOutlet]="combinationTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
+      </ng-container>
     </ng-container>
   </ng-container>
 </ng-template>
@@ -48,6 +52,12 @@
   <div>
     <h2 class="govuk-heading-m">{{ control.value.meta.label }}</h2>
   </div>
+</ng-template>
+
+<ng-template #combinationTemplate let-control="control" let-formGroup="formGroup">
+    <div *ngIf="control.value.meta">
+      <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list"></app-view-combination>
+    </div>
 </ng-template>
 
 <pre>{{ form.value | json }}</pre>

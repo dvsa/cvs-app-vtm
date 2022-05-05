@@ -4,7 +4,8 @@ export enum FormNodeViewTypes {
   STRING = 'string',
   DATE = 'date',
   DATETIME = 'dateTime',
-  TIME = 'time'
+  TIME = 'time',
+  HIDDEN = 'hidden'
 }
 
 export enum FormNodeTypes {
@@ -12,7 +13,8 @@ export enum FormNodeTypes {
   GROUP = 'group',
   CONTROL = 'control',
   ARRAY = 'array',
-  SECTION = 'section'
+  SECTION = 'section',
+  COMBINATION = 'combination'
 }
 
 export interface FormNodeOption<T> {
@@ -28,10 +30,16 @@ export interface FormNode {
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[];
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions ;
   validators?: string[];
   disabled?: boolean;
   readonly?: boolean;
+}
+
+export interface FormNodeCombinationOptions {
+  leftComponentName: string;
+  rightComponentName: string;
+  separator: string;
 }
 
 export interface CustomControl extends FormControl {

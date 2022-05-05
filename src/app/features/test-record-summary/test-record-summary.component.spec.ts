@@ -20,6 +20,7 @@ describe('TestRecordSummaryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestRecordSummaryComponent);
     component = fixture.componentInstance;
+
   });
 
   it('should create', () => {
