@@ -1,4 +1,4 @@
-import { globalErrorReducer, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
+import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { fetchTestResults, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsFailed, fetchTestResultsSuccess, initialTestResultsState, testResultsReducer } from '@store/test-records';
 import { getByVIN, getByVINFailure } from '@store/technical-records';
 
@@ -17,7 +17,7 @@ describe('Global Error Reducer', () => {
   describe('Fail action', () => {
     it.each([fetchTestResultsBySystemIdFailed, fetchTestResultsFailed, getByVINFailure])('should return the error state', (actionMethod) => {
       const error = 'fetching test records failed';
-      const newState = { ...initialGlobalErrorState, globalError: error };
+      const newState: GlobalErrorState = { ...initialGlobalErrorState, globalError: [{error: error, anchorLink: undefined}] };
       const action = actionMethod({ error });
       const state = globalErrorReducer(initialGlobalErrorState, action);
 
@@ -28,7 +28,7 @@ describe('Global Error Reducer', () => {
 
   describe('Success action', () => {
     it.each([fetchTestResultsBySystemId, getByVIN, fetchTestResults])('should reset the error state', (actionMethod) => {
-      const newState = { ...initialGlobalErrorState, globalError: null };
+      const newState = { ...initialGlobalErrorState, globalError: [] };
       //all props must be supplied here
       const action = actionMethod({ systemId: '', vin: '' });
       const state = globalErrorReducer(initialGlobalErrorState, action);
