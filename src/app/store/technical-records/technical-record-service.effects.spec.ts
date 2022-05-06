@@ -34,29 +34,29 @@ describe('TechnicalRecordServiceEffects', () => {
     });
   });
 
-  describe('return error messages', () => {
-    it('should return getByVIN action on successfull API call', () => {
+  describe('getByVin$', () => {
+    it('should return a technical record on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const testResults = mockVehicleTechnicalRecordList();
+        const techicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: getByVIN });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--a|', { a: testResults }));
+        jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--a|', { a: techicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getByVin$).toBe('---b', {
-          b: getByVINSuccess({ vehicleTechRecords: testResults })
+          b: getByVINSuccess({ vehicleTechRecords: techicalRecord })
         });
       });
     });
 
     it('should return generic error message if not not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vehicleTechRecords = {vin: 'vin'};
+        const vin = {vin: 'vin'};
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVIN( vehicleTechRecords ) });
+        actions$ = hot('-a--', { a: getByVIN( vin ) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -71,9 +71,9 @@ describe('TechnicalRecordServiceEffects', () => {
 
     it('should return not found error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vehicleTechRecords = {vin: 'vin'};
+        const vin = {vin: 'vin'};
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVIN( vehicleTechRecords ) });
+        actions$ = hot('-a--', { a: getByVIN( vin ) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
