@@ -37,17 +37,17 @@ describe('TechnicalRecordServiceEffects', () => {
   describe('getByVin$', () => {
     it('should return a technical record on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const techicalRecord = mockVehicleTechnicalRecordList();
+        const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: getByVIN });
 
         // mock service call
-        jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--a|', { a: techicalRecord }));
+        jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getByVin$).toBe('---b', {
-          b: getByVINSuccess({ vehicleTechRecords: techicalRecord })
+          b: getByVINSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });
