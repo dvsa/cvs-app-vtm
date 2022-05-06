@@ -137,13 +137,13 @@ describe('DynamicFormService', () => {
       let data = {
         axelsArray: [
           {
-            vin: "12345"
+            vin: '12345'
           },
           {
-            vin: "78910"
+            vin: '78910'
           }
         ]
-      }
+      };
 
       const outputGroup = service.createForm(node, data);
       const formArray = outputGroup.get('axelsArray');

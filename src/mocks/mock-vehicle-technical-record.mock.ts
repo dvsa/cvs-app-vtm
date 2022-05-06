@@ -94,7 +94,7 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         noOfAxles: 2,
         axles: [
           {
-          parkingBrakeMrk: false
+            parkingBrakeMrk: false
           },
           {
             parkingBrakeMrk: true
@@ -148,7 +148,7 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         },
         axles: [
           {
-          parkingBrakeMrk: false
+            parkingBrakeMrk: false
           },
           {
             parkingBrakeMrk: true

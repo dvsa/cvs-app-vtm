@@ -99,9 +99,9 @@ export enum VehicleSizes {
   LARGE = 'large'
 }
 
-export interface Axle{
+export interface Axle {
   axleNumber?: number;
-  parkingBrakeMrk?: boolean
+  parkingBrakeMrk?: boolean;
 }
 
 export interface TechRecordModel {

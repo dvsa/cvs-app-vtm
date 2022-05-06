@@ -36,9 +36,9 @@ export class DynamicFormService {
       if (form instanceof FormGroup) {
         form.addControl(name, control);
       } else if (form instanceof FormArray) {
-        this.createControls(child, d).forEach(control => {
+        this.createControls(child, d).forEach((control) => {
           (form as FormArray).push(control);
-        })
+        });
       }
     });
 
@@ -54,8 +54,8 @@ export class DynamicFormService {
         } else {
           controls.push(new CustomFormControl({ ...child, readonly: !!child.readonly }, { value: child.value, disabled: !!child.disabled }));
         }
-      })
-    }else{
+      });
+    } else {
       controls.push(new CustomFormControl({ ...child, readonly: !!child.readonly }, { value: child.value, disabled: !!child.disabled }));
     }
     return controls;

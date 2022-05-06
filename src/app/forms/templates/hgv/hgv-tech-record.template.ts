@@ -72,10 +72,10 @@ export const HgvTechRecord: FormNode = {
               children: [],
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING
-            },
-          ],
-        },                    
-      ],
+            }
+          ]
+        }
+      ]
     },
     {
       name: 'speedLimiterMrk',

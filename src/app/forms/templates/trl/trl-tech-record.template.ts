@@ -80,10 +80,10 @@ export const TrlTechRecord: FormNode = {
               children: [],
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING
-            },
-          ],
-        },                    
-      ],
+            }
+          ]
+        }
+      ]
     },
     {
       name: 'suspensionType',
