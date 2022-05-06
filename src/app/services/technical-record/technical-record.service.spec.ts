@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { environment } from '../../../environments/environment';
@@ -33,7 +34,7 @@ describe('TechnicalRecordService', () => {
     describe('getByVIN', () => {
       it('should get an array of matching results', () => {
         const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-        const mockData = mockVehicleTechnicalRecordList(1);
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
         service.getByVIN(searchParams.searchTerm).subscribe((response) => {
           expect(response).toEqual(mockData);
         });
@@ -48,7 +49,7 @@ describe('TechnicalRecordService', () => {
 
       it('should handle errors', () => {
         const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-        const mockData = mockVehicleTechnicalRecordList(1);
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
         service.getByVIN(searchParams.searchTerm).subscribe((response) => {
           expect(response).toEqual(mockData);
         });
