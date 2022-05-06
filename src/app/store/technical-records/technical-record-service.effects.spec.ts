@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -8,7 +9,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { getByVIN, getByVINFailure } from './technical-record-service.actions';
+import { getByVIN, getByVINFailure, getByVINSuccess } from './technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 
 describe('TechnicalRecordServiceEffects', () => {
@@ -34,9 +35,26 @@ describe('TechnicalRecordServiceEffects', () => {
   });
 
   describe('return error messages', () => {
+    it('should return getByVIN action on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResults = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByVIN });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--a|', { a: testResults }));
+
+        // expect effect to return success action
+        expectObservable(effects.getByVin$).toBe('---b', {
+          b: getByVINSuccess({ vehicleTechRecords: testResults })
+        });
+      });
+    });
+
     it('should return generic error message if not not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vehicleTechRecords = {vin: 'heuie'};
+        const vehicleTechRecords = {vin: 'vin'};
         // mock action to trigger effect
         actions$ = hot('-a--', { a: getByVIN( vehicleTechRecords ) });
 
@@ -53,7 +71,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
     it('should return not found error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vehicleTechRecords = {vin: 'heuie'};
+        const vehicleTechRecords = {vin: 'vin'};
         // mock action to trigger effect
         actions$ = hot('-a--', { a: getByVIN( vehicleTechRecords ) });
 
