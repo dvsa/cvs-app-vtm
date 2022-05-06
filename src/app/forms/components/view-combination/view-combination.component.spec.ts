@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ViewCombinationComponent } from './view-combination.component';
 import { CustomFormControl, FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 import { SharedModule } from '@shared/shared.module';
