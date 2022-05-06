@@ -85,5 +85,19 @@ describe('TechnicalRecordServiceEffects', () => {
         expectObservable(effects.getByVin$).toBe('---b', { b: getByVINFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
       });
     });
+
+    it('should return error message if error is a string', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const vin = {vin: 'vin'};
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByVIN( vin ) });
+
+        // mock service call
+        const expectedError = 'string';
+        jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getByVin$).toBe('---b', { b: getByVINFailure({ error: 'string', anchorLink: 'search-term' }) });
+      });
+    });
   });
 });
