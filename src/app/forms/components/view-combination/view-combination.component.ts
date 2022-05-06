@@ -1,5 +1,4 @@
 import { Component, Injector, Input, OnInit } from '@angular/core';
-
 import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '../../services/dynamic-form.types';
 
