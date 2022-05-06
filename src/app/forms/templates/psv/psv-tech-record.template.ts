@@ -56,20 +56,26 @@ export const PsvTechRecord: FormNode = {
     },
     {
       name: 'axles',
-      label: 'Axles fitted with a parking brake',
       value: '',
+      type: FormNodeTypes.ARRAY,
       children: [
         {
-          name: 'parkingBrakeMrk',
-          label: 'Axles fitted with a parking brake',
+          name: '0',
+          label: 'Axel',
           value: '',
-          children: [],
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        }
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'parkingBrakeMrk',
+              label: 'Axles fitted with a parking brake',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.STRING
+            },
+          ],
+        },                    
       ],
-      type: FormNodeTypes.GROUP,
-      viewType: FormNodeViewTypes.STRING
     },
     {
       name: 'speedLimiterMrk',

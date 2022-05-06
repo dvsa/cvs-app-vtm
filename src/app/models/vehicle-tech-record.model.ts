@@ -99,6 +99,11 @@ export enum VehicleSizes {
   LARGE = 'large'
 }
 
+export interface Axle{
+  axleNumber?: number;
+  parkingBrakeMrk?: boolean
+}
+
 export interface TechRecordModel {
   statusCode: StatusCodes;
   vehicleType: VehicleTypes;
@@ -106,9 +111,7 @@ export interface TechRecordModel {
   firstUseDate?: string;
   manufactureYear: number;
   noOfAxles: number;
-  axles: {
-    parkingBrakeMrk: boolean;
-  };
+  axles: Axle[];
   brakes: {
     dtpNumber: string;
   };

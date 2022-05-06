@@ -40,9 +40,16 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         brakes: {
           dtpNumber: '1234'
         },
-        axles: {
-          parkingBrakeMrk: true
-        },
+        axles: [
+          {
+            axleNumber: 1,
+            parkingBrakeMrk: false
+          },
+          {
+            axleNumber: 2,
+            parkingBrakeMrk: true
+          }
+        ],
         speedLimiterMrk: true,
         tachoExemptMrk: true,
         euroStandard: '123',
@@ -85,9 +92,14 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         regnDate: '1234',
         manufactureYear: 2022,
         noOfAxles: 2,
-        axles: {
-          parkingBrakeMrk: true
-        },
+        axles: [
+          {
+          parkingBrakeMrk: false
+          },
+          {
+            parkingBrakeMrk: true
+          }
+        ],
         brakes: {
           dtpNumber: '1234'
         },
@@ -134,9 +146,14 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         brakes: {
           dtpNumber: '1234'
         },
-        axles: {
-          parkingBrakeMrk: true
-        },
+        axles: [
+          {
+          parkingBrakeMrk: false
+          },
+          {
+            parkingBrakeMrk: true
+          }
+        ],
         suspensionType: '1',
         roadFriendly: true,
         drawbarCouplingFitted: true,
