@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 import { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
+import { SharedModule } from '@shared/shared.module';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +12,7 @@ import { GlobalErrorComponent } from './features/global-error/global-error.compo
 import { HomeButtonComponent } from './features/home/components/home-button/home-button.component';
 import { HomeComponent } from './features/home/home.component';
 import { SearchComponent } from './features/search/search.component';
+import { TechRecordSummaryComponent } from './features/tech-record-summary/tech-record-summary.component';
 import { TestRecordSummaryComponent } from './features/test-record-summary/test-record-summary.component';
 import { DynamicFormsModule } from './forms/dynamic-forms.module';
 import { InterceptorModule } from './interceptors/interceptor.module';
@@ -56,8 +58,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, GlobalErrorComponent, SpinnerComponent],
-  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule, InterceptorModule],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent, GlobalErrorComponent, SpinnerComponent],
+  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, InterceptorModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
