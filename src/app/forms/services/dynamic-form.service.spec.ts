@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { DynamicFormService, FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes, CustomControl, CustomFormGroup, CustomFormArray } from './dynamic-form.service';
-import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, ValidatorFn, Validators } from '@angular/forms';
+import { DynamicFormService } from './dynamic-form.service';
+import { CustomFormArray, CustomControl, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from './dynamic-form.types';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
@@ -36,7 +37,8 @@ describe('DynamicFormService', () => {
             name: 'vin',
             label: 'Vechile Identification Number',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING
+            viewType: FormNodeViewTypes.STRING,
+            children: []
           }
         ]
       };
@@ -65,7 +67,8 @@ describe('DynamicFormService', () => {
                 name: 'vin',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
-                viewType: FormNodeViewTypes.STRING
+                viewType: FormNodeViewTypes.STRING,
+                children: []
               }
             ]
           }

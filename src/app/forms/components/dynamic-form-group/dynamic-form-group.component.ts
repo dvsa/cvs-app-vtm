@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CustomFormArray, CustomFormGroup, DynamicFormService, FormNode, FormNodeTypes } from '../../services/dynamic-form.service';
+import { DynamicFormService } from '../../services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-dynamic-form-group',
@@ -10,6 +11,7 @@ import { CustomFormArray, CustomFormGroup, DynamicFormService, FormNode, FormNod
 export class DynamicFormGroupComponent implements OnInit {
   @Input() data: any = {};
   @Input() template!: FormNode;
+  @Input() isReadonly = true;
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
 

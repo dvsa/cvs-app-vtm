@@ -1,3 +1,6 @@
+import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
+import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
@@ -39,7 +42,14 @@ export const mockTestResult = (i: number = 0) =>
 
     testTypes: [...mockTestTypeList()],
 
-    reasonForCreation: 'mock test result data'
+    trailerId: `C${String(i + 1).padStart(5, '0')}`,
+    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    euVehicleCategory: EuVehicleCategory.M3,
+    odometerReading: 100,
+    odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
+    reasonForCreation: 'mock test result data',
+    preparerName: 'Durrell Truck & Van Centre',
+    preparerId: 'CM2254'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgControl, Validators } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.service';
+import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from './base-control.component';
 
 describe('BaseControlComponent', () => {

@@ -1,10 +1,23 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.service';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export const PsvAnnual: FormNode = {
-  name: 'testDetails',
-  label: 'Test Details',
+  name: 'psvAnnualTest',
+  label: 'Annual test',
   type: FormNodeTypes.GROUP,
   children: [
+    {
+      name: 'vehicleSection',
+      label: 'Vehicle',
+      type: FormNodeTypes.SECTION,
+      children: []
+    },
+    {
+      name: 'vin',
+      label: 'VIN/chassis number',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL
+    },
     {
       name: 'vrm',
       label: 'VRM',
@@ -13,11 +26,85 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'vin',
-      label: 'VIN/chassis number',
+      name: 'trailerId',
+      label: 'Trailer ID',
       value: '',
       children: [],
       type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'countryOfRegistration',
+      label: 'Country Of Registration',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'euVehicleCategory',
+      label: 'EU Vehicle Category',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'odometerCombination',
+      label: 'Odometer',
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'odometerReading',
+        rightComponentName: 'odometerReadingUnits',
+        separator: ' '
+      },
+      children: []
+    },
+    {
+      name: 'odometerReading',
+      label: 'Odometer Reading',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'odometerReadingUnits',
+      label: 'Odometer Reading Units',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'preparerCombination',
+      label: 'Preparer',
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'preparerName',
+        rightComponentName: 'preparerId',
+        separator: ' - '
+      },
+      children: []
+    },
+    {
+      name: 'preparerName',
+      label: 'Preparer Name',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'preparerId',
+      label: 'Preparer ID',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'testSection',
+      label: 'Test',
+      type: FormNodeTypes.SECTION,
+      children: []
     },
     {
       name: 'createdAt',
