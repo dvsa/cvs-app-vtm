@@ -11,7 +11,7 @@ export class DynamicFormService {
     required: Validators.required
   };
 
-  createForm(f: FormNode): CustomFormGroup | CustomFormArray {
+  createForm(f: FormNode, d: any = {}): CustomFormGroup | CustomFormArray {
     if (!f) {
       return new CustomFormGroup(f, {});
     }
@@ -21,9 +21,10 @@ export class DynamicFormService {
 
     f?.children.forEach((child) => {
       const { name, type, value, validators, disabled, readonly } = child;
-      let control;
+      let control: any;
+
       if (FormNodeTypes.CONTROL !== type) {
-        control = this.createForm(child);
+        control = this.createForm(child, d[name]);
       } else {
         control = new CustomFormControl({ ...child, readonly: !!readonly }, { value, disabled: !!disabled });
       }
@@ -35,11 +36,29 @@ export class DynamicFormService {
       if (form instanceof FormGroup) {
         form.addControl(name, control);
       } else if (form instanceof FormArray) {
-        form.push(control);
+        this.createControls(child, d).forEach(control => {
+          (form as FormArray).push(control);
+        })
       }
     });
 
     return form;
+  }
+
+  createControls(child: FormNode, d: any) {
+    const controls: any[] = [];
+    if (d.length && d.length > 0) {
+      d.forEach(() => {
+        if (FormNodeTypes.CONTROL !== child.type) {
+          controls.push(this.createForm(child, d[child.name]));
+        } else {
+          controls.push(new CustomFormControl({ ...child, readonly: !!child.readonly }, { value: child.value, disabled: !!child.disabled }));
+        }
+      })
+    }else{
+      controls.push(new CustomFormControl({ ...child, readonly: !!child.readonly }, { value: child.value, disabled: !!child.disabled }));
+    }
+    return controls;
   }
 
   addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<string> = []) {

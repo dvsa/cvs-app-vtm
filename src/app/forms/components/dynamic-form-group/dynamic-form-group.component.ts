@@ -16,7 +16,7 @@ export class DynamicFormGroupComponent implements OnInit {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template);
+    this.form = this.dfs.createForm(this.template, this.data);
     this.form.patchValue(this.data);
   }
 
