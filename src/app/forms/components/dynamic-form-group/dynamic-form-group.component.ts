@@ -10,6 +10,7 @@ import { CustomFormArray, CustomFormGroup, DynamicFormService, FormNode, FormNod
 export class DynamicFormGroupComponent implements OnInit {
   @Input() data: any = {};
   @Input() template!: FormNode;
+  @Input() edit = false;
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
 
@@ -18,6 +19,7 @@ export class DynamicFormGroupComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template);
     this.form.patchValue(this.data);
+    console.log(this.edit);
   }
 
   entriesOf(obj: FormGroup): { key: string; value: any }[] {
