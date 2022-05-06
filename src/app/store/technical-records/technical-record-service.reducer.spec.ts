@@ -1,5 +1,5 @@
-import { mockVehicleTecnicalRecord, mockVehicleTecnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
-import { getByVIN, getByVINSuccess, getByVINFailure } from './technical-record-service.actions';
+import { mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
+import { getByVINFailure, getByVINSuccess } from './technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
 describe('Vehicle Technical Record Reducer', () => {
@@ -16,7 +16,7 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('getByVINSuccess', () => {
     it('should set all vehicle technical records', () => {
-      const records = mockVehicleTecnicalRecordList(5);
+      const records = mockVehicleTechnicalRecordList(5);
       const newState: TechnicalRecordServiceState = {
         ...initialState,
         vehicleTechRecords: records

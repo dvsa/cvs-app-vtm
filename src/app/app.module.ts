@@ -13,8 +13,10 @@ import { HomeComponent } from './features/home/home.component';
 import { SearchComponent } from './features/search/search.component';
 import { TestRecordSummaryComponent } from './features/test-record-summary/test-record-summary.component';
 import { DynamicFormsModule } from './forms/dynamic-forms.module';
+import { InterceptorModule } from './interceptors/interceptor.module';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderComponent } from './layout/header/header.component';
+import { SpinnerComponent } from './layout/spinner/spinner.component';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record/vehicle-technical-record.component';
@@ -54,8 +56,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, GlobalErrorComponent],
-  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, GlobalErrorComponent, SpinnerComponent],
+  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule, InterceptorModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
