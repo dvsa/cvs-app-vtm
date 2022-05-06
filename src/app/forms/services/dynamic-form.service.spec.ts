@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { DynamicFormService } from './dynamic-form.service';
-import { FormNode, FormNodeTypes, CustomFormControl, FormNodeViewTypes, CustomControl, CustomFormGroup } from './dynamic-form.types';
 import { AbstractControl, FormArray, ValidatorFn, Validators } from '@angular/forms';
+import { DynamicFormService } from './dynamic-form.service';
+import { CustomFormArray, CustomControl, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from './dynamic-form.types';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
@@ -109,6 +109,50 @@ describe('DynamicFormService', () => {
       const formArray = outputGroup.get('nestedArray');
       expect(formArray instanceof FormArray).toBeTruthy();
       expect((formArray as FormArray).controls.length).toBe(1);
+    });
+
+    it('should return a formGroup with a nested FormArray with data given ', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          <FormNode>{
+            name: 'axelsArray',
+            type: FormNodeTypes.ARRAY,
+            children: [
+              <FormNode>{
+                name: '0',
+                type: FormNodeTypes.GROUP,
+                children: [
+                  <FormNode>{
+                    name: 'vin',
+                    label: 'Vechile Identification Number',
+                    type: FormNodeTypes.CONTROL,
+                    viewType: FormNodeViewTypes.STRING
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+
+      let data = {
+        axelsArray: [
+          {
+            vin: '12345'
+          },
+          {
+            vin: '78910'
+          }
+        ]
+      };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('axelsArray');
+      const subGroup = (formArray as CustomFormArray).controls;
+
+      expect(subGroup.length).toBe(2);
     });
 
     it('should add correct validators', () => {
