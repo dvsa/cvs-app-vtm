@@ -21,7 +21,8 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       reasonForAbandoning: ['The vehicle was not submitted for test at the appointed time', 'The relevant test fee has not been paid'],
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
       testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
-      prohibitionIssued: false
+      prohibitionIssued: false,
+      testResult: 'Pass',
     });
   });
 
@@ -35,7 +36,6 @@ export const mockTestResult = (i: number = 0) =>
 
     createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
-    testResult: 'Pass',
 
     testTypes: [...mockTestTypeList()],
 

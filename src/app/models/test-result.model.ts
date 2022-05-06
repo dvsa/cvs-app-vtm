@@ -9,7 +9,6 @@ export interface TestResultModel {
 
   createdAt?: string;
   testStartTimestamp: string | Date;
-  testResult: string;
 
   testTypes: TestType[];
 
