@@ -6,27 +6,42 @@ const server = jsonServer.create();
 const router = jsonServer.router('{}');
 const middlewares = jsonServer.defaults();
 
-const args = require('minimist')(process.argv.slice(2));
-
 server.use(middlewares);
 
 // Add custom routes before JSON Server router
 server.get('/vehicles/:vin/*', (req, res) => {
-  switch (args['tech-record']) {
+  switch (req.params.vin) {
     case 'NotFound':
       res.status(404);
       res.statusMessage = 'NotFound';
       res.jsonp('Error no vehicle found');
       break;
-    case 'ServiceError':
+     case 'delayok':
+      console.log('Delaying request');
+      setTimeout(() => {res.jsonp(mockVehicleTechnicalRecordList())}, 2500);
+      break;
+    case 'delayservererror':
+      console.log('Delaying not found request');
+      setTimeout(() => {
+        res.status(500);
+        res.statusMessage = 'Unavailable';
+        res.jsonp('Error service unavailable');
+      }, 2500);
+      break;
+    case 'servererror':
       res.status(500);
       res.statusMessage = 'Unavailable';
       res.jsonp('Error service unavailable');
       break;
+    case 'notfound':
+      res.status(404);
+      res.statusMessage = 'Not Found'
+      res.jsonp({"errors":["No resources match the search criteria."]})
+      break;
     default:
-      if (req.params['vin'] === "12345") {
+      if (req.params.vin === "12345") {
         res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
-      } else if (req.params['vin'] === "78910") {
+      } else if (req.params.vin === "78910") {
         res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
       } else {
         res.jsonp(mockVehicleTechnicalRecordList());
@@ -37,13 +52,13 @@ server.get('/vehicles/:vin/*', (req, res) => {
 
 server.get('/test-results/:systemId', (req, res) => {
 
-  switch (args['test-result']) {
-    case 'NotFound':
+  switch (req.params.systemId) {
+    case 'notfound':
       res.status(404);
       res.statusMessage = 'NotFound';
       res.jsonp('Error no test records found');
       break;
-    case 'ServiceError':
+    case 'servererror':
       res.status(500);
       res.statusMessage = 'Unavailable';
       res.jsonp('Error service unavailable');

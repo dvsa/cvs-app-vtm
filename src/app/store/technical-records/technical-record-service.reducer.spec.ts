@@ -1,6 +1,6 @@
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { mockVehicleTechnicalRecord, mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
-import { getByVIN, getByVINSuccess, getByVINFailure } from './technical-record-service.actions';
+import {  mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
+import { getByVINSuccess, getByVINFailure } from './technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
 describe('Vehicle Technical Record Reducer', () => {
