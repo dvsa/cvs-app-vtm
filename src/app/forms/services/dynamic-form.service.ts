@@ -52,11 +52,11 @@ export class DynamicFormService {
         if (FormNodeTypes.CONTROL !== child.type) {
           controls.push(this.createForm(child, d[child.name]));
         } else {
-          controls.push(new CustomFormControl({ ...child, readonly: !!child.readonly }, { value: child.value, disabled: !!child.disabled }));
+          controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
         }
       });
     } else {
-      controls.push(new CustomFormControl({ ...child, readonly: !!child.readonly }, { value: child.value, disabled: !!child.disabled }));
+      controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
     }
     return controls;
   }
