@@ -13,7 +13,6 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
 
   constructor(@Optional() @Inject(HTTP_RETRY_CONFIG) private config_: HttpRetryConfig) {
     this.config = { ...this.defaultConfig, ...this.config_ };
-    console.log(this.config);
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
