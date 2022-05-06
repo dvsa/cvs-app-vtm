@@ -30,8 +30,6 @@ export class ViewCombinationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.formNode)
-    console.log(this.formGroup)
     const options = <FormNodeCombinationOptions>(this.formNode.options);
     this.leftComponent = this.findComponentByName(options.leftComponentName, this.formGroup);
     this.rightComponent = this.findComponentByName(options.rightComponentName, this.formGroup)
