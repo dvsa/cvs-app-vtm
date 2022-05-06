@@ -3,7 +3,7 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { PsvTechRecord } from '../../forms/templates/psv/psv-tech-record.template';
 import { HgvTechRecord } from '../../forms/templates/hgv/hgv-tech-record.template';
 import { TrlTechRecord } from '../../forms/templates/trl/trl-tech-record.template';
-import { FormNode } from '../../forms/services/dynamic-form.service';
+import { FormNode } from '../../forms/services/dynamic-form.types';
 
 @Component({
   selector: 'app-tech-record-summary',

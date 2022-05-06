@@ -5,7 +5,8 @@ export enum FormNodeViewTypes {
   DATE = 'date',
   DATETIME = 'dateTime',
   TIME = 'time',
-  HIDDEN = 'hidden'
+  HIDDEN = 'hidden',
+  VEHICLETYPE = 'vehicleType'
 }
 
 export enum FormNodeTypes {
@@ -30,7 +31,7 @@ export interface FormNode {
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions ;
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
   validators?: string[];
   disabled?: boolean;
   readonly?: boolean;

@@ -19,8 +19,8 @@ export class ViewCombinationComponent implements OnInit {
   @Input() formNode: FormNode;
   @Input() formGroup: FormGroup;
 
-  leftComponent?: FormNode;
-  rightComponent?: FormNode;
+  leftComponent?: CustomFormControl;
+  rightComponent?: CustomFormControl;
   separator: string = ' ';
   label?: string;
 
@@ -30,18 +30,14 @@ export class ViewCombinationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const options = <FormNodeCombinationOptions>(this.formNode.options);
+    const options = <FormNodeCombinationOptions>this.formNode.options;
     this.leftComponent = this.findComponentByName(options.leftComponentName, this.formGroup);
-    this.rightComponent = this.findComponentByName(options.rightComponentName, this.formGroup)
+    this.rightComponent = this.findComponentByName(options.rightComponentName, this.formGroup);
     this.separator = options.separator;
     this.label = this.formNode.label;
   }
 
-
-
-  private findComponentByName(nodeName: string, formGroup: FormGroup) {
-    return (formGroup.get(nodeName) as CustomFormControl).meta;
+  private findComponentByName(nodeName: string, formGroup: FormGroup): CustomFormControl {
+    return formGroup.get(nodeName) as CustomFormControl;
   }
-
-
 }
