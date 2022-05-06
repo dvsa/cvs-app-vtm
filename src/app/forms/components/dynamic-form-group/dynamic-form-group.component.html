@@ -53,7 +53,7 @@
 </ng-template>
 
 <ng-template #combinationTemplate let-control="control" let-formGroup="formGroup">
-    <div *ngIf="control.value.meta">
-      <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list"></app-view-combination>
-    </div>
+  <div *ngIf="control.value.meta">
+    <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list"></app-view-combination>
+  </div>
 </ng-template>

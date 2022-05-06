@@ -6,9 +6,10 @@ import { ViewListItemComponent } from './view-list-item.component';
 
 @Component({
   selector: 'app-host-component',
-  template: ` <form [formGroup]="form">
-    <app-view-list-item name="foo" formControlName="foo"></app-view-list-item>
-  </form>`,
+  template: `<form [formGroup]="form">
+  <app-view-list-item name="foo" formControlName="foo"></app-view-list-item>
+</form>
+`,
   styles: []
 })
 class HostComponent {

@@ -6,9 +6,10 @@ import { TextInputComponent } from './text-input.component';
 
 @Component({
   selector: 'app-host-component',
-  template: ` <form [formGroup]="form">
-    <app-text-input name="foo" formControlName="foo"></app-text-input>
-  </form>`,
+  template: `<form [formGroup]="form">
+  <app-text-input name="foo" formControlName="foo"></app-text-input>
+</form>
+`,
   styles: []
 })
 class HostComponent {
