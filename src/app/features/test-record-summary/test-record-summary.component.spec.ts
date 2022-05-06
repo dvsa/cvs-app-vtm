@@ -61,4 +61,17 @@ describe('TestRecordSummaryComponent', () => {
     );
     expect(testTypeNames).toEqual('name,name');
   });
+
+  it('should concatinate multiple test results', () => {
+    const testTypeResults = component.getTestTypeResults(
+      createMock<TestResultModel>({
+        testTypes: createMockList<TestType>(2, (itr) =>
+          createMock<TestType>({
+            testResult: 'pass'
+          })
+        )
+      })
+    );
+    expect(testTypeResults).toEqual('pass,pass');
+  });
 });

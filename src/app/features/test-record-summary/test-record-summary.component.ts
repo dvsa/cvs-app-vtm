@@ -17,6 +17,6 @@ export class TestRecordSummaryComponent {
   }
 
   getTestTypeResults(testResult: TestResultModel) {
-    return testResult.testTypes.map((t) => t.testResult).join(',')
+    return testResult.testTypes.map((t) => t.testResult).join(',');
   }
 }
