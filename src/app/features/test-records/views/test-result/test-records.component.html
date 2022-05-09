@@ -1,3 +1,12 @@
 <section *ngIf="testResult$ | async as testResult">
-  <app-dynamic-form-group [edit]="(edit | async) || false" [template]="template" [data]="testResult"></app-dynamic-form-group>
+  <app-dynamic-form-group #dynamicForm [edit]="(edit | async) || false" [template]="template" [data]="testResult"></app-dynamic-form-group>
+
+  <app-button-group>
+    <app-button *ngIf="(edit | async) === false" (clicked)="handleEdit()">Edit</app-button>
+
+    <ng-container *ngIf="(edit | async) === true">
+      <app-button (clicked)="handleSave()">Save</app-button>
+      <app-button type="secondary" (clicked)="handleCancel()">Cancel</app-button>
+    </ng-container>
+  </app-button-group>
 </section>

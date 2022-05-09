@@ -27,7 +27,8 @@
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
       "@store/*": ["src/app/store/*"],
-      "@shared/*": ["src/app/shared/*"]
+      "@shared/*": ["src/app/shared/*"],
+      "@forms/*": ["src/app/forms/*"]
     },
     "plugins": [
       { "transform": "ts-auto-mock/transformer", "cacheBetweenTests": false }
