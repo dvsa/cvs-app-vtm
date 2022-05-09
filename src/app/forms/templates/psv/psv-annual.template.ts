@@ -115,13 +115,6 @@ export const PsvAnnual: FormNode = {
       viewType: FormNodeViewTypes.DATE
     },
     {
-      name: 'testResult',
-      label: 'Test status',
-      value: '',
-      children: [],
-      type: FormNodeTypes.CONTROL
-    },
-    {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
@@ -141,6 +134,13 @@ export const PsvAnnual: FormNode = {
             {
               name: 'testCode',
               label: 'Test Code',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testResult',
+              label: 'Result',
               value: '',
               children: [],
               type: FormNodeTypes.CONTROL
