@@ -176,17 +176,10 @@ export const PsvAnnual: FormNode = {
             },
             {
               name: 'reasonForAbandoning',
-              type: FormNodeTypes.ARRAY,
-              label: 'Reasons for abandoning',
-              children: [
-                {
-                  name: '0',
-                  type: FormNodeTypes.CONTROL,
-                  label: 'Reason for abandoning',
-                  value: '',
-                  children: []
-                }
-              ]
+              type: FormNodeTypes.CONTROL,
+              label: 'Reason for abandoning',
+              value: '',
+              children: []
             },
             {
               name: 'additionalCommentsForAbandon',

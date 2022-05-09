@@ -9,7 +9,7 @@ export interface TestType {
   testExpiryDate: string | Date;
 
   certificateNumber: string;
-  reasonForAbandoning: string[];
+  reasonForAbandoning: string;
   additionalCommentsForAbandon?: string;
   testAnniversaryDate: string | Date;
   prohibitionIssued: boolean;
