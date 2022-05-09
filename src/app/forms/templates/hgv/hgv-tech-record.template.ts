@@ -2,7 +2,6 @@ import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynam
 
 export const HgvTechRecord: FormNode = {
   name: 'techRecordSummary',
-  label: 'Summary',
   type: FormNodeTypes.GROUP,
   children: [
     {
