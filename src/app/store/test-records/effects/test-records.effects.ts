@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { getByVINSuccess } from '@store/technical-records';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, EMPTY, map, mergeMap, of } from 'rxjs';
 import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
 
 @Injectable()
@@ -25,7 +25,13 @@ export class TestResultsEffects {
       mergeMap((action) =>
         this.testRecordsService.fetchTestResultbySystemId(action.vehicleTechRecords[0].systemNumber).pipe(
           map((vehicleTestRecords) => fetchTestResultsBySystemIdSuccess({ payload: vehicleTestRecords })),
-          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e.message })))
+          catchError((e) => {
+            if (e.status != 404) {
+              return of(fetchTestResultsBySystemIdFailed({ error: e.message }))
+            } else {
+              return EMPTY
+            }
+          })
         )
       )
     )
