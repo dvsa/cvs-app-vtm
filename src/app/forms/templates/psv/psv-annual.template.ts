@@ -127,7 +127,7 @@ export const PsvAnnual: FormNode = {
       value: '',
       children: [],
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATETIME
+      viewType: FormNodeViewTypes.DATE
     },
     {
       name: 'testTypes',
@@ -208,7 +208,7 @@ export const PsvAnnual: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Start time',
-              viewType: FormNodeViewTypes.DATETIME,
+              viewType: FormNodeViewTypes.TIME,
               children: []
             },
             {
@@ -216,7 +216,7 @@ export const PsvAnnual: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'End time',
-              viewType: FormNodeViewTypes.DATETIME,
+              viewType: FormNodeViewTypes.TIME,
               children: []
             },
             {
