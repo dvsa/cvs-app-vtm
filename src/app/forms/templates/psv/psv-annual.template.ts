@@ -1,10 +1,23 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.service';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export const PsvAnnual: FormNode = {
-  name: 'testDetails',
-  label: 'Test Details',
+  name: 'psvAnnualTest',
+  label: 'Annual test',
   type: FormNodeTypes.GROUP,
   children: [
+    {
+      name: 'vehicleSection',
+      label: 'Vehicle',
+      type: FormNodeTypes.SECTION,
+      children: []
+    },
+    {
+      name: 'vin',
+      label: 'VIN/chassis number',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL
+    },
     {
       name: 'vrm',
       label: 'VRM',
@@ -13,11 +26,85 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'vin',
-      label: 'VIN/chassis number',
+      name: 'trailerId',
+      label: 'Trailer ID',
       value: '',
       children: [],
       type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'countryOfRegistration',
+      label: 'Country Of Registration',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'euVehicleCategory',
+      label: 'EU Vehicle Category',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'odometerCombination',
+      label: 'Odometer',
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'odometerReading',
+        rightComponentName: 'odometerReadingUnits',
+        separator: ' '
+      },
+      children: []
+    },
+    {
+      name: 'odometerReading',
+      label: 'Odometer Reading',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'odometerReadingUnits',
+      label: 'Odometer Reading Units',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'preparerCombination',
+      label: 'Preparer',
+      type: FormNodeTypes.COMBINATION,
+      options: {
+        leftComponentName: 'preparerName',
+        rightComponentName: 'preparerId',
+        separator: ' - '
+      },
+      children: []
+    },
+    {
+      name: 'preparerName',
+      label: 'Preparer Name',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'preparerId',
+      label: 'Preparer ID',
+      value: '',
+      children: [],
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'testSection',
+      label: 'Test',
+      type: FormNodeTypes.SECTION,
+      children: []
     },
     {
       name: 'createdAt',
@@ -28,19 +115,12 @@ export const PsvAnnual: FormNode = {
       viewType: FormNodeViewTypes.DATE
     },
     {
-      name: 'testResult',
-      label: 'Test status',
-      value: '',
-      children: [],
-      type: FormNodeTypes.CONTROL
-    },
-    {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
       children: [],
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATETIME
+      viewType: FormNodeViewTypes.DATE
     },
     {
       name: 'testTypes',
@@ -54,6 +134,13 @@ export const PsvAnnual: FormNode = {
             {
               name: 'testCode',
               label: 'Test Code',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testResult',
+              label: 'Result',
               value: '',
               children: [],
               type: FormNodeTypes.CONTROL
@@ -121,7 +208,7 @@ export const PsvAnnual: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Start time',
-              viewType: FormNodeViewTypes.DATETIME,
+              viewType: FormNodeViewTypes.TIME,
               children: []
             },
             {
@@ -129,7 +216,7 @@ export const PsvAnnual: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'End time',
-              viewType: FormNodeViewTypes.DATETIME,
+              viewType: FormNodeViewTypes.TIME,
               children: []
             },
             {

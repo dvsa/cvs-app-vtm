@@ -1,0 +1,9 @@
+@media (min-width: 40.0625em) {
+  .govuk-summary-list {
+    margin-bottom: 0;
+  }
+
+  .govuk-summary-list + div > h2 {
+    margin-top: 30px;
+  }
+}

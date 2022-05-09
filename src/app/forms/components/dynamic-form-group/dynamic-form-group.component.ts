@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CustomFormArray, CustomFormGroup, DynamicFormService, FormNode, FormNodeTypes } from '../../services/dynamic-form.service';
+import { DynamicFormService } from '../../services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-dynamic-form-group',
@@ -17,7 +18,7 @@ export class DynamicFormGroupComponent implements OnInit {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template);
+    this.form = this.dfs.createForm(this.template, this.data);
     this.form.patchValue(this.data);
     console.log(this.edit);
   }

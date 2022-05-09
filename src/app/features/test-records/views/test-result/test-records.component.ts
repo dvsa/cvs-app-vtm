@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
+import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { map, Observable } from 'rxjs';
+import { FormNode } from 'src/app/forms/services/dynamic-form.types';
 import { PsvAnnual } from '../../../../forms/templates/psv/psv-annual.template';
-import { FormNode } from '../../../../forms/services/dynamic-form.service';
-import { RouterService } from '@services/router/router.service';
+
 @Component({
   selector: 'app-test-records',
   templateUrl: './test-records.component.html',

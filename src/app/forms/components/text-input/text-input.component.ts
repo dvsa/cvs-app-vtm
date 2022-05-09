@@ -1,5 +1,5 @@
-import { Component, Host, Injector, Optional, Self, SkipSelf } from '@angular/core';
-import { NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Injector } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({

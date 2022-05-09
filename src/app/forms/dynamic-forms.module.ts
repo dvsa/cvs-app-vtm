@@ -6,9 +6,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { SharedModule } from '@shared/shared.module';
+import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent]
 })
 export class DynamicFormsModule {}

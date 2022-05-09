@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, DoCheck, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { CustomControl, FormNodeViewTypes } from '../../services/dynamic-form.service';
+import { FormNodeViewTypes, CustomControl } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({

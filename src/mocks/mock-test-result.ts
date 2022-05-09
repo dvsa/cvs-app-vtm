@@ -1,3 +1,6 @@
+import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
+import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
@@ -21,7 +24,8 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       reasonForAbandoning: ['The vehicle was not submitted for test at the appointed time', 'The relevant test fee has not been paid'],
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
       testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
-      prohibitionIssued: false
+      prohibitionIssued: false,
+      testResult: 'Pass',
     });
   });
 
@@ -35,11 +39,17 @@ export const mockTestResult = (i: number = 0) =>
 
     createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
-    testResult: 'Pass',
 
     testTypes: [...mockTestTypeList()],
 
-    reasonForCreation: 'mock test result data'
+    trailerId: `C${String(i + 1).padStart(5, '0')}`,
+    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    euVehicleCategory: EuVehicleCategory.M3,
+    odometerReading: 100,
+    odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
+    reasonForCreation: 'mock test result data',
+    preparerName: 'Durrell Truck & Van Centre',
+    preparerId: 'CM2254'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

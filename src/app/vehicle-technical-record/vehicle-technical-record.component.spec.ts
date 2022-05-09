@@ -4,6 +4,8 @@ import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.comp
 import { initialAppState } from '@store/.';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordSummaryComponent } from '../features/test-record-summary/test-record-summary.component';
+import { TechRecordSummaryComponent } from '../features/tech-record-summary/tech-record-summary.component';
+import { SharedModule } from '@shared/shared.module';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -11,8 +13,8 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent],
+      imports: [HttpClientTestingModule, SharedModule],
+      declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });

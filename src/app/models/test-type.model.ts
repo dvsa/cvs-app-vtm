@@ -13,4 +13,6 @@ export interface TestType {
   additionalCommentsForAbandon?: string;
   testAnniversaryDate: string | Date;
   prohibitionIssued: boolean;
+
+  testResult: string;
 }

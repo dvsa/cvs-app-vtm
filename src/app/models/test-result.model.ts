@@ -1,3 +1,6 @@
+import { CountryOfRegistration } from './country-of-registration.enum';
+import { EuVehicleCategory } from './eu-vehicle-category.enum';
+import { OdometerReadingUnits } from './odometer-unit.enum';
 import { TestType } from './test-type.model';
 
 export interface TestResultModel {
@@ -9,9 +12,16 @@ export interface TestResultModel {
 
   createdAt?: string;
   testStartTimestamp: string | Date;
-  testResult: string;
 
   testTypes: TestType[];
+
+  trailerId: string;
+  countryOfRegistration: CountryOfRegistration;
+  euVehicleCategory: EuVehicleCategory;
+  odometerReading: number;
+  odometerReadingUnits: OdometerReadingUnits;
+  preparerName: string;
+  preparerId: string;
 
   reasonForCreation?: string;
 }

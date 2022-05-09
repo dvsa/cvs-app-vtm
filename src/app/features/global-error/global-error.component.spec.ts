@@ -40,7 +40,7 @@ describe('GlobalErrorComponent', () => {
   describe('goto', () => {
     it('should focus element', () => {
       const input: HTMLInputElement = fixture.debugElement.query(By.css('#test-input')).nativeElement;
-      component.goto({ message: 'navigate', anchorLink: 'test-input' });
+      component.goto({ error: 'navigate', anchorLink: 'test-input' });
 
       expect(document.activeElement).toBe(input);
     });
