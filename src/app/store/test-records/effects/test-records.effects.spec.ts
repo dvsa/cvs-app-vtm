@@ -8,7 +8,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
 import { getByVINSuccess } from '@store/technical-records';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
