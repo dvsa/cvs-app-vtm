@@ -25,7 +25,13 @@ export class TestResultsEffects {
       mergeMap((action) =>
         this.testRecordsService.fetchTestResultbySystemId(action.vehicleTechRecords[0].systemNumber).pipe(
           map((vehicleTestRecords) => fetchTestResultsBySystemIdSuccess({ payload: vehicleTestRecords })),
-          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e.message })))
+          catchError((e) => {
+            if (e.status != 404) {
+              return of(fetchTestResultsBySystemIdFailed({ error: e.message }))
+            } else {
+              return of(fetchTestResultsBySystemIdSuccess({payload: []}))
+            }
+          })
         )
       )
     )
