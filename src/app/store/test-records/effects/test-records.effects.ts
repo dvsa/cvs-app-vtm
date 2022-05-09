@@ -29,7 +29,7 @@ export class TestResultsEffects {
             if (e.status != 404) {
               return of(fetchTestResultsBySystemIdFailed({ error: e.message }))
             } else {
-              return EMPTY
+              return of(fetchTestResultsBySystemIdSuccess({payload: []}))
             }
           })
         )

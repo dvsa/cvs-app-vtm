@@ -19,5 +19,9 @@ export const spinnerState = createSelector(getSpinnerState, (state) => state.sho
 export const spinnerReducer = createReducer(
   initialSpinnerState,
   on(TechnicalRecordServiceActions.getByVIN, (state) => ({ ...state, showSpinner: true })),
-  on(TechnicalRecordServiceActions.getByVINFailure, TechnicalRecordServiceActions.getByVINSuccess, (state) => ({ ...state, showSpinner: false }))
+  on(TechnicalRecordServiceActions.getByVINFailure, TechnicalRecordServiceActions.getByVINSuccess, (state) => ({ ...state, showSpinner: false })),
+  on(TestResultActions.fetchTestResultsBySystemId, (state) => ({...state, showSpinner: true})),
+  on(TestResultActions.fetchTestResultsBySystemIdFailed, TestResultActions.fetchTestResultsBySystemIdSuccess, (state) => ({...state, showSpinner: false})),
+  on(TestResultActions.fetchTestResults, (state) => ({...state, showSpinner: true})),
+  on(TestResultActions.fetchTestResultsFailed, TestResultActions.fetchTestResultsSuccess, (state) => ({...state, showSpinner: false}))
 );

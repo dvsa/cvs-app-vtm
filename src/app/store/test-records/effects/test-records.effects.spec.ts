@@ -131,7 +131,9 @@ describe('TestResultsEffects', () => {
         });
         jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('');
+        expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
+          b: fetchTestResultsBySystemIdSuccess({ payload: [] })
+        });
       });
     });
   });
