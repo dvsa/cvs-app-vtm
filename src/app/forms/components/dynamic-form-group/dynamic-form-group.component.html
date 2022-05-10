@@ -1,28 +1,39 @@
 <div id="{{ 'test-' + form.meta?.name || 'test-dynamic-form' }}">
-  <h1 class="govuk-heading-xl title">{{ form.meta?.label }}</h1>
+  <ng-template [ngTemplateOutlet]="templateHeading"></ng-template>
   <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
 </div>
+
+<ng-template #templateHeading>
+  <ng-container [ngSwitch]="form.meta?.viewType">
+    <ng-container *ngSwitchCase="formNodeViewTypes.SUBHEADING">
+      <h2 class="govuk-heading-m">{{ form.meta?.label }}</h2>
+    </ng-container>
+    <ng-container *ngSwitchCaseDefault>
+      <h1 class="govuk-heading-xl title">{{ form.meta?.label }}</h1>
+    </ng-container>
+  </ng-container>
+</ng-template>
 
 <ng-template #nodeTemplateRef let-form="form">
   <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">
     <ng-container [ngSwitch]="control.value.meta.type">
-      <ng-container *ngSwitchCase="formNodeViewTypes.CONTROL">
+      <ng-container *ngSwitchCase="formNodeTypes.CONTROL">
         <ng-template [ngTemplateOutlet]="controlTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
       </ng-container>
 
-      <ng-container *ngSwitchCase="formNodeViewTypes.GROUP">
+      <ng-container *ngSwitchCase="formNodeTypes.GROUP">
         <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
       </ng-container>
 
-      <ng-container *ngSwitchCase="formNodeViewTypes.ARRAY">
+      <ng-container *ngSwitchCase="formNodeTypes.ARRAY">
         <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
       </ng-container>
 
-      <ng-container *ngSwitchCase="formNodeViewTypes.SECTION">
+      <ng-container *ngSwitchCase="formNodeTypes.SECTION">
         <ng-template [ngTemplateOutlet]="sectionTemplate" [ngTemplateOutletContext]="{ control: control }"></ng-template>
       </ng-container>
 
-      <ng-container *ngSwitchCase="formNodeViewTypes.COMBINATION">
+      <ng-container *ngSwitchCase="formNodeTypes.COMBINATION">
         <ng-template [ngTemplateOutlet]="combinationTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
       </ng-container>
     </ng-container>

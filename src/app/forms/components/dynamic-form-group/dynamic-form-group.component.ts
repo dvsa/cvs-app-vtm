@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicFormService } from '../../services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-dynamic-form-group',
@@ -33,7 +33,12 @@ export class DynamicFormGroupComponent implements OnInit {
     return index;
   }
 
-  get formNodeViewTypes(): typeof FormNodeTypes {
+  get formNodeTypes(): typeof FormNodeTypes {
     return FormNodeTypes;
   }
+
+  get formNodeViewTypes(): typeof FormNodeViewTypes{
+    return FormNodeViewTypes;
+  }
+
 }

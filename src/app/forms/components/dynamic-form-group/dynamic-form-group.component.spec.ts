@@ -2,7 +2,7 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
-import { FormNodeTypes, FormNode } from '../../services/dynamic-form.types';
+import { FormNodeTypes, FormNode, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
@@ -50,11 +50,20 @@ describe('DynamicFormGroupComponent', () => {
     expect(component.entriesOf(input)).toStrictEqual(expected);
   });
 
+  describe('formNodeTypes', () => {
+    it('should return FormNodeTypes enum', () => {
+      Object.entries(FormNodeTypes).forEach((entry) => {
+        expect(FormNodeTypes).toEqual(component.formNodeTypes);
+        expect(component.formNodeTypes[entry[0] as keyof typeof FormNodeTypes]).toBe(entry[1]);
+      });
+    });
+  });
+
   describe('formNodeViewTypes', () => {
     it('should return FormNodeViewTypes enum', () => {
-      Object.entries(FormNodeTypes).forEach((entry) => {
-        expect(FormNodeTypes).toEqual(component.formNodeViewTypes);
-        expect(component.formNodeViewTypes[entry[0] as keyof typeof FormNodeTypes]).toBe(entry[1]);
+      Object.entries(FormNodeViewTypes).forEach((entry) => {
+        expect(FormNodeViewTypes).toEqual(component.formNodeViewTypes);
+        expect(component.formNodeViewTypes[entry[0] as keyof typeof FormNodeViewTypes]).toBe(entry[1]);
       });
     });
   });

@@ -6,7 +6,8 @@ export enum FormNodeViewTypes {
   DATETIME = 'dateTime',
   TIME = 'time',
   HIDDEN = 'hidden',
-  VEHICLETYPE = 'vehicleType'
+  VEHICLETYPE = 'vehicleType',
+  SUBHEADING = 'subHeading'
 }
 
 export enum FormNodeTypes {
