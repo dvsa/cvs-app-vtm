@@ -20,7 +20,7 @@ export const HgvTechRecord: FormNode = {
       value: '',
       children: [],
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.DATE
     },
     {
       name: 'manufactureYear',
