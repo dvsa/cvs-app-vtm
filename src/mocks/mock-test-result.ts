@@ -21,7 +21,7 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       testExpiryDate: nextYear,
 
       certificateNumber: `CertNumber${String(i + 1).padStart(4, '0')}`,
-      reasonForAbandoning: ['The vehicle was not submitted for test at the appointed time', 'The relevant test fee has not been paid'],
+      reasonForAbandoning: 'The vehicle was not submitted for test at the appointed time',
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
       testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
       prohibitionIssued: false,
