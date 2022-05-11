@@ -7,8 +7,9 @@ This is used by the DVSA staff to create and update technical records & test res
 ## Getting started
 
 Prerequisites:
-* Node 16
-* Git Secrets
+
+- Node 16
+- Git Secrets
 
 ### Using Make
 
@@ -21,16 +22,19 @@ To just run the application run:
 `make run`
 
 To run the mock api run:
-`make api` 
+`make api`
 
 To get different responses use custom VINs/IDs. Also see `mock-api/mock-api-server.ts` for more details about custom endpoints.
 
-| Argument                      | Tech Record API | Test Record API |
-|-------------------------------|-----------------|-----------------|
-| `.*`                          | 200             | 200             |
-| `notfound`                    | 400             | 400             |
-| `servererror`                 | 500             | 500             |
-
+| Argument           | Tech Record API | Test Record API |
+| ------------------ | --------------- | --------------- |
+| `.*`               | 200             | 200             |
+| `notfound`         | 400             | 400             |
+| `servererror`      | 500             | 500             |
+| `delayok`          | 200             | -               |
+| `delayservererror` | 500             | -               |
+| `HGV`              | 200             | -               |
+| `TRL`              | 200             | -               |
 
 ### Using Node commands
 
@@ -39,6 +43,7 @@ To get different responses use custom VINs/IDs. Also see `mock-api/mock-api-serv
 3. Find more commands with `npm run`
 
 ### Testing
+
 The test coverage requirement for this project is 80% and automation tests can be found in a java project named `cvs-vtm-auto`
 
 The framework used is Jest.
@@ -48,8 +53,9 @@ To run the test coverage run `npm run test`
 ### Backend Requirements
 
 This talks to the following backends:
-* cvs-svc-technical-records
-* cvs-svc-test-results
+
+- cvs-svc-technical-records
+- cvs-svc-test-results
 
 ### Running Locally End-2-End
 
@@ -88,6 +94,7 @@ To run storybook:
 Then view it on `localhost:6006`.
 
 # Atomic Design
+
 This project aims to follow atomic design principles and is structured as follows:
 
 Atoms - atoms make up everything these are the smallest core components e.g. Label
