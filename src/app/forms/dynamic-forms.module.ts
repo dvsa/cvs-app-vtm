@@ -7,9 +7,10 @@ import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynam
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { SharedModule } from '@shared/shared.module';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
+import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent]
 })
 export class DynamicFormsModule {}

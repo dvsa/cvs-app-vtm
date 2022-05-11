@@ -9,8 +9,8 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
   styles: []
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit, DoCheck {
+  @Input() name: string;
   @Input() label?: string;
-  @Input() name?: string;
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() hint?: string;
 
@@ -22,7 +22,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   private value_: any;
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    this.name = ''
+  }
 
   ngAfterContentInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
