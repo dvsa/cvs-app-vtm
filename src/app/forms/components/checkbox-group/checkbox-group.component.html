@@ -6,7 +6,7 @@
     <div [id]="name + '-hint'" class="govuk-hint">{{ hint }}</div>
     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
       <div *ngFor="let option of options" class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" [id]="name + '-checkbox'" [name]="name" type="checkbox" [value]="option.value" [ngModel]="isChecked(option.value)" (ngModelChange)="handleChange($event, option)" />
+        <input class="govuk-checkboxes__input" id="{{ name + '-' + option.value + '-checkbox' }}" [name]="name" type="checkbox" [value]="option.value" [ngModel]="isChecked(option.value)" (ngModelChange)="handleChange($event, option)" />
         <label class="govuk-label govuk-checkboxes__label" [for]="name"> {{ option.label }} </label>
       </div>
     </div>
