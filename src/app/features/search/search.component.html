@@ -19,11 +19,4 @@
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
     <app-vehicle-technical-record [vehicleTechRecord]="vehicleTechRecord"></app-vehicle-technical-record>
   </ng-container>
-
-  <section>
-    <form [formGroup]="form">
-      <app-checkbox-group name="colours" [options]="options" label="Colours" formControlName="colours"></app-checkbox-group>
-    </form>
-  </section>
 </div>
-<pre>{{ form.value | json }}</pre>

@@ -13,16 +13,6 @@ import { GlobalErrorService } from '../global-error/global-error.service';
 export class SearchComponent {
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
 
-  options = [
-    { label: 'red', value: 'red' },
-    { label: 'blue', value: 'blue' },
-    { label: 'green', value: 'green' }
-  ];
-
-  form = new FormGroup({
-    colours: new FormControl({ value: null, disabled: false })
-  });
-
   constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService) {
     this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
   }

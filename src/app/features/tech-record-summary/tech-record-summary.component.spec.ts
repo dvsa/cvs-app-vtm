@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { DynamicFormsModule } from 'src/app/forms/dynamic-forms.module';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 
 describe('TechRecordSummaryComponent', () => {
