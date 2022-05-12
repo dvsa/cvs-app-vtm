@@ -222,6 +222,67 @@ export const PsvAnnual: FormNode = {
                 { value: false, label: 'No' }
               ],
               children: []
+            },
+            {
+              name: '',
+              label: 'Emissions',
+              type: FormNodeTypes.SECTION,
+              children: []
+            },
+            {
+              name: 'emissionStandard',
+              label: 'Emissions standard',
+              type: FormNodeTypes.CONTROL,
+              children: []
+            },
+            {
+              name: 'smokeTestKLimitApplied',
+              label: 'Smoke test K limit applied',
+              type: FormNodeTypes.CONTROL,
+              children: []
+            },
+            {
+              name: 'fuelType',
+              label: 'Fuel type',
+              type: FormNodeTypes.CONTROL,
+              children: []
+            },
+            {
+              name: 'modType',
+              label: 'Modification Type',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'code',
+                  label: 'Modification code',
+                  type: FormNodeTypes.CONTROL,
+                  children: []
+                },
+                {
+                  name: 'description',
+                  label: 'Modification description',
+                  type: FormNodeTypes.CONTROL,
+                  children: []
+                }
+              ]
+            },
+            {
+              name: 'modificationTypeUsed',
+              label: 'Modification type used',
+              type: FormNodeTypes.CONTROL,
+              children: []
+            },
+            {
+              name: 'particulateTrapFitted',
+              label: 'Particulate trap fitted',
+              type: FormNodeTypes.CONTROL,
+              children: []
+            },
+            {
+              name: 'particulateTrapSerialNumber',
+              label: 'Particulate trap serial number',
+              type: FormNodeTypes.CONTROL,
+              children: []
             }
           ]
         }

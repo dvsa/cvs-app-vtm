@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { Store } from '@ngrx/store';
+import { Logout } from '@store/user/user-service.actions';
 import { lastValueFrom, skip, of } from 'rxjs';
 import { AppModule } from '../../app.module';
 import { UserServiceState } from '../../store/user/user-service.reducer';
@@ -39,5 +40,14 @@ describe('User-Service', () => {
     });
 
     service.logIn('you reading this?');
+  });
+
+  it('should logout', () => {
+    const dispatchSpy = jest.spyOn(mockStore, 'dispatch');
+    const dispatchSpyMsal = jest.spyOn(mockMsal, 'logout');
+    service.logOut();
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith(Logout());
+    expect(dispatchSpyMsal).toHaveBeenCalledTimes(1);
   });
 });

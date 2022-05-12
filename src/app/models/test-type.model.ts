@@ -1,3 +1,5 @@
+import * as Emissions from './emissions.enum';
+
 export interface TestType {
   testNumber: string;
 
@@ -15,4 +17,15 @@ export interface TestType {
   prohibitionIssued: boolean;
 
   testResult: string;
+
+  emissionStandard: Emissions.EmissionStandard;
+  smokeTestKLimitApplied: string;
+  fuelType: Emissions.FuelType;
+  modType: {
+    code: Emissions.ModTypeCode;
+    description: Emissions.ModeTypeDescription;
+  } | null;
+  modificationTypeUsed: string;
+  particulateTrapFitted: string;
+  particulateTrapSerialNumber: string;
 }
