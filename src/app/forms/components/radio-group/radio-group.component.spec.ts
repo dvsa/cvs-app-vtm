@@ -51,16 +51,15 @@ describe('RadioGroupComponent', () => {
       const boxes = fixture.debugElement.queryAll(By.css('input[type="radio"]'));
       expect(boxes.length).toBe(3);
 
-      (boxes[1].nativeElement as HTMLInputElement).click();
       (boxes[0].nativeElement as HTMLInputElement).click();
       expect(foo?.value).toEqual('1');
       (boxes[1].nativeElement as HTMLInputElement).click();
       expect(foo?.value).toEqual('2');
-      (boxes[0].nativeElement as HTMLInputElement).click();
+      (boxes[1].nativeElement as HTMLInputElement).click();
       expect(foo?.value).not.toBeNull();
     });
 
-    it('should be propagated from the form control to the element', () => {
+    it('should be displayed on the DOM', () => {
       component.form.patchValue({ foo: '1' });
 
       fixture.detectChanges();

@@ -24,10 +24,7 @@ export interface TestType {
   emissionStandard: Emissions.EmissionStandard;
   smokeTestKLimitApplied: string;
   fuelType: Emissions.FuelType;
-  modType: {
-    code: Emissions.ModTypeCode;
-    description: Emissions.ModeTypeDescription;
-  } | null;
+  modType: Emissions.ModType;
   modificationTypeUsed: string;
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;

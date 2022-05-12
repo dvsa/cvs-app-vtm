@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { RadioGroupComponent } from './radio-group.component';
+import { MultiOptions } from '@models/options.model';
 
 export default {
   title: 'Forms/Radio button group',
@@ -32,13 +33,14 @@ const Template: Story = (args) => {
 };
 
 const defaultArgs = {
-  label: 'Color',
+  label: 'Color picker',
   name: 'color',
   options: [
     { label: 'Red', value: 'red' },
-    { label: 'Yellow', value: 'yellow' },
-    { label: 'Blue', value: 'blue' }
-  ]
+    { label: 'Yellow', value: 'yellow', hint: 'this is the colour of the sun' },
+    { label: 'Blue', value: 'blue', hint: 'this is the colour of the sea' }
+  ],
+  hint: 'These are the three primary colours'
 };
 
 export const Enabled = Template.bind({});
@@ -55,5 +57,5 @@ Disabled.args = {
 export const Initilisation = Template.bind({});
 Initilisation.args = {
   ...defaultArgs,
-  value: 'red',
+  value: 'red'
 };

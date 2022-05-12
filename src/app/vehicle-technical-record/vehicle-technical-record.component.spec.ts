@@ -1,4 +1,4 @@
-import { ComponentFixture, ComponentFixtureNoNgZone, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 import { initialAppState } from '@store/.';
@@ -35,7 +35,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     expect(component.currentVrm).toEqual('KP01 ABC');
   });
 
-  it('should other Vrms', () => {
+  it('should get other Vrms', () => {
     component.vehicleTechRecord = mockVehicleTechnicalRecord();
     expect(component.otherVrms).toEqual([
       {

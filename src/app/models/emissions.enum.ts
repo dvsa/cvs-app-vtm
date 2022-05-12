@@ -29,3 +29,8 @@ export enum ModeTypeDescription {
   Engine = 'modification or change of engine',
   GasEngine = 'gas engine'
 }
+
+export interface ModType {
+  code: ModTypeCode;
+  description: ModeTypeDescription;
+}

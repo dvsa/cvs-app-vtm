@@ -19,8 +19,7 @@ describe('DynamicFormService', () => {
     it('should return an empty FormGroup if the root node has no children', () => {
       const node: FormNode = {
         name: 'empty',
-        type: FormNodeTypes.GROUP,
-        children: []
+        type: FormNodeTypes.GROUP
       };
 
       expect(service.createForm(node)).toMatchObject({});
@@ -37,8 +36,7 @@ describe('DynamicFormService', () => {
             name: 'vin',
             label: 'Vechile Identification Number',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING,
-            children: []
+            viewType: FormNodeViewTypes.STRING
           }
         ]
       };
@@ -67,8 +65,7 @@ describe('DynamicFormService', () => {
                 name: 'vin',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
-                viewType: FormNodeViewTypes.STRING,
-                children: []
+                viewType: FormNodeViewTypes.STRING
               }
             ]
           }
@@ -163,8 +160,7 @@ describe('DynamicFormService', () => {
           <FormNode>{
             name: 'foo',
             type: FormNodeTypes.CONTROL,
-            validators: ['required'],
-            children: []
+            validators: ['required']
           }
         ]
       };
