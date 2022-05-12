@@ -222,6 +222,34 @@ export const PsvAnnual: FormNode = {
                 { value: false, label: 'No' }
               ],
               children: []
+            },
+            {
+              name: 'seatbeltSection',
+              label: 'Seatbelts',
+              type: FormNodeTypes.SECTION,
+              children: []
+            },
+            {
+              name: 'seatbeltInstallationCheckDate',
+              label: 'Carried out during test',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'numberOfSeatbeltsFitted',
+              label: 'Number of seatbelts fitted',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'lastSeatbeltInstallationCheckDate',
+              label: 'Most recent installation check',
+              value: '',
+              children: [],
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE
             }
           ]
         }
