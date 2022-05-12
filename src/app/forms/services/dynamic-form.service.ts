@@ -20,7 +20,7 @@ export class DynamicFormService {
     const { type } = f;
     let form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === type ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
 
-    f?.children.forEach((child) => {
+    f?.children?.forEach((child) => {
       const { name, type, value, validators, disabled } = child;
       let control;
       if (FormNodeTypes.CONTROL !== type) {
