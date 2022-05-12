@@ -1,15 +1,9 @@
 import { Meta, Story } from '@storybook/angular';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 import { TestResultModel } from '../../models/test-result.model';
+import { mockTestResult } from '@mocks/mock-test-result';
 
-const fakeRecord: TestResultModel = {
-  testResultId: 'test',
-  systemNumber: 'test',
-  testStartTimestamp: 'testStartTimestamp',
-  testStatus: 'testStatus',
-  testTypes: [],
-  vin: 'vin'
-};
+const fakeRecord: TestResultModel = mockTestResult();
 
 export default {
   title: 'Test Record Summary',
