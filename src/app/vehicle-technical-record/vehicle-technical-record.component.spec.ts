@@ -6,6 +6,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordSummaryComponent } from '../features/test-record-summary/test-record-summary.component';
 import { TechRecordSummaryComponent } from '../features/tech-record-summary/tech-record-summary.component';
 import { SharedModule } from '@shared/shared.module';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -30,67 +31,19 @@ describe('VehicleTechnicalRecordComponent', () => {
   });
 
   it('should get current vrm', () => {
-    component.vehicleTechRecord = {
-      vrms: [
-        {
-          vrm: 'vrm1',
-          isPrimary: true
-        },
-        {
-          vrm: 'vrm2',
-          isPrimary: false
-        },
-        {
-          vrm: 'vrm3',
-          isPrimary: false
-        },
-        {
-          vrm: 'vrm4',
-          isPrimary: false
-        }
-      ],
-      vin: 'ABC123',
-      systemNumber: '123',
-      techRecord: []
-    };
-    expect(component.currentVrm).toEqual('vrm1');
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    expect(component.currentVrm).toEqual('KP01 ABC');
   });
 
   it('should other Vrms', () => {
-    component.vehicleTechRecord = {
-      vrms: [
-        {
-          vrm: 'vrm1',
-          isPrimary: true
-        },
-        {
-          vrm: 'vrm2',
-          isPrimary: false
-        },
-        {
-          vrm: 'vrm3',
-          isPrimary: false
-        },
-        {
-          vrm: 'vrm4',
-          isPrimary: false
-        }
-      ],
-      vin: 'ABC123',
-      systemNumber: '123',
-      techRecord: []
-    };
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
     expect(component.otherVrms).toEqual([
       {
-        vrm: 'vrm2',
+        vrm: '609859Z',
         isPrimary: false
       },
       {
-        vrm: 'vrm3',
-        isPrimary: false
-      },
-      {
-        vrm: 'vrm4',
+        vrm: '609959Z',
         isPrimary: false
       }
     ]);
