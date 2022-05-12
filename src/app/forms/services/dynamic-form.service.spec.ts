@@ -50,7 +50,7 @@ describe('DynamicFormService', () => {
           outputGroup.controls as {
             [key: string]: AbstractControl;
           }
-        )[node.children[0].name]
+        )[node.children![0].name]
       ).toBeTruthy();
     });
 
@@ -80,9 +80,9 @@ describe('DynamicFormService', () => {
         outputGroup.controls as {
           [key: string]: AbstractControl;
         }
-      )[node.children[0].name] as CustomFormGroup;
+      )[node.children![0].name] as CustomFormGroup;
 
-      expect(subGroup.controls[node.children[0].children[0].name]).toBeTruthy();
+      expect(subGroup.controls[node.children![0].children![0].name]).toBeTruthy();
     });
 
     it('should return a formGroup with a nested FormArray', () => {
