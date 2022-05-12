@@ -26,7 +26,7 @@ export interface FormNodeOption<T> {
 
 export interface FormNode {
   name: string;
-  children: FormNode[];
+  children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
   label?: string;

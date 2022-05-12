@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, ComponentFixtureNoNgZone, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 import { initialAppState } from '@store/.';
@@ -27,5 +27,72 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get current vrm', () => {
+    component.vehicleTechRecord = {
+      vrms: [
+        {
+          vrm: 'vrm1',
+          isPrimary: true
+        },
+        {
+          vrm: 'vrm2',
+          isPrimary: false
+        },
+        {
+          vrm: 'vrm3',
+          isPrimary: false
+        },
+        {
+          vrm: 'vrm4',
+          isPrimary: false
+        }
+      ],
+      vin: 'ABC123',
+      systemNumber: '123',
+      techRecord: []
+    };
+    expect(component.currentVrm).toEqual('vrm1');
+  });
+
+  it('should other Vrms', () => {
+    component.vehicleTechRecord = {
+      vrms: [
+        {
+          vrm: 'vrm1',
+          isPrimary: true
+        },
+        {
+          vrm: 'vrm2',
+          isPrimary: false
+        },
+        {
+          vrm: 'vrm3',
+          isPrimary: false
+        },
+        {
+          vrm: 'vrm4',
+          isPrimary: false
+        }
+      ],
+      vin: 'ABC123',
+      systemNumber: '123',
+      techRecord: []
+    };
+    expect(component.otherVrms).toEqual([
+      {
+        vrm: 'vrm2',
+        isPrimary: false
+      },
+      {
+        vrm: 'vrm3',
+        isPrimary: false
+      },
+      {
+        vrm: 'vrm4',
+        isPrimary: false
+      }
+    ]);
   });
 });
