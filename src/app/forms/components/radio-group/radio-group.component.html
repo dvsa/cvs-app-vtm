@@ -7,7 +7,7 @@
     <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
     <div class="govuk-radios" data-module="govuk-radios">
       <div *ngFor="let option of options" class="govuk-radios__item">
-        <input class="govuk-radios__input" [id]="name + '-' + option.value + '-radio'" [name]="name" type="radio" [value]="option.value" (ngModel)="(value)" (ngModelChange)="onChange($event)" />
+        <input class="govuk-radios__input" [id]="name + '-' + option.value + '-radio'" [name]="name" [attr.checked]="option.value === value" type="radio" [value]="option.value" [(ngModel)]="value" (ngModelChange)="onChange($event)" />
         <label class="govuk-label govuk-radios__label" [for]="option.value + '-radio'"> {{ option.label }} </label>
         <div *ngIf="option.hint" id="{{ name }}-hint-{{ option.value }}" class="govuk-hint govuk-radios__hint">{{ option.hint }}</div>
       </div>

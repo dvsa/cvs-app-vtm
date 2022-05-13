@@ -33,7 +33,7 @@ const Template: Story = (args) => {
 };
 
 const defaultArgs = {
-  label: 'Color picker',
+  label: 'Colour picker',
   name: 'color',
   options: [
     { label: 'Red', value: 'red' },
