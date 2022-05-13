@@ -48,27 +48,22 @@ describe('RadioGroupComponent', () => {
   describe('value', () => {
     it('should be propagated from element to the form control', () => {
       const foo = component.form.get('foo');
-      const boxes = fixture.debugElement.queryAll(By.css('input[type="radio"]'));
-      expect(boxes.length).toBe(3);
+      const radios = fixture.debugElement.queryAll(By.css('input[type="radio"]'));
+      expect(radios.length).toBe(3);
 
-      (boxes[0].nativeElement as HTMLInputElement).click();
+      (radios[0].nativeElement as HTMLInputElement).click();
       expect(foo?.value).toEqual('1');
-      (boxes[1].nativeElement as HTMLInputElement).click();
+      (radios[1].nativeElement as HTMLInputElement).click();
       expect(foo?.value).toEqual('2');
-      (boxes[1].nativeElement as HTMLInputElement).click();
+      (radios[1].nativeElement as HTMLInputElement).click();
       expect(foo?.value).not.toBeNull();
     });
 
-    it('should be displayed on the DOM', () => {
-      component.form.patchValue({ foo: '1' });
-
+    it('should check a radio button when the form value is updated', () => {
+      component.form.patchValue({ foo: '2' });
       fixture.detectChanges();
-
-      const box2 = fixture.debugElement.query(By.css('input#foo-2-radio')).nativeElement;
-
-      box2.click();
-
-      expect(component.form.get('foo')?.value).toEqual('2');
+      const radios = fixture.debugElement.queryAll(By.css('input[checked=true]'));
+      expect(radios.length).toBe(1);
     });
   });
 });
