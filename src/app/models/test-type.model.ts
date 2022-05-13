@@ -18,5 +18,5 @@ export interface TestType {
 
   seatbeltInstallationCheckDate: boolean;
   numberOfSeatbeltsFitted: number;
-  lastSeatbeltInstallationCheckDate: string | Date;
+  lastSeatbeltInstallationCheckDate: Date | null;
 }
