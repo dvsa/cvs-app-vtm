@@ -26,6 +26,9 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
       prohibitionIssued: false,
       testResult: 'Pass',
+      seatbeltInstallationCheckDate: true,
+      numberOfSeatbeltsFitted: 4,
+      lastSeatbeltInstallationCheckDate: new Date().toISOString()
     });
   });
 

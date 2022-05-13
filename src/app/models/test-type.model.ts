@@ -15,4 +15,8 @@ export interface TestType {
   prohibitionIssued: boolean;
 
   testResult: string;
+
+  seatbeltInstallationCheckDate: boolean;
+  numberOfSeatbeltsFitted: number;
+  lastSeatbeltInstallationCheckDate: Date | null;
 }
