@@ -1,8 +1,9 @@
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TechRecordModel, VehicleTypes, StatusCodes, FuelTypes, VehicleConfigurations, EuVehicleCategories, VehicleSizes } from '@models/vehicle-tech-record.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { By } from '@angular/platform-browser';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -10,7 +11,8 @@ describe('TechRecordSummaryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TechRecordSummaryComponent]
+      declarations: [TechRecordSummaryComponent],
+      imports: [DynamicFormsModule]
     }).compileComponents();
   });
 
@@ -26,6 +28,16 @@ describe('TechRecordSummaryComponent', () => {
   it('should get the tech record vehicle type', () => {
     component.vehicleTechRecord = mockVehicleTechnicalRecord();
     expect(component.vehicleType).toEqual('psv');
+  });
+
+  it('should get the tech record vehicle type', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL);
+    expect(component.vehicleType).toEqual('trl');
+  });
+
+  it('should get the tech record vehicle type', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV);
+    expect(component.vehicleType).toEqual('hgv');
   });
 
   it('should show record found', () => {

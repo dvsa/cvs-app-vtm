@@ -8,42 +8,41 @@ export const PsvAnnual: FormNode = {
     {
       name: 'vehicleSection',
       label: 'Vehicle',
-      type: FormNodeTypes.SECTION,
-      children: []
+      type: FormNodeTypes.SECTION
     },
     {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'vrm',
       label: 'VRM',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'trailerId',
       label: 'Trailer ID',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL
     },
     {
@@ -54,14 +53,13 @@ export const PsvAnnual: FormNode = {
         leftComponentName: 'odometerReading',
         rightComponentName: 'odometerReadingUnits',
         separator: ' '
-      },
-      children: []
+      }
     },
     {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
@@ -69,7 +67,7 @@ export const PsvAnnual: FormNode = {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
@@ -81,14 +79,13 @@ export const PsvAnnual: FormNode = {
         leftComponentName: 'preparerName',
         rightComponentName: 'preparerId',
         separator: ' - '
-      },
-      children: []
+      }
     },
     {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
@@ -96,21 +93,20 @@ export const PsvAnnual: FormNode = {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'testSection',
       label: 'Test',
-      type: FormNodeTypes.SECTION,
-      children: []
+      type: FormNodeTypes.SECTION
     },
     {
       name: 'createdAt',
       label: 'Created',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE
     },
@@ -118,7 +114,7 @@ export const PsvAnnual: FormNode = {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE
     },
@@ -135,42 +131,42 @@ export const PsvAnnual: FormNode = {
               name: 'testCode',
               label: 'Test Code',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testResult',
               label: 'Result',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testTypeName',
               label: 'Description',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE
             },
@@ -178,39 +174,34 @@ export const PsvAnnual: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              value: '',
-              children: []
+              value: ''
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'Additional details for abandoning',
-              children: []
+              label: 'Additional details for abandoning'
             },
             {
               name: 'testAnniversaryDate',
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Anniversary date',
-              viewType: FormNodeViewTypes.DATE,
-              children: []
+              viewType: FormNodeViewTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME,
-              children: []
+              viewType: FormNodeViewTypes.TIME
             },
             {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME,
-              children: []
+              viewType: FormNodeViewTypes.TIME
             },
             {
               name: 'prohibitionIssued',
@@ -220,36 +211,86 @@ export const PsvAnnual: FormNode = {
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
-              ],
-              children: []
+              ]
             },
             {
               name: 'seatbeltSection',
               label: 'Seatbelts',
-              type: FormNodeTypes.SECTION,
-              children: []
+              type: FormNodeTypes.SECTION
             },
             {
               name: 'seatbeltInstallationCheckDate',
               label: 'Carried out during test',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'numberOfSeatbeltsFitted',
               label: 'Number of seatbelts fitted',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
               label: 'Most recent installation check',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE
+            },
+            {
+              name: 'emissionsSection',
+              label: 'Emissions',
+              type: FormNodeTypes.SECTION
+            },
+            {
+              name: 'emissionStandard',
+              label: 'Emissions standard',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'smokeTestKLimitApplied',
+              label: 'Smoke test K limit applied',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'fuelType',
+              label: 'Fuel type',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'modType',
+              label: 'Modification Type',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'code',
+                  label: 'Modification code',
+                  type: FormNodeTypes.CONTROL
+                },
+                {
+                  name: 'description',
+                  label: 'Modification description',
+                  type: FormNodeTypes.CONTROL
+                }
+              ]
+            },
+            {
+              name: 'modificationTypeUsed',
+              label: 'Modification type used',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'particulateTrapFitted',
+              label: 'Particulate trap fitted',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'particulateTrapSerialNumber',
+              label: 'Particulate trap serial number',
+              type: FormNodeTypes.CONTROL
             }
           ]
         }

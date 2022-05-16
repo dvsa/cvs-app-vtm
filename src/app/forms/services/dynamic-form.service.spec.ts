@@ -19,8 +19,7 @@ describe('DynamicFormService', () => {
     it('should return an empty FormGroup if the root node has no children', () => {
       const node: FormNode = {
         name: 'empty',
-        type: FormNodeTypes.GROUP,
-        children: []
+        type: FormNodeTypes.GROUP
       };
 
       expect(service.createForm(node)).toMatchObject({});
@@ -37,8 +36,7 @@ describe('DynamicFormService', () => {
             name: 'vin',
             label: 'Vechile Identification Number',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING,
-            children: []
+            viewType: FormNodeViewTypes.STRING
           }
         ]
       };
@@ -50,7 +48,7 @@ describe('DynamicFormService', () => {
           outputGroup.controls as {
             [key: string]: AbstractControl;
           }
-        )[node.children[0].name]
+        )[node.children![0].name]
       ).toBeTruthy();
     });
 
@@ -67,8 +65,7 @@ describe('DynamicFormService', () => {
                 name: 'vin',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
-                viewType: FormNodeViewTypes.STRING,
-                children: []
+                viewType: FormNodeViewTypes.STRING
               }
             ]
           }
@@ -80,9 +77,9 @@ describe('DynamicFormService', () => {
         outputGroup.controls as {
           [key: string]: AbstractControl;
         }
-      )[node.children[0].name] as CustomFormGroup;
+      )[node.children![0].name] as CustomFormGroup;
 
-      expect(subGroup.controls[node.children[0].children[0].name]).toBeTruthy();
+      expect(subGroup.controls[node.children![0].children![0].name]).toBeTruthy();
     });
 
     it('should return a formGroup with a nested FormArray', () => {
@@ -163,8 +160,7 @@ describe('DynamicFormService', () => {
           <FormNode>{
             name: 'foo',
             type: FormNodeTypes.CONTROL,
-            validators: ['required'],
-            children: []
+            validators: ['required']
           }
         ]
       };

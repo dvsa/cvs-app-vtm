@@ -11,14 +11,11 @@ server.use(middlewares);
 // Add custom routes before JSON Server router
 server.get('/vehicles/:vin/*', (req, res) => {
   switch (req.params.vin) {
-    case 'NotFound':
-      res.status(404);
-      res.statusMessage = 'NotFound';
-      res.jsonp('Error no vehicle found');
-      break;
-     case 'delayok':
+    case 'delayok':
       console.log('Delaying request');
-      setTimeout(() => {res.jsonp(mockVehicleTechnicalRecordList())}, 2500);
+      setTimeout(() => {
+        res.jsonp(mockVehicleTechnicalRecordList());
+      }, 2500);
       break;
     case 'delayservererror':
       console.log('Delaying not found request');
@@ -35,23 +32,25 @@ server.get('/vehicles/:vin/*', (req, res) => {
       break;
     case 'notfound':
       res.status(404);
-      res.statusMessage = 'Not Found'
-      res.jsonp({"errors":["No resources match the search criteria."]})
+      res.statusMessage = 'Not Found';
+      res.jsonp({ errors: ['No resources match the search criteria.'] });
+      console.log('No vehicle found');
+      break;
+    case 'HGV':
+      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
+      console.log('HGV technical record');
+      break;
+    case 'TRL':
+      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
+      console.log('TRL technical record');
       break;
     default:
-      if (req.params.vin === "12345") {
-        res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
-      } else if (req.params.vin === "78910") {
-        res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
-      } else {
-        res.jsonp(mockVehicleTechnicalRecordList());
-      }
+      res.jsonp(mockVehicleTechnicalRecordList());
       break;
-  };
+  }
 });
 
 server.get('/test-results/:systemId', (req, res) => {
-
   switch (req.params.systemId) {
     case 'notfound':
       res.status(404);

@@ -10,7 +10,7 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit, DoCheck {
   @Input() label?: string;
-  @Input() name?: string;
+  @Input() name: string = '';
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() hint?: string;
 

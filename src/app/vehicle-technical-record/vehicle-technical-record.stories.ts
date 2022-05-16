@@ -1,7 +1,6 @@
 import { Meta, Story } from '@storybook/angular';
-
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
-import * as vtrMock from '../../mocks/vehicleTechnicalRecord.mock';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 export default {
   title: 'Vehicle Tech Record',
@@ -14,5 +13,5 @@ const Template: Story = (args) => ({
 
 export const Primary = Template.bind({});
 Primary.args = {
-  vehicleTechRecord: vtrMock.default
+  vehicleTechRecord: mockVehicleTechnicalRecord()
 };

@@ -6,6 +6,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordSummaryComponent } from '../features/test-record-summary/test-record-summary.component';
 import { TechRecordSummaryComponent } from '../features/tech-record-summary/tech-record-summary.component';
 import { SharedModule } from '@shared/shared.module';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -27,5 +28,24 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get current vrm', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    expect(component.currentVrm).toEqual('KP01 ABC');
+  });
+
+  it('should get other Vrms', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    expect(component.otherVrms).toEqual([
+      {
+        vrm: '609859Z',
+        isPrimary: false
+      },
+      {
+        vrm: '609959Z',
+        isPrimary: false
+      }
+    ]);
   });
 });

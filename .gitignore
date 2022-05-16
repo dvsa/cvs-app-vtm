@@ -9,7 +9,7 @@
 /out-tsc
 /bazel-out
 /reports
-./documentation.json
+documentation.json
 
 # Node
 /node_modules
