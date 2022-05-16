@@ -10,7 +10,7 @@ export const HgvTechRecord: FormNode = {
       name: 'vehicleType',
       label: 'Vehicle type',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE
     },
@@ -18,7 +18,7 @@ export const HgvTechRecord: FormNode = {
       name: 'regnDate',
       label: 'Date of first registration',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE
     },
@@ -26,7 +26,7 @@ export const HgvTechRecord: FormNode = {
       name: 'manufactureYear',
       label: 'Year of manufacture',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -34,7 +34,7 @@ export const HgvTechRecord: FormNode = {
       name: 'noOfAxles',
       label: 'Number of axles',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -47,7 +47,7 @@ export const HgvTechRecord: FormNode = {
           name: 'dtpNumber',
           label: 'DTP number',
           value: '',
-          children: [],
+
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING
         }
@@ -70,7 +70,7 @@ export const HgvTechRecord: FormNode = {
               name: 'parkingBrakeMrk',
               label: 'Axles fitted with a parking brake',
               value: '',
-              children: [],
+
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING
             }
@@ -82,7 +82,7 @@ export const HgvTechRecord: FormNode = {
       name: 'speedLimiterMrk',
       label: 'Speed limiter exempt',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -90,7 +90,7 @@ export const HgvTechRecord: FormNode = {
       name: 'tachoExemptMrk',
       label: 'Tacho exempt',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -98,7 +98,7 @@ export const HgvTechRecord: FormNode = {
       name: 'euroStandard',
       label: 'Euro standard',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -106,7 +106,7 @@ export const HgvTechRecord: FormNode = {
       name: 'roadFriendly',
       label: 'Road friendly suspension',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -114,7 +114,7 @@ export const HgvTechRecord: FormNode = {
       name: 'fuelPropulsionSystem',
       label: 'Fuel / propulsion system',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -122,7 +122,7 @@ export const HgvTechRecord: FormNode = {
       name: 'drawbarCouplingFitted',
       label: 'Drawbar coupling fitted',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -136,7 +136,7 @@ export const HgvTechRecord: FormNode = {
           name: 'description',
           label: 'Vehicle class',
           value: '',
-          children: [],
+
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING
         }
@@ -146,7 +146,7 @@ export const HgvTechRecord: FormNode = {
       name: 'vehicleConfiguration',
       label: 'Vehicle configuration',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -154,7 +154,7 @@ export const HgvTechRecord: FormNode = {
       name: 'offRoad',
       label: 'Off road vehicle',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -162,7 +162,7 @@ export const HgvTechRecord: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU vehicle category',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -170,7 +170,7 @@ export const HgvTechRecord: FormNode = {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     },
@@ -178,7 +178,7 @@ export const HgvTechRecord: FormNode = {
       name: 'departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
       value: '',
-      children: [],
+
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
     }

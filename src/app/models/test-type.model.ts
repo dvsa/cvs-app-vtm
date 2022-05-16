@@ -1,3 +1,5 @@
+import * as Emissions from './emissions.enum';
+
 export interface TestType {
   testNumber: string;
 
@@ -15,4 +17,15 @@ export interface TestType {
   prohibitionIssued: boolean;
 
   testResult: string;
+
+  seatbeltInstallationCheckDate: boolean;
+  numberOfSeatbeltsFitted: number;
+  lastSeatbeltInstallationCheckDate: Date | null;
+  emissionStandard: Emissions.EmissionStandard;
+  smokeTestKLimitApplied: string;
+  fuelType: Emissions.FuelType;
+  modType: Emissions.ModType;
+  modificationTypeUsed: string;
+  particulateTrapFitted: string;
+  particulateTrapSerialNumber: string;
 }

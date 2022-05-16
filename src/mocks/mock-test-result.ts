@@ -4,6 +4,7 @@ import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
+import * as Emissions from '../app/models/emissions.enum';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
@@ -26,6 +27,20 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
       prohibitionIssued: false,
       testResult: 'Pass',
+      seatbeltInstallationCheckDate: true,
+      numberOfSeatbeltsFitted: 4,
+      lastSeatbeltInstallationCheckDate: new Date().toISOString(),
+
+      emissionStandard: Emissions.EmissionStandard.Euro3,
+      smokeTestKLimitApplied: 'yes',
+      fuelType: Emissions.FuelType.Diesel,
+      modType: {
+        code: Emissions.ModTypeCode.g,
+        description: Emissions.ModeTypeDescription.Engine
+      },
+      modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
+      particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
+      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString()
     });
   });
 
