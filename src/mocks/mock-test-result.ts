@@ -5,6 +5,7 @@ import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import * as Emissions from '../app/models/emissions.enum';
+import { TestStationType } from '../app/models/test-station-type.enum';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
@@ -40,7 +41,15 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       },
       modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
-      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString()
+      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
+
+      testStationName: 'Abshire-Kub',
+      testStationPNumber: '(P12346)',
+      testStationType:TestStationType.atf,
+      testerName: 'John Smith',
+      testerEmailAddress: 'john.smith@dvsa.gov.uk',
+    
+      additionalNotesRecorded: 'notes for the test record will be displayed here...'
     });
   });
 

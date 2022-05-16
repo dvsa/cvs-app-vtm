@@ -337,6 +337,16 @@ export const PsvAnnual: FormNode = {
               name: 'testerEmailAddress',
               label: 'Tester Email Address',
               type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'notesSection',
+              label: 'Notes',
+              type: FormNodeTypes.SECTION
+            },
+            {
+              name: 'additionalNotesRecorded',
+              label: 'Additional Notes',
+              type: FormNodeTypes.CONTROL
             }
             
           ]
