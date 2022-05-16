@@ -62,8 +62,14 @@ describe('RadioGroupComponent', () => {
     it('should check a radio button when the form value is updated', () => {
       component.form.patchValue({ foo: '2' });
       fixture.detectChanges();
-      const radios = fixture.debugElement.queryAll(By.css('input[checked=true]'));
-      expect(radios.length).toBe(1);
+      const radios2 = fixture.debugElement.queryAll(By.css('input[checked=true]'));
+      expect(radios2.length).toBe(1);
+      expect(radios2[0].nativeElement.id).toEqual('foo-2-radio');
+      component.form.patchValue({ foo: '3' });
+      fixture.detectChanges();
+      const radios3 = fixture.debugElement.queryAll(By.css('input[checked=true]'));
+      expect(radios3.length).toBe(1);
+      expect(radios3[0].nativeElement.id).toEqual('foo-3-radio');
     });
   });
 });
