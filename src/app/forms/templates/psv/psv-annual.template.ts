@@ -25,13 +25,6 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'trailerId',
-      label: 'Trailer ID',
-      value: '',
-
-      type: FormNodeTypes.CONTROL
-    },
-    {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
@@ -304,7 +297,7 @@ export const PsvAnnual: FormNode = {
               options: {
                 leftComponentName: 'testStationName',
                 rightComponentName: 'testStationPNumber',
-                separator: ' '
+                separator: ' / '
               }
             },
             {
@@ -330,12 +323,12 @@ export const PsvAnnual: FormNode = {
             },
             {
               name: 'testerName',
-              label: 'Tester Name',
+              label: 'Tester name',
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testerEmailAddress',
-              label: 'Tester Email Address',
+              label: 'Tester email address',
               type: FormNodeTypes.CONTROL
             },
             {
