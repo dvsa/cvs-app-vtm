@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
-import { CheckboxGroupComponent } from './checkbox-group.component';
 import { MultiOptions } from '../../models/options.model';
+import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
-import { json } from 'stream/consumers';
+import { CheckboxGroupComponent } from './checkbox-group.component';
 
 @Component({
   selector: 'app-host-component',
@@ -60,15 +59,17 @@ describe('CheckboxGroupComponent', () => {
     });
 
     it('should be propagated from the form control to the element', () => {
-      component.form.patchValue({ foo: ['1'] });
-
+      component.form.patchValue({ foo: ['1', '2'] });
       fixture.detectChanges();
+      const checkedBoxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"][checked=true]'));
 
-      const box2 = fixture.debugElement.query(By.css('input#foo-2-checkbox')).nativeElement;
-
-      box2.click();
-
-      expect(component.form.get('foo')?.value).toEqual(['1', '2']);
+      checkedBoxes.forEach((box) => {
+        const {
+          nativeElement: { value, checked, name }
+        } = box;
+        console.log(value, checked, name);
+      });
+      expect(checkedBoxes.length).toBe(2);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { Component, Injector, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, Input, QueryList, ViewChildren } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { MultiOption, MultiOptions } from '../../models/options.model';

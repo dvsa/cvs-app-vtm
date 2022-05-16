@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { map, Observable } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';

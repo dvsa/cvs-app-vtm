@@ -1,17 +1,33 @@
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { CheckboxGroupComponent } from './checkbox-group.component';
+import { array, boolean, number, object, text, withKnobs } from '@storybook/addon-knobs';
 
 export default {
   title: 'Forms/Checkbox group',
   component: CheckboxGroupComponent,
+  args: {
+    options: [
+      { label: 'Red', value: 'red' },
+      { label: 'Green', value: 'green' },
+      { label: 'Blue', value: 'blue' }
+    ]
+  },
+  argTypes: {
+    label: {
+      name: 'label',
+      type: 'string',
+      description: 'Fieldset label'
+    }
+  },
   decorators: [
     moduleMetadata({
       declarations: [CheckboxGroupComponent, BaseControlComponent],
       imports: [CommonModule, FormsModule, ReactiveFormsModule]
-    })
+    }),
+    withKnobs
   ]
 } as Meta;
 
@@ -31,29 +47,21 @@ const Template: Story = (args) => {
   };
 };
 
-const defaultArgs = {
-  label: 'Colors',
-  name: 'colors',
-  options: [
-    { label: 'Red', value: 'red' },
-    { label: 'Blue', value: 'blue' }
-  ]
-};
-
 export const Enabled = Template.bind({});
 Enabled.args = {
-  ...defaultArgs
+  label: 'Colors',
+  name: 'colors'
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-  ...defaultArgs,
+  ...Enabled.args,
   disabled: true
 };
 
 export const Invalid = Template.bind({});
 Invalid.args = {
-  ...defaultArgs,
+  ...Enabled.args,
   value: ['red'],
   hint: 'uncheck "Red" and click outside to see error message.',
   validators: [Validators.required]
