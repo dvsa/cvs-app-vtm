@@ -1,0 +1,35 @@
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+
+
+export const PsvBrakeSectionWheelsNotLocked: FormNode = {
+    name: 'brakes',
+    type: FormNodeTypes.GROUP,
+    label: 'Brake force wheels not locked',
+    viewType: FormNodeViewTypes.SUBHEADING,
+    children: [
+        {
+            name: 'brakeForceWheelsNotLocked',
+            type: FormNodeTypes.GROUP,
+            children: [
+                {
+                    name: 'parkingBrakeForceA',
+                    label: 'Service',
+                    value: '',
+                    type: FormNodeTypes.CONTROL,
+                },
+                {
+                    name: 'secondaryBrakeForceA',
+                    label: 'Secondary',
+                    value: '',
+                    type: FormNodeTypes.CONTROL,
+                },
+                {
+                    name: 'serviceBrakeForceA',
+                    label: 'Parking',
+                    value: '',
+                    type: FormNodeTypes.CONTROL,
+                },
+            ]
+        }
+    ]
+}
