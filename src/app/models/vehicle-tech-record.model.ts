@@ -112,9 +112,6 @@ export interface TechRecordModel {
   manufactureYear: number;
   noOfAxles: number;
   axles: Axle[];
-  brakes: {
-    dtpNumber: string;
-  };
   suspensionType?: string;
   speedLimiterMrk?: boolean;
   tachoExemptMrk?: boolean;
@@ -140,4 +137,34 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker: boolean;
+  brakes: Brakes;
+}
+
+export interface Brakes {
+  dtpNumber?: string;
+  loadSensingValve?: string; //TODO: Check from here if these types are correct
+  antilockBrakingSystem?: string;
+  axleNumber?: string;
+  axleBrakeProperties?: AxleBrakeProperties; //Check to here and including object
+  brakeCode?: string;
+  dataTrBrakeOne?: string;
+  dataTrBrakeTwo?: string;
+  dataTrBrakeThree?: string;
+  retarderBrakeOne?: RetarderBrake;
+  retarderBrakeTwo?: RetarderBrake;
+}
+
+export enum RetarderBrake {
+  ELECTRIC = 'electric',
+  EXHAUST = 'exhaust',
+  FRICTION = 'friction',
+  HYDRAULIC = 'hydraulic',
+  OTHER = 'other',
+  NONE = 'none'
+}
+
+export interface AxleBrakeProperties {
+  brakeActuator: string;
+  leverLength: string;
+  springBrakeParking: string;
 }
