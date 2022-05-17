@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -112,7 +112,17 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmRollNumber: 'nb123456',
           microfilmSerialNumber: 'ser123456'
         },
-        remarks: 'Some notes about the vehicle'
+        remarks: 'Some notes about the vehicle',
+        modelLiteral: 'Vehicle model',
+        chassisMake: 'Chassis make',
+        chassisModel: 'Chassis model',
+        bodyMake: 'Body make',
+        bodyModel: 'Body model',
+        bodyType: {
+          description: BodyTypeDescription.DOUBLEDECKER,
+        },
+        functionCode: 'r',
+        conversionRefNo: '345345',
       }
     ]
   });
@@ -162,7 +172,7 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         offRoad: true,
         euVehicleCategory: EuVehicleCategories.M1,
         emissionsLimit: 1234,
-        departmentalVehicleMarker: true
+        departmentalVehicleMarker: true,
       }
     ]
   });
@@ -211,7 +221,7 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         maxLoadOnCoupling: 1234,
         frameDescription: FrameDescriptions.FRAME_SECTION,
         euVehicleCategory: EuVehicleCategories.M1,
-        departmentalVehicleMarker: true
+        departmentalVehicleMarker: true,
       }
     ]
   });

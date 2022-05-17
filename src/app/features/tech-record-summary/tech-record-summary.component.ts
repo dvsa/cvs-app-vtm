@@ -12,6 +12,7 @@ import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.templa
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
+import { PsvBody } from '@forms/templates/psv/psv-body';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -32,6 +33,7 @@ export class TechRecordSummaryComponent implements OnInit {
   dimensionsTemplate?: FormNode;
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
+  body?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -39,7 +41,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.currentBrakeRecord = this.currentRecord?.brakes;
   }
 
-  constructor() {}
+  constructor() { }
 
   /**
    * A function to get the correct tech record to create the summary display, this has a hierarchy
@@ -75,6 +77,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
+        this.body = PsvBody;
         break;
       }
       case 'hgv': {
