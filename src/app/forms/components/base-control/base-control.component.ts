@@ -81,7 +81,6 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   writeValue(obj: any): void {
     this.value = obj;
-    // this.onChange(obj);
   }
 
   registerOnChange(fn: any): void {
