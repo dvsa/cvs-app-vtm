@@ -8,12 +8,11 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { SharedModule } from '@shared/shared.module';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
-import { DefectComponent } from './components/defect/defect.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent]
 })
 export class DynamicFormsModule {}

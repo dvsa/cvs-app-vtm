@@ -1,3 +1,4 @@
+import { Defect } from './defect';
 import * as Emissions from './emissions.enum';
 
 export interface TestType {
@@ -28,4 +29,5 @@ export interface TestType {
   modificationTypeUsed: string;
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
+  defects?: Defect[];
 }

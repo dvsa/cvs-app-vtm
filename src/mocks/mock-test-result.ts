@@ -1,10 +1,11 @@
-import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
-import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
-import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
+import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
 import * as Emissions from '../app/models/emissions.enum';
+import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
+import { mockDefectList } from './mock-defects';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
@@ -40,7 +41,8 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       },
       modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
-      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString()
+      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
+      defects: mockDefectList()
     });
   });
 
