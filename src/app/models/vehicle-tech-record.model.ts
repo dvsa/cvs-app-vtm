@@ -120,9 +120,6 @@ export interface TechRecordModel {
   manufactureYear: number;
   noOfAxles: number;
   axles: Axle[];
-  brakes: {
-    dtpNumber: string;
-  };
   suspensionType?: string;
   speedLimiterMrk?: boolean;
   tachoExemptMrk?: boolean;
@@ -156,4 +153,47 @@ export interface TechRecordModel {
   coifDate?: string | Date;
   variantNumber?: string;
   variantVersionNumber?: string;
+  brakes: Brakes;
+}
+
+export interface Brakes {
+  dtpNumber?: string;
+  loadSensingValve?: string; //TODO: Check from here if these types are correct
+  antilockBrakingSystem?: string;
+  axleNumber?: string;
+  axleBrakeProperties?: AxleBrakeProperties; //Check to here and including object
+  brakeCode?: string;
+  dataTrBrakeOne?: string;
+  dataTrBrakeTwo?: string;
+  dataTrBrakeThree?: string;
+  retarderBrakeOne?: RetarderBrake;
+  retarderBrakeTwo?: RetarderBrake;
+  brakeForceWheelsNotLocked?: BrakeForceWheelsNotLocked;
+  brakeForceWheelsUpToHalfLocked?: BrakeForceWheelsUpToHalfLocked;
+}
+
+export interface BrakeForceWheelsNotLocked {
+  parkingBrakeForceA: number;
+  secondaryBrakeForceA: number;
+  serviceBrakeForceA: number;
+}
+
+export interface BrakeForceWheelsUpToHalfLocked {
+  parkingBrakeForceB: number;
+  secondaryBrakeForceB: number;
+  serviceBrakeForceB: number;
+}
+export enum RetarderBrake {
+  ELECTRIC = 'electric',
+  EXHAUST = 'exhaust',
+  FRICTION = 'friction',
+  HYDRAULIC = 'hydraulic',
+  OTHER = 'other',
+  NONE = 'none'
+}
+
+export interface AxleBrakeProperties {
+  brakeActuator: string;
+  leverLength: string;
+  springBrakeParking: string;
 }
