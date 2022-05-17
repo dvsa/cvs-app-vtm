@@ -140,4 +140,10 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker: boolean;
+  dimensions?: {
+    height: number;
+    length: number;
+    width: number;
+  }
+  frontAxleToRearAxle?: number;
 }

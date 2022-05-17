@@ -66,7 +66,13 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         vehicleSize: VehicleSizes.SMALL,
         numberOfSeatbelts: '1234',
         seatbeltInstallationApprovalDate: '1234',
-        departmentalVehicleMarker: true
+        departmentalVehicleMarker: true,
+        dimensions: {
+          height: 30000,
+          length: 25000,
+          width: 10000
+        },
+        frontAxleToRearAxle: 5000
       }
     ]
   });
