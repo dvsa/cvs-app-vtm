@@ -3,7 +3,8 @@
     margin-bottom: 0;
   }
 
-  .govuk-summary-list + div > h2 {
+  .govuk-summary-list + div > h2,
+  .node + div > h2 {
     margin-top: 30px;
   }
 }

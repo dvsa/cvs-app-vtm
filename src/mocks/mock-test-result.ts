@@ -5,6 +5,7 @@ import { CountryOfRegistration } from '../app/models/country-of-registration.enu
 import * as Emissions from '../app/models/emissions.enum';
 import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
+import { TestStationType } from '../app/models/test-station-type.enum';
 import { mockDefectList } from './mock-defects';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
@@ -66,7 +67,14 @@ export const mockTestResult = (i: number = 0) =>
     odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
     reasonForCreation: 'mock test result data',
     preparerName: 'Durrell Truck & Van Centre',
-    preparerId: 'CM2254'
+    preparerId: 'CM2254',
+
+    testStationName: 'Abshire-Kub',
+    testStationPNumber: 'P12346',
+    testStationType: TestStationType.atf,
+    testerName: 'John Smith',
+    testerEmailAddress: 'john.smith@dvsa.gov.uk',
+    additionalNotesRecorded: 'notes for the test record will be displayed here...'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));
