@@ -25,13 +25,6 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'trailerId',
-      label: 'Trailer ID',
-      value: '',
-
-      type: FormNodeTypes.CONTROL
-    },
-    {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
@@ -291,7 +284,64 @@ export const PsvAnnual: FormNode = {
               name: 'particulateTrapSerialNumber',
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'visitSection',
+              label: 'Visit',
+              type: FormNodeTypes.SECTION
+            },
+            {
+              name: 'testFacilityCombination',
+              label: 'Test facility name/number',
+              type: FormNodeTypes.COMBINATION,
+              options: {
+                leftComponentName: 'testStationName',
+                rightComponentName: 'testStationPNumber',
+                separator: ' / '
+              }
+            },
+            {
+              name: 'testStationName',
+              label: 'Test Station Name',
+              value: '',
+        
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
+              name: 'testStationPNumber',
+              label: 'Test Station Number',
+              value: '',
+        
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
+              name: 'testStationType',
+              label: 'Type of test facility',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testerName',
+              label: 'Tester name',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testerEmailAddress',
+              label: 'Tester email address',
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'notesSection',
+              label: 'Notes',
+              type: FormNodeTypes.SECTION
+            },
+            {
+              name: 'additionalNotesRecorded',
+              label: 'Additional Notes',
+              type: FormNodeTypes.CONTROL
             }
+            
           ]
         }
       ]
