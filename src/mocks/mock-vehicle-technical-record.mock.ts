@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -82,7 +82,15 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         vehicleSize: VehicleSizes.SMALL,
         numberOfSeatbelts: '1234',
         seatbeltInstallationApprovalDate: '1234',
-        departmentalVehicleMarker: true
+        departmentalVehicleMarker: true,
+        approvalType: approvalType.ECSSTA,
+        approvalTypeNumber: 'approval123',
+        ntaNumber: 'nta789',
+        coifSerialNumber: 'coifSerial123456',
+        coifCertifierName: 'coifName',
+        coifDate: new Date(),
+        variantNumber: 'variant123456',
+        variantVersionNumber: 'variantversion123456'
       }
     ]
   });
