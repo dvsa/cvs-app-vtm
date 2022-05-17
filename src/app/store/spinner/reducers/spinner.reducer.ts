@@ -1,6 +1,7 @@
 import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
 import * as TechnicalRecordServiceActions from '../../technical-records/technical-record-service.actions';
 import * as TestResultActions from '@store/test-records';
+import { fetchTestResultsBySystemIdSuccess } from '@store/test-records';
 
 export const STORE_SPINNER_KEY = 'Spinner';
 
@@ -19,7 +20,7 @@ export const spinnerState = createSelector(getSpinnerState, (state) => state.sho
 export const spinnerReducer = createReducer(
   initialSpinnerState,
   on(TechnicalRecordServiceActions.getByVIN, TestResultActions.fetchTestResults, TestResultActions.fetchTestResultsBySystemId, (state) => ({ ...state, showSpinner: true })),
-  on(TechnicalRecordServiceActions.getByVINFailure, TechnicalRecordServiceActions.getByVINSuccess,
+  on(TechnicalRecordServiceActions.getByVINFailure,
      TestResultActions.fetchTestResultsBySystemIdFailed, TestResultActions.fetchTestResultsBySystemIdSuccess,
      TestResultActions.fetchTestResultsFailed, TestResultActions.fetchTestResultsSuccess,
       (state) => ({ ...state, showSpinner: false })
