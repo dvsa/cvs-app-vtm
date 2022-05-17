@@ -99,6 +99,14 @@ export enum VehicleSizes {
   LARGE = 'large'
 }
 
+export enum approvalType {
+  NTA = 'NTA',
+  ECTA = 'ECTA',
+  IVA = 'IVA',
+  NSSTA = 'NSSTA',
+  ECSSTA = 'ECSSTA'
+}
+
 export interface Axle {
   axleNumber?: number;
   parkingBrakeMrk?: boolean;
@@ -140,4 +148,12 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker: boolean;
+  approvalType?: approvalType;
+  approvalTypeNumber?: string;
+  ntaNumber?: string;
+  coifSerialNumber?: string;
+  coifCertifierName?: string;
+  coifDate?: string | Date;
+  variantNumber?: string;
+  variantVersionNumber?: string;
 }
