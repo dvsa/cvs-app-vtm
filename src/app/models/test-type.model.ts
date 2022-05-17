@@ -1,5 +1,4 @@
 import * as Emissions from './emissions.enum';
-import { TestStationType } from './test-station-type.enum';
 
 export interface TestType {
   testNumber: string;
@@ -29,14 +28,5 @@ export interface TestType {
   modificationTypeUsed: string;
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
-
-  testStationName: string;
-  testStationPNumber: string;
-  testStationType:TestStationType;
-  testerName: string;
-  testerEmailAddress: string;
-
-  additionalNotesRecorded: string;
-
 
 }

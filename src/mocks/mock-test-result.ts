@@ -41,15 +41,11 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       },
       modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
-      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
+      particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString()
 
-      testStationName: 'Abshire-Kub',
-      testStationPNumber: '(P12346)',
-      testStationType:TestStationType.atf,
-      testerName: 'John Smith',
-      testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    
-      additionalNotesRecorded: 'notes for the test record will be displayed here...'
+
+
+
     });
   });
 
@@ -73,7 +69,14 @@ export const mockTestResult = (i: number = 0) =>
     odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
     reasonForCreation: 'mock test result data',
     preparerName: 'Durrell Truck & Van Centre',
-    preparerId: 'CM2254'
+    preparerId: 'CM2254',
+
+    testStationName: 'Abshire-Kub',
+    testStationPNumber: 'P12346',
+    testStationType: TestStationType.atf,
+    testerName: 'John Smith',
+    testerEmailAddress: 'john.smith@dvsa.gov.uk',
+    additionalNotesRecorded: 'notes for the test record will be displayed here...'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));
