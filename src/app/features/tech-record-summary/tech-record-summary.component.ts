@@ -5,6 +5,8 @@ import { HgvTechRecord } from '../../forms/templates/hgv/hgv-tech-record.templat
 import { TrlTechRecord } from '../../forms/templates/trl/trl-tech-record.template';
 import { FormNode } from '../../forms/services/dynamic-form.types';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
+import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
+import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -16,6 +18,8 @@ export class TechRecordSummaryComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   template!: FormNode;
   brakeTemplate!: FormNode;
+  brakeTemplateWheelsNotLocked!: FormNode;
+  brakeTemplateWheelsHalfLocked!: FormNode;
   currentRecord?: TechRecordModel;
   currentBrakeRecord?: Brakes;
 
@@ -55,6 +59,8 @@ export class TechRecordSummaryComponent implements OnInit {
       case 'psv': {
         this.template = PsvTechRecord;
         this.brakeTemplate = PsvBrakeSection;
+        this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
+        this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
         break;
       }
       case 'hgv': {

@@ -152,8 +152,21 @@ export interface Brakes {
   dataTrBrakeThree?: string;
   retarderBrakeOne?: RetarderBrake;
   retarderBrakeTwo?: RetarderBrake;
+  brakeForceWheelsNotLocked?: BrakeForceWheelsNotLocked;
+  brakeForceWheelsUpToHalfLocked?: BrakeForceWheelsUpToHalfLocked;
 }
 
+export interface BrakeForceWheelsNotLocked {
+  parkingBrakeForceA: number;
+  secondaryBrakeForceA: number;
+  serviceBrakeForceA: number;
+}
+
+export interface BrakeForceWheelsUpToHalfLocked {
+  parkingBrakeForceB: number;
+  secondaryBrakeForceB: number;
+  serviceBrakeForceB: number;
+}
 export enum RetarderBrake {
   ELECTRIC = 'electric',
   EXHAUST = 'exhaust',

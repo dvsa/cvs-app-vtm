@@ -44,7 +44,17 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           dataTrBrakeTwo: '34',
           dataTrBrakeThree: '56',
           retarderBrakeOne: RetarderBrake.ELECTRIC,
-          retarderBrakeTwo: RetarderBrake.ELECTRIC
+          retarderBrakeTwo: RetarderBrake.ELECTRIC,
+          brakeForceWheelsNotLocked: {
+            parkingBrakeForceA: 1234,
+            secondaryBrakeForceA: 1234,
+            serviceBrakeForceA: 1234
+          },
+          brakeForceWheelsUpToHalfLocked: {
+            parkingBrakeForceB: 1234,
+            secondaryBrakeForceB: 1234,
+            serviceBrakeForceB: 1234
+          }
         },
         axles: [
           {
