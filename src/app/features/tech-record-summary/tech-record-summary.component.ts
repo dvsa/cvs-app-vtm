@@ -7,6 +7,7 @@ import { FormNode } from '../../forms/services/dynamic-form.types';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
+import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -20,14 +21,14 @@ export class TechRecordSummaryComponent implements OnInit {
   brakeTemplate!: FormNode;
   brakeTemplateWheelsNotLocked!: FormNode;
   brakeTemplateWheelsHalfLocked!: FormNode;
+  approvalTypeTemplate!: FormNode;
   currentRecord?: TechRecordModel;
   currentBrakeRecord?: Brakes;
-
 
   ngOnInit(): void {
     this.vehicleTemplate();
     this.currentRecord = this.viewableTechRecord(this.vehicleTechRecord);
-    this.currentBrakeRecord = this.currentRecord?.brakes
+    this.currentBrakeRecord = this.currentRecord?.brakes;
   }
 
   constructor() {}
@@ -58,6 +59,7 @@ export class TechRecordSummaryComponent implements OnInit {
     switch (viewableRecord?.vehicleType) {
       case 'psv': {
         this.template = PsvTechRecord;
+        this.approvalTypeTemplate = PsvApprovalTypeSection;
         this.brakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
