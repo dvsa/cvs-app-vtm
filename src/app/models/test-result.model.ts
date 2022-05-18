@@ -32,4 +32,11 @@ export interface TestResultModel {
   additionalNotesRecorded: string;
 
   reasonForCreation?: string;
+  testHistory?: TestResultModel[];
+
+  createdByName?: string;
+  testVersion: string;
+  lastUpdatedByName: string;
+  lastUpdatedAt: string | Date;
+
 }

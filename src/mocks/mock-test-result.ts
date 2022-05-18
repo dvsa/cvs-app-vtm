@@ -74,7 +74,8 @@ export const mockTestResult = (i: number = 0) =>
     testStationType: TestStationType.atf,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    additionalNotesRecorded: 'notes for the test record will be displayed here...'
+    additionalNotesRecorded: 'notes for the test record will be displayed here...',
+    testVersion: 'Current'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

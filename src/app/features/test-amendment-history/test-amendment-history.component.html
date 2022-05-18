@@ -1,0 +1,23 @@
+<h2 class="govuk-heading-m">Test Record History</h2>
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Status</th>
+      <th scope="col" class="govuk-table__header">Reason for creation</th>
+      <th scope="col" class="govuk-table__header">Created by</th>
+      <th scope="col" class="govuk-table__header">Created at</th>
+      <th scope="col" class="govuk-table__header"></th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell">{{ testRecords?.testVersion }}</td>
+      <td class="govuk-table__cell">{{ testRecords?.reasonForCreation }}</td>
+      <td class="govuk-table__cell">{{ testRecords?.testerName }}</td>
+      <td class="govuk-table__cell">{{ testRecords?.createdAt | date }}</td>
+      <td class="govuk-table__cell">
+        <!-- <a id="view-test-{{ testRecords?.testResultId }}" routerLink="#">View</a> -->
+      </td>
+    </tr>
+  </tbody>
+</table>
