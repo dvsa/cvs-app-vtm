@@ -10,6 +10,8 @@ import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-
 import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
 import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
+import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
+import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -28,6 +30,8 @@ export class TechRecordSummaryComponent implements OnInit {
   currentRecord?: TechRecordModel;
   currentBrakeRecord?: Brakes;
   dimensionsTemplate?: FormNode;
+  notesTemplate?: FormNode;
+  documentsTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -69,6 +73,8 @@ export class TechRecordSummaryComponent implements OnInit {
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
         this.dimensionsTemplate = PsvDimensionsSection;
         this.applicantDetailsTemplate = PsvApplicantDetails;
+        this.documentsTemplate = PsvDocuments;
+        this.notesTemplate = PsvNotes;
         break;
       }
       case 'hgv': {
