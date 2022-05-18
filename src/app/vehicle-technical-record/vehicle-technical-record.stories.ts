@@ -1,6 +1,6 @@
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { Meta, Story } from '@storybook/angular';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 export default {
   title: 'Vehicle Tech Record',

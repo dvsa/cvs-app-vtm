@@ -9,6 +9,7 @@ import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-w
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
 import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.template';
+import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -18,15 +19,15 @@ import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.templa
 })
 export class TechRecordSummaryComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  template!: FormNode;
+  vehicleSummaryTemplate!: FormNode;
   brakeTemplate!: FormNode;
   brakeTemplateWheelsNotLocked!: FormNode;
   brakeTemplateWheelsHalfLocked!: FormNode;
   approvalTypeTemplate!: FormNode;
+  applicantDetailsTemplate!: FormNode;
   currentRecord?: TechRecordModel;
   currentBrakeRecord?: Brakes;
   dimensionsTemplate?: FormNode;
-
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -34,7 +35,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.currentBrakeRecord = this.currentRecord?.brakes;
   }
 
-  constructor() { }
+  constructor() {}
 
   /**
    * A function to get the correct tech record to create the summary display, this has a hierarchy
@@ -61,20 +62,21 @@ export class TechRecordSummaryComponent implements OnInit {
     let viewableRecord = this.viewableTechRecord(this.vehicleTechRecord);
     switch (viewableRecord?.vehicleType) {
       case 'psv': {
-        this.template = PsvTechRecord;
+        this.vehicleSummaryTemplate = PsvTechRecord;
         this.approvalTypeTemplate = PsvApprovalTypeSection;
-        this.dimensionsTemplate = PsvDimensionsSection;
         this.brakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
+        this.dimensionsTemplate = PsvDimensionsSection;
+        this.applicantDetailsTemplate = PsvApplicantDetails;
         break;
       }
       case 'hgv': {
-        this.template = HgvTechRecord;
+        this.vehicleSummaryTemplate = HgvTechRecord;
         break;
       }
       case 'trl': {
-        this.template = TrlTechRecord;
+        this.vehicleSummaryTemplate = TrlTechRecord;
         break;
       }
       default: {

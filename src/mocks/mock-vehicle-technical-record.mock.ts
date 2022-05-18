@@ -96,7 +96,17 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         coifCertifierName: 'coifName',
         coifDate: new Date(),
         variantNumber: 'variant123456',
-        variantVersionNumber: 'variantversion123456'
+        variantVersionNumber: 'variantversion123456',
+        applicantDetails: {
+          name: 'Test',
+          address1: 'address1',
+          address2: 'address2',
+          postTown: 'town',
+          address3: 'address3',
+          postCode: 'postCode',
+          telephoneNumber: '0121',
+          emailAddress: 'test@email.com'
+        }
       }
     ]
   });

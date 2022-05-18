@@ -156,6 +156,18 @@ export interface TechRecordModel {
   variantNumber?: string;
   variantVersionNumber?: string;
   brakes: Brakes;
+  applicantDetails?: ApplicantDetails;
+}
+
+export interface ApplicantDetails {
+  name: string;
+  address1: string;
+  address2: string;
+  postTown: string;
+  address3: string;
+  postCode: string;
+  telephoneNumber: string;
+  emailAddress: string;
 }
 
 export interface Dimensions {

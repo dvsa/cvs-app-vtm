@@ -1,9 +1,9 @@
-import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { By } from '@angular/platform-browser';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordSummaryComponent } from './tech-record-summary.component';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;

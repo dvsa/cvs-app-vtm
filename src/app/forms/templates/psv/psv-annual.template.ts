@@ -117,7 +117,7 @@ export const PsvAnnual: FormNode = {
       type: FormNodeTypes.ARRAY,
       children: [
         {
-          name: 'test0',
+          name: '0', // it is important here that the name of the node for an ARRAY type should be an index value
           type: FormNodeTypes.GROUP,
           children: [
             {
