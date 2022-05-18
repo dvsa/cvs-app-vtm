@@ -23,3 +23,4 @@ export const selectTestResultsTotal = selectTotal;
 export const testResultsEnitities = createSelector(testResultsFeatureState, selectTestResultsEntities);
 
 export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { testResultId }) => entities[testResultId]);
+export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);

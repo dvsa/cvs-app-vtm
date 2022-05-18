@@ -1,2 +1,2 @@
-export * from './technical-record-service.selectors';
-export * from './technical-record-service.actions';
+export * from './selectors/technical-record-service.selectors';
+export * from './actions/technical-record-service.actions';

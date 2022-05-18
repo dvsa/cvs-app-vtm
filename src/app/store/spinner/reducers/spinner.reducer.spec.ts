@@ -1,10 +1,4 @@
-import { spinnerReducer, initialSpinnerState } from '@store/spinner/reducers/spinner.reducer';
-import { getByVIN, getByVINFailure } from '@store/technical-records';
-import * as TestResultsActions from '@store/test-records';
-
-const stopLoading = [getByVINFailure, TestResultsActions.fetchTestResultsFailed, TestResultsActions.fetchTestResultsSuccess, TestResultsActions.fetchTestResultsBySystemIdFailed, TestResultsActions.fetchTestResultsBySystemIdSuccess];
-
-const startLoading = [getByVIN, TestResultsActions.fetchTestResultsBySystemId, TestResultsActions.fetchTestResults];
+import { initialSpinnerState, setSpinnerState, spinnerReducer } from '@store/spinner/reducers/spinner.reducer';
 
 describe('Spinner Reducer', () => {
   describe('unknown action', () => {
@@ -28,27 +22,19 @@ describe('Spinner Reducer', () => {
     });
   });
 
-  describe('Start Loading', () => {
-    it.each(startLoading)('should start the loading state', (actionMethod) => {
-      const expectedValue = { showSpinner: true };
-      const action = actionMethod({} as any);
-
-      const state = spinnerReducer({ showSpinner: false }, action);
-
-      expect(state).toEqual(expectedValue);
-      expect(state).not.toBe(expectedValue);
+  describe('setSpinnerState', () => {
+    it('should have the correct type', () => {
+      expect(setSpinnerState.type).toBe('[UI/spinner] set spinner state');
     });
-  });
 
-  describe('Stop Loading', () => {
-    it.each(stopLoading)('should stop the loading state', (actionMethod) => {
-      const expectedValue = { showSpinner: false };
-      const action = actionMethod({} as any);
-
-      const state = spinnerReducer({ showSpinner: true }, action);
-
-      expect(state).toEqual(expectedValue);
-      expect(state).not.toBe(expectedValue);
+    it('should set correct state', () => {
+      expect(setSpinnerState.type).toBe('[UI/spinner] set spinner state');
+      const state = { ...initialSpinnerState };
+      expect(state.showSpinner).toBeFalsy();
+      const showingState = spinnerReducer(state, setSpinnerState({ showSpinner: true }));
+      expect(showingState.showSpinner).toBeTruthy();
+      const notShowingState = spinnerReducer(state, setSpinnerState({ showSpinner: false }));
+      expect(notShowingState.showSpinner).toBeFalsy();
     });
   });
 });
