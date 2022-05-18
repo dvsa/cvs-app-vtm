@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, DoCheck, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { FormNodeViewTypes, CustomControl } from '../../services/dynamic-form.types';
+import { CustomControl, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
@@ -9,8 +9,8 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
   styles: []
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit, DoCheck {
+  @Input() name = '';
   @Input() label?: string;
-  @Input() name: string = '';
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() hint?: string;
 
@@ -22,7 +22,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   private value_: any;
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) {
+    this.name = '';
+  }
 
   ngAfterContentInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
@@ -78,7 +80,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   }
 
   writeValue(obj: any): void {
-    this.value_ = obj;
+    this.value = obj;
   }
 
   registerOnChange(fn: any): void {

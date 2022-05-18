@@ -18,7 +18,7 @@ export class SearchComponent {
 
   public searchTechRecords(searchTerm: string) {
     const searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
-      this.globalErrorService.clearError()
+    this.globalErrorService.clearError();
 
     searchTerm = searchTerm.trim();
 
@@ -30,6 +30,6 @@ export class SearchComponent {
   }
 
   public getInlineErrorMessage(): Observable<number> {
-    return this.globalErrorService.errors$.pipe(map(errors => errors.length))
+    return this.globalErrorService.errors$.pipe(map((errors) => errors.length));
   }
 }

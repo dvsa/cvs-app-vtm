@@ -1,3 +1,13 @@
 <section *ngIf="testResult$ | async as testResult">
   <app-dynamic-form-group [template]="template" [data]="testResult"></app-dynamic-form-group>
+
+  <section class="section">
+    <h2 class="govuk-heading-m">Defects</h2>
+    <ng-container *ngIf="defectData$ | async as defectData; else noDefects">
+      <app-dynamic-form-group *ngIf="defectData.length > 0; else noDefects" [template]="defectTpl" [data]="defectData$ | async"></app-dynamic-form-group>
+    </ng-container>
+  </section>
+  <ng-template #noDefects>
+    <p>No defects</p>
+  </ng-template>
 </section>

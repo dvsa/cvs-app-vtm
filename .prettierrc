@@ -14,7 +14,7 @@
       "files": "*.html",
       "options": {
         "parser": "html"
-    }
+      }
     },
     {
       "files": "*.component.html",
