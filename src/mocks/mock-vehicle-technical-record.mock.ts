@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -106,7 +106,13 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           postCode: 'postCode',
           telephoneNumber: '0121',
           emailAddress: 'test@email.com'
-        }
+        },
+        microfilm: {
+          microfilmDocumentType: MicrofilmDocumentType.AAT,
+          microfilmRollNumber: 'nb123456',
+          microfilmSerialNumber: 'ser123456'
+        },
+        remarks: 'Some notes about the vehicle'
       }
     ]
   });

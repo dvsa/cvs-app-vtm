@@ -157,6 +157,8 @@ export interface TechRecordModel {
   variantVersionNumber?: string;
   brakes: Brakes;
   applicantDetails?: ApplicantDetails;
+  microfilm?: Microfilm;
+  remarks?: string;
 }
 
 export interface ApplicantDetails {
@@ -216,4 +218,68 @@ export interface AxleBrakeProperties {
   brakeActuator: string;
   leverLength: string;
   springBrakeParking: string;
+}
+
+export interface Microfilm {
+  microfilmDocumentType: MicrofilmDocumentType;
+  microfilmRollNumber: string;
+  microfilmSerialNumber: string;
+}
+
+export enum MicrofilmDocumentType {
+  PSVMisc = 'PSV Miscellaneous',
+  AAT = 'AAT - Trailer Annual Test',
+  AIV = 'AIV - HGV International App',
+  COIFMod = 'COIF Modification',
+  Trailer = 'Trailer COC + Int Plate',
+  RCT = 'RCT - Trailer Test Cert paid',
+  HGV = 'HGV COC + Int Plate',
+  PSVCarry = 'PSV Carry/Auth',
+  OMORep = 'OMO Report',
+  AIT = 'AIT - Trailer International App',
+  IPV = 'IPV - HGV EEC Plate/Cert',
+  XCV = 'XCV - HGV Test Cert free',
+  AAV = 'AAV - HGV Annual Test',
+  COIFMaster = 'COIF Master',
+  Tempo100 = 'Tempo 100 Sp Ord',
+  Deleted = 'Deleted',
+  PSVNalt = 'PSV N/ALT',
+  XPT = 'XPT - Tr Plating Cert paid',
+  FFV = 'FFV - HGV First Test',
+  Repl = 'Repl Vitesse 100',
+  TCV = 'TCV - HGV Test Cert',
+  ZZZ = 'ZZZ -  Miscellaneous',
+  Test = 'Test Certificate',
+  XCT = 'XCT - Trailer Test Cert free',
+  C52 = 'C52 - COC and VTG52A',
+  Tempo100Rep = 'Tempo 100 Report',
+  Main = 'Main File Amendment',
+  PSVDoc = 'PSV Doc',
+  PSVCOC = 'PSV COC',
+  PSVReplCOC = 'PSV Repl COC',
+  TAV = 'TAV - COC',
+  NPT = 'NPT - Trailer Alteration',
+  OMO = 'OMO Certificate',
+  PSVReplCOIF = 'PSV Repl COIF',
+  PSVReplCOF = 'PSV Repl COF',
+  COIFApp = 'COIF Application',
+  XPV = 'XPV - HGV Plating Cert Free',
+  TCT = 'TCT  - Trailer Test Cert',
+  Tempo100App = 'Tempo 100 App',
+  PSV = 'PSV Decision on N/ALT',
+  Special = 'Special Order PSV',
+  NPV = 'NPV - HGV Alteration',
+  No = 'No Description Found',
+  Vitesse = 'Vitesse 100 Sp Ord',
+  Brake = 'Brake Test Details',
+  COIF = 'COIF Productional',
+  RDT = 'RDT - Test Disc Paid',
+  RCV = 'RCV -  HGV Test Cert',
+  FFT = 'FFT -  Trailer First Test',
+  IPT = 'IPT - Trailer EEC Plate/Cert',
+  XDT = 'XDT - Test Disc Free',
+  PRV = 'PRV - HGV Plating Cert paid',
+  COF = 'COF Cert',
+  PRT = 'PRT - Tr Plating Cert paid',
+  Tempo = 'Tempo 100 Permit'
 }
