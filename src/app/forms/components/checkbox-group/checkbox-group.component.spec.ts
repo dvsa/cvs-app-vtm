@@ -67,7 +67,6 @@ describe('CheckboxGroupComponent', () => {
         const {
           nativeElement: { value, checked, name }
         } = box;
-        console.log(value, checked, name);
       });
       expect(checkedBoxes.length).toBe(2);
     });
