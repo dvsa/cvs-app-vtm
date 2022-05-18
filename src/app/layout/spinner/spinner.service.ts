@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { spinnerState } from '@store/spinner/reducers/spinner.reducer';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
-import { combineLatest, map, Observable, withLatestFrom } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class SpinnerService {
     this.techRecordsLoadingState$ = this.store.pipe(select(technicalRecordsLoadingState));
   }
 
-  private reduceLoadingStates$() {
+  private get reduceLoadingStates$() {
     return combineLatest([this.globalLoadingState$, this.testResultLoadingState$, this.techRecordsLoadingState$]).pipe(
       map((states) =>
         states.reduce((acc, cur) => {
@@ -30,11 +30,6 @@ export class SpinnerService {
   }
 
   get showSpinner$(): Observable<boolean> {
-    return this.globalLoadingState$.pipe(
-      withLatestFrom(this.reduceLoadingStates$()),
-      map(([global, features]) => {
-        return global || features;
-      })
-    );
+    return this.reduceLoadingStates$;
   }
 }
