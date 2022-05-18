@@ -24,3 +24,12 @@ export const testResultsEnitities = createSelector(testResultsFeatureState, sele
 
 export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { testResultId }) => entities[testResultId]);
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
+
+/**
+ * Returns the selected test record defects for the first testType (if any).
+ * TODO: When we have better routing set up, we need to revisit this so that the testType is also selected based on route paramerets/queries.
+ */
+export const selectDefectData = createSelector(selectedTestResultState, (testResult) => {
+  const defects = testResult?.testTypes && testResult?.testTypes.length > 0 ? testResult?.testTypes[0].defects : [];
+  return defects || [];
+});

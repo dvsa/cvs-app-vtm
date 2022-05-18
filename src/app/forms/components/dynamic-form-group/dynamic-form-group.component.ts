@@ -37,8 +37,7 @@ export class DynamicFormGroupComponent implements OnInit {
     return FormNodeTypes;
   }
 
-  get formNodeViewTypes(): typeof FormNodeViewTypes{
+  get formNodeViewTypes(): typeof FormNodeViewTypes {
     return FormNodeViewTypes;
   }
-
 }

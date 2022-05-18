@@ -1,24 +1,14 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
+  "ignorePatterns": ["projects/**/*"],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json"
-        ],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
-      "extends": [
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "prettier"
-      ],
+      "extends": ["plugin:@angular-eslint/recommended", "prettier"],
       "plugins": ["prettier"],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -40,18 +30,12 @@
       }
     },
     {
-      "files": [
-        "*.html", "*.scss"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended",
-        "prettier"
-      ],
+      "files": ["*.html", "*.scss"],
+      "extends": ["plugin:@angular-eslint/template/recommended", "prettier"],
       "plugins": ["prettier"],
       "rules": {
-        "prettier/prettier": ["error", {}, {   
-        }]
-        }
+        "prettier/prettier": ["error", {}, {}]
+      }
     }
   ]
 }
