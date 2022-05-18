@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -38,7 +38,23 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         manufactureYear: 2022,
         noOfAxles: 2,
         brakes: {
-          dtpNumber: '1234'
+          dtpNumber: '1234',
+          brakeCode: '1234',
+          dataTrBrakeOne: '12',
+          dataTrBrakeTwo: '34',
+          dataTrBrakeThree: '56',
+          retarderBrakeOne: RetarderBrake.ELECTRIC,
+          retarderBrakeTwo: RetarderBrake.ELECTRIC,
+          brakeForceWheelsNotLocked: {
+            parkingBrakeForceA: 1234,
+            secondaryBrakeForceA: 1234,
+            serviceBrakeForceA: 1234
+          },
+          brakeForceWheelsUpToHalfLocked: {
+            parkingBrakeForceB: 1234,
+            secondaryBrakeForceB: 1234,
+            serviceBrakeForceB: 1234
+          }
         },
         axles: [
           {
@@ -72,7 +88,15 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           length: 25000,
           width: 10000
         },
-        frontAxleToRearAxle: 5000
+        frontAxleToRearAxle: 5000,
+        approvalType: approvalType.ECSSTA,
+        approvalTypeNumber: 'approval123',
+        ntaNumber: 'nta789',
+        coifSerialNumber: 'coifSerial123456',
+        coifCertifierName: 'coifName',
+        coifDate: new Date(),
+        variantNumber: 'variant123456',
+        variantVersionNumber: 'variantversion123456'
       }
     ]
   });

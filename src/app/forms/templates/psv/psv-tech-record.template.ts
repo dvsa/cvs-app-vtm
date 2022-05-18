@@ -205,47 +205,6 @@ export const PsvTechRecord: FormNode = {
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING
-    },
-    {
-      name: 'dimensions',
-      label: 'Dimensions',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'height',
-          label: 'Height',
-          value: '',
-
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
-        {
-          name: 'length',
-          label: 'Length',
-          value: '',
-
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        },
-        {
-          name: 'width',
-          label: 'Width',
-          value: '',
-
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
-        }
-      ]
-    },
-    {
-      name: 'frontAxleToRearAxle',
-      label: 'Front axle to rear axle',
-      value: '',
-
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
     }
-
   ]
 };
