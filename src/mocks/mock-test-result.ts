@@ -76,7 +76,10 @@ export const mockTestResult = (i: number = 0) =>
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
     testVersion: 'Current',
-    testHistory: [mockTestResultArchived(), { ...mockTestResultArchived(), testerName: 'Dave' }]
+    testHistory: [
+      { ...mockTestResultArchived(), createdAt: new Date().setDate(1).toString(), reasonForCreation: 'amend some data' },
+      { ...mockTestResultArchived(), createdAt: new Date().setMonth(1).toString(), reasonForCreation: 'different mock test', createdByName: 'DVSA Personel' }
+    ]
   });
 
 export const mockTestResultArchived = (i: number = 0) =>
