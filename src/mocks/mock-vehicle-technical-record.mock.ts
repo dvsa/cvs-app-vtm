@@ -83,6 +83,12 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         numberOfSeatbelts: '1234',
         seatbeltInstallationApprovalDate: '1234',
         departmentalVehicleMarker: true,
+        dimensions: {
+          height: 30000,
+          length: 25000,
+          width: 10000
+        },
+        frontAxleToRearAxle: 5000,
         approvalType: approvalType.ECSSTA,
         approvalTypeNumber: 'approval123',
         ntaNumber: 'nta789',

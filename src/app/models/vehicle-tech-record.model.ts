@@ -145,6 +145,8 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker: boolean;
+  dimensions?: Dimensions;
+  frontAxleToRearAxle?: number;
   approvalType?: approvalType;
   approvalTypeNumber?: string;
   ntaNumber?: string;
@@ -166,6 +168,12 @@ export interface ApplicantDetails {
   postCode: string;
   telephoneNumber: string;
   emailAddress: string;
+}
+
+export interface Dimensions {
+  height: number;
+  length: number;
+  width: number;
 }
 
 export interface Brakes {
