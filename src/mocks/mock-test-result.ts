@@ -75,7 +75,39 @@ export const mockTestResult = (i: number = 0) =>
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
-    testVersion: 'Current'
+    testVersion: 'Current',
+    testHistory: [mockTestResultArchived(), { ...mockTestResultArchived(), testerName: 'Dave' }]
+  });
+
+export const mockTestResultArchived = (i: number = 0) =>
+  createMock<TestResultModel>({
+    testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
+
+    systemNumber: 'SYS0001',
+    vin: 'XMGDE02FS0H012345',
+    vrm: 'KP02 ABC',
+
+    createdAt: new Date().toISOString(),
+    testStartTimestamp: new Date().toISOString(),
+
+    testTypes: [...mockTestTypeList()],
+
+    trailerId: `C${String(i + 1).padStart(5, '0')}`,
+    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    euVehicleCategory: EuVehicleCategory.M3,
+    odometerReading: 100,
+    odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
+    reasonForCreation: 'mock test result data',
+    preparerName: 'Durrell Truck & Van Centre',
+    preparerId: 'CM2254',
+
+    testStationName: 'Abshire-Kub',
+    testStationPNumber: 'P12346',
+    testStationType: TestStationType.atf,
+    testerName: 'John Smith',
+    testerEmailAddress: 'john.smith@dvsa.gov.uk',
+    additionalNotesRecorded: 'notes for the test record will be displayed here...',
+    testVersion: 'Archived'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

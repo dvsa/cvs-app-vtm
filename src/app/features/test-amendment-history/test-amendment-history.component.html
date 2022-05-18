@@ -15,8 +15,15 @@
       <td class="govuk-table__cell">{{ testRecords?.reasonForCreation }}</td>
       <td class="govuk-table__cell">{{ testRecords?.testerName }}</td>
       <td class="govuk-table__cell">{{ testRecords?.createdAt | date }}</td>
+      <td class="govuk-table__cell"></td>
+    </tr>
+    <tr class="govuk-table__row" *ngFor="let amendedTest of testRecords?.testHistory">
+      <td class="govuk-table__cell">{{ amendedTest.testVersion }}</td>
+      <td class="govuk-table__cell">{{ amendedTest.reasonForCreation }}</td>
+      <td class="govuk-table__cell">{{ amendedTest.testerName }}</td>
+      <td class="govuk-table__cell">{{ amendedTest.createdAt | date }}</td>
       <td class="govuk-table__cell">
-        <!-- <a id="view-test-{{ testRecords?.testResultId }}" routerLink="#">View</a> -->
+        <a id="view-test-{{ amendedTest.testResultId }}" routerLink="#">View</a>
       </td>
     </tr>
   </tbody>
