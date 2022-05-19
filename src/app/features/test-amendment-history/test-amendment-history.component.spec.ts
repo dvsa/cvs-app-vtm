@@ -111,7 +111,7 @@ describe('TestAmendmentHistoryComponent', () => {
       expect(cells[4].nativeElement.innerHTML).toBe('');
     });
 
-    it('should have first row be the current record', () => {
+    it('should have the second row be the most recent archived amendement version', () => {
       component.testRecord = mockTestResult();
       fixture.detectChanges();
 
