@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectDefectData, selectedTestResultState } from './test-records.selectors';
+import { selectedTestResultState, testResultLoadingState, selectDefectData } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -10,6 +10,14 @@ describe('Test Results Selectors', () => {
       const state: TestResultsState = { ...initialTestResultsState, ids: ['testResult1'], entities: { testResult1: mockTestResult() } };
       const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1' } as Params);
       expect(selectedState).toEqual(state.entities['testResult1']);
+    });
+  });
+
+  describe('testResultLoadingState', () => {
+    it('should return loading state', () => {
+      const state: TestResultsState = { ...initialTestResultsState, loading: true };
+      const selectedState = testResultLoadingState.projector(state);
+      expect(selectedState).toBeTruthy();
     });
   });
 

@@ -9,7 +9,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { getByVIN, getByVINFailure, getByVINSuccess } from './technical-record-service.actions';
+import { getByVIN, getByVINFailure, getByVINSuccess } from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 
 describe('TechnicalRecordServiceEffects', () => {
@@ -54,9 +54,9 @@ describe('TechnicalRecordServiceEffects', () => {
 
     it('should return generic error message if not not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vin = {vin: 'vin'};
+        const vin = { vin: 'vin' };
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVIN( vin ) });
+        actions$ = hot('-a--', { a: getByVIN(vin) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -71,9 +71,9 @@ describe('TechnicalRecordServiceEffects', () => {
 
     it('should return not found error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vin = {vin: 'vin'};
+        const vin = { vin: 'vin' };
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVIN( vin ) });
+        actions$ = hot('-a--', { a: getByVIN(vin) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -88,9 +88,9 @@ describe('TechnicalRecordServiceEffects', () => {
 
     it('should return error message if error is a string', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const vin = {vin: 'vin'};
+        const vin = { vin: 'vin' };
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVIN( vin ) });
+        actions$ = hot('-a--', { a: getByVIN(vin) });
 
         // mock service call
         const expectedError = 'string';

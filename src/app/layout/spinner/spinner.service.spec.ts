@@ -1,40 +1,57 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { Store } from '@ngrx/store';
-import { lastValueFrom, skip, of } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialAppState, State } from '@store/.';
+import { spinnerState } from '@store/spinner/reducers/spinner.reducer';
+import { technicalRecordsLoadingState } from '@store/technical-records';
+import { testResultLoadingState } from '@store/test-records';
+import { firstValueFrom, take } from 'rxjs';
 import { AppModule } from '../../app.module';
 import { SpinnerService } from './spinner.service';
-import { initialAppState, State } from '@store/.';
-import * as TechnicalRecordServiceActions from '@store/technical-records/technical-record-service.actions';
 
 describe('Spinner-Service', () => {
   let service: SpinnerService;
-
-  let mockStore: Store<State>;
+  let mockStore: MockStore<State>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [AppModule, RouterTestingModule],
-      providers: [Store]
+      providers: [SpinnerService, provideMockStore({ initialState: initialAppState })]
     });
 
-    mockStore = TestBed.inject(Store);
-
-    service = new SpinnerService(mockStore);
+    service = TestBed.inject(SpinnerService);
+    mockStore = TestBed.inject(MockStore);
   });
 
   it('should create the spinner service', () => {
     expect(service).toBeTruthy();
   });
 
-  it('Should enable the spinner', (done) => {
-    // Skip the default value being set
-    service.showSpinner$.pipe(skip(1)).subscribe((data) => {
-      expect(data).toBe(true);
-      done();
+  describe('showSpinner$', () => {
+    beforeEach(() => {
+      mockStore.resetSelectors();
     });
 
-    mockStore.dispatch(TechnicalRecordServiceActions.getByVIN({vin: 'test'}));
+    it('Should return false when global spinner, testResult and technicalRecords loading state is false', async () => {
+      mockStore.overrideSelector(spinnerState, false);
+      mockStore.overrideSelector(testResultLoadingState, false);
+      mockStore.overrideSelector(technicalRecordsLoadingState, false);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeFalsy();
+    });
+
+    it('Should return true when global spinner state is true', async () => {
+      mockStore.overrideSelector(spinnerState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
+
+    it('Should return true when testResult loading state is true', async () => {
+      mockStore.overrideSelector(testResultLoadingState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
+
+    it('Should return true when TechnicalRecords loading state is true', async () => {
+      mockStore.overrideSelector(technicalRecordsLoadingState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
   });
 });

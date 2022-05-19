@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { getByVIN, getByVINFailure, getByVINSuccess } from './technical-record-service.actions';
+import { getByVIN, getByVINFailure, getByVINSuccess } from '../actions/technical-record-service.actions';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
