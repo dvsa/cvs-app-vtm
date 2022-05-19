@@ -1,0 +1,10 @@
+<h2 class="govuk-heading-m">Defects</h2>
+<ng-container *ngIf="defectsData$ | async as defectsData; else noDefects">
+  <ng-container *ngIf="defectsData && defectsData.length > 0; else noDefects">
+    <app-defect *ngFor="let defect of defectsData" [edit]="edit" [defectData]="defect || undefined"></app-defect>
+  </ng-container>
+</ng-container>
+
+<ng-template #noDefects>
+  <p>No defects</p>
+</ng-template>
