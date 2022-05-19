@@ -11,19 +11,19 @@
   </thead>
   <tbody class="govuk-table__body">
     <tr class="govuk-table__row">
-      <td class="govuk-table__cell">{{ testRecords?.testVersion }}</td>
-      <td class="govuk-table__cell">{{ testRecords?.reasonForCreation }}</td>
-      <td class="govuk-table__cell">{{ testRecords?.testerName }}</td>
-      <td class="govuk-table__cell">{{ testRecords?.createdAt | date }}</td>
+      <td class="govuk-table__cell">{{ testRecord?.testVersion }}</td>
+      <td class="govuk-table__cell">{{ testRecord?.reasonForCreation }}</td>
+      <td class="govuk-table__cell">{{ getCreatedByName(testRecord) }}</td>
+      <td class="govuk-table__cell">{{ testRecord?.createdAt | date }}</td>
       <td class="govuk-table__cell"></td>
     </tr>
-    <tr class="govuk-table__row" *ngFor="let amendedTest of testRecords?.testHistory">
+    <tr class="govuk-table__row" *ngFor="let amendedTest of sortedTestHistory(testRecord?.testHistory)">
       <td class="govuk-table__cell">{{ amendedTest.testVersion }}</td>
       <td class="govuk-table__cell">{{ amendedTest.reasonForCreation }}</td>
-      <td class="govuk-table__cell">{{ amendedTest.createdByName?.length === 0 || !amendedTest.createdByName ? amendedTest.testerName : amendedTest.createdByName }}</td>
+      <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) }}</td>
       <td class="govuk-table__cell">{{ amendedTest.createdAt | date }}</td>
       <td class="govuk-table__cell">
-        <a id="view-test-{{ amendedTest.testResultId }}" routerLink="#">View</a>
+        <a id="view-test-{{ amendedTest.testResultId }}" rounterLink="#">View</a>
       </td>
     </tr>
   </tbody>

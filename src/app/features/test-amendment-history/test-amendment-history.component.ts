@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 
 @Component({
@@ -6,20 +6,28 @@ import { TestResultModel } from '@models/test-result.model';
   templateUrl: './test-amendment-history.component.html',
   styleUrls: ['./test-amendment-history.component.scss']
 })
-export class TestAmendmentHistoryComponent implements OnInit {
-  @Input() testRecords: TestResultModel | undefined;
+export class TestAmendmentHistoryComponent {
+  @Input() testRecord: TestResultModel | undefined;
 
-  constructor() { }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  constructor() {}
+
+  getCreatedByName(testResult: TestResultModel | undefined) {
+    return testResult?.createdByName?.length === 0 || !testResult?.createdByName ? testResult?.testerName : testResult?.createdByName;
   }
 
-  getTestTypeName(testResult: TestResultModel) {
-    return testResult.testTypes.map((t) => t.testTypeName).join(',');
-  }
+  sortedTestHistory(testResult: TestResultModel[] | undefined): TestResultModel[] | undefined {
+    let newarr: TestResultModel[] | undefined = testResult
+      ?.filter((item): item is TestResultModel => !!item.createdAt)
+      .sort((a, b) => {
+        return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
+      });
 
-  getTestTypeResults(testResult: TestResultModel) {
-    return testResult.testTypes.map((t) => t.testResult).join(',');
-  }
+    let notFound: TestResultModel[] | undefined = testResult?.filter((item): item is TestResultModel => !item.createdAt);
 
+    if (notFound) {
+      return newarr?.concat(notFound);
+    } else {
+      return newarr;
+    }
+  }
 }

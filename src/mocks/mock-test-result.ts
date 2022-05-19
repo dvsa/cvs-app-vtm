@@ -76,9 +76,13 @@ export const mockTestResult = (i: number = 0) =>
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
     testVersion: 'Current',
+    createdByName: 'Jane Doe',
     testHistory: [
-      { ...mockTestResultArchived(), createdAt: new Date().setDate(1).toString(), reasonForCreation: 'amend some data' },
-      { ...mockTestResultArchived(), createdAt: new Date().setMonth(1).toString(), reasonForCreation: 'different mock test', createdByName: 'DVSA Personel' }
+      { ...mockTestResultArchived(), createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
+      { ...mockTestResultArchived(), createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
+      { ...mockTestResultArchived(), createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
+      { ...mockTestResultArchived(), createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
+      { ...mockTestResultArchived(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Brush' }
     ]
   });
 
@@ -90,7 +94,6 @@ export const mockTestResultArchived = (i: number = 0) =>
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
 
-    createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
 
     testTypes: [...mockTestTypeList()],

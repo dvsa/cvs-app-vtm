@@ -9,7 +9,7 @@
   <ng-template #noDefects>
     <p>No defects</p>
   </ng-template>
-  <section>
-    <app-test-amendment-history *ngIf="!testResult.testHistory || testResult.testHistory.length > 0" [testRecords]="testResult"></app-test-amendment-history>
+  <section class="section">
+    <app-test-amendment-history [testRecord]="testResult"></app-test-amendment-history>
   </section>
 </section>
