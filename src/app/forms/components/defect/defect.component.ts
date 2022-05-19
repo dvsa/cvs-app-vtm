@@ -11,7 +11,7 @@ import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInf
 })
 export class DefectComponent {
   @Input() edit = false;
-  @Input() defectData: Defect | undefined;
+  @Input() defectData!: Defect;
 
   defectTpl: FormNode;
 
@@ -21,7 +21,10 @@ export class DefectComponent {
 
   mapLocationText(location: DefectAdditionalInformationLocation) {
     return Object.entries(location)
-      .map((val) => `${val[0]}: ${val[1]}`)
+      .filter(([key, value]) => {
+        return (typeof value === 'number' && isNaN(value) === false) || value;
+      })
+      .map(([key, value]) => `${key}: ${value}`)
       .join(` / `);
   }
 }
