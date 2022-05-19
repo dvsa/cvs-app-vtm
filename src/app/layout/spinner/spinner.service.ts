@@ -20,13 +20,7 @@ export class SpinnerService {
   }
 
   private get reduceLoadingStates$() {
-    return combineLatest([this.globalLoadingState$, this.testResultLoadingState$, this.techRecordsLoadingState$]).pipe(
-      map((states) =>
-        states.reduce((acc, cur) => {
-          return acc || cur;
-        }, false)
-      )
-    );
+    return combineLatest([this.globalLoadingState$, this.testResultLoadingState$, this.techRecordsLoadingState$]).pipe(map((states) => states.some((b) => b)));
   }
 
   get showSpinner$(): Observable<boolean> {
