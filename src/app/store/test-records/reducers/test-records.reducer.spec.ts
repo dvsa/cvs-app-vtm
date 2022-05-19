@@ -1,5 +1,5 @@
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
+import { fetchTestResults, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
 import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
 
 describe('Test Results Reducer', () => {
@@ -11,6 +11,20 @@ describe('Test Results Reducer', () => {
       const state = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toBe(initialTestResultsState);
+    });
+  });
+
+  describe('fetchTestResults', () => {
+    it('should set loading to true', () => {
+      const newState: TestResultsState = {
+        ...initialTestResultsState,
+        loading: true
+      };
+      const action = fetchTestResults();
+      const state = testResultsReducer(initialTestResultsState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
     });
   });
 
