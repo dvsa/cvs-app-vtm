@@ -1,8 +1,7 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Defect } from '@models/defect';
-import { Defects } from '@models/defects';
 import { of } from 'rxjs';
 import { createMockList } from 'ts-auto-mock';
 import { DefectsComponent } from './defects.component';
@@ -12,7 +11,10 @@ import { DefectsComponent } from './defects.component';
   template: ``,
   styles: []
 })
-class MockDefectComponent {}
+class MockDefectComponent {
+  @Input() edit = false;
+  @Input() defectData!: Defect;
+}
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
