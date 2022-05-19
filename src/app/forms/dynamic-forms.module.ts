@@ -10,10 +10,11 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { TestAmendmentHistoryComponent } from '../features/test-amendment-history/test-amendment-history.component';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, TestAmendmentHistoryComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule],
   exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, TestAmendmentHistoryComponent]
 })
-export class DynamicFormsModule { }
+export class DynamicFormsModule {}
