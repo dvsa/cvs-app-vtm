@@ -2,7 +2,6 @@ import { formatDate } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
-import { locale } from 'yargs';
 
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
