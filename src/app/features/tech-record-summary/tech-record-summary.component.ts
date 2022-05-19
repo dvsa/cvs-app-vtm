@@ -33,7 +33,7 @@ export class TechRecordSummaryComponent implements OnInit {
   dimensionsTemplate?: FormNode;
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
-  body?: FormNode;
+  bodyTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -77,7 +77,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
-        this.body = PsvBody;
+        this.bodyTemplate = PsvBody;
         break;
       }
       case 'hgv': {
