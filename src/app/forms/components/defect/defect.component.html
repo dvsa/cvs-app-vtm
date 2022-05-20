@@ -1,10 +1,10 @@
 <ng-container [ngSwitch]="edit">
   <ng-container *ngSwitchCase="true">
-    <ng-temnplate [ngTemplateOutlet]="editDefect" [ngTemplateOutletContext]="{ data: defectData }"></ng-temnplate>
+    <ng-template [ngTemplateOutlet]="editDefect" [ngTemplateOutletContext]="{ data: defectData }"></ng-template>
   </ng-container>
 
   <ng-container *ngSwitchCase="false">
-    <ng-temnplate [ngTemplateOutlet]="viewDefect" [ngTemplateOutletContext]="{ data: defectData }"></ng-temnplate>
+    <ng-template [ngTemplateOutlet]="viewDefect" [ngTemplateOutletContext]="{ data: defectData }"></ng-template>
   </ng-container>
 </ng-container>
 
