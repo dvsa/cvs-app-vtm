@@ -17,12 +17,12 @@ export class TestRecordComponent {
   testResult$: Observable<TestResultModel | undefined>;
   template: FormNode;
   defectTpl: FormNode;
-  defectData$: Observable<Defects | undefined>;
+  defectsData$: Observable<Defects | undefined>;
 
   constructor(private testRecordsService: TestRecordsService) {
     this.testResult$ = this.testRecordsService.testResult$;
     this.template = PsvAnnual;
     this.defectTpl = DefectTpl;
-    this.defectData$ = this.testRecordsService.defectData$;
+    this.defectsData$ = this.testRecordsService.defectData$;
   }
 }
