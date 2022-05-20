@@ -18,7 +18,6 @@ export interface TestType {
   prohibitionIssued: boolean;
 
   testResult: string;
-
   seatbeltInstallationCheckDate: boolean;
   numberOfSeatbeltsFitted: number;
   lastSeatbeltInstallationCheckDate: Date | null;
@@ -30,4 +29,6 @@ export interface TestType {
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
   defects?: Defect[];
+  additionalNotesRecorded: string;
+
 }

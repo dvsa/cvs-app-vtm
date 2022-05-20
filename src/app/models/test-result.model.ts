@@ -29,7 +29,7 @@ export interface TestResultModel {
   testStationType: TestStationType;
   testerName: string;
   testerEmailAddress: string;
-  additionalNotesRecorded: string;
+
 
   reasonForCreation?: string;
 }

@@ -43,7 +43,8 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
-      defects: mockDefectList()
+      defects: mockDefectList(),
+      additionalNotesRecorded: 'notes for the test record will be displayed here...'
     });
   });
 
@@ -73,8 +74,7 @@ export const mockTestResult = (i: number = 0) =>
     testStationPNumber: 'P12346',
     testStationType: TestStationType.atf,
     testerName: 'John Smith',
-    testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    additionalNotesRecorded: 'notes for the test record will be displayed here...'
+    testerEmailAddress: 'john.smith@dvsa.gov.uk'
   });
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

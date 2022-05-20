@@ -285,6 +285,16 @@ export const PsvAnnual: FormNode = {
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL
             },
+            {
+              name: 'notesSection',
+              label: 'Notes',
+              type: FormNodeTypes.SECTION
+            },
+            {
+              name: 'additionalNotesRecorded',
+              label: 'Additional Notes',
+              type: FormNodeTypes.CONTROL
+            }
           ]
         }
       ]
@@ -329,16 +339,6 @@ export const PsvAnnual: FormNode = {
     {
       name: 'testerEmailAddress',
       label: 'Tester email address',
-      type: FormNodeTypes.CONTROL
-    },
-    {
-      name: 'notesSection',
-      label: 'Notes',
-      type: FormNodeTypes.SECTION
-    },
-    {
-      name: 'additionalNotesRecorded',
-      label: 'Additional Notes',
       type: FormNodeTypes.CONTROL
     }
   ]
