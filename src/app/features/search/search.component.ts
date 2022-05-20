@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { map, Observable } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
-import { GlobalErrorService } from '../global-error/global-error.service';
 
 @Component({
   selector: 'app-search',

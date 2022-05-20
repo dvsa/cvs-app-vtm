@@ -1,9 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/.';
-import { GlobalErrorService } from '../global-error/global-error.service';
 import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
