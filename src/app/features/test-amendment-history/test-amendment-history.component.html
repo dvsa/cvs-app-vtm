@@ -23,7 +23,7 @@
       <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) }}</td>
       <td class="govuk-table__cell">{{ amendedTest.createdAt | date }}</td>
       <td class="govuk-table__cell">
-        <a id="view-test-{{ amendedTest.testResultId }}" routerLink="#">View</a>
+        <a id="view-test-{{ amendedTest.testResultId }}" routerLink="/test-records/{{ testRecord?.systemNumber }}/test-result/{{ testRecord?.testResultId }}">View</a>
       </td>
     </tr>
   </tbody>
