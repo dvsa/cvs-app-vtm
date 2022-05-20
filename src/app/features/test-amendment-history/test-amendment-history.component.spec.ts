@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
 
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
@@ -11,7 +12,8 @@ describe('TestAmendmentHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestAmendmentHistoryComponent]
+      declarations: [TestAmendmentHistoryComponent],
+      imports: [RouterTestingModule]
     }).compileComponents();
   });
 
