@@ -19,6 +19,13 @@ export class DefectComponent {
     this.defectTpl = DefectTpl;
   }
 
+  /**
+   * takes the location object where all properties are optional and returns a string with all the properties that have values separated with ` / `.
+   * While we don't know how to format the string, we show the properties as `key: value`.
+   * TODO: update string format once we have service design.
+   * @param location - DefectAdditionalInformationLocation object
+   * @returns string
+   */
   mapLocationText(location: DefectAdditionalInformationLocation) {
     return Object.entries(location)
       .filter(([key, value]) => {
