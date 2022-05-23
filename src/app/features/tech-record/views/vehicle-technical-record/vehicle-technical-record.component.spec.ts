@@ -7,6 +7,8 @@ import { TestRecordSummaryComponent } from '../../../test-record-summary/test-re
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { SharedModule } from '@shared/shared.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -14,7 +16,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule],
       declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
