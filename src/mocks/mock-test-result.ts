@@ -77,43 +77,38 @@ export const mockTestResult = (i: number = 0) =>
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
     testVersion: 'Current',
     createdByName: 'Jane Doe',
-    testHistory: [
-      { ...mockTestResultArchived(), createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
-      { ...mockTestResultArchived(), createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
-      { ...mockTestResultArchived(), createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
-      { ...mockTestResultArchived(), createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
-      { ...mockTestResultArchived(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Brush' }
-    ]
+    testHistory: [...createMockList<TestResultModel>(5, (i: number) => mockTestResultArchived(i))]
   });
 
-export const mockTestResultArchived = (i: number = 0) =>
-  createMock<TestResultModel>({
-    testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
-
+export const mockTestResultArchived = (i: number = 0) => {
+  const now = new Date();
+  const createdAt = now.setDate(now.getDate() + i);
+  return createMock<TestResultModel>({
+    testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
+    createdAt: new Date(createdAt).toISOString(),
     systemNumber: 'SYS0001',
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
-
     testStartTimestamp: new Date().toISOString(),
 
     testTypes: [...mockTestTypeList()],
-
+    createdByName: `Person ${i}`,
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
     euVehicleCategory: EuVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
-    reasonForCreation: 'mock test result data',
+    reasonForCreation: `reason ${i}`,
     preparerName: 'Durrell Truck & Van Centre',
     preparerId: 'CM2254',
-
     testStationName: 'Abshire-Kub',
     testStationPNumber: 'P12346',
     testStationType: TestStationType.atf,
-    testerName: 'John Smith',
+    testerName: `person ${i}`,
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    additionalNotesRecorded: 'notes for the test record will be displayed here...',
+    additionalNotesRecorded: `achived test record ${i}`,
     testVersion: 'Archived'
   });
+};
 
 export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));

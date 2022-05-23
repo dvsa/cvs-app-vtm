@@ -9,7 +9,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
-import { TestAmendmentHistoryComponent } from '../features/test-amendment-history/test-amendment-history.component';
+import { TestAmendmentHistoryComponent } from './components/test-amendment-history/test-amendment-history.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({

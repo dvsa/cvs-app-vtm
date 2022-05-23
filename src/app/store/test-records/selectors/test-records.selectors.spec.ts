@@ -1,8 +1,8 @@
 import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
-import { mockTestResult } from '../../../../mocks/mock-test-result';
+import { mockTestResult, mockTestResultArchived } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectDefectData, selectedTestResultState } from './test-records.selectors';
+import { selectArchivedDefectData, selectDefectData, selectedArchivedTestResultState, selectedTestResultState } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -25,6 +25,31 @@ describe('Test Results Selectors', () => {
     it('should return an ampty array if there are no defects', () => {
       const noDefectState = { ...state, testTypes: [{ ...state.testTypes[0], defects: undefined }] };
       const defectState = selectDefectData.projector(noDefectState);
+      expect(defectState?.length).toBe(0);
+    });
+  });
+
+  describe(selectedArchivedTestResultState.name, () => {
+    it('should return selected archived test record', () => {
+      const archivedTestResultId = 'oldTestResult';
+      const testResult: TestResultModel = { ...mockTestResult(), testHistory: [{ ...mockTestResultArchived(), testResultId: archivedTestResultId }] };
+      const archivedTestResultState = selectedArchivedTestResultState.projector(testResult, { archivedTestResultId: archivedTestResultId });
+      expect(archivedTestResultState?.testResultId).toBe(archivedTestResultId);
+    });
+  });
+
+  describe(selectArchivedDefectData.name, () => {
+    const state: TestResultModel = mockTestResultArchived();
+
+    it('should return defect data for the first testType in selected test result', () => {
+      const defectState = selectArchivedDefectData.projector(state);
+      expect(defectState?.length).toBe(1);
+      expect(defectState).toEqual(state.testTypes[0].defects);
+    });
+
+    it('should return an ampty array if there are no defects', () => {
+      const noDefectState = { ...state, testTypes: [{ ...state.testTypes[0], defects: undefined }] };
+      const defectState = selectArchivedDefectData.projector(noDefectState);
       expect(defectState?.length).toBe(0);
     });
   });

@@ -9,8 +9,8 @@ import { PsvAnnual } from '../../../../forms/templates/psv/psv-annual.template';
 
 @Component({
   selector: 'app-test-records',
-  templateUrl: './test-records.component.html',
-  styleUrls: ['./test-records.component.scss'],
+  templateUrl: './test-record.component.html',
+  styleUrls: ['./test-record.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordComponent {

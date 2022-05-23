@@ -68,7 +68,8 @@ describe('TestAmendmentHistoryComponent', () => {
 
   describe('Created By', () => {
     it('should return createdByName entry if not empty', () => {
-      const name = component.getCreatedByName(mockTestResultArchived());
+      const mockArchivedTestResult = { ...mockTestResultArchived(), testerName: 'John Smith', createdByName: undefined };
+      const name = component.getCreatedByName(mockArchivedTestResult);
       const testerName = 'John Smith';
 
       expect(name).toBe(testerName);
@@ -119,11 +120,20 @@ describe('TestAmendmentHistoryComponent', () => {
       const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
       expect(rows[0]).toBeTruthy();
 
+      const sortedTestHistory = component.sortedTestHistory(component.testRecord.testHistory);
+      console.group('*******');
+      sortedTestHistory?.forEach((i) => {
+        console.log(JSON.stringify(i.createdAt, null, 2));
+        console.log(JSON.stringify(i.reasonForCreation, null, 2));
+        console.log(JSON.stringify(i.createdByName, null, 2));
+      });
+      console.groupEnd();
+
       const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-      expect(cells[5].nativeElement.innerHTML).toBe(component.testRecord.testHistory![1].testVersion);
-      expect(cells[6].nativeElement.innerHTML).toBe(component.testRecord.testHistory![1].reasonForCreation);
-      expect(cells[7].nativeElement.innerHTML).toBe(component.testRecord.testHistory![1].createdByName);
-      expect(cells[8].nativeElement.innerHTML).toBe(formatDate(component.testRecord.testHistory![1].createdAt!, 'MMM d, yyyy', 'en'));
+      expect(cells[5].nativeElement.innerHTML).toBe(sortedTestHistory![0].testVersion);
+      expect(cells[6].nativeElement.innerHTML).toBe(sortedTestHistory![0].reasonForCreation);
+      expect(cells[7].nativeElement.innerHTML).toBe(sortedTestHistory![0].createdByName);
+      expect(cells[8].nativeElement.innerHTML).toBe(formatDate(sortedTestHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
       expect(cells[9].nativeElement.innerHTML).toContain('View');
     });
 
