@@ -40,12 +40,20 @@ server.get('/vehicles/:vin/*', (req, res) => {
       res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
       console.log('HGV technical record');
       break;
+    case 'XMGDE03FS0H012345':
+      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
+      console.log('HGV technical record');
+      break;
     case 'TRL':
       res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
       console.log('TRL technical record');
       break;
+    case 'XMGDE04FS0H012345':
+      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
+      console.log('TRL technical record');
+      break;
     default:
-      res.jsonp(mockVehicleTechnicalRecordList());
+      res.jsonp(mockVehicleTechnicalRecordList());  
       break;
   }
 });

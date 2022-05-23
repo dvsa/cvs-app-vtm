@@ -32,6 +32,8 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
     ],
     techRecord: [
       {
+        createdAt: new Date(),
+        createdByName: "Nathan",
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.PSV,
         regnDate: '1234',
@@ -112,7 +114,94 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmRollNumber: 'nb123456',
           microfilmSerialNumber: 'ser123456'
         },
-        remarks: 'Some notes about the vehicle'
+        remarks: 'Some notes about the vehicle',
+        reasonForCreation: "Brake Failure"
+      },
+      {
+        createdAt: new Date(2018, 11),
+        createdByName: "Nathan",
+        statusCode: StatusCodes.CURRENT,
+        vehicleType: VehicleTypes.PSV,
+        regnDate: '12345678',
+        manufactureYear: 2022,
+        noOfAxles: 2,
+        brakes: {
+          dtpNumber: '12345678',
+          brakeCode: '1234',
+          dataTrBrakeOne: '12',
+          dataTrBrakeTwo: '34',
+          dataTrBrakeThree: '56',
+          retarderBrakeOne: RetarderBrake.ELECTRIC,
+          retarderBrakeTwo: RetarderBrake.ELECTRIC,
+          brakeForceWheelsNotLocked: {
+            parkingBrakeForceA: 1234,
+            secondaryBrakeForceA: 1234,
+            serviceBrakeForceA: 1234
+          },
+          brakeForceWheelsUpToHalfLocked: {
+            parkingBrakeForceB: 1234,
+            secondaryBrakeForceB: 1234,
+            serviceBrakeForceB: 1234
+          }
+        },
+        axles: [
+          {
+            axleNumber: 1,
+            parkingBrakeMrk: false
+          },
+          {
+            axleNumber: 2,
+            parkingBrakeMrk: true
+          }
+        ],
+        speedLimiterMrk: true,
+        tachoExemptMrk: true,
+        euroStandard: '123',
+        fuelPropulsionSystem: FuelTypes.HYBRID,
+        vehicleClass: {
+          description: 'Description'
+        },
+        vehicleConfiguration: VehicleConfigurations.ARTICULATED,
+        euVehicleCategory: EuVehicleCategories.M1,
+        emissionsLimit: 1234,
+        seatsLowerDeck: 1234,
+        seatsUpperDeck: 1234,
+        standingCapacity: 1234,
+        vehicleSize: VehicleSizes.SMALL,
+        numberOfSeatbelts: '1234',
+        seatbeltInstallationApprovalDate: '1234',
+        departmentalVehicleMarker: true,
+        dimensions: {
+          height: 30000,
+          length: 25000,
+          width: 10000
+        },
+        frontAxleToRearAxle: 5000,
+        approvalType: approvalType.ECSSTA,
+        approvalTypeNumber: 'approval123',
+        ntaNumber: 'nta789',
+        coifSerialNumber: 'coifSerial123456',
+        coifCertifierName: 'coifName',
+        coifDate: new Date(),
+        variantNumber: 'variant123456',
+        variantVersionNumber: 'variantversion123456',
+        applicantDetails: {
+          name: 'Test',
+          address1: 'address1',
+          address2: 'address2',
+          postTown: 'town',
+          address3: 'address3',
+          postCode: 'postCode',
+          telephoneNumber: '0121',
+          emailAddress: 'test@email.com'
+        },
+        microfilm: {
+          microfilmDocumentType: MicrofilmDocumentType.AAT,
+          microfilmRollNumber: 'nb123456',
+          microfilmSerialNumber: 'ser123456'
+        },
+        remarks: 'Some notes about the vehicle',
+        reasonForCreation: "COIF"
       }
     ]
   });
@@ -120,7 +209,7 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
 const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
     systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
-    vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
+    vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {
         vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
@@ -133,6 +222,8 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
     ],
     techRecord: [
       {
+        createdAt: new Date(),
+        createdByName: "Nathan",
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.HGV,
         regnDate: '1234',
@@ -162,7 +253,8 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         offRoad: true,
         euVehicleCategory: EuVehicleCategories.M1,
         emissionsLimit: 1234,
-        departmentalVehicleMarker: true
+        departmentalVehicleMarker: true,
+        reasonForCreation: "Brake Failure"
       }
     ]
   });
@@ -170,7 +262,7 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
 const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
     systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
-    vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
+    vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {
         vrm: `KP${String(systemNumber + 1).padStart(2, '0')} ABC`,
@@ -183,6 +275,8 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
     ],
     techRecord: [
       {
+        createdAt: new Date(),
+        createdByName: "Nathan",
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.TRL,
         regnDate: '1234',
@@ -211,7 +305,8 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         maxLoadOnCoupling: 1234,
         frameDescription: FrameDescriptions.FRAME_SECTION,
         euVehicleCategory: EuVehicleCategories.M1,
-        departmentalVehicleMarker: true
+        departmentalVehicleMarker: true,
+        reasonForCreation: "Brake Failure"
       }
     ]
   });
