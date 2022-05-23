@@ -22,6 +22,6 @@ export class ArchivedTestRecordComponent {
     this.testResult$ = this.testRecordsService.archivedTestResult$;
     this.template = PsvAnnual;
     this.defectTpl = DefectTpl;
-    this.defectData$ = this.testRecordsService.defectData$;
+    this.defectData$ = this.testRecordsService.archivedDefectData$;
   }
 }
