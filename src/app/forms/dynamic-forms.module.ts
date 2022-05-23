@@ -11,10 +11,12 @@ import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-gro
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { TestAmendmentHistoryComponent } from '../features/test-amendment-history/test-amendment-history.component';
 import { RouterModule } from '@angular/router';
+import { DefectComponent } from './components/defect/defect.component';
+import { DefectsComponent } from './components/defects/defects.component';
 
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, TestAmendmentHistoryComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, TestAmendmentHistoryComponent, DefectComponent, DefectsComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, TestAmendmentHistoryComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, TestAmendmentHistoryComponent, DefectComponent, DefectsComponent]
 })
 export class DynamicFormsModule {}
