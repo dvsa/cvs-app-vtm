@@ -1,6 +1,4 @@
-import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/store';
-import * as TechnicalRecordServiceActions from '../../technical-records/technical-record-service.actions';
-import * as TestResultActions from '@store/test-records';
+import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
 
 export const STORE_SPINNER_KEY = 'Spinner';
 
@@ -16,12 +14,9 @@ export const getSpinnerState = createFeatureSelector<SpinnerState>(STORE_SPINNER
 
 export const spinnerState = createSelector(getSpinnerState, (state) => state.showSpinner);
 
+export const setSpinnerState = createAction('[UI/spinner] set spinner state', props<{ showSpinner: boolean }>());
+
 export const spinnerReducer = createReducer(
   initialSpinnerState,
-  on(TechnicalRecordServiceActions.getByVIN, TestResultActions.fetchTestResults, TestResultActions.fetchTestResultsBySystemId, (state) => ({ ...state, showSpinner: true })),
-  on(TechnicalRecordServiceActions.getByVINFailure, TechnicalRecordServiceActions.getByVINSuccess,
-     TestResultActions.fetchTestResultsBySystemIdFailed, TestResultActions.fetchTestResultsBySystemIdSuccess,
-     TestResultActions.fetchTestResultsFailed, TestResultActions.fetchTestResultsSuccess,
-      (state) => ({ ...state, showSpinner: false })
-  ),
+  on(setSpinnerState, (state, { showSpinner }) => ({ ...state, showSpinner }))
 );

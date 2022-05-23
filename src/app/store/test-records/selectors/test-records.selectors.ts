@@ -23,6 +23,7 @@ export const selectTestResultsTotal = selectTotal;
 export const testResultsEnitities = createSelector(testResultsFeatureState, selectTestResultsEntities);
 
 export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteNestedParams, (entities, { testResultId }) => entities[testResultId]);
+export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) => {
   return getDefectFromTestResult(testResult);

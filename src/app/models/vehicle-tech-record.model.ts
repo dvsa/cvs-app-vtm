@@ -107,6 +107,21 @@ export enum approvalType {
   ECSSTA = 'ECSSTA'
 }
 
+export enum BodyTypeDescription {
+  ARTICULATED = 'articulated',
+  BOX = 'box',
+  DOUBLEDECKER = 'double decker',
+  FLAT = 'flat',
+  OTHER = 'other',
+  PETROL = 'petrol/oil tanker',
+  REFRIGIRATED = 'refrigerated',
+  REFUSE = 'refuse',
+  SINGLEDECKER = 'single decker',
+  SKELETAL = 'skeletal',
+  SKIPLOADER = 'skip loader',
+  TIPPER = 'tipper',
+}
+
 export interface Axle {
   axleNumber?: number;
   parkingBrakeMrk?: boolean;
@@ -159,6 +174,16 @@ export interface TechRecordModel {
   applicantDetails?: ApplicantDetails;
   microfilm?: Microfilm;
   remarks?: string;
+  modelLiteral?: string;
+  chassisMake?: string;
+  chassisModel?: string;
+  bodyMake?: string;
+  bodyModel?: string;
+  bodyType?: {
+    description: BodyTypeDescription;
+  };
+  functionCode?: string;
+  conversionRefNo?: string;
 }
 
 export interface ApplicantDetails {

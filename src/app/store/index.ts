@@ -1,10 +1,10 @@
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState, STORE_GLOBAL_ERROR_KEY } from '@store/global-error/reducers/global-error-service.reducer';
+import { initialSpinnerState, spinnerReducer, SpinnerState, STORE_SPINNER_KEY } from '@store/spinner/reducers/spinner.reducer';
 import { environment } from '../../environments/environment';
-import { initialState as initialTechnicalRecordsState, STORE_FEATURE_TECHNICAL_RECORDS_KEY, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-records/technical-record-service.reducer';
+import { initialState as initialTechnicalRecordsState, STORE_FEATURE_TECHNICAL_RECORDS_KEY, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-records/reducers/technical-record-service.reducer';
 import { initialTestResultsState, STORE_FEATURE_TEST_RESULTS_KEY, testResultsReducer, TestResultsState } from './test-records';
 import { initialState as initialUserState, STORE_FEATURE_USER_KEY, userServiceReducer, UserServiceState } from './user/user-service.reducer';
-import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState, STORE_GLOBAL_ERROR_KEY } from '@store/global-error/reducers/global-error-service.reducer';
-import { spinnerReducer, SpinnerState, initialSpinnerState, STORE_SPINNER_KEY } from '@store/spinner/reducers/spinner.reducer';
 
 export interface State {
   [STORE_FEATURE_USER_KEY]: UserServiceState;
