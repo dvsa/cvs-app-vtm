@@ -1,0 +1,6 @@
+<ng-container *ngIf="vehicleTechRecord$ | async as vehicleTechRecord; else elseBlock">
+  <app-vehicle-technical-record [vehicleTechRecord]="vehicleTechRecord || undefined"></app-vehicle-technical-record>
+</ng-container>
+<ng-template #elseBlock>
+  <h1>This vehicle is not real, like the no vehicle page we need to create</h1>
+</ng-template>

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, Brakes } from '@models/vehicle-tech-record.model';
-import { PsvTechRecord } from '../../forms/templates/psv/psv-tech-record.template';
-import { HgvTechRecord } from '../../forms/templates/hgv/hgv-tech-record.template';
-import { TrlTechRecord } from '../../forms/templates/trl/trl-tech-record.template';
-import { FormNode } from '../../forms/services/dynamic-form.types';
+import { PsvTechRecord } from '../../../../forms/templates/psv/psv-tech-record.template';
+import { HgvTechRecord } from '../../../../forms/templates/hgv/hgv-tech-record.template';
+import { TrlTechRecord } from '../../../../forms/templates/trl/trl-tech-record.template';
+import { FormNode } from '../../../../forms/services/dynamic-form.types';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
@@ -12,6 +12,8 @@ import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.templa
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -19,7 +21,8 @@ import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
   styleUrls: ['./tech-record-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TechRecordSummaryComponent implements OnInit {
+export class TechRecordSummaryComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   vehicleSummaryTemplate!: FormNode;
   brakeTemplate!: FormNode;
@@ -39,27 +42,44 @@ export class TechRecordSummaryComponent implements OnInit {
     this.currentBrakeRecord = this.currentRecord?.brakes;
   }
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) { }
+
+  //use selector to get the tech record from the date time, not an input.
 
   /**
    * A function to get the correct tech record to create the summary display, this has a hierarchy
+   * first it will try to use a date time if that exists then uses a default
    * which is PROVISIONAL -> CURRENT -> ARCHIVED.
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
   viewableTechRecord(record?: VehicleTechRecordModel): TechRecordModel | undefined {
-    let viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.PROVISIONAL);
-    if (viewableTechRecord == undefined) {
-      viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.CURRENT);
+    let viewableTechRecord = undefined;
+
+    this.route.firstChild?.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const createdAt = params['techCreatedAt'] ?? '';
+      viewableTechRecord = record?.techRecord?.find((record) => new Date(record.createdAt).getTime() == createdAt);
+    });
+
+    if (!viewableTechRecord) {
+      viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.PROVISIONAL);
+      if (viewableTechRecord == undefined) {
+        viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.CURRENT);
+      }
+      if (viewableTechRecord == undefined) {
+        viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.ARCHIVED);
+      }
     }
-    if (viewableTechRecord == undefined) {
-      viewableTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.ARCHIVED);
-    }
+
     return viewableTechRecord;
   }
 
   get vehicleType(): string | undefined {
     return this.vehicleTechRecord?.techRecord.pop()?.vehicleType;
+  }
+
+  convertToUnix(date: Date): number {
+    return new Date(date).getTime()
   }
 
   vehicleTemplate(): void {
@@ -89,5 +109,10 @@ export class TechRecordSummaryComponent implements OnInit {
         break;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -17,6 +17,6 @@
     <button class="govuk-button" data-module="govuk-button" (click)="searchTechRecords(searchTerm.value)">Search</button>
   </div>
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
-    <app-vehicle-technical-record [vehicleTechRecord]="vehicleTechRecord"></app-vehicle-technical-record>
+    <a id="view-tech-{{ vehicleTechRecord.vin }}" routerLink="/tech-records/{{ vehicleTechRecord.vin }}">{{ vehicleTechRecord.vin }}</a>
   </ng-container>
 </div>
