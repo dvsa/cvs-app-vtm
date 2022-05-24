@@ -79,10 +79,10 @@ export const mockTestResult = (i: number = 0) =>
     createdByName: 'Jane Doe',
     testHistory: [
       { ...mockTestResultArchived(), createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
-      { ...mockTestResultArchived(), createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
-      { ...mockTestResultArchived(), createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
-      { ...mockTestResultArchived(), createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
-      { ...mockTestResultArchived(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Brush' }
+      { ...mockTestResultArchived(), createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Forest' },
+      { ...mockTestResultArchived(), createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Hills' },
+      { ...mockTestResultArchived(), createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Fields' },
+      { ...mockTestResultArchived(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Lakes' }
     ]
   });
 
