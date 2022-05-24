@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { SpinnerService } from 'src/app/layout/spinner/spinner.service';
 
 @Component({
   selector: 'app-tech-record',
@@ -14,7 +15,7 @@ export class TechRecordComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private technicalRecordService: TechnicalRecordService, private route: ActivatedRoute) {
+  constructor(private technicalRecordService: TechnicalRecordService, private route: ActivatedRoute, public spinnerService: SpinnerService) {
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       const vin = params.get('vin') ?? '';
       this.technicalRecordService.searchBy({ type: 'vin', searchTerm: vin });
