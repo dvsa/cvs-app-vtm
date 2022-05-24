@@ -10,6 +10,6 @@ import { VehicleTechnicalRecordComponent } from './views/vehicle-technical-recor
 
 @NgModule({
   declarations: [TechRecordComponent, TechRecordSummaryComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent],
-  imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule]
+    imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule]
 })
 export class TechRecordsModule {}

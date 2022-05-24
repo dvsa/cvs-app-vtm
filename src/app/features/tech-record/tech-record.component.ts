@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { Observable } from 'rxjs';
-import { SpinnerService } from 'src/app/layout/spinner/spinner.service';
+import { SpinnerService } from '../../layout/spinner/spinner.service';
 
 @Component({
   selector: 'app-tech-record',
