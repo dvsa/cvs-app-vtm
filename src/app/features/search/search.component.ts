@@ -32,7 +32,7 @@ export class SearchComponent {
 
     searchTerm = searchTerm.trim();
 
-    if (searchTerm || searchTerm !== '') {
+    if (searchTerm) {
       this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
     } else {
       this.globalErrorService.addError({ error: searchErrorMessage, anchorLink: 'search-term' });
