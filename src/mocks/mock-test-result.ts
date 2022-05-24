@@ -71,7 +71,7 @@ export const mockTestResult = (i: number = 0) =>
 
     testStationName: 'Abshire-Kub',
     testStationPNumber: 'P12346',
-    testStationType: TestStationType.atf,
+    testStationType: TestStationType.ATF,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
@@ -103,7 +103,7 @@ export const mockTestResultArchived = (i: number = 0) => {
     preparerId: 'CM2254',
     testStationName: 'Abshire-Kub',
     testStationPNumber: 'P12346',
-    testStationType: TestStationType.atf,
+    testStationType: TestStationType.ATF,
     testerName: `person ${i}`,
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: `achived test record ${i}`,
