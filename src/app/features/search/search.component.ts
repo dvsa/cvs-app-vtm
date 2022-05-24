@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
@@ -13,15 +13,13 @@ import { GlobalErrorService } from '../global-error/global-error.service';
 export class SearchComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
-  searchedValue!: string;
 
-  constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, private route: ActivatedRoute) {
-    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+  constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, 
+    private route: ActivatedRoute, private router: Router) {
+    console.log(this.route);
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       let vin = params.get('vin');
       if (vin !== null) {
-        if (vin === 'undefined'){
-          vin = ''
-        }
         this.searchTechRecords(vin)
       }
     });
@@ -48,5 +46,15 @@ export class SearchComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  public navigateSearch(search: string): void {
+    const extras: NavigationExtras = {
+      queryParams: {
+          vin: search,
+      }
+    };
+
+    this.router.navigate(['/search'], extras);
   }
 }
