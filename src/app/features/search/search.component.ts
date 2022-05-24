@@ -1,28 +1,28 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { VehicleTechRecordModel } from '../../models/vehicle-tech-record.model';
 import { GlobalErrorService } from '../global-error/global-error.service';
+import { select, Store } from '@ngrx/store';
+import { selectQueryParams } from '@store/router/selectors/router.selectors';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnDestroy {
-  private destroy$ = new Subject<void>();
+export class SearchComponent {
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
 
   constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, 
-    private route: ActivatedRoute, private router: Router) {
-    console.log(this.route);
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      let vin = params.get('vin');
-      if (vin !== null) {
-        this.searchTechRecords(vin)
-      }
-    });
+    private store: Store, private router: Router) {
+      this.store.pipe(select(selectQueryParams)).subscribe((params) => {
+        let vin = params['vin'];
+        if (vin !== null || vin !== undefined) {
+          this.searchTechRecords(vin)
+        }
+      });
     this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
   }
 
@@ -43,18 +43,12 @@ export class SearchComponent implements OnDestroy {
     return this.globalErrorService.errors$.pipe(map((errors) => errors.length));
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   public navigateSearch(search: string): void {
     const extras: NavigationExtras = {
       queryParams: {
           vin: search,
       }
     };
-
     this.router.navigate(['/search'], extras);
   }
 }

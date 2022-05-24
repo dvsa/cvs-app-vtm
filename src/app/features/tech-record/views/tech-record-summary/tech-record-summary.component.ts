@@ -12,8 +12,8 @@ import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.templa
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
-import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -21,8 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./tech-record-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TechRecordSummaryComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class TechRecordSummaryComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   vehicleSummaryTemplate!: FormNode;
   brakeTemplate!: FormNode;
@@ -42,7 +41,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
     this.currentBrakeRecord = this.currentRecord?.brakes;
   }
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private store: Store) { }
 
   //use selector to get the tech record from the date time, not an input.
 
@@ -56,7 +55,7 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
   viewableTechRecord(record?: VehicleTechRecordModel): TechRecordModel | undefined {
     let viewableTechRecord = undefined;
 
-    this.route.firstChild?.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+    this.store.pipe(select(selectRouteNestedParams)).subscribe((params) => {
       const createdAt = params['techCreatedAt'] ?? '';
       viewableTechRecord = record?.techRecord?.find((record) => new Date(record.createdAt).getTime() == createdAt);
     });
@@ -109,10 +108,5 @@ export class TechRecordSummaryComponent implements OnInit, OnDestroy {
         break;
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
