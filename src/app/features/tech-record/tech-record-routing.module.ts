@@ -8,13 +8,11 @@ const routes: Routes = [
     path: ':vin',
     component: TechRecordComponent,
     canActivateChild: [MsalGuard],
-    children: [
-      {
-        path: ':techCreatedAt',
-        component: TechRecordComponent,
-        data: { title: 'Tech Record' }
-      }
-    ]
+  },
+  {
+    path: ':vin/:techCreatedAt',
+    component: TechRecordComponent,
+    data: { title: 'Tech Record' }
   }
 ];
 
