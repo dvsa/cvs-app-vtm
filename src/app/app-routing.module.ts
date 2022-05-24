@@ -18,7 +18,7 @@ const routes: Routes = [
       },
       {
         path: 'search',
-        component: SearchComponent,
+        loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
         data: { title: 'Technical record search' },
         canActivate: [MsalGuard]
       },

@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { GlobalErrorComponent } from './features/global-error/global-error.component';
 import { HomeButtonComponent } from './features/home/components/home-button/home-button.component';
 import { HomeComponent } from './features/home/home.component';
-import { SearchComponent } from './features/search/search.component';
 import { DynamicFormsModule } from './forms/dynamic-forms.module';
 import { InterceptorModule } from './interceptors/interceptor.module';
 import { FooterComponent } from './layout/footer/footer.component';
@@ -55,7 +54,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, SearchComponent, GlobalErrorComponent, SpinnerComponent],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, HomeComponent, HomeButtonComponent, GlobalErrorComponent, SpinnerComponent],
   imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, InterceptorModule],
   providers: [
     {

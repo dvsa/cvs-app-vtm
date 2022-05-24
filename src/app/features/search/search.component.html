@@ -11,10 +11,10 @@
         <p class="white-space--normal" *ngIf="errorMessage.length > 0">{{ errorMessage[0].error }}</p>
       </span>
 
-      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage() | async }" (keyup.enter)="searchTechRecords(searchTerm.value)" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
+      <input #searchTerm [(ngModel)]="searchedValue" class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage() | async }" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
     </div>
 
-    <button class="govuk-button" data-module="govuk-button" (click)="searchTechRecords(searchTerm.value)">Search</button>
+    <button class="govuk-button" data-module="govuk-button" [routerLink]="['/search/', searchedValue]">Search</button>
   </div>
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
     <a id="view-tech-{{ vehicleTechRecord.vin }}" routerLink="/tech-records/{{ vehicleTechRecord.vin }}">{{ vehicleTechRecord.vin }}</a>
