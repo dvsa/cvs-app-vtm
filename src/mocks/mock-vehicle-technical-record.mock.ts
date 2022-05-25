@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -115,7 +115,17 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmSerialNumber: 'ser123456'
         },
         remarks: 'Some notes about the vehicle',
-        reasonForCreation: "Brake Failure"
+        reasonForCreation: "Brake Failure",
+        modelLiteral: 'Vehicle model',
+        chassisMake: 'Chassis make',
+        chassisModel: 'Chassis model',
+        bodyMake: 'Body make',
+        bodyModel: 'Body model',
+        bodyType: {
+          description: BodyTypeDescription.DOUBLEDECKER,
+        },
+        functionCode: 'r',
+        conversionRefNo: '345345',
       },
       {
         createdAt: new Date(2018, 11),
@@ -201,7 +211,17 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmSerialNumber: 'ser123456'
         },
         remarks: 'Some notes about the vehicle',
-        reasonForCreation: "COIF"
+        reasonForCreation: "COIF",
+        modelLiteral: 'Vehicle model',
+        chassisMake: 'Chassis make',
+        chassisModel: 'Chassis model',
+        bodyMake: 'Body make',
+        bodyModel: 'Body model',
+        bodyType: {
+          description: BodyTypeDescription.DOUBLEDECKER,
+        },
+        functionCode: 'r',
+        conversionRefNo: '345345',
       },
       {
         createdAt: new Date(2019, 11),
@@ -287,7 +307,17 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmSerialNumber: 'ser123456'
         },
         remarks: 'Some notes about the vehicle',
-        reasonForCreation: "COIF"
+        reasonForCreation: "COIF",
+        modelLiteral: 'Vehicle model',
+        chassisMake: 'Chassis make',
+        chassisModel: 'Chassis model',
+        bodyMake: 'Body make',
+        bodyModel: 'Body model',
+        bodyType: {
+          description: BodyTypeDescription.DOUBLEDECKER,
+        },
+        functionCode: 'r',
+        conversionRefNo: '345345',
       }
     ]
   });
