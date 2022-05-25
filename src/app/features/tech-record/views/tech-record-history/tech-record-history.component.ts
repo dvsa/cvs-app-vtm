@@ -15,7 +15,9 @@ export class TechRecordHistoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.sortedTechRecords = [...this.vehicleTechRecord!.techRecord].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    if(this.vehicleTechRecord){
+      this.sortedTechRecords = [...this.vehicleTechRecord?.techRecord].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    }
   }
 
   convertToUnix(date: Date): number {
