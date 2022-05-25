@@ -18,7 +18,7 @@ const routes: Routes = [
       },
       {
         path: 'search',
-        component: SearchComponent,
+        loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule),
         data: { title: 'Technical record search' },
         canActivate: [MsalGuard]
       },
@@ -26,6 +26,11 @@ const routes: Routes = [
         path: 'test-records',
         canLoad: [MsalGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then((m) => m.TestRecordsModule)
+      },
+      {
+        path: 'tech-records',
+        canLoad: [MsalGuard],
+        loadChildren: () => import('./features/tech-record/tech-record.module').then((m) => m.TechRecordsModule)
       }
     ]
   }
