@@ -3,9 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
-import { TestResultModel } from '@models/test-result.model';
-import { boolean } from 'yargs';
-
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
@@ -68,20 +65,52 @@ describe('TestAmendmentHistoryComponent', () => {
   });
 
   describe('Created By', () => {
-    it('should return createdByName entry if not empty', () => {
+    it('should return testerName entry if createdByName does not exist', () => {
       const name = component.getCreatedByName(mockTestResultArchived());
       const testerName = 'John Smith';
 
       expect(name).toBe(testerName);
     });
 
-    it('should return testerName if createdByName is empty', () => {
+    it('should return testerName entry if createdByName is empty', () => {
+      const name = component.getCreatedByName({ ...mockTestResultArchived(), createdByName: '' });
+      const testerName = 'John Smith';
+
+      expect(name).toBe(testerName);
+    });
+
+    it('should return createdByName if createdByName not is empty', () => {
       const name = component.getCreatedByName(mockTestResult());
       const testerName = 'John Smith';
       const createdByName = 'Jane Doe';
 
       expect(name).toBe(createdByName);
       expect(name).not.toEqual(testerName);
+    });
+  });
+
+  describe('test version', () => {
+    it('should return the testVersion if it exists', () => {
+      const version = component.getTestVersion('Archived');
+      const testVersion = 'Archived';
+
+      expect(version).toBe(testVersion);
+    });
+
+    it('should return empty string if there are multiple entries in testHistory', () => {
+      component.testRecord = mockTestResult();
+      const version = component.getTestVersion('');
+      const testVersion = '';
+
+      expect(version).toBe(testVersion);
+    });
+
+    it('should return "Current" if there are no entries in testHistory', () => {
+      component.testRecord = undefined;
+      const version = component.getTestVersion('');
+      const testVersion = 'Current';
+
+      expect(version).toEqual(testVersion);
     });
   });
 

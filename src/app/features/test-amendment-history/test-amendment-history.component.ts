@@ -12,11 +12,21 @@ export class TestAmendmentHistoryComponent {
   constructor() {}
 
   getCreatedByName(testResult: TestResultModel | undefined) {
-    return testResult?.createdByName?.length === 0 || !testResult?.createdByName ? testResult?.testerName : testResult?.createdByName;
+    return !testResult?.createdByName ? testResult?.testerName : testResult?.createdByName;
+  }
+
+  getTestVersion(testVersion: string | null | undefined): string {
+    if (testVersion) {
+      return testVersion;
+    } else if (!this.testRecord?.testHistory) {
+      return 'Current';
+    } else {
+      return '';
+    }
   }
 
   sortedTestHistory(testResult: TestResultModel[] | undefined): TestResultModel[] | undefined {
-    let newarr: TestResultModel[] | undefined = testResult
+    let sortedArray: TestResultModel[] | undefined = testResult
       ?.filter((item): item is TestResultModel => !!item.createdAt)
       .sort((a, b) => {
         return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
@@ -25,9 +35,9 @@ export class TestAmendmentHistoryComponent {
     let notFound: TestResultModel[] | undefined = testResult?.filter((item): item is TestResultModel => !item.createdAt);
 
     if (notFound) {
-      return newarr?.concat(notFound);
+      return sortedArray?.concat(notFound);
     } else {
-      return newarr;
+      return sortedArray;
     }
   }
 }

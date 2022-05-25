@@ -35,8 +35,5 @@ export interface TestResultModel {
   testHistory?: TestResultModel[];
 
   createdByName?: string;
-  testVersion: string;
-  lastUpdatedByName: string;
-  lastUpdatedAt: string | Date;
-
+  testVersion?: string | null;
 }
