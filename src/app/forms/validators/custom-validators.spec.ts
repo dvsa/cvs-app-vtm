@@ -2,7 +2,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidator } from './custom-validators';
 
-describe(CustomValidator.hide.name, () => {
+describe('Hide', () => {
   let form: FormGroup;
   beforeEach(() => {
     form = new FormGroup({
@@ -20,9 +20,8 @@ describe(CustomValidator.hide.name, () => {
   });
 
   it('should set meta.hide to false if content of sibling is not empty', () => {
-    const bar = new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, 'value');
-    form.setControl('bar', bar);
-    CustomValidator.hide('foo')(bar as AbstractControl);
+    form.controls['bar'].patchValue('bar');
+    CustomValidator.hide('foo')(form.controls['bar'] as AbstractControl);
     expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
   });
 });
