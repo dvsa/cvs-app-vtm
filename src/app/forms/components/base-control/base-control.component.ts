@@ -47,6 +47,8 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
         const firstError = ErrorMessageMap[errorList[0]];
         this.errorMessage = firstError(errors[errorList[0]], this.label);
       }
+    } else {
+      this.errorMessage = '';
     }
   }
 
