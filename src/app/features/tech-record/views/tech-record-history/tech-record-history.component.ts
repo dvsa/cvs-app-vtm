@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
@@ -6,19 +6,13 @@ import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-re
   templateUrl: './tech-record-history.component.html',
   styleUrls: ['./tech-record-history.component.scss']
 })
-export class TechRecordHistoryComponent implements OnInit {
+export class TechRecordHistoryComponent {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() currentRecord?: TechRecordModel;
 
   sortedTechRecords: TechRecordModel[] = [];
 
   constructor() { }
-
-  ngOnInit(): void {
-    if(this.vehicleTechRecord){
-      this.sortedTechRecords = [...this.vehicleTechRecord?.techRecord].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    }
-  }
 
   convertToUnix(date: Date): number {
     return new Date(date).getTime()

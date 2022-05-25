@@ -30,18 +30,15 @@ describe('TechRecordSummaryComponent', () => {
   });
 
   it('should get the tech record vehicle type', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop();
-    expect(component.vehicleTechRecord?.vehicleType).toEqual('psv');
+    expect(mockVehicleTechnicalRecord().techRecord.pop()?.vehicleType).toEqual('psv');
   });
 
   it('should get the tech record vehicle type', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();;
-    expect(component.vehicleTechRecord?.vehicleType).toEqual('trl');
+    expect(mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()?.vehicleType).toEqual('trl');
   });
 
   it('should get the tech record vehicle type', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();;
-    expect(component.vehicleTechRecord?.vehicleType).toEqual('hgv');
+    expect(mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()?.vehicleType).toEqual('hgv');
   });
 
   it('should show record found', () => {

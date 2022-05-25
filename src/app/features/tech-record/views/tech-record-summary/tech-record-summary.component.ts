@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TechRecordModel, Brakes } from '@models/vehicle-tech-record.model';
-import { PsvTechRecord } from '../../../../forms/templates/psv/psv-tech-record.template';
-import { HgvTechRecord } from '../../../../forms/templates/hgv/hgv-tech-record.template';
-import { TrlTechRecord } from '../../../../forms/templates/trl/trl-tech-record.template';
-import { FormNode } from '../../../../forms/services/dynamic-form.types';
+import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
+import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
+import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
+import { FormNode } from '@forms/services/dynamic-form.types';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
