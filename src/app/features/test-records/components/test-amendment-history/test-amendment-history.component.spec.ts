@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import * as exp from 'constants';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
