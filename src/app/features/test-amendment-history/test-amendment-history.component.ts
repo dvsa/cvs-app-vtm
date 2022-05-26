@@ -15,16 +15,6 @@ export class TestAmendmentHistoryComponent {
     return !testResult?.createdByName ? testResult?.testerName : testResult?.createdByName;
   }
 
-  getTestVersion(testVersion: string | null | undefined): string {
-    if (testVersion) {
-      return testVersion;
-    } else if (!this.testRecord?.testHistory) {
-      return 'Current';
-    } else {
-      return '';
-    }
-  }
-
   sortedTestHistory(testResult: TestResultModel[] | undefined): TestResultModel[] | undefined {
     let sortedArray: TestResultModel[] | undefined = testResult
       ?.filter((item): item is TestResultModel => !!item.createdAt)

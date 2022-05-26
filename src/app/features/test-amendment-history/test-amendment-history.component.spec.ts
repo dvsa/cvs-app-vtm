@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import * as exp from 'constants';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
@@ -90,31 +91,6 @@ describe('TestAmendmentHistoryComponent', () => {
     });
   });
 
-  describe('test version', () => {
-    it('should return the testVersion if it exists', () => {
-      const version = component.getTestVersion('Archived');
-      const testVersion = 'Archived';
-
-      expect(version).toBe(testVersion);
-    });
-
-    it('should return empty string if there are multiple entries in testHistory', () => {
-      component.testRecord = mockTestResult();
-      const version = component.getTestVersion('');
-      const testVersion = '';
-
-      expect(version).toBe(testVersion);
-    });
-
-    it('should return "Current" if there are no entries in testHistory', () => {
-      component.testRecord = undefined;
-      const version = component.getTestVersion('');
-      const testVersion = 'Current';
-
-      expect(version).toEqual(testVersion);
-    });
-  });
-
   describe('Table', () => {
     it('should render on the DOM', () => {
       component.testRecord = mockTestResult();
@@ -141,20 +117,18 @@ describe('TestAmendmentHistoryComponent', () => {
       });
       it('should have first row be the current record', () => {
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[0].nativeElement.innerHTML).toBe(component.testRecord?.testVersion);
-        expect(cells[1].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.reasonForCreation!));
-        expect(cells[2].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
-        expect(cells[3].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt!, 'MMM d, yyyy', 'en'));
-        expect(cells[4].nativeElement.innerHTML).toBe('');
+        expect(cells[0].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.reasonForCreation!));
+        expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
+        expect(cells[2].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt!, 'MMM d, yyyy', 'en'));
+        expect(cells[3].nativeElement.innerHTML).toBe('');
       });
 
       it('should have the second row be the most recent archived amendement version', () => {
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[5].nativeElement.innerHTML).toBe(component.testRecord?.testHistory![1].testVersion);
-        expect(cells[6].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.testHistory![1].reasonForCreation!));
-        expect(cells[7].nativeElement.innerHTML).toBe(component.testRecord?.testHistory![1].createdByName);
-        expect(cells[8].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![1].createdAt!, 'MMM d, yyyy', 'en'));
-        expect(cells[9].nativeElement.innerHTML).toContain('View');
+        expect(cells[4].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.testHistory![1].reasonForCreation!));
+        expect(cells[5].nativeElement.innerHTML).toBe(component.testRecord?.testHistory![1].createdByName);
+        expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![1].createdAt!, 'MMM d, yyyy', 'en'));
+        expect(cells[7].nativeElement.innerHTML).toContain('View');
       });
     });
 
@@ -162,9 +136,10 @@ describe('TestAmendmentHistoryComponent', () => {
       component.testRecord = mockTestResult();
       fixture.detectChanges();
 
-      const links = fixture.debugElement.query(By.css('a'));
+      const links = fixture.debugElement.queryAll(By.css('a'));
 
-      expect(links.nativeElement.innerHTML).toBe('View');
+      links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
+      expect(links.length).toBe(component.testRecord.testHistory?.length);
     });
   });
 });
