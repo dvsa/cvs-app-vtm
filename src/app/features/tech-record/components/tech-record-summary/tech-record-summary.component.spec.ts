@@ -29,20 +29,8 @@ describe('TechRecordSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get the tech record vehicle type', () => {
-    expect(mockVehicleTechnicalRecord().techRecord.pop()?.vehicleType).toEqual('psv');
-  });
-
-  it('should get the tech record vehicle type', () => {
-    expect(mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()?.vehicleType).toEqual('trl');
-  });
-
-  it('should get the tech record vehicle type', () => {
-    expect(mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()?.vehicleType).toEqual('hgv');
-  });
-
   it('should show record found', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop();;
+    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop();
     fixture.detectChanges();
 
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));

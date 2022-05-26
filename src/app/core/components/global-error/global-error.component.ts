@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { GlobalError, GlobalErrorService } from './global-error.service';
+import { GlobalError } from './global-error.interface';
+import { GlobalErrorService } from './global-error.service';
 
 @Component({
   selector: 'app-global-error',

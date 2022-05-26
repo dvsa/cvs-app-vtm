@@ -4,10 +4,7 @@ import { MsalModule } from '@azure/msal-angular';
 import { StoreModule } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppComponent } from './app.component';
-import { GlobalErrorComponent } from './features/global-error/global-error.component';
-import { FooterComponent } from './layout/footer/footer.component';
-import { HeaderComponent } from './layout/header/header.component';
-import { SpinnerComponent } from './layout/spinner/spinner.component';
+import { CoreModule } from './core/core.module';
 import { UserService } from './services/user-service/user-service';
 
 describe('AppComponent', () => {
@@ -17,8 +14,8 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StoreModule.forRoot({}), MsalModule],
-      declarations: [AppComponent, HeaderComponent, FooterComponent, GlobalErrorComponent, SpinnerComponent],
+      imports: [RouterTestingModule, StoreModule.forRoot({}), MsalModule, CoreModule],
+      declarations: [AppComponent],
       providers: [{ provide: UserService, useValue: MockUserService }]
     }).compileComponents();
   });

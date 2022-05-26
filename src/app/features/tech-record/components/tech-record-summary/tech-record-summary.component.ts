@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { TechRecordModel, Brakes } from '@models/vehicle-tech-record.model';
-import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
-import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
-import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
-import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
-import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
-import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
-import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.template';
+import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
+import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
+import { PsvBody } from '@forms/templates/psv/psv-body';
+import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
+import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
+import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
+import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.template';
 import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
-import { PsvBody } from '@forms/templates/psv/psv-body';
+import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
+import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
+import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -39,7 +39,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.currentBrakeRecord = this.vehicleTechRecord?.brakes;
   }
 
-  constructor() { }
+  constructor() {}
 
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TestResultModel } from '../../models/test-result.model';
+import { TestResultModel } from '@models/test-result.model';
 
 @Component({
   selector: 'app-test-record-summary',
