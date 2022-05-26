@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { TestRecordsComponent } from './test-records.component';
-import { TestRecordComponent } from './views/test-result/test-records.component';
+import { TestRecordComponent } from './views/test-result/test-records-summary.component';
 
 const routes: Routes = [
   {

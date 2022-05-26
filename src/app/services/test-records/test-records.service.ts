@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
-import { fetchTestResults, fetchTestResultsBySystemId, selectAllTestResults, selectDefectData, selectedTestResultState, TestResultsState } from '@store/test-records';
+import { fetchTestResults, fetchTestResultsBySystemId, selectAllTestResults, selectDefectData, selectedTestResultState, selectVehicleType, TestResultsState } from '@store/test-records';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -45,5 +45,9 @@ export class TestRecordsService {
 
   get defectData$() {
     return this.store.pipe(select(selectDefectData));
+  }
+
+  get vehicleType$() {
+    return this.store.pipe(select(selectVehicleType));
   }
 }
