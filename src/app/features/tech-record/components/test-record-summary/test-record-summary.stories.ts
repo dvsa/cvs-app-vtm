@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/angular';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
-import { TestResultModel } from '../../models/test-result.model';
 import { mockTestResult } from '@mocks/mock-test-result';
+import { TestResultModel } from '@models/test-result.model';
 
 const fakeRecord: TestResultModel = mockTestResult();
 

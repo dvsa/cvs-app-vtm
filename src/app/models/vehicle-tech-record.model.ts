@@ -128,6 +128,8 @@ export interface Axle {
 }
 
 export interface TechRecordModel {
+  createdAt: Date;
+  createdByName: string;
   statusCode: StatusCodes;
   vehicleType: VehicleTypes;
   regnDate: string;
@@ -174,6 +176,7 @@ export interface TechRecordModel {
   applicantDetails?: ApplicantDetails;
   microfilm?: Microfilm;
   remarks?: string;
+  reasonForCreation: string;
   modelLiteral?: string;
   chassisMake?: string;
   chassisModel?: string;

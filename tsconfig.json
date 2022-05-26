@@ -23,12 +23,13 @@
       "dom"
     ],
     "paths": {
+      "@core/*": ["src/app/core/*"],
+      "@forms/*": ["src/app/forms/*"],
       "@mocks/*": ["src/mocks/*"],
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
       "@store/*": ["src/app/store/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@forms/*": ["src/app/forms/*"]
+      "@shared/*": ["src/app/shared/*"]
     },
     "plugins": [
       { "transform": "ts-auto-mock/transformer", "cacheBetweenTests": false }

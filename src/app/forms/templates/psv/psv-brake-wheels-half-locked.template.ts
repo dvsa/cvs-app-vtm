@@ -12,7 +12,7 @@ export const PsvBrakeSectionWheelsHalfLocked: FormNode = {
             type: FormNodeTypes.GROUP,
             children: [
                 {
-                    name: 'parkingBrakeForceB',
+                    name: 'serviceBrakeForceB',
                     label: 'Service',
                     value: '',
                     type: FormNodeTypes.CONTROL,
@@ -24,7 +24,7 @@ export const PsvBrakeSectionWheelsHalfLocked: FormNode = {
                     type: FormNodeTypes.CONTROL,
                 },
                 {
-                    name: 'serviceBrakeForceB',
+                    name: 'parkingBrakeForceB',
                     label: 'Parking',
                     value: '',
                     type: FormNodeTypes.CONTROL,

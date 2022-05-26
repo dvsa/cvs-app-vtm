@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
-import { getByVIN, vehicleTechRecords } from '@store/technical-records';
+import { getByVIN, selectVehicleTechnicalRecordByVin, vehicleTechRecords } from '@store/technical-records';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -19,6 +19,10 @@ export class TechnicalRecordService {
 
   get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
+  }
+
+  get selectedVehicleTechRecord$() {
+    return this.store.pipe(select(selectVehicleTechnicalRecordByVin));
   }
 
   searchBy(criteria: { type: 'vin'; searchTerm: string }) {
