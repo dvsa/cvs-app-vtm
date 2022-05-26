@@ -19,7 +19,9 @@ export class TechRecordComponent implements OnDestroy {
   constructor(private technicalRecordService: TechnicalRecordService, private store: Store, public spinnerService: SpinnerService) {
     this.store.pipe(select(selectRouteNestedParams)).pipe(takeUntil(this.ngDestroy$)).subscribe((params) => {
       const vin = params['vin'];
-      this.technicalRecordService.searchBy({ type: 'vin', searchTerm: vin });
+      if (vin) {
+        this.technicalRecordService.searchBy({ type: 'vin', searchTerm: vin });
+      }
     });
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
   }
