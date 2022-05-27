@@ -1,6 +1,6 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../../services/dynamic-form.types';
 
-export const PsvAnnual: FormNode = {
+export const TrlAnnual: FormNode = {
   name: 'psvAnnualTest',
   label: 'Annual test',
   type: FormNodeTypes.GROUP,
@@ -284,7 +284,7 @@ export const PsvAnnual: FormNode = {
               name: 'particulateTrapSerialNumber',
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL
-            },
+            }
           ]
         }
       ]

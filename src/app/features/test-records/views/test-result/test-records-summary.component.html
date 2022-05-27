@@ -5,6 +5,16 @@
         <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
       </ng-container>
     </ng-container>
+    <ng-container *ngSwitchCase="vehicleTypes.HGV">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.HGV] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="vehicleTypes.TRL">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.TRL] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
   </ng-container>
 
   <!-- <app-dynamic-form-group [template]="template" [data]="testResult"></app-dynamic-form-group> -->
