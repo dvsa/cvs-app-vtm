@@ -25,6 +25,18 @@ export const testResultsEnitities = createSelector(testResultsFeatureState, sele
 export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { testResultId }) => entities[testResultId]);
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
+export const selectedTestSortedAmendementHistory = createSelector(selectedTestResultState, (testResult) => {
+  const sortedArray: TestResultModel[] | undefined = testResult?.testHistory
+    ?.filter((item): item is TestResultModel => !!item.createdAt)
+    .sort((a, b) => {
+      return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
+    });
+
+  const notFound: TestResultModel[] | undefined = testResult?.testHistory?.filter((item): item is TestResultModel => !item.createdAt);
+
+  return notFound ? sortedArray?.concat(notFound) : sortedArray;
+});
+
 /**
  * Returns the selected test record defects for the first testType (if any).
  * TODO: When we have better routing set up, we need to revisit this so that the testType is also selected based on route paramerets/queries.

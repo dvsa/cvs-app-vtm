@@ -1,33 +1,23 @@
 import { Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
+import { select, Store } from '@ngrx/store';
+import { selectedTestSortedAmendementHistory } from '@store/test-records/selectors/test-records.selectors';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-test-amendment-history',
-  templateUrl: './test-amendment-history.component.html',
-  styleUrls: ['./test-amendment-history.component.scss']
+  templateUrl: './test-amendment-history.component.html'
 })
 export class TestAmendmentHistoryComponent {
   @Input() testRecord: TestResultModel | undefined;
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   getCreatedByName(testResult: TestResultModel | undefined) {
     return !testResult?.createdByName ? testResult?.testerName : testResult?.createdByName;
   }
 
-  sortedTestHistory(testResult: TestResultModel[] | undefined): TestResultModel[] | undefined {
-    let sortedArray: TestResultModel[] | undefined = testResult
-      ?.filter((item): item is TestResultModel => !!item.createdAt)
-      .sort((a, b) => {
-        return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
-      });
-
-    let notFound: TestResultModel[] | undefined = testResult?.filter((item): item is TestResultModel => !item.createdAt);
-
-    if (notFound) {
-      return sortedArray?.concat(notFound);
-    } else {
-      return sortedArray;
-    }
+  get sortedTestHistory(): Observable<TestResultModel[] | undefined> {
+    return this.store.pipe(select(selectedTestSortedAmendementHistory));
   }
 }

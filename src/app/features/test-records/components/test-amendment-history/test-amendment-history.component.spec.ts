@@ -3,7 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
+import { provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { initialAppState } from '@store/.';
+import { Observable } from 'rxjs';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
@@ -13,7 +16,8 @@ describe('TestAmendmentHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestAmendmentHistoryComponent, DefaultNullOrEmpty],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
+      providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
@@ -25,44 +29,6 @@ describe('TestAmendmentHistoryComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Sorting', () => {
-    it('should append amendment history entry with not date to the end', () => {
-      const mock = mockTestResult();
-      delete mock.createdAt;
-      const randomOrderTestHistory = [
-        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
-        { ...mock, reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
-        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
-        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' }
-      ];
-      const testHistory = component.sortedTestHistory(randomOrderTestHistory);
-      const sortedTestHistory = [
-        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
-        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
-        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
-        { ...mock, reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' }
-      ];
-      expect(testHistory).toEqual(sortedTestHistory);
-    });
-    it('should sort the amendment history by date', () => {
-      const mock = mockTestResult();
-      const randomOrderTestHistory = [
-        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
-        { ...mock, createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
-        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
-        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' }
-      ];
-      const testHistory = component.sortedTestHistory(randomOrderTestHistory);
-      const sortedTestHistory = [
-        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
-        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
-        { ...mock, createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
-        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' }
-      ];
-      expect(testHistory).toEqual(sortedTestHistory);
-    });
   });
 
   describe('Created By', () => {
@@ -131,9 +97,10 @@ describe('TestAmendmentHistoryComponent', () => {
       });
     });
 
-    it('should have links to view amended records', () => {
+    it('should have links to view amended records', async () => {
       component.testRecord = mockTestResult();
       fixture.detectChanges();
+      jest.runAllTicks();
 
       const links = fixture.debugElement.queryAll(By.css('a'));
 
