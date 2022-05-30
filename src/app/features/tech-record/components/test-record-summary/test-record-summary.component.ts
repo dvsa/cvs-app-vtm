@@ -4,7 +4,6 @@ import { TestResultModel } from '@models/test-result.model';
 @Component({
   selector: 'app-test-record-summary',
   templateUrl: './test-record-summary.component.html',
-  styleUrls: ['./test-record-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordSummaryComponent {
