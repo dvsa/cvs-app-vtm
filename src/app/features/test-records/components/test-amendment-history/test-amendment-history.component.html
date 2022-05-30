@@ -16,7 +16,7 @@
         <td class="govuk-table__cell">{{ testRecord?.createdAt | date | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell"></td>
       </tr>
-      <tr class="govuk-table__row" *ngFor="let amendedTest of sortedTestHistory | async">
+      <tr class="govuk-table__row" *ngFor="let amendedTest of sortedTestHistory$ | async">
         <td class="govuk-table__cell">{{ amendedTest.reasonForCreation | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell">{{ amendedTest.createdAt | date | defaultNullOrEmpty }}</td>

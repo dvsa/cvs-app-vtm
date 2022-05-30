@@ -17,7 +17,7 @@ export class TestAmendmentHistoryComponent {
     return !testResult?.createdByName ? testResult?.testerName : testResult?.createdByName;
   }
 
-  get sortedTestHistory(): Observable<TestResultModel[] | undefined> {
+  get sortedTestHistory$(): Observable<TestResultModel[] | undefined> {
     return this.store.pipe(select(selectedTestSortedAmendementHistory));
   }
 }
