@@ -1,6 +1,6 @@
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TestResultModel } from '@models/test-result.model';
 import { createAction, props } from '@ngrx/store';
-import { GlobalError } from 'src/app/features/global-error/global-error.service';
 
 export const fetchTestResults = createAction('[API/test-results] Fetch All');
 export const fetchTestResultsSuccess = createAction('[API/test-results] Fetch All Success', props<{ payload: Array<TestResultModel> }>());

@@ -29,6 +29,18 @@ export const selectDefectData = createSelector(selectedTestResultState, (testRes
   return getDefectFromTestResult(testResult);
 });
 
+export const selectedTestSortedAmendementHistory = createSelector(selectedTestResultState, (testResult) => {
+  const sortedArray: TestResultModel[] | undefined = testResult?.testHistory
+    ?.filter((item): item is TestResultModel => !!item.createdAt)
+    .sort((a, b) => {
+      return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
+    });
+
+  const notFound: TestResultModel[] | undefined = testResult?.testHistory?.filter((item): item is TestResultModel => !item.createdAt);
+
+  return notFound ? sortedArray?.concat(notFound) : sortedArray;
+});
+
 export const selectedArchivedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { archivedTestResultId }) => testRecord?.testHistory?.find((i) => i.testResultId === archivedTestResultId));
 export const selectArchivedDefectData = createSelector(selectedArchivedTestResultState, (archivedTestResult) => {
   return getDefectFromTestResult(archivedTestResult);

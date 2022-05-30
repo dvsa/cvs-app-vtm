@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
 import { mockTestResult, mockTestResultArchived } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectArchivedDefectData, selectDefectData, selectedArchivedTestResultState, selectedTestResultState, testResultLoadingState } from './test-records.selectors';
+import { selectArchivedDefectData, selectDefectData, selectedArchivedTestResultState, selectedTestResultState, selectedTestSortedAmendementHistory, testResultLoadingState } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -34,6 +34,24 @@ describe('Test Results Selectors', () => {
       const noDefectState = { ...state, testTypes: [{ ...state.testTypes[0], defects: undefined }] };
       const defectState = selectDefectData.projector(noDefectState);
       expect(defectState?.length).toBe(0);
+    });
+  });
+
+  describe('selectSortedTestAmendementHistory', () => {
+    let mock: TestResultModel;
+    let sorted: TestResultModel[];
+    beforeEach(() => {
+      mock = mockTestResult();
+      sorted = [];
+      sorted[0] = mock.testHistory![1];
+      sorted[1] = mock.testHistory![3];
+      sorted[2] = mock.testHistory![2];
+      sorted[3] = mock.testHistory![0];
+      sorted[4] = mock.testHistory![4];
+    });
+    it('should sort the ', () => {
+      const sortedTestHistory = selectedTestSortedAmendementHistory.projector(mock);
+      expect(sortedTestHistory).toEqual(sorted);
     });
   });
 

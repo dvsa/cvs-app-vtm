@@ -1,5 +1,5 @@
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { createAction, props } from '@ngrx/store';
-import { GlobalError } from 'src/app/features/global-error/global-error.service';
 import { VehicleTechRecordModel } from '../../../models/vehicle-tech-record.model';
 
 export const getByVIN = createAction('[Technical Record Service] GetByVIN', props<{ vin: string }>());

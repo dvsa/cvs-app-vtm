@@ -6,7 +6,7 @@ import { spinnerState } from '@store/spinner/reducers/spinner.reducer';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
 import { firstValueFrom, take } from 'rxjs';
-import { AppModule } from '../../app.module';
+import { SpinnerComponent } from './spinner.component';
 import { SpinnerService } from './spinner.service';
 
 describe('Spinner-Service', () => {
@@ -15,7 +15,8 @@ describe('Spinner-Service', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [AppModule, RouterTestingModule],
+      declarations: [SpinnerComponent],
+      imports: [RouterTestingModule],
       providers: [SpinnerService, provideMockStore({ initialState: initialAppState })]
     });
 

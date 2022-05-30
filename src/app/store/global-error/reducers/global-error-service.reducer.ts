@@ -2,7 +2,7 @@ import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/
 import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
 import * as TestResultActions from '@store/test-records';
 import * as GlobalErrorActions from '../actions/global-error.actions';
-import { GlobalError } from 'src/app/features/global-error/global-error.service';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 
 export const STORE_GLOBAL_ERROR_KEY = 'GlobalError';
 

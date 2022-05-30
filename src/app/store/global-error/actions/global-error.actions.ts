@@ -1,6 +1,5 @@
-import { createAction, props } from "@ngrx/store";
-import { GlobalError } from "src/app/features/global-error/global-error.service";
-
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { createAction, props } from '@ngrx/store';
 
 export const clearError = createAction('[Global Error Service] Clear Error');
-export const addError = createAction('[Global Error Service] Add error', props<GlobalError>())
+export const addError = createAction('[Global Error Service] Add error', props<GlobalError>());

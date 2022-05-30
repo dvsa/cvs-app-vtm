@@ -1,12 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
-import { initialAppState } from '@store/.';
-import { provideMockStore } from '@ngrx/store/testing';
-import { TestRecordSummaryComponent } from '../features/test-record-summary/test-record-summary.component';
-import { TechRecordSummaryComponent } from '../features/tech-record-summary/tech-record-summary.component';
-import { SharedModule } from '@shared/shared.module';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { provideMockStore } from '@ngrx/store/testing';
+import { SharedModule } from '@shared/shared.module';
+import { initialAppState } from '@store/.';
+import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
+import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
+import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
+import { TechRecordsModule } from '../../tech-record.module';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -14,7 +16,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule],
+      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TechRecordsModule],
       declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();

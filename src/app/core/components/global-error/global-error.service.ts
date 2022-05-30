@@ -4,6 +4,7 @@ import { State } from '@store/.';
 import { addError, clearError } from '@store/global-error/actions/global-error.actions';
 import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { Observable } from 'rxjs';
+import { GlobalError } from './global-error.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,4 @@ export class GlobalErrorService {
   clearError(): void {
     this.store.dispatch(clearError());
   }
-}
-
-export interface GlobalError {
-  error: string;
-  anchorLink?: string;
 }
