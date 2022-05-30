@@ -5,7 +5,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
-  styleUrls: ['./text-input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

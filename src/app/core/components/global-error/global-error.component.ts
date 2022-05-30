@@ -5,7 +5,6 @@ import { GlobalErrorService } from './global-error.service';
 @Component({
   selector: 'app-global-error',
   templateUrl: './global-error.component.html',
-  styleUrls: ['./global-error.component.scss']
 })
 export class GlobalErrorComponent {
   constructor(public globalErrorService: GlobalErrorService) {}
