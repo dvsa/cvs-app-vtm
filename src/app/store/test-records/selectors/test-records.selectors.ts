@@ -29,7 +29,7 @@ export const selectDefectData = createSelector(selectedTestResultState, (testRes
   return getDefectFromTestResult(testResult);
 });
 
-export const selectedTestSortedAmendementHistory = createSelector(selectedTestResultState, (testResult) => {
+export const selectedTestSortedAmendmentHistory = createSelector(selectedTestResultState, (testResult) => {
   const sortedArray: TestResultModel[] | undefined = testResult?.testHistory
     ?.filter((item): item is TestResultModel => !!item.createdAt)
     .sort((a, b) => {

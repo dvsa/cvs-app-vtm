@@ -1,11 +1,10 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-view-combination',
   templateUrl: './view-combination.component.html',
-  styleUrls: ['./view-combination.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

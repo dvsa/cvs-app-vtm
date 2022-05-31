@@ -32,4 +32,9 @@ describe('DefaultNullOrEmpty pipe tests', () => {
     const val = new Date();
     expect(pipe.transform(val)).toBe(val);
   });
+
+  it('should capitalise the first character of a string', () => {
+    const val = 'lowercase string';
+    expect(pipe.transform(val)).toBe('Lowercase string');
+  });
 });

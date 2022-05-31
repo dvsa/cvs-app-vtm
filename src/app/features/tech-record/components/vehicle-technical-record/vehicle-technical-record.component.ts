@@ -10,7 +10,6 @@ import { Observable, of, Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-vehicle-technical-record',
   templateUrl: './vehicle-technical-record.component.html',
-  styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
@@ -44,7 +43,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
 
     this.store.pipe(select(selectRouteNestedParams)).pipe(takeUntil(this.ngDestroy$)).subscribe((params) => {
       const createdAt = params['techCreatedAt'] ?? '';
-      viewableTechRecord = record?.techRecord?.find((record) => new Date(record.createdAt).getTime() == createdAt);
+      viewableTechRecord = record?.techRecord?.find((techRecord) => new Date(techRecord.createdAt).getTime() == createdAt);
     });
 
     if (!viewableTechRecord) {
@@ -60,14 +59,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
   filterTechRecordByStatusCode(record?: VehicleTechRecordModel): TechRecordModel | undefined {
-    let filteredTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.PROVISIONAL);
+    let filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.PROVISIONAL);
 
     if (filteredTechRecord == undefined) {
-      filteredTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.CURRENT);
+      filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.CURRENT);
     }
 
     if (filteredTechRecord == undefined) {
-      filteredTechRecord = record?.techRecord?.find((record) => record.statusCode === StatusCodes.ARCHIVED);
+      filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.ARCHIVED);
     }
 
     return filteredTechRecord;
