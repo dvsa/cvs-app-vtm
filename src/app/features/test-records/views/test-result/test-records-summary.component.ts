@@ -12,7 +12,6 @@ import { FormNode } from 'src/app/forms/services/dynamic-form.types';
 @Component({
   selector: 'app-test-records',
   templateUrl: './test-records-summary.component.html',
-  styleUrls: ['./test-records-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordComponent {

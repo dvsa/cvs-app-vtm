@@ -71,7 +71,7 @@ server.get('/test-results/:systemId', (req, res) => {
       res.jsonp('Error service unavailable');
       break;
     default:
-      res.jsonp(mockTestResultList(req.params.systemId));
+      res.jsonp(mockTestResultList(1, req.params.systemId));
       break;
   }
 });
