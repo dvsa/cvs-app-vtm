@@ -1,8 +1,6 @@
-import { not } from '@angular/compiler/src/output/output_ast';
 import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
-import * as exp from 'constants';
-import { mockTestResult, mockTestResultArchived } from '../../../../mocks/mock-test-result';
+import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
 import { selectedTestResultState, testResultLoadingState, selectDefectData, selectedTestSortedAmendmentHistory } from './test-records.selectors';
 

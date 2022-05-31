@@ -5,16 +5,15 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records';
-import { titleCaseFirstWord } from '../../../../../test-utils/functions';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
   let component: TestAmendmentHistoryComponent;
   let fixture: ComponentFixture<TestAmendmentHistoryComponent>;
   let store: MockStore;
+  const pipe = new DefaultNullOrEmpty();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -85,7 +84,7 @@ describe('TestAmendmentHistoryComponent', () => {
       it('should have first row be the current record', () => {
         component.testRecord = mockTestResult();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[0].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.reasonForCreation!));
+        expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation!));
         expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
         expect(cells[2].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt!, 'MMM d, yyyy', 'en'));
         expect(cells[3].nativeElement.innerHTML).toBe('');
@@ -97,7 +96,7 @@ describe('TestAmendmentHistoryComponent', () => {
         tick();
         fixture.detectChanges();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[4].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.testHistory![0].reasonForCreation!));
+        expect(cells[4].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].reasonForCreation!));
         expect(cells[5].nativeElement.innerHTML).toBe(component.testRecord?.testHistory![0].testerName);
         expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
         expect(cells[7].nativeElement.innerHTML).toContain('View');
