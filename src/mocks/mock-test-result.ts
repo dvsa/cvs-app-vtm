@@ -118,7 +118,7 @@ export const mockTestResultArchived = (i: number = 0) =>
     testVersion: 'Archived'
   });
 
-export const mockTestResultList = (systemNumber: string = 'PSV', items: number = 1) => {
+export const mockTestResultList = (items: number = 1, systemNumber: string = 'PSV') => {
   switch (systemNumber.substring(0, 3)) {
     case 'HGV':
       return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.HGV, systemNumber));
