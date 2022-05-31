@@ -17,7 +17,6 @@ import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
 @Component({
   selector: 'app-tech-record-summary',
   templateUrl: './tech-record-summary.component.html',
-  styleUrls: ['./tech-record-summary.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechRecordSummaryComponent implements OnInit {

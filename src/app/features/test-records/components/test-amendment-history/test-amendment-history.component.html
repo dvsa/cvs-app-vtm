@@ -1,0 +1,29 @@
+<section id="test-records-amendment-history">
+  <h2 class="govuk-heading-m">Test Record Amendment History</h2>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Reason for creation</th>
+        <th scope="col" class="govuk-table__header">Created by</th>
+        <th scope="col" class="govuk-table__header">Created at</th>
+        <th scope="col" class="govuk-table__header"></th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell">{{ testRecord?.reasonForCreation | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ getCreatedByName(testRecord) | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ testRecord?.createdAt | date | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+      <tr class="govuk-table__row" *ngFor="let amendedTest of sortedTestHistory$ | async">
+        <td class="govuk-table__cell">{{ amendedTest.reasonForCreation | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">{{ amendedTest.createdAt | date | defaultNullOrEmpty }}</td>
+        <td class="govuk-table__cell">
+          <a id="view-test-{{ amendedTest.testResultId }}" routerLink="#">View</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>

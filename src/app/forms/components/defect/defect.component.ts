@@ -7,7 +7,6 @@ import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInf
 @Component({
   selector: 'app-defect',
   templateUrl: './defect.component.html',
-  styleUrls: ['./defect.component.scss']
 })
 export class DefectComponent {
   @Input() edit = false;

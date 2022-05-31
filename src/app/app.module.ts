@@ -74,4 +74,4 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   exports: [],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })
-export class AppModule {}
+export class AppModule { }

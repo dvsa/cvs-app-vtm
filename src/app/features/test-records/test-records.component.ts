@@ -6,7 +6,6 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-test-records',
   templateUrl: './test-records.component.html',
-  styleUrls: ['./test-records.component.scss']
 })
 export class TestRecordsComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

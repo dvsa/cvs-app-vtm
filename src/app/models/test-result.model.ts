@@ -33,4 +33,8 @@ export interface TestResultModel {
 
   reasonForCreation?: string;
   vehicleType?: string;
+  testHistory?: TestResultModel[];
+
+  createdByName?: string;
+  testVersion?: string | null;
 }

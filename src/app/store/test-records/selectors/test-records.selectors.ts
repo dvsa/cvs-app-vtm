@@ -25,8 +25,16 @@ export const testResultsEnitities = createSelector(testResultsFeatureState, sele
 export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { testResultId }) => entities[testResultId]);
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
-export const selectVehicleType = createSelector(selectedTestResultState, (testResult) => {
-  return testResult?.vehicleType || undefined;
+export const selectedTestSortedAmendmentHistory = createSelector(selectedTestResultState, (testResult) => {
+  const sortedArray: TestResultModel[] | undefined = testResult?.testHistory
+    ?.filter((item): item is TestResultModel => !!item.createdAt)
+    .sort((a, b) => {
+      return new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime();
+    });
+
+  const notFound: TestResultModel[] | undefined = testResult?.testHistory?.filter((item): item is TestResultModel => !item.createdAt);
+
+  return notFound ? sortedArray?.concat(notFound) : sortedArray;
 });
 
 /**
