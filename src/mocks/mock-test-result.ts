@@ -1,5 +1,6 @@
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
+import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
 import * as Emissions from '../app/models/emissions.enum';
@@ -47,11 +48,11 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
     });
   });
 
-export const mockTestResult = (i: number = 0) =>
+export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') =>
   createMock<TestResultModel>({
     testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
 
-    systemNumber: 'SYS0001',
+    systemNumber,
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
 
@@ -75,7 +76,16 @@ export const mockTestResult = (i: number = 0) =>
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
-    vehicleType: 'psv'
+    vehicleType
   });
 
-export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));
+export const mockTestResultList = (systemNumber: string = 'PSV', items: number = 1) => {
+  switch (systemNumber.substring(0, 3)) {
+    case 'HGV':
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.HGV, systemNumber));
+    case 'TRL':
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.TRL, systemNumber));
+    default:
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i));
+  }
+};

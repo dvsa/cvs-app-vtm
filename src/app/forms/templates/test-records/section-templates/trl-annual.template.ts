@@ -25,6 +25,13 @@ export const TrlAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
+      name: 'trailerId',
+      label: 'Trailer ID',
+      value: '',
+
+      type: FormNodeTypes.CONTROL
+    },
+    {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',

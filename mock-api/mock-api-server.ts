@@ -53,7 +53,7 @@ server.get('/vehicles/:vin/*', (req, res) => {
       console.log('TRL technical record');
       break;
     default:
-      res.jsonp(mockVehicleTechnicalRecordList());  
+      res.jsonp(mockVehicleTechnicalRecordList());
       break;
   }
 });
@@ -71,7 +71,7 @@ server.get('/test-results/:systemId', (req, res) => {
       res.jsonp('Error service unavailable');
       break;
     default:
-      res.jsonp(mockTestResultList());
+      res.jsonp(mockTestResultList(req.params.systemId));
       break;
   }
 });

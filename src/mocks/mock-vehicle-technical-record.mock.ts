@@ -33,7 +33,7 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
     techRecord: [
       {
         createdAt: new Date(),
-        createdByName: "Nathan",
+        createdByName: 'Nathan',
         statusCode: StatusCodes.PROVISIONAL,
         vehicleType: VehicleTypes.PSV,
         regnDate: '1234',
@@ -115,21 +115,21 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmSerialNumber: 'ser123456'
         },
         remarks: 'Some notes about the vehicle',
-        reasonForCreation: "Brake Failure",
+        reasonForCreation: 'Brake Failure',
         modelLiteral: 'Vehicle model',
         chassisMake: 'Chassis make',
         chassisModel: 'Chassis model',
         bodyMake: 'Body make',
         bodyModel: 'Body model',
         bodyType: {
-          description: BodyTypeDescription.DOUBLEDECKER,
+          description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345',
+        conversionRefNo: '345345'
       },
       {
         createdAt: new Date(2018, 11),
-        createdByName: "Nathan",
+        createdByName: 'Nathan',
         statusCode: StatusCodes.ARCHIVED,
         vehicleType: VehicleTypes.PSV,
         regnDate: '12345678',
@@ -211,21 +211,21 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmSerialNumber: 'ser123456'
         },
         remarks: 'Some notes about the vehicle',
-        reasonForCreation: "COIF",
+        reasonForCreation: 'COIF',
         modelLiteral: 'Vehicle model',
         chassisMake: 'Chassis make',
         chassisModel: 'Chassis model',
         bodyMake: 'Body make',
         bodyModel: 'Body model',
         bodyType: {
-          description: BodyTypeDescription.DOUBLEDECKER,
+          description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345',
+        conversionRefNo: '345345'
       },
       {
         createdAt: new Date(2019, 11),
-        createdByName: "Nathan",
+        createdByName: 'Nathan',
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.PSV,
         regnDate: '12345678',
@@ -307,24 +307,24 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           microfilmSerialNumber: 'ser123456'
         },
         remarks: 'Some notes about the vehicle',
-        reasonForCreation: "COIF",
+        reasonForCreation: 'COIF',
         modelLiteral: 'Vehicle model',
         chassisMake: 'Chassis make',
         chassisModel: 'Chassis model',
         bodyMake: 'Body make',
         bodyModel: 'Body model',
         bodyType: {
-          description: BodyTypeDescription.DOUBLEDECKER,
+          description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345',
+        conversionRefNo: '345345'
       }
     ]
   });
 
 const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
-    systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
+    systemNumber: `HGV${String(systemNumber + 1).padStart(4, '0')}`,
     vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {
@@ -339,7 +339,7 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
     techRecord: [
       {
         createdAt: new Date(),
-        createdByName: "Nathan",
+        createdByName: 'Nathan',
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.HGV,
         regnDate: '1234',
@@ -370,14 +370,14 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         euVehicleCategory: EuVehicleCategories.M1,
         emissionsLimit: 1234,
         departmentalVehicleMarker: true,
-        reasonForCreation: "Brake Failure"
+        reasonForCreation: 'Brake Failure'
       }
     ]
   });
 
 const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
-    systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
+    systemNumber: `TRL${String(systemNumber + 1).padStart(4, '0')}`,
     vin: `XMGDE04FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {
@@ -392,7 +392,7 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
     techRecord: [
       {
         createdAt: new Date(),
-        createdByName: "Nathan",
+        createdByName: 'Nathan',
         statusCode: StatusCodes.CURRENT,
         vehicleType: VehicleTypes.TRL,
         regnDate: '1234',
@@ -422,7 +422,7 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         frameDescription: FrameDescriptions.FRAME_SECTION,
         euVehicleCategory: EuVehicleCategories.M1,
         departmentalVehicleMarker: true,
-        reasonForCreation: "Brake Failure"
+        reasonForCreation: 'Brake Failure'
       }
     ]
   });
