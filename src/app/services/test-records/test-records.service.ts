@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
-import { fetchTestResults, fetchTestResultsBySystemId, selectAllTestResults, selectArchivedDefectData, selectDefectData, selectedArchivedTestResultState, selectedTestResultState, TestResultsState } from '@store/test-records';
+import { fetchTestResults, fetchTestResultsBySystemId, selectAllTestResults, selectAmendedDefectData, selectDefectData, selectedAmendedTestResultState, selectedTestResultState, TestResultsState } from '@store/test-records';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
 export class TestRecordsService {
   constructor(private http: HttpClient, private store: Store<TestResultsState>) {}
 
-  fetchTestResultbySystemId(systemId: string, queryparams?: { testResultId?: string }): Observable<Array<TestResultModel>> {
+  fetchTestResultbySystemId(systemId: string, queryparams?: { submitted?: string; fromDateTime?: string; toDateTime?: string; testResultId?: string; version?: 'all' | 'current' }): Observable<Array<TestResultModel>> {
     if (!systemId) {
       return throwError(() => new Error('systemId is required'));
     }
@@ -47,11 +47,11 @@ export class TestRecordsService {
     return this.store.pipe(select(selectDefectData));
   }
 
-  get archivedTestResult$() {
-    return this.store.pipe(select(selectedArchivedTestResultState));
+  get amendedTestResult$() {
+    return this.store.pipe(select(selectedAmendedTestResultState));
   }
 
-  get archivedDefectData$() {
-    return this.store.pipe(select(selectArchivedDefectData));
+  get amendedDefectData$() {
+    return this.store.pipe(select(selectAmendedDefectData));
   }
 }

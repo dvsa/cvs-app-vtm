@@ -8,20 +8,19 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-archived-test-record',
-  templateUrl: './archived-test-record.component.html',
-  styleUrls: ['./archived-test-record.component.scss']
+  selector: 'app-amended-test-record',
+  templateUrl: './amended-test-record.component.html'
 })
-export class ArchivedTestRecordComponent {
+export class AmendedTestRecordComponent {
   testResult$: Observable<TestResultModel | undefined>;
   template: FormNode;
   defectTpl: FormNode;
   defectData$: Observable<Defects | undefined>;
 
   constructor(private testRecordsService: TestRecordsService) {
-    this.testResult$ = this.testRecordsService.archivedTestResult$;
+    this.testResult$ = this.testRecordsService.amendedTestResult$;
     this.template = PsvAnnual;
     this.defectTpl = DefectTpl;
-    this.defectData$ = this.testRecordsService.archivedDefectData$;
+    this.defectData$ = this.testRecordsService.amendedDefectData$;
   }
 }

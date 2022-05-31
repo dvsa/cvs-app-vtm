@@ -5,23 +5,22 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
+import { AmendedTestRecordComponent } from './amended-test-record.component';
 
-import { ArchivedTestRecordComponent } from './archived-test-record.component';
-
-describe('ArchivedTestRecordComponent', () => {
-  let component: ArchivedTestRecordComponent;
-  let fixture: ComponentFixture<ArchivedTestRecordComponent>;
+describe('AmendedTestRecordComponent', () => {
+  let component: AmendedTestRecordComponent;
+  let fixture: ComponentFixture<AmendedTestRecordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchivedTestRecordComponent],
+      declarations: [AmendedTestRecordComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArchivedTestRecordComponent);
+    fixture = TestBed.createComponent(AmendedTestRecordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

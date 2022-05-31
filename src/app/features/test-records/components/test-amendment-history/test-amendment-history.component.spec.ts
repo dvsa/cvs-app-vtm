@@ -1,33 +1,25 @@
 import { formatDate } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/.';
-import { selectedTestSortedAmendementHistory } from '@store/test-records';
-import { titleCaseFirstWord } from '../../../../../test-utils/functions';
+
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
   let component: TestAmendmentHistoryComponent;
   let fixture: ComponentFixture<TestAmendmentHistoryComponent>;
-  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestAmendmentHistoryComponent, DefaultNullOrEmpty],
-      imports: [RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      declarations: [TestAmendmentHistoryComponent],
+      imports: [RouterTestingModule]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestAmendmentHistoryComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 
@@ -35,22 +27,55 @@ describe('TestAmendmentHistoryComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('Sorting', () => {
+    it('should append amendment history entry with not date to the end', () => {
+      const mock = { ...mockTestResult() };
+      delete mock.createdAt;
+      const randomOrderTestHistory = [
+        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
+        { ...mock, reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
+        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
+        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' }
+      ];
+      const testHistory = component.sortedTestHistory(randomOrderTestHistory);
+      const sortedTestHistory = [
+        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
+        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
+        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
+        { ...mock, reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' }
+      ];
+      expect(testHistory).toEqual(sortedTestHistory);
+    });
+
+    it('should sort the amendment history by date', () => {
+      const mock = { ...mockTestResult() };
+      const randomOrderTestHistory = [
+        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
+        { ...mock, createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
+        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
+        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' }
+      ];
+      const testHistory = component.sortedTestHistory(randomOrderTestHistory);
+      const sortedTestHistory = [
+        { ...mock, createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Carr' },
+        { ...mock, createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Mop' },
+        { ...mock, createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Tone' },
+        { ...mock, createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' }
+      ];
+      expect(testHistory).toEqual(sortedTestHistory);
+    });
+  });
+
   describe('Created By', () => {
-    it('should return testerName entry if createdByName does not exist', () => {
-      const name = component.getCreatedByName(mockTestResultArchived());
+    it('should return createdByName entry if not empty', () => {
+      const mockArchivedTestResult = { ...mockTestResultArchived(), testerName: 'John Smith', createdByName: undefined };
+      const name = component.getCreatedByName(mockArchivedTestResult);
       const testerName = 'John Smith';
 
       expect(name).toBe(testerName);
     });
 
-    it('should return testerName entry if createdByName is empty', () => {
-      const name = component.getCreatedByName({ ...mockTestResultArchived(), createdByName: '' });
-      const testerName = 'John Smith';
-
-      expect(name).toBe(testerName);
-    });
-
-    it('should return createdByName if createdByName not is empty', () => {
+    it('should return testerName if createdByName is empty', () => {
       const name = component.getCreatedByName(mockTestResult());
       const testerName = 'John Smith';
       const createdByName = 'Jane Doe';
@@ -73,47 +98,52 @@ describe('TestAmendmentHistoryComponent', () => {
       expect(table).toBeTruthy();
     });
 
-    describe('Table sorting', () => {
-      beforeEach(() => {
-        component.testRecord = mockTestResult();
-        fixture.detectChanges();
-
-        const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
-        expect(rows[0]).toBeTruthy();
-      });
-
-      it('should have first row be the current record', () => {
-        component.testRecord = mockTestResult();
-        const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[0].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.reasonForCreation!));
-        expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
-        expect(cells[2].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.createdAt!, 'MMM d, yyyy', 'en'));
-        expect(cells[3].nativeElement.innerHTML).toBe('');
-      });
-
-      it('should have the second row be the first entry from amendement version history', fakeAsync(() => {
-        component.testRecord = mockTestResult();
-        store.overrideSelector(selectedTestSortedAmendementHistory, mockTestResult().testHistory);
-        tick();
-        fixture.detectChanges();
-        const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
-        expect(cells[4].nativeElement.innerHTML).toBe(titleCaseFirstWord(component.testRecord?.testHistory![0].reasonForCreation!));
-        expect(cells[5].nativeElement.innerHTML).toBe(component.testRecord?.testHistory![0].testerName);
-        expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
-        expect(cells[7].nativeElement.innerHTML).toContain('View');
-      }));
-    });
-
-    it('should have links to view amended records', fakeAsync(() => {
+    it('should have first row be the current record', () => {
       component.testRecord = mockTestResult();
-      store.overrideSelector(selectedTestSortedAmendementHistory, mockTestResult().testHistory);
-      tick();
       fixture.detectChanges();
 
-      const links = fixture.debugElement.queryAll(By.css('a'));
+      const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
+      expect(rows[0]).toBeTruthy();
 
-      links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
-      expect(links.length).toBe(component.testRecord?.testHistory?.length);
-    }));
+      const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
+      expect(cells[0].nativeElement.innerHTML).toBe(component.testRecord.testVersion);
+      expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord.reasonForCreation);
+      expect(cells[2].nativeElement.innerHTML).toBe(component.testRecord.createdByName);
+      expect(cells[3].nativeElement.innerHTML).toBe(formatDate(component.testRecord.createdAt!, 'MMM d, yyyy', 'en'));
+      expect(cells[4].nativeElement.innerHTML).toBe('');
+    });
+
+    it('should have the second row be the most recent archived amendement version', () => {
+      component.testRecord = mockTestResult();
+      fixture.detectChanges();
+
+      const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
+      expect(rows[0]).toBeTruthy();
+
+      const sortedTestHistory = component.sortedTestHistory(component.testRecord.testHistory);
+      console.group('*******');
+      sortedTestHistory?.forEach((i) => {
+        console.log(JSON.stringify(i.createdAt, null, 2));
+        console.log(JSON.stringify(i.reasonForCreation, null, 2));
+        console.log(JSON.stringify(i.createdByName, null, 2));
+      });
+      console.groupEnd();
+
+      const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
+      expect(cells[5].nativeElement.innerHTML).toBe(sortedTestHistory![0].testVersion);
+      expect(cells[6].nativeElement.innerHTML).toBe(sortedTestHistory![0].reasonForCreation);
+      expect(cells[7].nativeElement.innerHTML).toBe(sortedTestHistory![0].createdByName);
+      expect(cells[8].nativeElement.innerHTML).toBe(formatDate(sortedTestHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
+      expect(cells[9].nativeElement.innerHTML).toContain('View');
+    });
+
+    it('should have links to view amended records', () => {
+      component.testRecord = mockTestResult();
+      fixture.detectChanges();
+
+      const links = fixture.debugElement.query(By.css('a'));
+
+      expect(links.nativeElement.innerHTML).toBe('View');
+    });
   });
 });

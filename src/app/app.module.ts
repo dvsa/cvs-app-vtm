@@ -49,11 +49,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, InterceptorModule, CoreModule],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: MsalInterceptor,
+    //   multi: true
+    // },
     {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
@@ -62,10 +62,10 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       provide: MSAL_GUARD_CONFIG,
       useFactory: MSALGuardConfigFactory
     },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory
-    },
+    // {
+    //   provide: MSAL_INTERCEPTOR_CONFIG,
+    //   useFactory: MSALInterceptorConfigFactory
+    // },
     MsalService,
     MsalGuard,
     MsalBroadcastService,

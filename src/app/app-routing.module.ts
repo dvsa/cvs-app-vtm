@@ -11,23 +11,23 @@ const routes: Routes = [
       {
         path: '',
         data: { title: 'Home' },
-        canActivate: [MsalGuard],
+        // canActivate: [MsalGuard],
         loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule)
       },
       {
         path: 'search',
         data: { title: 'Technical record search' },
-        canActivate: [MsalGuard],
+        // canActivate: [MsalGuard],
         loadChildren: () => import('./features/search/search.module').then((m) => m.SearchModule)
       },
       {
         path: 'test-records',
-        canActivate: [MsalGuard],
+        // canActivate: [MsalGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then((m) => m.TestRecordsModule)
       },
       {
         path: 'tech-records',
-        canActivate: [MsalGuard],
+        // canActivate: [MsalGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then((m) => m.TechRecordsModule)
       }
     ]

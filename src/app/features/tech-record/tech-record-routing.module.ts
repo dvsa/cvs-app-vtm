@@ -6,8 +6,8 @@ import { TechRecordComponent } from './tech-record.component';
 const routes: Routes = [
   {
     path: ':vin',
-    component: TechRecordComponent,
-    canActivateChild: [MsalGuard],
+    component: TechRecordComponent
+    // canActivateChild: [MsalGuard],
   },
   {
     path: ':vin/:techCreatedAt',

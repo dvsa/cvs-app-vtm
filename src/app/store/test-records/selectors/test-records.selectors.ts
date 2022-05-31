@@ -41,9 +41,9 @@ export const selectedTestSortedAmendementHistory = createSelector(selectedTestRe
   return notFound ? sortedArray?.concat(notFound) : sortedArray;
 });
 
-export const selectedArchivedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { archivedTestResultId }) => testRecord?.testHistory?.find((i) => i.testResultId === archivedTestResultId));
-export const selectArchivedDefectData = createSelector(selectedArchivedTestResultState, (archivedTestResult) => {
-  return getDefectFromTestResult(archivedTestResult);
+export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { amendedTestResultId }) => testRecord?.testHistory?.find((i) => i.testResultId === amendedTestResultId));
+export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, (amendedTestResult) => {
+  return getDefectFromTestResult(amendedTestResult);
 });
 
 // Common Functions
