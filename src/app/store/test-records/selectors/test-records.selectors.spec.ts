@@ -1,8 +1,8 @@
 import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
-import { mockTestResult, mockTestResultArchived } from '../../../../mocks/mock-test-result';
+import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectedTestResultState, testResultLoadingState, selectDefectData, selectedTestSortedAmendmentHistory } from './test-records.selectors';
+import { selectDefectData, selectedTestResultState, selectedTestSortedAmendmentHistory, testResultLoadingState } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
