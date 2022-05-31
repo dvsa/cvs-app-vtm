@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { TestRecordsComponent } from './test-records.component';
-import { TestRecordComponent } from './views/test-result/test-records-summary.component';
+import { TestRecordSummaryComponent } from './views/test-result/test-records-summary.component';
 
 const routes: Routes = [
   {
@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       {
         path: 'test-result/:testResultId',
-        component: TestRecordComponent,
+        component: TestRecordSummaryComponent,
         data: { title: 'Test Result' }
       }
     ]
