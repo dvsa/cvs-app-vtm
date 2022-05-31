@@ -25,7 +25,7 @@ export const testResultsEnitities = createSelector(testResultsFeatureState, sele
 export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteParams, (entities, { testResultId }) => entities[testResultId]);
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
-export const selectedTestSortedAmendementHistory = createSelector(selectedTestResultState, (testResult) => {
+export const selectedTestSortedAmendmentHistory = createSelector(selectedTestResultState, (testResult) => {
   const sortedArray: TestResultModel[] | undefined = testResult?.testHistory
     ?.filter((item): item is TestResultModel => !!item.createdAt)
     .sort((a, b) => {

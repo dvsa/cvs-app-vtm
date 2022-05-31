@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
-import { selectedTestSortedAmendementHistory } from '@store/test-records/selectors/test-records.selectors';
+import { selectedTestSortedAmendmentHistory } from '@store/test-records/selectors/test-records.selectors';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
@@ -18,6 +18,6 @@ export class TestAmendmentHistoryComponent {
   }
 
   get sortedTestHistory$(): Observable<TestResultModel[] | undefined> {
-    return this.store.pipe(select(selectedTestSortedAmendementHistory));
+    return this.store.pipe(select(selectedTestSortedAmendmentHistory));
   }
 }

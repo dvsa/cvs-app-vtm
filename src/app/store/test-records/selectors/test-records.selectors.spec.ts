@@ -1,9 +1,10 @@
+import { not } from '@angular/compiler/src/output/output_ast';
 import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
 import * as exp from 'constants';
 import { mockTestResult, mockTestResultArchived } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectedTestResultState, testResultLoadingState, selectDefectData, selectedTestSortedAmendementHistory } from './test-records.selectors';
+import { selectedTestResultState, testResultLoadingState, selectDefectData, selectedTestSortedAmendmentHistory } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -38,21 +39,28 @@ describe('Test Results Selectors', () => {
     });
   });
 
-  describe('selectSortedTestAmendementHistory', () => {
+  describe('selectSortedTestAmendmentHistory', () => {
     let mock: TestResultModel;
     let sorted: TestResultModel[];
     beforeEach(() => {
       mock = mockTestResult();
-      sorted = [];
-      sorted[0] = mock.testHistory![1];
-      sorted[1] = mock.testHistory![3];
-      sorted[2] = mock.testHistory![2];
-      sorted[3] = mock.testHistory![0];
-      sorted[4] = mock.testHistory![4];
     });
-    it('should sort the ', () => {
-      const sortedTestHistory = selectedTestSortedAmendementHistory.projector(mock);
-      expect(sortedTestHistory).toEqual(sorted);
+    it('should sort the test history', () => {
+      // Adding entries with null created at at the end if they exist
+      const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
+      let previous = new Date(sortedTestHistory![0].createdAt!).getTime();
+      let notfound: TestResultModel[] = [];
+      sortedTestHistory?.forEach((test) => {
+        if (test.createdAt) {
+          expect(new Date(test.createdAt!).getTime()).toBeLessThanOrEqual(previous);
+          previous = new Date(test.createdAt!).getTime();
+        } else {
+          notfound.push(test);
+        }
+      });
+      if (notfound.length > 0) {
+        expect(sortedTestHistory?.slice(-notfound.length)).toEqual(notfound);
+      }
     });
   });
 });

@@ -7,7 +7,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { selectedTestSortedAmendementHistory } from '@store/test-records';
+import { selectedTestSortedAmendmentHistory } from '@store/test-records';
 import { titleCaseFirstWord } from '../../../../../test-utils/functions';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
@@ -93,7 +93,7 @@ describe('TestAmendmentHistoryComponent', () => {
 
       it('should have the second row be the first entry from amendement version history', fakeAsync(() => {
         component.testRecord = mockTestResult();
-        store.overrideSelector(selectedTestSortedAmendementHistory, mockTestResult().testHistory);
+        store.overrideSelector(selectedTestSortedAmendmentHistory, mockTestResult().testHistory);
         tick();
         fixture.detectChanges();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
@@ -106,7 +106,7 @@ describe('TestAmendmentHistoryComponent', () => {
 
     it('should have links to view amended records', fakeAsync(() => {
       component.testRecord = mockTestResult();
-      store.overrideSelector(selectedTestSortedAmendementHistory, mockTestResult().testHistory);
+      store.overrideSelector(selectedTestSortedAmendmentHistory, mockTestResult().testHistory);
       tick();
       fixture.detectChanges();
 
