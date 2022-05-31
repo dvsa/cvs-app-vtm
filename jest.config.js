@@ -1,4 +1,4 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig.json');
 
 module.exports = {
@@ -9,7 +9,8 @@ module.exports = {
   collectCoverage: true,
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   coverageDirectory: 'coverage/cvs-app-vtm',
-  testPathIgnorePatterns: ["/node_modules/", "/archive/", "/dist/"],
+  testPathIgnorePatterns: ['/node_modules/', '/archive/', '/dist/'],
+  testResultsProcessor: 'jest-sonar-reporter',
   globals: {
     crypto: require("crypto"),
   },

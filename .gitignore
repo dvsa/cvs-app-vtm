@@ -43,6 +43,7 @@ testem.log
 /typings
 .reports/
 {}
+.scannerwork
 
 # System files
 .DS_Store
