@@ -1,10 +1,8 @@
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { createSelector } from '@ngrx/store';
-import { createMock } from 'ts-auto-mock';
-import { getVehicleTechRecordState, initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
-
-export const vehicleTechRecords = createSelector(getVehicleTechRecordState, (state) => state.vehicleTechRecords);
-export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordState, (state) => state.loading);
+import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { createMock, createMockList } from 'ts-auto-mock';
+import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
+import { selectVehicleTechnicalRecordsByVin, technicalRecordsLoadingState, vehicleTechRecords } from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -20,6 +18,35 @@ describe('Tech Record Selectors', () => {
       const state: TechnicalRecordServiceState = { ...initialState, loading: true };
       const selectedState = technicalRecordsLoadingState.projector(state);
       expect(selectedState).toBeTruthy();
+    });
+  });
+
+  describe(selectVehicleTechnicalRecordsByVin.name, () => {
+    it('should return the correct record by vin', () => {
+      const vin = 'VIN0001';
+      const vehicleTechRecords = createMockList<VehicleTechRecordModel>(1, (i) =>
+        createMock<VehicleTechRecordModel>({
+          vin,
+          techRecord: [
+            createMock<TechRecordModel>({
+              createdAt: new Date('2022-01-01').toISOString()
+            }),
+            createMock<TechRecordModel>({
+              createdAt: new Date('2022-01-03').toISOString()
+            }),
+            createMock<TechRecordModel>({
+              createdAt: new Date('2022-01-02').toISOString()
+            })
+          ]
+        })
+      );
+
+      const selectedState = selectVehicleTechnicalRecordsByVin.projector(vehicleTechRecords, { vin });
+
+      const expectedTechRecord = vehicleTechRecords[0].techRecord;
+      expect(selectedState?.techRecord[0].createdAt).toStrictEqual(expectedTechRecord[1].createdAt);
+      expect(selectedState?.techRecord[1].createdAt).toStrictEqual(expectedTechRecord[2].createdAt);
+      expect(selectedState?.techRecord[2].createdAt).toStrictEqual(expectedTechRecord[0].createdAt);
     });
   });
 });

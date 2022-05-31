@@ -77,18 +77,12 @@ export const mockTestResult = (i: number = 0) =>
     additionalNotesRecorded: 'notes for the test record will be displayed here...',
     testVersion: 'Current',
     createdByName: 'Jane Doe',
-    testHistory: [
-      { ...mockTestResultArchived(), createdAt: new Date('05 October 2011 14:48 UTC').toISOString(), reasonForCreation: 'different mock test' },
-      { ...mockTestResultArchived(), createdAt: new Date('05 October 2014 14:48 UTC').toISOString(), reasonForCreation: 'amend some data', createdByName: 'Barry Forest' },
-      { ...mockTestResultArchived(), createdAt: new Date('15 November 2013 14:48 UTC').toISOString(), reasonForCreation: 'amend test reason', createdByName: 'Barry Hills' },
-      { ...mockTestResultArchived(), createdAt: new Date('23 June 2014 14:48 UTC').toISOString(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Fields' },
-      { ...mockTestResultArchived(), reasonForCreation: 'some thing was changed', createdByName: 'Sarah Lakes' }
-    ]
+    testHistory: [...createMockList<TestResultModel>(5, (j) => mockTestResultArchived(j))]
   });
 
 export const mockTestResultArchived = (i: number = 0) => {
   const now = new Date();
-  const createdAt = now.setDate(now.getDate() + i);
+  const createdAt = now.setDate(now.getDate() - (i + 1));
   return createMock<TestResultModel>({
     testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
     createdAt: new Date(createdAt).toISOString(),
@@ -110,7 +104,7 @@ export const mockTestResultArchived = (i: number = 0) => {
     testStationName: 'Abshire-Kub',
     testStationPNumber: 'P12346',
     testStationType: TestStationType.ATF,
-    testerName: `person ${i}`,
+    testerName: `tester ${i}`,
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: `achived test record ${i}`,
     testVersion: 'Archived'

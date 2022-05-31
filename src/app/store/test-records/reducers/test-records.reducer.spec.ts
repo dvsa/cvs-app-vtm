@@ -1,5 +1,5 @@
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResults, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
+import { fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess, fetchTestResults, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
 import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
 
 describe('Test Results Reducer', () => {
@@ -16,10 +16,7 @@ describe('Test Results Reducer', () => {
 
   describe('fetchTestResults', () => {
     it('should set loading to true', () => {
-      const newState: TestResultsState = {
-        ...initialTestResultsState,
-        loading: true
-      };
+      const newState: TestResultsState = { ...initialTestResultsState, loading: true };
       const action = fetchTestResults();
       const state = testResultsReducer(initialTestResultsState, action);
 
@@ -45,6 +42,15 @@ describe('Test Results Reducer', () => {
   });
 
   describe('fetchTestResultsBySystemId actions', () => {
+    it('should set loading to true', () => {
+      const newState: TestResultsState = { ...initialTestResultsState, loading: true };
+      const action = fetchTestResultsBySystemId({ systemId: 'TestResultId0001' });
+      const state = testResultsReducer(initialTestResultsState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+
     describe('fetchTestResultsBySystemIdSuccess', () => {
       it('should set all test result records', () => {
         const testResults = mockTestResultList();
@@ -59,10 +65,45 @@ describe('Test Results Reducer', () => {
 
     describe('fetchTestResultsBySystemIdFailed', () => {
       it('should set error state', () => {
-        const error = 'fetching test records failed';
-        const newState = { ...initialTestResultsState, error };
-        const action = fetchTestResultsBySystemIdFailed({ error });
+        const newState = { ...initialTestResultsState, loading: false };
+        const action = fetchTestResultsBySystemIdFailed({ error: 'unit testing error message' });
+        const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
+
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
+    });
+  });
+
+  describe('fetchSelectedTestResult actions', () => {
+    it('should set loading to true', () => {
+      const newState: TestResultsState = { ...initialTestResultsState, loading: true };
+      const action = fetchSelectedTestResult();
+      const state = testResultsReducer(initialTestResultsState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+
+    describe('fetchSelectedTestResultSuccess', () => {
+      it('should set all test result records', () => {
+        const testResults = mockTestResultList();
+        const updatedTestResult = { ...testResults[0], odometerReading: 99999 };
+
+        const newState: TestResultsState = { ...initialTestResultsState, ids: [updatedTestResult.testResultId], entities: { [updatedTestResult.testResultId]: updatedTestResult } };
+        const action = fetchSelectedTestResultSuccess({ payload: updatedTestResult });
         const state = testResultsReducer(initialTestResultsState, action);
+
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
+    });
+
+    describe('fetchSelectedTestResultFailed', () => {
+      it('should set error state', () => {
+        const newState = { ...initialTestResultsState, loading: false };
+        const action = fetchSelectedTestResultFailed({ error: 'unit testing error message' });
+        const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
 
         expect(state).toEqual(newState);
         expect(state).not.toBe(newState);
