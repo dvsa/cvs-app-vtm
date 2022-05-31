@@ -32,4 +32,8 @@ export interface TestResultModel {
   additionalNotesRecorded: string;
 
   reasonForCreation?: string;
+  testHistory?: TestResultModel[];
+
+  createdByName?: string;
+  testVersion?: string | null;
 }

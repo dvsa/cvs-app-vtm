@@ -8,6 +8,7 @@ import { initialAppState } from '@store/.';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
+import { TechRecordsModule } from '../../tech-record.module';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -15,7 +16,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TechRecordsModule],
       declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
