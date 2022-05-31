@@ -6,25 +6,25 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
-import { TestRecordComponent } from './test-records-summary.component';
+import { TestRecordSummaryComponent } from './test-records-summary.component';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 
 describe('TestRecordComponent', () => {
-  let component: TestRecordComponent;
-  let fixture: ComponentFixture<TestRecordComponent>;
+  let component: TestRecordSummaryComponent;
+  let fixture: ComponentFixture<TestRecordSummaryComponent>;
   let el: DebugElement;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [TestRecordComponent],
+      declarations: [TestRecordSummaryComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestRecordComponent);
+    fixture = TestBed.createComponent(TestRecordSummaryComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
   });

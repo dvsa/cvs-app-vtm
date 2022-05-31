@@ -10,16 +10,14 @@ import { Observable } from 'rxjs';
 import { FormNode } from 'src/app/forms/services/dynamic-form.types';
 
 @Component({
-  selector: 'app-test-records',
+  selector: 'app-test-record-summary',
   templateUrl: './test-records-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordComponent {
+export class TestRecordSummaryComponent {
   testResult$: Observable<TestResultModel | undefined>;
-  template: FormNode | undefined;
   defectTpl: FormNode;
   defectsData$: Observable<Defects | undefined>;
-  vehicleType!: string;
 
   constructor(private testRecordsService: TestRecordsService) {
     this.testResult$ = this.testRecordsService.testResult$;
