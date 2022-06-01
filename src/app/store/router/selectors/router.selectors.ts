@@ -2,7 +2,8 @@ import { Params } from '@angular/router';
 import { getSelectors, RouterReducerState } from '@ngrx/router-store';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-export const selectRouter = createFeatureSelector<RouterReducerState>('router');
+export const STORE_FEATURE_ROUTER_STORE_KEY = 'router';
+export const selectRouter = createFeatureSelector<RouterReducerState>(STORE_FEATURE_ROUTER_STORE_KEY);
 
 export const {
   selectCurrentRoute, // select the current route
@@ -22,9 +23,8 @@ export const selectRouteNestedParams = createSelector(selectRouter, (router) => 
     currentRoute = currentRoute.firstChild;
     params = {
       ...params,
-      ...currentRoute.params,
+      ...currentRoute.params
     };
   }
   return params;
 });
-

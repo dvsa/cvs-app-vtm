@@ -7,11 +7,12 @@ import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState } from '@store/.';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getByVINSuccess } from '@store/technical-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
+import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
+import { fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
 import { TestResultsEffects } from './test-records.effects';
 
 describe('TestResultsEffects', () => {
@@ -23,7 +24,25 @@ describe('TestResultsEffects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestResultsEffects, provideMockActions(() => actions$), TestRecordsService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        TestResultsEffects,
+        provideMockActions(() => actions$),
+        TestRecordsService,
+        provideMockStore({
+          initialState: initialAppState,
+          selectors: [
+            {
+              selector: selectRouteNestedParams,
+              value: [
+                {
+                  systemId: 'systemId01',
+                  testResultId: 'testResult01'
+                }
+              ]
+            }
+          ]
+        })
+      ]
     });
 
     effects = TestBed.inject(TestResultsEffects);
@@ -133,6 +152,51 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
           b: fetchTestResultsBySystemIdSuccess({ payload: [] })
+        });
+      });
+    });
+  });
+
+  describe('fetchSelectedTestResult$', () => {
+    it('should return fetchSelectedTestResultSuccess', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResult = mockTestResult();
+
+        actions$ = hot('-a-', { a: fetchSelectedTestResult() });
+
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: [testResult] }));
+
+        expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
+          b: fetchSelectedTestResultSuccess({ payload: testResult })
+        });
+      });
+    });
+
+    it('should return fetchSelectedTestResultFailed if API returns empty array', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a-', { a: fetchSelectedTestResult() });
+
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: [] }));
+
+        expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
+          b: fetchSelectedTestResultFailed({ error: 'Test result not found' })
+        });
+      });
+    });
+
+    it('should return fetchSelectedTestResultFailed if API returns an error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a-', { a: fetchSelectedTestResult() });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 400,
+          statusText: 'Bad Request'
+        });
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
+          b: fetchSelectedTestResultFailed({ error: 'Http failure response for (unknown url): 400 Bad Request' })
         });
       });
     });

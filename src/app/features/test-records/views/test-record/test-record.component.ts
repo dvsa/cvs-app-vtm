@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { FormNode } from 'src/app/forms/services/dynamic-form.types';
 
 @Component({
-  selector: 'app-test-record-summary',
-  templateUrl: './test-records-summary.component.html',
+  selector: 'app-test-records',
+  templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordSummaryComponent {

@@ -4,11 +4,11 @@ import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '../../forms/dynamic-forms.module';
 import { TestAmendmentHistoryComponent } from './components/test-amendment-history/test-amendment-history.component';
 import { TestRecordsRoutingModule } from './test-records-routing.module';
-import { TestRecordsComponent } from './test-records.component';
-import { TestRecordSummaryComponent } from './views/test-result/test-records-summary.component';
+import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
+import { TestRecordComponent } from './views/test-record/test-record.component';
 
 @NgModule({
-  declarations: [TestRecordsComponent, TestRecordSummaryComponent, TestAmendmentHistoryComponent],
+  declarations: [TestRecordComponent, AmendedTestRecordComponent, TestAmendmentHistoryComponent],
   imports: [CommonModule, TestRecordsRoutingModule, DynamicFormsModule, SharedModule]
 })
 export class TestRecordsModule {}
