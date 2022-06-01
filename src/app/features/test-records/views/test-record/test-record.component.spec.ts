@@ -11,20 +11,20 @@ import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 
 describe('TestRecordComponent', () => {
-  let component: TestRecordSummaryComponent;
-  let fixture: ComponentFixture<TestRecordSummaryComponent>;
+  let component: TestRecordComponent;
+  let fixture: ComponentFixture<TestRecordComponent>;
   let el: DebugElement;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [TestRecordSummaryComponent],
+      declarations: [TestRecordComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestRecordSummaryComponent);
+    fixture = TestBed.createComponent(TestRecordComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
   });

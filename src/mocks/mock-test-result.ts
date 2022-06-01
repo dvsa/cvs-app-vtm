@@ -79,16 +79,16 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     vehicleType,
     testVersion: 'Current',
     createdByName: 'Jane Doe',
-    testHistory: [...createMockList<TestResultModel>(5, (j) => mockTestResultArchived(j))]
+    testHistory: [...createMockList<TestResultModel>(5, (j) => mockTestResultArchived(j, vehicleType, systemNumber))]
   });
 
-export const mockTestResultArchived = (i: number = 0) => {
+export const mockTestResultArchived = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') => {
   const date = new Date('2022-01-02');
   const createdAt = date.setDate(date.getDate() - (i + 1));
   return createMock<TestResultModel>({
     testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
     createdAt: new Date(createdAt).toISOString(),
-    systemNumber: 'SYS0001',
+    systemNumber,
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
     testStartTimestamp: new Date().toISOString(),
@@ -109,7 +109,8 @@ export const mockTestResultArchived = (i: number = 0) => {
     testerName: `tester ${i}`,
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
     additionalNotesRecorded: `achived test record ${i}`,
-    testVersion: 'Archived'
+    testVersion: 'Archived',
+    vehicleType
   });
 };
 

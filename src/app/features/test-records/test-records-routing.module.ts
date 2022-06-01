@@ -14,7 +14,8 @@ const routes: Routes = [
   {
     path: ':systemId/test-result/:testResultId/amended/:createdAt',
     component: AmendedTestRecordComponent,
-    data: { title: 'Amend Test Result' }
+    data: { title: 'Amend Test Result' },
+    resolve: { load: TestResultResolver }
   }
 ];
 

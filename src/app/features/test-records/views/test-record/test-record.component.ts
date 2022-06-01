@@ -14,7 +14,7 @@ import { FormNode } from 'src/app/forms/services/dynamic-form.types';
   templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordSummaryComponent {
+export class TestRecordComponent {
   testResult$: Observable<TestResultModel | undefined>;
   defectTpl: FormNode;
   defectsData$: Observable<Defects | undefined>;
