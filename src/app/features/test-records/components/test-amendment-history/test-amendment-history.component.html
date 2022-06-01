@@ -21,7 +21,7 @@
         <td class="govuk-table__cell">{{ getCreatedByName(amendedTest) | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell">{{ amendedTest.createdAt | date | defaultNullOrEmpty }}</td>
         <td class="govuk-table__cell">
-          <a id="view-test-{{ amendedTest.testResultId }}" routerLink="amended/{{ amendedTest.testResultId }}">View</a>
+          <a id="view-test-{{ amendedTest.testResultId }}" routerLink="amended/{{ amendedTest.createdAt }}">View</a>
         </td>
       </tr>
     </tbody>

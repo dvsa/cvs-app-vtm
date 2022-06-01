@@ -41,7 +41,11 @@ export const selectedTestSortedAmendmentHistory = createSelector(selectedTestRes
   return notFound ? sortedArray?.concat(notFound) : sortedArray;
 });
 
-export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { amendedTestResultId }) => testRecord?.testHistory?.find((i) => i.testResultId === amendedTestResultId));
+export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { createdAt }) =>
+  testRecord?.testHistory?.find((i) => {
+    return i.createdAt === createdAt;
+  })
+);
 export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, (amendedTestResult) => {
   return getDefectFromTestResult(amendedTestResult);
 });

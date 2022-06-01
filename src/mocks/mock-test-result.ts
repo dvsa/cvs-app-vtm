@@ -81,8 +81,8 @@ export const mockTestResult = (i: number = 0) =>
   });
 
 export const mockTestResultArchived = (i: number = 0) => {
-  const now = new Date();
-  const createdAt = now.setDate(now.getDate() - (i + 1));
+  const date = new Date('2022-01-02');
+  const createdAt = date.setDate(date.getDate() - (i + 1));
   return createMock<TestResultModel>({
     testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
     createdAt: new Date(createdAt).toISOString(),
