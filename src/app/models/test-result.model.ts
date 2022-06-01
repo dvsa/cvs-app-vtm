@@ -32,6 +32,7 @@ export interface TestResultModel {
   additionalNotesRecorded: string;
 
   reasonForCreation?: string;
+  vehicleType?: string;
   testHistory?: TestResultModel[];
 
   createdByName?: string;
