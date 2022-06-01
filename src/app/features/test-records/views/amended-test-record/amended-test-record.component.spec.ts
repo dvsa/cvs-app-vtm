@@ -1,25 +1,26 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { TestRecordsComponent } from './test-records.component';
+import { AmendedTestRecordComponent } from './amended-test-record.component';
 
-describe('TestRecordsComponent', () => {
-  let component: TestRecordsComponent;
-  let fixture: ComponentFixture<TestRecordsComponent>;
+describe('AmendedTestRecordComponent', () => {
+  let component: AmendedTestRecordComponent;
+  let fixture: ComponentFixture<AmendedTestRecordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestRecordsComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      declarations: [AmendedTestRecordComponent],
+      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestRecordsComponent);
+    fixture = TestBed.createComponent(AmendedTestRecordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

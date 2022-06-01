@@ -9,8 +9,7 @@ import { FormNode } from 'src/app/forms/services/dynamic-form.types';
 
 @Component({
   selector: 'app-test-records',
-  templateUrl: './test-records.component.html',
-  styleUrls: ['./test-records.component.scss'],
+  templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordComponent {

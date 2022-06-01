@@ -36,26 +36,25 @@ describe('TestAmendmentHistoryComponent', () => {
 
   describe('Created By', () => {
     it('should return testerName entry if createdByName does not exist', () => {
-      const name = component.getCreatedByName(mockTestResultArchived());
-      const testerName = 'John Smith';
+      const data = mockTestResultArchived();
+      delete data.createdByName;
+      const name = component.getCreatedByName(data);
 
-      expect(name).toBe(testerName);
+      expect(name).toBe(data.testerName);
     });
 
     it('should return testerName entry if createdByName is empty', () => {
-      const name = component.getCreatedByName({ ...mockTestResultArchived(), createdByName: '' });
-      const testerName = 'John Smith';
+      const data = { ...mockTestResultArchived(), createdByName: '' };
+      const name = component.getCreatedByName(data);
 
-      expect(name).toBe(testerName);
+      expect(name).toBe(data.testerName);
     });
 
     it('should return createdByName if createdByName not is empty', () => {
       const name = component.getCreatedByName(mockTestResult());
-      const testerName = 'John Smith';
-      const createdByName = 'Jane Doe';
 
-      expect(name).toBe(createdByName);
-      expect(name).not.toEqual(testerName);
+      expect(name).toBe(mockTestResult().createdByName);
+      expect(name).not.toEqual(mockTestResult().testerName);
     });
   });
 
@@ -97,7 +96,7 @@ describe('TestAmendmentHistoryComponent', () => {
         fixture.detectChanges();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
         expect(cells[4].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].reasonForCreation!));
-        expect(cells[5].nativeElement.innerHTML).toBe(component.testRecord?.testHistory![0].testerName);
+        expect(cells[5].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.testHistory![0].createdByName));
         expect(cells[6].nativeElement.innerHTML).toBe(formatDate(component.testRecord?.testHistory![0].createdAt!, 'MMM d, yyyy', 'en'));
         expect(cells[7].nativeElement.innerHTML).toContain('View');
       }));
