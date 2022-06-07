@@ -11,6 +11,7 @@ import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.templa
 import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
+import { PsvTyre } from '@forms/templates/psv/psv-tyre.template';
 import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
 import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
 
@@ -32,6 +33,7 @@ export class TechRecordSummaryComponent implements OnInit {
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
   bodyTemplate?: FormNode;
+  tyreTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -53,6 +55,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
         this.bodyTemplate = PsvBody;
+        this.tyreTemplate = PsvTyre;
         break;
       }
       case 'hgv': {

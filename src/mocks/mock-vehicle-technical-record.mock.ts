@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription, FitmentCode, SpeedCategorySymbol } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -61,14 +61,31 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
+            tyres: {
+              tyreSize: '295/80-22.5',
+              speedCategorySymbol: SpeedCategorySymbol.P,
+              fitmentCode: FitmentCode.DOUBLE,
+              dataTrAxles: 0,
+              plyRating: 'A',
+              tyreCode: 456
+            },
             parkingBrakeMrk: false
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            tyres: {
+              tyreSize: '295/80-22.5',
+              speedCategorySymbol: SpeedCategorySymbol.P,
+              fitmentCode: FitmentCode.DOUBLE,
+              dataTrAxles: 0,
+              plyRating: 'A',
+              tyreCode: 456
+            }
           }
         ],
         speedLimiterMrk: true,
+        speedRestriction: 54,
         tachoExemptMrk: true,
         euroStandard: '123',
         fuelPropulsionSystem: FuelTypes.HYBRID,
