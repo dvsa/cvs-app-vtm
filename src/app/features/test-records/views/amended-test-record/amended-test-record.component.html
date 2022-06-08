@@ -11,22 +11,22 @@
   <ng-container [ngSwitch]="testResult.vehicleType">
     <ng-container *ngSwitchCase="vehicleTypes.PSV">
       <ng-container *ngFor="let section of masterTpl[vehicleTypes.PSV] | keyvalue">
-        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+        <app-dynamic-form-group [template]="section.value" [data]="testResult" [edit]="(edit$ | async) || false"></app-dynamic-form-group>
       </ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="vehicleTypes.HGV">
       <ng-container *ngFor="let section of masterTpl[vehicleTypes.HGV] | keyvalue">
-        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+        <app-dynamic-form-group [template]="section.value" [data]="testResult" [edit]="(edit$ | async) || false"></app-dynamic-form-group>
       </ng-container>
     </ng-container>
     <ng-container *ngSwitchCase="vehicleTypes.TRL">
       <ng-container *ngFor="let section of masterTpl[vehicleTypes.TRL] | keyvalue">
-        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+        <app-dynamic-form-group [template]="section.value" [data]="testResult" [edit]="(edit$ | async) || false"></app-dynamic-form-group>
       </ng-container>
     </ng-container>
   </ng-container>
 
   <section class="section">
-    <app-defects [edit]="false" [defectsData$]="defectData$"></app-defects>
+    <app-defects [edit]="(edit$ | async) || false" [defectsData$]="defectsData$"></app-defects>
   </section>
 </section>

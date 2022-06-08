@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { TestRecordComponent } from './test-record.component';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
@@ -18,7 +19,7 @@ describe('TestRecordComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestRecordComponent],
-      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
+      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, RouterTestingModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   }));
