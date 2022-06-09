@@ -1,9 +1,9 @@
 <app-button-group>
-  <app-button *ngIf="(edit$ | async) === false" (clicked)="handleEdit()">Edit</app-button>
+  <app-button *ngIf="(edit$ | async) === false" id="edit-test-result" (clicked)="handleEdit()">Edit</app-button>
 
   <ng-container *ngIf="(edit$ | async) === true">
-    <app-button (clicked)="handleSave()">Save</app-button>
-    <app-button type="secondary" (clicked)="handleCancel()">Cancel</app-button>
+    <app-button id="save-test-result" (clicked)="handleSave()">Save</app-button>
+    <app-button id="cancel-edit-test-result" type="secondary" (clicked)="handleCancel()">Cancel</app-button>
   </ng-container>
 </app-button-group>
 

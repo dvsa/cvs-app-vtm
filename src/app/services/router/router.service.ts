@@ -11,11 +11,11 @@ import { Observable } from 'rxjs';
 export class RouterService {
   constructor(private store: Store<State>) {}
 
-  get queryParams(): Observable<Params> {
+  get queryParams$(): Observable<Params> {
     return this.store.pipe(select(selectQueryParams));
   }
 
-  getQueryParam(param: string) {
+  getQueryParam$(param: string) {
     return this.store.pipe(select(selectQueryParam(param)));
   }
 

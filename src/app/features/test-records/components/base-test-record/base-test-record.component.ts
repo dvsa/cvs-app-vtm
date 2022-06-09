@@ -23,7 +23,7 @@ export class BaseTestRecordComponent {
     this.edit$ = this.routerService.routeEditable$;
   }
 
-  get vehicleTypes() {
+  get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
   }
 

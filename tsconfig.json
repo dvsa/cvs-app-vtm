@@ -25,6 +25,7 @@
     "paths": {
       "@core/*": ["src/app/core/*"],
       "@forms/*": ["src/app/forms/*"],
+      "@guards/*": ["src/app/guards/*"],
       "@mocks/*": ["src/mocks/*"],
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],
