@@ -1,34 +1,34 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const PsvWeights: FormNode = {
-  name: 'weights',
-  label: 'Weights',
-  value: '',
-  type: FormNodeTypes.GROUP,
-  children: [
+export function generateWeights(addGrossPrefix: boolean = false): FormNode[] {
+  return [
     {
-      name: 'kerbWeight',
+      name: addGrossPrefix ? addPrefix('kerbWeight') : 'kerbWeight',
       label: 'Kerb weight',
       value: '',
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'ladenWeight',
+      name: addGrossPrefix ? addPrefix('ladenWeight') : 'ladenWeight',
       label: 'Laden weight',
       value: '',
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'gbWeight',
+      name: addGrossPrefix ? addPrefix('gbWeight') : 'gbWeight',
       label: 'GB weight',
       value: '',
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'designWeight',
+      name: addGrossPrefix ? addPrefix('designWeight') : 'designWeight',
       label: 'Design weight',
       value: '',
       type: FormNodeTypes.CONTROL
     }
-  ]
-};
+  ];
+}
+
+function addPrefix(string: string): string {
+  return 'gross' + string.charAt(0).toUpperCase() + string.slice(1);
+}

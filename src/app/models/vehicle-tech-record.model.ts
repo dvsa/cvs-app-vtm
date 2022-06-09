@@ -119,12 +119,21 @@ export enum BodyTypeDescription {
   SINGLEDECKER = 'single decker',
   SKELETAL = 'skeletal',
   SKIPLOADER = 'skip loader',
-  TIPPER = 'tipper',
+  TIPPER = 'tipper'
 }
 
 export interface Axle {
   axleNumber?: number;
   parkingBrakeMrk?: boolean;
+  weights?: AxleWeights;
+}
+
+export interface AxleWeights {
+  kerbWeight: number;
+  ladenWeight: number;
+  gbWeight: number;
+  eecWeight: number;
+  designWeight: number;
 }
 
 export interface TechRecordModel {
@@ -187,6 +196,18 @@ export interface TechRecordModel {
   };
   functionCode?: string;
   conversionRefNo?: string;
+
+  // Gross vehicle weights
+  grossKerbWeight?: number;
+  grossLadenWeight?: number;
+  grossGbWeight?: number;
+  grossEecWeight?: number;
+  grossDesignWeight?: number;
+  unladenWeight?: number;
+
+  // Train weights
+  maxTrainGbWeight?: number;
+  trainDesignWeight?: number;
 }
 
 export interface ApplicantDetails {
