@@ -3,7 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
@@ -33,7 +33,7 @@ export class SearchComponent implements OnDestroy {
 
     if (searchTerm) {
       searchTerm = searchTerm.trim();
-      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
+      this.technicalRecordService.searchBy({ type: SEARCH_TYPES.VIN, searchTerm });
     } else {
       this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
     }
