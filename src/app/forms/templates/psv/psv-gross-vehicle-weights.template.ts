@@ -7,7 +7,7 @@ export const PsvGrossVehicleWeight: FormNode = {
   value: '',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
-  children: generateWeights().concat([
+  children: generateWeights(true).concat([
     {
       name: 'unladenWeight',
       label: 'Unladen weight',
