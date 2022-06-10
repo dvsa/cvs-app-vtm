@@ -107,7 +107,7 @@ describe('DynamicFormGroupComponent', () => {
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
-      component.isReadonly = false;
+      component.edit = true;
       component.form = dfs.createForm(template());
 
       fixture.detectChanges();

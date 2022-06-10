@@ -46,5 +46,5 @@
 </ng-template>
 
 <ng-template #editDefect let-data="data">
-  <app-dynamic-form-group [isReadonly]="!edit" [template]="defectTpl" [data]="data"></app-dynamic-form-group>
+  <app-dynamic-form-group [edit]="edit" [template]="defectTpl" [data]="data"></app-dynamic-form-group>
 </ng-template>

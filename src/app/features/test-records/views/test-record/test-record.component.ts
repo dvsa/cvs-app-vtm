@@ -1,35 +1,33 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DefectTpl } from '@forms/templates/general/defect.template';
-import { masterTpl } from '@forms/templates/test-records/master.template';
-import { PsvAnnual } from '@forms/templates/test-records/section-templates/psv-annual.template';
-import { Defects } from '@models/defects';
-import { TestResultModel } from '@models/test-result.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable } from 'rxjs';
-import { FormNode } from 'src/app/forms/services/dynamic-form.types';
+import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-test-records',
   templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordComponent {
-  testResult$: Observable<TestResultModel | undefined>;
-  defectTpl: FormNode;
-  defectsData$: Observable<Defects | undefined>;
+export class TestRecordComponent extends BaseTestRecordComponent implements OnInit {
+  constructor(private testRecordsService: TestRecordsService, routerService: RouterService, private router: Router, private route: ActivatedRoute) {
+    super(routerService);
+  }
 
-  constructor(private testRecordsService: TestRecordsService) {
+  ngOnInit() {
     this.testResult$ = this.testRecordsService.testResult$;
-    this.defectTpl = DefectTpl;
     this.defectsData$ = this.testRecordsService.defectData$;
   }
 
-  get vehicleTypes() {
-    return VehicleTypes;
+  handleEdit() {
+    this.router.navigate([], { queryParams: { edit: true }, relativeTo: this.route });
   }
 
-  get masterTpl() {
-    return masterTpl;
+  handleSave() {
+    alert('Saved');
+  }
+
+  handleCancel() {
+    this.router.navigate([], { relativeTo: this.route });
   }
 }
