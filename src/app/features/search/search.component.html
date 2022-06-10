@@ -11,11 +11,23 @@
         <p class="white-space--normal" *ngIf="errorMessage.length > 0">{{ errorMessage[0].error }}</p>
       </span>
 
-      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage() | async }" (keyup.enter)="navigateSearch(searchTerm.value)" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
+      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage() | async }" (keyup.enter)="navigateSearch(searchTerm.value, searchType.value)" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
     </div>
 
-    <button class="govuk-button" data-module="govuk-button" (click)="navigateSearch(searchTerm.value)">Search</button>
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-!-font-weight-bold" for="type">Search criteria</label>
+      <select #searchType class="govuk-select" id="type" name="type">
+        <option value="" selected disabled>Vehicle registration mark, trailer ID or vehicle identification number</option>
+        <option value="vin">Vehicle identification number (VIM)</option>
+        <option value="partialVin">Partial vehicle identification number (Partial VIM)</option>
+        <option value="vrm">Vehicle registration mark (VRM)</option>
+        <option value="trailerId">Trailer ID</option>
+      </select>
+    </div>
+
+    <button class="govuk-button" data-module="govuk-button" (click)="navigateSearch(searchTerm.value, searchType.value)">Search</button>
   </div>
+
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
     <a id="view-tech-{{ vehicleTechRecord.vin }}" routerLink="/tech-records/{{ vehicleTechRecord.vin }}">{{ vehicleTechRecord.vin }}</a>
   </ng-container>
