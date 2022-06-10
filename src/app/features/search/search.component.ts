@@ -9,7 +9,7 @@ import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html',
+  templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnDestroy {
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
@@ -18,22 +18,30 @@ export class SearchComponent implements OnDestroy {
 
   constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, private store: Store, private router: Router) {
     this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
-      let vin = params['vin'];
+      let searchTerm = params['term'];
 
-      if (vin) {
-        this.searchTechRecords(vin);
+      if (searchTerm) {
+        this.searchTechRecords(searchTerm, params['type']);
       }
     });
 
     this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
   }
 
-  public searchTechRecords(searchTerm: string) {
+  public searchTechRecords(searchTerm: string, type: SEARCH_TYPES) {
     this.globalErrorService.clearError();
 
+    searchTerm = searchTerm.trim();
+
     if (searchTerm) {
+<<<<<<< HEAD
       searchTerm = searchTerm.trim();
       this.technicalRecordService.searchBy({ type: SEARCH_TYPES.VIN, searchTerm });
+=======
+      // TODO: Switch to this after CB2-4185 has been integrated.
+      // this.technicalRecordService.searchBy({ type, searchTerm });
+      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
+>>>>>>> feat(cb2-4184): create a ui selector for search criteria
     } else {
       this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
     }
@@ -43,13 +51,9 @@ export class SearchComponent implements OnDestroy {
     return this.globalErrorService.errors$.pipe(map((errors) => errors.length));
   }
 
-  public navigateSearch(search: string): void {
-    if (search) {
-      const extras: NavigationExtras = {
-        queryParams: {
-          vin: search
-        }
-      };
+  public navigateSearch(term: string, type: string): void {
+    if (term) {
+      const extras: NavigationExtras = { queryParams: { term, type } };
       this.router.navigate(['/search'], extras);
     } else {
       this.globalErrorService.clearError();
