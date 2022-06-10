@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { SearchComponent } from './search.component';
@@ -58,14 +58,14 @@ describe('SearchComponent', () => {
       });
 
       it('should call the service to search by VIN', () => {
-        const searchParams = { searchTerm: 'A_VIN_', type: 'vin' };
-        component.searchTechRecords(searchParams.searchTerm);
+        const searchParams = { searchTerm: 'A_VIN_', type: SEARCH_TYPES.VIN };
+        component.searchTechRecords(searchParams.searchTerm, searchParams.type);
 
         expect(searchBySpy).toBeCalledWith(searchParams);
       });
 
       it('should not call service', () => {
-        component.searchTechRecords('');
+        component.searchTechRecords('', SEARCH_TYPES.VIN);
         fixture.detectChanges();
         expect(searchBySpy).not.toHaveBeenCalled();
       });
@@ -74,13 +74,13 @@ describe('SearchComponent', () => {
     describe('by URL params', () => {
       it('should call the service to search by vin with "someVin"', fakeAsync(() => {
         const vin = 'someVin';
-        mockSelectQueryParams.setResult({ vin });
+        mockSelectQueryParams.setResult({ term: vin, type: SEARCH_TYPES.VIN });
         store.refreshState();
 
         tick();
         fixture.detectChanges();
 
-        expect(searchBySpy).toHaveBeenCalledWith({ type: 'vin', searchTerm: vin });
+        expect(searchBySpy).toHaveBeenCalledWith({ searchTerm: vin, type: SEARCH_TYPES.VIN });
       }));
     });
 
@@ -89,15 +89,15 @@ describe('SearchComponent', () => {
         const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
         const vin = 'someVin';
-        component.navigateSearch(vin);
+        component.navigateSearch(vin, SEARCH_TYPES.VIN);
 
-        expect(navigateSpy).toHaveBeenCalledWith(['/search'], { queryParams: { vin } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/search'], { queryParams: { term: vin, type: 'vin' } });
       });
 
       it('should add error', () => {
         const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
 
-        component.navigateSearch('');
+        component.navigateSearch('', '');
 
         expect(addErrorSpy).toHaveBeenCalledWith({ error: component.searchErrorMessage, anchorLink: 'search-term' });
       });
