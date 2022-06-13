@@ -99,6 +99,7 @@ describe('numeric', () => {
   it.each([
     [null, 123456789],
     [null, 0],
+    [null, ''],
     [{ customPattern: { message: 'must be a number' } }, 'foobar'],
     [{ customPattern: { message: 'must be a number' } }, '123456bar'],
     [{ customPattern: { message: 'must be a number' } }, 'foo123456'],
@@ -113,16 +114,20 @@ describe('customPattern', () => {
   it.each([
     [null, 123456789, '.*', 'this should always pass'],
     [null, 'jkl', 'c*', 'this should be a character'],
-    [null, 123456789, '.*', 'this should always pass'],
-    [null, 123456789, '.*', 'this should always pass']
+    [{ customPattern: { message: 'this should not be a number' } }, 123456789, '\\D+', 'this should not be a number'],
+    [null, '%^', '^\\W+$', 'this should be a symbol']
   ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any, regex: string, msg: string) => {
     const customPattern = CustomValidators.customPattern([regex, msg]);
     const validation = customPattern(new FormControl(input));
+    expect(validation).toEqual(expected);
     if (validation) {
       const message = validation['customPattern']['message'];
       expect(message).toEqual(msg);
     } else {
       expect(validation).toBeNull();
     }
+  });
+  it('should throw an error if an invalid regex is given', () => {
+    expect(CustomValidators.customPattern(['regex', 'msg'])).toThrowError();
   });
 });
