@@ -1,8 +1,8 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 
-export class CustomValidator {
-  static hide = (sibling: string): ValidatorFn => {
+export class CustomValidators {
+  static hideIfEmpty = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const siblingControl = control.parent?.get(sibling);
       if (!control?.value) {
@@ -52,4 +52,15 @@ export class CustomValidator {
       return null;
     };
   };
+
+  static numeric(): ValidatorFn {
+    return this.customPattern(['^\\d*$', 'must be a number']);
+  }
+
+  static customPattern([regEx, message]: string[]): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valid = new RegExp(regEx).test(control.value);
+      return valid ? null : { customPattern: { message } };
+    };
+  }
 }

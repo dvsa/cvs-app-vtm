@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { CustomValidator } from '@forms/validators/custom-validators';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { FormNode, CustomFormGroup, CustomFormControl, CustomFormArray, FormNodeTypes } from './dynamic-form.types';
 
 @Injectable({
@@ -11,7 +11,10 @@ export class DynamicFormService {
 
   validatorMap: { [key: string]: any } = {
     required: () => Validators.required,
-    hide: (args: string) => CustomValidator.hide(args)
+    hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
+    pattern: (args: string) => Validators.pattern(args),
+    customPattern: (args: any) => CustomValidators.customPattern([...args]),
+    numeric: () => CustomValidators.numeric()
   };
 
   createForm(f: FormNode, d: any = {}): CustomFormGroup | CustomFormArray {

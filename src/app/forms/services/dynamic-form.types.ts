@@ -33,7 +33,7 @@ export interface FormNode {
   value?: string;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
-  validators?: { name: string; args: any[] }[];
+  validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
