@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function createSingleSearchResult(vin: string): FormNode {
+export function createSingleSearchResult(vin?: string): FormNode {
   return {
     name: 'singleSearchResult',
     type: FormNodeTypes.GROUP,
