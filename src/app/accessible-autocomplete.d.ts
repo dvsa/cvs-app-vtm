@@ -9,5 +9,5 @@ declare module 'accessible-autocomplete/dist/accessible-autocomplete.min' {
     required: true
   }
 
-  export default function accessibleAutocomplete(params: AutocompleteParams): void;
+  export default function autocomplete(params: AutocompleteParams): void;
 }
