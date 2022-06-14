@@ -64,6 +64,13 @@ describe('SearchComponent', () => {
         expect(searchBySpy).toBeCalledWith(searchParams);
       });
 
+      it('should call the service to search by partialVin', () => {
+        const searchParams = { searchTerm: 'A_PARTIAL_VIN_', type: SEARCH_TYPES.PARTIAL_VIN};
+        component.searchTechRecords(searchParams.searchTerm, searchParams.type)
+
+        expect(searchBySpy).toBeCalledWith(searchParams);
+      })
+
       it('should not call service', () => {
         component.searchTechRecords('', SEARCH_TYPES.VIN);
         fixture.detectChanges();
@@ -74,25 +81,45 @@ describe('SearchComponent', () => {
     describe('by URL params', () => {
       it('should call the service to search by vin with "someVin"', fakeAsync(() => {
         const vin = 'someVin';
-        mockSelectQueryParams.setResult({ term: vin, type: SEARCH_TYPES.VIN });
+        mockSelectQueryParams.setResult({ vin: vin });
         store.refreshState();
 
         tick();
         fixture.detectChanges();
 
-        expect(searchBySpy).toHaveBeenCalledWith({ searchTerm: vin, type: SEARCH_TYPES.VIN });
+        expect(searchBySpy).toHaveBeenCalledWith({ searchTerm: vin, type: 'vin'});
       }));
+
+      it('should call the service to search by partialVin with "somePartialVin"', fakeAsync(() => {
+        const partialVin = 'somePartialVin';
+        mockSelectQueryParams.setResult({ partialVin: partialVin });
+        store.refreshState();
+
+        tick();
+        fixture.detectChanges();
+
+        expect(searchBySpy).toHaveBeenCalledWith({ searchTerm: partialVin, type: 'partialVin'});
+      }))
     });
 
     describe('navigateSearch', () => {
-      it('should navigate', () => {
+      it('should navigate to vin search result', () => {
         const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
         const vin = 'someVin';
         component.navigateSearch(vin, SEARCH_TYPES.VIN);
 
-        expect(navigateSpy).toHaveBeenCalledWith(['/search'], { queryParams: { term: vin, type: 'vin' } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/search'], { queryParams: { vin: 'someVin'} });
       });
+
+      it('should navigate to partialVin search result', () => {
+        const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+        const partialVin = 'somePartialVin';
+        component.navigateSearch(partialVin, SEARCH_TYPES.PARTIAL_VIN);
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/search'], { queryParams: { partialVin: 'somePartialVin'} });
+      })
 
       it('should add error', () => {
         const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});

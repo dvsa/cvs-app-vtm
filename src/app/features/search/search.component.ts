@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { typeAnnotation } from '@babel/types';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
@@ -15,13 +16,15 @@ export class SearchComponent implements OnDestroy {
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
   ngDestroy$ = new Subject();
   searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
+  missingCriteriaErrorMessage = 'You must select a valid search criteria';
 
   constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, private store: Store, private router: Router) {
     this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
-      let searchTerm = params['term'];
+      let type = Object.keys(params)[0];
+      let searchTerm = params[type] as string;
 
-      if (searchTerm) {
-        this.searchTechRecords(searchTerm, params['type']);
+      if (searchTerm && Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES) && Object.keys(params).length === 1) {
+        this.searchTechRecords(searchTerm, type as SEARCH_TYPES);
       }
     });
 
@@ -34,7 +37,12 @@ export class SearchComponent implements OnDestroy {
     searchTerm = searchTerm.trim();
 
     if (searchTerm) {
-      this.technicalRecordService.searchBy({ type, searchTerm });
+      if(type) {
+        this.technicalRecordService.searchBy({ type, searchTerm });
+      }
+      else {
+        this.globalErrorService.addError({ error: this.missingCriteriaErrorMessage, anchorLink: 'search-term' });
+      }
     } else {
       this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
     }
@@ -45,9 +53,21 @@ export class SearchComponent implements OnDestroy {
   }
 
   public navigateSearch(term: string, type: string): void {
+    let extras: NavigationExtras;
     if (term) {
-      const extras: NavigationExtras = { queryParams: { term, type } };
-      this.router.navigate(['/search'], extras);
+      switch(type){
+        case(SEARCH_TYPES.VIN):
+          extras = { queryParams: { vin: term} };
+          this.router.navigate(['/search'], extras);
+          break;
+        case(SEARCH_TYPES.PARTIAL_VIN):
+          extras = { queryParams: { partialVin: term } };
+          this.router.navigate(['/search'], extras);
+          break;
+        default:
+          this.globalErrorService.clearError();
+          this.globalErrorService.addError({ error: this.missingCriteriaErrorMessage, anchorLink: 'search-term' });
+      }
     } else {
       this.globalErrorService.clearError();
       this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
