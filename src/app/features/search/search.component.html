@@ -29,6 +29,6 @@
   </div>
 
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
-    <a id="view-tech-{{ vehicleTechRecord.vin }}" routerLink="/tech-records/{{ vehicleTechRecord.vin }}">{{ vehicleTechRecord.vin }}</a>
+    <app-single-search-result [vehicleTechRecord]="vehicleTechRecord"></app-single-search-result>
   </ng-container>
 </div>

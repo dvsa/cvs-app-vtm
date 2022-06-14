@@ -36,12 +36,18 @@ export interface FormNode {
   validators?: string[];
   disabled?: boolean;
   readonly?: boolean;
+  subHeadingLink?: SubHeadingLink;
 }
 
 export interface FormNodeCombinationOptions {
   leftComponentName: string;
   rightComponentName: string;
   separator: string;
+}
+
+export interface SubHeadingLink {
+  label: string;
+  url: string;
 }
 
 export interface CustomControl extends FormControl {
