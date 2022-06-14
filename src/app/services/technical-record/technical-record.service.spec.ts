@@ -62,5 +62,37 @@ describe('TechnicalRecordService', () => {
         req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
       });
     });
+
+    describe('getByPartialVIN', () => {
+      it('should get an array of matching results', () => {
+        const searchParams = { searchTerm: 'A_VIN', type: 'partialVin' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+        service.getByPartialVIN(searchParams.searchTerm).subscribe((response) => {
+          expect(response).toEqual(mockData);
+        });
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=partialVin`);
+        expect(req.request.method).toEqual('GET');
+
+        // Provide each request with a mock response
+        req.flush(mockData);
+      });
+
+      it('should handle errors', () => {
+        const searchParams = { searchTerm: 'A_VIN', type: 'partialVin' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+        service.getByPartialVIN(searchParams.searchTerm).subscribe((response) => {
+          expect(response).toEqual(mockData);
+        });
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=partialVin`);
+        expect(req.request.method).toEqual('GET');
+
+        // Respond with mock error
+        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
+      });
+    });
   });
 });
