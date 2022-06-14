@@ -7,18 +7,18 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 
 
 @Component({
-  selector: 'app-accessible-autocomplete',
-  templateUrl: './accessible-autocomplete.component.html',
-  styleUrls: ['./accessible-autocomplete.component.scss'],
+  selector: 'app-autocomplete',
+  templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: AccessibleAutocompleteComponent,
+      useExisting: AutocompleteComponent,
       multi: true
     }
   ]
 })
-export class AccessibleAutocompleteComponent extends BaseControlComponent implements OnInit {
+export class AutocompleteComponent extends BaseControlComponent implements OnInit {
   @Input() options: String[] = [];
 
   constructor(injector: Injector, @Inject(DOCUMENT) private document: Document) {
@@ -26,7 +26,7 @@ export class AccessibleAutocompleteComponent extends BaseControlComponent implem
   }
 
   ngOnInit(): void {
-    this.name = this.name || 'accessible-autocomplete';
+    this.name = this.name || 'autocomplete';
     accessibleAutocomplete({
       element: this.document.querySelector('#' + this.name + '-wrapper'),
       id: `${ this.name }-autocomplete`, //this matches the relevant label

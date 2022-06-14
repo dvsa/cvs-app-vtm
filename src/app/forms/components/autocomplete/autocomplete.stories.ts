@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { AccessibleAutocompleteComponent } from './accessible-autocomplete.component';
+import { AutocompleteComponent } from './autocomplete.component';
 
 export default {
   title: 'Forms/Autocomplete',
-  component: AccessibleAutocompleteComponent,
+  component: AutocompleteComponent,
   decorators: [
     moduleMetadata({
-      declarations: [AccessibleAutocompleteComponent],
+      declarations: [AutocompleteComponent],
       imports: [CommonModule, FormsModule, ReactiveFormsModule]
     })
   ]
@@ -18,8 +18,8 @@ const Template: Story = (args) => {
   const { id, label, options, name, hint, value = null, disabled = false, validators = [] } = args;
   const form = new FormGroup({ [name]: new FormControl({ value, disabled }, validators) });
   return {
-    component: AccessibleAutocompleteComponent,
-    template: `<form [formGroup]="form"><app-accessible-autocomplete [label]="label" [id]="id" [name]="name" [options]="options" [formControlName]="name">  </app-accessible-autocomplete></form>`,
+    component: AutocompleteComponent,
+    template: `<form [formGroup]="form"><app-autocomplete [label]="label" [id]="id" [name]="name" [options]="options" [formControlName]="name">  </app-autocomplete></form>`,
     props: {
         id,
         label,
@@ -31,7 +31,7 @@ const Template: Story = (args) => {
   };
 
   const defaultArgs = {
-    label: 'Accesibility Autocomplete',
+    label: 'Autocomplete',
     hint: 'Type any letter to start searching',
     name: 'name',
     id: 'name' + '-wrapper',
