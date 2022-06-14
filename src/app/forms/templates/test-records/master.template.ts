@@ -2,7 +2,7 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestCodes } from '@models/testCodes.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
-import { NotesSection } from './section-templates/notes/notes-section.template copy';
+import { NotesSection } from './section-templates/notes/notes-section.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
