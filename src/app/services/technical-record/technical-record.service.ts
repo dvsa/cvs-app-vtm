@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getByVIN, getByPartialVIN, selectVehicleTechnicalRecordsByVin, vehicleTechRecords } from '@store/technical-records';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -48,5 +49,47 @@ export class TechnicalRecordService {
         this.store.dispatch(getByPartialVIN({ [type]: searchTerm }));
         break;
     }
+  }
+
+  /**
+   * A function to get the correct tech record to create the summary display which uses time first then status code
+   * @param record This is a VehicleTechRecordModel passed in from the parent component
+   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
+   */
+  viewableTechRecord(record: VehicleTechRecordModel, destroy$: Subject<any>): TechRecordModel | undefined {
+    let viewableTechRecord = undefined;
+
+    this.store
+      .pipe(select(selectRouteNestedParams))
+      .pipe(takeUntil(destroy$))
+      .subscribe((params) => {
+        const createdAt = params['techCreatedAt'] ?? '';
+        viewableTechRecord = record?.techRecord?.find((techRecord) => new Date(techRecord.createdAt).getTime() == createdAt);
+      });
+
+    if (!viewableTechRecord) {
+      viewableTechRecord = this.filterTechRecordByStatusCode(record);
+    }
+
+    return viewableTechRecord;
+  }
+
+  /**
+   * A function to filter the correct tech record, this has a hierarchy which is PROVISIONAL -> CURRENT -> ARCHIVED.
+   * @param record This is a VehicleTechRecordModel passed in from the parent component
+   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
+   */
+  filterTechRecordByStatusCode(record?: VehicleTechRecordModel): TechRecordModel | undefined {
+    let filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.PROVISIONAL);
+
+    if (filteredTechRecord == undefined) {
+      filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.CURRENT);
+    }
+
+    if (filteredTechRecord == undefined) {
+      filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.ARCHIVED);
+    }
+
+    return filteredTechRecord;
   }
 }
