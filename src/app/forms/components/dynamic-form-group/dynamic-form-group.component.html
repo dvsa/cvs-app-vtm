@@ -6,7 +6,10 @@
 <ng-template #templateHeading>
   <ng-container [ngSwitch]="form.meta?.viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.SUBHEADING">
-      <h2 class="govuk-heading-m">{{ form.meta?.label }}</h2>
+      <div class="subheading-container">
+        <h2 class="govuk-heading-m">{{ form.meta?.label }}</h2>
+        <a *ngIf="form.meta?.subHeadingLink" class="govuk-link" [routerLink]="form.meta?.subHeadingLink?.url">{{ form.meta?.subHeadingLink?.label }}</a>
+      </div>
     </ng-container>
     <ng-container *ngSwitchCaseDefault>
       <h1 class="govuk-heading-xl title">{{ form.meta?.label }}</h1>
