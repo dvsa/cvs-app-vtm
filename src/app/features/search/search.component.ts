@@ -34,14 +34,7 @@ export class SearchComponent implements OnDestroy {
     searchTerm = searchTerm.trim();
 
     if (searchTerm) {
-<<<<<<< HEAD
-      searchTerm = searchTerm.trim();
-      this.technicalRecordService.searchBy({ type: SEARCH_TYPES.VIN, searchTerm });
-=======
-      // TODO: Switch to this after CB2-4185 has been integrated.
-      // this.technicalRecordService.searchBy({ type, searchTerm });
-      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
->>>>>>> feat(cb2-4184): create a ui selector for search criteria
+      this.technicalRecordService.searchBy({ type, searchTerm });
     } else {
       this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
     }
