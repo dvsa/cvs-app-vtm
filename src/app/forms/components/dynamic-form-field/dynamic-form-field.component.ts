@@ -5,15 +5,12 @@ import { CustomFormControl, FormNode, FormNodeEditTypes } from '@forms/services/
 
 @Component({
   selector: 'app-dynamic-form-field',
-  templateUrl: './dynamic-form-field.component.html',
-  styleUrls: ['./dynamic-form-field.component.scss']
+  templateUrl: './dynamic-form-field.component.html'
 })
 export class DynamicFormFieldComponent {
   @Input() control?: KeyValue<string, CustomFormControl>;
   @Input() form: FormGroup = {} as FormGroup;
-  constructor() { }
-
-
+  constructor() {}
 
   get formNodeEditTypes(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
@@ -22,5 +19,4 @@ export class DynamicFormFieldComponent {
   get options(): string[] {
     return (this.control?.value.meta.options as string[]) || [];
   }
-
 }

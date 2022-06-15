@@ -5,6 +5,14 @@
         <app-autocomplete [label]="control.value.meta.label" [id]="control.value.meta.name + '-wrapper'" [name]="control.value.meta.name" [options]="options" [formControlName]="control.key"> </app-autocomplete>
       </ng-container>
 
+      <ng-container *ngSwitchCase="formNodeEditTypes.NUMBER">
+        <app-number-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-number-input>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeEditTypes.TEXTAREA">
+        <app-text-area [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-area>
+      </ng-container>
+
       <ng-container *ngSwitchDefault>
         <app-text-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-input>
       </ng-container>

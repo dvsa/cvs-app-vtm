@@ -14,9 +14,12 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
+import { NumberInputComponent } from './components/number-input/number-input.component';
+import { TextAreaComponent } from './components/text-area/text-area.component';
+
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, NumberInputComponent, DynamicFormFieldComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent, TextAreaComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent]
 })
 export class DynamicFormsModule {}

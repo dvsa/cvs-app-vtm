@@ -49,6 +49,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
+      validators: [{ name: 'numeric' }, { name: 'required' }],
+      editType: FormNodeEditTypes.NUMBER,
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN

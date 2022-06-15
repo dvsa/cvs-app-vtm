@@ -103,7 +103,8 @@ describe('numeric', () => {
     [{ customPattern: { message: 'must be a number' } }, 'foobar'],
     [{ customPattern: { message: 'must be a number' } }, '123456bar'],
     [{ customPattern: { message: 'must be a number' } }, 'foo123456'],
-    [null, '123546789']
+    [null, '123546789'],
+    [null, null]
   ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
     const numberValidator = CustomValidators.numeric();
     expect(numberValidator(new FormControl(input))).toEqual(expected);
@@ -115,7 +116,8 @@ describe('customPattern', () => {
     [null, 123456789, '.*', 'this should always pass'],
     [null, 'jkl', 'c*', 'this should be a character'],
     [{ customPattern: { message: 'this should not be a number' } }, 123456789, '\\D+', 'this should not be a number'],
-    [null, '%^', '^\\W+$', 'this should be a symbol']
+    [null, '%^', '^\\W+$', 'this should be a symbol'],
+    [null, null, '.*', 'pass on null']
   ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any, regex: string, msg: string) => {
     const customPattern = CustomValidators.customPattern([regex, msg]);
     const validation = customPattern(new FormControl(input));

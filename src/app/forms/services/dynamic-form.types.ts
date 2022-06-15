@@ -22,7 +22,8 @@ export enum FormNodeTypes {
 export enum FormNodeEditTypes {
   TEXT = 'text',
   AUTOCOMPLETE = 'autocomplete',
-  NUMBER = 'number'
+  NUMBER = 'number',
+  TEXTAREA = 'textarea'
 }
 
 export interface FormNodeOption<T> {

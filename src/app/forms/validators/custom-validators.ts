@@ -59,6 +59,9 @@ export class CustomValidators {
 
   static customPattern([regEx, message]: string[]): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) {
+        return null;
+      }
       const valid = new RegExp(regEx).test(control.value);
       return valid ? null : { customPattern: { message } };
     };
