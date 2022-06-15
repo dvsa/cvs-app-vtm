@@ -23,6 +23,7 @@
       "dom"
     ],
     "paths": {
+      "@api/*": ["src/app/api/*"],
       "@core/*": ["src/app/core/*"],
       "@forms/*": ["src/app/forms/*"],
       "@guards/*": ["src/app/guards/*"],

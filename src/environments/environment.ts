@@ -8,7 +8,8 @@ export const environment = {
   VTM_AUTHORITY_ID: '',
   VTM_REDIRECT_URI: '/',
   VTM_API_URI: '',
-  VTM_API_CLIENT_ID: ''
+  VTM_API_CLIENT_ID: '',
+  VTM_TEST_RESULTS_API_URI: ''
 };
 
 /*

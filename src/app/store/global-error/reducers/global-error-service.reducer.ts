@@ -20,6 +20,21 @@ export const globalErrorState = createSelector(getGlobalErrorState, (state) => s
 
 export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
-  on(GlobalErrorActions.clearError, TechnicalRecordServiceActions.getByVIN, TestResultActions.fetchTestResults, TestResultActions.fetchTestResultsBySystemId, TestResultActions.fetchSelectedTestResult, (state) => ({ ...state, globalError: [] })),
-  on(GlobalErrorActions.addError, TechnicalRecordServiceActions.getByVINFailure, TestResultActions.fetchTestResultsFailed, TestResultActions.fetchTestResultsBySystemIdFailed, TestResultActions.fetchSelectedTestResultFailed, (state, { error, anchorLink }) => ({ ...state, globalError: [...state.globalError, { error: error, anchorLink: anchorLink }] }))
+  on(
+    GlobalErrorActions.clearError,
+    TechnicalRecordServiceActions.getByVIN,
+    TestResultActions.fetchTestResults,
+    TestResultActions.fetchTestResultsBySystemId,
+    TestResultActions.fetchSelectedTestResult,
+    (state) => ({ ...state, globalError: [] })
+  ),
+  on(
+    GlobalErrorActions.addError,
+    TechnicalRecordServiceActions.getByVINFailure,
+    TestResultActions.fetchTestResultsFailed,
+    TestResultActions.fetchTestResultsBySystemIdFailed,
+    TestResultActions.fetchSelectedTestResultFailed,
+    (state, { error, anchorLink }) => ({ ...state, globalError: [...state.globalError, { error: error, anchorLink: anchorLink }] })
+  ),
+  on(GlobalErrorActions.setErrors, (state, { errors }) => ({ ...state, globalError: [...errors] }))
 );

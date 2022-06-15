@@ -1,5 +1,11 @@
 <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
-  <div *ngIf="errorMessages && errorMessages.length > 0" class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+  <div
+    *ngIf="errorMessages && errorMessages.length > 0"
+    class="govuk-error-summary"
+    aria-labelledby="error-summary-title"
+    role="alert"
+    data-module="govuk-error-summary"
+  >
     <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
     <div class="govuk-error-summary__body">
       <ul class="govuk-list govuk-error-summary__list">

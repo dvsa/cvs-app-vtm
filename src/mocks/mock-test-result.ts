@@ -1,12 +1,12 @@
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
-import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
 import * as Emissions from '../app/models/emissions.enum';
 import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestStationType } from '../app/models/test-station-type.enum';
+import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
@@ -15,21 +15,22 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
     const nextYear = new Date().setFullYear(now.getFullYear());
 
     return createMock<TestType>({
+      testTypeId: '1',
       testNumber: `TestNumber${String(i + 1).padStart(4, '0')}`,
 
       testCode: `Test${i}`,
       testTypeName: `Test Type Name ${i}`,
 
       testTypeStartTimestamp: now.toISOString(),
-      testTypeEndTimestamp: now.setFullYear(now.getFullYear() + 1),
-      testExpiryDate: nextYear,
+      testTypeEndTimestamp: new Date(now.setFullYear(now.getFullYear() + 1)).toISOString(),
+      testExpiryDate: new Date(nextYear).toISOString(),
 
       certificateNumber: `CertNumber${String(i + 1).padStart(4, '0')}`,
       reasonForAbandoning: 'The vehicle was not submitted for test at the appointed time',
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
-      testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
+      testAnniversaryDate: new Date(now.setFullYear(now.getFullYear() - 1)).toISOString(),
       prohibitionIssued: false,
-      testResult: 'Pass',
+      testResult: 'pass',
       seatbeltInstallationCheckDate: true,
       numberOfSeatbeltsFitted: 4,
       lastSeatbeltInstallationCheckDate: new Date().toISOString(),
@@ -44,7 +45,9 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
-      defects: mockDefectList()
+      defects: mockDefectList(),
+
+      additionalNotesRecorded: 'notes for the test record will be displayed here...'
     });
   });
 
@@ -54,7 +57,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
 
     systemNumber,
     vin: 'XMGDE02FS0H012345',
-    vrm: 'KP02 ABC',
+    vrm: 'KP02ABC',
 
     createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
@@ -75,7 +78,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testStationType: TestStationType.ATF,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    additionalNotesRecorded: 'notes for the test record will be displayed here...',
+    // additionalNotesRecorded: 'notes for the test record will be displayed here...',
     vehicleType,
     testVersion: 'Current',
     createdByName: 'Jane Doe',

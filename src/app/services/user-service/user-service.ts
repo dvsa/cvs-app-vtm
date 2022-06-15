@@ -18,7 +18,17 @@ export class UserService implements OnDestroy {
         takeUntil(this._destroying$)
       )
       .subscribe((result: any) => {
-        this.logIn(result.payload.account.name);
+        console.log(result);
+        const {
+          payload: {
+            account: {
+              name,
+              username,
+              idTokenClaims: { oid }
+            }
+          }
+        } = result;
+        this.logIn({ name, username, oid });
       });
   }
 
@@ -27,12 +37,20 @@ export class UserService implements OnDestroy {
     this._destroying$.complete();
   }
 
-  logIn(name: string): void {
-    this.store.dispatch(UserServiceActions.Login({ name: name }));
+  logIn({ name, username, oid }: { name: string; username: string; oid: string }): void {
+    this.store.dispatch(UserServiceActions.Login({ name: name, oid, username }));
+  }
+
+  get name$(): Observable<string> {
+    return this.store.pipe(select(UserServiceState.name));
   }
 
   get userName$(): Observable<string> {
     return this.store.pipe(select(UserServiceState.username));
+  }
+
+  get id$(): Observable<string | undefined> {
+    return this.store.pipe(select(UserServiceState.id));
   }
 
   logOut(): void {
