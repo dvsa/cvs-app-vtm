@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const VehicleSectionDefaultPsvHgv: FormNode = {
   name: 'vehicleSection',
@@ -24,6 +24,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
 
       type: FormNodeTypes.CONTROL
     },

@@ -19,6 +19,12 @@ export enum FormNodeTypes {
   COMBINATION = 'combination'
 }
 
+export enum FormNodeEditTypes {
+  TEXT = 'text',
+  AUTOCOMPLETE = 'autocomplete',
+  NUMBER = 'number'
+}
+
 export interface FormNodeOption<T> {
   value: T;
   label: string;
@@ -29,10 +35,11 @@ export interface FormNode {
   children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
+  editType?: FormNodeEditTypes;
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions | string[];
   validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
