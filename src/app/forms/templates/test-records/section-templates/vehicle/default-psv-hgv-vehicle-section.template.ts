@@ -25,6 +25,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'Country Of Registration',
       value: '',
       editType: FormNodeEditTypes.AUTOCOMPLETE,
+      options: ["option1", "option2", "option3"],
 
       type: FormNodeTypes.CONTROL
     },
@@ -59,9 +60,11 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: '',
+      options:[{value: 'km', label: 'Kilometers'}, {value: 'mi', label: 'Miles'}],
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.RADIO,
     },
     {
       name: 'preparerCombination',

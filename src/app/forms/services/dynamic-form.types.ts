@@ -1,4 +1,5 @@
 import { AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormArray, FormControl, FormControlOptions, FormGroup, ValidatorFn } from '@angular/forms';
+import {MultiOptions } from '@models/options.model';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -23,7 +24,8 @@ export enum FormNodeEditTypes {
   TEXT = 'text',
   AUTOCOMPLETE = 'autocomplete',
   NUMBER = 'number',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  RADIO= 'radio'
 }
 
 export interface FormNodeOption<T> {
@@ -45,6 +47,7 @@ export interface FormNode {
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
+  multiOptions?: MultiOptions;
 }
 
 export interface FormNodeCombinationOptions {
