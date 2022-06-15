@@ -4,22 +4,23 @@
   </div>
 
   <div class="govuk-grid-column-full">
-    <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': getInlineErrorMessage() | async }">
-      <label class="govuk-label govuk-!-font-weight-bold" for="searchIdentifier"> Vehicle registration mark, trailer ID or vehicle identification number </label>
-      <span *ngIf="globalErrorService.errors$ | async as errorMessage" id="search-term-error" class="govuk-error-message">
-        <span class="govuk-visually-hidden">Error:</span>
-        <p class="white-space--normal" *ngIf="errorMessage.length > 0">{{ errorMessage[0].error }}</p>
-      </span>
+    <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': getInlineErrorMessage('search-term') | async }">
+      <label class="govuk-label govuk-!-font-weight-bold" for="search-term"> Vehicle registration mark, trailer ID or vehicle identification number </label>
 
-      <input #searchTerm class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage() | async }" (keyup.enter)="navigateSearch(searchTerm.value, searchType.value)" id="search-term" name="search-term" type="text" aria-describedby="search-term" />
+      <ng-container *ngTemplateOutlet="error; context: { $implicit: 'search-term' }"></ng-container>
+
+      <input #searchTerm id="search-term" name="search-term" aria-describedby="search-term" type="text" class="govuk-input govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage('search-term') | async }" (keyup.enter)="navigateSearch(searchTerm.value, searchType.value)" />
     </div>
 
-    <div class="govuk-form-group">
+    <div class="govuk-form-group" [ngClass]="{ 'govuk-form-group--error': getInlineErrorMessage('search-type') | async }">
       <label class="govuk-label govuk-!-font-weight-bold" for="type">Search criteria</label>
-      <select #searchType class="govuk-select govuk-!-width-two-thirds" id="type" name="type">
+
+      <ng-container *ngTemplateOutlet="error; context: { $implicit: 'search-type' }"></ng-container>
+
+      <select #searchType id="type" name="type" class="govuk-select govuk-!-width-two-thirds" [ngClass]="{ 'govuk-input--error': getInlineErrorMessage('search-term') | async }">
         <option value="" selected disabled>Vehicle registration mark, trailer ID or vehicle identification number</option>
-        <option value="vin">Vehicle identification number (VIM)</option>
-        <option value="partialVin">Partial vehicle identification number (Partial VIM)</option>
+        <option value="vin">Vehicle identification number (VIN)</option>
+        <option value="partialVin">Partial vehicle identification number (Partial VIN)</option>
         <option value="vrm">Vehicle registration mark (VRM)</option>
         <option value="trailerId">Trailer ID</option>
       </select>
@@ -27,8 +28,13 @@
 
     <button class="govuk-button" data-module="govuk-button" (click)="navigateSearch(searchTerm.value, searchType.value)">Search</button>
   </div>
-
-  <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
-    <app-single-search-result [vehicleTechRecord]="vehicleTechRecord"></app-single-search-result>
-  </ng-container>
 </div>
+
+<ng-template #error let-name>
+  <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
+    <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
+      <span class="govuk-visually-hidden">Error:</span>
+      <p class="white-space--normal">{{ errorMessage.error }}</p>
+    </span>
+  </ng-container>
+</ng-template>
