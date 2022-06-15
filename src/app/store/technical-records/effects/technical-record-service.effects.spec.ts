@@ -46,7 +46,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
-        expectObservable(effects.getByVin$).toBe('---b', {
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByVINSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
@@ -65,7 +65,7 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getByVin$).toBe('---b', { b: getByVINFailure({ error: 'There was a problem getting the Tech Record by VIN', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVINFailure({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' }) });
       });
     });
 
@@ -82,7 +82,7 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getByVin$).toBe('---b', { b: getByVINFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVINFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
       });
     });
 
@@ -96,7 +96,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getByVIN').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getByVin$).toBe('---b', { b: getByVINFailure({ error: 'string', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVINFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
     });
   });
@@ -113,7 +113,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getByPartialVIN').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
-        expectObservable(effects.getByPartialVIN$).toBe('---b', {
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
           b: getByPartialVINSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
@@ -132,7 +132,7 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByPartialVIN').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getByPartialVIN$).toBe('---b', { b: getByPartialVINFailure({ error: 'There was a problem getting the Tech Record by partialVIN', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByPartialVINFailure({ error: 'There was a problem getting the Tech Record by partialVin', anchorLink: 'search-term' }) });
       });
     });
 
@@ -149,7 +149,7 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByPartialVIN').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getByPartialVIN$).toBe('---b', { b: getByPartialVINFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByPartialVINFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
       });
     });
 
@@ -163,7 +163,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getByPartialVIN').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getByPartialVIN$).toBe('---b', { b: getByPartialVINFailure({ error: 'string', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByPartialVINFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
     });
   });
