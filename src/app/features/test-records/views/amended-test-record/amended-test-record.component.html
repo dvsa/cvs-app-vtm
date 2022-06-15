@@ -1,0 +1,32 @@
+<section *ngIf="testResult$ | async as testResult">
+  <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-notification-banner__heading">Amended Test Record - created at {{ testResult.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+  </div>
+
+  <ng-container [ngSwitch]="testResult.vehicleType">
+    <ng-container *ngSwitchCase="vehicleTypes.PSV">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.PSV] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="vehicleTypes.HGV">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.HGV] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="vehicleTypes.TRL">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.TRL] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <section class="section">
+    <app-defects [edit]="false" [defectsData$]="defectData$"></app-defects>
+  </section>
+</section>

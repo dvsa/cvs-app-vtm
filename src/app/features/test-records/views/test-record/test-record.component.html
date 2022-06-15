@@ -1,0 +1,27 @@
+<section *ngIf="testResult$ | async as testResult">
+  <ng-container [ngSwitch]="testResult.vehicleType">
+    <ng-container *ngSwitchCase="vehicleTypes.PSV">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.PSV] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="vehicleTypes.HGV">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.HGV] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="vehicleTypes.TRL">
+      <ng-container *ngFor="let section of masterTpl[vehicleTypes.TRL] | keyvalue">
+        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <section class="section">
+    <app-defects [edit]="false" [defectsData$]="defectsData$"></app-defects>
+  </section>
+
+  <section class="section">
+    <app-test-amendment-history [testRecord]="testResult"></app-test-amendment-history>
+  </section>
+</section>

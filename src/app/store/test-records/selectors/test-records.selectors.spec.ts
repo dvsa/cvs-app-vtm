@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { TestResultModel } from '@models/test-result.model';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectedTestResultState, testResultLoadingState, selectDefectData } from './test-records.selectors';
+import { selectDefectData, selectedTestResultState, selectedTestSortedAmendmentHistory, testResultLoadingState } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -34,6 +34,31 @@ describe('Test Results Selectors', () => {
       const noDefectState = { ...state, testTypes: [{ ...state.testTypes[0], defects: undefined }] };
       const defectState = selectDefectData.projector(noDefectState);
       expect(defectState?.length).toBe(0);
+    });
+  });
+
+  describe('selectSortedTestAmendmentHistory', () => {
+    let mock: TestResultModel;
+    let sorted: TestResultModel[];
+    beforeEach(() => {
+      mock = mockTestResult();
+    });
+    it('should sort the test history', () => {
+      // Adding entries with null created at at the end if they exist
+      const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
+      let previous = new Date(sortedTestHistory![0].createdAt!).getTime();
+      let notfound: TestResultModel[] = [];
+      sortedTestHistory?.forEach((test) => {
+        if (test.createdAt) {
+          expect(new Date(test.createdAt!).getTime()).toBeLessThanOrEqual(previous);
+          previous = new Date(test.createdAt!).getTime();
+        } else {
+          notfound.push(test);
+        }
+      });
+      if (notfound.length > 0) {
+        expect(sortedTestHistory?.slice(-notfound.length)).toEqual(notfound);
+      }
     });
   });
 });

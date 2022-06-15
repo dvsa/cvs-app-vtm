@@ -1,5 +1,6 @@
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
+import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
 import * as Emissions from '../app/models/emissions.enum';
@@ -47,11 +48,11 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
     });
   });
 
-export const mockTestResult = (i: number = 0) =>
+export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') =>
   createMock<TestResultModel>({
     testResultId: `TestResultId${String(i + 1).padStart(4, '0')}`,
 
-    systemNumber: 'SYS0001',
+    systemNumber,
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
 
@@ -71,10 +72,55 @@ export const mockTestResult = (i: number = 0) =>
 
     testStationName: 'Abshire-Kub',
     testStationPNumber: 'P12346',
-    testStationType: TestStationType.atf,
+    testStationType: TestStationType.ATF,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    additionalNotesRecorded: 'notes for the test record will be displayed here...'
+    additionalNotesRecorded: 'notes for the test record will be displayed here...',
+    vehicleType,
+    testVersion: 'Current',
+    createdByName: 'Jane Doe',
+    testHistory: [...createMockList<TestResultModel>(5, (j) => mockTestResultArchived(j, vehicleType, systemNumber))]
   });
 
-export const mockTestResultList = (items: number = 1) => createMockList<TestResultModel>(items, (i) => mockTestResult(i));
+export const mockTestResultArchived = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') => {
+  const date = new Date('2022-01-02');
+  const createdAt = date.setDate(date.getDate() - (i + 1));
+  return createMock<TestResultModel>({
+    testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
+    createdAt: new Date(createdAt).toISOString(),
+    systemNumber,
+    vin: 'XMGDE02FS0H012345',
+    vrm: 'KP02 ABC',
+    testStartTimestamp: new Date().toISOString(),
+
+    testTypes: [...mockTestTypeList()],
+    createdByName: `Person ${i}`,
+    trailerId: `C${String(i + 1).padStart(5, '0')}`,
+    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    euVehicleCategory: EuVehicleCategory.M3,
+    odometerReading: 100,
+    odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
+    reasonForCreation: `reason ${i}`,
+    preparerName: 'Durrell Truck & Van Centre',
+    preparerId: 'CM2254',
+    testStationName: 'Abshire-Kub',
+    testStationPNumber: 'P12346',
+    testStationType: TestStationType.ATF,
+    testerName: `tester ${i}`,
+    testerEmailAddress: 'john.smith@dvsa.gov.uk',
+    additionalNotesRecorded: `achived test record ${i}`,
+    testVersion: 'Archived',
+    vehicleType
+  });
+};
+
+export const mockTestResultList = (items: number = 1, systemNumber: string = 'PSV') => {
+  switch (systemNumber.substring(0, 3)) {
+    case 'HGV':
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.HGV, systemNumber));
+    case 'TRL':
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.TRL, systemNumber));
+    default:
+      return createMockList<TestResultModel>(items, (i) => mockTestResult(i));
+  }
+};

@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { RadioGroupComponent } from './radio-group.component';
-import { MultiOptions } from '@models/options.model';
 
 export default {
   title: 'Forms/Radio button group',
