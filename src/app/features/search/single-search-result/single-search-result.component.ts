@@ -24,8 +24,8 @@ export class SingleSearchResultComponent implements OnInit {
     this.vehicleDisplayData = {
       vin: this.vehicleTechRecord?.vin,
       vrm: this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm,
-      make: techRecord?.bodyMake,
-      model: techRecord?.modelLiteral,
+      make: techRecord?.chassisMake,
+      model: techRecord?.chassisModel,
       manufactureYear: techRecord?.manufactureYear,
       vehicleType: techRecord?.vehicleType.toUpperCase()
     };

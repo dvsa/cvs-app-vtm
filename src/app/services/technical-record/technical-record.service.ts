@@ -4,7 +4,7 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getByVIN, getByPartialVIN, selectVehicleTechnicalRecordsByVin, vehicleTechRecords } from '@store/technical-records';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -17,17 +17,18 @@ export class TechnicalRecordService {
   constructor(private store: Store, private http: HttpClient) {}
 
   getByVIN(vin: string): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${vin}/tech-records?status=all&metadata=true&searchCriteria=vin`;
-    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
-
-    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
+    return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
   }
 
   getByPartialVIN(partialVin: string): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${partialVin}/tech-records?status=all&metadata=true&searchCriteria=partialVin`
-    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`
+    return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
+  }
 
-    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' })
+  private getVehicleTechRecordModels(identifier: string, type: SEARCH_TYPES) {
+    const queryStr = `${identifier}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
+    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
+
+    return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
   get vehicleTechRecords$() {
@@ -41,7 +42,7 @@ export class TechnicalRecordService {
   searchBy(criteria: { type: SEARCH_TYPES; searchTerm: string }) {
     const { type, searchTerm } = criteria;
 
-    switch(type) {
+    switch (type) {
       case SEARCH_TYPES.VIN:
         this.store.dispatch(getByVIN({ [type]: searchTerm }));
         break;
