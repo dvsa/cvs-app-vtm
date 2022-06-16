@@ -16,7 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class AutocompleteComponent extends BaseControlComponent implements OnInit {
-  @Input() options: string[] = [];
+  @Input() options: String[] = [];
 
   constructor(injector: Injector, @Inject(DOCUMENT) private document: Document) {
     super(injector);

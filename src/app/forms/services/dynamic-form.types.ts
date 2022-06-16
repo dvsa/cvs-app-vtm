@@ -36,11 +36,10 @@ export interface FormNode {
   children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
-  editType?: FormNodeEditTypes;
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions | string[];
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
   validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
