@@ -44,6 +44,7 @@ export interface FormNode {
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
+  editType?: FormNodeEditTypes;
 }
 
 export interface FormNodeCombinationOptions {
