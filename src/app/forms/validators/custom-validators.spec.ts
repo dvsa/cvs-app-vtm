@@ -100,9 +100,9 @@ describe('numeric', () => {
     [null, 123456789],
     [null, 0],
     [null, ''],
-    [{ customPattern: { message: 'must be a number' } }, 'foobar'],
-    [{ customPattern: { message: 'must be a number' } }, '123456bar'],
-    [{ customPattern: { message: 'must be a number' } }, 'foo123456'],
+    [{ customPattern: { message: 'must be a whole number' } }, 'foobar'],
+    [{ customPattern: { message: 'must be a whole number' } }, '123456bar'],
+    [{ customPattern: { message: 'must be a whole number' } }, 'foo123456'],
     [null, '123546789'],
     [null, null]
   ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {

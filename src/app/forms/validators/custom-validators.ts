@@ -54,7 +54,7 @@ export class CustomValidators {
   };
 
   static numeric(): ValidatorFn {
-    return this.customPattern(['^\\d*$', 'must be a number']);
+    return this.customPattern(['^\\d*$', 'must be a whole number']);
   }
 
   static customPattern([regEx, message]: string[]): ValidatorFn {

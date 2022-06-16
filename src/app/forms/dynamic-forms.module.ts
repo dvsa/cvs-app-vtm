@@ -16,9 +16,10 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
+import { NumberOnlyDirective } from './directives/app-number-only.directive';
 
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent, TextAreaComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent, TextAreaComponent, NumberOnlyDirective],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent]
 })
