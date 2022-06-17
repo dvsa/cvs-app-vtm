@@ -1,6 +1,5 @@
-import { Component, DebugElement, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NumberOnlyDirective } from './app-number-only.directive';
 
@@ -15,8 +14,7 @@ describe('NumberOnlyDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [NumberOnlyDirective, TestComponent],
-      imports: [ReactiveFormsModule]
+      declarations: [NumberOnlyDirective, TestComponent]
     }).createComponent(TestComponent);
     fixture.detectChanges();
 
