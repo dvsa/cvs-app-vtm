@@ -26,7 +26,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
 
           if (searchTerm && Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
             this.globalErrorService.clearError();
-            this.technicalRecordService.searchBy({ type, searchTerm });
+            this.technicalRecordService.searchBy(type, searchTerm);
           }
         }
       });

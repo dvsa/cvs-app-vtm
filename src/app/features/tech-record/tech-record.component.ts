@@ -16,12 +16,15 @@ export class TechRecordComponent implements OnDestroy {
   ngDestroy$ = new Subject();
 
   constructor(private technicalRecordService: TechnicalRecordService, private store: Store, public spinnerService: SpinnerService) {
-    this.store.pipe(select(selectRouteNestedParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
-      const vin = params['vin'];
-      if (vin) {
-        this.technicalRecordService.searchBy({ type: SEARCH_TYPES.VIN, searchTerm: vin });
-      }
-    });
+    this.store
+      .pipe(select(selectRouteNestedParams), takeUntil(this.ngDestroy$))
+      .subscribe((params) => {
+        const vin = params['vin'];
+        if (vin) {
+          this.technicalRecordService.searchBy(SEARCH_TYPES.VIN, vin);
+        }
+      });
+
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
   }
 
