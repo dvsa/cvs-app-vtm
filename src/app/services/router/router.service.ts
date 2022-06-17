@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { routeEditable, selectQueryParam, selectQueryParams, selectRouteParam } from '@store/router/selectors/router.selectors';
+import {
+  routeEditable,
+  selectQueryParam,
+  selectQueryParams,
+  selectRouteParam,
+  selectRouteParams,
+  selectRouteNestedParams
+} from '@store/router/selectors/router.selectors';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,6 +28,10 @@ export class RouterService {
 
   getRouteParam$(param: string) {
     return this.store.pipe(select(selectRouteParam(param)));
+  }
+
+  get routeNestedParams$() {
+    return this.store.pipe(select(selectRouteNestedParams));
   }
 
   get routeEditable$() {

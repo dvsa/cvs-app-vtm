@@ -22,7 +22,11 @@ export const selectTestResultsTotal = selectTotal;
 
 export const testResultsEnitities = createSelector(testResultsFeatureState, selectTestResultsEntities);
 
-export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteNestedParams, (entities, { testResultId }) => entities[testResultId]);
+export const selectedTestResultState = createSelector(
+  testResultsEnitities,
+  selectRouteNestedParams,
+  (entities, { testResultId }) => entities[testResultId]
+);
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) => {
@@ -59,3 +63,8 @@ const getDefectFromTestResult = (testResult: TestResultModel | undefined) => {
   const defects = testResult?.testTypes && testResult?.testTypes.length > 0 ? testResult?.testTypes[0].defects : [];
   return defects || [];
 };
+
+export const selectTestFromSelectedTestResult = createSelector(selectedTestResultState, selectRouteNestedParams, (testResult, params) => {
+  const { testTypeId } = params;
+  return testResult?.testTypes?.find((testType) => testType.testTypeId === testTypeId);
+});

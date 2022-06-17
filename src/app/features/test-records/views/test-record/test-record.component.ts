@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -10,15 +10,16 @@ import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { mergeMap, Observable, of, take, withLatestFrom } from 'rxjs';
+import { firstValueFrom, mergeMap, Observable, of, take, withLatestFrom } from 'rxjs';
+import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-test-records',
   templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordComponent implements OnInit, AfterViewInit {
-  @ViewChildren(DynamicFormGroupComponent) dynamicFormGroupComponents?: QueryList<DynamicFormGroupComponent>;
+export class TestRecordComponent implements OnInit {
+  @ViewChild(BaseTestRecordComponent) baseTestRecordComponent?: BaseTestRecordComponent;
 
   defectTpl: FormNode = DefectTpl;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
@@ -40,54 +41,54 @@ export class TestRecordComponent implements OnInit, AfterViewInit {
     this.edit$ = this.routerService.routeEditable$;
   }
 
-  ngAfterViewInit() {
-    console.log(this.dynamicFormGroupComponents);
-    this.dynamicFormGroupComponents?.changes.subscribe({
-      next: (formGroup) => {
-        console.log(formGroup);
-      }
-    });
-  }
-
   handleEdit() {
-    this.router.navigate([], { queryParams: { edit: true }, relativeTo: this.route });
-  }
-
-  handleSave() {
-    let payload: TestResultModel;
-    this.dynamicFormGroupComponents?.forEach((component) => {
-      payload = { ...component.form.getRawValue() };
-      console.log(payload);
-    });
-
-    this.routerService
-      .getRouteParam$('systemId')
-      .pipe(
-        take(1),
-        withLatestFrom(this.userService.userName$, this.userService.id$),
-        mergeMap(([testResultId, username, id]) => this.testRecordsService.saveTestResult({ username, id }, this.cleanUp(payload), testResultId!))
-      )
-      .subscribe({
-        next: (updatedTestResult) => {
-          console.log(updatedTestResult);
-        },
-        error: (err) => {
-          console.log(err);
-          if (err.status === 400) {
-            const { errors } = err.error;
-            const globalErrors: GlobalError[] = [];
-            errors.forEach((error: string) => {
-              const field = error.match(/"([^"]+)"/);
-              globalErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
-            });
-            this.globalErrorService.setErrors(globalErrors);
-          }
-        }
-      });
+    this.router.navigate([], { queryParams: { edit: true }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
   handleCancel() {
-    this.router.navigate([], { relativeTo: this.route });
+    this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
+  }
+
+  handleSave() {
+    this.baseTestRecordComponent?.dynamicFormGroupComponents?.forEach(async (component) => {
+      const { testResultId, testTypeId } = await firstValueFrom(this.routerService.routeNestedParams$);
+      const testSection = component.form.meta.name;
+      if (component && testSection) {
+        const { form } = component;
+        this.testRecordsService.updateTestResultState({ testResultId, testTypeId, section: testSection, value: form.getCleanValue(form) });
+      }
+    });
+    // this.testRecordsService.submitTestResult();
+    // let payload: TestResultModel;
+    // this.baseTestRecordComponent?.dynamicFormGroupComponents?.forEach((component) => {
+    //   payload = { ...payload, ...component.form.getRawValue() };
+    //   console.log(payload);
+    // });
+
+    // this.routerService
+    //   .getRouteParam$('systemId')
+    //   .pipe(
+    //     take(1),
+    //     withLatestFrom(this.userService.userName$, this.userService.id$),
+    //     mergeMap(([testResultId, username, id]) => this.testRecordsService.saveTestResult({ username, id }, this.cleanUp(payload)!))
+    //   )
+    //   .subscribe({
+    //     next: (updatedTestResult) => {
+    //       console.log(updatedTestResult);
+    //     },
+    //     error: (err) => {
+    //       console.log(err);
+    //       if (err.status === 400) {
+    //         const { errors } = err.error;
+    //         const globalErrors: GlobalError[] = [];
+    //         errors.forEach((error: string) => {
+    //           const field = error.match(/"([^"]+)"/);
+    //           globalErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
+    //         });
+    //         this.globalErrorService.setErrors(globalErrors);
+    //       }
+    //     }
+    //   });
   }
 
   cleanUp(payload: any) {

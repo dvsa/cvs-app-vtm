@@ -7,9 +7,11 @@ import { TestAmendmentHistoryComponent } from './components/test-amendment-histo
 import { TestRecordsRoutingModule } from './test-records-routing.module';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { TestRecordComponent } from './views/test-record/test-record.component';
+import { TestComponent } from './views/test/test.component';
+import { TestSectionsComponent } from './views/test-sections/test-sections.component';
 
 @NgModule({
-  declarations: [TestRecordComponent, AmendedTestRecordComponent, TestAmendmentHistoryComponent, BaseTestRecordComponent],
+  declarations: [TestRecordComponent, AmendedTestRecordComponent, TestAmendmentHistoryComponent, BaseTestRecordComponent, TestComponent, TestSectionsComponent],
   imports: [CommonModule, TestRecordsRoutingModule, DynamicFormsModule, SharedModule]
 })
 export class TestRecordsModule {}

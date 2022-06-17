@@ -1,5 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GetTestResultsService, TestResultPutBody, UpdateTestResultsService } from '@api/test-results';
 import { TestResultModel } from '@models/test-result.model';
@@ -12,10 +11,12 @@ import {
   selectDefectData,
   selectedAmendedTestResultState,
   selectedTestResultState,
-  TestResultsState
+  selectTestFromSelectedTestResult,
+  TestResultsState,
+  updateTestResult,
+  updateTestResultState
 } from '@store/test-records';
-import { Observable, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -84,20 +85,41 @@ export class TestRecordsService {
     return this.store.pipe(select(selectAmendedDefectData));
   }
 
+  get selectedTestInTestResult$() {
+    return this.store.pipe(select(selectTestFromSelectedTestResult));
+  }
+
   saveTestResult(
     user: { username: string; id?: string },
     body: TestResultModel,
-    testResultId: string,
     observe?: 'body',
     reportProgress?: boolean
   ): Observable<TestResultModel[]> {
     const { username, id } = user;
-
+    const { testResultId } = body;
     return this.updateTestResultsService.testResultsTestResultIdPut(
       { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as TestResultPutBody,
       testResultId,
       observe,
       reportProgress
     ) as unknown as Observable<TestResultModel[]>;
+  }
+
+  updateTestResultState({
+    testResultId,
+    testTypeId,
+    section,
+    value
+  }: {
+    testResultId: string;
+    testTypeId: string;
+    section: string;
+    value: any;
+  }): void {
+    this.store.dispatch(updateTestResultState({ testResultId, testTypeId, section, value }));
+  }
+
+  async submitTestResult(): Promise<void> {
+    this.store.dispatch(updateTestResult());
   }
 }

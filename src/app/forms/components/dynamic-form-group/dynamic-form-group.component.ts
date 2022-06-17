@@ -1,16 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-dynamic-form-group',
   templateUrl: './dynamic-form-group.component.html',
-  styleUrls: ['./dynamic-form-group.component.scss']
+  styleUrls: ['./dynamic-form-group.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynamicFormGroupComponent implements OnInit {
+export class DynamicFormGroupComponent implements OnInit, OnChanges {
   @Input() data: any = {};
-  @Input() template!: FormNode;
+  @Input() template?: FormNode;
   @Input() edit = false;
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
@@ -18,8 +20,17 @@ export class DynamicFormGroupComponent implements OnInit {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.data);
-    this.form.patchValue(this.data);
+    // this.form = this.dfs.createForm(this.template!, this.data);
+    // this.form.patchValue(this.data);
+    return;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { template } = changes;
+    if (template && template.currentValue) {
+      this.form = this.dfs.createForm(template.currentValue, this.data);
+    }
+    // this.form.patchValue(this.data);
   }
 
   entriesOf(obj: FormGroup): { key: string; value: any }[] {
@@ -29,8 +40,8 @@ export class DynamicFormGroupComponent implements OnInit {
     }));
   }
 
-  trackByFn(index: number) {
-    return index;
+  trackByFn(index: number, item: any) {
+    return item.key;
   }
 
   get formNodeTypes(): typeof FormNodeTypes {

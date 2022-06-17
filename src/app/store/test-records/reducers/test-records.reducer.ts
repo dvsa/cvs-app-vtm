@@ -1,7 +1,20 @@
 import { TestResultModel } from '@models/test-result.model';
+import { TestType } from '@models/test-type.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess, fetchTestResults, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess, fetchTestResultsSuccess } from '../actions/test-records.actions';
+import {
+  fetchSelectedTestResult,
+  fetchSelectedTestResultFailed,
+  fetchSelectedTestResultSuccess,
+  fetchTestResults,
+  fetchTestResultsBySystemId,
+  fetchTestResultsBySystemIdFailed,
+  fetchTestResultsBySystemIdSuccess,
+  fetchTestResultsSuccess,
+  updateTestResultState,
+  updateTestResult,
+  updateTestResultFailed
+} from '../actions/test-records.actions';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
 
@@ -27,7 +40,41 @@ export const testResultsReducer = createReducer(
   on(fetchTestResultsBySystemIdFailed, (state) => ({ ...testResultAdapter.setAll([], state), loading: false })),
   on(fetchSelectedTestResult, (state) => ({ ...state, loading: true })),
   on(fetchSelectedTestResultSuccess, (state, action) => ({ ...testResultAdapter.upsertOne(action.payload, state), loading: false })),
-  on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false }))
+  on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false })),
+  on(updateTestResultState, (state, { testResultId, testTypeId, section, value }) => {
+    const testResult = state.entities[testResultId];
+    if (!testResult) {
+      return state;
+    }
+
+    const updatedTestResult = updateTestResultBySection(section, testResult, testTypeId, value);
+
+    return { ...testResultAdapter.upsertOne(updatedTestResult, state), loading: false };
+  }),
+  on(updateTestResult, (state) => ({ ...state, loading: true })),
+  on(updateTestResultFailed, (state) => ({ ...state, loading: false }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
+
+function updateTestResultBySection(section: string, testResult: TestResultModel, testTypeId: string, value: any) {
+  const testType = testResult?.testTypes.find((t) => t.testTypeId === testTypeId);
+  const testTypeIndex = testResult?.testTypes.map((t) => t.testTypeId).indexOf(testTypeId);
+  switch (section) {
+    case 'vehicle':
+    case 'vehicleSection':
+    case 'notesSection':
+      return {
+        ...testResult,
+        ...value
+      };
+    case 'test':
+    case 'testSection':
+    case 'seatbeltSection':
+    case 'emissionsSection':
+    case 'visitSection':
+      return testResult;
+    default:
+      return testResult;
+  }
+}

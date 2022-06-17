@@ -36,5 +36,5 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchSelectedTestResultFailed,
     (state, { error, anchorLink }) => ({ ...state, globalError: [...state.globalError, { error: error, anchorLink: anchorLink }] })
   ),
-  on(GlobalErrorActions.setErrors, (state, { errors }) => ({ ...state, globalError: [...errors] }))
+  on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, globalError: [...errors] }))
 );
