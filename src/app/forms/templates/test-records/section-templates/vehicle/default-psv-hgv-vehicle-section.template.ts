@@ -25,7 +25,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'Country Of Registration',
       value: '',
       editType: FormNodeEditTypes.AUTOCOMPLETE,
-      options: ["option1", "option2", "option3"],
+      options: [{ label: 'England', value: 'gb' }, { label: 'Wales', value: 'wa' }, { label: 'Scotland', value: 'sc' }],
 
       type: FormNodeTypes.CONTROL
     },
@@ -60,7 +60,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: '',
-      options:[{value: 'km', label: 'Kilometers'}, {value: 'mi', label: 'Miles'}],
+      options: [{ value: 'kilometers', label: 'Kilometers' }, { value: 'miles', label: 'Miles' }],
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,

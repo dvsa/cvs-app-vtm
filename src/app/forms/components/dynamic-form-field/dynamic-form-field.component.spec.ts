@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormFieldComponent } from './dynamic-form-field.component';
 
 describe('DynamicFormFieldComponent', () => {
@@ -8,9 +8,10 @@ describe('DynamicFormFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DynamicFormFieldComponent ]
+      declarations: [DynamicFormFieldComponent],
+      imports: [FormsModule, ReactiveFormsModule]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

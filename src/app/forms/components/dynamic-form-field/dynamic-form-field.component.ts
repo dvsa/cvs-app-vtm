@@ -10,17 +10,17 @@ import { MultiOptions } from '@models/options.model';
 })
 export class DynamicFormFieldComponent {
   @Input() control?: KeyValue<string, CustomFormControl>;
-  @Input() form: FormGroup = {} as FormGroup;
-  constructor() {}
+  @Input() form?: FormGroup;
+  constructor() { }
 
   get formNodeEditTypes(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
 
-  get options(): string[]{
-    return (this.control?.value.meta.options as string[] | []);
+  get options(): any[] {
+    return (this.control?.value.meta.options as any[]);
   }
-  get multiOptions(): MultiOptions{
+  get multiOptions(): MultiOptions {
     return (this.control?.value.meta.options as MultiOptions | []);
   }
 }
