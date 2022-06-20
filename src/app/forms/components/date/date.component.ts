@@ -69,8 +69,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
       next: ({ day, month, year }) => {
         const date = new Date(`${year}-${month}-${day}`);
         this.onChange(date);
-      },
-      error: (e) => console.log(e)
+      }
     });
   }
 
