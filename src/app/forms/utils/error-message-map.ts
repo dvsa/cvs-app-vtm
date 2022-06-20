@@ -2,5 +2,7 @@ export const ErrorMessageMap: { [key: string]: any } = {
   ['required']: (err: boolean, label: string) => `${label ?? 'This filed'} is required`,
   ['pattern']: (err: boolean, label: string) => `${label ?? 'This filed'} must match a pattern`,
   ['customPattern']: (err: { message: string }, label: string) => `${label ?? 'This field'} ${err.message}`,
-  invalidDate: (err: boolean, label: string) => `${label ?? 'This filed'} is an invalid date`
+  invalidDate: (err: boolean, label: string) => `${label ?? 'This filed'} is an invalid date`,
+  maxlength: (err: { requiredLength: number }, label: string) => `${label ?? 'This filed'} must be less than ${err.requiredLength} characters`,
+  minlength: (err: { requiredLength: number }, label: string) => `${label ?? 'This filed'} must be greater than ${err.requiredLength} characters`
 };

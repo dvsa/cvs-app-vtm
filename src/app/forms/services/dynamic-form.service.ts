@@ -9,12 +9,14 @@ import { FormNode, CustomFormGroup, CustomFormControl, CustomFormArray, FormNode
 export class DynamicFormService {
   constructor() {}
 
-  validatorMap: { [key: string]: any } = {
+  validatorMap: { [key: string]: (args: any) => ValidatorFn } = {
     required: () => Validators.required,
     hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
     pattern: (args: string) => Validators.pattern(args),
-    customPattern: (args: any) => CustomValidators.customPattern([...args]),
-    numeric: () => CustomValidators.numeric()
+    customPattern: (args: string[]) => CustomValidators.customPattern([...args]),
+    numeric: () => CustomValidators.numeric(),
+    maxLength: (args: number) => Validators.maxLength(args),
+    minLength: (args: number) => Validators.minLength(args)
   };
 
   createForm(f: FormNode, d: any = {}): CustomFormGroup | CustomFormArray {
@@ -70,7 +72,7 @@ export class DynamicFormService {
     return controls;
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any[] }> = []) {
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any }> = []) {
     validators.forEach((v) => {
       control.addValidators(this.validatorMap[v.name](v.args));
     });
