@@ -17,6 +17,10 @@ export const getByVrm = createAction(`${prefix} getByVrm`, props<{ vrm: string }
 export const getByVrmSuccess = createOutcomeAction('getByVrm', true);
 export const getByVrmFailure = createOutcomeAction('getByVrm');
 
+export const getByTrailerId = createAction(`${prefix} getByTrailerId`, props<{ trailerId: string }>());
+export const getByTrailerIdSuccess = createOutcomeAction('getByTrailerId', true);
+export const getByTrailerIdFailure = createOutcomeAction('getByTrailerId');
+
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;

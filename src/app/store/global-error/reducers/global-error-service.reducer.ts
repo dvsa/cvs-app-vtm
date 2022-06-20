@@ -20,6 +20,34 @@ export const globalErrorState = createSelector(getGlobalErrorState, (state) => s
 
 export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
-  on(GlobalErrorActions.clearError, TechnicalRecordServiceActions.getByVin, TestResultActions.fetchTestResults, TestResultActions.fetchTestResultsBySystemId, TestResultActions.fetchSelectedTestResult, (state) => ({ ...state, globalError: [] })),
-  on(GlobalErrorActions.addError, TechnicalRecordServiceActions.getByVinFailure, TestResultActions.fetchTestResultsFailed, TestResultActions.fetchTestResultsBySystemIdFailed, TestResultActions.fetchSelectedTestResultFailed, (state, { error, anchorLink }) => ({ ...state, globalError: [...state.globalError, { error: error, anchorLink: anchorLink }] }))
+  on(
+    GlobalErrorActions.clearError,
+    TechnicalRecordServiceActions.getByVin,
+    TechnicalRecordServiceActions.getByPartialVin,
+    TechnicalRecordServiceActions.getByVrm,
+    TechnicalRecordServiceActions.getByTrailerId,
+    TestResultActions.fetchTestResults,
+    TestResultActions.fetchTestResultsBySystemId,
+    TestResultActions.fetchSelectedTestResult,
+    succesMethod
+    ),
+
+  on(
+    GlobalErrorActions.addError,
+    TechnicalRecordServiceActions.getByVinFailure,
+    TechnicalRecordServiceActions.getByPartialVinFailure,
+    TechnicalRecordServiceActions.getByVrmFailure,
+    TechnicalRecordServiceActions.getByTrailerIdFailure,
+    TestResultActions.fetchTestResultsFailed,
+    TestResultActions.fetchTestResultsBySystemIdFailed,
+    TestResultActions.fetchSelectedTestResultFailed,
+    failureMethod)
 );
+
+function succesMethod(state: GlobalErrorState) {
+  return { ...state, globalError: [] };
+};
+
+function failureMethod(state: GlobalErrorState, errorMessage: { error: any, anchorLink: any }) {
+  return { ...state, globalError: [...state.globalError, { error: errorMessage.error, anchorLink: errorMessage.anchorLink }] };
+};

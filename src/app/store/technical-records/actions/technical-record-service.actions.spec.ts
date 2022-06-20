@@ -1,4 +1,4 @@
-import { getByVin, getByVinSuccess, getByVinFailure, getByPartialVinSuccess, getByPartialVinFailure, getByPartialVin, getByVrm, getByVrmSuccess, getByVrmFailure } from './technical-record-service.actions';
+import { getByVin, getByVinSuccess, getByVinFailure, getByPartialVinSuccess, getByPartialVinFailure, getByPartialVin, getByVrm, getByVrmSuccess, getByVrmFailure, getByTrailerId, getByTrailerIdSuccess, getByTrailerIdFailure } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';
 const FAILURE = ' Failure';
@@ -16,6 +16,10 @@ describe('Technical record actions', () => {
     expect(getByVrm.type).toBe(getMessage('getByVrm'));
     expect(getByVrmSuccess.type).toBe(getMessage('getByVrm', SUCCESS));
     expect(getByVrmFailure.type).toBe(getMessage('getByVrm', FAILURE));
+
+    expect(getByTrailerId.type).toBe(getMessage('getByTrailerId'));
+    expect(getByTrailerIdSuccess.type).toBe(getMessage('getByTrailerId', SUCCESS));
+    expect(getByTrailerIdFailure.type).toBe(getMessage('getByTrailerId', FAILURE));
   });
 });
 
