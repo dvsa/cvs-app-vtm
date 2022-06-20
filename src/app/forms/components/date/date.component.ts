@@ -1,13 +1,12 @@
 import { AfterContentInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
-import { CustomValidators } from '../../validators/date/date.validators';
+import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
   selector: 'app-date',
   templateUrl: './date.component.html',
-  styleUrls: ['./date.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -76,6 +75,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   addValidators() {
-    this.control?.addValidators([CustomValidators.validDate]);
+    this.control?.addValidators([DateValidators.validDate]);
   }
 }

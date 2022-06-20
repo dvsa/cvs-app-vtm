@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
-import { CustomValidators } from './date.validators';
+import { DateValidators } from './date.validators';
 
-describe(CustomValidators.validDate.name, () => {
+describe(DateValidators.validDate.name, () => {
   it.each([
     [{ invalidDate: true }, 'asdasd'],
     [{ invalidDate: true }, '2000-01-00'],
@@ -15,6 +15,6 @@ describe(CustomValidators.validDate.name, () => {
   ])('should validate date and return %s for %p', (expected, date) => {
     const control = new FormControl(new Date(date));
 
-    expect(CustomValidators.validDate(control)).toEqual(expected);
+    expect(DateValidators.validDate(control)).toEqual(expected);
   });
 });
