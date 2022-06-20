@@ -37,7 +37,7 @@ export class TestComponent {
         if (testResult) {
           const { vehicleType } = testResult;
           const tpl = masterTpl[vehicleType as VehicleTypes];
-          const sections = test && test.testCode ? tpl[test.testCode as TestCodes] : tpl['default'];
+          const sections = test && test.testCode && tpl.hasOwnProperty(test.testCode) ? tpl[test.testCode as TestCodes] : tpl['default'];
           return Object.keys(sections as { [key: string]: any });
         }
         return [];

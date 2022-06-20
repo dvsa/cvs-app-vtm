@@ -31,7 +31,7 @@ export class TestSectionsComponent {
     ]).pipe(
       map(([param, testResult, test]) => {
         const tpl = masterTpl[testResult?.vehicleType as VehicleTypes];
-        const sections = test && test.testCode ? tpl[test.testCode as TestCodes] : tpl['default'];
+        const sections = test && test.testCode && tpl.hasOwnProperty(test.testCode) ? tpl[test.testCode as TestCodes] : tpl['default'];
         return sections![param ? param : 'default'];
       })
     );

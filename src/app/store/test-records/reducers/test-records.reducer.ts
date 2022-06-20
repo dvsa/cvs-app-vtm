@@ -60,21 +60,33 @@ export const testResultsFeatureState = createFeatureSelector<TestResultsState>(S
 function updateTestResultBySection(section: string, testResult: TestResultModel, testTypeId: string, value: any) {
   const testType = testResult?.testTypes.find((t) => t.testTypeId === testTypeId);
   const testTypeIndex = testResult?.testTypes.map((t) => t.testTypeId).indexOf(testTypeId);
-  switch (section) {
-    case 'vehicle':
-    case 'vehicleSection':
-    case 'notesSection':
-      return {
-        ...testResult,
-        ...value
-      };
-    case 'test':
-    case 'testSection':
-    case 'seatbeltSection':
-    case 'emissionsSection':
-    case 'visitSection':
-      return testResult;
-    default:
-      return testResult;
+
+  const newTestType = { ...testType };
+  if (value && value.testTypes) {
+    Object.assign(newTestType, value.testTypes[0]);
   }
+  const testTypes = [...testResult?.testTypes];
+
+  testTypes.splice(testTypeIndex, 1, newTestType as TestType);
+  const newTestResult = { ...testResult, ...value, testTypes };
+
+  return newTestResult;
+
+  // switch (section) {
+  //   case 'vehicle':
+  //   case 'vehicleSection':
+  //   case 'notesSection':
+  //     return {
+  //       ...testResult,
+  //       ...value
+  //     };
+  //   case 'test':
+  //   case 'testSection':
+  //   case 'seatbeltSection':
+  //   case 'emissionsSection':
+  //   case 'visitSection':
+  //     return testResult;
+  //   default:
+  //     return testResult;
+  // }
 }
