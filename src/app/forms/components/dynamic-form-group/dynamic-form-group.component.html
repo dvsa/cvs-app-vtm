@@ -42,9 +42,9 @@
 
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
-    <ng-container *ngIf="control.value.meta" [ngSwitch]="isReadonly">
-      <app-view-list-item *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list"></app-view-list-item>
-      <app-text-input *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input>
+    <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit">
+      <app-view-list-item *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list"></app-view-list-item>
+      <app-text-input *ngSwitchCase="true" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key"></app-text-input>
     </ng-container>
   </ng-container>
 </ng-template>
@@ -64,7 +64,8 @@
 </ng-template>
 
 <ng-template #combinationTemplate let-control="control" let-formGroup="formGroup">
-  <div *ngIf="control.value.meta">
+  <!-- check for editable here so that we don't render this template as well as the actual form fields -->
+  <div *ngIf="control.value.meta && !edit">
     <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list"></app-view-combination>
   </div>
 </ng-template>

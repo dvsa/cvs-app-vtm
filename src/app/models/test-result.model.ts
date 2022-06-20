@@ -37,4 +37,5 @@ export interface TestResultModel {
 
   createdByName?: string;
   testVersion?: string | null;
+  testCode?: string;
 }
