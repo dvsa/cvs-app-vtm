@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const NotesSection: FormNode = {
   name: 'notesSection',
@@ -9,7 +9,8 @@ export const NotesSection: FormNode = {
     {
       name: 'additionalNotesRecorded',
       label: 'Additional Notes',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.TEXTAREA
     }
   ]
 };

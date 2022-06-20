@@ -4,5 +4,5 @@
   </h1>
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
   <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
-  <input class="govuk-input" id="{{ name }}" name="{{ name }}" type="text" [(ngModel)]="value" [disabled]="disabled ?? false" (ngModelChange)="onChange($event)" (blur)="onTouched(); handleEvent($event)" (focus)="handleEvent($event)" />
+  <input class="govuk-input" id="{{ name }}" name="{{ name }}" type="number" [(ngModel)]="value" [disabled]="disabled ?? false" (ngModelChange)="onChange($event)" (blur)="onTouched(); handleEvent($event)" (focus)="handleEvent($event)" appNumberOnly />
 </div>
