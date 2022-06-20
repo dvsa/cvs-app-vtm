@@ -28,6 +28,13 @@ export enum FormNodeTypes {
   COMBINATION = 'combination'
 }
 
+export enum FormNodeEditTypes {
+  TEXT = 'text',
+  AUTOCOMPLETE = 'autocomplete',
+  NUMBER = 'number',
+  TEXTAREA = 'textarea'
+}
+
 export interface FormNodeOption<T> {
   value: T;
   label: string;
@@ -46,6 +53,7 @@ export interface FormNode {
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
+  editType?: FormNodeEditTypes;
 }
 
 export interface FormNodeCombinationOptions {
