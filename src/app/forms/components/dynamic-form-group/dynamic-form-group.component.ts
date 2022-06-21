@@ -10,7 +10,7 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeView
   styleUrls: ['./dynamic-form-group.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynamicFormGroupComponent implements OnInit, OnChanges {
+export class DynamicFormGroupComponent implements OnChanges {
   @Input() data: any = {};
   @Input() template?: FormNode;
   @Input() edit = false;
@@ -19,18 +19,11 @@ export class DynamicFormGroupComponent implements OnInit, OnChanges {
 
   constructor(private dfs: DynamicFormService) {}
 
-  ngOnInit(): void {
-    // this.form = this.dfs.createForm(this.template!, this.data);
-    // this.form.patchValue(this.data);
-    return;
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     const { template } = changes;
     if (template && template.currentValue) {
       this.form = this.dfs.createForm(template.currentValue, this.data);
     }
-    // this.form.patchValue(this.data);
   }
 
   entriesOf(obj: FormGroup): { key: string; value: any }[] {
@@ -41,7 +34,7 @@ export class DynamicFormGroupComponent implements OnInit, OnChanges {
   }
 
   trackByFn(index: number, item: any) {
-    return item.key;
+    return item.hasOwnProperty('key') ? item.key : index;
   }
 
   get formNodeTypes(): typeof FormNodeTypes {

@@ -68,7 +68,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     AppStoreModule,
     InterceptorModule,
     CoreModule,
-    TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_TEST_RESULTS_API_URI }))
+    TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI }))
   ],
   providers: [
     {

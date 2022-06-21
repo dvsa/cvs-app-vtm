@@ -32,7 +32,8 @@ export enum FormNodeEditTypes {
   TEXT = 'text',
   AUTOCOMPLETE = 'autocomplete',
   NUMBER = 'number',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  DATE = 'date'
 }
 
 export interface FormNodeOption<T> {
@@ -142,7 +143,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
       if (control.meta.type === FormNodeTypes.CONTROL) {
-        cleanValue[key] = control.value;
+        Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
       }
     }
   });

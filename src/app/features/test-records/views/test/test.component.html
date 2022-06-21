@@ -6,18 +6,10 @@
       class="govuk-tabs__list-item"
       [ngClass]="{ 'govuk-tabs__list-item--selected': (selectedSection$ | async) === section }"
     >
-      <!-- <a class="govuk-tabs__tab" [routerLink]="[]" [queryParams]="{ section }" queryParamsHandling="merge"> {{ section | titlecase }} </a> -->
       <a class="govuk-tabs__tab" [routerLink]="[section]" queryParamsHandling="preserve"> {{ section | titlecase }} </a>
     </li>
   </ul>
   <div class="govuk-tabs__panel">
-    <!-- <app-button-group>
-      <app-button *ngIf="(edit$ | async) === true" id="save" (click)="handleSave()">Save</app-button>
-    </app-button-group>
-    <ng-container *ngIf="template$ | async as template">
-      <app-dynamic-form-group [template]="template" [data]="data$ | async" [edit]="(edit$ | async) || false"></app-dynamic-form-group>
-      <pre>{{ template | json }}</pre>
-    </ng-container> -->
     <router-outlet></router-outlet>
   </div>
 </div>

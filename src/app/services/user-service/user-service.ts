@@ -18,7 +18,6 @@ export class UserService implements OnDestroy {
         takeUntil(this._destroying$)
       )
       .subscribe((result: any) => {
-        console.log(result);
         const {
           payload: {
             account: {
@@ -38,7 +37,7 @@ export class UserService implements OnDestroy {
   }
 
   logIn({ name, username, oid }: { name: string; username: string; oid: string }): void {
-    this.store.dispatch(UserServiceActions.Login({ name: name, oid, username }));
+    this.store.dispatch(UserServiceActions.Login({ name, oid, username }));
   }
 
   get name$(): Observable<string> {

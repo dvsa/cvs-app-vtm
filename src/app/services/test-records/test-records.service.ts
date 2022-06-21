@@ -16,7 +16,7 @@ import {
   updateTestResult,
   updateTestResultState
 } from '@store/test-records';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -39,22 +39,14 @@ export class TestRecordsService {
       version?: string;
     } = {}
   ): Observable<Array<TestResultModel>> {
+    if (!systemNumber) {
+      return throwError(() => new Error('systemNumber is required'));
+    }
+
     const { status, fromDateTime, toDateTime, testResultId, version } = queryparams;
     return this.getTestResultService.testResultsSystemNumberGet(systemNumber, status, fromDateTime, toDateTime, testResultId, version) as Observable<
       Array<TestResultModel>
     >;
-    // if (!systemId) {
-    //   return throwError(() => new Error('systemId is required'));
-    // }
-
-    // let params = {};
-    // if (queryparams && Object.keys(queryparams).length > 0) {
-    //   params = new HttpParams({ fromObject: queryparams });
-    // }
-
-    // const url = `${environment.VTM_API_URI}/test-results/${systemId}`;
-
-    // return this.http.get<Array<TestResultModel>>(url, { params });
   }
 
   loadTestResults(): void {
@@ -117,9 +109,5 @@ export class TestRecordsService {
     value: any;
   }): void {
     this.store.dispatch(updateTestResultState({ testResultId, testTypeId, section, value }));
-  }
-
-  async submitTestResult(): Promise<void> {
-    this.store.dispatch(updateTestResult());
   }
 }

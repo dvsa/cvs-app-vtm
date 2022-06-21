@@ -15,13 +15,19 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    <tr class="govuk-table__row" *ngFor="let testRecord of testRecords">
-      <th scope="row" class="govuk-table__header">{{ testRecord.testStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}</th>
-      <td class="govuk-table__cell">{{ getTestTypeName(testRecord) }}</td>
-      <td class="govuk-table__cell">{{ getTestTypeResults(testRecord) }}</td>
-      <td class="govuk-table__cell">
-        <a id="view-test-{{ testRecord.testResultId }}" routerLink="/test-records/{{ testRecord.systemNumber }}/test-result/{{ testRecord.testResultId }}">View</a>
-      </td>
-    </tr>
+    <ng-container *ngFor="let testRecord of testRecords">
+      <tr class="govuk-table__row" *ngFor="let test of testRecord.testTypes">
+        <th scope="row" class="govuk-table__header">{{ test.testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}</th>
+        <td class="govuk-table__cell">{{ test.testTypeName }}</td>
+        <td class="govuk-table__cell">{{ test.testResult }}</td>
+        <td class="govuk-table__cell">
+          <a
+            id="view-test-{{ testRecord.testResultId }}"
+            routerLink="/test-records/{{ testRecord.systemNumber }}/test-result/{{ testRecord.testResultId }}/test/{{ test.testTypeId }}"
+            >View</a
+          >
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </table>

@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const TestSection: FormNode = {
   name: 'testSection',
@@ -12,7 +12,8 @@ export const TestSection: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE
     },
     {
       name: 'testStartTimestamp',

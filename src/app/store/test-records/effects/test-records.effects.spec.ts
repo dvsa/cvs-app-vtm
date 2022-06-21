@@ -1,18 +1,27 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getByVINSuccess } from '@store/technical-records';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
-import { fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
+import {
+  fetchSelectedTestResult,
+  fetchSelectedTestResultFailed,
+  fetchSelectedTestResultSuccess,
+  fetchTestResultsBySystemId,
+  fetchTestResultsBySystemIdFailed,
+  fetchTestResultsBySystemIdSuccess
+} from '../actions/test-records.actions';
 import { TestResultsEffects } from './test-records.effects';
 
 describe('TestResultsEffects', () => {
@@ -23,7 +32,7 @@ describe('TestResultsEffects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TestResultsApiModule],
       providers: [
         TestResultsEffects,
         provideMockActions(() => actions$),
@@ -41,7 +50,8 @@ describe('TestResultsEffects', () => {
               ]
             }
           ]
-        })
+        }),
+        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } }
       ]
     });
 
@@ -83,7 +93,9 @@ describe('TestResultsEffects', () => {
         });
         jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', { b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' }) });
+        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
+          b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' })
+        });
       });
     });
 
@@ -97,7 +109,9 @@ describe('TestResultsEffects', () => {
         });
         jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', { b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 404 Not found' }) });
+        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
+          b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 404 Not found' })
+        });
       });
     });
   });
@@ -133,7 +147,9 @@ describe('TestResultsEffects', () => {
         });
         jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', { b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' }) });
+        expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
+          b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' })
+        });
       });
     });
 
