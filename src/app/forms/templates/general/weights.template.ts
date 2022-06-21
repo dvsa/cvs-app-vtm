@@ -6,19 +6,19 @@ export function generateWeights(prefix: boolean = false, vehicleType: string, pr
         case 'hgv':
             return [
                 {
-                  name: prefix ? addPrefix('gbWeight', prefixName) : 'gbWeight',
+                  name: addPrefix('gbWeight', prefixName),
                   label: 'GB weight',
                   value: '',
                   type: FormNodeTypes.CONTROL
                 },
                 {
-                  name: prefix ? addPrefix('eecWeight', prefixName) : 'eecWeight',
+                  name: addPrefix('eecWeight', prefixName),
                   label: 'EEC weight',
                   value: '',
                   type: FormNodeTypes.CONTROL
                 },
                 {
-                  name: prefix ? addPrefix('designWeight', prefixName) : 'designWeight',
+                  name: addPrefix('designWeight', prefixName),
                   label: 'Design weight',
                   value: '',
                   type: FormNodeTypes.CONTROL
@@ -27,25 +27,25 @@ export function generateWeights(prefix: boolean = false, vehicleType: string, pr
         case 'psv': 
           return [
               {
-                name: prefix ? addPrefix('kerbWeight', prefixName) : 'kerbWeight',
+                name: addPrefix('kerbWeight', prefixName),
                 label: 'Kerb weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               },
               {
-                name: prefix ? addPrefix('ladenWeight', prefixName) : 'ladenWeight',
+                name: addPrefix('ladenWeight', prefixName),
                 label: 'Laden weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               },
               {
-                name: prefix ? addPrefix('gbWeight', prefixName) : 'gbWeight',
+                name: addPrefix('gbWeight', prefixName),
                 label: 'GB weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               },
               {
-                name: prefix ? addPrefix('designWeight', prefixName) : 'designWeight',
+                name: addPrefix('designWeight', prefixName),
                 label: 'Design weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
@@ -57,8 +57,5 @@ export function generateWeights(prefix: boolean = false, vehicleType: string, pr
 }
 
 function addPrefix(string: string, prefix?: string): string {
-  if (prefix) {
-    return prefix + string.charAt(0).toUpperCase() + string.slice(1);
-  }
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return prefix ? prefix + string.charAt(0).toUpperCase() + string.slice(1) : string;
 }
