@@ -1,5 +1,5 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
-import { generateWeights } from '../general/trl-weights.template';
+import { generateWeights } from '../general/weights.template';
 
 export const TrlGrossVehicleWeight: FormNode = {
   name: 'grossVehicleWeight',
@@ -7,5 +7,5 @@ export const TrlGrossVehicleWeight: FormNode = {
   value: '',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
-  children: generateWeights(true)
+  children: generateWeights(true, 'trl', 'gross')
 };

@@ -1,5 +1,5 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
-import { generateWeights } from '../general/psv-weights.template';
+import { generateWeights } from '../general/weights.template';
 
 export const PsvGrossVehicleWeight: FormNode = {
   name: 'grossVehicleWeight',
@@ -7,7 +7,7 @@ export const PsvGrossVehicleWeight: FormNode = {
   value: '',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
-  children: generateWeights(true).concat([
+  children: generateWeights(true, 'psv', 'gross').concat([
     {
       name: 'unladenWeight',
       label: 'Unladen weight',
