@@ -14,7 +14,7 @@ export const PsvAxleWeights: FormNode = {
       children: [
         {
           name: '0',
-          label: 'Axel',
+          label: 'Axle',
           value: '',
           type: FormNodeTypes.GROUP,
           children: [
