@@ -5,6 +5,7 @@ import { HgvAxleWeights } from '@forms/templates/hgv/hgv-axle-weights.template';
 import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
 import { HgvGrossVehicleWeight } from '@forms/templates/hgv/hgv-gross-vehicle-weights.template';
 import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
+import { HgvTyres } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
 import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
@@ -46,6 +47,7 @@ export class TechRecordSummaryComponent implements OnInit {
   maxTrainWeightTemplate?: FormNode;
   trainWeightTemplate?: FormNode;
   axleWeightsTemplate?: FormNode;
+  tyresTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -78,15 +80,13 @@ export class TechRecordSummaryComponent implements OnInit {
         this.trainWeightTemplate = HgvGrossTrainWeight;
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
+        this.tyresTemplate = HgvTyres;
         break;
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecord;
         this.axleWeightsTemplate = TrlAxleWeights;
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
-        break;
-      }
-      default: {
         break;
       }
     }

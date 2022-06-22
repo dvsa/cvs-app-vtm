@@ -62,7 +62,7 @@ export const HgvTechRecord: FormNode = {
       children: [
         {
           name: '0',
-          label: 'Axel',
+          label: 'Axle',
           value: '',
           type: FormNodeTypes.GROUP,
           children: [
