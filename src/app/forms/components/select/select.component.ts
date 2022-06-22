@@ -4,17 +4,17 @@ import { MultiOptions } from '@models/options.model';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  selector: 'app-radio-group',
-  templateUrl: './radio-group.component.html',
+  selector: 'app-select',
+  templateUrl: './select.component.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: RadioGroupComponent,
+      useExisting: SelectComponent,
       multi: true
     }
   ]
 })
-export class RadioGroupComponent extends BaseControlComponent {
+export class SelectComponent extends BaseControlComponent {
   @Input() options: MultiOptions = [];
 
   constructor(injector: Injector) {
