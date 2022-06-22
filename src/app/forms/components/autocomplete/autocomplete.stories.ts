@@ -15,31 +15,33 @@ export default {
 } as Meta;
 
 const Template: Story = (args) => {
-  const { id, label, options, name, hint, value = null, disabled = false, validators = [] } = args;
-  const form = new FormGroup({ [name]: new FormControl({ value, disabled }, validators) });
+  const { id, label, options, name, hint, defaultValue = "RED", disabled = false, validators = [] } = args;
+  const form = new FormGroup({ [name]: new FormControl({ defaultValue, disabled }, validators) });
   return {
     component: AutocompleteComponent,
-    template: `<form [formGroup]="form"><app-autocomplete [label]="label" [id]="id" [name]="name" [options]="options" [formControlName]="name">  </app-autocomplete></form>`,
+    template: `<form [formGroup]="form"><app-autocomplete [defaultValue]="defaultValue" [label]="label" [id]="id" [name]="name" [options]="options" [formControlName]="name">  </app-autocomplete></form>`,
     props: {
-        id,
-        label,
-        hint,
-        name,
-        options
-      }
+      id,
+      label,
+      hint,
+      name,
+      options,
+      defaultValue
     }
-  };
+  }
+};
 
-  const defaultArgs = {
-    label: 'Autocomplete',
-    hint: 'Type any letter to start searching',
-    name: 'name',
-    id: 'name' + '-wrapper',
-    options: ['red', 'yellow', 'blue','green']
-    ,
-  };
+const defaultArgs = {
+  label: 'Autocomplete',
+  hint: 'Type any letter to start searching',
+  name: 'name',
+  id: 'name' + '-wrapper',
+  options: ['red', 'yellow', 'blue', 'green'],
+  defaultValue: 'red'
+  ,
+};
 
-  export const Enabled = Template.bind({});
-    Enabled.args = {
+export const Enabled = Template.bind({});
+Enabled.args = {
   ...defaultArgs
 };

@@ -5,6 +5,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
+jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+    enhanceSelectElement: () => {}
+  };
+});
+
 @Component({
   selector: 'app-host-component',
   template: '<form [formGroup]="form"><app-autocomplete [name]="name" [options]="options" formControlName="foo"></app-autocomplete></form>'
@@ -12,36 +20,27 @@ import { ReactiveFormsModule } from '@angular/forms';
 class HostComponent {
   name = 'autocomplete';
   options = ['option1', 'option2', 'option3'];
-  form = new FormGroup({foo: new FormControl()})
+  form = new FormGroup({ foo: new FormControl() });
 }
-
 
 describe('AutocompleteComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let mockDocument = jest.spyOn(document, 'querySelector');
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AutocompleteComponent, HostComponent ],
-      providers:[{provide: Document, useValue: mockDocument}],
+      declarations: [AutocompleteComponent, HostComponent],
       imports: [FormsModule, ReactiveFormsModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    let mockElement = document.createElement('div');
-    mockElement.setAttribute('id', "autocomplete");
-    mockDocument.mockReturnValue(mockElement);
-    //should ideally not be mocking document but use the dom that is created by jest instead?
-    fixture.detectChanges(); 
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();  
+    expect(component).toBeTruthy();
   });
 });

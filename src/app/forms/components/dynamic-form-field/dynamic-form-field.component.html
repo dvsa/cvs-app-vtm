@@ -1,0 +1,25 @@
+<ng-container *ngIf="form" [formGroup]="form">
+  <ng-container *ngIf="control">
+    <ng-container [ngSwitch]="control.value.meta.editType">
+      <ng-container *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE">
+        <app-autocomplete [label]="control.value.meta.label" [name]="control.value.meta.name" [options]="options" [formControlName]="control.key"> </app-autocomplete>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeEditTypes.NUMBER">
+        <app-number-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-number-input>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeEditTypes.RADIO">
+        <app-radio-group [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key" [options]="options"> </app-radio-group>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="formNodeEditTypes.TEXTAREA">
+        <app-text-area [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-area>
+      </ng-container>
+
+      <ng-container *ngSwitchDefault>
+        <app-text-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-input>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-container>
