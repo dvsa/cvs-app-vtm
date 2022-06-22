@@ -1,3 +1,4 @@
+import { ɵassignExtraOptionsToRouter } from '@angular/router';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const TestSection: FormNode = {
@@ -10,6 +11,7 @@ export const TestSection: FormNode = {
       name: 'createdAt',
       label: 'Created',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE
@@ -18,6 +20,7 @@ export const TestSection: FormNode = {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE
@@ -35,6 +38,7 @@ export const TestSection: FormNode = {
               name: 'testCode',
               label: 'Test Code',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -42,6 +46,7 @@ export const TestSection: FormNode = {
               name: 'testResult',
               label: 'Result',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -49,6 +54,7 @@ export const TestSection: FormNode = {
               name: 'testTypeName',
               label: 'Description',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -56,6 +62,7 @@ export const TestSection: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -63,6 +70,7 @@ export const TestSection: FormNode = {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -70,6 +78,7 @@ export const TestSection: FormNode = {
               name: 'testExpiryDate',
               label: 'Expiry Date',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE
@@ -78,18 +87,21 @@ export const TestSection: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              value: ''
+              value: '',
+              disabled: true
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'Additional details for abandoning'
+              label: 'Additional details for abandoning',
+              disabled: true
             },
             {
               name: 'testAnniversaryDate',
               type: FormNodeTypes.CONTROL,
               value: '',
+              disabled: true,
               label: 'Anniversary date',
               viewType: FormNodeViewTypes.DATE
             },
@@ -97,6 +109,7 @@ export const TestSection: FormNode = {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
+              disabled: true,
               label: 'Start time',
               viewType: FormNodeViewTypes.TIME
             },
@@ -104,6 +117,7 @@ export const TestSection: FormNode = {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
+              disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
             },
@@ -115,7 +129,8 @@ export const TestSection: FormNode = {
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
-              ]
+              ],
+              disabled: true
             }
           ]
         }

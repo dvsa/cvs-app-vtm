@@ -1,3 +1,4 @@
+import { Disabled } from '@forms/components/checkbox-group/checkbox-group.stories';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const VehicleSectionDefaultPsvHgv: FormNode = {
@@ -10,6 +11,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -17,6 +19,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'vrm',
       label: 'VRM',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -25,7 +28,11 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'Country Of Registration',
       value: '',
       editType: FormNodeEditTypes.AUTOCOMPLETE,
-      options: [{ label: 'England', value: 'gb' }, { label: 'Wales', value: 'wa' }, { label: 'Scotland', value: 'sc' }],
+      options: [
+        { label: 'England', value: 'gb' },
+        { label: 'Wales', value: 'wa' },
+        { label: 'Scotland', value: 'sc' }
+      ],
 
       type: FormNodeTypes.CONTROL
     },
@@ -33,6 +40,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -44,7 +52,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
         leftComponentName: 'odometerReading',
         rightComponentName: 'odometerReadingUnits',
         separator: ' '
-      }
+      },
+      disabled: true
     },
     {
       name: 'odometerReading',
@@ -60,11 +69,14 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: '',
-      options: [{ value: 'kilometers', label: 'Kilometers' }, { value: 'miles', label: 'Miles' }],
+      options: [
+        { value: 'kilometers', label: 'Kilometers' },
+        { value: 'miles', label: 'Miles' }
+      ],
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.RADIO,
+      editType: FormNodeEditTypes.RADIO
     },
     {
       name: 'preparerCombination',
@@ -74,7 +86,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
         leftComponentName: 'preparerName',
         rightComponentName: 'preparerId',
         separator: ' - '
-      }
+      },
+      disabled: true
     },
     {
       name: 'preparerName',
@@ -82,7 +95,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      disabled: true
     },
     {
       name: 'preparerId',
@@ -90,7 +104,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      disabled: true
     }
   ]
 };
