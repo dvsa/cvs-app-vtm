@@ -10,7 +10,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeEditTypes.RADIO">
-        <app-radio-group [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key" [options]="multiOptions"> </app-radio-group>
+        <app-radio-group [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key" [options]="options"> </app-radio-group>
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeEditTypes.TEXTAREA">

@@ -42,12 +42,11 @@ export interface FormNode {
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions | string[];
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions | string[] | MultiOptions;
   validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
-  multiOptions?: MultiOptions;
 }
 
 export interface FormNodeCombinationOptions {
