@@ -17,7 +17,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
   ngDestroy$ = new Subject();
 
   constructor(public globalErrorService: GlobalErrorService, private technicalRecordService: TechnicalRecordService, private store: Store, private location: Location) {
-    this.store //
+    this.store
       .pipe(select(selectQueryParams), takeUntil(this.ngDestroy$))
       .subscribe((params) => {
         if (Object.keys(params).length === 1) {
