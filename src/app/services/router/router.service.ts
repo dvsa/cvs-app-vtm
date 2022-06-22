@@ -6,9 +6,8 @@ import {
   routeEditable,
   selectQueryParam,
   selectQueryParams,
-  selectRouteParam,
-  selectRouteParams,
-  selectRouteNestedParams
+  selectRouteNestedParams,
+  selectRouteParam
 } from '@store/router/selectors/router.selectors';
 import { Observable } from 'rxjs';
 

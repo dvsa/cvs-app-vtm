@@ -13,7 +13,8 @@ import {
   fetchTestResultsSuccess,
   updateTestResultState,
   updateTestResult,
-  updateTestResultFailed
+  updateTestResultFailed,
+  updateTestResultSuccess
 } from '../actions/test-records.actions';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
@@ -44,7 +45,7 @@ export const testResultsReducer = createReducer(
   on(updateTestResultState, (state, { testResultId, testTypeId, section, value }) => {
     const testResult = state.entities[testResultId];
     if (!testResult) {
-      return state;
+      return { ...state };
     }
 
     const updatedTestResult = updateTestResultBySection(section, testResult, testTypeId, value);
@@ -52,7 +53,7 @@ export const testResultsReducer = createReducer(
     return { ...testResultAdapter.upsertOne(updatedTestResult, state), loading: false };
   }),
   on(updateTestResult, (state) => ({ ...state, loading: true })),
-  on(updateTestResultFailed, (state) => ({ ...state, loading: false }))
+  on(updateTestResultSuccess, updateTestResultFailed, (state) => ({ ...state, loading: false }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
@@ -71,22 +72,4 @@ function updateTestResultBySection(section: string, testResult: TestResultModel,
   const newTestResult = { ...testResult, ...value, testTypes };
 
   return newTestResult;
-
-  // switch (section) {
-  //   case 'vehicle':
-  //   case 'vehicleSection':
-  //   case 'notesSection':
-  //     return {
-  //       ...testResult,
-  //       ...value
-  //     };
-  //   case 'test':
-  //   case 'testSection':
-  //   case 'seatbeltSection':
-  //   case 'emissionsSection':
-  //   case 'visitSection':
-  //     return testResult;
-  //   default:
-  //     return testResult;
-  // }
 }

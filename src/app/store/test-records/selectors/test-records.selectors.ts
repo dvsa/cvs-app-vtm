@@ -50,6 +50,7 @@ export const selectedAmendedTestResultState = createSelector(selectedTestResultS
     return i.createdAt === createdAt;
   })
 );
+
 export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, (amendedTestResult) => {
   return getDefectFromTestResult(amendedTestResult);
 });
@@ -60,7 +61,7 @@ export const selectAmendedDefectData = createSelector(selectedAmendedTestResultS
  * TODO: When we have better routing set up, we need to revisit this so that the testType is also selected based on route paramerets/queries.
  */
 const getDefectFromTestResult = (testResult: TestResultModel | undefined) => {
-  const defects = testResult?.testTypes && testResult?.testTypes.length > 0 ? testResult?.testTypes[0].defects : [];
+  const defects = testResult?.testTypes && testResult.testTypes.length > 0 ? testResult.testTypes[0].defects : [];
   return defects || [];
 };
 

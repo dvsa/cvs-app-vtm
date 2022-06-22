@@ -1,8 +1,19 @@
 import { Params } from '@angular/router';
+import { Defect } from '@models/defect';
 import { TestResultModel } from '@models/test-result.model';
+import { TestType } from '@models/test-type.model';
+import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectDefectData, selectedTestResultState, selectedTestSortedAmendmentHistory, testResultLoadingState } from './test-records.selectors';
+import {
+  selectAmendedDefectData,
+  selectDefectData,
+  selectedAmendedTestResultState,
+  selectedTestResultState,
+  selectedTestSortedAmendmentHistory,
+  selectTestFromSelectedTestResult,
+  testResultLoadingState
+} from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -59,6 +70,78 @@ describe('Test Results Selectors', () => {
       if (notfound.length > 0) {
         expect(sortedTestHistory?.slice(-notfound.length)).toEqual(notfound);
       }
+    });
+  });
+
+  describe('selectedAmendedTestResultState', () => {
+    const testResult = createMock<TestResultModel>({
+      testHistory: createMockList<TestResultModel>(1, (i) => createMock<TestResultModel>({ createdAt: `2020-01-01T00:0${i}:00.000Z` }))
+    });
+
+    it('should return amended record that matches "createdAt" route param value', () => {
+      expect(selectedAmendedTestResultState.projector(testResult, { createdAt: '2020-01-01T00:01:00.000Z' })).toEqual(testResult.testHistory![1]);
+    });
+
+    it('should return return undefined when "createdAt" route param value doesn not match any amended records', () => {
+      expect(selectedAmendedTestResultState.projector(testResult, { createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
+    });
+
+    it('should return return undefined when there is no selected testResult', () => {
+      expect(selectedAmendedTestResultState.projector(undefined, { createdAt: '2020-01-01T00:01:00.000Z' })).toBeUndefined();
+    });
+
+    it('should return return undefined when testHistory is empty', () => {
+      expect(selectedAmendedTestResultState.projector({ ...testResult, testHistory: [] }, { createdAt: '2020-01-01T00:01:00.000Z' })).toBeUndefined();
+    });
+  });
+
+  describe('selectAmendedDefectData', () => {
+    const amendedTestResultState = createMock<TestResultModel>({
+      testTypes: createMockList<TestType>(1, (i) =>
+        createMock<TestType>({
+          defects: createMockList<Defect>(1, (i) =>
+            createMock<Defect>({
+              imNumber: i
+            })
+          )
+        })
+      )
+    });
+
+    it('should return defect array from first testType in testResult', () => {
+      const selectedState = selectAmendedDefectData.projector(amendedTestResultState);
+      expect(selectedState?.length).toBe(1);
+      expect(selectedState).toEqual(amendedTestResultState.testTypes[0].defects);
+    });
+
+    it('should return empty array if testResult is undefined', () => {
+      expect(selectAmendedDefectData.projector(undefined)).toEqual([]);
+    });
+
+    it('should return empty array if testTypes is empty', () => {
+      expect(selectAmendedDefectData.projector({ testTypes: [] })).toEqual([]);
+    });
+  });
+
+  describe('selectTestFromSelectedTestResult', () => {
+    const testResult = createMock<TestResultModel>({
+      testTypes: createMockList<TestType>(3, (i) => createMock<TestType>({ testTypeId: `${i}` }))
+    });
+
+    it('should return test from selected test result', () => {
+      expect(selectTestFromSelectedTestResult.projector(testResult, { testTypeId: '1' })).toEqual(testResult.testTypes[1]);
+    });
+
+    it('should return undefined when testResult is undefined', () => {
+      expect(selectTestFromSelectedTestResult.projector(undefined, { testTypeId: '1' })).toBeUndefined();
+    });
+
+    it('should return undefined when testTypeId not found', () => {
+      expect(selectTestFromSelectedTestResult.projector(testResult, { testTypeId: '3' })).toBeUndefined();
+    });
+
+    it('should return undefined when testTypes is undefined', () => {
+      expect(selectTestFromSelectedTestResult.projector({ testTypes: undefined }, { testTypeId: '3' })).toBeUndefined();
     });
   });
 });

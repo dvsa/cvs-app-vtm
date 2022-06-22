@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -20,7 +21,10 @@ import {
   fetchSelectedTestResultSuccess,
   fetchTestResultsBySystemId,
   fetchTestResultsBySystemIdFailed,
-  fetchTestResultsBySystemIdSuccess
+  fetchTestResultsBySystemIdSuccess,
+  updateTestResult,
+  updateTestResultFailed,
+  updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { TestResultsEffects } from './test-records.effects';
 
@@ -213,6 +217,55 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
           b: fetchSelectedTestResultFailed({ error: 'Http failure response for (unknown url): 400 Bad Request' })
+        });
+      });
+    });
+  });
+
+  describe('updateTestResult$', () => {
+    it('should dispatch updateTestResultSuccess action on success', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a-', { a: updateTestResult() });
+
+        jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('---b', {}));
+
+        expectObservable(effects.updateTestResult$).toBe('----b', {
+          b: updateTestResultSuccess()
+        });
+      });
+    });
+
+    it('should dispatch updateTestResultFailed action with empty errors array', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a-', { a: updateTestResult() });
+
+        jest
+          .spyOn(testResultsService, 'saveTestResult')
+          .mockReturnValue(cold('---#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
+
+        expectObservable(effects.updateTestResult$).toBe('----b', {
+          b: updateTestResultFailed({ errors: [] })
+        });
+      });
+    });
+
+    it('should dispatch updateTestResultFailed action with validation errors', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a-', { a: updateTestResult() });
+
+        jest
+          .spyOn(testResultsService, 'saveTestResult')
+          .mockReturnValue(
+            cold('---#|', {}, new HttpErrorResponse({ status: 400, error: { errors: ['"name" is missing', '"age" is missing', 'random error'] } }))
+          );
+
+        const expectedErrors: GlobalError[] = [
+          { error: '"name" is missing', anchorLink: 'name' },
+          { error: '"age" is missing', anchorLink: 'age' },
+          { error: 'random error', anchorLink: '' }
+        ];
+        expectObservable(effects.updateTestResult$).toBe('----b', {
+          b: updateTestResultFailed({ errors: expectedErrors })
         });
       });
     });

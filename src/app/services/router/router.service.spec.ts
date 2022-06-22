@@ -1,8 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { selectQueryParam, selectQueryParams } from '@store/router/selectors/router.selectors';
+import {
+  selectQueryParam,
+  selectQueryParams,
+  selectRouteNestedParams,
+  selectRouteParam,
+  selectRouteParams
+} from '@store/router/selectors/router.selectors';
 import { firstValueFrom, take } from 'rxjs';
 import { RouterService } from './router.service';
 
@@ -35,6 +40,25 @@ describe('RouterService', () => {
       store.overrideSelector(selectQueryParams, { bar: 'foo' });
       store.refreshState();
       expect(await firstValueFrom(service.getQueryParam$('bar').pipe(take(1)))).toEqual('foo');
+    });
+  });
+
+  describe(RouterService.prototype.getRouteParam$.name, () => {
+    it('should return an Observable of the given route param', async () => {
+      store.overrideSelector(selectRouteParams, { bar: 'baz' });
+      store.refreshState();
+      expect(await firstValueFrom(service.getRouteParam$('bar').pipe(take(1)))).toEqual('baz');
+    });
+  });
+
+  describe('get routeNestedParams$', () => {
+    it('should return an Observable route Params', (done) => {
+      store.overrideSelector(selectRouteNestedParams, { foo: 'bar' });
+      store.refreshState();
+      service.routeNestedParams$.subscribe((value) => {
+        expect(value).toEqual({ foo: 'bar' });
+        done();
+      });
     });
   });
 });
