@@ -3,14 +3,17 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
+import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
 import { PsvBody } from '@forms/templates/psv/psv-body';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.template';
 import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
+import { PsvGrossVehicleWeight } from '@forms/templates/psv/psv-gross-vehicle-weights.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
+import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
 import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
 
@@ -32,6 +35,9 @@ export class TechRecordSummaryComponent implements OnInit {
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
   bodyTemplate?: FormNode;
+  grossVehicleWeightTemplate?: FormNode;
+  trainWeightTemplate?: FormNode;
+  axleWeightsTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -53,6 +59,9 @@ export class TechRecordSummaryComponent implements OnInit {
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
         this.bodyTemplate = PsvBody;
+        this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
+        this.trainWeightTemplate = PsvTrainWeight;
+        this.axleWeightsTemplate = PsvAxleWeights;
         break;
       }
       case 'hgv': {

@@ -61,11 +61,25 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
-            parkingBrakeMrk: false
+            parkingBrakeMrk: false,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           }
         ],
         speedLimiterMrk: true,
@@ -125,7 +139,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345'
+        conversionRefNo: '345345',
+
+        // Gross vehicle weights
+        grossKerbWeight: 1,
+        grossLadenWeight: 2,
+        grossGbWeight: 3,
+        grossEecWeight: 4,
+        grossDesignWeight: 5,
+        unladenWeight: 6,
+
+        // Train weights
+        maxTrainGbWeight: 7,
+        trainDesignWeight: 8
       },
       {
         createdAt: new Date(2018, 11),
@@ -157,11 +183,25 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
-            parkingBrakeMrk: false
+            parkingBrakeMrk: false,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           }
         ],
         speedLimiterMrk: true,
@@ -221,7 +261,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345'
+        conversionRefNo: '345345',
+
+        // Gross vehicle weights
+        grossKerbWeight: 1,
+        grossLadenWeight: 2,
+        grossGbWeight: 3,
+        grossEecWeight: 4,
+        grossDesignWeight: 5,
+        unladenWeight: 6,
+
+        // Train weights
+        maxTrainGbWeight: 7,
+        trainDesignWeight: 8
       },
       {
         createdAt: new Date(2019, 11),
@@ -253,11 +305,25 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
-            parkingBrakeMrk: false
+            parkingBrakeMrk: false,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           }
         ],
         speedLimiterMrk: true,
@@ -317,7 +383,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345'
+        conversionRefNo: '345345',
+
+        // Gross vehicle weights
+        grossKerbWeight: 1,
+        grossLadenWeight: 2,
+        grossGbWeight: 3,
+        grossEecWeight: 4,
+        grossDesignWeight: 5,
+        unladenWeight: 6,
+
+        // Train weights
+        maxTrainGbWeight: 7,
+        trainDesignWeight: 8
       }
     ]
   });
