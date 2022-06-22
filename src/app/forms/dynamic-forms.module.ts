@@ -18,10 +18,11 @@ import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynam
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
+import { SelectComponent } from './components/select/select.component';
 
 @NgModule({
-  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent, TextAreaComponent, NumberOnlyDirective, DateComponent],
+  declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, NumberInputComponent, TextAreaComponent, NumberOnlyDirective, DateComponent, SelectComponent, DynamicFormFieldComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, DynamicFormFieldComponent, NumberInputComponent, NumberOnlyDirective, DateComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, NumberInputComponent, TextAreaComponent, DateComponent, SelectComponent, DynamicFormFieldComponent]
 })
 export class DynamicFormsModule {}
