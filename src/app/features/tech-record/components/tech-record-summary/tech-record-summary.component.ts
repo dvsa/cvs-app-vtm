@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
+import { HgvAxleWeights } from '@forms/templates/hgv/hgv-axle-weights.template';
+import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
+import { HgvGrossVehicleWeight } from '@forms/templates/hgv/hgv-gross-vehicle-weights.template';
+import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
 import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
@@ -15,6 +19,8 @@ import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
+import { TrlAxleWeights } from '@forms/templates/trl/trl-axle-weights.template';
+import { TrlGrossVehicleWeight } from '@forms/templates/trl/trl-gross-vehicle-weights.template';
 import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
@@ -36,6 +42,8 @@ export class TechRecordSummaryComponent implements OnInit {
   documentsTemplate?: FormNode;
   bodyTemplate?: FormNode;
   grossVehicleWeightTemplate?: FormNode;
+  grossTrainWeightTemplate?: FormNode;
+  maxTrainWeightTemplate?: FormNode;
   trainWeightTemplate?: FormNode;
   axleWeightsTemplate?: FormNode;
 
@@ -66,10 +74,16 @@ export class TechRecordSummaryComponent implements OnInit {
       }
       case 'hgv': {
         this.vehicleSummaryTemplate = HgvTechRecord;
+        this.grossVehicleWeightTemplate = HgvGrossVehicleWeight;
+        this.trainWeightTemplate = HgvGrossTrainWeight;
+        this.maxTrainWeightTemplate = HgvMaxTrainWeight;
+        this.axleWeightsTemplate = HgvAxleWeights;
         break;
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecord;
+        this.axleWeightsTemplate = TrlAxleWeights;
+        this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
         break;
       }
       default: {

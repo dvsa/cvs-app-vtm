@@ -1,7 +1,7 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { generateWeights } from '../general/weights.template';
 
-export const PsvAxleWeights: FormNode = {
+export const HgvAxleWeights: FormNode = {
   name: 'axleWeightsSection',
   label: 'Axle Weights',
   type: FormNodeTypes.GROUP,
@@ -28,7 +28,7 @@ export const PsvAxleWeights: FormNode = {
               label: 'Weights',
               value: '',
               type: FormNodeTypes.GROUP,
-              children: generateWeights(false, 'psv')
+              children: generateWeights(false, 'hgv')
             }
           ]
         }
