@@ -9,8 +9,8 @@ jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
   return {
     __esModule: true,
     default: jest.fn(),
-    enhanceSelectElement: () => { }
-  }
+    enhanceSelectElement: () => {}
+  };
 });
 
 @Component({
@@ -20,24 +20,18 @@ jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
 class HostComponent {
   name = 'autocomplete';
   options = ['option1', 'option2', 'option3'];
-  form = new FormGroup({ foo: new FormControl() })
+  form = new FormGroup({ foo: new FormControl() });
 }
-
 
 describe('AutocompleteComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let mockDocument = jest.spyOn(document, 'querySelector').mockImplementation((selector: string) => {
-    return ({ insertBefore: () => { }, setAttribute: (qualifedName: string, value: string) => { }, appendChild: (node: any) => node } as unknown) as Element;
-  });
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AutocompleteComponent, HostComponent],
       imports: [FormsModule, ReactiveFormsModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
