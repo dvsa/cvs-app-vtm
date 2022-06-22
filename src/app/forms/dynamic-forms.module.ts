@@ -22,6 +22,6 @@ import { SelectComponent } from './components/select/select.component';
 @NgModule({
   declarations: [BaseControlComponent, TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, NumberInputComponent, TextAreaComponent, NumberOnlyDirective, DateComponent, SelectComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
-  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, NumberInputComponent, TextAreaComponent, DateComponent]
+  exports: [TextInputComponent, ViewListItemComponent, DynamicFormGroupComponent, ViewCombinationComponent, CheckboxGroupComponent, RadioGroupComponent, DefectComponent, DefectsComponent, AutocompleteComponent, NumberInputComponent, TextAreaComponent, DateComponent, SelectComponent]
 })
 export class DynamicFormsModule {}
