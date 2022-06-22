@@ -46,32 +46,6 @@ export const TrlAnnual: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'odometerCombination',
-      label: 'Odometer',
-      type: FormNodeTypes.COMBINATION,
-      options: {
-        leftComponentName: 'odometerReading',
-        rightComponentName: 'odometerReadingUnits',
-        separator: ' '
-      }
-    },
-    {
-      name: 'odometerReading',
-      label: 'Odometer Reading',
-      value: '',
-
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
-    },
-    {
-      name: 'odometerReadingUnits',
-      label: 'Odometer Reading Units',
-      value: '',
-
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
-    },
-    {
       name: 'preparerCombination',
       label: 'Preparer',
       type: FormNodeTypes.COMBINATION,
