@@ -23,12 +23,10 @@ export class AutocompleteComponent extends BaseControlComponent implements After
     super(injector);
   }
 
-
   ngAfterViewInit(): void {
     enhanceSelectElement({
       selectElement: this.document.querySelector('#' + this.name),
       autoselect: false
-    })
+    });
   }
-
 }
