@@ -13,7 +13,7 @@ export const PsvApprovalTypeSection: FormNode = {
     },
     {
       name: 'approvalTypeNumber',
-      label: 'Approval type tumber',
+      label: 'Approval type number',
       type: FormNodeTypes.CONTROL
     },
     {
