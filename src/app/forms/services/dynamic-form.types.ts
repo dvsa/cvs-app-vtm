@@ -8,6 +8,7 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
+import { MultiOptions } from '@models/options.model';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -33,7 +34,8 @@ export enum FormNodeEditTypes {
   AUTOCOMPLETE = 'autocomplete',
   NUMBER = 'number',
   TEXTAREA = 'textarea',
-  DATE = 'date'
+  DATE = 'date',
+  RADIO = 'radio'
 }
 
 export interface FormNodeOption<T> {
@@ -46,15 +48,15 @@ export interface FormNode {
   children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
+  editType?: FormNodeEditTypes;
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions | string[] | MultiOptions;
   validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
-  editType?: FormNodeEditTypes;
 }
 
 export interface FormNodeCombinationOptions {

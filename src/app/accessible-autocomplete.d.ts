@@ -4,10 +4,18 @@ declare module 'accessible-autocomplete/dist/accessible-autocomplete.min' {
     element: any,
     id: string,
     source: Array<any>,
-    onConfirm: (value: any)=>void,
+    onConfirm: (value: any) => void,
     confirmOnBlur: boolean
     required: true
+    defaultValue: string
+    enhanceSelectElement?: (params: any) => void
   }
 
-  export default function autocomplete(params: AutocompleteParams): void;
+  export interface AutocompleteEnhanceParams {
+    selectElement: any,
+    autoselect: boolean
+  }
+
+  export default function accesibleAutocomplete(params: AutocompleteParams): void;
+  export function enhanceSelectElement(params: AutocompleteEnhanceParams): void;
 }

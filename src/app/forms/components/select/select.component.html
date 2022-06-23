@@ -1,0 +1,8 @@
+<div class="govuk-form-group">
+  <label class="govuk-label" for="{{ name }}"> {{ label }} </label>
+  <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  <select class="govuk-select" id="{{ name }}" name="{{ name }}" [(ngModel)]="value" (ngModelChange)="onChange($event)" attr.aria-describedby="{{ name }}-hint" (blur)="onTouched(); handleEvent($event)" (focus)="handleEvent($event)" [disabled]="disabled || false">
+    <option value="choose" selected></option>
+    <option *ngFor="let option of options" [value]="option.value" [selected]="value === option.value">{{ option.label }}</option>
+  </select>
+</div>

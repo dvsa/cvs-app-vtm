@@ -51,12 +51,7 @@
         [formControlName]="control.key"
         class="govuk-summary-list"
       ></app-view-list-item>
-      <app-text-input
-        *ngSwitchCase="true"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [formControlName]="control.key"
-      ></app-text-input>
+      <app-dynamic-form-field *ngSwitchCase="true" [control]="control" [form]="formGroup"></app-dynamic-form-field>
     </ng-container>
   </ng-container>
 </ng-template>
