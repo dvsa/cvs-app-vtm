@@ -13,9 +13,8 @@ const environmentFileContent = `export const environment = {
   VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",
   VTM_AUTHORITY_ID: "${process.env['VTM_AUTHORITY_ID']}",
   VTM_REDIRECT_URI: 'http://localhost:4200',
-  VTM_API_URI: 'https://api.develop.cvs.dvsacloud.uk/develop',
+  VTM_API_URI: 'http://localhost:3005',
   VTM_API_CLIENT_ID: "${process.env['VTM_API_CLIENT_ID']}",
-  VTM_TEST_RESULTS_API_URI: 'https://api.develop.cvs.dvsacloud.uk/develop',
 };
 `;
 // write the content to the respective file
