@@ -5,7 +5,7 @@
   <app-dynamic-form-group *ngIf="tyreTemplate" [template]="tyreTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="brakeTemplateWheelsNotLocked" [template]="brakeTemplateWheelsNotLocked" [data]="currentBrakeRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="brakeTemplateWheelsHalfLocked" [template]="brakeTemplateWheelsHalfLocked" [data]="currentBrakeRecord" class="govuk-summary-list"></app-dynamic-form-group>
-  <app-dynamic-form-group *ngIf="dimensionsTemplate" [template]="dimensionsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
+  <app-dynamic-form-group *ngIf="psvDimensionsTemplate" [template]="psvDimensionsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="applicantDetailsTemplate" [template]="applicantDetailsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="documentsTemplate" [template]="documentsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="notesTemplate" [template]="notesTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
@@ -17,4 +17,7 @@
   <app-dynamic-form-group *ngIf="axleWeightsTemplate" [template]="axleWeightsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="tyresTemplate" [template]="tyresTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="brakesTemplate" [template]="brakesTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
+  <app-dynamic-form-group *ngIf="hgvAndTrlDimensionsTemplate" [template]="hgvAndTrlDimensionsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
+  <app-dynamic-form-group *ngIf="firstMinMaxTemplate" [template]="firstMinMaxTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
+  <app-dynamic-form-group *ngIf="secondMinMaxTemplate" [template]="secondMinMaxTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
 </section>
