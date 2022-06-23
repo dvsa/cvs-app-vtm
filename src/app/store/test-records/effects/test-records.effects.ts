@@ -101,14 +101,6 @@ export class TestResultsEffects {
     )
   );
 
-  foo$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(updateTestResultState),
-      debounceTime(500),
-      map(() => updateTestResultSuccess())
-    )
-  );
-
   constructor(
     private actions$: Actions,
     private testRecordsService: TestRecordsService,
