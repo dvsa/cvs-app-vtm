@@ -7,7 +7,7 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getByVINSuccess } from '@store/technical-records';
-import { catchError, concatMap, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
+import { catchError, debounceTime, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
@@ -15,8 +15,8 @@ import {
   fetchTestResultsBySystemId,
   fetchTestResultsBySystemIdFailed,
   fetchTestResultsBySystemIdSuccess,
-  updateTestResult,
   updateTestResultFailed,
+  updateTestResultState,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 
@@ -76,10 +76,11 @@ export class TestResultsEffects {
 
   updateTestResult$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateTestResult),
-      mergeMap(() => this.testRecordsService.testResult$.pipe(withLatestFrom(this.userService.userName$, this.userService.id$))),
-      concatMap(([testResult, username, id]) =>
-        this.testRecordsService.saveTestResult({ username, id }, testResult!).pipe(
+      ofType(updateTestResultState),
+      debounceTime(500),
+      mergeMap(() => this.testRecordsService.testResult$.pipe(withLatestFrom(this.userService.userName$, this.userService.id$), take(1))),
+      mergeMap(([testResult, username, id]) => {
+        return this.testRecordsService.saveTestResult({ username, id }, testResult!).pipe(
           take(1),
           map(() => updateTestResultSuccess()),
           catchError((e) => {
@@ -95,8 +96,16 @@ export class TestResultsEffects {
             }
             return of(updateTestResultFailed({ errors: validationsErrors }));
           })
-        )
-      )
+        );
+      })
+    )
+  );
+
+  foo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateTestResultState),
+      debounceTime(500),
+      map(() => updateTestResultSuccess())
     )
   );
 

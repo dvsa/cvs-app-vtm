@@ -9,27 +9,27 @@ import { TestComponent } from './views/test/test.component';
 
 const routes: Routes = [
   {
-    path: ':systemId/test-result/:testResultId',
+    path: ':systemId/test-result/:testResultId/:testTypeId',
     component: TestRecordComponent,
     data: { title: 'Test Result' },
-    resolve: { load: TestResultResolver },
-    children: [
-      {
-        path: 'test/:testTypeId',
-        component: TestComponent,
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'vehicle'
-          },
-          {
-            path: ':testSection',
-            component: TestSectionsComponent
-          }
-        ]
-      }
-    ]
+    resolve: { load: TestResultResolver }
+    // children: [
+    //   {
+    //     path: 'test/:testTypeId',
+    //     component: TestComponent,
+    //     children: [
+    //       {
+    //         path: '',
+    //         pathMatch: 'full',
+    //         redirectTo: 'vehicle'
+    //       },
+    //       {
+    //         path: ':testSection',
+    //         component: TestSectionsComponent
+    //       }
+    //     ]
+    //   }
+    // ]
   },
   {
     path: ':systemId/test-result/:testResultId/amended/:createdAt',

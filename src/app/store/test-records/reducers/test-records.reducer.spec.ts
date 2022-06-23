@@ -142,7 +142,8 @@ describe('Test Results Reducer', () => {
       };
       const newState = {
         ...state,
-        entities: { ['TestResultId0001']: { ...testResults[0], testCode: '2', testTypes: [{ ...testResults[0].testTypes[0], testNumber: '2' }] } }
+        entities: { ['TestResultId0001']: { ...testResults[0], testCode: '2', testTypes: [{ ...testResults[0].testTypes[0], testNumber: '2' }] } },
+        loading: true
       };
 
       const action = updateTestResultState({

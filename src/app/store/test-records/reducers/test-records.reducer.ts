@@ -50,7 +50,7 @@ export const testResultsReducer = createReducer(
 
     const updatedTestResult = updateTestResultBySection(section, testResult, testTypeId, value);
 
-    return { ...testResultAdapter.upsertOne(updatedTestResult, state), loading: false };
+    return { ...testResultAdapter.upsertOne(updatedTestResult, state), loading: true };
   }),
   on(updateTestResult, (state) => ({ ...state, loading: true })),
   on(updateTestResultSuccess, updateTestResultFailed, (state) => ({ ...state, loading: false }))
