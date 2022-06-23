@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
+import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { HgvAxleWeights } from '@forms/templates/hgv/hgv-axle-weights.template';
 import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
@@ -33,7 +34,7 @@ export class TechRecordSummaryComponent implements OnInit {
   @Input() vehicleTechRecord?: TechRecordModel;
   currentBrakeRecord?: Brakes;
   vehicleSummaryTemplate!: FormNode;
-  brakeTemplate!: FormNode;
+  psvBrakeTemplate!: FormNode;
   brakeTemplateWheelsNotLocked!: FormNode;
   brakeTemplateWheelsHalfLocked!: FormNode;
   approvalTypeTemplate!: FormNode;
@@ -48,6 +49,7 @@ export class TechRecordSummaryComponent implements OnInit {
   trainWeightTemplate?: FormNode;
   axleWeightsTemplate?: FormNode;
   tyresTemplate?: FormNode;
+  brakesTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -61,7 +63,7 @@ export class TechRecordSummaryComponent implements OnInit {
       case 'psv': {
         this.vehicleSummaryTemplate = PsvTechRecord;
         this.approvalTypeTemplate = PsvApprovalTypeSection;
-        this.brakeTemplate = PsvBrakeSection;
+        this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
         this.dimensionsTemplate = PsvDimensionsSection;
@@ -81,12 +83,14 @@ export class TechRecordSummaryComponent implements OnInit {
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
         this.tyresTemplate = HgvTyres;
+        this.brakesTemplate = BrakesTemplate;
         break;
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecord;
         this.axleWeightsTemplate = TrlAxleWeights;
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
+        this.brakesTemplate = BrakesTemplate;
         break;
       }
     }
