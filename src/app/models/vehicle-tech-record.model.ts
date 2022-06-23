@@ -122,9 +122,43 @@ export enum BodyTypeDescription {
   TIPPER = 'tipper'
 }
 
+export enum SpeedCategorySymbol {
+  A7 = 'a7',
+  A8 = 'a8',
+  B = 'b',
+  C = 'c',
+  D = 'd',
+  E = 'e',
+  F = 'f',
+  G = 'g',
+  J = 'j',
+  K = 'k',
+  L = 'l',
+  M = 'm',
+  N = 'n',
+  P = 'p',
+  Q = 'q'
+}
+
 export interface Axle {
   axleNumber?: number;
   parkingBrakeMrk?: boolean;
+  tyres?: Tyres;
+  weights?: AxleWeights;
+}
+
+export enum FitmentCode {
+  DOUBLE = 'double',
+  SINGLE = 'single'
+}
+
+export interface Tyres {
+  tyreSize: string;
+  speedCategorySymbol: SpeedCategorySymbol;
+  fitmentCode: FitmentCode;
+  dataTrAxles: number;
+  plyRating: string;
+  tyreCode: number;
   weights?: AxleWeights;
 }
 
@@ -147,6 +181,7 @@ export interface TechRecordModel {
   noOfAxles: number;
   axles: Axle[];
   suspensionType?: string;
+  speedRestriction?: number;
   speedLimiterMrk?: boolean;
   tachoExemptMrk?: boolean;
   euroStandard?: string;

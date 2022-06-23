@@ -2,6 +2,7 @@
   <app-dynamic-form-group *ngIf="vehicleSummaryTemplate" [template]="vehicleSummaryTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="approvalTypeTemplate" [template]="approvalTypeTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="psvBrakeTemplate" [template]="psvBrakeTemplate" [data]="currentBrakeRecord" class="govuk-summary-list"></app-dynamic-form-group>
+  <app-dynamic-form-group *ngIf="tyreTemplate" [template]="tyreTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="brakeTemplateWheelsNotLocked" [template]="brakeTemplateWheelsNotLocked" [data]="currentBrakeRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="brakeTemplateWheelsHalfLocked" [template]="brakeTemplateWheelsHalfLocked" [data]="currentBrakeRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group *ngIf="dimensionsTemplate" [template]="dimensionsTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>

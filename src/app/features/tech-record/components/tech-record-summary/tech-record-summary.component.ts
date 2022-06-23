@@ -19,6 +19,7 @@ import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvGrossVehicleWeight } from '@forms/templates/psv/psv-gross-vehicle-weights.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
+import { PsvTyre } from '@forms/templates/psv/psv-tyre.template';
 import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
 import { TrlAxleWeights } from '@forms/templates/trl/trl-axle-weights.template';
@@ -43,6 +44,7 @@ export class TechRecordSummaryComponent implements OnInit {
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
   bodyTemplate?: FormNode;
+  tyreTemplate?: FormNode;
   grossVehicleWeightTemplate?: FormNode;
   grossTrainWeightTemplate?: FormNode;
   maxTrainWeightTemplate?: FormNode;
@@ -71,6 +73,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
         this.bodyTemplate = PsvBody;
+        this.tyreTemplate = PsvTyre;
         this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
         this.trainWeightTemplate = PsvTrainWeight;
         this.axleWeightsTemplate = PsvAxleWeights;

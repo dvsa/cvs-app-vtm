@@ -10,6 +10,7 @@ module.exports = {
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   coverageDirectory: 'coverage/cvs-app-vtm',
   testPathIgnorePatterns: ['/node_modules/', '/archive/', '/dist/'],
+  coveragePathIgnorePatterns: ['/src/mocks/'],
   testResultsProcessor: 'jest-sonar-reporter',
   globals: {
     crypto: require("crypto"),
