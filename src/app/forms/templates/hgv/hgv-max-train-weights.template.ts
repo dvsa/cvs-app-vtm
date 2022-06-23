@@ -7,5 +7,5 @@ export const HgvMaxTrainWeight: FormNode = {
   value: '',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
-  children: generateWeights(true, 'hgv', 'max')
+  children: generateWeights(true, 'hgv', 'maxTrain')
 };
