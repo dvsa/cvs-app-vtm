@@ -4,7 +4,9 @@ import { selectRouteNestedParams } from '@store/router/selectors/router.selector
 import { getVehicleTechRecordState } from '../reducers/technical-record-service.reducer';
 
 export const vehicleTechRecords = createSelector(getVehicleTechRecordState, (state) => state.vehicleTechRecords);
+
 export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordState, (state) => state.loading);
+
 export const selectVehicleTechnicalRecordsByVin = createSelector(vehicleTechRecords, selectRouteNestedParams, (state, { vin }) => {
   let foundRecord = state.find((record) => record.vin === vin);
   let sortedRecord: VehicleTechRecordModel | undefined;
