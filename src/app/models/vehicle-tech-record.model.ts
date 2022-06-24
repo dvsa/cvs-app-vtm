@@ -58,7 +58,8 @@ export enum VehicleConfigurations {
   DRAWBAR = 'drawbar',
   FOUR_IN_LINE = 'four-in-line',
   DOLLY = 'dolly',
-  FULL_DRAWBAR = 'full drawbar'
+  FULL_DRAWBAR = 'full drawbar',
+  LONG_SEMI_TRAILER = 'long semi-trailer'
 }
 
 export enum FrameDescriptions {
