@@ -2,4 +2,6 @@
   <app-vehicle-technical-record [vehicleTechRecord]="vehicleTechRecord || undefined"></app-vehicle-technical-record>
 </ng-container>
 
-<h1 *ngIf="(spinnerService.showSpinner$ | async) === false && (vehicleTechRecord$ | async) === undefined">This vehicle is not real, like the no vehicle page we need to create</h1>
+<h1 *ngIf="(spinnerService.showSpinner$ | async) === false && (vehicleTechRecord$ | async) === undefined">
+  This vehicle is not real, like the no vehicle page we need to create
+</h1>

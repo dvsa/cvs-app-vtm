@@ -36,7 +36,7 @@ describe('TitleResolver', () => {
         state: {
           root: {
             params: {
-              systemId: 'SYS0001'
+              systemNumber: 'SYS0001'
             },
             data: {
               title: 'Test Results'
@@ -49,7 +49,7 @@ describe('TitleResolver', () => {
             ],
             outlet: 'primary',
             routeConfig: {
-              path: ':systemId'
+              path: ':systemNumber'
             },
             queryParams: {},
             fragment: null,

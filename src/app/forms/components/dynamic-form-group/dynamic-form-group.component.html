@@ -43,7 +43,14 @@
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
     <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit">
-      <app-view-list-item *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name" [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list"></app-view-list-item>
+      <app-view-list-item
+        *ngSwitchCase="false"
+        [label]="control.value.meta.label"
+        [name]="control.value.meta.name"
+        [viewType]="control.value.meta.viewType"
+        [formControlName]="control.key"
+        class="govuk-summary-list"
+      ></app-view-list-item>
       <app-dynamic-form-field *ngSwitchCase="true" [control]="control" [form]="formGroup"></app-dynamic-form-field>
     </ng-container>
   </ng-container>

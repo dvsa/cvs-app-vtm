@@ -2,19 +2,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TestRecordsService } from '@services/test-records/test-records.service';
-import { initialAppState } from '@store/.';
-import { of } from 'rxjs';
-import { TestRecordComponent } from './test-record.component';
-import { SharedModule } from '@shared/shared.module';
-import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
-import { MemoizedSelector, DefaultProjectorFn } from '@ngrx/store';
-import { routeEditable } from '@store/router/selectors/router.selectors';
-import { RouterService } from '@services/router/router.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { RouterService } from '@services/router/router.service';
+import { TestRecordsService } from '@services/test-records/test-records.service';
+import { SharedModule } from '@shared/shared.module';
+import { initialAppState } from '@store/.';
+import { routeEditable } from '@store/router/selectors/router.selectors';
+import { of } from 'rxjs';
+import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
+import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { TestRecordComponent } from './test-record.component';
 
 describe('TestRecordComponent', () => {
   let component: TestRecordComponent;
@@ -28,7 +29,7 @@ describe('TestRecordComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestRecordComponent, BaseTestRecordComponent],
-      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, RouterTestingModule, TestResultsApiModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), RouterService]
     }).compileComponents();
   }));
@@ -73,7 +74,7 @@ describe('TestRecordComponent', () => {
       expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
     }));
 
-    it('should navigate without query param when cancel button is clicked', fakeAsync(() => {
+    it('should navigate with query param "edit=false" when cancel button is clicked', fakeAsync(() => {
       const handleCancelSpy = jest.spyOn(component, 'handleCancel');
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       mockRouteEditable = store.overrideSelector(routeEditable, true);
@@ -86,7 +87,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       expect(handleCancelSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route });
+      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: false }, queryParamsHandling: 'merge' });
     }));
 
     it('should display edit button when edit query param is false', fakeAsync(() => {
@@ -98,7 +99,7 @@ describe('TestRecordComponent', () => {
       expect(el.query(By.css('button#edit-test-result'))).toBeTruthy();
     }));
 
-    it('should navigate with edit query param when edit button is clicked', fakeAsync(() => {
+    it('should navigate with query param "edit=true" when edit button is clicked', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       const handleEditSpy = jest.spyOn(component, 'handleEdit');
       mockRouteEditable = store.overrideSelector(routeEditable, false);
@@ -111,7 +112,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       expect(handleEditSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: true } });
+      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: true }, queryParamsHandling: 'merge' });
     }));
   });
 });

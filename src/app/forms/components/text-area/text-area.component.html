@@ -4,5 +4,16 @@
   </h1>
   <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-  <textarea class="govuk-textarea" rows="5" id="{{ name }}" name="{{ name }}" [(ngModel)]="value" [disabled]="disabled ?? false" (ngModelChange)="onChange($event)" (blur)="onTouched(); handleEvent($event)" (focus)="handleEvent($event)" attr.aria-describedby="{{ name }}"></textarea>
+  <textarea
+    class="govuk-textarea"
+    rows="5"
+    id="{{ name }}"
+    name="{{ name }}"
+    [(ngModel)]="value"
+    [disabled]="disabled ?? false"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched(); handleEvent($event)"
+    (focus)="handleEvent($event)"
+    attr.aria-describedby="{{ name }}"
+  ></textarea>
 </div>

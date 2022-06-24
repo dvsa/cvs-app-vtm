@@ -70,7 +70,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'Odometer Reading Units',
       value: '',
       options: [
-        { value: 'kilometers', label: 'Kilometers' },
+        { value: 'kilometres', label: 'Kilometres' },
         { value: 'miles', label: 'Miles' }
       ],
 
