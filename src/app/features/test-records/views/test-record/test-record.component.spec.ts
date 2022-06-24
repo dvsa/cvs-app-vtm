@@ -99,7 +99,7 @@ describe('TestRecordComponent', () => {
       expect(el.query(By.css('button#edit-test-result'))).toBeTruthy();
     }));
 
-    it('should navigate with query param "edir=true" when edit button is clicked', fakeAsync(() => {
+    it('should navigate with query param "edit=true" when edit button is clicked', fakeAsync(() => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       const handleEditSpy = jest.spyOn(component, 'handleEdit');
       mockRouteEditable = store.overrideSelector(routeEditable, false);
