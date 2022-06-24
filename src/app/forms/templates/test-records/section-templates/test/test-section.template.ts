@@ -23,7 +23,8 @@ export const TestSection: FormNode = {
       disabled: true,
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE
     },
     {
       name: 'testTypes',
@@ -81,7 +82,8 @@ export const TestSection: FormNode = {
               disabled: true,
 
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'reasonForAbandoning',
@@ -103,7 +105,8 @@ export const TestSection: FormNode = {
               value: '',
               disabled: true,
               label: 'Anniversary date',
-              viewType: FormNodeViewTypes.DATE
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',

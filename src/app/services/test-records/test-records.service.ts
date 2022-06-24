@@ -5,18 +5,16 @@ import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
   fetchTestResults,
-  fetchTestResultsBySystemId,
+  fetchTestResultsBySystemNumber,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
   selectedAmendedTestResultState,
   selectedTestResultState,
-  selectTestFromSelectedTestResult,
   TestResultsState,
-  updateTestResult,
   updateTestResultState
 } from '@store/test-records';
-import { firstValueFrom, Observable, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +27,7 @@ export class TestRecordsService {
     private getTestResultService: GetTestResultsService
   ) {}
 
-  fetchTestResultbySystemId(
+  fetchTestResultbySystemNumber(
     systemNumber: string,
     queryparams: {
       status?: string;
@@ -53,8 +51,8 @@ export class TestRecordsService {
     this.store.dispatch(fetchTestResults());
   }
 
-  loadTestResultBySystemId(systemId: string): void {
-    this.store.dispatch(fetchTestResultsBySystemId({ systemId }));
+  loadTestResultBySystemNumber(systemNumber: string): void {
+    this.store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
   }
 
   get testResult$() {
@@ -75,10 +73,6 @@ export class TestRecordsService {
 
   get amendedDefectData$() {
     return this.store.pipe(select(selectAmendedDefectData));
-  }
-
-  get selectedTestInTestResult$() {
-    return this.store.pipe(select(selectTestFromSelectedTestResult));
   }
 
   saveTestResult(

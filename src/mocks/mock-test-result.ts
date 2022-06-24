@@ -15,7 +15,7 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
     const nextYear = new Date().setFullYear(now.getFullYear());
 
     return createMock<TestType>({
-      testTypeId: '1',
+      testTypeId: `${i + 1}`,
       testNumber: `TestNumber${String(i + 1).padStart(4, '0')}`,
 
       testCode: `Test${i}`,
@@ -62,7 +62,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
 
-    testTypes: [...mockTestTypeList()],
+    testTypes: [...mockTestTypeList(2)],
 
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
@@ -82,21 +82,30 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     vehicleType,
     testVersion: 'Current',
     createdByName: 'Jane Doe',
-    testHistory: [...createMockList<TestResultModel>(5, (j) => mockTestResultArchived(j, vehicleType, systemNumber))]
+    testHistory: [
+      ...createMockList<TestResultModel>(5, (j) =>
+        mockTestResultArchived(j, `TestResultId${String(i + 1).padStart(4, '0')}`, vehicleType, systemNumber)
+      )
+    ]
   });
 
-export const mockTestResultArchived = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') => {
+export const mockTestResultArchived = (
+  i: number = 0,
+  testResultId: string = 'TestResultId0001',
+  vehicleType: VehicleTypes = VehicleTypes.PSV,
+  systemNumber: string = 'SYS0001'
+) => {
   const date = new Date('2022-01-02');
   const createdAt = date.setDate(date.getDate() - (i + 1));
   return createMock<TestResultModel>({
-    testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
+    testResultId,
     createdAt: new Date(createdAt).toISOString(),
     systemNumber,
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
     testStartTimestamp: new Date().toISOString(),
 
-    testTypes: [...mockTestTypeList()],
+    testTypes: [...mockTestTypeList(2)],
     createdByName: `Person ${i}`,
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
     countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,

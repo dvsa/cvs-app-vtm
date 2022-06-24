@@ -12,9 +12,9 @@ import {
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
-  fetchTestResultsBySystemId,
-  fetchTestResultsBySystemIdFailed,
-  fetchTestResultsBySystemIdSuccess,
+  fetchTestResultsBySystemNumber,
+  fetchTestResultsBySystemNumberFailed,
+  fetchTestResultsBySystemNumberSuccess,
   updateTestResultFailed,
   updateTestResultState,
   updateTestResultSuccess
@@ -24,11 +24,11 @@ import {
 export class TestResultsEffects {
   fetchTestResultsBySystemNumber$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(fetchTestResultsBySystemId),
-      mergeMap(({ systemId }) =>
-        this.testRecordsService.fetchTestResultbySystemId(systemId).pipe(
-          map((testResults) => fetchTestResultsBySystemIdSuccess({ payload: testResults })),
-          catchError((e) => of(fetchTestResultsBySystemIdFailed({ error: e.message })))
+      ofType(fetchTestResultsBySystemNumber),
+      mergeMap(({ systemNumber }) =>
+        this.testRecordsService.fetchTestResultbySystemNumber(systemNumber).pipe(
+          map((testResults) => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
+          catchError((e) => of(fetchTestResultsBySystemNumberFailed({ error: e.message })))
         )
       )
     )
@@ -38,13 +38,13 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(getByVINSuccess),
       mergeMap((action) =>
-        this.testRecordsService.fetchTestResultbySystemId(action.vehicleTechRecords[0].systemNumber).pipe(
-          map((vehicleTestRecords) => fetchTestResultsBySystemIdSuccess({ payload: vehicleTestRecords })),
+        this.testRecordsService.fetchTestResultbySystemNumber(action.vehicleTechRecords[0].systemNumber).pipe(
+          map((vehicleTestRecords) => fetchTestResultsBySystemNumberSuccess({ payload: vehicleTestRecords })),
           catchError((e) => {
             if (e.status != 404) {
-              return of(fetchTestResultsBySystemIdFailed({ error: e.message }));
+              return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
             } else {
-              return of(fetchTestResultsBySystemIdSuccess({ payload: [] }));
+              return of(fetchTestResultsBySystemNumberSuccess({ payload: [] }));
             }
           })
         )
@@ -57,8 +57,8 @@ export class TestResultsEffects {
       ofType(fetchSelectedTestResult),
       mergeMap(() => this.store.pipe(select(selectRouteNestedParams), take(1))),
       mergeMap((params) => {
-        const { systemId, testResultId } = params;
-        return this.testRecordsService.fetchTestResultbySystemId(systemId, { testResultId, version: 'all' }).pipe(
+        const { systemNumber, testResultId } = params;
+        return this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { testResultId, version: 'all' }).pipe(
           map((vehicleTestRecords) => {
             if (vehicleTestRecords && vehicleTestRecords.length === 1) {
               return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });

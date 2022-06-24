@@ -24,7 +24,7 @@ export const globalErrorReducer = createReducer(
     GlobalErrorActions.clearError,
     TechnicalRecordServiceActions.getByVIN,
     TestResultActions.fetchTestResults,
-    TestResultActions.fetchTestResultsBySystemId,
+    TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,
     (state) => ({ ...state, globalError: [] })
   ),
@@ -32,7 +32,7 @@ export const globalErrorReducer = createReducer(
     GlobalErrorActions.addError,
     TechnicalRecordServiceActions.getByVINFailure,
     TestResultActions.fetchTestResultsFailed,
-    TestResultActions.fetchTestResultsBySystemIdFailed,
+    TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,
     (state, { error, anchorLink }) => ({ ...state, globalError: [...state.globalError, { error: error, anchorLink: anchorLink }] })
   ),

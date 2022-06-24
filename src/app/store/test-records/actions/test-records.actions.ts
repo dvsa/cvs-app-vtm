@@ -6,12 +6,12 @@ export const fetchTestResults = createAction('[API/test-results] Fetch All');
 export const fetchTestResultsSuccess = createAction('[API/test-results] Fetch All Success', props<{ payload: Array<TestResultModel> }>());
 export const fetchTestResultsFailed = createAction('[API/test-results] Fetch All Failed', props<GlobalError>());
 
-export const fetchTestResultsBySystemId = createAction('[API/test-results] Fetch All By systemId', props<{ systemId: string }>());
-export const fetchTestResultsBySystemIdSuccess = createAction(
-  '[API/test-results] Fetch All By systemId Success',
+export const fetchTestResultsBySystemNumber = createAction('[API/test-results] Fetch All By systemNumber', props<{ systemNumber: string }>());
+export const fetchTestResultsBySystemNumberSuccess = createAction(
+  '[API/test-results] Fetch All By systemNumber Success',
   props<{ payload: Array<TestResultModel> }>()
 );
-export const fetchTestResultsBySystemIdFailed = createAction('[API/test-results] Fetch All By systemId Failed', props<GlobalError>());
+export const fetchTestResultsBySystemNumberFailed = createAction('[API/test-results] Fetch All By systemNumber Failed', props<GlobalError>());
 
 export const fetchSelectedTestResult = createAction('[API/test-results], Fetch by ID');
 export const fetchSelectedTestResultSuccess = createAction('[API/test-results], Fetch by ID Success', props<{ payload: TestResultModel }>());

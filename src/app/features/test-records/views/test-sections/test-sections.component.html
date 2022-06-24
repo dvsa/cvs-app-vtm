@@ -1,6 +1,0 @@
-<ng-container *ngIf="template$ | async as template">
-  <app-button-group>
-    <app-button *ngIf="(edit$ | async) === true" id="save" (clicked)="handleSave()">Save</app-button>
-  </app-button-group>
-  <app-dynamic-form-group [template]="template" [data]="data$ | async" [edit]="(edit$ | async) || false"></app-dynamic-form-group>
-</ng-container>

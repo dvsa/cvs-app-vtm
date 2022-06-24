@@ -19,9 +19,9 @@ import {
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
-  fetchTestResultsBySystemId,
-  fetchTestResultsBySystemIdFailed,
-  fetchTestResultsBySystemIdSuccess,
+  fetchTestResultsBySystemNumber,
+  fetchTestResultsBySystemNumberFailed,
+  fetchTestResultsBySystemNumberSuccess,
   updateTestResultFailed,
   updateTestResultState,
   updateTestResultSuccess
@@ -48,7 +48,7 @@ describe('TestResultsEffects', () => {
               selector: selectRouteNestedParams,
               value: [
                 {
-                  systemId: 'systemId01',
+                  systemNumber: 'systemNumber01',
                   testResultId: 'testResult01'
                 }
               ]
@@ -70,58 +70,58 @@ describe('TestResultsEffects', () => {
   });
 
   describe('fetchTestResultsBySystemNumber$', () => {
-    it('should return fetchTestResultBySystemIdSuccess action on successfull API call', () => {
+    it('should return fetchTestResultBySystemNumberSuccess action on successfull API call', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const testResults = mockTestResultList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: fetchTestResultsBySystemId });
+        actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
         // mock service call
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: testResults }));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: testResults }));
 
         // expect effect to return success action
         expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
-          b: fetchTestResultsBySystemIdSuccess({ payload: testResults })
+          b: fetchTestResultsBySystemNumberSuccess({ payload: testResults })
         });
       });
     });
 
-    it('should return fetchTestResultsBySystemIdFailed action on API error', () => {
+    it('should return fetchTestResultsBySystemNumberFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a--', { a: fetchTestResultsBySystemId });
+        actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
         const expectedError = new HttpErrorResponse({
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
-          b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' })
+          b: fetchTestResultsBySystemNumberFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' })
         });
       });
     });
 
-    it('should return fetchTestResultsBySystemIdFailed action on API error', () => {
+    it('should return fetchTestResultsBySystemNumberFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a--', { a: fetchTestResultsBySystemId });
+        actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
         const expectedError = new HttpErrorResponse({
           status: 404,
           statusText: 'Not found'
         });
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
-          b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 404 Not found' })
+          b: fetchTestResultsBySystemNumberFailed({ error: 'Http failure response for (unknown url): 404 Not found' })
         });
       });
     });
   });
 
   describe('fetchTestResultsBySystemNumberAfterSearchByVinSucces$', () => {
-    it('should return fetchTestResultBySystemIdSuccess action', () => {
+    it('should return fetchTestResultBySystemNumberSuccess action', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const testResults = mockTestResultList();
         const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
@@ -129,16 +129,16 @@ describe('TestResultsEffects', () => {
         actions$ = hot('-a--', { a: getByVINSuccess({ vehicleTechRecords }) });
 
         // mock service call
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: testResults }));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: testResults }));
 
         // expect effect to return success action
         expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
-          b: fetchTestResultsBySystemIdSuccess({ payload: testResults })
+          b: fetchTestResultsBySystemNumberSuccess({ payload: testResults })
         });
       });
     });
 
-    it('should return fetchTestResultsBySystemIdFailed', () => {
+    it('should return fetchTestResultsBySystemNumberFailed', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
         // mock action to trigger effect
@@ -149,15 +149,15 @@ describe('TestResultsEffects', () => {
           status: 500,
           statusText: 'Internal server error'
         });
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
-          b: fetchTestResultsBySystemIdFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' })
+          b: fetchTestResultsBySystemNumberFailed({ error: 'Http failure response for (unknown url): 500 Internal server error' })
         });
       });
     });
 
-    it('should not return fetchTestResultsBySystemIdFailed when not found a test record', () => {
+    it('should not return fetchTestResultsBySystemNumberFailed when not found a test record', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
         // mock action to trigger effect
@@ -168,10 +168,10 @@ describe('TestResultsEffects', () => {
           status: 404,
           statusText: 'Not found'
         });
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestResultsBySystemNumberAfterSearchByVinSucces$).toBe('---b', {
-          b: fetchTestResultsBySystemIdSuccess({ payload: [] })
+          b: fetchTestResultsBySystemNumberSuccess({ payload: [] })
         });
       });
     });
@@ -184,7 +184,7 @@ describe('TestResultsEffects', () => {
 
         actions$ = hot('-a-', { a: fetchSelectedTestResult() });
 
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: [testResult] }));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: [testResult] }));
 
         expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
           b: fetchSelectedTestResultSuccess({ payload: testResult })
@@ -196,7 +196,7 @@ describe('TestResultsEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a-', { a: fetchSelectedTestResult() });
 
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--a|', { a: [] }));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: [] }));
 
         expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
           b: fetchSelectedTestResultFailed({ error: 'Test result not found' })
@@ -213,7 +213,7 @@ describe('TestResultsEffects', () => {
           status: 400,
           statusText: 'Bad Request'
         });
-        jest.spyOn(testResultsService, 'fetchTestResultbySystemId').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchSelectedTestResult$).toBe('---b', {
           b: fetchSelectedTestResultFailed({ error: 'Http failure response for (unknown url): 400 Bad Request' })

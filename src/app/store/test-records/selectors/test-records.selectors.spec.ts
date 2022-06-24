@@ -11,15 +11,23 @@ import {
   selectedAmendedTestResultState,
   selectedTestResultState,
   selectedTestSortedAmendmentHistory,
-  selectTestFromSelectedTestResult,
   testResultLoadingState
 } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
   describe('selectedTestResultState', () => {
     it('should return the correct test result', () => {
-      const state: TestResultsState = { ...initialTestResultsState, ids: ['testResult1'], entities: { testResult1: mockTestResult() } };
-      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1' } as Params);
+      const state: TestResultsState = {
+        ...initialTestResultsState,
+        ids: ['testResult1'],
+        entities: {
+          testResult1: createMock<TestResultModel>({
+            testResultId: 'testResult1',
+            testTypes: [createMock<TestType>({ testTypeId: '1' })]
+          })
+        }
+      };
+      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1', testTypeId: '1' } as Params);
       expect(selectedState).toEqual(state.entities['testResult1']);
     });
   });
@@ -75,15 +83,26 @@ describe('Test Results Selectors', () => {
 
   describe('selectedAmendedTestResultState', () => {
     const testResult = createMock<TestResultModel>({
-      testHistory: createMockList<TestResultModel>(1, (i) => createMock<TestResultModel>({ createdAt: `2020-01-01T00:0${i}:00.000Z` }))
+      testHistory: createMockList<TestResultModel>(2, (i) =>
+        createMock<TestResultModel>({
+          createdAt: `2020-01-01T00:0${i}:00.000Z`,
+          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}` }))
+        })
+      )
     });
 
     it('should return amended record that matches "createdAt" route param value', () => {
-      expect(selectedAmendedTestResultState.projector(testResult, { createdAt: '2020-01-01T00:01:00.000Z' })).toEqual(testResult.testHistory![1]);
+      const selectedState = selectedAmendedTestResultState.projector(testResult, { testTypeId: '00', createdAt: '2020-01-01T00:00:00.000Z' });
+      expect(selectedState).not.toBeUndefined();
+      expect(testResult.testHistory![1].testTypes.length).toEqual(1);
     });
 
-    it('should return return undefined when "createdAt" route param value doesn not match any amended records', () => {
-      expect(selectedAmendedTestResultState.projector(testResult, { createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
+    it('should return return undefined when "createdAt" route param value doesnt not match any amended records', () => {
+      expect(selectedAmendedTestResultState.projector(testResult, { testTypeId: '00', createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
+    });
+
+    it('should return return undefined when "testTypeId" route param value doesnt not match any in amended test record', () => {
+      expect(selectedAmendedTestResultState.projector(testResult, { testTypeId: '01', createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
     });
 
     it('should return return undefined when there is no selected testResult', () => {
@@ -120,28 +139,6 @@ describe('Test Results Selectors', () => {
 
     it('should return empty array if testTypes is empty', () => {
       expect(selectAmendedDefectData.projector({ testTypes: [] })).toEqual([]);
-    });
-  });
-
-  describe('selectTestFromSelectedTestResult', () => {
-    const testResult = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(3, (i) => createMock<TestType>({ testTypeId: `${i}` }))
-    });
-
-    it('should return test from selected test result', () => {
-      expect(selectTestFromSelectedTestResult.projector(testResult, { testTypeId: '1' })).toEqual(testResult.testTypes[1]);
-    });
-
-    it('should return undefined when testResult is undefined', () => {
-      expect(selectTestFromSelectedTestResult.projector(undefined, { testTypeId: '1' })).toBeUndefined();
-    });
-
-    it('should return undefined when testTypeId not found', () => {
-      expect(selectTestFromSelectedTestResult.projector(testResult, { testTypeId: '3' })).toBeUndefined();
-    });
-
-    it('should return undefined when testTypes is undefined', () => {
-      expect(selectTestFromSelectedTestResult.projector({ testTypes: undefined }, { testTypeId: '3' })).toBeUndefined();
     });
   });
 });

@@ -4,9 +4,9 @@ import {
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
   fetchTestResults,
-  fetchTestResultsBySystemId,
-  fetchTestResultsBySystemIdFailed,
-  fetchTestResultsBySystemIdSuccess,
+  fetchTestResultsBySystemNumber,
+  fetchTestResultsBySystemNumberFailed,
+  fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
   updateTestResult,
   updateTestResultFailed,
@@ -54,17 +54,17 @@ describe('Test Results Reducer', () => {
     });
   });
 
-  describe('fetchTestResultsBySystemId actions', () => {
+  describe('fetchTestResultsBySystemNumber actions', () => {
     it('should set loading to true', () => {
       const newState: TestResultsState = { ...initialTestResultsState, loading: true };
-      const action = fetchTestResultsBySystemId({ systemId: 'TestResultId0001' });
+      const action = fetchTestResultsBySystemNumber({ systemNumber: 'TestResultId0001' });
       const state = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);
     });
 
-    describe('fetchTestResultsBySystemIdSuccess', () => {
+    describe('fetchTestResultsBySystemNumberSuccess', () => {
       it('should set all test result records', () => {
         const testResults = mockTestResultList();
         const newState: TestResultsState = {
@@ -72,7 +72,7 @@ describe('Test Results Reducer', () => {
           ids: ['TestResultId0001'],
           entities: { ['TestResultId0001']: testResults[0] }
         };
-        const action = fetchTestResultsBySystemIdSuccess({ payload: testResults });
+        const action = fetchTestResultsBySystemNumberSuccess({ payload: testResults });
         const state = testResultsReducer(initialTestResultsState, action);
 
         expect(state).toEqual(newState);
@@ -80,10 +80,10 @@ describe('Test Results Reducer', () => {
       });
     });
 
-    describe('fetchTestResultsBySystemIdFailed', () => {
+    describe('fetchTestResultsBySystemNumberFailed', () => {
       it('should set error state', () => {
         const newState = { ...initialTestResultsState, loading: false };
-        const action = fetchTestResultsBySystemIdFailed({ error: 'unit testing error message' });
+        const action = fetchTestResultsBySystemNumberFailed({ error: 'unit testing error message' });
         const state = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
 
         expect(state).toEqual(newState);
@@ -142,7 +142,13 @@ describe('Test Results Reducer', () => {
       };
       const newState = {
         ...state,
-        entities: { ['TestResultId0001']: { ...testResults[0], testCode: '2', testTypes: [{ ...testResults[0].testTypes[0], testNumber: '2' }] } },
+        entities: {
+          ['TestResultId0001']: {
+            ...testResults[0],
+            testCode: '2',
+            testTypes: [{ ...testResults[0].testTypes[0], testNumber: '2' }, { ...testResults[0].testTypes[1] }]
+          }
+        },
         loading: true
       };
 

@@ -1,12 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GetTestResultsService, TestTypeResults, UpdateTestResultsService } from '@api/test-results';
-import { TestType } from '@models/test-type.model';
+import { GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { fetchTestResults, fetchTestResultsBySystemId, selectTestFromSelectedTestResult, updateTestResultState } from '@store/test-records';
-import { firstValueFrom } from 'rxjs';
-import { createMock } from 'ts-auto-mock';
+import { fetchTestResults, fetchTestResultsBySystemNumber, updateTestResultState } from '@store/test-records';
 import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
 
@@ -37,8 +34,8 @@ describe('TestRecordsService', () => {
 
   describe('API', () => {
     describe('fetchTestResultbyServiceId', () => {
-      it('should throw error when systemId is empty', (done) => {
-        service.fetchTestResultbySystemId('').subscribe({
+      it('should throw error when systemNumber is empty', (done) => {
+        service.fetchTestResultbySystemNumber('').subscribe({
           error: (e) => {
             expect(e.message).toBe('systemNumber is required');
             done();
@@ -49,7 +46,7 @@ describe('TestRecordsService', () => {
       it('should add query params to url', () => {
         const now = new Date('2022-01-01T00:00:00.000Z');
         service
-          .fetchTestResultbySystemId('SystemId', {
+          .fetchTestResultbySystemNumber('SystemNumber', {
             status: 'submited',
             fromDateTime: now,
             toDateTime: now,
@@ -60,7 +57,7 @@ describe('TestRecordsService', () => {
 
         // Check for correct requests: should have made one request to POST search from expected URL
         const req = httpTestingController.expectOne(
-          `https://url/api/v1/test-results/SystemId?status=submited&fromDateTime=2022-01-01T00:00:00.000Z&toDateTime=2022-01-01T00:00:00.000Z&testResultId=TEST_RESULT_ID&version=1`
+          `https://url/api/v1/test-results/SystemNumber?status=submited&fromDateTime=2022-01-01T00:00:00.000Z&toDateTime=2022-01-01T00:00:00.000Z&testResultId=TEST_RESULT_ID&version=1`
         );
         expect(req.request.method).toEqual('GET');
 
@@ -69,9 +66,9 @@ describe('TestRecordsService', () => {
       });
 
       it('should get a single test result', () => {
-        const systemId = 'SYS0001';
+        const systemNumber = 'SYS0001';
         const mockData = mockTestResult();
-        service.fetchTestResultbySystemId(systemId).subscribe((response) => {
+        service.fetchTestResultbySystemNumber(systemNumber).subscribe((response) => {
           expect(response).toEqual(mockData);
         });
 
@@ -83,11 +80,6 @@ describe('TestRecordsService', () => {
         req.flush(mockData);
       });
     });
-
-    // TODO: Needs updating from the contract because api doesnt return anything but 200 OK
-    describe.skip(TestRecordsService.prototype.saveTestResult.name, () => {
-      it('should return return something', () => {});
-    });
   });
 
   describe(TestRecordsService.prototype.loadTestResults.name, () => {
@@ -98,12 +90,12 @@ describe('TestRecordsService', () => {
     });
   });
 
-  describe(TestRecordsService.prototype.loadTestResultBySystemId.name, () => {
-    it('should dispatch fetchTestResultsBySystemId action', () => {
+  describe(TestRecordsService.prototype.loadTestResultBySystemNumber.name, () => {
+    it('should dispatch fetchTestResultsBySystemNumber action', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const systemNumber = 'SYS0001';
-      service.loadTestResultBySystemId(systemNumber);
-      expect(dispatchSpy).toHaveBeenCalledWith(fetchTestResultsBySystemId({ systemId: systemNumber }));
+      service.loadTestResultBySystemNumber(systemNumber);
+      expect(dispatchSpy).toHaveBeenCalledWith(fetchTestResultsBySystemNumber({ systemNumber: systemNumber }));
     });
   });
 
@@ -113,16 +105,6 @@ describe('TestRecordsService', () => {
       const args = { testResultId: 'testResultId', testTypeId: 'testTypeId', section: 'section', value: 'some value' };
       service.updateTestResultState(args);
       expect(dispatchSpy).toHaveBeenCalledWith(updateTestResultState(args));
-    });
-  });
-
-  describe('selectedTestInTestResult$', () => {
-    it('should return observable of testType', async () => {
-      const testType = createMock<TestType>();
-      store.overrideSelector(selectTestFromSelectedTestResult, testType);
-
-      const selectedTestType = await firstValueFrom(service.selectedTestInTestResult$);
-      expect(selectedTestType).toEqual(testType);
     });
   });
 });
