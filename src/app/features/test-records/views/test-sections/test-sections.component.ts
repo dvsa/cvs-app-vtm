@@ -10,8 +10,7 @@ import { combineLatest, firstValueFrom, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-test-sections',
-  templateUrl: './test-sections.component.html',
-  styleUrls: ['./test-sections.component.scss']
+  templateUrl: './test-sections.component.html'
 })
 export class TestSectionsComponent {
   @ViewChild(DynamicFormGroupComponent) dynamicForm?: DynamicFormGroupComponent;
