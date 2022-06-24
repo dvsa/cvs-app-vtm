@@ -1,27 +1,23 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { TestResultModel } from '@models/test-result.model';
 import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-technical-record',
   templateUrl: './vehicle-technical-record.component.html'
 })
-export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
+export class VehicleTechnicalRecordComponent implements OnDestroy {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  currentTechRecord?: TechRecordModel;
-  records: Observable<TestResultModel[]> = of([]);
+  currentTechRecord: Observable<TechRecordModel | undefined>;
+  records: Observable<TestResultModel[]>;
   ngDestroy$ = new Subject();
 
-  constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService, private store: Store) {
+  constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService) {
+    this.currentTechRecord = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!, this.ngDestroy$);
     this.records = testRecordService.testRecords$;
-  }
-
-  ngOnInit(): void {
-    this.currentTechRecord = this.technicalRecordService.viewableTechRecord(this.vehicleTechRecord!, this.ngDestroy$);
   }
 
   get currentVrm(): string | undefined {

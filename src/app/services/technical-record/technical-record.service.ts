@@ -4,7 +4,7 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { getByVIN, getByPartialVIN, selectVehicleTechnicalRecordsByVin, vehicleTechRecords } from '@store/technical-records';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -54,25 +54,18 @@ export class TechnicalRecordService {
 
   /**
    * A function to get the correct tech record to create the summary display which uses time first then status code
-   * @param record This is a VehicleTechRecordModel passed in from the parent component
+   * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  viewableTechRecord(record: VehicleTechRecordModel, destroy$: Subject<any>): TechRecordModel | undefined {
-    let viewableTechRecord = undefined;
-
-    this.store
-      .pipe(select(selectRouteNestedParams))
-      .pipe(takeUntil(destroy$))
-      .subscribe((params) => {
-        const createdAt = params['techCreatedAt'] ?? '';
-        viewableTechRecord = record?.techRecord?.find((techRecord) => new Date(techRecord.createdAt).getTime() == createdAt);
-      });
-
-    if (!viewableTechRecord) {
-      viewableTechRecord = this.filterTechRecordByStatusCode(record);
-    }
-
-    return viewableTechRecord;
+  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel, destroy$: Subject<any>): Observable<TechRecordModel | undefined> {
+    return this.store
+      .pipe(
+        select(selectRouteNestedParams),
+        map(({ techCreatedAt }) => {
+          const viewableTechRecord = vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == techCreatedAt);
+          return viewableTechRecord ?? this.filterTechRecordByStatusCode(vehicleRecord)
+        }
+      ));
   }
 
   /**
@@ -80,17 +73,9 @@ export class TechnicalRecordService {
    * @param record This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  filterTechRecordByStatusCode(record?: VehicleTechRecordModel): TechRecordModel | undefined {
-    let filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.PROVISIONAL);
-
-    if (filteredTechRecord == undefined) {
-      filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.CURRENT);
-    }
-
-    if (filteredTechRecord == undefined) {
-      filteredTechRecord = record?.techRecord?.find((vehicleTechRecord) => vehicleTechRecord.statusCode === StatusCodes.ARCHIVED);
-    }
-
-    return filteredTechRecord;
+  private filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
+    return record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
+      ?? record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)
+      ?? record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED);
   }
 }

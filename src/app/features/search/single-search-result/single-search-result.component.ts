@@ -19,16 +19,15 @@ export class SingleSearchResultComponent implements OnInit {
   constructor(private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
-    const techRecord = this.technicalRecordService.viewableTechRecord(this.vehicleTechRecord!, this.ngDestroy$);
-
-    this.vehicleDisplayData = {
-      vin: this.vehicleTechRecord?.vin,
-      vrm: this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm,
-      make: techRecord?.chassisMake,
-      model: techRecord?.chassisModel,
-      manufactureYear: techRecord?.manufactureYear,
-      vehicleType: techRecord?.vehicleType.toUpperCase()
-    };
+    this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!, this.ngDestroy$)
+      .subscribe(record => this.vehicleDisplayData = {
+        vin: this.vehicleTechRecord?.vin,
+        vrm: this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm,
+        make: record?.chassisMake,
+        model: record?.chassisModel,
+        manufactureYear: record?.manufactureYear,
+        vehicleType: record?.vehicleType.toUpperCase()
+      });
 
     this.template = createSingleSearchResult(this.vehicleTechRecord?.vin);
   }
