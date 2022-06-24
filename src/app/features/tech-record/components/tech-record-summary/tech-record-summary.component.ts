@@ -86,13 +86,13 @@ export class TechRecordSummaryComponent implements OnInit {
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
         this.tyresTemplate = HgvTyres;
-        this.brakesTemplate = BrakesTemplate;
         break;
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecord;
         this.axleWeightsTemplate = TrlAxleWeights;
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
+        this.tyresTemplate = HgvTyres;
         this.brakesTemplate = BrakesTemplate;
         break;
       }
