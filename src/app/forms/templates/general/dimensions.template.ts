@@ -1,6 +1,9 @@
+import { AxleSpacing, Dimensions } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function getDimensionsSection(includeTrailer: boolean = false): FormNode {
+export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTrailer: boolean = false): FormNode {
+
+
   const section: FormNode = {
     name: 'dimensionsSection',
     label: 'Dimensions',
@@ -26,28 +29,7 @@ export function getDimensionsSection(includeTrailer: boolean = false): FormNode 
             type: FormNodeTypes.CONTROL,
             viewType: FormNodeViewTypes.STRING
           },
-          {
-            name: 'axleSpacing',
-            value: '',
-            type: FormNodeTypes.ARRAY,
-            children: [
-              {
-                name: '0',
-                label: 'Axle',
-                value: '',
-                type: FormNodeTypes.GROUP,
-                children: [
-                  {
-                    name: 'value',
-                    label: "Axle 'x' to axle 'y' (mm)",
-                    value: '',
-                    type: FormNodeTypes.CONTROL,
-                    viewType: FormNodeViewTypes.STRING
-                  }
-                ]
-              }
-            ]
-          }
+          ...generateAxleToAxleNodes(axleSpacings)
         ]
       },
       {
@@ -96,4 +78,22 @@ export function getDimensionsMinMaxSection(heading: string, minField: string, ma
       }
     ]
   };
+}
+
+function generateAxleToAxleNodes(axles?: AxleSpacing[]): FormNode[] {
+  return !axles ? [] : axles.map(axle => {
+    const values = axle.axles.split('-');
+
+    if (values.length === 1) {
+      values.push((+values[0] + 1).toString());
+    }
+
+    return {
+      name: 'axle' + axle.axles,
+      label: `Axle ${values[0]} to axle ${values[1]} (mm)`,
+      value: axle.value.toString(),
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING
+    }
+  });
 }
