@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVINSuccess } from '@store/technical-records';
+import { getByVinSuccess } from '@store/technical-records';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsBySystemIdSuccess } from '../actions/test-records.actions';
 
@@ -24,7 +24,7 @@ export class TestResultsEffects {
 
   fetchTestResultsBySystemNumberAfterSearchByVinSucces$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getByVINSuccess),
+      ofType(getByVinSuccess),
       mergeMap((action) =>
         this.testRecordsService.fetchTestResultbySystemId(action.vehicleTechRecords[0].systemNumber).pipe(
           map((vehicleTestRecords) => fetchTestResultsBySystemIdSuccess({ payload: vehicleTestRecords })),

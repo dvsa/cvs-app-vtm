@@ -46,19 +46,19 @@ describe('SearchComponent', () => {
       it('should navigate to vin search result', () => {
         const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-        const vin = 'someVin';
-        component.navigateSearch(vin, SEARCH_TYPES.VIN);
+        const expectedVin = 'someVin';
+        component.navigateSearch(expectedVin, SEARCH_TYPES.VIN);
 
-        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { vin: 'someVin' } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { vin: expectedVin } });
       });
 
       it('should navigate to partialVin search result', () => {
         const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-        const partialVin = 'somePartialVin';
-        component.navigateSearch(partialVin, SEARCH_TYPES.PARTIAL_VIN);
+        const expectedPartialVin = 'somePartialVin';
+        component.navigateSearch(expectedPartialVin, SEARCH_TYPES.PARTIAL_VIN);
 
-        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { partialVin: 'somePartialVin' } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { partialVin: expectedPartialVin } });
       });
 
       it('should add error', () => {
@@ -66,7 +66,7 @@ describe('SearchComponent', () => {
 
         component.navigateSearch('', '');
 
-        expect(addErrorSpy).toHaveBeenCalledWith({ error: component.searchErrorMessage, anchorLink: 'search-term' });
+        expect(addErrorSpy).toHaveBeenCalledWith({ error: component.missingTermErrorMessage, anchorLink: 'search-term' });
       });
     });
   });

@@ -19,7 +19,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     this.records = testRecordService.testRecords$;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.currentTechRecord = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!, this.ngDestroy$);
   }
 

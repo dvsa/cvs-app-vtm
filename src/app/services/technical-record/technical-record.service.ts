@@ -3,25 +3,30 @@ import { Injectable } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVIN, getByPartialVIN, selectVehicleTechnicalRecordsByVin, vehicleTechRecords } from '@store/technical-records';
+import { getByVin, getByPartialVin, selectVehicleTechnicalRecordsByVin, vehicleTechRecords, getByVrm } from '@store/technical-records';
 import { map, Observable, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
   VIN = 'vin',
-  PARTIAL_VIN = 'partialVin'
+  PARTIAL_VIN = 'partialVin',
+  VRM = 'vrm'
 }
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
   constructor(private store: Store, private http: HttpClient) {}
 
-  getByVIN(vin: string): Observable<VehicleTechRecordModel[]> {
+  getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
     return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
   }
 
-  getByPartialVIN(partialVin: string): Observable<VehicleTechRecordModel[]> {
+  getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
     return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
+  }
+
+  getByVrm(vrm: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
   }
 
   private getVehicleTechRecordModels(identifier: string, type: SEARCH_TYPES) {
@@ -39,15 +44,16 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectVehicleTechnicalRecordsByVin));
   }
 
-  searchBy(criteria: { type: SEARCH_TYPES; searchTerm: string }) {
-    const { type, searchTerm } = criteria;
-
+  searchBy(type: SEARCH_TYPES, searchTerm: string) {
     switch (type) {
       case SEARCH_TYPES.VIN:
-        this.store.dispatch(getByVIN({ [type]: searchTerm }));
+        this.store.dispatch(getByVin({ [type]: searchTerm }));
         break;
       case SEARCH_TYPES.PARTIAL_VIN:
-        this.store.dispatch(getByPartialVIN({ [type]: searchTerm }));
+        this.store.dispatch(getByPartialVin({ [type]: searchTerm }));
+        break;
+      case SEARCH_TYPES.VRM:
+        this.store.dispatch(getByVrm({ [type]: searchTerm }));
         break;
     }
   }

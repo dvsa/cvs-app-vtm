@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { SEARCH_TYPES } from '@services/technical-record/technical-record.service';
@@ -10,33 +10,21 @@ import { map, Observable } from 'rxjs';
   templateUrl: './search.component.html'
 })
 export class SearchComponent {
-  searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
-  missingCriteriaErrorMessage = 'You must select a valid search criteria';
+  missingTermErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
+  missingTypeErrorMessage = 'You must select a valid search criteria';
 
   constructor(public globalErrorService: GlobalErrorService, private router: Router) {}
 
-  public navigateSearch(term: string, type: string): void {
+  navigateSearch(term: string, type: string): void {
     this.globalErrorService.clearError();
-
     term = term.trim();
 
-    let extras: NavigationExtras;
-    if (term) {
-      switch (type) {
-        case SEARCH_TYPES.VIN:
-          extras = { queryParams: { vin: term } };
-          break;
-        case SEARCH_TYPES.PARTIAL_VIN:
-          extras = { queryParams: { partialVin: term } };
-          break;
-        default:
-          this.globalErrorService.addError({ error: this.missingCriteriaErrorMessage, anchorLink: 'search-type' });
-          return;
-      }
-
-      this.router.navigate(['/search/results'], extras);
+    if (!term) {
+      this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'search-term' });
+    } else if (!Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
+      this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'search-type' });
     } else {
-      this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
+      this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
     }
   }
 
