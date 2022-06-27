@@ -280,11 +280,11 @@ export interface Dimensions {
   height: number;
   length: number;
   width: number;
-  axleSpacing?: AxleSpacing
+  axleSpacing?: AxleSpacing[]
 }
 
 export interface AxleSpacing {
-  axles?: string;
+  axles: string;
   value: number;
 }
 
