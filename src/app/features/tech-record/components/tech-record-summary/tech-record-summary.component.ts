@@ -6,7 +6,6 @@ import { HgvAxleWeights } from '@forms/templates/hgv/hgv-axle-weights.template';
 import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
 import { HgvGrossVehicleWeight } from '@forms/templates/hgv/hgv-gross-vehicle-weights.template';
 import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
-import { HgvTyres } from '@forms/templates/hgv/hgv-tyres.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { PsvApprovalTypeSection } from '@forms/templates/psv/psv-approval-type.template';
 import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
@@ -19,12 +18,12 @@ import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvGrossVehicleWeight } from '@forms/templates/psv/psv-gross-vehicle-weights.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
-import { PsvTyre } from '@forms/templates/psv/psv-tyre.template';
 import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
 import { TrlAxleWeights } from '@forms/templates/trl/trl-axle-weights.template';
 import { TrlGrossVehicleWeight } from '@forms/templates/trl/trl-gross-vehicle-weights.template';
 import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { getTyresSection } from '@forms/templates/general/tyres.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -73,7 +72,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
         this.bodyTemplate = PsvBody;
-        this.tyreTemplate = PsvTyre;
+        this.tyreTemplate = getTyresSection(true);
         this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
         this.trainWeightTemplate = PsvTrainWeight;
         this.axleWeightsTemplate = PsvAxleWeights;
@@ -85,14 +84,14 @@ export class TechRecordSummaryComponent implements OnInit {
         this.trainWeightTemplate = HgvGrossTrainWeight;
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
-        this.tyresTemplate = HgvTyres;
+        this.tyresTemplate = getTyresSection();
         break;
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecord;
         this.axleWeightsTemplate = TrlAxleWeights;
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
-        this.tyresTemplate = HgvTyres;
+        this.tyresTemplate = getTyresSection();
         this.brakesTemplate = BrakesTemplate;
         break;
       }
