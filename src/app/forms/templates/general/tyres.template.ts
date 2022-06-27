@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export const HgvTyres: FormNode = {
+export const TyresTemplate: FormNode = {
   name: '',
   label: 'Tyres',
   type: FormNodeTypes.GROUP,
