@@ -13,7 +13,7 @@ export const Brakes: FormNode = {
       children: [
         {
           name: 'loadSensingValve',
-          label: 'Load sensing value',
+          label: 'Load sensing valve',
           value: '',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING
