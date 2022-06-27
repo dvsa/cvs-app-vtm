@@ -63,7 +63,7 @@ export class TechRecordSummaryComponent implements OnInit {
     switch (this.vehicleTechRecord?.vehicleType) {
       case 'psv': {
         this.vehicleSummaryTemplate = PsvTechRecord;
-        //this.approvalTypeTemplate = getTypeApprovalSection(true);
+        this.approvalTypeTemplate = getTypeApprovalSection(true);
         this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
@@ -80,7 +80,7 @@ export class TechRecordSummaryComponent implements OnInit {
       }
       case 'hgv': {
         this.vehicleSummaryTemplate = HgvTechRecord;
-        //this.approvalTypeTemplate = getTypeApprovalSection();
+        this.approvalTypeTemplate = getTypeApprovalSection();
         this.grossVehicleWeightTemplate = HgvGrossVehicleWeight;
         this.trainWeightTemplate = HgvGrossTrainWeight;
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
@@ -90,7 +90,7 @@ export class TechRecordSummaryComponent implements OnInit {
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecord;
-        //this.approvalTypeTemplate = getTypeApprovalSection();
+        this.approvalTypeTemplate = getTypeApprovalSection();
         this.axleWeightsTemplate = TrlAxleWeights;
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
         this.tyresTemplate = getTyresSection();

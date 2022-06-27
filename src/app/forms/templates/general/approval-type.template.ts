@@ -35,26 +35,28 @@ export function getTypeApprovalSection(psv: boolean = false): FormNode {
     ]
   };
 
+  const COIFSection = [
+    {
+      name: 'coifSerialNumber',
+      label: 'COIF Serial number',
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'coifCertifierName',
+      label: 'COIF Certifier name',
+      type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'coifDate',
+      label: 'COIF Certifier date',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE
+    }
+  ]
+
   if (psv) {
-    approvalTypeSection.children = [
-      {
-        name: 'coifSerialNumber',
-        label: 'COIF Serial number',
-        type: FormNodeTypes.CONTROL
-      },
-      {
-        name: 'coifCertifierName',
-        label: 'COIF Certifier name',
-        type: FormNodeTypes.CONTROL
-      },
-      {
-        name: 'coifDate',
-        label: 'COIF Certifier date',
-        type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.DATE
-      },
-      ...approvalTypeSection.children as FormNode[]
-    ]
+    approvalTypeSection.children?.splice(3, 0, ...COIFSection)
+
   }
 
   return approvalTypeSection;
