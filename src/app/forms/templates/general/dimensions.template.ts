@@ -29,14 +29,22 @@ export function getDimensionsSection(includeTrailer: boolean = false): FormNode 
           {
             name: 'axleSpacing',
             value: '',
-            type: FormNodeTypes.GROUP,
+            type: FormNodeTypes.ARRAY,
             children: [
               {
-                name: 'value',
-                label: "Axle 'x' to axle 'y' (mm)",
+                name: '0',
+                label: 'Axle',
                 value: '',
-                type: FormNodeTypes.CONTROL,
-                viewType: FormNodeViewTypes.STRING
+                type: FormNodeTypes.GROUP,
+                children: [
+                  {
+                    name: 'value',
+                    label: "Axle 'x' to axle 'y' (mm)",
+                    value: '',
+                    type: FormNodeTypes.CONTROL,
+                    viewType: FormNodeViewTypes.STRING
+                  }
+                ]
               }
             ]
           }
