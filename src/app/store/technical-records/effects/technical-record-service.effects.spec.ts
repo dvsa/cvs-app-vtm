@@ -47,7 +47,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getByVinSuccess({ records: technicalRecord })
+          b: getByVinSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });
@@ -114,7 +114,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getByPartialVinSuccess({ records: technicalRecord })
+          b: getByPartialVinSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });
@@ -181,7 +181,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getByVrmSuccess({ records: technicalRecord })
+          b: getByVrmSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });
@@ -248,7 +248,7 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getByTrailerIdSuccess({ records: technicalRecord })
+          b: getByTrailerIdSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });

@@ -25,19 +25,19 @@ export class TechnicalRecordServiceEffects {
           case getByPartialVin.type:
             return this.technicalRecordService.getByPartialVin(action.partialVin)
               .pipe(
-                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
+                map(vehicleTechRecords => getByPartialVinSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByPartialVinFailure({ error: this.getErrorMessage(error, 'partialVin'), anchorLink })))
               );
           case getByVrm.type:
             return this.technicalRecordService.getByVrm(action.vrm)
               .pipe(
-                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
+                map(vehicleTechRecords => getByVrmSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByVrmFailure({ error: this.getErrorMessage(error, 'vrm'), anchorLink })))
               );
           case getByTrailerId.type:
             return this.technicalRecordService.getByTrailerId(action.trailerId)
               .pipe(
-                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
+                map(vehicleTechRecords => getByTrailerIdSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByTrailerIdFailure({ error: this.getErrorMessage(error, 'trailerId'), anchorLink })))
               );
         }
