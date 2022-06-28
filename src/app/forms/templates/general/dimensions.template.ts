@@ -1,9 +1,7 @@
-import { AxleSpacing } from '@models/vehicle-tech-record.model';
+import { AxleSpacing, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTrailer: boolean = false): FormNode {
-
-
+export function getDimensionsSection(vehicleType: VehicleTypes, axleSpacings?: AxleSpacing[]): FormNode {
   const section: FormNode = {
     name: 'dimensionsSection',
     label: 'Dimensions',
@@ -15,6 +13,13 @@ export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTraile
         value: '',
         type: FormNodeTypes.GROUP,
         children: [
+          ...(vehicleType === VehicleTypes.PSV ? [{
+            name: 'height',
+            label: 'Height (mm)',
+            value: '',
+            type: FormNodeTypes.CONTROL,
+            viewType: FormNodeViewTypes.STRING
+          }]: []),
           {
             name: 'length',
             label: 'Length (mm)',
@@ -41,7 +46,7 @@ export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTraile
     ]
   };
 
-  if (includeTrailer) {
+  if (vehicleType === VehicleTypes.TRL) {
     section.children?.push({
       name: 'rearAxleToRearTrl',
       label: 'Rear axle to rear trailer',
@@ -51,20 +56,21 @@ export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTraile
     });
   }
 
-  section.children?.push({
-    name: 'dimensionsBottomSection',
-    label: 'Dimensions',
-    type: FormNodeTypes.GROUP,
-    children: [
-      {
-        name: 'dimensions',
-        value: '',
-        type: FormNodeTypes.GROUP,
-        children: generateAxleToAxleNodes(axleSpacings)
-      }
-    ]
-  });
-
+  if (vehicleType == VehicleTypes.HGV || vehicleType == VehicleTypes.TRL) {
+    section.children?.push({
+      name: 'dimensionsBottomSection',
+      label: 'Dimensions',
+      type: FormNodeTypes.GROUP,
+      children: [
+        {
+          name: 'dimensions',
+          value: '',
+          type: FormNodeTypes.GROUP,
+          children: generateAxleToAxleNodes(axleSpacings)
+        }
+      ]
+    })
+  }
   return section;
 }
 
