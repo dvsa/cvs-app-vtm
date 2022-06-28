@@ -1,4 +1,4 @@
-import { AxleSpacing, Dimensions } from '@models/vehicle-tech-record.model';
+import { AxleSpacing } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTrailer: boolean = false): FormNode {
@@ -28,8 +28,7 @@ export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTraile
             value: '',
             type: FormNodeTypes.CONTROL,
             viewType: FormNodeViewTypes.STRING
-          },
-          ...generateAxleToAxleNodes(axleSpacings)
+          }
         ]
       },
       {
@@ -51,6 +50,20 @@ export function getDimensionsSection(axleSpacings?: AxleSpacing[], includeTraile
       viewType: FormNodeViewTypes.STRING
     });
   }
+
+  section.children?.push({
+    name: 'dimensionsBottomSection',
+    label: 'Dimensions',
+    type: FormNodeTypes.GROUP,
+    children: [
+      {
+        name: 'dimensions',
+        value: '',
+        type: FormNodeTypes.GROUP,
+        children: generateAxleToAxleNodes(axleSpacings)
+      }
+    ]
+  });
 
   return section;
 }
