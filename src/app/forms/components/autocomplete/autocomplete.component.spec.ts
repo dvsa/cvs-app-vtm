@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AutocompleteComponent } from './autocomplete.component';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
+import { AutocompleteComponent } from './autocomplete.component';
 
 jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
   return {
@@ -20,7 +20,7 @@ jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
 class HostComponent {
   name = 'autocomplete';
   options = ['option1', 'option2', 'option3'];
-  form = new FormGroup({ foo: new FormControl() });
+  form = new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') });
 }
 
 describe('AutocompleteComponent', () => {
@@ -29,7 +29,7 @@ describe('AutocompleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AutocompleteComponent, HostComponent],
+      declarations: [AutocompleteComponent, HostComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });

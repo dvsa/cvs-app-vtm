@@ -18,12 +18,12 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
 })
 export class TestRecordComponent implements OnInit {
   @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(c: BaseTestRecordComponent) {
-    c.dynamicFormGroupComponents?.forEach((component) => {
+    c?.dynamicFormGroupComponents?.forEach((component) => {
       this.sectionForms.push(component.form);
     });
   }
 
-  private sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
+  sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   defectTpl: FormNode = DefectTpl;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
@@ -53,19 +53,16 @@ export class TestRecordComponent implements OnInit {
   }
 
   get sectionFormsInvalid() {
-    return of([...this.sectionForms])
-      .pipe(map((forms) => forms.map((f) => f.invalid).some((b) => b)))
-      .pipe(distinctUntilChanged());
+    return [...this.sectionForms].map((f) => f.invalid).some((b) => b);
   }
 
   async handleSave() {
-    this.sectionForms.forEach((f) => console.log(f));
     this.sectionForms.forEach((f) => {
       const errors = DynamicFormService.updateValidity(f);
       errors.length > 0 && this.errorService.patchErrors(errors);
     });
 
-    if (await lastValueFrom(this.sectionFormsInvalid)) {
+    if (this.sectionFormsInvalid) {
       return;
     }
 

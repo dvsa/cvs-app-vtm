@@ -4,6 +4,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DateValidators } from '@forms/validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { DateComponent } from './date.component';
 
 @Component({
@@ -26,7 +27,7 @@ describe('DateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateComponent, BaseControlComponent, HostComponent],
+      declarations: [DateComponent, BaseControlComponent, HostComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });

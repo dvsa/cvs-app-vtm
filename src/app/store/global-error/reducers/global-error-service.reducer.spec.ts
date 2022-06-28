@@ -17,7 +17,7 @@ describe('Global Error Reducer', () => {
   describe('Fail action', () => {
     it.each([fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed, getByVINFailure])('should return the error state', (actionMethod) => {
       const error = 'fetching test records failed';
-      const newState: GlobalErrorState = { ...initialGlobalErrorState, globalError: [{ error: error, anchorLink: undefined }] };
+      const newState: GlobalErrorState = { ...initialGlobalErrorState, errors: [{ error: error, anchorLink: undefined }] };
       const action = actionMethod({ error });
       const state = globalErrorReducer(initialGlobalErrorState, action);
 
@@ -28,7 +28,7 @@ describe('Global Error Reducer', () => {
 
   describe('Success action', () => {
     it.each([fetchTestResultsBySystemNumber, getByVIN, fetchTestResults])('should reset the error state', (actionMethod) => {
-      const newState = { ...initialGlobalErrorState, globalError: [] };
+      const newState = { ...initialGlobalErrorState, errors: [] };
       //all props must be supplied here
       const action = actionMethod({ systemNumber: '', vin: '' });
       const state = globalErrorReducer(initialGlobalErrorState, action);

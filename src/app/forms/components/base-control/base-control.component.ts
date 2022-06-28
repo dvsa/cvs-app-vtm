@@ -9,7 +9,7 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BaseControlComponent implements ControlValueAccessor, AfterContentInit, DoCheck {
+export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
   @Input() name = '';
   @Input() label?: string;
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
@@ -29,20 +29,12 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   ngAfterContentInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
-    if (this.name === 'countryOfRegistration') {
-      console.log('countryOfRegistration', ngControl);
-    }
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
       this.control.meta.changeDetection = this.ref;
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }
-  }
-
-  ngDoCheck(): void {
-    // this.getError();
-    return;
   }
 
   get error() {

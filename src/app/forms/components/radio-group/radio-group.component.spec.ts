@@ -6,13 +6,13 @@ import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.ty
 import { RadioGroupComponent } from './radio-group.component';
 import { MultiOptions } from '../../../models/options.model';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
-  <app-radio-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-radio-group>
-</form>
-`,
+    <app-radio-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-radio-group>
+  </form> `,
   styles: []
 })
 class HostComponent {
@@ -33,7 +33,7 @@ describe('RadioGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostComponent, RadioGroupComponent, BaseControlComponent],
+      declarations: [HostComponent, RadioGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });

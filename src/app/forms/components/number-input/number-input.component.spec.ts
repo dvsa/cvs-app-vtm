@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
+import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { NumberInputComponent } from './number-input.component';
 
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
-    <app-number-input name="foo" formControlName="foo"></app-number-input>
+    <app-number-input name="foo" label="Foo" formControlName="foo"></app-number-input>
   </form> `,
   styles: []
 })
 class HostComponent {
   form = new FormGroup({
-    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, '')
+    foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '')
   });
 }
 
@@ -23,7 +25,8 @@ describe('NumberInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NumberInputComponent]
+      declarations: [HostComponent, NumberInputComponent, BaseControlComponent, FieldErrorMessageComponent],
+      imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });
 
