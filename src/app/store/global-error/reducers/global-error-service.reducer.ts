@@ -30,7 +30,7 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchTestResultsBySystemId,
     TestResultActions.fetchSelectedTestResult,
     succesMethod
-    ),
+  ),
 
   on(
     GlobalErrorActions.addError,
@@ -41,7 +41,8 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemIdFailed,
     TestResultActions.fetchSelectedTestResultFailed,
-    failureMethod)
+    failureMethod
+  )
 );
 
 function succesMethod(state: GlobalErrorState) {

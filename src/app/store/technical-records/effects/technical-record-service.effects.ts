@@ -19,25 +19,25 @@ export class TechnicalRecordServiceEffects {
           case getByVin.type:
             return this.technicalRecordService.getByVin(action.vin)
               .pipe(
-                map(records => getByVinSuccess({ records })),
+                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByVinFailure({ error: this.getErrorMessage(error, 'vin'), anchorLink })))
               );
           case getByPartialVin.type:
             return this.technicalRecordService.getByPartialVin(action.partialVin)
               .pipe(
-                map(records => getByPartialVinSuccess({ records })),
+                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByPartialVinFailure({ error: this.getErrorMessage(error, 'partialVin'), anchorLink })))
               );
           case getByVrm.type:
             return this.technicalRecordService.getByVrm(action.vrm)
               .pipe(
-                map(records => getByVrmSuccess({ records })),
+                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByVrmFailure({ error: this.getErrorMessage(error, 'vrm'), anchorLink })))
               );
           case getByTrailerId.type:
             return this.technicalRecordService.getByTrailerId(action.trailerId)
               .pipe(
-                map(records => getByTrailerIdSuccess({ records })),
+                map(vehicleTechRecords => getByVinSuccess({ vehicleTechRecords })),
                 catchError(error => of(getByTrailerIdFailure({ error: this.getErrorMessage(error, 'trailerId'), anchorLink })))
               );
         }
