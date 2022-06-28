@@ -531,7 +531,12 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         frameDescription: FrameDescriptions.FRAME_SECTION,
         euVehicleCategory: EuVehicleCategories.M1,
         departmentalVehicleMarker: true,
-        reasonForCreation: 'Brake Failure'
+        reasonForCreation: 'Brake Failure',
+        approvalType: approvalType.ECSSTA,
+        approvalTypeNumber: 'approval123',
+        ntaNumber: 'nta789',
+        variantNumber: 'variant123456',
+        variantVersionNumber: 'variantversion123456',
       }
     ]
   });

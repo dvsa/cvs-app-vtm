@@ -20,6 +20,7 @@ export function getDimensionsSection(vehicleType: VehicleTypes, axleSpacings?: A
             type: FormNodeTypes.CONTROL,
             viewType: FormNodeViewTypes.STRING
           }]: []),
+
           {
             name: 'length',
             label: 'Length (mm)',
