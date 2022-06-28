@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function getTypeApprovalSection(psv: boolean = false): FormNode {
+export function getTypeApprovalSection(includeCoifSection: boolean = false): FormNode {
   const approvalTypeSection: FormNode = {
     name: 'approvalSection',
     label: 'Type approval',
@@ -35,28 +35,27 @@ export function getTypeApprovalSection(psv: boolean = false): FormNode {
     ]
   };
 
-  const COIFSection = [
-    {
-      name: 'coifSerialNumber',
-      label: 'COIF Serial number',
-      type: FormNodeTypes.CONTROL
-    },
-    {
-      name: 'coifCertifierName',
-      label: 'COIF Certifier name',
-      type: FormNodeTypes.CONTROL
-    },
-    {
-      name: 'coifDate',
-      label: 'COIF Certifier date',
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE
-    }
-  ]
+  if (includeCoifSection) {
+    const COIFSection = [
+      {
+        name: 'coifSerialNumber',
+        label: 'COIF Serial number',
+        type: FormNodeTypes.CONTROL
+      },
+      {
+        name: 'coifCertifierName',
+        label: 'COIF Certifier name',
+        type: FormNodeTypes.CONTROL
+      },
+      {
+        name: 'coifDate',
+        label: 'COIF Certifier date',
+        type: FormNodeTypes.CONTROL,
+        viewType: FormNodeViewTypes.DATE
+      }
+    ]
 
-  if (psv) {
     approvalTypeSection.children?.splice(3, 0, ...COIFSection)
-
   }
 
   return approvalTypeSection;
