@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { DefectTpl } from '@forms/templates/general/defect.template';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { distinctUntilChanged, firstValueFrom, lastValueFrom, map, Observable, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -15,7 +17,13 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordComponent implements OnInit {
-  @ViewChild(BaseTestRecordComponent) baseTestRecordComponent?: BaseTestRecordComponent;
+  @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(c: BaseTestRecordComponent) {
+    c.dynamicFormGroupComponents?.forEach((component) => {
+      this.sectionForms.push(component.form);
+    });
+  }
+
+  private sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   defectTpl: FormNode = DefectTpl;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
@@ -26,7 +34,8 @@ export class TestRecordComponent implements OnInit {
     private testRecordsService: TestRecordsService,
     private routerService: RouterService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private errorService: GlobalErrorService
   ) {}
 
   ngOnInit() {
@@ -43,14 +52,28 @@ export class TestRecordComponent implements OnInit {
     this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  handleSave() {
-    this.baseTestRecordComponent?.dynamicFormGroupComponents?.forEach(async (component) => {
-      const { testResultId, testTypeId } = await firstValueFrom(this.routerService.routeNestedParams$);
-      const testSection = component.form.meta.name;
-      if (component && testSection) {
-        const { form } = component;
-        this.testRecordsService.updateTestResultState({ testResultId, testTypeId, section: testSection, value: form.getCleanValue(form) });
-      }
+  get sectionFormsInvalid() {
+    return of([...this.sectionForms])
+      .pipe(map((forms) => forms.map((f) => f.invalid).some((b) => b)))
+      .pipe(distinctUntilChanged());
+  }
+
+  async handleSave() {
+    this.sectionForms.forEach((f) => console.log(f));
+    this.sectionForms.forEach((f) => {
+      const errors = DynamicFormService.updateValidity(f);
+      errors.length > 0 && this.errorService.patchErrors(errors);
+    });
+
+    if (await lastValueFrom(this.sectionFormsInvalid)) {
+      return;
+    }
+
+    const { testResultId, testTypeId } = await firstValueFrom(this.routerService.routeNestedParams$);
+
+    this.sectionForms.forEach((form) => {
+      const testSection = form.meta.name;
+      this.testRecordsService.updateTestResultState({ testResultId, testTypeId, section: testSection, value: form.getCleanValue(form) });
     });
   }
 }

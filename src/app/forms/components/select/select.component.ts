@@ -1,4 +1,4 @@
-import { Component, Injector, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiOptions } from '@models/options.model';
 import { BaseControlComponent } from '../base-control/base-control.component';
@@ -17,7 +17,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 export class SelectComponent extends BaseControlComponent {
   @Input() options: MultiOptions = [];
 
-  constructor(injector: Injector) {
-    super(injector);
+  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
+    super(injector, changeDetectorRef);
   }
 }

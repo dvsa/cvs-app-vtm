@@ -1,4 +1,4 @@
-import { Component, Injector, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { MultiOption, MultiOptions } from '../../models/options.model';
@@ -17,8 +17,8 @@ import { MultiOption, MultiOptions } from '../../models/options.model';
 export class CheckboxGroupComponent extends BaseControlComponent {
   @Input() options: MultiOptions = [];
 
-  constructor(injector: Injector) {
-    super(injector);
+  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
+    super(injector, changeDetectorRef);
   }
 
   isChecked(option: string) {

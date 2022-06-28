@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -14,7 +14,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class TextAreaComponent extends BaseControlComponent {
-  constructor(injector: Injector) {
-    super(injector);
+  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
+    super(injector, changeDetectorRef);
   }
 }

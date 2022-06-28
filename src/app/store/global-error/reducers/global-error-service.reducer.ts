@@ -7,16 +7,16 @@ import * as GlobalErrorActions from '../actions/global-error.actions';
 export const STORE_GLOBAL_ERROR_KEY = 'GlobalError';
 
 export interface GlobalErrorState {
-  globalError: Array<GlobalError>;
+  errors: Array<GlobalError>;
 }
 
 export const initialGlobalErrorState: GlobalErrorState = {
-  globalError: []
+  errors: []
 };
 
 export const getGlobalErrorState = createFeatureSelector<GlobalErrorState>(STORE_GLOBAL_ERROR_KEY);
 
-export const globalErrorState = createSelector(getGlobalErrorState, (state) => state.globalError);
+export const globalErrorState = createSelector(getGlobalErrorState, (state) => state.errors);
 
 export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
@@ -26,7 +26,7 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchTestResults,
     TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,
-    (state) => ({ ...state, globalError: [] })
+    (state) => ({ ...state, errors: [] })
   ),
   on(
     GlobalErrorActions.addError,
@@ -34,7 +34,8 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,
-    (state, { error, anchorLink }) => ({ ...state, globalError: [...state.globalError, { error: error, anchorLink: anchorLink }] })
+    (state, { error, anchorLink }) => ({ ...state, errors: [...state.errors, { error: error, anchorLink: anchorLink }] })
   ),
-  on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, globalError: [...errors] }))
+  on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, errors: [...errors] })),
+  on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] }))
 );

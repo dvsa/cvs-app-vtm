@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { combineLatest, distinctUntilChanged, Observable, of, Subject, Subscription, takeWhile } from 'rxjs';
 import { DateValidators } from '../../validators/date/date.validators';
@@ -28,8 +28,8 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   public month?: number;
   public year?: number;
 
-  constructor(injector: Injector) {
-    super(injector);
+  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
+    super(injector, changeDetectorRef);
     this.day$ = this.day_.asObservable();
     this.month$ = this.month_.asObservable();
     this.year$ = this.year_.asObservable();
