@@ -29,8 +29,6 @@ export class AutocompleteComponent extends BaseControlComponent implements After
       selectElement: this.document.querySelector('#' + this.name),
       autoselect: false,
       defaultValue: '',
-      // onConfirm: (value) => this.handleConfirm(value),
-      // confirmOnBlur: false,
       showAllValues: true
     });
     window.document.querySelector(`#${this.name}`)?.addEventListener('change', (event) => this.handleChange(event));
@@ -41,18 +39,12 @@ export class AutocompleteComponent extends BaseControlComponent implements After
     this.addValidators();
   }
 
-  handleConfirm(option: any) {
-    this.value = option.label;
-    this.ref.detectChanges();
-  }
-
   handleChange(event: any) {
     const {
       target: { value }
     } = event;
-    console.log(event);
 
-    const optionValue = this.getOptionForValue(value);
+    const optionValue = this.findOptionValue(value);
 
     this.control?.patchValue(optionValue ?? '[INVALID_OPTION]');
     this.control?.markAsTouched();
@@ -67,8 +59,8 @@ export class AutocompleteComponent extends BaseControlComponent implements After
    * @param value - value to get option for
    * @returns `string | undefined`
    */
-  getOptionForValue(value: string) {
-    return value ? this.options.find((option) => option.label === value)?.value : '';
+  findOptionValue(label: string) {
+    return label ? this.options.find((option) => option.label === label)?.value : '';
   }
 
   addValidators() {

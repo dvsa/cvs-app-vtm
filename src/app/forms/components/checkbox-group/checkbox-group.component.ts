@@ -17,10 +17,6 @@ import { MultiOption, MultiOptions } from '../../models/options.model';
 export class CheckboxGroupComponent extends BaseControlComponent {
   @Input() options: MultiOptions = [];
 
-  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
-    super(injector, changeDetectorRef);
-  }
-
   isChecked(option: string) {
     const checked = this.value && (this.value as Array<string>).includes(option);
     return checked;

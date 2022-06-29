@@ -6,15 +6,29 @@ import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
 import {
+  selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
   selectedAmendedTestResultState,
   selectedTestResultState,
   selectedTestSortedAmendmentHistory,
+  selectTestResultIds,
+  selectTestResultsEntities,
+  selectTestResultsTotal,
   testResultLoadingState
 } from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
+  describe('adapter selectors', () => {
+    it('should return correct state', () => {
+      const state = { ...initialTestResultsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } };
+      expect(selectTestResultIds.projector(state)).toEqual(['1']);
+      expect(selectTestResultsEntities.projector(state)).toEqual({ ['1']: { preparerId: '2' } });
+      expect(selectAllTestResults.projector(state)).toEqual([{ preparerId: '2' }]);
+      expect(selectTestResultsTotal.projector(state)).toEqual(1);
+    });
+  });
+
   describe('selectedTestResultState', () => {
     it('should return the correct test result', () => {
       const state: TestResultsState = {

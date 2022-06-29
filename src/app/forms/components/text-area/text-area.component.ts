@@ -13,8 +13,4 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class TextAreaComponent extends BaseControlComponent {
-  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
-    super(injector, changeDetectorRef);
-  }
-}
+export class TextAreaComponent extends BaseControlComponent {}

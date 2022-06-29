@@ -16,8 +16,4 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class SelectComponent extends BaseControlComponent {
   @Input() options: MultiOptions = [];
-
-  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
-    super(injector, changeDetectorRef);
-  }
 }

@@ -22,7 +22,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   private day$: Observable<number>;
   private month$: Observable<number>;
   private year$: Observable<number>;
-  private subscriptions: Array<Subscription> = [];
+  private subscriptions: Array<Subscription | undefined> = [];
 
   public day?: number;
   public month?: number;
@@ -46,7 +46,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    this.subscriptions.forEach((s) => s && s.unsubscribe());
   }
 
   onDayChange(event: any) {
@@ -65,19 +65,17 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * subscribe to value and propagate to date segments
    */
   watchValue() {
-    return of(this.control?.value)
-      .pipe(distinctUntilChanged())
-      .subscribe((value) => {
-        if (value && typeof value === 'string') {
-          const date = new Date(value);
-          this.day = date.getDate();
-          this.day_.next(this.day);
-          this.month = date.getMonth() + 1;
-          this.month_.next(this.month);
-          this.year = date.getFullYear();
-          this.year_.next(this.year);
-        }
-      });
+    return this.control?.valueChanges.pipe(distinctUntilChanged()).subscribe((value) => {
+      if (value && typeof value === 'string') {
+        const date = new Date(value);
+        this.day = date.getDate();
+        this.day_.next(this.day);
+        this.month = date.getMonth() + 1;
+        this.month_.next(this.month);
+        this.year = date.getFullYear();
+        this.year_.next(this.year);
+      }
+    });
   }
 
   /**

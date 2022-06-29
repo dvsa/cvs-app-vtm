@@ -15,10 +15,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class ViewListItemComponent extends BaseControlComponent {
-  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
-    super(injector, changeDetectorRef);
-  }
-
   get formNodeViewTypes(): typeof FormNodeViewTypes {
     return FormNodeViewTypes;
   }

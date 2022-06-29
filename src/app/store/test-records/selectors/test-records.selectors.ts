@@ -6,36 +6,35 @@ import { testResultAdapter, testResultsFeatureState } from '../reducers/test-rec
 const { selectIds, selectEntities, selectAll, selectTotal } = testResultAdapter.getSelectors();
 
 // select the array of ids
-export const selectTestResultIds = selectIds;
+export const selectTestResultIds = createSelector(testResultsFeatureState, (state) => selectIds(state));
 
 // select the dictionary of test results entities
-export const selectTestResultsEntities = selectEntities;
+export const selectTestResultsEntities = createSelector(testResultsFeatureState, (state) => selectEntities(state));
 
 // select the array of tests result
-// export const selectAllTestResults = selectAll;
-export const selectAllTestResults = createSelector(testResultsFeatureState, (state) => {
-  return Object.values(state.entities) as TestResultModel[];
-});
+export const selectAllTestResults = createSelector(testResultsFeatureState, (state) => selectAll(state));
 
 // select the total test results count
-export const selectTestResultsTotal = selectTotal;
+export const selectTestResultsTotal = createSelector(testResultsFeatureState, (state) => selectTotal(state));
 
-export const testResultsEntities = createSelector(testResultsFeatureState, selectTestResultsEntities);
+export const selectedTestResultState = createSelector(
+  selectTestResultsEntities,
+  selectRouteNestedParams,
+  (entities, { testResultId, testTypeId }) => {
+    const testResult = entities[testResultId];
+    if (!testResult) {
+      return undefined;
+    }
 
-export const selectedTestResultState = createSelector(testResultsEntities, selectRouteNestedParams, (entities, { testResultId, testTypeId }) => {
-  const testResult = entities[testResultId];
-  if (!testResult) {
-    return undefined;
+    const testType = testResult.testTypes.find((testType) => testType.testTypeId === testTypeId);
+
+    if (!testType) {
+      return undefined;
+    }
+
+    return { ...testResult, testTypes: [testType] };
   }
-
-  const testType = testResult.testTypes.find((testType) => testType.testTypeId === testTypeId);
-
-  if (!testType) {
-    return undefined;
-  }
-
-  return { ...testResult, testTypes: [testType] };
-});
+);
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) => {
