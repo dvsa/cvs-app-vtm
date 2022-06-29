@@ -207,8 +207,6 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker: boolean;
-  dimensions?: Dimensions;
-  frontAxleToRearAxle?: number;
   approvalType?: approvalType;
   approvalTypeNumber?: string;
   ntaNumber?: string;
@@ -244,6 +242,27 @@ export interface TechRecordModel {
   // Train weights
   maxTrainGbWeight?: number;
   trainDesignWeight?: number;
+
+  // Dimensions
+  dimensions?: Dimensions;
+  frontAxleToRearAxle?: number;
+  rearAxleToRearTrl?: number;
+
+  // Front of vehicle to 5th wheel coupling
+  frontAxleTo5thWheelCouplingMin?: number;
+  frontAxleTo5thWheelCouplingMax?: number;
+
+  // Front axle to 5th wheel
+  frontAxleTo5thWheelMin?: number;
+  frontAxleTo5thWheelMax?: number;
+
+  // Coupling center to rear axle
+  couplingCenterToRearAxleMin?: number;
+  couplingCenterToRearAxleMax?: number;
+
+  // Coupling center to rear trailer
+  couplingCenterToRearTrlMin?: number;
+  couplingCenterToRearTrlMax?: number;
 }
 
 export interface ApplicantDetails {
@@ -261,6 +280,12 @@ export interface Dimensions {
   height: number;
   length: number;
   width: number;
+  axleSpacing?: AxleSpacing[]
+}
+
+export interface AxleSpacing {
+  axles: string;
+  value: number;
 }
 
 export interface Brakes {
