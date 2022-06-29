@@ -23,6 +23,7 @@ import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
 import { getBodyTemplate } from '@forms/templates/general/body.template';
+import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 
 @Component({
@@ -92,6 +93,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.dimensionsTemplate = getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.firstMinMaxTemplate = getDimensionsMinMaxSection('Front of vehicle to 5th wheel coupling', 'frontAxleTo5thWheelCouplingMin', 'frontAxleTo5thWheelCouplingMax');
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
+        this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
         break;
       }
@@ -106,10 +108,8 @@ export class TechRecordSummaryComponent implements OnInit {
         this.dimensionsTemplate = getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.firstMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax');
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
+        this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
-        break;
-      }
-      default: {
         break;
       }
     }
