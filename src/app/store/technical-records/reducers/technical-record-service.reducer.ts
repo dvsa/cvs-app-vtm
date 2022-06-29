@@ -1,6 +1,6 @@
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';
-import { getByPartialVin, getByPartialVinFailure, getByPartialVinSuccess, getByVin, getByVinFailure, getByVinSuccess, getByVrm, getByVrmFailure, getByVrmSuccess } from '../actions/technical-record-service.actions';
+import { getByPartialVin, getByPartialVinFailure, getByPartialVinSuccess, getByTrailerId, getByTrailerIdFailure, getByTrailerIdSuccess, getByVin, getByVinFailure, getByVinSuccess, getByVrm, getByVrmFailure, getByVrmSuccess } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
@@ -29,7 +29,11 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(getByVrm, defaultArgs),
   on(getByVrmSuccess, successArgs),
-  on(getByVrmFailure, failureArgs)
+  on(getByVrmFailure, failureArgs),
+
+  on(getByTrailerId, defaultArgs),
+  on(getByTrailerIdSuccess, successArgs),
+  on(getByTrailerIdFailure, failureArgs)
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

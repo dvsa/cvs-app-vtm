@@ -61,6 +61,24 @@ describe('SearchComponent', () => {
         expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { partialVin: expectedPartialVin } });
       });
 
+      it('should navigate to vrm search result', () => {
+        const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+        const expectedVrm = 'someVrm';
+        component.navigateSearch(expectedVrm, SEARCH_TYPES.VRM);
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { vrm: expectedVrm } });
+      });
+
+      it('should navigate to trailerId search result', () => {
+        const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+        const expectedTrailerId = 'someTrailerId';
+        component.navigateSearch(expectedTrailerId, SEARCH_TYPES.TRAILER_ID);
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { trailerId: expectedTrailerId } });
+      });
+
       it('should add error', () => {
         const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
 

@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVin, getByPartialVin, selectVehicleTechnicalRecordsByVin, vehicleTechRecords, getByVrm } from '@store/technical-records';
-import { map, Observable, Subject } from 'rxjs';
+import { getByVin, getByPartialVin, selectVehicleTechnicalRecordsByVin, vehicleTechRecords, getByVrm, getByTrailerId } from '@store/technical-records';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
   VIN = 'vin',
   PARTIAL_VIN = 'partialVin',
-  VRM = 'vrm'
+  VRM = 'vrm',
+  TRAILER_ID = 'trailerId'
 }
 
 @Injectable({ providedIn: 'root' })
@@ -29,8 +30,12 @@ export class TechnicalRecordService {
     return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
   }
 
-  private getVehicleTechRecordModels(identifier: string, type: SEARCH_TYPES) {
-    const queryStr = `${identifier}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
+  getByTrailerId(id: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
+  }
+
+  private getVehicleTechRecordModels(id: string, type: SEARCH_TYPES) {
+    const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
     const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
 
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
@@ -44,16 +49,19 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectVehicleTechnicalRecordsByVin));
   }
 
-  searchBy(type: SEARCH_TYPES, searchTerm: string) {
+  searchBy(type: SEARCH_TYPES, term: string) {
     switch (type) {
       case SEARCH_TYPES.VIN:
-        this.store.dispatch(getByVin({ [type]: searchTerm }));
+        this.store.dispatch(getByVin({ [type]: term }));
         break;
       case SEARCH_TYPES.PARTIAL_VIN:
-        this.store.dispatch(getByPartialVin({ [type]: searchTerm }));
+        this.store.dispatch(getByPartialVin({ [type]: term }));
         break;
       case SEARCH_TYPES.VRM:
-        this.store.dispatch(getByVrm({ [type]: searchTerm }));
+        this.store.dispatch(getByVrm({ [type]: term }));
+        break;
+      case SEARCH_TYPES.TRAILER_ID:
+        this.store.dispatch(getByTrailerId({ [type]: term }));
         break;
     }
   }
@@ -67,7 +75,8 @@ export class TechnicalRecordService {
     return this.store
       .pipe(
         select(selectRouteNestedParams),
-        map((params) => {
+        takeUntil(destroy$),
+        map(params => {
           const createdAt = params['techCreatedAt'] ?? '';
           const viewableTechRecord = vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt);
           return viewableTechRecord ?? this.filterTechRecordByStatusCode(vehicleRecord)
