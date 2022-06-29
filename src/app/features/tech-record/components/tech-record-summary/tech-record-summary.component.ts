@@ -11,8 +11,6 @@ import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
-import { PsvDimensionsSection } from '@forms/templates/psv/psv-dimensions.template';
-import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvGrossVehicleWeight } from '@forms/templates/psv/psv-gross-vehicle-weights.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
@@ -20,11 +18,14 @@ import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecord } from '@forms/templates/trl/trl-tech-record.template';
 import { TrlAxleWeights } from '@forms/templates/trl/trl-axle-weights.template';
 import { TrlGrossVehicleWeight } from '@forms/templates/trl/trl-gross-vehicle-weights.template';
-import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Brakes, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
+import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
 import { getBodyTemplate } from '@forms/templates/general/body.template';
 import { TrlPurchasers } from '@forms/templates/trl/trl-purcheser.template';
+import { NotesTemplate } from '@forms/templates/general/notes.template';
+import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -44,7 +45,6 @@ export class TechRecordSummaryComponent implements OnInit {
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
   bodyTemplate?: FormNode;
-  tyreTemplate?: FormNode;
   grossVehicleWeightTemplate?: FormNode;
   grossTrainWeightTemplate?: FormNode;
   maxTrainWeightTemplate?: FormNode;
@@ -53,6 +53,9 @@ export class TechRecordSummaryComponent implements OnInit {
   tyresTemplate?: FormNode;
   brakesTemplate?: FormNode;
   purchasersTemplate?: FormNode;
+  hgvAndTrlDimensionsTemplate?: FormNode;
+  firstMinMaxTemplate?: FormNode;
+  secondMinMaxTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -69,12 +72,12 @@ export class TechRecordSummaryComponent implements OnInit {
         this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
-        this.dimensionsTemplate = PsvDimensionsSection;
+        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.applicantDetailsTemplate = PsvApplicantDetails;
-        this.documentsTemplate = PsvDocuments;
+        this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
         this.bodyTemplate = getBodyTemplate(true);
-        this.tyreTemplate = getTyresSection(true);
+        this.tyresTemplate = getTyresSection(true);
         this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
         this.trainWeightTemplate = PsvTrainWeight;
         this.axleWeightsTemplate = PsvAxleWeights;
@@ -89,6 +92,11 @@ export class TechRecordSummaryComponent implements OnInit {
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
         this.tyresTemplate = getTyresSection();
+        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
+        this.firstMinMaxTemplate = getDimensionsMinMaxSection('Front of vehicle to 5th wheel coupling', 'frontAxleTo5thWheelCouplingMin', 'frontAxleTo5thWheelCouplingMax');
+        this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
+        this.notesTemplate = NotesTemplate;
+        this.documentsTemplate = DocumentsTemplate;
         break;
       }
       case 'trl': {
@@ -100,6 +108,11 @@ export class TechRecordSummaryComponent implements OnInit {
         this.tyresTemplate = getTyresSection();
         this.brakesTemplate = BrakesTemplate;
         this.purchasersTemplate = TrlPurchasers;
+        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
+        this.firstMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax');
+        this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
+        this.notesTemplate = NotesTemplate;
+        this.documentsTemplate = DocumentsTemplate;
         break;
       }
     }

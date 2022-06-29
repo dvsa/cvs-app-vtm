@@ -471,6 +471,20 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         ntaNumber: 'nta789',
         variantNumber: 'variant123456',
         variantVersionNumber: 'variantversion123456',
+        dimensions: {
+          length: 1,
+          width: 2,
+          height: 6,
+          axleSpacing: [{
+            axles: '1-2',
+            value: 4
+          }]
+        },
+        frontAxleToRearAxle: 3,
+        frontAxleTo5thWheelCouplingMin: 5,
+        frontAxleTo5thWheelCouplingMax: 6,
+        frontAxleTo5thWheelMin: 7,
+        frontAxleTo5thWheelMax: 8,
       }
     ]
   });
