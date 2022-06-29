@@ -69,7 +69,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
-        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord?.dimensions?.axleSpacing);
+        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = PsvDocuments;
         this.notesTemplate = PsvNotes;
@@ -88,7 +88,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
         this.tyresTemplate = getTyresSection();
-        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord?.dimensions?.axleSpacing);
+        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.firstMinMaxTemplate = getDimensionsMinMaxSection('Front of vehicle to 5th wheel coupling', 'frontAxleTo5thWheelCouplingMin', 'frontAxleTo5thWheelCouplingMax');
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
         break;
@@ -100,7 +100,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
         this.tyresTemplate = getTyresSection();
         this.brakesTemplate = BrakesTemplate;
-        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord?.dimensions?.axleSpacing);
+        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.firstMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax');
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
         break;

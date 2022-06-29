@@ -1,7 +1,7 @@
 import { AxleSpacing, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function getDimensionsSection(vehicleType: VehicleTypes, axleSpacings?: AxleSpacing[]): FormNode {
+export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: number, axleSpacings?: AxleSpacing[]): FormNode {
   const section: FormNode = {
     name: 'dimensionsSection',
     label: 'Dimensions',
@@ -66,11 +66,12 @@ export function getDimensionsSection(vehicleType: VehicleTypes, axleSpacings?: A
           name: 'dimensions',
           value: '',
           type: FormNodeTypes.GROUP,
-          children: generateAxleToAxleNodes(axleSpacings)
+          children: generateAxleToAxleNodes(noOfAxles, axleSpacings)
         }
       ]
     })
   }
+
   return section;
 }
 
@@ -99,8 +100,24 @@ export function getDimensionsMinMaxSection(heading: string, minField: string, ma
   };
 }
 
-function generateAxleToAxleNodes(axles?: AxleSpacing[]): FormNode[] {
-  return !axles ? [] : axles.map(axle => {
+function generateAxleToAxleNodes(noOfAxles: number, axles?: AxleSpacing[]): FormNode[] {
+  if (!axles) {
+    const nodes: FormNode[] = [];
+
+    for (let i = 0; i < noOfAxles; i++) {
+      nodes.push({
+        name: 'axle' + i,
+        label: `Axle ${i} to axle ${i + 1} (mm)`,
+        value: '',
+        type: FormNodeTypes.CONTROL,
+        viewType: FormNodeViewTypes.STRING
+      });
+    }
+
+    return nodes;
+  }
+
+  return axles.map(axle => {
     const values = axle.axles.split('-');
 
     if (values.length === 1) {
