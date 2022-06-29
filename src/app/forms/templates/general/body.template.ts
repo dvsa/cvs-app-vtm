@@ -71,6 +71,5 @@ export function getBodyTemplate(isPsv: boolean = false): FormNode {
         type: FormNodeTypes.CONTROL,
       }
   )
-  console.log(bodyFormControl)
   return bodyFormControl;
 }
