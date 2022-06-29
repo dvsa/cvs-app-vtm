@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export const PsvDocuments: FormNode = {
+export const DocumentsTemplate: FormNode = {
   name: 'documentsSection',
   label: 'Documents',
   type: FormNodeTypes.GROUP,
@@ -8,7 +8,6 @@ export const PsvDocuments: FormNode = {
   children: [
     {
       name: 'microfilm',
-      label: 'Documents',
       type: FormNodeTypes.GROUP,
       children: [
         {
@@ -23,7 +22,7 @@ export const PsvDocuments: FormNode = {
         },
         {
           name: 'microfilmSerialNumber',
-          label: 'Microfilm Serial Number',
+          label: 'Microfilm serial number',
           type: FormNodeTypes.CONTROL
         }
       ]

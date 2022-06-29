@@ -11,7 +11,6 @@ import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
-import { PsvDocuments } from '@forms/templates/psv/psv-document.template';
 import { PsvGrossVehicleWeight } from '@forms/templates/psv/psv-gross-vehicle-weights.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
@@ -25,6 +24,7 @@ import { getTypeApprovalSection } from '@forms/templates/general/approval-type.t
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
 import { getBodyTemplate } from '@forms/templates/general/body.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
+import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -72,7 +72,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
         this.dimensionsTemplate = getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
         this.applicantDetailsTemplate = PsvApplicantDetails;
-        this.documentsTemplate = PsvDocuments;
+        this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
         this.bodyTemplate = getBodyTemplate(true);
         this.tyresTemplate = getTyresSection(true);
@@ -94,6 +94,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.firstMinMaxTemplate = getDimensionsMinMaxSection('Front of vehicle to 5th wheel coupling', 'frontAxleTo5thWheelCouplingMin', 'frontAxleTo5thWheelCouplingMax');
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
         this.notesTemplate = NotesTemplate;
+        this.documentsTemplate = DocumentsTemplate;
         break;
       }
       case 'trl': {
@@ -108,6 +109,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.firstMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax');
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
         this.notesTemplate = NotesTemplate;
+        this.documentsTemplate = DocumentsTemplate;
         break;
       }
     }
