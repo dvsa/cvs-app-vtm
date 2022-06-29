@@ -528,6 +528,18 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         ntaNumber: 'nta789',
         variantNumber: 'variant123456',
         variantVersionNumber: 'variantversion123456',
+        purchaserDetails: {
+          name: 'purchaser name',
+          address1: '1 Purchaser way',
+          address2: '',
+          postTown: 'Town',
+          postCode: 'PP1 1PP',
+          telephonenumber: '01234567890',
+          purchaserNotes: 'Notes',
+          address3: 'Country',
+          emailAddress: 'purchaser@purchaser.com',
+          faxNumber: ''
+        }
       }
     ]
   });

@@ -245,7 +245,7 @@ export interface TechRecordModel {
   };
   functionCode?: string;
   conversionRefNo?: string;
-  purchaserDetails: Purchaser;
+  purchaserDetails?: Purchaser;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
