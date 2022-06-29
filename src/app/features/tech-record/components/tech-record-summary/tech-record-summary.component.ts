@@ -24,6 +24,7 @@ import { TrlGrossVehicleWeight } from '@forms/templates/trl/trl-gross-vehicle-we
 import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
+import { TrlPurchasers } from '@forms/templates/trl/trl-purcheser.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -51,6 +52,7 @@ export class TechRecordSummaryComponent implements OnInit {
   axleWeightsTemplate?: FormNode;
   tyresTemplate?: FormNode;
   brakesTemplate?: FormNode;
+  purchasersTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -95,6 +97,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeight;
         this.tyresTemplate = getTyresSection();
         this.brakesTemplate = BrakesTemplate;
+        this.purchasersTemplate = TrlPurchasers;
         break;
       }
     }

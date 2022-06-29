@@ -171,6 +171,19 @@ export interface AxleWeights {
   designWeight: number;
 }
 
+export interface Purchaser {
+  name: string;
+  address1: string;
+  address2: string;
+  postTown: string;
+  address3: string;
+  postCode: string;
+  telephonenumber: string;
+  emailAddress: string;
+  faxNumber: string;
+  purchaserNotes: string;
+}
+
 export interface TechRecordModel {
   createdAt: Date;
   createdByName: string;
@@ -232,6 +245,7 @@ export interface TechRecordModel {
   };
   functionCode?: string;
   conversionRefNo?: string;
+  purchaserDetails: Purchaser;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
