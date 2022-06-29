@@ -124,5 +124,35 @@ describe('TechnicalRecordService', () => {
         req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
       });
     });
+
+    describe('getByTrailerId', () => {
+      it('should get an array of matching results', () => {
+        const params = { term: 'A_TRAILER_ID', type: 'trailerId' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+        service.getByTrailerId(params.term)
+          .subscribe(response => expect(response).toEqual(mockData));
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${params.term}/tech-records?status=all&metadata=true&searchCriteria=${params.type}`);
+        expect(req.request.method).toEqual('GET');
+
+        // Provide each request with a mock response
+        req.flush(mockData);
+      });
+
+      it('should handle errors', () => {
+        const params = { term: 'A_TRAILER_ID', type: 'trailerId' };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+        service.getByTrailerId(params.term)
+          .subscribe(response => expect(response).toEqual(mockData));
+
+        // Check for correct requests: should have made one request to search from expected URL
+        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${params.term}/tech-records?status=all&metadata=true&searchCriteria=${params.type}`);
+        expect(req.request.method).toEqual('GET');
+
+        // Respond with mock error
+        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
+      });
+    });
   });
 });
