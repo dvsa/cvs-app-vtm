@@ -104,7 +104,7 @@ function generateAxleToAxleNodes(noOfAxles: number, axles?: AxleSpacing[]): Form
   if (!axles) {
     const nodes: FormNode[] = [];
 
-    for (let i = 0; i < noOfAxles; i++) {
+    for (let i = 1; i < noOfAxles; i++) {
       nodes.push({
         name: 'axle' + i,
         label: `Axle ${i} to axle ${i + 1} (mm)`,
