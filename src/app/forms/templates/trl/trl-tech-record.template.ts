@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export const TrlTechRecord: FormNode = {
+export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
   type: FormNodeTypes.GROUP,
   label: 'Vehicle Summary',
