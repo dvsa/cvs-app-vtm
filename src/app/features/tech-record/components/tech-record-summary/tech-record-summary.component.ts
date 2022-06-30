@@ -25,6 +25,7 @@ import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templat
 import { getBodyTemplate } from '@forms/templates/general/body.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
+import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
 
 @Component({
@@ -55,6 +56,7 @@ export class TechRecordSummaryComponent implements OnInit {
   hgvAndTrlDimensionsTemplate?: FormNode;
   firstMinMaxTemplate?: FormNode;
   secondMinMaxTemplate?: FormNode;
+  trlAuthIntoServiceTemplate?: FormNode;
   trlManufacturerTemplate?: FormNode;
 
   ngOnInit(): void {
@@ -112,6 +114,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
         this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
+        this.trlAuthIntoServiceTemplate = TrlAuthIntoServiceTemplate;
         this.trlManufacturerTemplate = TrlManufacturerTemplate;
         break;
       }
