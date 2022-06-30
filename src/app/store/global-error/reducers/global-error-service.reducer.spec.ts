@@ -1,6 +1,7 @@
 import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { getByVin, getByVinFailure } from '@store/technical-records';
 import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
+import { patchErrors, setErrors } from '../actions/global-error.actions';
 
 describe('Global Error Reducer', () => {
   describe('unknown action', () => {
@@ -32,6 +33,34 @@ describe('Global Error Reducer', () => {
       //all props must be supplied here
       const action = actionMethod({ systemNumber: '', vin: '' });
       const state = globalErrorReducer(initialGlobalErrorState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('setErrors', () => {
+    it('should replace existing errors with new ones', () => {
+      const newState = { ...initialGlobalErrorState, errors: [{ error: 'some error', anchorLink: '' }] };
+      const action = setErrors({ errors: [{ error: 'some error', anchorLink: '' }] });
+      const state = globalErrorReducer({ ...initialGlobalErrorState, errors: [{ error: 'old error', anchorLink: '' }] }, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+
+    it('should add new errors after existing ones', () => {
+      const newState = {
+        ...initialGlobalErrorState,
+        errors: [
+          { error: 'old error', anchorLink: '' },
+          { error: 'new error', anchorLink: '' }
+        ]
+      };
+      const action = patchErrors({
+        errors: [{ error: 'new error', anchorLink: '' }]
+      });
+      const state = globalErrorReducer({ ...initialGlobalErrorState, errors: [{ error: 'old error', anchorLink: '' }] }, action);
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);

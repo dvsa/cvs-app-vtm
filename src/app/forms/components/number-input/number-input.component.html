@@ -3,7 +3,7 @@
     <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
   </h1>
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-  <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
+  <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
   <input
     class="govuk-input"
     id="{{ name }}"

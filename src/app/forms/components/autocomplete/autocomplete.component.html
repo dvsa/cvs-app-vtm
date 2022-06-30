@@ -1,7 +1,7 @@
 <div>
   <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m">{{ label }}</label>
   <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
-  <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
+  <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
   <select [id]="name">
     <option value=""></option>
