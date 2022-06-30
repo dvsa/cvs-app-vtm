@@ -1,29 +1,19 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { environment } from '../../../environments/environment';
-import { mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
-import { TechnicalRecordService } from './technical-record.service';
+import { ReferenceDataService } from './reference-data.service';
+import { testCases } from '@store/reference-data/reference-data.test-cases';
 
 describe('TechnicalRecordService', () => {
-  let service: TechnicalRecordService;
-  let httpTestingController: HttpTestingController;
+  let service: ReferenceDataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
+      imports: [],
+      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
     });
 
-    httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(TechnicalRecordService);
-  });
-
-  afterEach(() => {
-    // After every test, assert that there are no more pending requests.
-    httpTestingController.verify();
+    service = TestBed.inject(ReferenceDataService);
   });
 
   it('should be created', () => {
@@ -31,36 +21,67 @@ describe('TechnicalRecordService', () => {
   });
 
   describe('API', () => {
-    describe('getByVIN', () => {
-      it('should get an array of matching results', () => {
-        const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByVIN(searchParams.searchTerm).subscribe((response) => {
-          expect(response).toEqual(mockData);
+    describe('resourceTypes', () => {
+      it.each(testCases)('should return all data for a given resourceType', (value, done: any) => {
+        service.fetchReferenceData(value.resourceType).subscribe((response) => {
+          expect(response).toEqual(value.payload);
+          done();
         });
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`);
-        expect(req.request.method).toEqual('GET');
-
-        // Provide each request with a mock response
-        req.flush(mockData);
       });
+    });
 
-      it('should handle errors', () => {
-        const searchParams = { searchTerm: 'A_VIN', type: 'vin' };
-        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.getByVIN(searchParams.searchTerm).subscribe((response) => {
-          expect(response).toEqual(mockData);
-        });
-
-        // Check for correct requests: should have made one request to search from expected URL
-        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/${searchParams.searchTerm}/tech-records?status=all&metadata=true&searchCriteria=vin`);
-        expect(req.request.method).toEqual('GET');
-
-        // Respond with mock error
-        req.flush('Deliberate 500 error', { status: 500, statusText: 'Server Error' });
+    it('should thrown an error if resource type is not given', (done) => {
+      service.fetchReferenceData(undefined as any).subscribe({
+        error: (e) => {
+          expect(e.message).toBe('Reference data resourceType is required');
+          done();
+        }
       });
+    });
+
+    it('should thrown an error if resource type is not valid', (done) => {
+      service.fetchReferenceData('NOT_SUPPORTED' as any).subscribe({
+        error: (e) => {
+          expect(e.message).toBe('Unknown reference data resourceType');
+          done();
+        }
+      });
+    });
+  });
+
+  describe('resourceKeys', () => {
+    it.each(testCases)('should return one result for a given resourceType and resourceKey', (value, done: any) => {
+      const { resourceType, resourceKey, payload } = value;
+      const expectedResult = payload.find((p) => p.resourceKey === resourceKey);
+
+      service.fetchReferenceData(resourceType, resourceKey).subscribe((response) => {
+        expect(response).toEqual(expectedResult);
+        done();
+      });
+    });
+
+    it.each(testCases)('should thrown an error if resource key is not valid', (value, done: any) => {
+      service.fetchReferenceData(value.resourceType, 'NOT_FOUND').subscribe({
+        error: (e) => {
+          expect(e.message).toBe('Reference data with specified resource key not found (404)');
+          done();
+        }
+      });
+    });
+  });
+
+  it.each(testCases)('should get all of the reference data', (value) => {
+    service.getAll$(value.resourceType).subscribe((response) => {
+      expect(response).toEqual(value.payload);
+    });
+  });
+
+  it.each(testCases)('should get a specific reference data record', (value) => {
+    const { resourceType, resourceKey, payload } = value;
+    const expectedResult = payload.find((p) => p.resourceKey === resourceKey);
+
+    service.getByKey$(resourceType, resourceKey).subscribe((response) => {
+      expect(response).toEqual(expectedResult);
     });
   });
 });

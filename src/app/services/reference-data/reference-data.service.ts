@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
-import { fetchReferenceData, ReferenceDataState, selectAllCountriesOfRegistration } from '@store/reference-data';
+import { fetchReferenceData, ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
@@ -11,17 +11,39 @@ import { Observable, of, throwError } from 'rxjs';
 export class ReferenceDataService {
   constructor(private store: Store<ReferenceDataState>) {}
 
-  fetchReferenceDataByType(resourceType: ReferenceDataResourceType): Observable<Array<ReferenceDataModelBase>> {
+  // fetchReferenceDataByType(resourceType: ReferenceDataResourceType): Observable<Array<ReferenceDataModelBase>> {
+  //   if (!resourceType) {
+  //     return throwError(() => new Error('Reference data resourceType is required'));
+  //   }
+
+  //   // ** Until the reference data API is provisioned, return an in-memory collection ** //
+  //   switch (resourceType) {
+  //     case ReferenceDataResourceType.CountryOfRegistration:
+  //       return of(mockCountriesOfRegistration);
+  //     default:
+  //       return throwError(() => new Error('Unknown reference data resourceType'));
+  //   }
+  // }
+
+  fetchReferenceData(resourceType: ReferenceDataResourceType, resourceKey?: string): Observable<Array<ReferenceDataModelBase> | ReferenceDataModelBase> {
     if (!resourceType) {
       return throwError(() => new Error('Reference data resourceType is required'));
     }
 
-    // ** Until the reference data service is provisioned, return an in-memory collection ** //
+    // ** Until the reference data API is provisioned, return an in-memory item ** //
     switch (resourceType) {
       case ReferenceDataResourceType.CountryOfRegistration:
+        if (resourceKey) {
+          const result = mockCountriesOfRegistration.find((c) => c.resourceKey === resourceKey);
+          if (result) {
+            return of(result);
+          } else {
+            return throwError(() => new Error('Reference data with specified resource key not found (404)'));
+          }
+        }
         return of(mockCountriesOfRegistration);
       default:
-        return throwError(() => new Error('Unknown feference data resourceType'));
+        return throwError(() => new Error('Unknown reference data resourceType'));
     }
   }
 
@@ -29,7 +51,11 @@ export class ReferenceDataService {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
 
-  get countriesOfRegistration$() {
-    return this.store.pipe(select(selectAllCountriesOfRegistration));
-  }
+  getAll$ = (resourceType: ReferenceDataResourceType) => {
+    return this.store.pipe(select(selectAllReferenceDataByResourceType(resourceType)));
+  };
+
+  getByKey$ = (resourceType: ReferenceDataResourceType, resourceKey: string) => {
+    return this.store.pipe(select(selectReferenceDataByResourceKey(resourceType, resourceKey)));
+  };
 }

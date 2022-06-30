@@ -1,7 +1,7 @@
 import { CountryOfRegistration, ReferenceDataModelBase } from '@models/reference-data.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { fetchReferenceData, fetchReferenceDataFailed, fetchReferenceDataSuccess } from '../actions/reference-data.actions';
+import { fetchReferenceData, fetchReferenceDataByKey, fetchReferenceDataFailed, fetchReferenceDataSuccess, fetchReferenceDataByKeySuccess, fetchReferenceDataByKeyFailed } from '../actions/reference-data.actions';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
 const selectResourceKey = (a: ReferenceDataModelBase): string => {
@@ -18,7 +18,7 @@ export const countriesOfRegistrationEntityAdapter: EntityAdapter<CountryOfRegist
 
 export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
 
-const initialReferenceDataState: ReferenceDataState = {
+export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
   COUNTRY_OF_REGISTRATION: initialCountriesOfRegistrationState
@@ -31,7 +31,14 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload } = action;
     return { ...state, [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).setAll(payload, state[resourceType]), loading: false };
   }),
-  on(fetchReferenceDataFailed, (state, action) => ({ ...state, error: action.error, loading: false }))
+  on(fetchReferenceDataFailed, (state, action) => ({ ...state, loading: false })),
+
+  on(fetchReferenceDataByKey, (state) => ({ ...state, loading: true })),
+  on(fetchReferenceDataByKeySuccess, (state, action) => {
+    const { resourceType, payload } = action;
+    return { ...state, [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).upsertOne(payload, state[resourceType]), loading: false };
+  }),
+  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, loading: false }))
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);

@@ -1,11 +1,20 @@
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { createSelector } from '@ngrx/store';
-import { countriesOfRegistrationEntityAdapter, referenceDataFeatureState } from '../reducers/reference-data.reducer';
+import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
-const { selectAll } = countriesOfRegistrationEntityAdapter.getSelectors();
+const resourceTypeSelector = (resourceType: ReferenceDataResourceType) =>
+  createSelector(referenceDataFeatureState, (state) => {
+    return state[resourceType];
+  });
 
-// select the array of all CountriesOfRegistration
-// export const selectAllCountriesOfRegistration = selectAll;
+export const selectAllReferenceDataByResourceType = (resourceType: ReferenceDataResourceType) =>
+  createSelector(resourceTypeSelector(resourceType), (state) => {
+    return resourceTypeAdapters[resourceType].getSelectors().selectAll(state);
+  });
 
-export const selectAllCountriesOfRegistration = createSelector(referenceDataFeatureState, (state) => {
-  return Object.values(state.COUNTRY_OF_REGISTRATION);
-});
+export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string) =>
+  createSelector(referenceDataFeatureState, (state) => {
+    return state[resourceType].entities[resourceKey];
+  });
+
+export const referenceDataLoadingState = createSelector(referenceDataFeatureState, (state) => state.loading);
