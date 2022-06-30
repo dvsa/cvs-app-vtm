@@ -12,8 +12,8 @@
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
-    *ngIf="brakeTemplate"
-    [template]="brakeTemplate"
+    *ngIf="psvBrakeTemplate"
+    [template]="psvBrakeTemplate"
     [data]="currentBrakeRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
@@ -27,12 +27,6 @@
     *ngIf="brakeTemplateWheelsHalfLocked"
     [template]="brakeTemplateWheelsHalfLocked"
     [data]="currentBrakeRecord"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="dimensionsTemplate"
-    [template]="dimensionsTemplate"
-    [data]="vehicleTechRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
@@ -56,6 +50,66 @@
   <app-dynamic-form-group
     *ngIf="bodyTemplate"
     [template]="bodyTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="grossVehicleWeightTemplate"
+    [template]="grossVehicleWeightTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="trainWeightTemplate"
+    [template]="trainWeightTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="grossTrainWeightTemplate"
+    [template]="grossTrainWeightTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="maxTrainWeightTemplate"
+    [template]="maxTrainWeightTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="axleWeightsTemplate"
+    [template]="axleWeightsTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="tyresTemplate"
+    [template]="tyresTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="brakesTemplate"
+    [template]="brakesTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="dimensionsTemplate"
+    [template]="dimensionsTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="firstMinMaxTemplate"
+    [template]="firstMinMaxTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="secondMinMaxTemplate"
+    [template]="secondMinMaxTemplate"
     [data]="vehicleTechRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>

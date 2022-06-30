@@ -17,7 +17,8 @@ export enum FormNodeViewTypes {
   TIME = 'time',
   HIDDEN = 'hidden',
   VEHICLETYPE = 'vehicleType',
-  SUBHEADING = 'subHeading'
+  SUBHEADING = 'subHeading',
+  FULLWIDTH = 'fullWidth'
 }
 
 export enum FormNodeTypes {
@@ -57,12 +58,18 @@ export interface FormNode {
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
+  subHeadingLink?: SubHeadingLink;
 }
 
 export interface FormNodeCombinationOptions {
   leftComponentName: string;
   rightComponentName: string;
   separator: string;
+}
+
+export interface SubHeadingLink {
+  label: string;
+  url: string;
 }
 
 export interface CustomControl extends FormControl {
