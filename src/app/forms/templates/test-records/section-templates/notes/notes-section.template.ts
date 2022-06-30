@@ -1,4 +1,3 @@
-import { Validators } from '@angular/forms';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const NotesSection: FormNode = {
@@ -12,7 +11,7 @@ export const NotesSection: FormNode = {
       label: 'Additional Notes',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: 'required' }, { name: 'maxLength', args: 100 }]
+      validators: [{ name: 'maxLength', args: 500 }]
     }
   ]
 };

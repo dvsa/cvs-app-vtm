@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 

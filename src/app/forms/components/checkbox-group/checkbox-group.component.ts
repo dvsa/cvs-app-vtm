@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseControlComponent } from '../base-control/base-control.component';
 import { MultiOption, MultiOptions } from '../../models/options.model';
+import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
   selector: 'app-checkbox-group',
