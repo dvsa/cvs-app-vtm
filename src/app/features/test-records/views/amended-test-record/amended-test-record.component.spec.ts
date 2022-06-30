@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -14,7 +15,7 @@ describe('AmendedTestRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AmendedTestRecordComponent],
-      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule],
+      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });

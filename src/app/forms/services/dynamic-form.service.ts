@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { CustomValidators } from '@forms/validators/custom-validators';
 import { FormNode, CustomFormGroup, CustomFormControl, CustomFormArray, FormNodeTypes } from './dynamic-form.types';
 
 @Injectable({
@@ -8,17 +9,22 @@ import { FormNode, CustomFormGroup, CustomFormControl, CustomFormArray, FormNode
 export class DynamicFormService {
   constructor() {}
 
-  validatorMap: { [key: string]: ValidatorFn } = {
-    required: Validators.required
+  validatorMap: { [key: string]: any } = {
+    required: () => Validators.required,
+    hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
+    pattern: (args: string) => Validators.pattern(args),
+    customPattern: (args: any) => CustomValidators.customPattern([...args]),
+    numeric: () => CustomValidators.numeric()
   };
 
-  createForm(f: FormNode, d: any = {}): CustomFormGroup | CustomFormArray {
+  createForm(f: FormNode, d?: any): CustomFormGroup | CustomFormArray {
     if (!f) {
       return new CustomFormGroup(f, {});
     }
 
     const formType = f.type;
     let form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === formType ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
+    d = d ?? (FormNodeTypes.ARRAY === formType ? [] : {});
 
     f?.children?.forEach((child) => {
       const { name, type, value, validators, disabled } = child;
@@ -43,6 +49,10 @@ export class DynamicFormService {
       }
     });
 
+    if (d) {
+      form.patchValue(d);
+    }
+
     return form;
   }
 
@@ -65,9 +75,9 @@ export class DynamicFormService {
     return controls;
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<string> = []) {
-    validators.forEach((v: string) => {
-      control.addValidators(this.validatorMap[v]);
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any[] }> = []) {
+    validators.forEach((v) => {
+      control.addValidators(this.validatorMap[v.name](v.args));
     });
   }
 }

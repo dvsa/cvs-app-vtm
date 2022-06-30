@@ -17,14 +17,17 @@
     "resolveJsonModule": true,
     "importHelpers": true,
     "target": "es2017",
+    "allowSyntheticDefaultImports": true,
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
     ],
     "paths": {
+      "@api/*": ["src/app/api/*"],
       "@core/*": ["src/app/core/*"],
       "@forms/*": ["src/app/forms/*"],
+      "@guards/*": ["src/app/guards/*"],
       "@mocks/*": ["src/mocks/*"],
       "@models/*": ["src/app/models/*"],
       "@services/*": ["src/app/services/*"],

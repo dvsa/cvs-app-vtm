@@ -58,7 +58,8 @@ export enum VehicleConfigurations {
   DRAWBAR = 'drawbar',
   FOUR_IN_LINE = 'four-in-line',
   DOLLY = 'dolly',
-  FULL_DRAWBAR = 'full drawbar'
+  FULL_DRAWBAR = 'full drawbar',
+  LONG_SEMI_TRAILER = 'long semi-trailer'
 }
 
 export enum FrameDescriptions {
@@ -119,12 +120,55 @@ export enum BodyTypeDescription {
   SINGLEDECKER = 'single decker',
   SKELETAL = 'skeletal',
   SKIPLOADER = 'skip loader',
-  TIPPER = 'tipper',
+  TIPPER = 'tipper'
+}
+
+export enum SpeedCategorySymbol {
+  A7 = 'a7',
+  A8 = 'a8',
+  B = 'b',
+  C = 'c',
+  D = 'd',
+  E = 'e',
+  F = 'f',
+  G = 'g',
+  J = 'j',
+  K = 'k',
+  L = 'l',
+  M = 'm',
+  N = 'n',
+  P = 'p',
+  Q = 'q'
 }
 
 export interface Axle {
   axleNumber?: number;
   parkingBrakeMrk?: boolean;
+  tyres?: Tyres;
+  weights?: AxleWeights;
+}
+
+export enum FitmentCode {
+  DOUBLE = 'double',
+  SINGLE = 'single'
+}
+
+export interface Tyres {
+  tyreSize: string;
+  speedCategorySymbol: SpeedCategorySymbol;
+  fitmentCode: FitmentCode;
+  dataTrAxles: number;
+  plyRating: string;
+  tyreCode: number;
+  weights?: AxleWeights;
+}
+
+export interface AxleWeights {
+  kerbWeight: number;
+  ladenWeight: number;
+  gbWeight: number;
+  eecWeight: number;
+  designWeight: number;
 }
 
 export interface TechRecordModel {
@@ -138,6 +182,7 @@ export interface TechRecordModel {
   noOfAxles: number;
   axles: Axle[];
   suspensionType?: string;
+  speedRestriction?: number;
   speedLimiterMrk?: boolean;
   tachoExemptMrk?: boolean;
   euroStandard?: string;
@@ -162,8 +207,6 @@ export interface TechRecordModel {
   numberOfSeatbelts?: string;
   seatbeltInstallationApprovalDate?: string;
   departmentalVehicleMarker: boolean;
-  dimensions?: Dimensions;
-  frontAxleToRearAxle?: number;
   approvalType?: approvalType;
   approvalTypeNumber?: string;
   ntaNumber?: string;
@@ -187,6 +230,39 @@ export interface TechRecordModel {
   };
   functionCode?: string;
   conversionRefNo?: string;
+
+  // Gross vehicle weights
+  grossKerbWeight?: number;
+  grossLadenWeight?: number;
+  grossGbWeight?: number;
+  grossEecWeight?: number;
+  grossDesignWeight?: number;
+  unladenWeight?: number;
+
+  // Train weights
+  maxTrainGbWeight?: number;
+  trainDesignWeight?: number;
+
+  // Dimensions
+  dimensions?: Dimensions;
+  frontAxleToRearAxle?: number;
+  rearAxleToRearTrl?: number;
+
+  // Front of vehicle to 5th wheel coupling
+  frontAxleTo5thWheelCouplingMin?: number;
+  frontAxleTo5thWheelCouplingMax?: number;
+
+  // Front axle to 5th wheel
+  frontAxleTo5thWheelMin?: number;
+  frontAxleTo5thWheelMax?: number;
+
+  // Coupling center to rear axle
+  couplingCenterToRearAxleMin?: number;
+  couplingCenterToRearAxleMax?: number;
+
+  // Coupling center to rear trailer
+  couplingCenterToRearTrlMin?: number;
+  couplingCenterToRearTrlMax?: number;
 }
 
 export interface ApplicantDetails {
@@ -204,6 +280,12 @@ export interface Dimensions {
   height: number;
   length: number;
   width: number;
+  axleSpacing?: AxleSpacing[]
+}
+
+export interface AxleSpacing {
+  axles: string;
+  value: number;
 }
 
 export interface Brakes {

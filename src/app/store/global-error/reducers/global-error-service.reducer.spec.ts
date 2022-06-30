@@ -1,6 +1,6 @@
 import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
-import { fetchTestResults, fetchTestResultsBySystemId, fetchTestResultsBySystemIdFailed, fetchTestResultsFailed, fetchTestResultsSuccess, initialTestResultsState, testResultsReducer } from '@store/test-records';
-import { getByVIN, getByVINFailure } from '@store/technical-records';
+import { getByVin, getByVinFailure } from '@store/technical-records';
+import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
 
 describe('Global Error Reducer', () => {
   describe('unknown action', () => {
@@ -15,9 +15,9 @@ describe('Global Error Reducer', () => {
   });
 
   describe('Fail action', () => {
-    it.each([fetchTestResultsBySystemIdFailed, fetchTestResultsFailed, getByVINFailure])('should return the error state', (actionMethod) => {
+    it.each([fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed, getByVinFailure])('should return the error state', (actionMethod) => {
       const error = 'fetching test records failed';
-      const newState: GlobalErrorState = { ...initialGlobalErrorState, globalError: [{error: error, anchorLink: undefined}] };
+      const newState: GlobalErrorState = { ...initialGlobalErrorState, errors: [{ error: error, anchorLink: undefined }] };
       const action = actionMethod({ error });
       const state = globalErrorReducer(initialGlobalErrorState, action);
 
@@ -27,10 +27,10 @@ describe('Global Error Reducer', () => {
   });
 
   describe('Success action', () => {
-    it.each([fetchTestResultsBySystemId, getByVIN, fetchTestResults])('should reset the error state', (actionMethod) => {
-      const newState = { ...initialGlobalErrorState, globalError: [] };
+    it.each([fetchTestResultsBySystemNumber, getByVin, fetchTestResults])('should reset the error state', (actionMethod) => {
+      const newState = { ...initialGlobalErrorState, errors: [] };
       //all props must be supplied here
-      const action = actionMethod({ systemId: '', vin: '' });
+      const action = actionMethod({ systemNumber: '', vin: '' });
       const state = globalErrorReducer(initialGlobalErrorState, action);
 
       expect(state).toEqual(newState);

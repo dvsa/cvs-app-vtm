@@ -58,8 +58,8 @@ server.get('/vehicles/:vin/*', (req, res) => {
   }
 });
 
-server.get('/test-results/:systemId', (req, res) => {
-  switch (req.params.systemId) {
+server.get('/test-results/:systemNumber', (req, res) => {
+  switch (req.params.systemNumber) {
     case 'notfound':
       res.status(404);
       res.statusMessage = 'NotFound';
@@ -71,7 +71,7 @@ server.get('/test-results/:systemId', (req, res) => {
       res.jsonp('Error service unavailable');
       break;
     default:
-      res.jsonp(mockTestResultList(1, req.params.systemId));
+      res.jsonp(mockTestResultList(1, req.params.systemNumber));
       break;
   }
 });

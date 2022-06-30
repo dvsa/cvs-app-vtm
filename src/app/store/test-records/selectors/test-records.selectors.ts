@@ -20,9 +20,22 @@ export const selectAllTestResults = createSelector(testResultsFeatureState, (sta
 // select the total test results count
 export const selectTestResultsTotal = selectTotal;
 
-export const testResultsEnitities = createSelector(testResultsFeatureState, selectTestResultsEntities);
+export const testResultsEntities = createSelector(testResultsFeatureState, selectTestResultsEntities);
 
-export const selectedTestResultState = createSelector(testResultsEnitities, selectRouteNestedParams, (entities, { testResultId }) => entities[testResultId]);
+export const selectedTestResultState = createSelector(testResultsEntities, selectRouteNestedParams, (entities, { testResultId, testTypeId }) => {
+  const testResult = entities[testResultId];
+  if (!testResult) {
+    return undefined;
+  }
+
+  const testType = testResult.testTypes.find((testType) => testType.testTypeId === testTypeId);
+
+  if (!testType) {
+    return undefined;
+  }
+
+  return { ...testResult, testTypes: [testType] };
+});
 export const testResultLoadingState = createSelector(testResultsFeatureState, (state) => state.loading);
 
 export const selectDefectData = createSelector(selectedTestResultState, (testResult) => {
@@ -41,11 +54,29 @@ export const selectedTestSortedAmendmentHistory = createSelector(selectedTestRes
   return notFound ? sortedArray?.concat(notFound) : sortedArray;
 });
 
-export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { createdAt }) =>
-  testRecord?.testHistory?.find((i) => {
+// export const selectTestFromSelectedTestResult = createSelector(selectedTestResultState, selectRouteNestedParams, (testResult, params) => {
+//   const { testTypeId } = params;
+//   return testResult?.testTypes?.find((testType) => testType.testTypeId === testTypeId);
+// });
+
+export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testTypeId, createdAt }) => {
+  const amendedTest = testRecord?.testHistory?.find((i) => {
     return i.createdAt === createdAt;
-  })
-);
+  });
+
+  if (!amendedTest) {
+    return undefined;
+  }
+
+  const testType = amendedTest.testTypes.find((testType) => testType.testTypeId === testTypeId);
+
+  if (!testType) {
+    return undefined;
+  }
+
+  return { ...amendedTest, testTypes: [testType] };
+});
+
 export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, (amendedTestResult) => {
   return getDefectFromTestResult(amendedTestResult);
 });
@@ -56,6 +87,6 @@ export const selectAmendedDefectData = createSelector(selectedAmendedTestResultS
  * TODO: When we have better routing set up, we need to revisit this so that the testType is also selected based on route paramerets/queries.
  */
 const getDefectFromTestResult = (testResult: TestResultModel | undefined) => {
-  const defects = testResult?.testTypes && testResult?.testTypes.length > 0 ? testResult?.testTypes[0].defects : [];
+  const defects = testResult?.testTypes && testResult.testTypes.length > 0 ? testResult.testTypes[0].defects : [];
   return defects || [];
 };

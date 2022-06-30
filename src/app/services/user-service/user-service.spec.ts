@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { Store } from '@ngrx/store';
 import { Logout } from '@store/user/user-service.actions';
-import { skip, of } from 'rxjs';
+import { of, take } from 'rxjs';
 import { AppModule } from '../../app.module';
 import { UserServiceState } from '../../store/user/user-service.reducer';
 import { UserService } from './user-service';
@@ -32,14 +32,33 @@ describe('User-Service', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get and set the username', (done) => {
-    // Skip the default value being set
-    service.userName$.pipe(skip(1)).subscribe((data) => {
-      expect(data).toBe('you reading this?');
-      done();
+  describe('User getters', () => {
+    const user = { name: 'name', username: 'name@mail.com', oid: '123' };
+
+    beforeEach(() => {
+      service.logIn(user);
     });
 
-    service.logIn('you reading this?');
+    it('should get the username', (done) => {
+      service.userName$.pipe(take(1)).subscribe((data) => {
+        expect(data).toEqual(user.username);
+        done();
+      });
+    });
+
+    it('should get the name', (done) => {
+      service.name$.pipe(take(1)).subscribe((data) => {
+        expect(data).toEqual(user.name);
+        done();
+      });
+    });
+
+    it('should get the id', (done) => {
+      service.id$.pipe(take(1)).subscribe((data) => {
+        expect(data).toEqual(user.oid);
+        done();
+      });
+    });
   });
 
   it('should logout', () => {

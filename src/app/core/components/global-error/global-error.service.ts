@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { addError, clearError } from '@store/global-error/actions/global-error.actions';
+import { addError, clearError, setErrors } from '@store/global-error/actions/global-error.actions';
 import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { Observable } from 'rxjs';
 import { GlobalError } from './global-error.interface';
@@ -22,6 +22,10 @@ export class GlobalErrorService {
 
   addError(error: GlobalError) {
     this.store.dispatch(addError(error));
+  }
+
+  setErrors(errors: GlobalError[]) {
+    this.store.dispatch(setErrors({ errors }));
   }
 
   clearError(): void {

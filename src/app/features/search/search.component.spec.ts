@@ -1,22 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Params, Router } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { initialAppState, State } from '@store/.';
-import { selectQueryParams } from '@store/router/selectors/router.selectors';
+import { provideMockStore } from '@ngrx/store/testing';
+import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { initialAppState } from '@store/.';
 import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
-  let technicalRecordService: TechnicalRecordService;
-  let searchBySpy = jest.fn();
-  let store: MockStore<State>;
-  let mockSelectQueryParams: MemoizedSelector<any, Params, DefaultProjectorFn<Params>>;
   let router: Router;
   let globalErrorService: GlobalErrorService;
 
@@ -37,10 +31,6 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
-    mockSelectQueryParams = store.overrideSelector(selectQueryParams, {});
-    technicalRecordService = TestBed.inject(TechnicalRecordService);
-    technicalRecordService.searchBy = searchBySpy;
     router = TestBed.inject(Router);
     globalErrorService = TestBed.inject(GlobalErrorService);
 
@@ -52,54 +42,49 @@ describe('SearchComponent', () => {
   });
 
   describe('searching', () => {
-    describe('manually', () => {
-      beforeEach(() => {
-        fixture.detectChanges();
-      });
-
-      it('should call the service to search by VIN', () => {
-        const searchParams = { searchTerm: 'A_VIN_', type: 'vin' };
-        component.searchTechRecords(searchParams.searchTerm);
-
-        expect(searchBySpy).toBeCalledWith(searchParams);
-      });
-
-      it('should not call service', () => {
-        component.searchTechRecords('');
-        fixture.detectChanges();
-        expect(searchBySpy).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('by URL params', () => {
-      it('should call the service to search by vin with "someVin"', fakeAsync(() => {
-        const vin = 'someVin';
-        mockSelectQueryParams.setResult({ vin });
-        store.refreshState();
-
-        tick();
-        fixture.detectChanges();
-
-        expect(searchBySpy).toHaveBeenCalledWith({ type: 'vin', searchTerm: vin });
-      }));
-    });
-
     describe('navigateSearch', () => {
-      it('should navigate', () => {
+      it('should navigate to vin search result', () => {
         const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
 
-        const vin = 'someVin';
-        component.navigateSearch(vin);
+        const expectedVin = 'someVin';
+        component.navigateSearch(expectedVin, SEARCH_TYPES.VIN);
 
-        expect(navigateSpy).toHaveBeenCalledWith(['/search'], { queryParams: { vin } });
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { vin: expectedVin } });
+      });
+
+      it('should navigate to partialVin search result', () => {
+        const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+        const expectedPartialVin = 'somePartialVin';
+        component.navigateSearch(expectedPartialVin, SEARCH_TYPES.PARTIAL_VIN);
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { partialVin: expectedPartialVin } });
+      });
+
+      it('should navigate to vrm search result', () => {
+        const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+        const expectedVrm = 'someVrm';
+        component.navigateSearch(expectedVrm, SEARCH_TYPES.VRM);
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { vrm: expectedVrm } });
+      });
+
+      it('should navigate to trailerId search result', () => {
+        const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
+
+        const expectedTrailerId = 'someTrailerId';
+        component.navigateSearch(expectedTrailerId, SEARCH_TYPES.TRAILER_ID);
+
+        expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { trailerId: expectedTrailerId } });
       });
 
       it('should add error', () => {
         const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
 
-        component.navigateSearch('');
+        component.navigateSearch('', '');
 
-        expect(addErrorSpy).toHaveBeenCalledWith({ error: component.searchErrorMessage, anchorLink: 'search-term' });
+        expect(addErrorSpy).toHaveBeenCalledWith({ error: component.missingTermErrorMessage, anchorLink: 'search-term' });
       });
     });
   });

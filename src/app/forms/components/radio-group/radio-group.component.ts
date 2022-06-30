@@ -3,11 +3,6 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MultiOptions } from '@models/options.model';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
-interface Option {
-  label: string;
-  value: string;
-}
-
 @Component({
   selector: 'app-radio-group',
   templateUrl: './radio-group.component.html',
