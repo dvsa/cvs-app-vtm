@@ -11,7 +11,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVINSuccess } from '@store/technical-records';
+import { getByVinSuccess } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
@@ -126,7 +126,7 @@ describe('TestResultsEffects', () => {
         const testResults = mockTestResultList();
         const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVINSuccess({ vehicleTechRecords }) });
+        actions$ = hot('-a--', { a: getByVinSuccess({ vehicleTechRecords }) });
 
         // mock service call
         jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--a|', { a: testResults }));
@@ -142,7 +142,7 @@ describe('TestResultsEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVINSuccess({ vehicleTechRecords }) });
+        actions$ = hot('-a--', { a: getByVinSuccess({ vehicleTechRecords }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -161,7 +161,7 @@ describe('TestResultsEffects', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const vehicleTechRecords = [{ systemNumber: 'systemSumber' }] as VehicleTechRecordModel[];
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getByVINSuccess({ vehicleTechRecords }) });
+        actions$ = hot('-a--', { a: getByVinSuccess({ vehicleTechRecords }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({

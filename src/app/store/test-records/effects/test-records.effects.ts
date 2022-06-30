@@ -6,7 +6,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVINSuccess } from '@store/technical-records';
+import { getByVinSuccess } from '@store/technical-records';
 import { catchError, debounceTime, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
   fetchSelectedTestResult,
@@ -36,7 +36,7 @@ export class TestResultsEffects {
 
   fetchTestResultsBySystemNumberAfterSearchByVinSucces$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getByVINSuccess),
+      ofType(getByVinSuccess),
       mergeMap((action) =>
         this.testRecordsService.fetchTestResultbySystemNumber(action.vehicleTechRecords[0].systemNumber).pipe(
           map((vehicleTestRecords) => fetchTestResultsBySystemNumberSuccess({ payload: vehicleTestRecords })),

@@ -22,20 +22,35 @@ export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
   on(
     GlobalErrorActions.clearError,
-    TechnicalRecordServiceActions.getByVIN,
+    TechnicalRecordServiceActions.getByVin,
+    TechnicalRecordServiceActions.getByPartialVin,
+    TechnicalRecordServiceActions.getByVrm,
+    TechnicalRecordServiceActions.getByTrailerId,
     TestResultActions.fetchTestResults,
     TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,
-    (state) => ({ ...state, errors: [] })
+    succesMethod
   ),
+
   on(
     GlobalErrorActions.addError,
-    TechnicalRecordServiceActions.getByVINFailure,
+    TechnicalRecordServiceActions.getByVinFailure,
+    TechnicalRecordServiceActions.getByPartialVinFailure,
+    TechnicalRecordServiceActions.getByVrmFailure,
+    TechnicalRecordServiceActions.getByTrailerIdFailure,
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,
-    (state, { error, anchorLink }) => ({ ...state, errors: [...state.errors, { error: error, anchorLink: anchorLink }] })
+    failureMethod
   ),
   on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, errors: [...errors] })),
   on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] }))
 );
+
+function succesMethod(state: GlobalErrorState) {
+  return { ...state, errors: [] };
+}
+
+function failureMethod(state: GlobalErrorState, errorMessage: { error: any; anchorLink: any }) {
+  return { ...state, errors: [...state.errors, { error: errorMessage.error, anchorLink: errorMessage.anchorLink }] };
+}
