@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
-import { fetchReferenceData, ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import {
+  fetchReferenceData,
+  ReferenceDataState,
+  selectAllReferenceDataByResourceType,
+  selectReferenceDataByResourceKey
+} from '@store/reference-data';
 import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
@@ -11,26 +16,15 @@ import { Observable, of, throwError } from 'rxjs';
 export class ReferenceDataService {
   constructor(private store: Store<ReferenceDataState>) {}
 
-  // fetchReferenceDataByType(resourceType: ReferenceDataResourceType): Observable<Array<ReferenceDataModelBase>> {
-  //   if (!resourceType) {
-  //     return throwError(() => new Error('Reference data resourceType is required'));
-  //   }
-
-  //   // ** Until the reference data API is provisioned, return an in-memory collection ** //
-  //   switch (resourceType) {
-  //     case ReferenceDataResourceType.CountryOfRegistration:
-  //       return of(mockCountriesOfRegistration);
-  //     default:
-  //       return throwError(() => new Error('Unknown reference data resourceType'));
-  //   }
-  // }
-
-  fetchReferenceData(resourceType: ReferenceDataResourceType, resourceKey?: string): Observable<Array<ReferenceDataModelBase> | ReferenceDataModelBase> {
+  fetchReferenceData(
+    resourceType: ReferenceDataResourceType,
+    resourceKey?: string
+  ): Observable<Array<ReferenceDataModelBase> | ReferenceDataModelBase> {
     if (!resourceType) {
       return throwError(() => new Error('Reference data resourceType is required'));
     }
 
-    // ** Until the reference data API is provisioned, return an in-memory item ** //
+    // ** Until the reference data API is provisioned, return an in-memory data ** //
     switch (resourceType) {
       case ReferenceDataResourceType.CountryOfRegistration:
         if (resourceKey) {
