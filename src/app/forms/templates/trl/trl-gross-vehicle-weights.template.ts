@@ -1,7 +1,7 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { generateWeights } from '../general/weights.template';
 
-export const TrlGrossVehicleWeight: FormNode = {
+export const TrlGrossVehicleWeightTemplate: FormNode = {
   name: 'grossVehicleWeight',
   label: 'Gross Vehicle Weight',
   value: '',
