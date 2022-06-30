@@ -7,7 +7,9 @@ import {
   selectQueryParam,
   selectQueryParams,
   selectRouteNestedParams,
-  selectRouteParam
+  selectRouteParam,
+  currentRouteState,
+  routerState
 } from '@store/router/selectors/router.selectors';
 import { Observable } from 'rxjs';
 
@@ -16,6 +18,10 @@ import { Observable } from 'rxjs';
 })
 export class RouterService {
   constructor(private store: Store<State>) {}
+
+  get router$() {
+    return this.store.pipe(select(routerState));
+  }
 
   get queryParams$(): Observable<Params> {
     return this.store.pipe(select(selectQueryParams));

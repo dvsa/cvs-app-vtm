@@ -5,14 +5,14 @@ import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
-    path: ':vin',
+    path: '',
     component: TechRecordComponent,
     canActivateChild: [MsalGuard]
   },
   {
-    path: ':vin/:techCreatedAt',
+    path: ':techCreatedAt',
     component: TechRecordComponent,
-    data: { title: 'Tech Record' }
+    data: { title: 'Historic Tech Record' }
   }
 ];
 

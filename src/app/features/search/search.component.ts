@@ -3,20 +3,27 @@ import { NavigationExtras, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html',
+  templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnDestroy {
   vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
   ngDestroy$ = new Subject();
   searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
 
-  constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, private store: Store, private router: Router) {
+  constructor(
+    private technicalRecordService: TechnicalRecordService,
+    public globalErrorService: GlobalErrorService,
+    private store: Store,
+    private router: Router,
+    private routerService: RouterService
+  ) {
     this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
       let vin = params['vin'];
 
