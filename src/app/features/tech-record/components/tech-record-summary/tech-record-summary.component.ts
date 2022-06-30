@@ -25,6 +25,7 @@ import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templat
 import { getBodyTemplate } from '@forms/templates/general/body.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
+import { PlatesTemplate } from '@forms/templates/general/plates.template'
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -54,6 +55,7 @@ export class TechRecordSummaryComponent implements OnInit {
   hgvAndTrlDimensionsTemplate?: FormNode;
   firstMinMaxTemplate?: FormNode;
   secondMinMaxTemplate?: FormNode;
+  platesTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -95,6 +97,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
         this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
+        this.platesTemplate = PlatesTemplate;
         break;
       }
       case 'trl': {
@@ -110,6 +113,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
         this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
+        this.platesTemplate = PlatesTemplate;
         break;
       }
     }

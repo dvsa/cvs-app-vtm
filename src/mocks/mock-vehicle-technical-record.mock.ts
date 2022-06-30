@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription, FitmentCode, SpeedCategorySymbol } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription, FitmentCode, SpeedCategorySymbol, PlateReasonForIssue } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -485,6 +485,20 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         frontAxleTo5thWheelCouplingMax: 6,
         frontAxleTo5thWheelMin: 7,
         frontAxleTo5thWheelMax: 8,
+        plates: [
+          {
+            plateSerialNumber: "12345",
+            plateIssueDate: new Date(),
+            plateReasonForIssue: PlateReasonForIssue.REPLACEMENT,
+            plateIssuer: "person"
+          },
+          {
+            plateSerialNumber: "54321",
+            plateIssueDate: new Date(),
+            plateReasonForIssue: PlateReasonForIssue.REPLACEMENT,
+            plateIssuer: "person 2"
+          }
+        ]
       }
     ]
   });
@@ -542,6 +556,12 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         ntaNumber: 'nta789',
         variantNumber: 'variant123456',
         variantVersionNumber: 'variantversion123456',
+        plates: [{
+          plateSerialNumber: "12345",
+          plateIssueDate: new Date(),
+          plateReasonForIssue: PlateReasonForIssue.REPLACEMENT,
+          plateIssuer: "person"
+        }]
       }
     ]
   });
