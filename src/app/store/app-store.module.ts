@@ -10,6 +10,7 @@ import { TechnicalRecordsStateModule } from './technical-records/technical-recor
 import { TestRecordsStateModule } from './test-records/test-records.module';
 import { UserStateModule } from './user/user-state.module';
 import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
+import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 
 @NgModule({
   declarations: [],
@@ -20,14 +21,15 @@ import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
     StoreDevtoolsModule.instrument({
       name: 'VTM Web Dev Tools',
       maxAge: 25, // Retains last 25 states
-      logOnly: environment.production //Log-only mode in production
+      logOnly: environment.production // Log-only mode in production
     }),
     UserStateModule,
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
     GlobalErrorStateModule,
     RouterStateModule,
-    SpinnerStateModule
+    SpinnerStateModule,
+    ReferenceDataStateModule
   ]
 })
 export class AppStoreModule {}

@@ -3,6 +3,7 @@ import { createFeatureSelector, createReducer, createSelector, on } from '@ngrx/
 import * as TestResultActions from '@store/test-records';
 import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
 import * as GlobalErrorActions from '../actions/global-error.actions';
+import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 
 export const STORE_GLOBAL_ERROR_KEY = 'GlobalError';
 
@@ -29,7 +30,9 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchTestResults,
     TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,
-    succesMethod
+    ReferenceDataActions.fetchReferenceData,
+    ReferenceDataActions.fetchReferenceDataByKey,
+    successMethod
   ),
 
   on(
@@ -41,12 +44,14 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,
+    ReferenceDataActions.fetchReferenceDataFailed,
+    ReferenceDataActions.fetchReferenceDataByKeyFailed,
     failureMethod
   ),
   on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, errors: [...errors] }))
 );
 
-function succesMethod(state: GlobalErrorState) {
+function successMethod(state: GlobalErrorState) {
   return { ...state, errors: [] };
 }
 
