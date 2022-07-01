@@ -43,7 +43,7 @@ export const TrlPurchasers: FormNode = {
         type: FormNodeTypes.CONTROL
       },
       {
-        name: 'telephonenumber',
+        name: 'telephoneNumber',
         label: 'Telephone number',
         value: '',
         type: FormNodeTypes.CONTROL

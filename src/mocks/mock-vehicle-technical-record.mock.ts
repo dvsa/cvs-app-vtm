@@ -548,7 +548,7 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
           address2: '',
           postTown: 'Town',
           postCode: 'PP1 1PP',
-          telephonenumber: '01234567890',
+          telephoneNumber: '01234567890',
           purchaserNotes: 'Notes',
           address3: 'Country',
           emailAddress: 'purchaser@purchaser.com',

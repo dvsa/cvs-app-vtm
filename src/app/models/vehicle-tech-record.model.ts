@@ -178,7 +178,7 @@ export interface Purchaser {
   postTown: string;
   address3: string;
   postCode: string;
-  telephonenumber: string;
+  telephoneNumber: string;
   emailAddress: string;
   faxNumber: string;
   purchaserNotes: string;
