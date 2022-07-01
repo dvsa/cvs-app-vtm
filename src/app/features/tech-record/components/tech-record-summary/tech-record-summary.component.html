@@ -113,4 +113,22 @@
     [data]="vehicleTechRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="platesTemplate"
+    [template]="platesTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="trlAuthIntoServiceTemplate"
+    [template]="trlAuthIntoServiceTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="trlManufacturerTemplate"
+    [template]="trlManufacturerTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
 </section>
