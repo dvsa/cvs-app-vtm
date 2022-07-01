@@ -28,7 +28,7 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.DATE
     },
     {
       name: 'manufactureYear',
