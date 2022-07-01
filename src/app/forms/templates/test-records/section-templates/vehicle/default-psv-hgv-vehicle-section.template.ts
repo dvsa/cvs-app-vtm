@@ -1,4 +1,3 @@
-import { Disabled } from '@forms/components/checkbox-group/checkbox-group.stories';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 

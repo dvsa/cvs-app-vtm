@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';

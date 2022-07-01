@@ -1,10 +1,10 @@
 import { KeyValue } from '@angular/common';
 import { AfterContentInit, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CustomFormControl, FormNodeCombinationOptions, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { map, Observable, of, mergeMap } from 'rxjs';
+import { map, mergeMap, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-dynamic-form-field',
