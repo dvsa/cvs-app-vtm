@@ -13,6 +13,12 @@ const routes: Routes = [
     path: ':techCreatedAt',
     component: TechRecordComponent,
     data: { title: 'Historic Tech Record' }
+  },
+  {
+    path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+    data: { title: 'Test Result' },
+    canActivate: [MsalGuard],
+    loadChildren: () => import('../test-records/test-records.module').then((m) => m.TestRecordsModule)
   }
 ];
 

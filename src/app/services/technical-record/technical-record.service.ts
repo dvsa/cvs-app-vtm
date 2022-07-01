@@ -1,17 +1,41 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
-import { getByVIN, selectVehicleTechnicalRecordsByVin, vehicleTechRecords } from '@store/technical-records';
-import { Observable } from 'rxjs';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { getByVin, getByPartialVin, selectVehicleTechnicalRecordsByVin, vehicleTechRecords, getByVrm, getByTrailerId } from '@store/technical-records';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
+
+export enum SEARCH_TYPES {
+  VIN = 'vin',
+  PARTIAL_VIN = 'partialVin',
+  VRM = 'vrm',
+  TRAILER_ID = 'trailerId'
+}
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
   constructor(private store: Store, private http: HttpClient) {}
 
-  getByVIN(vin: string): Observable<VehicleTechRecordModel[]> {
-    const queryStr = `${vin}/tech-records?status=all&metadata=true&searchCriteria=vin`;
+  getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
+  }
+
+  getByPartialVin(partialVin: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(partialVin, SEARCH_TYPES.PARTIAL_VIN);
+  }
+
+  getByVrm(vrm: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(vrm, SEARCH_TYPES.VRM);
+  }
+
+  getByTrailerId(id: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
+  }
+
+  private getVehicleTechRecordModels(id: string, type: SEARCH_TYPES) {
+    const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
     const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
 
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
@@ -25,8 +49,49 @@ export class TechnicalRecordService {
     return this.store.pipe(select(selectVehicleTechnicalRecordsByVin));
   }
 
-  searchBy(criteria: { type: 'vin'; searchTerm: string }) {
-    const { type, searchTerm } = criteria;
-    this.store.dispatch(getByVIN({ [type]: searchTerm }));
+  searchBy(type: SEARCH_TYPES, term: string) {
+    switch (type) {
+      case SEARCH_TYPES.VIN:
+        this.store.dispatch(getByVin({ [type]: term }));
+        break;
+      case SEARCH_TYPES.PARTIAL_VIN:
+        this.store.dispatch(getByPartialVin({ [type]: term }));
+        break;
+      case SEARCH_TYPES.VRM:
+        this.store.dispatch(getByVrm({ [type]: term }));
+        break;
+      case SEARCH_TYPES.TRAILER_ID:
+        this.store.dispatch(getByTrailerId({ [type]: term }));
+        break;
+    }
+  }
+
+  /**
+   * A function to get the correct tech record to create the summary display which uses time first then status code
+   * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
+   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
+   */
+  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel, destroy$: Subject<any>): Observable<TechRecordModel | undefined> {
+    return this.store
+      .pipe(
+        select(selectRouteNestedParams),
+        takeUntil(destroy$),
+        map(params => {
+          const createdAt = params['techCreatedAt'] ?? '';
+          const viewableTechRecord = vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt);
+          return viewableTechRecord ?? this.filterTechRecordByStatusCode(vehicleRecord)
+        }
+      ));
+  }
+
+  /**
+   * A function to filter the correct tech record, this has a hierarchy which is PROVISIONAL -> CURRENT -> ARCHIVED.
+   * @param record This is a VehicleTechRecordModel passed in from the parent component
+   * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
+   */
+  private filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
+    return record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
+      ?? record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)
+      ?? record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED);
   }
 }

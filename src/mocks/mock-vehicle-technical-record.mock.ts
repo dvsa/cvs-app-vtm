@@ -1,4 +1,4 @@
-import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription } from '../app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleSizes, EuVehicleCategories, FrameDescriptions, VehicleConfigurations, FuelTypes, VehicleTypes, StatusCodes, RetarderBrake, approvalType, MicrofilmDocumentType, BodyTypeDescription, FitmentCode, SpeedCategorySymbol } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockVehicleTechnicalRecord = (vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: number = 0) => {
@@ -61,14 +61,45 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
-            parkingBrakeMrk: false
+            tyres: {
+              tyreSize: '295/80-22.5',
+              speedCategorySymbol: SpeedCategorySymbol.P,
+              fitmentCode: FitmentCode.DOUBLE,
+              dataTrAxles: 0,
+              plyRating: 'A',
+              tyreCode: 456
+            },
+            parkingBrakeMrk: false,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            tyres: {
+              tyreSize: '295/80-22.5',
+              speedCategorySymbol: SpeedCategorySymbol.P,
+              fitmentCode: FitmentCode.DOUBLE,
+              dataTrAxles: 0,
+              plyRating: 'A',
+              tyreCode: 456
+            },
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           }
         ],
         speedLimiterMrk: true,
+        speedRestriction: 54,
         tachoExemptMrk: true,
         euroStandard: '123',
         fuelPropulsionSystem: FuelTypes.HYBRID,
@@ -125,7 +156,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345'
+        conversionRefNo: '345345',
+
+        // Gross vehicle weights
+        grossKerbWeight: 1,
+        grossLadenWeight: 2,
+        grossGbWeight: 3,
+        grossEecWeight: 4,
+        grossDesignWeight: 5,
+        unladenWeight: 6,
+
+        // Train weights
+        maxTrainGbWeight: 7,
+        trainDesignWeight: 8
       },
       {
         createdAt: new Date(2018, 11),
@@ -157,11 +200,25 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
-            parkingBrakeMrk: false
+            parkingBrakeMrk: false,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           }
         ],
         speedLimiterMrk: true,
@@ -221,7 +278,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345'
+        conversionRefNo: '345345',
+
+        // Gross vehicle weights
+        grossKerbWeight: 1,
+        grossLadenWeight: 2,
+        grossGbWeight: 3,
+        grossEecWeight: 4,
+        grossDesignWeight: 5,
+        unladenWeight: 6,
+
+        // Train weights
+        maxTrainGbWeight: 7,
+        trainDesignWeight: 8
       },
       {
         createdAt: new Date(2019, 11),
@@ -253,11 +322,25 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
         axles: [
           {
             axleNumber: 1,
-            parkingBrakeMrk: false
+            parkingBrakeMrk: false,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           },
           {
             axleNumber: 2,
-            parkingBrakeMrk: true
+            parkingBrakeMrk: true,
+            weights: {
+              kerbWeight: 1,
+              ladenWeight: 2,
+              gbWeight: 3,
+              eecWeight: 4,
+              designWeight: 5
+            }
           }
         ],
         speedLimiterMrk: true,
@@ -317,7 +400,19 @@ const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
           description: BodyTypeDescription.DOUBLEDECKER
         },
         functionCode: 'r',
-        conversionRefNo: '345345'
+        conversionRefNo: '345345',
+
+        // Gross vehicle weights
+        grossKerbWeight: 1,
+        grossLadenWeight: 2,
+        grossGbWeight: 3,
+        grossEecWeight: 4,
+        grossDesignWeight: 5,
+        unladenWeight: 6,
+
+        // Train weights
+        maxTrainGbWeight: 7,
+        trainDesignWeight: 8
       }
     ]
   });
@@ -370,7 +465,26 @@ const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
         euVehicleCategory: EuVehicleCategories.M1,
         emissionsLimit: 1234,
         departmentalVehicleMarker: true,
-        reasonForCreation: 'Brake Failure'
+        reasonForCreation: 'Brake Failure',
+        approvalType: approvalType.ECSSTA,
+        approvalTypeNumber: 'approval123',
+        ntaNumber: 'nta789',
+        variantNumber: 'variant123456',
+        variantVersionNumber: 'variantversion123456',
+        dimensions: {
+          length: 1,
+          width: 2,
+          height: 6,
+          axleSpacing: [{
+            axles: '1-2',
+            value: 4
+          }]
+        },
+        frontAxleToRearAxle: 3,
+        frontAxleTo5thWheelCouplingMin: 5,
+        frontAxleTo5thWheelCouplingMax: 6,
+        frontAxleTo5thWheelMin: 7,
+        frontAxleTo5thWheelMax: 8,
       }
     ]
   });
@@ -422,7 +536,12 @@ const createMockTrl = (systemNumber: number): VehicleTechRecordModel =>
         frameDescription: FrameDescriptions.FRAME_SECTION,
         euVehicleCategory: EuVehicleCategories.M1,
         departmentalVehicleMarker: true,
-        reasonForCreation: 'Brake Failure'
+        reasonForCreation: 'Brake Failure',
+        approvalType: approvalType.ECSSTA,
+        approvalTypeNumber: 'approval123',
+        ntaNumber: 'nta789',
+        variantNumber: 'variant123456',
+        variantVersionNumber: 'variantversion123456',
       }
     ]
   });

@@ -17,7 +17,7 @@ const routes: Routes = [
       {
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
-        data: { title: 'Amend Test Result' },
+        data: { title: 'Amended Test Result' },
         resolve: { load: TestResultResolver },
         canActivate: [NoEditGuard]
       }

@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DateValidators } from '@forms/validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { DateComponent } from './date.component';
 
 @Component({
@@ -26,7 +27,7 @@ describe('DateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateComponent, BaseControlComponent, HostComponent],
+      declarations: [DateComponent, BaseControlComponent, HostComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });
@@ -53,12 +54,31 @@ describe('DateComponent', () => {
 
     it.each([
       [new Date(NaN), 234234, 6213, 234],
-      [new Date(`${2022}-${0o1}-${0o1}`), 2022, 0o1, 0o1]
-    ])('should be %s for %d, %d, %d', (expected: Date, year: number, month: number, day: number) => {
+      [new Date(`${2022}-${0o1}-${0o1}`), 2022, 0o1, 0o1],
+      [null, NaN, 0o1, 0o1],
+      [null, 2022, NaN, 0o1],
+      [null, 2022, 0o1, NaN]
+    ])('should be %s for %d, %d, %d', (expected: Date | null, year: number, month: number, day: number) => {
       component.dateComponent?.onDayChange(day);
       component.dateComponent?.onMonthChange(month);
       component.dateComponent?.onYearChange(year);
-      expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());
+      if (expected === null) {
+        expect(component.form.get('foo')?.value).toBeNull();
+      } else {
+        expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());
+      }
     });
+
+    it('should propagate control value to subjects', fakeAsync(() => {
+      const date = new Date(`${2022}-${0o1}-${0o1}`);
+      component.dateComponent?.control?.patchValue(date.toISOString());
+
+      tick();
+      component.dateComponent?.control?.meta.changeDetection?.detectChanges();
+
+      expect(component.dateComponent?.day).toEqual(date.getDate());
+      expect(component.dateComponent?.month).toEqual(date.getMonth() + 1);
+      expect(component.dateComponent?.year).toEqual(date.getFullYear());
+    }));
   });
 });

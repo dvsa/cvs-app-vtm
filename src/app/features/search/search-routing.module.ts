@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MultipleSearchResultsComponent } from './multiple-search-results/multiple-search-results.component';
 import { SearchComponent } from './search.component';
 
 const routes: Routes = [
@@ -7,6 +8,11 @@ const routes: Routes = [
     path: '',
     pathMatch: 'prefix',
     component: SearchComponent
+  },
+  {
+    path: 'results',
+    data: { title: 'Search Results' },
+    component: MultipleSearchResultsComponent
   }
 ];
 

@@ -34,7 +34,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
         { label: 'Scotland', value: 'sc' }
       ],
 
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: 'required' }]
     },
     {
       name: 'euVehicleCategory',

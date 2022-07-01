@@ -8,7 +8,7 @@
         <a *ngIf="!last; else current" class="govuk-breadcrumbs__link" [routerLink]="breadcrumb.path">{{ breadcrumb.label }}</a>
       </li>
       <ng-template #current>
-        <a class="govuk-breadcrumbs__link">{{ breadcrumb.label }}</a>
+        {{ breadcrumb.label }}
       </ng-template>
     </ng-container>
   </ol>

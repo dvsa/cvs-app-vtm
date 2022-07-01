@@ -1,7 +1,6 @@
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
 import * as Emissions from '../app/models/emissions.enum';
 import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
@@ -65,7 +64,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testTypes: [...mockTestTypeList(2)],
 
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
-    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    countryOfRegistration: 'gb',
     euVehicleCategory: EuVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
@@ -108,7 +107,7 @@ export const mockTestResultArchived = (
     testTypes: [...mockTestTypeList(2)],
     createdByName: `Person ${i}`,
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
-    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    countryOfRegistration: 'gb',
     euVehicleCategory: EuVehicleCategory.M3,
     odometerReading: 100,
     odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
