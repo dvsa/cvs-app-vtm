@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { MultiOptions } from '@models/options.model';
+import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 import { SelectComponent } from './select.component';
@@ -19,7 +18,7 @@ class HostComponent {
   form = new FormGroup({
     foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
   });
-  options: MultiOptions = [
+  options: FormNodeOption<string | number | boolean>[] = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
     { label: 'Value 3', value: '3' }

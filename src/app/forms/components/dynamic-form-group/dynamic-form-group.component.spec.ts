@@ -5,6 +5,9 @@ import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { FormNodeTypes, FormNode, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
 
 describe('DynamicFormGroupComponent', () => {
   let component: DynamicFormGroupComponent;
@@ -12,7 +15,8 @@ describe('DynamicFormGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule]
+      imports: [DynamicFormsModule],
+      providers: [ReferenceDataService, provideMockStore({initialState: initialAppState})]
     }).compileComponents();
   });
 

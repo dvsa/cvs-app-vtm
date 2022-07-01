@@ -1,6 +1,6 @@
-import { Component, Injector, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MultiOptions } from '@models/options.model';
+import { FormNodeOption } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -15,9 +15,5 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class RadioGroupComponent extends BaseControlComponent {
-  @Input() options: MultiOptions = [];
-
-  constructor(injector: Injector) {
-    super(injector);
-  }
+  @Input() options: FormNodeOption<string | number | boolean>[] = [];
 }

@@ -8,7 +8,7 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
-import { MultiOptions } from '@models/options.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -42,6 +42,7 @@ export enum FormNodeEditTypes {
 export interface FormNodeOption<T> {
   value: T;
   label: string;
+  hint?: string;
 }
 
 export interface FormNode {
@@ -53,12 +54,13 @@ export interface FormNode {
   label?: string;
   value?: string;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions | string[] | MultiOptions;
+  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
   validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
   subHeadingLink?: SubHeadingLink;
+  referenceData?: ReferenceDataResourceType;
 }
 
 export interface FormNodeCombinationOptions {
