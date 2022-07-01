@@ -79,9 +79,7 @@ describe('TestRecordComponent', () => {
       el.query(By.css('button#save-test-result')).triggerEventHandler('click', {});
       tick();
       expect(component.handleSave).toHaveBeenCalledTimes(1);
-
-    }
-    ));
+    }));
 
     it('should display cancel button when edit query param is true', fakeAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
