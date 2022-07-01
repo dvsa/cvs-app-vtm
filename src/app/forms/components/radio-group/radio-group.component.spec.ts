@@ -9,6 +9,8 @@ import { ReferenceDataService } from '@services/reference-data/reference-data.se
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { FormNodeOption } from '../../services/dynamic-form.types';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
+
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
@@ -34,7 +36,7 @@ describe('RadioGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostComponent, RadioGroupComponent, BaseControlComponent],
+      declarations: [HostComponent, RadioGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();

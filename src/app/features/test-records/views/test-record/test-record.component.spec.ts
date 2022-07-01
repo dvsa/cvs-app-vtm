@@ -1,17 +1,19 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { routeEditable } from '@store/router/selectors/router.selectors';
+import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { of } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
@@ -25,6 +27,7 @@ describe('TestRecordComponent', () => {
   let store: MockStore;
   let router: Router;
   let route: ActivatedRoute;
+  let testRecordsService: TestRecordsService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -42,6 +45,7 @@ describe('TestRecordComponent', () => {
     mockRouteEditable = store.overrideSelector(routeEditable, false);
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
+    testRecordsService = TestBed.inject(TestRecordsService);
   });
 
   it('should create', () => {
@@ -127,6 +131,54 @@ describe('TestRecordComponent', () => {
 
       expect(handleEditSpy).toHaveBeenCalledTimes(1);
       expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: true }, queryParamsHandling: 'merge' });
+    }));
+  });
+
+  describe('getters', () => {
+    describe('sectionFormsInvalid', () => {
+      it.each([
+        [true, [{ invalid: true }, { invalid: true }]],
+        [true, [{ invalid: true }, { invalid: false }]],
+        [false, [{ invalid: false }, { invalid: false }]],
+        [false, []]
+      ])('should return %p for forms: %o', (expected, forms) => {
+        component.sectionForms = forms as Array<CustomFormGroup>;
+        expect(component.sectionFormsInvalid).toBe(expected);
+      });
+    });
+  });
+
+  describe(TestRecordComponent.prototype.handleSave.name, () => {
+    const forms = [
+      new CustomFormGroup(
+        { name: 'form1', type: FormNodeTypes.GROUP },
+        { foo: new CustomFormControl({ name: 'foo', label: 'Foo', type: FormNodeTypes.CONTROL }, '', [Validators.required]) }
+      ),
+      new CustomFormGroup(
+        { name: 'form2', type: FormNodeTypes.GROUP },
+        { foo: new CustomFormControl({ name: 'bar', label: 'Bar', type: FormNodeTypes.CONTROL }, '') }
+      )
+    ];
+
+    beforeEach(() => {
+      component.sectionForms = forms as Array<CustomFormGroup>;
+      store.resetSelectors();
+    });
+
+    it('should return without calling updateTestResultState', fakeAsync(() => {
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResultState');
+      component.handleSave();
+      tick();
+      expect(updateTestResultStateSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should call updateTestResultState for each form', fakeAsync(() => {
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResultState').mockImplementation(() => {});
+      store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testTypeId: 'a' });
+      component.sectionForms[0].get('foo')?.patchValue('baz');
+      component.handleSave();
+      tick();
+      expect(updateTestResultStateSpy).toHaveBeenCalledTimes(2);
     }));
   });
 });

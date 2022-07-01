@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomValidators } from '@forms/validators/custom-validators';
-import { FormNode, CustomFormGroup, CustomFormControl, CustomFormArray, FormNodeTypes } from './dynamic-form.types';
+import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,8 @@ export class DynamicFormService {
     hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
     pattern: (args: string) => Validators.pattern(args),
     customPattern: (args: any) => CustomValidators.customPattern([...args]),
-    numeric: () => CustomValidators.numeric()
+    numeric: () => CustomValidators.numeric(),
+    maxLength: (args: number) => Validators.maxLength(args)
   };
 
   createForm(f: FormNode, d?: any): CustomFormGroup | CustomFormArray {
@@ -79,5 +83,48 @@ export class DynamicFormService {
     validators.forEach((v) => {
       control.addValidators(this.validatorMap[v.name](v.args));
     });
+  }
+
+  static updateValidity(form: CustomFormGroup | CustomFormArray): GlobalError[] {
+    const valildationErrors: GlobalError[] = [];
+
+    Object.entries(form.controls).forEach(([key, value]) => {
+      this.validate(value, valildationErrors);
+    });
+
+    return valildationErrors;
+  }
+
+  static validate(control: CustomFormGroup | CustomFormArray | CustomFormControl | AbstractControl, validationErrorList: GlobalError[]) {
+    if (control instanceof CustomFormGroup) {
+      this.updateValidity(control);
+    } else if (control instanceof CustomFormArray) {
+      control.controls.forEach((i) => {
+        this.validate(i, validationErrorList);
+      });
+    } else {
+      control.markAsTouched();
+      control.updateValueAndValidity({ emitEvent: true });
+      (control as CustomFormControl).meta.changeDetection?.detectChanges();
+      this.getControlErrors(control as CustomFormControl, validationErrorList);
+    }
+  }
+
+  private static getControlErrors(control: CustomFormControl, validationErrorList: GlobalError[]) {
+    const {
+      errors,
+      meta: { name, label }
+    } = control;
+
+    // const valildationErrors: GlobalError[] = [];
+
+    if (errors) {
+      const errorList = Object.keys(errors);
+      errorList.forEach((error) => {
+        validationErrorList.push({ error: ErrorMessageMap[error](errors[error], label), anchorLink: name } as GlobalError);
+      });
+    }
+
+    // return valildationErrors;
   }
 }

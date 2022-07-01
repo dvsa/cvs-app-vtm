@@ -48,7 +48,8 @@ export const globalErrorReducer = createReducer(
     ReferenceDataActions.fetchReferenceDataByKeyFailed,
     failureMethod
   ),
-  on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, errors: [...errors] }))
+  on(GlobalErrorActions.setErrors, TestResultActions.updateTestResultFailed, (state, { errors }) => ({ ...state, errors: [...errors] })),
+  on(GlobalErrorActions.patchErrors, (state, { errors }) => ({ ...state, errors: [...state.errors, ...errors] }))
 );
 
 function successMethod(state: GlobalErrorState) {

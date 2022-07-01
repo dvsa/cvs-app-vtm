@@ -13,6 +13,4 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class NumberInputComponent extends BaseControlComponent {
-
-}
+export class NumberInputComponent extends BaseControlComponent {}

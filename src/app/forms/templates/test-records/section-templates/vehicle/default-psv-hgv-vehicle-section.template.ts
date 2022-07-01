@@ -31,7 +31,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       options: [],
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: 'required' }]
     },
     {
       name: 'euVehicleCategory',

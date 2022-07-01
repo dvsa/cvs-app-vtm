@@ -16,6 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class CheckboxGroupComponent extends BaseControlComponent {
   @Input() options: MultiOptions = [];
+
   isChecked(option: string) {
     const checked = this.value && (this.value as Array<string>).includes(option);
     return checked;

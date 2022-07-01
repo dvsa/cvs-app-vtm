@@ -4,7 +4,7 @@
       <h1 class="govuk-fieldset__heading">{{ label }}</h1>
       <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     </legend>
-    <p *ngIf="errorMessage" id="{{ name }}-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error:</span> {{ errorMessage }}</p>
+    <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-radios" data-module="govuk-radios">
       <div *ngFor="let option of options" class="govuk-radios__item">
         <input
