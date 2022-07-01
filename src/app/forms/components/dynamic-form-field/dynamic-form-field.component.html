@@ -2,7 +2,12 @@
   <ng-container *ngIf="control">
     <ng-container [ngSwitch]="control.value.meta.editType">
       <ng-container *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE">
-        <app-autocomplete [label]="control.value.meta.label" [name]="control.value.meta.name" [options]="options" [formControlName]="control.key">
+        <app-autocomplete
+          [label]="control.value.meta.label"
+          [name]="control.value.meta.name"
+          [options]="(options | async) || []"
+          [formControlName]="control.key"
+        >
         </app-autocomplete>
       </ng-container>
 
@@ -11,7 +16,12 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeEditTypes.RADIO">
-        <app-radio-group [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key" [options]="options">
+        <app-radio-group
+          [label]="control.value.meta.label"
+          [name]="control.value.meta.name"
+          [options]="(options | async) || []"
+          [formControlName]="control.key"
+        >
         </app-radio-group>
       </ng-container>
 

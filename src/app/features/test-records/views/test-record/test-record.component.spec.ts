@@ -69,6 +69,18 @@ describe('TestRecordComponent', () => {
       expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
     }));
 
+    it('should run handleSave when save button is clicked', fakeAsync(() => {
+      mockRouteEditable = store.overrideSelector(routeEditable, true);
+
+      tick();
+      fixture.detectChanges();
+
+      jest.spyOn(component, 'handleSave');
+      el.query(By.css('button#save-test-result')).triggerEventHandler('click', {});
+      tick();
+      expect(component.handleSave).toHaveBeenCalledTimes(1);
+    }));
+
     it('should display cancel button when edit query param is true', fakeAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
 

@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
-import { FormNodeTypes, FormNode, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
@@ -12,7 +14,8 @@ describe('DynamicFormGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule]
+      imports: [DynamicFormsModule],
+      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
