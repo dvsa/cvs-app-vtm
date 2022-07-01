@@ -36,6 +36,14 @@ server.get('/vehicles/:vin/*', (req, res) => {
       res.jsonp({ errors: ['No resources match the search criteria.'] });
       console.log('No vehicle found');
       break;
+    case 'PSV':
+      res.jsonp(mockVehicleTechnicalRecordList());
+      console.log('PSV technical record');
+      break;
+    case 'XMGDE02FS0H012345':
+      res.jsonp(mockVehicleTechnicalRecordList());
+      console.log('PSV technical record');
+      break;
     case 'HGV':
       res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
       console.log('HGV technical record');
@@ -53,7 +61,9 @@ server.get('/vehicles/:vin/*', (req, res) => {
       console.log('TRL technical record');
       break;
     default:
-      res.jsonp(mockVehicleTechnicalRecordList());
+      res.status(404);
+      res.statusMessage = 'NotFound';
+      res.jsonp('Error no test records found');
       break;
   }
 });
