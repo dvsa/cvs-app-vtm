@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
@@ -10,6 +11,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
   templateUrl: './base-test-record.component.html'
 })
 export class BaseTestRecordComponent {
+  @ViewChildren(DynamicFormGroupComponent) dynamicFormGroupComponents?: QueryList<DynamicFormGroupComponent>;
   @Input() testResult: TestResultModel | undefined = undefined;
   @Input() edit: boolean = false;
 

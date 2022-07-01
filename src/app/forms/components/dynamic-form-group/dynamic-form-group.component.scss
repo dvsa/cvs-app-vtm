@@ -8,3 +8,9 @@
     margin-top: 30px;
   }
 }
+
+.subheading-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

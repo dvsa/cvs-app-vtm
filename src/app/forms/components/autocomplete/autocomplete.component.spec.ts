@@ -1,9 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AutocompleteComponent } from './autocomplete.component';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
+import { AutocompleteComponent } from './autocomplete.component';
+
+jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+    enhanceSelectElement: () => {}
+  };
+});
 
 @Component({
   selector: 'app-host-component',
@@ -11,37 +20,83 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 class HostComponent {
   name = 'autocomplete';
-  options = ['option1', 'option2', 'option3'];
-  form = new FormGroup({foo: new FormControl()})
+  options = [
+    { label: 'option1', value: 'option1' },
+    { label: 'option2', value: 'option2' }
+  ];
+  form = new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') });
 }
-
 
 describe('AutocompleteComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let mockDocument = jest.spyOn(document, 'querySelector');
-
+  let autocompleteComponent: AutocompleteComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AutocompleteComponent, HostComponent ],
-      providers:[{provide: Document, useValue: mockDocument}],
+      declarations: [AutocompleteComponent, HostComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    let mockElement = document.createElement('div');
-    mockElement.setAttribute('id', "autocomplete");
-    mockDocument.mockReturnValue(mockElement);
-    //should ideally not be mocking document but use the dom that is created by jest instead?
-    fixture.detectChanges(); 
+    autocompleteComponent = fixture.debugElement.query(By.directive(AutocompleteComponent)).componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();  
+    expect(component).toBeTruthy();
+  });
+
+  it.each([
+    ['val1', [{ label: 'val1', value: 'val1' }], 'val1'],
+    [undefined, [{ label: 'val1', value: 'val1' }], 'val2']
+  ])('should return %s for %o when looking for $s', (expected, options, label) => {
+    autocompleteComponent.options = options;
+    expect(autocompleteComponent.findOptionValue(label)).toBe(expected);
+  });
+
+  it('should call handleChange when input value changes', () => {
+    const handleChangeSpy = jest.spyOn(autocompleteComponent, 'handleChange');
+    const autocompleteInput: HTMLInputElement = fixture.debugElement.query(By.css(`#${component.name}`)).nativeElement;
+
+    autocompleteInput.dispatchEvent(new Event('change'));
+
+    expect(handleChangeSpy).toHaveBeenCalled();
+  });
+
+  it('should find option value by label and propagate to form control', () => {
+    const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
+    const control = component.form.get('foo');
+
+    autocompleteComponent.handleChange({ target: { value: 'option2' } });
+
+    expect(findOptionValueSpy).toHaveBeenCalled();
+    expect(control?.value).toBe('option2');
+    expect(control?.touched).toBeTruthy();
+  });
+
+  it('should propagate "" to form control when input is left empty', () => {
+    const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
+    const control = component.form.get('foo');
+
+    autocompleteComponent.handleChange({ target: { value: '' } });
+
+    expect(findOptionValueSpy).toHaveBeenCalled();
+    expect(control?.value).toBe('');
+    expect(control?.touched).toBeTruthy();
+  });
+
+  it('should propagate "[INVALID_OPTION]" to form control when value in not an option', () => {
+    const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
+    const control = component.form.get('foo');
+
+    autocompleteComponent.handleChange({ target: { value: 'option3' } });
+
+    expect(findOptionValueSpy).toHaveBeenCalled();
+    expect(control?.value).toBe('[INVALID_OPTION]');
+    expect(control?.touched).toBeTruthy();
   });
 });

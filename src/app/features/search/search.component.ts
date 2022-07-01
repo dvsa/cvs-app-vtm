@@ -1,64 +1,38 @@
-import { Component, OnDestroy } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { selectQueryParams } from '@store/router/selectors/router.selectors';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { SEARCH_TYPES } from '@services/technical-record/technical-record.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html',
+  templateUrl: './search.component.html'
 })
-export class SearchComponent implements OnDestroy {
-  vehicleTechRecords$: Observable<Array<VehicleTechRecordModel>>;
-  ngDestroy$ = new Subject();
-  searchErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
+export class SearchComponent {
+  missingTermErrorMessage = 'You must provide a vehicle registration mark, trailer ID or vehicle identification number.';
+  missingTypeErrorMessage = 'You must select a valid search criteria';
 
-  constructor(private technicalRecordService: TechnicalRecordService, public globalErrorService: GlobalErrorService, private store: Store, private router: Router) {
-    this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe((params) => {
-      let vin = params['vin'];
+  constructor(public globalErrorService: GlobalErrorService, private router: Router) {}
 
-      if (vin) {
-        this.searchTechRecords(vin);
-      }
-    });
-
-    this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
-  }
-
-  public searchTechRecords(searchTerm: string) {
+  navigateSearch(term: string, type: string): void {
     this.globalErrorService.clearError();
+    term = term.trim();
 
-    if (searchTerm) {
-      searchTerm = searchTerm.trim();
-      this.technicalRecordService.searchBy({ type: 'vin', searchTerm });
+    if (!term) {
+      this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'search-term' });
+    } else if (!Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
+      this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'search-type' });
     } else {
-      this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
+      this.router.navigate(['/search/results'], { queryParams: { [type]: term } });
     }
   }
 
-  public getInlineErrorMessage(): Observable<number> {
-    return this.globalErrorService.errors$.pipe(map((errors) => errors.length));
+  getInlineErrorMessage(name: string): Observable<boolean> {
+    return this.globalErrorService.errors$.pipe(map((errors) => errors.some((error) => error.anchorLink === name)));
   }
 
-  public navigateSearch(search: string): void {
-    if (search) {
-      const extras: NavigationExtras = {
-        queryParams: {
-          vin: search
-        }
-      };
-      this.router.navigate(['/search'], extras);
-    } else {
-      this.globalErrorService.clearError();
-      this.globalErrorService.addError({ error: this.searchErrorMessage, anchorLink: 'search-term' });
-    }
-  }
-
-  ngOnDestroy() {
-    this.ngDestroy$.next(true);
-    this.ngDestroy$.complete();
+  getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
+    return errors.find((error) => error.anchorLink === name);
   }
 }

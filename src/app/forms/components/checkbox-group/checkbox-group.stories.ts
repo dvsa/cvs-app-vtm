@@ -3,7 +3,6 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { CheckboxGroupComponent } from './checkbox-group.component';
-import { withKnobs } from '@storybook/addon-knobs';
 
 export default {
   title: 'Forms/Checkbox group',
@@ -26,8 +25,7 @@ export default {
     moduleMetadata({
       declarations: [CheckboxGroupComponent, BaseControlComponent],
       imports: [CommonModule, FormsModule, ReactiveFormsModule]
-    }),
-    withKnobs
+    })
   ]
 } as Meta;
 

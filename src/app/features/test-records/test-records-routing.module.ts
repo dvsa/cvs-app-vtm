@@ -7,13 +7,13 @@ import { TestRecordComponent } from './views/test-record/test-record.component';
 
 const routes: Routes = [
   {
-    path: ':systemId/test-result/:testResultId',
+    path: ':systemNumber/test-result/:testResultId/:testTypeId',
     component: TestRecordComponent,
     data: { title: 'Test Result' },
     resolve: { load: TestResultResolver }
   },
   {
-    path: ':systemId/test-result/:testResultId/amended/:createdAt',
+    path: ':systemNumber/test-result/:testResultId/:testTypeId/amended/:createdAt',
     component: AmendedTestRecordComponent,
     data: { title: 'Amend Test Result' },
     resolve: { load: TestResultResolver },

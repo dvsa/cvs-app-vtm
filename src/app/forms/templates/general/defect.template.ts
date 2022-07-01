@@ -7,47 +7,56 @@ export const DefectTpl: FormNode = {
     {
       name: 'deficiencyRef',
       label: 'Deficiency ref',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'deficiencyCategory',
       label: 'Deficiency category',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'imNumber',
       label: 'IM number',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'imDescription',
       label: 'IM description',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'itemNumber',
       label: 'Item No.',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'itemDescription',
       label: 'Item description',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'deficiencyId',
       label: 'Deficiency ID',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'deficiencySubId',
       label: 'Deficiency sub ID',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'deficiencyText',
       label: 'Deficiency text',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'additionalInformation',
@@ -62,56 +71,66 @@ export const DefectTpl: FormNode = {
             {
               name: 'vertical',
               label: 'Vertical',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             },
             {
               name: 'horizontal',
               label: 'Horizontal',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             },
             {
               name: 'lateral',
               label: 'Lateral',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             },
             {
               name: 'longitudinal',
               label: 'Longitudinal',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             },
             {
               name: 'rowNumber',
               label: 'Row number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             },
             {
               name: 'seatNumber',
               label: 'Seat number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             },
             {
               name: 'axleNumber',
               label: 'Axle number',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              disabled: true
             }
           ]
         },
         {
           name: 'notes',
           label: 'Notes',
-          type: FormNodeTypes.CONTROL
+          type: FormNodeTypes.CONTROL,
+          disabled: true
         }
       ]
     },
     {
       name: 'prs',
       label: 'PRS',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'prohibitionIssued',
       label: 'Prohibition issued',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     }
   ]
 };

@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const VehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -10,6 +10,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -17,6 +18,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'vrm',
       label: 'VRM',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -24,6 +26,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'trailerId',
       label: 'Trailer ID',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -31,6 +34,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
+      disabled: true,
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
 
       type: FormNodeTypes.CONTROL
     },
@@ -38,6 +43,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -49,7 +55,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
         leftComponentName: 'preparerName',
         rightComponentName: 'preparerId',
         separator: ' - '
-      }
+      },
+      disabled: true
     },
     {
       name: 'preparerName',
@@ -57,7 +64,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      disabled: true
     },
     {
       name: 'preparerId',
@@ -65,7 +73,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      disabled: true
     }
   ]
 };

@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -13,8 +13,4 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class NumberInputComponent extends BaseControlComponent {
-  constructor(injector: Injector) {
-    super(injector);
-  }
-}
+export class NumberInputComponent extends BaseControlComponent {}

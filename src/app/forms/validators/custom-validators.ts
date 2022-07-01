@@ -66,4 +66,12 @@ export class CustomValidators {
       return valid ? null : { customPattern: { message } };
     };
   }
+
+  static invalidOption: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    if ('[INVALID_OPTION]' === control.value) {
+      return { invalidOption: true };
+    }
+
+    return null;
+  };
 }

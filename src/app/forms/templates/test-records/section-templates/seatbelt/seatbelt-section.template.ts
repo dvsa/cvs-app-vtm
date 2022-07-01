@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const SeatbeltSection: FormNode = {
   name: 'seatbeltSection',
@@ -19,6 +19,7 @@ export const SeatbeltSection: FormNode = {
               name: 'seatbeltInstallationCheckDate',
               label: 'Carried out during test',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -26,6 +27,7 @@ export const SeatbeltSection: FormNode = {
               name: 'numberOfSeatbeltsFitted',
               label: 'Number of seatbelts fitted',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL
             },
@@ -33,9 +35,11 @@ export const SeatbeltSection: FormNode = {
               name: 'lastSeatbeltInstallationCheckDate',
               label: 'Most recent installation check',
               value: '',
+              disabled: true,
 
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
             }
           ]
         }

@@ -1,6 +1,6 @@
-import { AfterContentInit, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Observable, of, Subject, Subscription, takeWhile } from 'rxjs';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -22,30 +22,31 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   private day$: Observable<number>;
   private month$: Observable<number>;
   private year$: Observable<number>;
-  private subscription?: Subscription;
+  private subscriptions: Array<Subscription | undefined> = [];
 
   public day?: number;
   public month?: number;
   public year?: number;
 
-  constructor(injector: Injector) {
-    super(injector);
+  constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
+    super(injector, changeDetectorRef);
     this.day$ = this.day_.asObservable();
     this.month$ = this.month_.asObservable();
     this.year$ = this.year_.asObservable();
   }
 
   ngOnInit(): void {
-    this.subscription = this.subscribeAndPropagateChanges();
+    this.subscriptions.push(this.subscribeAndPropagateChanges());
   }
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
     this.addValidators();
+    this.subscriptions.push(this.watchValue());
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscriptions.forEach((s) => s && s.unsubscribe());
   }
 
   onDayChange(event: any) {
@@ -61,12 +62,34 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   /**
+   * subscribe to value and propagate to date segments
+   */
+  watchValue() {
+    return this.control?.valueChanges.pipe(distinctUntilChanged()).subscribe((value) => {
+      if (value && typeof value === 'string') {
+        const date = new Date(value);
+        this.day = date.getDate();
+        this.day_.next(this.day);
+        this.month = date.getMonth() + 1;
+        this.month_.next(this.month);
+        this.year = date.getFullYear();
+        this.year_.next(this.year);
+      }
+    });
+  }
+
+  /**
    * Subscribes to all date segments and propagates value as `Date`.
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
     return combineLatest({ day: this.day$, month: this.month$, year: this.year$ }).subscribe({
       next: ({ day, month, year }) => {
+        if (!day || !month || !year) {
+          this.onChange(null);
+          return;
+        }
+
         const date = new Date(`${year}-${month}-${day}`);
         this.onChange(date);
       }

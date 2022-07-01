@@ -1,4 +1,5 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const VehicleSectionDefaultPsvHgv: FormNode = {
   name: 'vehicleSection',
@@ -10,6 +11,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -17,6 +19,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'vrm',
       label: 'VRM',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -24,13 +27,17 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
-
-      type: FormNodeTypes.CONTROL
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
+      options: [],
+      referenceData: ReferenceDataResourceType.CountryOfRegistration,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: 'required' }]
     },
     {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
+      disabled: true,
 
       type: FormNodeTypes.CONTROL
     },
@@ -42,7 +49,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
         leftComponentName: 'odometerReading',
         rightComponentName: 'odometerReadingUnits',
         separator: ' '
-      }
+      },
+      disabled: true
     },
     {
       name: 'odometerReading',
@@ -58,9 +66,14 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReadingUnits',
       label: 'Odometer Reading Units',
       value: '',
+      options: [
+        { value: 'kilometres', label: 'Kilometres' },
+        { value: 'miles', label: 'Miles' }
+      ],
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.RADIO
     },
     {
       name: 'preparerCombination',
@@ -70,7 +83,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
         leftComponentName: 'preparerName',
         rightComponentName: 'preparerId',
         separator: ' - '
-      }
+      },
+      disabled: true
     },
     {
       name: 'preparerName',
@@ -78,7 +92,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      disabled: true
     },
     {
       name: 'preparerId',
@@ -86,7 +101,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      disabled: true
     }
   ]
 };
