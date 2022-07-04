@@ -79,7 +79,7 @@ export class DynamicFormService {
     return controls;
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any[] }> = []) {
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any }> = []) {
     validators.forEach((v) => {
       control.addValidators(this.validatorMap[v.name](v.args));
     });
