@@ -33,13 +33,13 @@ export function getBodyTemplate(isPsv: boolean = false): FormNode {
 
   bodyFormControl.children?.push(
       {
-        name: 'bodyMake',
+        name: 'make',
         label: 'Body make',
         value: '',
         type: FormNodeTypes.CONTROL,
       },
       {
-        name: 'bodyModel',
+        name: 'model',
         label: 'Body model',
         value: '',
         type: FormNodeTypes.CONTROL,
