@@ -42,7 +42,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
     this.addValidators();
-    this.subscriptions.push(this.watchValue());
+    this.valueWriteBack(this.value);
   }
 
   ngOnDestroy(): void {
@@ -61,21 +61,16 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.year_.next(event);
   }
 
-  /**
-   * subscribe to value and propagate to date segments
-   */
-  watchValue() {
-    return this.control?.valueChanges.pipe(distinctUntilChanged()).subscribe((value) => {
-      if (value && typeof value === 'string') {
-        const date = new Date(value);
-        this.day = date.getDate();
-        this.day_.next(this.day);
-        this.month = date.getMonth() + 1;
-        this.month_.next(this.month);
-        this.year = date.getFullYear();
-        this.year_.next(this.year);
-      }
-    });
+  valueWriteBack(value: string | null): void {
+    if (value && typeof value === 'string') {
+      const date = new Date(value);
+      this.day = date.getDate();
+      this.day_.next(this.day);
+      this.month = date.getMonth() + 1;
+      this.month_.next(this.month);
+      this.year = date.getFullYear();
+      this.year_.next(this.year);
+    }
   }
 
   /**

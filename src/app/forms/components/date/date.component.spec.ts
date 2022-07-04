@@ -73,6 +73,8 @@ describe('DateComponent', () => {
       const date = new Date(`${2022}-${0o1}-${0o1}`);
       component.dateComponent?.control?.patchValue(date.toISOString());
 
+      component.dateComponent?.valueWriteBack(date.toISOString());
+
       tick();
       component.dateComponent?.control?.meta.changeDetection?.detectChanges();
 
