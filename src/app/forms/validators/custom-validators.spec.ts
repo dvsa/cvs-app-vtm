@@ -9,12 +9,14 @@ interface CustomPatternMessage {
 
 describe('Hiding validators', () => {
   let form: FormGroup;
+
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
       bar: new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, null)
     });
   });
+
   describe('Hide if empty', () => {
     it('should return null', () => {
       expect(CustomValidators.hideIfEmpty('foo')(form.controls['bar'] as AbstractControl)).toEqual(null);
@@ -32,6 +34,7 @@ describe('Hiding validators', () => {
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
     });
   });
+
   describe('Hide if equals', () => {
     it('should return null', () => {
       expect(CustomValidators.hideIfEquals('foo', 'foo')(form.controls['bar'] as AbstractControl)).toEqual(null);
@@ -59,14 +62,17 @@ describe('Hiding validators', () => {
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
     });
   });
+
   describe('Hide if not equals', () => {
     let form: FormGroup;
+
     beforeEach(() => {
       form = new FormGroup({
         foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
         bar: new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, null)
       });
     });
+
     it('should return null', () => {
       expect(CustomValidators.hideIfNotEqual('foo', 'foo')(form.controls['bar'] as AbstractControl)).toEqual(null);
     });
@@ -129,7 +135,17 @@ describe('customPattern', () => {
       expect(validation).toBeNull();
     }
   });
+
   it('should throw an error if an invalid regex is given', () => {
     expect(CustomValidators.customPattern(['regex', 'msg'])).toThrowError();
+  });
+});
+
+describe('invalidOption', () => {
+  it.each([
+    [null, ''],
+    [{ invalidOption: true }, '[INVALID_OPTION]']
+  ])('should return %p when control value is %s', (expected: object | null, input: string) => {
+    expect(CustomValidators.invalidOption(new FormControl(input))).toEqual(expected);
   });
 });
