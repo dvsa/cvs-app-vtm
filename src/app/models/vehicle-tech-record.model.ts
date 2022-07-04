@@ -263,6 +263,23 @@ export interface TechRecordModel {
   // Coupling center to rear trailer
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
+  plates?: Plates[];
+}
+
+export interface Plates {
+  plateSerialNumber: string;
+  plateIssueDate: Date;
+  plateReasonForIssue: PlateReasonForIssue;
+  plateIssuer: string;
+}
+
+export enum PlateReasonForIssue {
+  FREE_REPLACEMENT = 'Free replacement',
+  REPLACEMENT = 'Replacement',
+  DESTROYED = 'Destroyed',
+  PROVISIONAL = 'Provisional',
+  ORIGINAL = 'Original',
+  MANUAL = 'Manual'
 }
 
 export interface ApplicantDetails {

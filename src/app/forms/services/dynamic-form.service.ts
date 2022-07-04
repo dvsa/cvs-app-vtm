@@ -116,15 +116,11 @@ export class DynamicFormService {
       meta: { name, label }
     } = control;
 
-    // const valildationErrors: GlobalError[] = [];
-
     if (errors) {
       const errorList = Object.keys(errors);
       errorList.forEach((error) => {
         validationErrorList.push({ error: ErrorMessageMap[error](errors[error], label), anchorLink: name } as GlobalError);
       });
     }
-
-    // return valildationErrors;
   }
 }

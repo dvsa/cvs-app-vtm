@@ -89,7 +89,7 @@ describe('AutocompleteComponent', () => {
     expect(control?.touched).toBeTruthy();
   });
 
-  it('should propagate "[INVALID_OPTION]" to form control when value in not an option', () => {
+  it('should propagate "[INVALID_OPTION]" to form control when value is not an option', () => {
     const findOptionValueSpy = jest.spyOn(autocompleteComponent, 'findOptionValue');
     const control = component.form.get('foo');
 
