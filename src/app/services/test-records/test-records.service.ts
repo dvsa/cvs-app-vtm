@@ -76,16 +76,16 @@ export class TestRecordsService {
   }
 
   saveTestResult(
+    systemNumber: string,
     user: { username: string; id?: string },
     body: TestResultModel,
     observe?: 'body',
     reportProgress?: boolean
   ): Observable<TestResultModel[]> {
     const { username, id } = user;
-    const { testResultId } = body;
     return this.updateTestResultsService.testResultsTestResultIdPut(
       { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as TestResultPutBody,
-      testResultId,
+      systemNumber,
       observe,
       reportProgress
     ) as unknown as Observable<TestResultModel[]>;
