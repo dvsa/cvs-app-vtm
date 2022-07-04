@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomValidators } from '@forms/validators/custom-validators';
@@ -11,13 +11,14 @@ import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNode
 export class DynamicFormService {
   constructor() {}
 
-  validatorMap: { [key: string]: any } = {
+  validatorMap: { [key: string]: (args: any) => ValidatorFn } = {
     required: () => Validators.required,
     hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
     pattern: (args: string) => Validators.pattern(args),
-    customPattern: (args: any) => CustomValidators.customPattern([...args]),
+    customPattern: (args: string[]) => CustomValidators.customPattern([...args]),
     numeric: () => CustomValidators.numeric(),
-    maxLength: (args: number) => Validators.maxLength(args)
+    maxLength: (args: number) => Validators.maxLength(args),
+    minLength: (args: number) => Validators.minLength(args)
   };
 
   createForm(f: FormNode, d?: any): CustomFormGroup | CustomFormArray {
@@ -78,7 +79,7 @@ export class DynamicFormService {
     return controls;
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any[] }> = []) {
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any }> = []) {
     validators.forEach((v) => {
       control.addValidators(this.validatorMap[v.name](v.args));
     });
