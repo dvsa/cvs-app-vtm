@@ -1,24 +1,16 @@
-<section *ngIf="testResult$ | async as testResult">
-  <ng-container [ngSwitch]="testResult.vehicleType">
-    <ng-container *ngSwitchCase="vehicleTypes.PSV">
-      <ng-container *ngFor="let section of masterTpl[vehicleTypes.PSV] | keyvalue">
-        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngSwitchCase="vehicleTypes.HGV">
-      <ng-container *ngFor="let section of masterTpl[vehicleTypes.HGV] | keyvalue">
-        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngSwitchCase="vehicleTypes.TRL">
-      <ng-container *ngFor="let section of masterTpl[vehicleTypes.TRL] | keyvalue">
-        <app-dynamic-form-group [template]="section.value" [data]="testResult"></app-dynamic-form-group>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+<app-button-group>
+  <app-button *ngIf="(edit$ | async) === false" id="edit-test-result" (clicked)="handleEdit()">Edit</app-button>
 
+  <ng-container *ngIf="(edit$ | async) === true">
+    <app-button id="save-test-result" (clicked)="handleSave()">Submit</app-button>
+    <app-button id="cancel-edit-test-result" type="secondary" (clicked)="handleCancel()">Cancel</app-button>
+  </ng-container>
+</app-button-group>
+
+<section *ngIf="testResult$ | async as testResult">
+  <app-base-test-record [edit]="(edit$ | async) || false" [testResult]="testResult"></app-base-test-record>
   <section class="section">
-    <app-defects [edit]="false" [defectsData$]="defectsData$"></app-defects>
+    <app-defects [edit]="(edit$ | async) || false" [defectsData$]="defectsData$"></app-defects>
   </section>
 
   <section class="section">

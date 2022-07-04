@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
@@ -15,10 +15,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class ViewListItemComponent extends BaseControlComponent {
-  constructor(injector: Injector) {
-    super(injector);
-  }
-
   get formNodeViewTypes(): typeof FormNodeViewTypes {
     return FormNodeViewTypes;
   }

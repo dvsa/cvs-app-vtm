@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { MultiOptions } from '../../models/options.model';
 import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { CheckboxGroupComponent } from './checkbox-group.component';
 
 @Component({
@@ -32,7 +33,7 @@ describe('CheckboxGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostComponent, CheckboxGroupComponent, BaseControlComponent],
+      declarations: [HostComponent, CheckboxGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });

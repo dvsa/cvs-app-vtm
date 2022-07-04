@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
@@ -6,20 +6,23 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeView
 @Component({
   selector: 'app-dynamic-form-group',
   templateUrl: './dynamic-form-group.component.html',
-  styleUrls: ['./dynamic-form-group.component.scss']
+  styleUrls: ['./dynamic-form-group.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynamicFormGroupComponent implements OnInit {
+export class DynamicFormGroupComponent implements OnChanges {
   @Input() data: any = {};
-  @Input() template!: FormNode;
-  @Input() isReadonly = true;
+  @Input() template?: FormNode;
+  @Input() edit = false;
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
 
   constructor(private dfs: DynamicFormService) {}
 
-  ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.data);
-    this.form.patchValue(this.data);
+  ngOnChanges(changes: SimpleChanges): void {
+    const { template } = changes;
+    if (template && template.currentValue) {
+      this.form = this.dfs.createForm(template.currentValue, this.data);
+    }
   }
 
   entriesOf(obj: FormGroup): { key: string; value: any }[] {
@@ -29,8 +32,8 @@ export class DynamicFormGroupComponent implements OnInit {
     }));
   }
 
-  trackByFn(index: number) {
-    return index;
+  trackByFn(index: number, item: any) {
+    return item.hasOwnProperty('key') ? item.key : index;
   }
 
   get formNodeTypes(): typeof FormNodeTypes {

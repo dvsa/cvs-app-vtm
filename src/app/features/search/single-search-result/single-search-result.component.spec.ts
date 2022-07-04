@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
@@ -13,7 +15,7 @@ describe('SingleSearchResultComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SingleSearchResultComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, DynamicFormsModule, RouterTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });

@@ -1,4 +1,15 @@
-import { AbstractControl, AbstractControlOptions, AsyncValidatorFn, FormArray, FormControl, FormControlOptions, FormGroup, ValidatorFn } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+import {
+  AbstractControl,
+  AbstractControlOptions,
+  AsyncValidatorFn,
+  FormArray,
+  FormControl,
+  FormControlOptions,
+  FormGroup,
+  ValidatorFn
+} from '@angular/forms';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -20,9 +31,19 @@ export enum FormNodeTypes {
   COMBINATION = 'combination'
 }
 
+export enum FormNodeEditTypes {
+  TEXT = 'text',
+  AUTOCOMPLETE = 'autocomplete',
+  NUMBER = 'number',
+  TEXTAREA = 'textarea',
+  DATE = 'date',
+  RADIO = 'radio'
+}
+
 export interface FormNodeOption<T> {
   value: T;
   label: string;
+  hint?: string;
 }
 
 export interface FormNode {
@@ -30,14 +51,18 @@ export interface FormNode {
   children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
+  editType?: FormNodeEditTypes;
   label?: string;
   value?: string;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
-  validators?: string[];
+  validators?: { name: string; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
+  hide?: boolean;
+  changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
+  referenceData?: ReferenceDataResourceType;
 }
 
 export interface FormNodeCombinationOptions {
@@ -58,17 +83,32 @@ export interface CustomControl extends FormControl {
 export class CustomFormControl extends FormControl implements CustomControl {
   meta: FormNode;
 
-  constructor(meta: FormNode, formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
+  constructor(
+    meta: FormNode,
+    formState?: any,
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+  ) {
     super(formState, validatorOrOpts, asyncValidator);
     this.meta = meta;
   }
+}
+
+interface BaseForm {
+  /**
+   * function that returns the json object value of the form after removing all the disabled controls
+   * and properties where meta.type is not 'control', 'group' or 'array
+   *
+   * @returns form json value
+   */
+  getCleanValue: (form: CustomFormGroup | CustomFormArray) => { [key: string]: any } | Array<[]>;
 }
 
 export interface CustomGroup extends FormGroup {
   meta: FormNode;
 }
 
-export class CustomFormGroup extends FormGroup implements CustomGroup {
+export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm {
   meta: FormNode;
 
   constructor(
@@ -82,17 +122,44 @@ export class CustomFormGroup extends FormGroup implements CustomGroup {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
   }
+
+  getCleanValue = cleanValue.bind(this);
 }
 
 export interface CustomArray extends FormArray {
   meta: FormNode;
 }
 
-export class CustomFormArray extends FormArray implements CustomArray {
+export class CustomFormArray extends FormArray implements CustomArray, BaseForm {
   meta: FormNode;
 
-  constructor(meta: FormNode, controls: AbstractControl[], validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
+  constructor(
+    meta: FormNode,
+    controls: AbstractControl[],
+    validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+  ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
   }
+
+  getCleanValue = cleanValue.bind(this);
 }
+
+const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: any } | Array<[]> => {
+  const cleanValue = form instanceof CustomFormArray ? [] : ({} as { [key: string]: any });
+  Object.keys(form.controls).forEach((key) => {
+    const control = (form.controls as any)[key];
+    if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
+      cleanValue[key] = control.getCleanValue(control);
+    } else if (control instanceof CustomFormArray) {
+      cleanValue[key] = control.getCleanValue(control);
+    } else if (control instanceof CustomFormControl) {
+      if (control.meta.type === FormNodeTypes.CONTROL) {
+        Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
+      }
+    }
+  });
+
+  return cleanValue;
+};

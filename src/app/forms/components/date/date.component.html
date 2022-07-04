@@ -1,0 +1,61 @@
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name }}-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">{{ label }}</legend>
+    <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+    <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
+    <div class="govuk-date-input" id="{{ name }}">
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="{{ name }}-day"> Day </label>
+          <input
+            class="govuk-input govuk-date-input__input govuk-input--width-2"
+            id="{{ name }}-day"
+            name="{{ name }}-day"
+            type="text"
+            inputmode="numeric"
+            [(ngModel)]="day"
+            [disabled]="disabled ?? false"
+            (ngModelChange)="onDayChange($event)"
+            (blur)="onTouched(); handleEvent($event)"
+            (focus)="handleEvent($event)"
+          />
+        </div>
+      </div>
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="{{ name }}-month"> Month </label>
+          <input
+            class="govuk-input govuk-date-input__input govuk-input--width-2"
+            id="{{ name }}-month"
+            name="{{ name }}-month"
+            type="text"
+            inputmode="numeric"
+            [(ngModel)]="month"
+            [disabled]="disabled ?? false"
+            (ngModelChange)="onMonthChange($event)"
+            (blur)="onTouched(); handleEvent($event)"
+            (focus)="handleEvent($event)"
+          />
+        </div>
+      </div>
+      <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="{{ name }}-year"> Year </label>
+          <input
+            class="govuk-input govuk-date-input__input govuk-input--width-4"
+            id="{{ name }}-year"
+            name="{{ name }}-year"
+            type="text"
+            inputmode="numeric"
+            [minlength]="4"
+            [(ngModel)]="year"
+            [disabled]="disabled ?? false"
+            (ngModelChange)="onYearChange($event)"
+            (blur)="onTouched(); handleEvent($event)"
+            (focus)="handleEvent($event)"
+          />
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
