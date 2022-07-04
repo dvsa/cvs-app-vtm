@@ -53,11 +53,6 @@ export const selectedTestSortedAmendmentHistory = createSelector(selectedTestRes
   return notFound ? sortedArray?.concat(notFound) : sortedArray;
 });
 
-// export const selectTestFromSelectedTestResult = createSelector(selectedTestResultState, selectRouteNestedParams, (testResult, params) => {
-//   const { testTypeId } = params;
-//   return testResult?.testTypes?.find((testType) => testType.testTypeId === testTypeId);
-// });
-
 export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testTypeId, createdAt }) => {
   const amendedTest = testRecord?.testHistory?.find((i) => {
     return i.createdAt === createdAt;
