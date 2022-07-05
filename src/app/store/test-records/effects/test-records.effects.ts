@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
@@ -78,9 +79,14 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(updateTestResultState),
       debounceTime(500),
-      mergeMap(() => this.testRecordsService.testResult$.pipe(withLatestFrom(this.userService.userName$, this.userService.id$), take(1))),
-      mergeMap(([testResult, username, id]) => {
-        return this.testRecordsService.saveTestResult({ username, id }, testResult!).pipe(
+      mergeMap(() =>
+        this.testRecordsService.testResult$.pipe(
+          withLatestFrom(this.userService.userName$, this.userService.id$, this.routerService.getRouteParam$('systemNumber')),
+          take(1)
+        )
+      ),
+      mergeMap(([testResult, username, id, systemNumber]) => {
+        return this.testRecordsService.saveTestResult(systemNumber!, { username, id }, testResult!).pipe(
           take(1),
           map(() => updateTestResultSuccess()),
           catchError((e) => {
@@ -105,6 +111,7 @@ export class TestResultsEffects {
     private actions$: Actions,
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
-    private userService: UserService
+    private userService: UserService,
+    private routerService: RouterService
   ) {}
 }

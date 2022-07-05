@@ -34,25 +34,6 @@ export const EmissionsSection: FormNode = {
               disabled: true
             },
             {
-              name: 'modType',
-              label: 'Modification Type',
-              type: FormNodeTypes.GROUP,
-              children: [
-                {
-                  name: 'code',
-                  label: 'Modification code',
-                  type: FormNodeTypes.CONTROL,
-                  disabled: true
-                },
-                {
-                  name: 'description',
-                  label: 'Modification description',
-                  type: FormNodeTypes.CONTROL,
-                  disabled: true
-                }
-              ]
-            },
-            {
               name: 'modificationTypeUsed',
               label: 'Modification type used',
               type: FormNodeTypes.CONTROL,

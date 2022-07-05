@@ -7,6 +7,7 @@ import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
@@ -55,7 +56,8 @@ describe('TestResultsEffects', () => {
             }
           ]
         }),
-        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } }
+        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } },
+        RouterService
       ]
     });
 
