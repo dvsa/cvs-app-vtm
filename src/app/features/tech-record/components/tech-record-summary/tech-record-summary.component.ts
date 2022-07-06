@@ -78,7 +78,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.PSV,
-          this.vehicleTechRecord.noOfAxles,
+          this.vehicleTechRecord?.noOfAxles,
           this.vehicleTechRecord?.dimensions?.axleSpacing
         );
         this.applicantDetailsTemplate = PsvApplicantDetails;
@@ -102,7 +102,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.tyresTemplate = getTyresSection();
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.HGV,
-          this.vehicleTechRecord.noOfAxles,
+          this.vehicleTechRecord?.noOfAxles,
           this.vehicleTechRecord?.dimensions?.axleSpacing
         );
         this.firstMinMaxTemplate = getDimensionsMinMaxSection(
@@ -126,7 +126,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.brakesTemplate = BrakesTemplate;
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.TRL,
-          this.vehicleTechRecord.noOfAxles,
+          this.vehicleTechRecord?.noOfAxles,
           this.vehicleTechRecord?.dimensions?.axleSpacing
         );
         this.firstMinMaxTemplate = getDimensionsMinMaxSection(
