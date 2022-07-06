@@ -29,11 +29,7 @@ describe('Custom Classes', () => {
             {
               name: 'levelTwoArray',
               type: FormNodeTypes.ARRAY,
-              children: [
-                { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
-                { name: 'sectionLabel', type: FormNodeTypes.SECTION, label: 'Section Label' },
-                { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
-              ]
+              children: [{ name: '0', type: FormNodeTypes.CONTROL, value: '1' }]
             }
           ]
         }
@@ -49,7 +45,7 @@ describe('Custom Classes', () => {
     it('should return a json object where properties are only FormNodeTypes GROUP | ARRAY | CONTROL', inject(
       [DynamicFormService],
       (dfs: DynamicFormService) => {
-        const form = dfs.createForm(template);
+        const form = dfs.createForm(template, expected);
         expect(form.getCleanValue(form)).toEqual(expected);
       }
     ));

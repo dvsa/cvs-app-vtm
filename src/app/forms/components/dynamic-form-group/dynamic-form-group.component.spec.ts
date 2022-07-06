@@ -114,8 +114,21 @@ describe('DynamicFormGroupComponent', () => {
       ]
     };
 
+    const data = {
+      levelOneControl: 'some string',
+      levelOneGroup: {
+        levelTwoControl: 'some string',
+        levelTwoArray: [
+          {
+            levelTwoArrayControlOne: 'some string',
+            levelTwoArrayControlTwo: 'some string'
+          }
+        ]
+      }
+    };
+
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
-      component.form = dfs.createForm(template);
+      component.form = dfs.createForm(template, data);
 
       fixture.detectChanges();
 
@@ -128,7 +141,7 @@ describe('DynamicFormGroupComponent', () => {
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
       component.edit = true;
-      component.form = dfs.createForm(template);
+      component.form = dfs.createForm(template, data);
 
       fixture.detectChanges();
 
