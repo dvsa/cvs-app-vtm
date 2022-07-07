@@ -88,11 +88,11 @@ describe('DynamicFormService', () => {
         type: FormNodeTypes.GROUP,
         children: [
           <FormNode>{
-            name: 'nestedArray',
+            name: 'vins',
             type: FormNodeTypes.ARRAY,
             children: [
               <FormNode>{
-                name: 'vin',
+                name: '0',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
@@ -102,10 +102,14 @@ describe('DynamicFormService', () => {
         ]
       };
 
-      const outputGroup = service.createForm(node);
-      const formArray = outputGroup.get('nestedArray');
+      const data = {
+        vins: ['123', '456']
+      };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('vins');
       expect(formArray instanceof FormArray).toBeTruthy();
-      expect((formArray as FormArray).controls.length).toBe(1);
+      expect((formArray as FormArray).controls.length).toBe(2);
     });
 
     it('should return a formGroup with a nested FormArray with data given ', () => {

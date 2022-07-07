@@ -25,7 +25,7 @@ import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templat
 import { getBodyTemplate } from '@forms/templates/general/body.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
-import { PlatesTemplate } from '@forms/templates/general/plates.template'
+import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
 
@@ -66,7 +66,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.currentBrakeRecord = this.vehicleTechRecord?.brakes;
   }
 
-  constructor() { }
+  constructor() {}
 
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {
@@ -76,7 +76,11 @@ export class TechRecordSummaryComponent implements OnInit {
         this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
-        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
+        this.dimensionsTemplate = getDimensionsSection(
+          VehicleTypes.PSV,
+          this.vehicleTechRecord?.noOfAxles,
+          this.vehicleTechRecord?.dimensions?.axleSpacing
+        );
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
@@ -90,14 +94,22 @@ export class TechRecordSummaryComponent implements OnInit {
       case 'hgv': {
         this.vehicleSummaryTemplate = HgvTechRecord;
         this.approvalTypeTemplate = getTypeApprovalSection();
-        this.bodyTemplate = getBodyTemplate()
+        this.bodyTemplate = getBodyTemplate();
         this.grossVehicleWeightTemplate = HgvGrossVehicleWeight;
         this.trainWeightTemplate = HgvGrossTrainWeight;
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = HgvAxleWeights;
         this.tyresTemplate = getTyresSection();
-        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
-        this.firstMinMaxTemplate = getDimensionsMinMaxSection('Front of vehicle to 5th wheel coupling', 'frontAxleTo5thWheelCouplingMin', 'frontAxleTo5thWheelCouplingMax');
+        this.dimensionsTemplate = getDimensionsSection(
+          VehicleTypes.HGV,
+          this.vehicleTechRecord?.noOfAxles,
+          this.vehicleTechRecord?.dimensions?.axleSpacing
+        );
+        this.firstMinMaxTemplate = getDimensionsMinMaxSection(
+          'Front of vehicle to 5th wheel coupling',
+          'frontAxleTo5thWheelCouplingMin',
+          'frontAxleTo5thWheelCouplingMax'
+        );
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
         this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
@@ -107,14 +119,26 @@ export class TechRecordSummaryComponent implements OnInit {
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecordTemplate;
         this.approvalTypeTemplate = getTypeApprovalSection();
-        this.bodyTemplate = getBodyTemplate()
+        this.bodyTemplate = getBodyTemplate();
         this.axleWeightsTemplate = TrlAxleWeightsTemplate;
         this.grossVehicleWeightTemplate = TrlGrossVehicleWeightTemplate;
         this.tyresTemplate = getTyresSection();
         this.brakesTemplate = BrakesTemplate;
-        this.dimensionsTemplate = getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord?.dimensions?.axleSpacing);
-        this.firstMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax');
-        this.secondMinMaxTemplate = getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax');
+        this.dimensionsTemplate = getDimensionsSection(
+          VehicleTypes.TRL,
+          this.vehicleTechRecord?.noOfAxles,
+          this.vehicleTechRecord?.dimensions?.axleSpacing
+        );
+        this.firstMinMaxTemplate = getDimensionsMinMaxSection(
+          'Coupling center to rear axle',
+          'couplingCenterToRearAxleMin',
+          'couplingCenterToRearAxleMax'
+        );
+        this.secondMinMaxTemplate = getDimensionsMinMaxSection(
+          'Coupling center to rear trailer',
+          'couplingCenterToRearTrlMin',
+          'couplingCenterToRearTrlMax'
+        );
         this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
