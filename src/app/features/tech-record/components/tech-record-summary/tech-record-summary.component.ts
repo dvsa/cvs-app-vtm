@@ -28,6 +28,7 @@ import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
+import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -60,6 +61,7 @@ export class TechRecordSummaryComponent implements OnInit {
   platesTemplate?: FormNode;
   trlAuthIntoServiceTemplate?: FormNode;
   trlManufacturerTemplate?: FormNode;
+  ddaTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -76,6 +78,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
+        this.ddaTemplate = PsvDdaTemplate;
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.PSV,
           this.vehicleTechRecord?.noOfAxles,
