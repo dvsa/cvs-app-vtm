@@ -264,6 +264,22 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
+  dda?: DDA;
+}
+
+export interface DDA {
+  certificateIssued: boolean;
+  wheelchairCapacity: number;
+  wheelchairFittings: string;
+  wheelchairLiftPresent: boolean;
+  wheelchairLiftInformation: string;
+  wheelchairRampPresent: boolean;
+  wheelchairRampInformation: string;
+  minEmergencyExits: number;
+  outswing: string;
+  ddaSchedules: string;
+  seatbeltsFitted: number;
+  ddaNotes: string;
 }
 
 export interface Plates {
