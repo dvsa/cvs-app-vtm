@@ -65,7 +65,7 @@ const currentTechRecord = {
         width: 2,
         height: 6,
         axleSpacing: [{
-            axles: '1-2',
+            axles: '1',
             value: 4
         }]
     },

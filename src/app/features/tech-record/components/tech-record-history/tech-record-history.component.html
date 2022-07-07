@@ -12,14 +12,14 @@
     </tr>
   </thead>
   <tbody class="govuk-table__body">
-    <tr class="govuk-table__row" *ngFor="let techRecord of vehicleTechRecord?.techRecord">
+    <tr class="govuk-table__row" *ngFor="let techRecord of vehicleTechRecord.techRecord">
       <th scope="row" class="govuk-table__header">{{ techRecord.statusCode }}</th>
       <td class="govuk-table__cell">{{ techRecord.reasonForCreation }}</td>
       <td class="govuk-table__cell">{{ techRecord.createdByName }}</td>
       <td class="govuk-table__cell">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
       <td class="govuk-table__cell">
         <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
-          <a id="view-test-{{ vehicleTechRecord?.vin }}" href="/tech-records/{{ vehicleTechRecord?.vin }}/{{ convertToUnix(techRecord.createdAt) }}">View</a>
+          <a id="view-test-{{ vehicleTechRecord?.vin }}" href="/tech-records/{{ vehicleTechRecord.vin }}/{{ convertToUnix(techRecord.createdAt) }}">View</a>
         </ng-container>
       </td>
     </tr>

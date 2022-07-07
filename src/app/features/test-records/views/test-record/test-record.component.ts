@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DefectTpl } from '@forms/templates/general/defect.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { PsvAnnual } from '@forms/templates/test-records/section-templates/psv-annual.template';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';

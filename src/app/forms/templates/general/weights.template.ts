@@ -1,58 +1,57 @@
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export function generateWeights(prefix: boolean = false, vehicleType: string, prefixName?: string, ): FormNode[] {
+export function generateWeights(vehicleType: VehicleTypes, prefix?: string): FormNode[] {
     switch(vehicleType) {
-        case 'trl':
-        case 'hgv':
+        case VehicleTypes.TRL:
+        case VehicleTypes.HGV:
             return [
                 {
-                  name: addPrefix('gbWeight', prefixName),
+                  name: addPrefix('gbWeight', prefix),
                   label: 'GB weight',
                   value: '',
                   type: FormNodeTypes.CONTROL
                 },
                 {
-                  name: addPrefix('eecWeight', prefixName),
+                  name: addPrefix('eecWeight', prefix),
                   label: 'EEC weight',
                   value: '',
                   type: FormNodeTypes.CONTROL
                 },
                 {
-                  name: addPrefix('designWeight', prefixName),
+                  name: addPrefix('designWeight', prefix),
                   label: 'Design weight',
                   value: '',
                   type: FormNodeTypes.CONTROL
                 }
               ];
-        case 'psv': 
+        case VehicleTypes.PSV:
           return [
               {
-                name: addPrefix('kerbWeight', prefixName),
+                name: addPrefix('kerbWeight', prefix),
                 label: 'Kerb weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               },
               {
-                name: addPrefix('ladenWeight', prefixName),
+                name: addPrefix('ladenWeight', prefix),
                 label: 'Laden weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               },
               {
-                name: addPrefix('gbWeight', prefixName),
+                name: addPrefix('gbWeight', prefix),
                 label: 'GB weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               },
               {
-                name: addPrefix('designWeight', prefixName),
+                name: addPrefix('designWeight', prefix),
                 label: 'Design weight',
                 value: '',
                 type: FormNodeTypes.CONTROL
               }
             ];
-        default:
-          return []
     }
 }
 

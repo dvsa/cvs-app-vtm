@@ -12,23 +12,19 @@ export class DynamicFormService {
     required: Validators.required
   };
 
-  createForm(f: FormNode, d: any = {}): CustomFormGroup | CustomFormArray {
-    if (!f) {
-      return new CustomFormGroup(f, {});
+  createForm(formNode: FormNode, data: any = {}): CustomFormGroup | CustomFormArray {
+    if (!formNode) {
+      return new CustomFormGroup(formNode, {});
     }
 
-    const formType = f.type;
-    let form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === formType ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
+    const form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === formNode.type ? new CustomFormArray(formNode, []) : new CustomFormGroup(formNode, {});
 
-    f?.children?.forEach((child) => {
+    formNode.children?.forEach(child => {
       const { name, type, value, validators, disabled } = child;
-      let control;
 
-      if (FormNodeTypes.CONTROL !== type) {
-        control = this.createForm(child, d[name]);
-      } else {
-        control = new CustomFormControl({ ...child }, { value, disabled: !!disabled });
-      }
+      const control = FormNodeTypes.CONTROL !== type
+        ? this.createForm(child, data[name])
+        : new CustomFormControl({ ...child }, { value, disabled: !!disabled });
 
       if (validators && validators.length > 0) {
         this.addValidators(control, validators);
@@ -37,37 +33,27 @@ export class DynamicFormService {
       if (form instanceof FormGroup) {
         form.addControl(name, control);
       } else if (form instanceof FormArray) {
-        this.createControls(child, d).forEach((element) => {
-          (form as FormArray).push(element);
-        });
+        this.createControls(child, data).forEach(element => form.push(element));
       }
     });
 
     return form;
   }
 
-  createControls(child: FormNode, d: any) {
-    const controls: any[] = [];
-    if (d.length && d.length > 0) {
-      d.forEach(() => {
-        if (FormNodeTypes.CONTROL !== child.type) {
-          // Note: There's a quirk here when dealing with arrays where if
-          // `d` is a array then `child.name` should be a correct index so
-          // make sure the template has the correct name to the node.
-          controls.push(this.createForm(child, d[child.name]));
-        } else {
-          controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
-        }
-      });
-    } else {
-      controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
+  createControls(child: FormNode, data: any): any[] {
+    const defaultFormControl = new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled });
+
+    if (!data.length || data.length === 0) {
+      return [defaultFormControl];
     }
-    return controls;
+
+    // Note: There's a quirk here when dealing with arrays where if
+    // `d` is a array then `child.name` should be a correct index so
+    // make sure the template has the correct name to the node.
+    return data.map(() => FormNodeTypes.CONTROL !== child.type ? this.createForm(child, data[child.name]) : defaultFormControl);
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<string> = []) {
-    validators.forEach((v: string) => {
-      control.addValidators(this.validatorMap[v]);
-    });
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<string>) {
+    validators.forEach(v => control.addValidators(this.validatorMap[v]));
   }
 }
