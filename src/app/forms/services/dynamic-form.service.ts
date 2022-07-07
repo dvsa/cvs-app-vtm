@@ -62,13 +62,13 @@ export class DynamicFormService {
 
   createControls(child: FormNode, d: any) {
     const controls: any[] = [];
-    if (d.length && d.length > 0) {
+    if (Array.isArray(d)) {
       d.forEach(() => {
         if (FormNodeTypes.CONTROL !== child.type) {
           // Note: There's a quirk here when dealing with arrays where if
           // `d` is a array then `child.name` should be a correct index so
           // make sure the template has the correct name to the node.
-          controls.push(this.createForm(child, d[child.name]));
+          controls.push(this.createForm(child, d[Number(child.name)]));
         } else {
           controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
         }
