@@ -151,6 +151,7 @@ const provisionalTechRecord = {
     microfilmSerialNumber: 'ser123456'
   },
   remarks: 'Some notes about the vehicle',
+  dispensations: 'reason given',
   reasonForCreation: 'Brake Failure',
   modelLiteral: 'Vehicle model',
   chassisMake: 'Chassis make',
@@ -288,6 +289,7 @@ const archivedTechRecord = {
     microfilmSerialNumber: 'ser123456'
   },
   remarks: 'Some notes about the vehicle',
+  dispensations: 'reason given',
   reasonForCreation: 'COIF',
   modelLiteral: 'Vehicle model',
   chassisMake: 'Chassis make',
@@ -411,6 +413,7 @@ const currentTechRecord = {
     microfilmSerialNumber: 'ser123456'
   },
   remarks: 'Some notes about the vehicle',
+  dispensations: 'reason given',
   reasonForCreation: 'COIF',
   modelLiteral: 'Vehicle model',
   chassisMake: 'Chassis make',

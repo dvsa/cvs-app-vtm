@@ -10,6 +10,12 @@ export const PsvNotes: FormNode = {
       name: 'remarks',
       label: 'Notes',
       type: FormNodeTypes.CONTROL
+    },
+    {
+      name: 'dispensations',
+      type: FormNodeTypes.CONTROL,
+      label: 'Dispensations',
+      value: ''
     }
   ]
 };
