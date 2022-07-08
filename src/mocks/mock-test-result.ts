@@ -77,7 +77,6 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testStationType: TestStationType.ATF,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    // additionalNotesRecorded: 'notes for the test record will be displayed here...',
     vehicleType,
     testVersion: 'Current',
     createdByName: 'Jane Doe',
