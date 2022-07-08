@@ -1,16 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
-import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
-import { TechRecordsModule } from '../../tech-record.module';
-import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { TechRecordsModule } from '../../tech-record.module';
+import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
+import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
+import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -19,7 +20,7 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TechRecordsModule],
+      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TechRecordsModule, TestResultsApiModule],
       declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();

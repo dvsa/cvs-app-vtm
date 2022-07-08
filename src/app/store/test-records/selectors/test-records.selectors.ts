@@ -7,27 +7,34 @@ import { testResultAdapter, testResultsFeatureState } from '../reducers/test-rec
 const { selectIds, selectEntities, selectAll, selectTotal } = testResultAdapter.getSelectors();
 
 // select the array of ids
-export const selectTestResultIds = selectIds;
+export const selectTestResultIds = createSelector(testResultsFeatureState, (state) => selectIds(state));
 
 // select the dictionary of test results entities
-export const selectTestResultsEntities = selectEntities;
+export const selectTestResultsEntities = createSelector(testResultsFeatureState, (state) => selectEntities(state));
 
 // select the array of tests result
-// export const selectAllTestResults = selectAll;
-export const selectAllTestResults = createSelector(
-  testResultsFeatureState,
-  state => Object.values(state.entities) as TestResultModel[]
-);
+export const selectAllTestResults = createSelector(testResultsFeatureState, (state) => selectAll(state));
 
 // select the total test results count
-export const selectTestResultsTotal = selectTotal;
-
-export const testResultsEnitities = createSelector(testResultsFeatureState, selectTestResultsEntities);
+export const selectTestResultsTotal = createSelector(testResultsFeatureState, (state) => selectTotal(state));
 
 export const selectedTestResultState = createSelector(
-  testResultsEnitities,
+  selectTestResultsEntities,
   selectRouteNestedParams,
-  (entities, { testResultId }) => entities[testResultId]
+  (entities, { testResultId, testTypeId }) => {
+    const testResult = entities[testResultId];
+    if (!testResult) {
+      return undefined;
+    }
+
+    const testType = testResult.testTypes.find((testType) => testType.testTypeId === testTypeId);
+
+    if (!testType) {
+      return undefined;
+    }
+
+    return { ...testResult, testTypes: [testType] };
+  }
 );
 
 export const testResultLoadingState = createSelector(testResultsFeatureState, state => state.loading);
@@ -42,16 +49,25 @@ export const selectedTestSortedAmendmentHistory = createSelector(
   testResult => testResult?.testHistory?.sort(byDate)
 );
 
-export const selectedAmendedTestResultState = createSelector(
-  selectedTestResultState,
-  selectRouteParams,
-  (testRecord, { createdAt }) => testRecord?.testHistory?.find(i => i.createdAt === createdAt)
-);
+export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testTypeId, createdAt }) => {
+  const amendedTest = testRecord?.testHistory?.find(testResult => testResult.createdAt === createdAt);
 
-export const selectAmendedDefectData = createSelector(
-  selectedAmendedTestResultState,
-  amendedTestResult => getDefectFromTestResult(amendedTestResult)
-);
+  if (!amendedTest) {
+    return undefined;
+  }
+
+  const testType = amendedTest.testTypes.find(testType => testType.testTypeId === testTypeId);
+
+  if (!testType) {
+    return undefined;
+  }
+
+  return { ...amendedTest, testTypes: [testType] };
+});
+
+export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, (amendedTestResult) => {
+  return getDefectFromTestResult(amendedTestResult);
+});
 
 // Common Functions
 /**

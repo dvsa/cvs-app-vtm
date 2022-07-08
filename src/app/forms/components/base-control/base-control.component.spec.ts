@@ -101,11 +101,17 @@ describe('BaseControlComponent', () => {
     describe('validation', () => {
       it('should get mapped message for first validation error', () => {
         component.label = 'Test control';
-        fixture.whenRenderingDone().then(() => {
-          component.control?.markAsTouched();
-          fixture.detectChanges();
-          expect(component.errorMessage).toBe('Test control is required');
-        });
+        component.control?.markAsTouched();
+        fixture.detectChanges();
+        expect(component.error).toBe('Test control is required');
+      });
+
+      it('should get "" when control is valid', () => {
+        component.label = 'Test control';
+        component.control?.patchValue('test');
+        component.control?.markAsTouched();
+        fixture.detectChanges();
+        expect(component.error).toBe('');
       });
     });
   });

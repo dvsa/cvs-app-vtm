@@ -1,14 +1,47 @@
 import { Params } from '@angular/router';
+import { Defect } from '@models/defect';
 import { TestResultModel } from '@models/test-result.model';
+import { TestType } from '@models/test-type.model';
+import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
-import { selectDefectData, selectedTestResultState, selectedTestSortedAmendmentHistory, testResultLoadingState } from './test-records.selectors';
+import {
+  selectAllTestResults,
+  selectAmendedDefectData,
+  selectDefectData,
+  selectedAmendedTestResultState,
+  selectedTestResultState,
+  selectedTestSortedAmendmentHistory,
+  selectTestResultIds,
+  selectTestResultsEntities,
+  selectTestResultsTotal,
+  testResultLoadingState
+} from './test-records.selectors';
 
 describe('Test Results Selectors', () => {
+  describe('adapter selectors', () => {
+    it('should return correct state', () => {
+      const state = { ...initialTestResultsState, ids: ['1'], entities: { ['1']: { preparerId: '2' } } };
+      expect(selectTestResultIds.projector(state)).toEqual(['1']);
+      expect(selectTestResultsEntities.projector(state)).toEqual({ ['1']: { preparerId: '2' } });
+      expect(selectAllTestResults.projector(state)).toEqual([{ preparerId: '2' }]);
+      expect(selectTestResultsTotal.projector(state)).toEqual(1);
+    });
+  });
+
   describe('selectedTestResultState', () => {
     it('should return the correct test result', () => {
-      const state: TestResultsState = { ...initialTestResultsState, ids: ['testResult1'], entities: { testResult1: mockTestResult() } };
-      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1' } as Params);
+      const state: TestResultsState = {
+        ...initialTestResultsState,
+        ids: ['testResult1'],
+        entities: {
+          testResult1: createMock<TestResultModel>({
+            testResultId: 'testResult1',
+            testTypes: [createMock<TestType>({ testTypeId: '1' })]
+          })
+        }
+      };
+      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1', testTypeId: '1' } as Params);
       expect(selectedState).toEqual(state.entities['testResult1']);
     });
   });
@@ -86,6 +119,67 @@ describe('Test Results Selectors', () => {
       if (notfound.length > 0) {
         expect(sortedTestHistory?.slice(-notfound.length)).toEqual(notfound);
       }
+    });
+  });
+
+  describe('selectedAmendedTestResultState', () => {
+    const testResult = createMock<TestResultModel>({
+      testHistory: createMockList<TestResultModel>(2, (i) =>
+        createMock<TestResultModel>({
+          createdAt: `2020-01-01T00:0${i}:00.000Z`,
+          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}` }))
+        })
+      )
+    });
+
+    it('should return amended record that matches "createdAt" route param value', () => {
+      const selectedState = selectedAmendedTestResultState.projector(testResult, { testTypeId: '00', createdAt: '2020-01-01T00:00:00.000Z' });
+      expect(selectedState).not.toBeUndefined();
+      expect(testResult.testHistory![1].testTypes.length).toEqual(1);
+    });
+
+    it('should return return undefined when "createdAt" route param value doesnt not match any amended records', () => {
+      expect(selectedAmendedTestResultState.projector(testResult, { testTypeId: '00', createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
+    });
+
+    it('should return return undefined when "testTypeId" route param value doesnt not match any in amended test record', () => {
+      expect(selectedAmendedTestResultState.projector(testResult, { testTypeId: '01', createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
+    });
+
+    it('should return return undefined when there is no selected testResult', () => {
+      expect(selectedAmendedTestResultState.projector(undefined, { createdAt: '2020-01-01T00:01:00.000Z' })).toBeUndefined();
+    });
+
+    it('should return return undefined when testHistory is empty', () => {
+      expect(selectedAmendedTestResultState.projector({ ...testResult, testHistory: [] }, { createdAt: '2020-01-01T00:01:00.000Z' })).toBeUndefined();
+    });
+  });
+
+  describe('selectAmendedDefectData', () => {
+    const amendedTestResultState = createMock<TestResultModel>({
+      testTypes: createMockList<TestType>(1, (i) =>
+        createMock<TestType>({
+          defects: createMockList<Defect>(1, (i) =>
+            createMock<Defect>({
+              imNumber: i
+            })
+          )
+        })
+      )
+    });
+
+    it('should return defect array from first testType in testResult', () => {
+      const selectedState = selectAmendedDefectData.projector(amendedTestResultState);
+      expect(selectedState?.length).toBe(1);
+      expect(selectedState).toEqual(amendedTestResultState.testTypes[0].defects);
+    });
+
+    it('should return empty array if testResult is undefined', () => {
+      expect(selectAmendedDefectData.projector(undefined)).toEqual([]);
+    });
+
+    it('should return empty array if testTypes is empty', () => {
+      expect(selectAmendedDefectData.projector({ testTypes: [] })).toEqual([]);
     });
   });
 });

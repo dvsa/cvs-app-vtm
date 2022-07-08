@@ -4,22 +4,25 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CustomFormControl, FormNodeTypes } from '../../services/dynamic-form.types';
 import { RadioGroupComponent } from './radio-group.component';
-import { MultiOptions } from '../../../models/options.model';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
+import { FormNodeOption } from '../../services/dynamic-form.types';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
-  <app-radio-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-radio-group>
-</form>
-`,
+    <app-radio-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-radio-group>
+  </form> `,
   styles: []
 })
 class HostComponent {
   form = new FormGroup({
     foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
   });
-  options: MultiOptions = [
+  options: FormNodeOption<string | number | boolean>[] = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
     { label: 'Value 3', value: '3' }
@@ -33,8 +36,9 @@ describe('RadioGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostComponent, RadioGroupComponent, BaseControlComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      declarations: [HostComponent, RadioGroupComponent, BaseControlComponent, FieldErrorMessageComponent],
+      imports: [FormsModule, ReactiveFormsModule],
+      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 

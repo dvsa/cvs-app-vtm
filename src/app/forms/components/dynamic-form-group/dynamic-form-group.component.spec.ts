@@ -1,8 +1,11 @@
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
-import { FormNodeTypes, FormNode, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
@@ -11,22 +14,29 @@ describe('DynamicFormGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule]
+      imports: [DynamicFormsModule],
+      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DynamicFormGroupComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // Don't detect changes on the first load as it will prevent change detection from working in the test function due to change detection being OnPush
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it.each([1, 0, 3])('trackByFn: should take and index and return it', (value) => {
-    expect(component.trackByFn(value)).toBe(value);
+  describe(DynamicFormGroupComponent.prototype.trackByFn.name, () => {
+    it.each([
+      [3, [3, 'some value']],
+      ['foo', [3, { key: 'foo' }]]
+    ])('should return %s when given %o', (expected, props) => {
+      const [index, item] = props;
+      expect(component.trackByFn(index as number, item)).toBe(expected);
+    });
   });
 
   it.each([
@@ -38,12 +48,24 @@ describe('DynamicFormGroupComponent', () => {
       ]
     ],
     [
-      { name: 'test-name', label: 'test-label', type: 'test-type', children: [{ name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType' }] },
+      {
+        name: 'test-name',
+        label: 'test-label',
+        type: 'test-type',
+        children: [
+          { name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType' }
+        ]
+      },
       [
         { key: 'name', value: 'test-name' },
         { key: 'label', value: 'test-label' },
         { key: 'type', value: 'test-type' },
-        { key: 'children', value: [{ name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType' }] }
+        {
+          key: 'children',
+          value: [
+            { name: 'test-c-name', label: 'test-c-label', value: 'test-c-value', children: [], type: 'test-c-control', viewType: 'test-c-viewType' }
+          ]
+        }
       ]
     ]
   ])('entriesOf: should split the keys out into values', (input: any, expected: any) => {
@@ -69,33 +91,44 @@ describe('DynamicFormGroupComponent', () => {
   });
 
   describe('template', () => {
-    const template = () => {
-      return <FormNode>{
-        name: 'myForm',
-        type: FormNodeTypes.GROUP,
-        children: [
-          { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+    const template = <FormNode>{
+      name: 'myForm',
+      type: FormNodeTypes.GROUP,
+      children: [
+        { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+        {
+          name: 'levelOneGroup',
+          type: FormNodeTypes.GROUP,
+          children: [
+            { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
+            {
+              name: 'levelTwoArray',
+              type: FormNodeTypes.ARRAY,
+              children: [
+                { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
+                { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const data = {
+      levelOneControl: 'some string',
+      levelOneGroup: {
+        levelTwoControl: 'some string',
+        levelTwoArray: [
           {
-            name: 'levelOneGroup',
-            type: FormNodeTypes.GROUP,
-            children: [
-              { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
-              {
-                name: 'levelTwoArray',
-                type: FormNodeTypes.ARRAY,
-                children: [
-                  { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
-                  { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
-                ]
-              }
-            ]
+            levelTwoArrayControlOne: 'some string',
+            levelTwoArrayControlTwo: 'some string'
           }
         ]
-      };
+      }
     };
 
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
-      component.form = dfs.createForm(template());
+      component.form = dfs.createForm(template, data);
 
       fixture.detectChanges();
 
@@ -107,8 +140,8 @@ describe('DynamicFormGroupComponent', () => {
     }));
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
-      component.isReadonly = false;
-      component.form = dfs.createForm(template());
+      component.edit = true;
+      component.form = dfs.createForm(template, data);
 
       fixture.detectChanges();
 

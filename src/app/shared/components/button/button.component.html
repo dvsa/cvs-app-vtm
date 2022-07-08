@@ -1,0 +1,23 @@
+<ng-container [ngSwitch]="type">
+  <a *ngSwitchCase="'link'" routerLink="[]" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </a>
+
+  <button
+    *ngSwitchDefault
+    [id]="id"
+    class="govuk-button"
+    [ngClass]="type !== 'link' ? 'govuk-button--' + type : ''"
+    [disabled]="disabled"
+    [attr.aria-disabled]="disabled"
+    data-module="govuk-button"
+    data-prevent-double-click="true"
+    (click)="clicked.emit()"
+  >
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </button>
+</ng-container>
+
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>

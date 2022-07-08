@@ -87,12 +87,12 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          {
-            name: 'nestedArray',
+          <FormNode>{
+            name: 'vins',
             type: FormNodeTypes.ARRAY,
             children: [
-              {
-                name: 'vin',
+              <FormNode>{
+                name: '0',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
@@ -102,11 +102,15 @@ describe('DynamicFormService', () => {
         ]
       };
 
-      const outputGroup = service.createForm(node);
-      const formArray = outputGroup.get('nestedArray');
+      const data = {
+        vins: ['123', '456']
+      };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('vins');
       expect(formArray instanceof FormArray).toBeTruthy();
-      expect((formArray as FormArray).controls.length).toBe(1);
-    })
+      expect((formArray as FormArray).controls.length).toBe(2);
+    });
 
     it('should return a formGroup with a nested FormArray with data given ', () => {
       const node: FormNode = {
@@ -189,7 +193,7 @@ describe('DynamicFormService', () => {
           <FormNode>{
             name: 'foo',
             type: FormNodeTypes.CONTROL,
-            validators: ['required']
+            validators: [{ name: 'required' }]
           }
         ]
       };
@@ -204,7 +208,7 @@ describe('DynamicFormService', () => {
   describe('addValidators', () => {
     it('should add validators', () => {
       const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
-      const validators: Array<string> = ['required'];
+      const validators: Array<{ name: string; args?: any[] }> = [{ name: 'required' }];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);
       expect(control.hasValidator(expectedValidator)).toBeTruthy();
