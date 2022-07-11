@@ -6,12 +6,12 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-single-search-result',
+  selector: 'app-single-search-result[vehicleTechRecord]',
   templateUrl: './single-search-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SingleSearchResultComponent implements OnInit {
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
+  @Input() vehicleTechRecord!: VehicleTechRecordModel;
   vehicleDisplayData?: vehicleDisplayData;
   template?: FormNode;
   ngDestroy$ = new Subject();
@@ -19,17 +19,17 @@ export class SingleSearchResultComponent implements OnInit {
   constructor(private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!, this.ngDestroy$)
+    this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord, this.ngDestroy$)
       .subscribe(record => this.vehicleDisplayData = {
-        vin: this.vehicleTechRecord?.vin,
-        vrm: this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary)?.vrm,
+        vin: this.vehicleTechRecord.vin,
+        vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
         make: record?.chassisMake,
         model: record?.chassisModel,
         manufactureYear: record?.manufactureYear,
         vehicleType: record?.vehicleType.toUpperCase()
       });
 
-    this.template = createSingleSearchResult(this.vehicleTechRecord?.vin);
+    this.template = createSingleSearchResult(this.vehicleTechRecord.vin);
   }
 }
 

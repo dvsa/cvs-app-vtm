@@ -8,7 +8,7 @@ import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { distinctUntilChanged, firstValueFrom, lastValueFrom, map, Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({

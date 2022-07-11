@@ -2,10 +2,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
+import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { TechRecordsModule } from '../../tech-record.module';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
@@ -14,6 +16,7 @@ import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.comp
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
+  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,21 +27,24 @@ describe('VehicleTechnicalRecordComponent', () => {
   });
 
   beforeEach(() => {
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(VehicleTechnicalRecordComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should get current vrm', () => {
+    fixture.detectChanges();
     component.vehicleTechRecord = mockVehicleTechnicalRecord();
     expect(component.currentVrm).toEqual('KP01 ABC');
   });
 
   it('should get other Vrms', () => {
+    fixture.detectChanges();
     component.vehicleTechRecord = mockVehicleTechnicalRecord();
     expect(component.otherVrms).toEqual([
       {
@@ -50,5 +56,31 @@ describe('VehicleTechnicalRecordComponent', () => {
         isPrimary: false
       }
     ]);
+  });
+
+  it('should get current tech record', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.vehicleTechRecord.techRecord = component.vehicleTechRecord.techRecord.filter(record => record.statusCode === StatusCodes.CURRENT);
+    fixture.detectChanges();
+
+    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy())
+  });
+
+  it('should get archived tech record', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.vehicleTechRecord.techRecord = component.vehicleTechRecord.techRecord.filter(record => record.statusCode === StatusCodes.ARCHIVED);
+    fixture.detectChanges();
+
+    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy())
+  });
+
+  it('should get tech record using created date', () => {
+    const expectedDate = new Date();
+    store.overrideSelector(selectRouteNestedParams, { techCreatedAt: expectedDate });
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.vehicleTechRecord.techRecord[0].createdAt = expectedDate;
+    fixture.detectChanges();
+
+    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy())
   });
 });

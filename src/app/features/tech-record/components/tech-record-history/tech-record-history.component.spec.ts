@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 
 import { TechRecordHistoryComponent } from './tech-record-history.component';
 
@@ -16,6 +17,8 @@ describe('TechRecordHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TechRecordHistoryComponent);
     component = fixture.componentInstance;
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.currentRecord = mockVehicleTechnicalRecord().techRecord[0];
     fixture.detectChanges();
   });
 
