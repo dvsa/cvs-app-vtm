@@ -1,55 +1,59 @@
-<ng-container [ngSwitch]="edit">
-  <ng-container *ngSwitchCase="true">
-    <ng-template [ngTemplateOutlet]="editDefect" [ngTemplateOutletContext]="{ data: defectData }"></ng-template>
-  </ng-container>
-
-  <ng-container *ngSwitchCase="false">
-    <ng-template [ngTemplateOutlet]="viewDefect" [ngTemplateOutletContext]="{ data: defectData }"></ng-template>
-  </ng-container>
-</ng-container>
+<ng-template [ngTemplateOutlet]="isEditing ? editDefect : viewDefect" [ngTemplateOutletContext]="{ data }"></ng-template>
 
 <ng-template #viewDefect let-data="data">
   <dl class="govuk-summary-list">
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Defect label</dt>
-      <dd class="govuk-summary-list__value">{{ data.deficiencyRef | defaultNullOrEmpty }} / {{ data.deficiencyCategory | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Category</dt>
-      <dd class="govuk-summary-list__value">{{ data.imNumber | defaultNullOrEmpty }} / {{ data.imDescription | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Item</dt>
-      <dd class="govuk-summary-list__value">{{ data.itemNumber | defaultNullOrEmpty }} / {{ data.itemDescription | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Description</dt>
-      <dd class="govuk-summary-list__value">
-        {{ data.deficiencyId | defaultNullOrEmpty }} / {{ data.deficiencySubId | defaultNullOrEmpty }} /
-        {{ data.deficiencyText | defaultNullOrEmpty }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Location</dt>
-      <dd class="govuk-summary-list__value">
-        {{ data.additionalInformation?.location ? mapLocationText(data.additionalInformation.location) : '-' }}
-      </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Repaired during test</dt>
-      <dd class="govuk-summary-list__value">{{ data.prs | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Prohibition issues</dt>
-      <dd class="govuk-summary-list__value">{{ data.prohibitionIssued | defaultNullOrEmpty }}</dd>
-    </div>
-    <div class="govuk-summary-list__row">
-      <dt class="govuk-summary-list__key">Additional defect details</dt>
-      <dd class="govuk-summary-list__value">{{ data.additionalInformation?.notes | defaultNullOrEmpty }}</dd>
-    </div>
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Defect label', data: combined(data.deficiencyRef, data.deficiencyCategory) }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Category', data: combined(data.imNumber, data.imDescription) }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Item', data: combined(data.itemNumber, data.itemDescription) }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Description', data: combined(data.deficiencyId, data.deficiencySubId, data.deficiencyText) }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{
+        label: 'Location',
+        data: combined(data.additionalInformation?.location ? mapLocationText(data.additionalInformation.location) : '-')
+      }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Repaired during test', data: combined(data.prs) }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Prohibition issues', data: combined(data.prohibitionIssued) }"
+    ></ng-template>
+
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(data.additionalInformation?.notes) }"
+    ></ng-template>
   </dl>
 </ng-template>
 
+<ng-template #viewDefectRow let-label="label" let-data="data">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">{{ label }}</dt>
+    <dd class="govuk-summary-list__value">{{ data }}</dd>
+  </div>
+</ng-template>
+
 <ng-template #editDefect let-data="data">
-  <app-dynamic-form-group [edit]="edit" [template]="defectTpl" [data]="data"></app-dynamic-form-group>
+  <app-dynamic-form-group [edit]="true" [template]="template" [data]="data"></app-dynamic-form-group>
 </ng-template>

@@ -11,6 +11,6 @@
   <app-base-test-record [edit]="(edit$ | async) || false" [testResult]="testResult"></app-base-test-record>
 
   <section class="section">
-    <app-defects [edit]="(edit$ | async) || false" [defectsData$]="defectsData$"></app-defects>
+    <app-defects [isEditing]="(edit$ | async) || false" [data$]="defectsData$"></app-defects>
   </section>
 </section>

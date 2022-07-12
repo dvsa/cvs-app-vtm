@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   templateUrl: './defects.component.html',
 })
 export class DefectsComponent {
-  @Input() edit = false;
-  @Input() defectsData$?: Observable<Defects | undefined>;
+  @Input() isEditing = false;
+  @Input() data$?: Observable<Defects | undefined>;
 
   constructor() {}
 }

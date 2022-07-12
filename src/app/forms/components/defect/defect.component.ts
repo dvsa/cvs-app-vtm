@@ -3,19 +3,24 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { DefectTpl } from '@forms/templates/general/defect.template';
 import { Defect } from '@models/defect';
 import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
-  selector: 'app-defect',
+  selector: 'app-defect[data]',
   templateUrl: './defect.component.html',
 })
 export class DefectComponent {
-  @Input() edit = false;
-  @Input() defectData!: Defect;
+  @Input() isEditing = false;
+  @Input() data!: Defect;
 
-  defectTpl: FormNode;
+  template: FormNode;
 
-  constructor() {
-    this.defectTpl = DefectTpl;
+  constructor(private pipe: DefaultNullOrEmpty) {
+    this.template = DefectTpl;
+  }
+
+  combined(...params: string[]): string {
+    return params.map(p => this.pipe.transform(p)).join(' / ');
   }
 
   /**
@@ -27,10 +32,8 @@ export class DefectComponent {
    */
   mapLocationText(location: DefectAdditionalInformationLocation) {
     return Object.entries(location)
-      .filter(([key, value]) => {
-        return (typeof value === 'number' && isNaN(value) === false) || value;
-      })
+      .filter(([key, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
       .map(([key, value]) => `${key}: ${value}`)
-      .join(` / `);
+      .join(' / ');
   }
 }

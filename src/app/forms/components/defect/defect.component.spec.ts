@@ -20,7 +20,7 @@ describe('DefectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DefectComponent);
     component = fixture.componentInstance;
-    component.defectData = createMock<Defect>();
+    component.data = createMock<Defect>();
     fixture.detectChanges();
   });
 
