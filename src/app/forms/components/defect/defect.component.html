@@ -24,10 +24,7 @@
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{
-        label: 'Location',
-        data: combined(data.additionalInformation?.location ? mapLocationText(data.additionalInformation.location) : '-')
-      }"
+      [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(data.additionalInformation?.location)) }"
     ></ng-template>
 
     <ng-template

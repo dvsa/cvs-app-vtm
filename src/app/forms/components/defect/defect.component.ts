@@ -38,10 +38,12 @@ export class DefectComponent {
    * @param location - DefectAdditionalInformationLocation object
    * @returns string
    */
-  mapLocationText(location: DefectAdditionalInformationLocation) {
-    return Object.entries(location)
-      .filter(([key, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join(' / ');
+  mapLocationText(location: DefectAdditionalInformationLocation): string {
+    return !location
+      ? '-'
+      : Object.entries(location)
+        .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(' / ');
   }
 }
