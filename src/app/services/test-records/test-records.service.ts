@@ -92,17 +92,7 @@ export class TestRecordsService {
     ) as unknown as Observable<TestResultModel[]>;
   }
 
-  updateTestResultState({
-    testResultId,
-    testTypeId,
-    section,
-    value
-  }: {
-    testResultId: string;
-    testTypeId: string;
-    section: string;
-    value: any;
-  }): void {
+  updateTestResultState(testResultId: string, testTypeId: string, section: string, value: any): void {
     this.store.dispatch(updateTestResultState({ testResultId, testTypeId, section, value }));
   }
 }

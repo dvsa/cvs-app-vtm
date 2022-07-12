@@ -13,7 +13,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 export class BaseTestRecordComponent {
   @ViewChildren(DynamicFormGroupComponent) dynamicFormGroupComponents?: QueryList<DynamicFormGroupComponent>;
   @Input() testResult: TestResultModel | undefined = undefined;
-  @Input() edit: boolean = false;
+  @Input() isEditing: boolean = false;
 
   constructor() {}
 

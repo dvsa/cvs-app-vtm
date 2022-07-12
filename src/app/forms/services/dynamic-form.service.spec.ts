@@ -32,7 +32,7 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'vin',
             label: 'Vechile Identification Number',
             type: FormNodeTypes.CONTROL,
@@ -57,11 +57,11 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'sub-group',
             type: FormNodeTypes.GROUP,
             children: [
-              <FormNode>{
+              {
                 name: 'vin',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
@@ -117,15 +117,15 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'axelsArray',
             type: FormNodeTypes.ARRAY,
             children: [
-              <FormNode>{
+              {
                 name: '0',
                 type: FormNodeTypes.GROUP,
                 children: [
-                  <FormNode>{
+                  {
                     name: 'vin',
                     label: 'Vechile Identification Number',
                     type: FormNodeTypes.CONTROL,
@@ -148,6 +148,35 @@ describe('DynamicFormService', () => {
           }
         ]
       };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('axelsArray');
+      const subGroup = (formArray as CustomFormArray).controls;
+
+      expect(subGroup.length).toBe(2);
+    });
+
+    it('should return a formGroup with a nested FormArray of simple controls', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          {
+            name: 'axelsArray',
+            type: FormNodeTypes.ARRAY,
+            children: [
+              {
+                name: 'vin',
+                label: 'Vechile Identification Number',
+                type: FormNodeTypes.CONTROL,
+                viewType: FormNodeViewTypes.STRING
+              }
+            ]
+          }
+        ]
+      };
+
+      let data = { axelsArray: ['12345', '78910'] };
 
       const outputGroup = service.createForm(node, data);
       const formArray = outputGroup.get('axelsArray');

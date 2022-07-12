@@ -45,7 +45,7 @@ describe('DefectsComponent', () => {
   describe('No defects', () => {
     it('should be dysplayed when defects is undefined or empty array', fakeAsync(() => {
       const expectedText = 'No defects';
-      component.defectsData$ = of(undefined);
+      component.defects = undefined;
 
       tick();
       fixture.detectChanges();
@@ -53,7 +53,7 @@ describe('DefectsComponent', () => {
       let text: HTMLParagraphElement = el.query(By.css('p')).nativeElement;
       expect(text.innerHTML).toBe(expectedText);
 
-      component.defectsData$ = of([]);
+      component.defects = undefined;
 
       tick();
       fixture.detectChanges();
@@ -65,7 +65,7 @@ describe('DefectsComponent', () => {
 
   describe('Defects', () => {
     it('should render app-defect component', fakeAsync(() => {
-      component.defectsData$ = of(createMockList<Defect>(1));
+      component.defects = createMockList<Defect>(1);
 
       tick();
       fixture.detectChanges();
