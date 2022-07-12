@@ -47,7 +47,7 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
   };
 
   if (vehicleType === VehicleTypes.TRL) {
-    section.children?.push({
+    section.children!.push({
       name: 'rearAxleToRearTrl',
       label: 'Rear axle to rear trailer',
       value: '',
@@ -57,7 +57,7 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
   }
 
   if (vehicleType == VehicleTypes.HGV || vehicleType == VehicleTypes.TRL) {
-    section.children?.push({
+    section.children!.push({
       name: 'dimensionsBottomSection',
       label: 'Dimensions',
       type: FormNodeTypes.GROUP,

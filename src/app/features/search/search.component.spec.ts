@@ -2,44 +2,48 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/.';
+import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
+import { of } from 'rxjs';
 import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
-  let router: Router;
   let globalErrorService: GlobalErrorService;
+  let router: Router;
+  let store: MockStore;
+  const expectedError: GlobalError = { error: 'some-error', anchorLink: 'some-link' };
+  const expectedErrors: GlobalError[] = [expectedError];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SearchComponent],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
+        GlobalErrorService,
         TechnicalRecordService,
-        provideMockStore({
-          initialState: initialAppState
-        }),
-        GlobalErrorService
+        provideMockStore({ initialState: initialAppState })
       ]
     }).compileComponents();
   });
 
   beforeEach(() => {
+    store = TestBed.inject(MockStore);
+    store.overrideSelector(globalErrorState, expectedErrors);
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
     globalErrorService = TestBed.inject(GlobalErrorService);
+    router = TestBed.inject(Router);
 
     jest.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should create', () => expect(component).toBeTruthy());
 
   describe('searching', () => {
     describe('navigateSearch', () => {
@@ -78,14 +82,46 @@ describe('SearchComponent', () => {
 
         expect(navigateSpy).toHaveBeenCalledWith(['/search/results'], { queryParams: { trailerId: expectedTrailerId } });
       });
+    });
 
-      it('should add error', () => {
+    describe('invalid input', () => {
+      it('should add search-term error', () => {
         const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
 
         component.navigateSearch('', '');
 
         expect(addErrorSpy).toHaveBeenCalledWith({ error: component.missingTermErrorMessage, anchorLink: 'search-term' });
       });
-    });
+
+      it('should add search-type error', () => {
+        const addErrorSpy = jest.spyOn(globalErrorService, 'addError').mockImplementation(() => {});
+
+        component.navigateSearch('some term', '');
+
+        expect(addErrorSpy).toHaveBeenCalledWith({ error: component.missingTypeErrorMessage, anchorLink: 'search-type' });
+      });
+    })
+
+    describe('helper methods', () => {
+      it('should get inline error message', (done) => {
+        const addErrorSpy = jest
+          .spyOn(globalErrorService, 'errors$', 'get')
+          .mockImplementation(() => of(expectedErrors));
+
+        component.getInlineErrorMessage(expectedError.anchorLink!)
+          .subscribe(response => {
+            expect(response).toBeTruthy();
+            done();
+          }); // subscribe to activate the map inside 'getInlineErrorMessage()'
+
+        expect(addErrorSpy).toHaveBeenCalled();
+      });
+
+      it('should get error by name', () => {
+        const error = component.getErrorByName(expectedErrors, expectedError.anchorLink!);
+
+        expect(error).toEqual(expectedError);
+      });
+    })
   });
 });

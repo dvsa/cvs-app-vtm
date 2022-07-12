@@ -29,10 +29,10 @@ export class SearchComponent {
   }
 
   getInlineErrorMessage(name: string): Observable<boolean> {
-    return this.globalErrorService.errors$.pipe(map((errors) => errors.some((error) => error.anchorLink === name)));
+    return this.globalErrorService.errors$.pipe(map(errors => errors.some(error => error.anchorLink === name)));
   }
 
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find((error) => error.anchorLink === name);
+    return errors.find(error => error.anchorLink === name);
   }
 }

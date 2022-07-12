@@ -1,7 +1,8 @@
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { generateWeights } from '../general/weights.template';
 
-export const TrlAxleWeights: FormNode = {
+export const TrlAxleWeightsTemplate: FormNode = {
   name: 'axleWeightsSection',
   label: 'Axle Weights',
   type: FormNodeTypes.GROUP,
@@ -28,7 +29,7 @@ export const TrlAxleWeights: FormNode = {
               label: 'Weights',
               value: '',
               type: FormNodeTypes.GROUP,
-              children: generateWeights(false, 'trl')
+              children: generateWeights(VehicleTypes.TRL)
             }
           ]
         }

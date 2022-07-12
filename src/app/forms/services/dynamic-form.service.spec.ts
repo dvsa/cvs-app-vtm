@@ -32,7 +32,7 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'vin',
             label: 'Vechile Identification Number',
             type: FormNodeTypes.CONTROL,
@@ -57,11 +57,11 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'sub-group',
             type: FormNodeTypes.GROUP,
             children: [
-              <FormNode>{
+              {
                 name: 'vin',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
@@ -88,11 +88,11 @@ describe('DynamicFormService', () => {
         type: FormNodeTypes.GROUP,
         children: [
           <FormNode>{
-            name: 'nestedArray',
+            name: 'vins',
             type: FormNodeTypes.ARRAY,
             children: [
               <FormNode>{
-                name: 'vin',
+                name: '0',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
@@ -102,10 +102,14 @@ describe('DynamicFormService', () => {
         ]
       };
 
-      const outputGroup = service.createForm(node);
-      const formArray = outputGroup.get('nestedArray');
+      const data = {
+        vins: ['123', '456']
+      };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('vins');
       expect(formArray instanceof FormArray).toBeTruthy();
-      expect((formArray as FormArray).controls.length).toBe(1);
+      expect((formArray as FormArray).controls.length).toBe(2);
     });
 
     it('should return a formGroup with a nested FormArray with data given ', () => {
@@ -113,15 +117,15 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'axelsArray',
             type: FormNodeTypes.ARRAY,
             children: [
-              <FormNode>{
+              {
                 name: '0',
                 type: FormNodeTypes.GROUP,
                 children: [
-                  <FormNode>{
+                  {
                     name: 'vin',
                     label: 'Vechile Identification Number',
                     type: FormNodeTypes.CONTROL,
@@ -152,6 +156,35 @@ describe('DynamicFormService', () => {
       expect(subGroup.length).toBe(2);
     });
 
+    it('should return a formGroup with a nested FormArray of simple controls', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          {
+            name: 'axelsArray',
+            type: FormNodeTypes.ARRAY,
+            children: [
+              {
+                name: 'vin',
+                label: 'Vechile Identification Number',
+                type: FormNodeTypes.CONTROL,
+                viewType: FormNodeViewTypes.STRING
+              }
+            ]
+          }
+        ]
+      };
+
+      let data = { axelsArray: ['12345', '78910'] };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('axelsArray');
+      const subGroup = (formArray as CustomFormArray).controls;
+
+      expect(subGroup.length).toBe(2);
+    });
+
     it('should add correct validators', () => {
       const node: FormNode = {
         name: 'group',
@@ -160,7 +193,7 @@ describe('DynamicFormService', () => {
           <FormNode>{
             name: 'foo',
             type: FormNodeTypes.CONTROL,
-            validators: ['required']
+            validators: [{ name: 'required' }]
           }
         ]
       };
@@ -175,7 +208,7 @@ describe('DynamicFormService', () => {
   describe('addValidators', () => {
     it('should add validators', () => {
       const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
-      const validators: Array<string> = ['required'];
+      const validators: Array<{ name: string; args?: any[] }> = [{ name: 'required' }];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);
       expect(control.hasValidator(expectedValidator)).toBeTruthy();

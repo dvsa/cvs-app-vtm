@@ -1,9 +1,22 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalRedirectComponent, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
+import {
+  MsalBroadcastService,
+  MsalGuard,
+  MsalGuardConfiguration,
+  MsalInterceptor,
+  MsalInterceptorConfiguration,
+  MsalModule,
+  MsalRedirectComponent,
+  MsalService,
+  MSAL_GUARD_CONFIG,
+  MSAL_INSTANCE,
+  MSAL_INTERCEPTOR_CONFIG
+} from '@azure/msal-angular';
 import { BrowserCacheLocation, InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from '../environments/environment';
+import { ApiModule as TestResultsApiModule, Configuration as TestResultsApiConfiguration } from '@api/test-results';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -47,7 +60,16 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, MsalModule, HttpClientModule, AppStoreModule, InterceptorModule, CoreModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MsalModule,
+    HttpClientModule,
+    AppStoreModule,
+    InterceptorModule,
+    CoreModule,
+    TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI }))
+  ],
   providers: [
     {
       provide: LOCALE_ID,

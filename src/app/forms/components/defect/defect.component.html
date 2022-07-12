@@ -24,11 +24,16 @@
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Description</dt>
-      <dd class="govuk-summary-list__value">{{ data.deficiencyId | defaultNullOrEmpty }} / {{ data.deficiencySubId | defaultNullOrEmpty }} / {{ data.deficiencyText | defaultNullOrEmpty }}</dd>
+      <dd class="govuk-summary-list__value">
+        {{ data.deficiencyId | defaultNullOrEmpty }} / {{ data.deficiencySubId | defaultNullOrEmpty }} /
+        {{ data.deficiencyText | defaultNullOrEmpty }}
+      </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Location</dt>
-      <dd class="govuk-summary-list__value">{{ data.additionalInformation?.location ? mapLocationText(data.additionalInformation.location) : '-' }}</dd>
+      <dd class="govuk-summary-list__value">
+        {{ data.additionalInformation?.location ? mapLocationText(data.additionalInformation.location) : '-' }}
+      </dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">Repaired during test</dt>
@@ -46,5 +51,5 @@
 </ng-template>
 
 <ng-template #editDefect let-data="data">
-  <app-dynamic-form-group [isReadonly]="!edit" [template]="defectTpl" [data]="data"></app-dynamic-form-group>
+  <app-dynamic-form-group [edit]="edit" [template]="defectTpl" [data]="data"></app-dynamic-form-group>
 </ng-template>

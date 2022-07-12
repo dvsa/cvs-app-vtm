@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, DoCheck, Injector, Input } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { CustomControl, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
@@ -6,9 +6,10 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 @Component({
   selector: 'app-base-control',
   template: ``,
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BaseControlComponent implements ControlValueAccessor, AfterContentInit, DoCheck {
+export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
   @Input() name = '';
   @Input() label?: string;
   @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
@@ -22,7 +23,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   private value_: any;
 
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector, protected ref: ChangeDetectorRef) {
     this.name = '';
   }
 
@@ -30,23 +31,22 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
+      this.control.meta.changeDetection = this.ref;
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }
   }
 
-  ngDoCheck(): void {
-    this.getError();
-  }
-
-  private getError() {
+  get error() {
     if (this.control && this.control.touched && this.control.invalid) {
       const { errors } = this.control;
       if (errors) {
         const errorList = Object.keys(errors);
         const firstError = ErrorMessageMap[errorList[0]];
-        this.errorMessage = firstError(errors[errorList[0]], this.label);
+        return firstError(errors[errorList[0]], this.label);
       }
+    } else if (this.control && this.control.touched && !this.control.invalid) {
+      return '';
     }
   }
 

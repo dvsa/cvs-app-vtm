@@ -1,33 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { DefectTpl } from '@forms/templates/general/defect.template';
-import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-amended-test-record',
   templateUrl: './amended-test-record.component.html'
 })
-export class AmendedTestRecordComponent {
-  testResult$: Observable<TestResultModel | undefined>;
-  defectTpl: FormNode;
-  defectData$: Observable<Defects | undefined>;
+export class AmendedTestRecordComponent implements OnInit {
+  defectTpl: FormNode = DefectTpl;
+  testResult$: Observable<TestResultModel | undefined> = of(undefined);
+  defectsData$: Observable<Defects | undefined> = of(undefined);
+  edit$: Observable<boolean> = of(false);
 
-  constructor(private testRecordsService: TestRecordsService) {
+  constructor(private testRecordsService: TestRecordsService, private routerService: RouterService) {}
+
+  ngOnInit() {
     this.testResult$ = this.testRecordsService.amendedTestResult$;
     this.defectTpl = DefectTpl;
-    this.defectData$ = this.testRecordsService.amendedDefectData$;
-  }
-
-  get vehicleTypes() {
-    return VehicleTypes;
-  }
-
-  get masterTpl() {
-    return masterTpl;
+    this.defectsData$ = this.testRecordsService.amendedDefectData$;
+    this.edit$ = this.routerService.routeEditable$;
   }
 }

@@ -1,12 +1,11 @@
 import { TestResultModel } from '@models/test-result.model';
 import { TestType } from '@models/test-type.model';
-import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { CountryOfRegistration } from '../app/models/country-of-registration.enum';
 import * as Emissions from '../app/models/emissions.enum';
 import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestStationType } from '../app/models/test-station-type.enum';
+import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
@@ -15,21 +14,22 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
     const nextYear = new Date().setFullYear(now.getFullYear());
 
     return createMock<TestType>({
+      testTypeId: `${i + 1}`,
       testNumber: `TestNumber${String(i + 1).padStart(4, '0')}`,
 
       testCode: `Test${i}`,
       testTypeName: `Test Type Name ${i}`,
 
       testTypeStartTimestamp: now.toISOString(),
-      testTypeEndTimestamp: now.setFullYear(now.getFullYear() + 1),
-      testExpiryDate: nextYear,
+      testTypeEndTimestamp: new Date(now.setFullYear(now.getFullYear() + 1)).toISOString(),
+      testExpiryDate: new Date(nextYear).toISOString(),
 
       certificateNumber: `CertNumber${String(i + 1).padStart(4, '0')}`,
       reasonForAbandoning: 'The vehicle was not submitted for test at the appointed time',
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
-      testAnniversaryDate: now.setFullYear(now.getFullYear() - 1),
+      testAnniversaryDate: new Date(now.setFullYear(now.getFullYear() - 1)).toISOString(),
       prohibitionIssued: false,
-      testResult: 'Pass',
+      testResult: 'pass',
       seatbeltInstallationCheckDate: true,
       numberOfSeatbeltsFitted: 4,
       lastSeatbeltInstallationCheckDate: new Date().toISOString(),
@@ -44,7 +44,9 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       modificationTypeUsed: 'modifications number ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapFitted: 'particulate trap ' + Math.round(Math.random() * 1000).toString(),
       particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
-      defects: mockDefectList()
+      defects: mockDefectList(),
+
+      additionalNotesRecorded: 'notes for the test record will be displayed here...'
     });
   });
 
@@ -54,18 +56,18 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
 
     systemNumber,
     vin: 'XMGDE02FS0H012345',
-    vrm: 'KP02 ABC',
+    vrm: 'KP02ABC',
 
     createdAt: new Date().toISOString(),
     testStartTimestamp: new Date().toISOString(),
 
-    testTypes: [...mockTestTypeList()],
+    testTypes: [...mockTestTypeList(2)],
 
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
-    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    countryOfRegistration: 'gb',
     euVehicleCategory: EuVehicleCategory.M3,
     odometerReading: 100,
-    odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
+    odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
     reasonForCreation: 'mock test result data',
     preparerName: 'Durrell Truck & Van Centre',
     preparerId: 'CM2254',
@@ -75,31 +77,40 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testStationType: TestStationType.ATF,
     testerName: 'John Smith',
     testerEmailAddress: 'john.smith@dvsa.gov.uk',
-    additionalNotesRecorded: 'notes for the test record will be displayed here...',
+    // additionalNotesRecorded: 'notes for the test record will be displayed here...',
     vehicleType,
     testVersion: 'Current',
     createdByName: 'Jane Doe',
-    testHistory: [...createMockList<TestResultModel>(5, (j) => mockTestResultArchived(j, vehicleType, systemNumber))]
+    testHistory: [
+      ...createMockList<TestResultModel>(5, (j) =>
+        mockTestResultArchived(j, `TestResultId${String(i + 1).padStart(4, '0')}`, vehicleType, systemNumber)
+      )
+    ]
   });
 
-export const mockTestResultArchived = (i: number = 0, vehicleType: VehicleTypes = VehicleTypes.PSV, systemNumber: string = 'SYS0001') => {
+export const mockTestResultArchived = (
+  i: number = 0,
+  testResultId: string = 'TestResultId0001',
+  vehicleType: VehicleTypes = VehicleTypes.PSV,
+  systemNumber: string = 'SYS0001'
+) => {
   const date = new Date('2022-01-02');
   const createdAt = date.setDate(date.getDate() - (i + 1));
   return createMock<TestResultModel>({
-    testResultId: `archivedTestResultId${String(1 + i).padStart(4, '0')}`,
+    testResultId,
     createdAt: new Date(createdAt).toISOString(),
     systemNumber,
     vin: 'XMGDE02FS0H012345',
     vrm: 'KP02 ABC',
     testStartTimestamp: new Date().toISOString(),
 
-    testTypes: [...mockTestTypeList()],
+    testTypes: [...mockTestTypeList(2)],
     createdByName: `Person ${i}`,
     trailerId: `C${String(i + 1).padStart(5, '0')}`,
-    countryOfRegistration: CountryOfRegistration.GreatBritainandNorthernIreland_GB,
+    countryOfRegistration: 'gb',
     euVehicleCategory: EuVehicleCategory.M3,
     odometerReading: 100,
-    odometerReadingUnits: OdometerReadingUnits.KILOMETERS,
+    odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
     reasonForCreation: `reason ${i}`,
     preparerName: 'Durrell Truck & Van Centre',
     preparerId: 'CM2254',
