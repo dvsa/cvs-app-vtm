@@ -1,17 +1,24 @@
-import { Component, Input } from '@angular/core';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { DefectTpl } from '@forms/templates/general/defect.template';
 import { Defect } from '@models/defect';
 import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DynamicFormGroupComponent } from '../dynamic-form-group/dynamic-form-group.component';
 
 @Component({
-  selector: 'app-defect[data]',
+  selector: 'app-defect[defect]',
   templateUrl: './defect.component.html',
 })
 export class DefectComponent {
+  @ViewChild(DynamicFormGroupComponent) private set dynamicFormGroupComponent(component: DynamicFormGroupComponent) {
+    this.formChange.emit(component.form);
+  }
+
   @Input() isEditing = false;
-  @Input() data!: Defect;
+  @Input() defect!: Defect;
+
+  @Output() formChange = new EventEmitter<CustomFormGroup | CustomFormArray>();
 
   template: FormNode;
 

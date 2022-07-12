@@ -1,9 +1,12 @@
 <h2 class="govuk-heading-m">Defects</h2>
 
-<ng-container *ngIf="data$ | async as defects; else noDefects">
-  <ng-container *ngIf="defects && defects.length > 0; else noDefects">
-    <app-defect *ngFor="let defect of defects" [isEditing]="isEditing" [data]="defect"></app-defect>
-  </ng-container>
+<ng-container *ngIf="defects && defects.length > 0; else noDefects">
+  <app-defect
+    *ngFor="let defect of defects; let i = index"
+    [isEditing]="isEditing"
+    [defect]="defect"
+    (formChange)="emitFormChange(i, $event)"
+  ></app-defect>
 </ng-container>
 
 <ng-template #noDefects>

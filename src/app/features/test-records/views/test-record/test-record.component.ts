@@ -1,15 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { DefectTpl } from '@forms/templates/general/defect.template';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { firstValueFrom, Observable, of, tap } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -22,19 +20,14 @@ export class TestRecordComponent implements OnInit {
     component?.dynamicFormGroupComponents?.forEach(component => this.sectionForms.push(component.form));
   }
 
-  @ViewChild(DefectsComponent) private set defectsComponent(component: DefectsComponent) {
-    component?.data$?.pipe(tap(defects => this.defects = defects || []));
-  }
+  isEditing$: Observable<boolean> = of(false);
+  testResult$: Observable<TestResultModel | undefined> = of(undefined);
+  defects$: Observable<Defects | undefined> = of(undefined);
 
   sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
-  defects: Defects = [];
-
-  testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  defectsData$: Observable<Defects | undefined> = of(undefined);
-  isEditing$: Observable<boolean> = of(false);
+  defectForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   constructor(
-    private dynamicFormService: DynamicFormService,
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -42,22 +35,26 @@ export class TestRecordComponent implements OnInit {
     private testRecordsService: TestRecordsService,
   ) {}
 
-  ngOnInit() {
-    this.testResult$ = this.testRecordsService.testResult$;
-    this.defectsData$ = this.testRecordsService.defectData$;
+  ngOnInit(): void {
     this.isEditing$ = this.routerService.routeEditable$;
+    this.testResult$ = this.testRecordsService.testResult$;
+    this.defects$ = this.testRecordsService.defectData$;
   }
 
-  handleEdit() {
+  defectFormsChange(forms: Array<CustomFormGroup | CustomFormArray>): void {
+    this.defectForms = forms;
+  }
+
+  handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: true }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  handleCancel() {
+  handleCancel(): void {
     this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  async handleSave() {
-    this.sectionForms.concat(this.defects.map(defect => this.dynamicFormService.createForm(DefectTpl, defect)));
+  async handleSave(): Promise<void> {
+    this.sectionForms.concat(this.defectForms.filter(f => f));
 
     this.sectionForms.forEach(form => {
       const errors = DynamicFormService.updateValidity(form);

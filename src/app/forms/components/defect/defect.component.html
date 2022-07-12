@@ -1,4 +1,4 @@
-<ng-template [ngTemplateOutlet]="isEditing ? editDefect : viewDefect" [ngTemplateOutletContext]="{ data }"></ng-template>
+<ng-template [ngTemplateOutlet]="isEditing ? editDefect : viewDefect" [ngTemplateOutletContext]="{ defect }"></ng-template>
 
 <ng-template #viewDefect let-data="data">
   <dl class="govuk-summary-list">
