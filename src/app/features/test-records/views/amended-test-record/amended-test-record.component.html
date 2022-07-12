@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <app-base-test-record [edit]="(edit$ | async) || false" [testResult]="testResult"></app-base-test-record>
+  <app-base-test-record [testResult]="testResult"></app-base-test-record>
 
-  <app-defects *ngIf="defects$ | async as defects" class="section" [isEditing]="(edit$ | async) || false" [defects]="defects"></app-defects>
+  <app-defects *ngIf="defects$ | async as defects" class="section" [defects]="defects"></app-defects>
 </section>

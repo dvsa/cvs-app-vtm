@@ -15,7 +15,6 @@ export class AmendedTestRecordComponent implements OnInit {
   defectTpl: FormNode = DefectTpl;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   defects$: Observable<Defects | undefined> = of(undefined);
-  edit$: Observable<boolean> = of(false);
 
   constructor(private testRecordsService: TestRecordsService, private routerService: RouterService) {}
 
@@ -23,6 +22,5 @@ export class AmendedTestRecordComponent implements OnInit {
     this.testResult$ = this.testRecordsService.amendedTestResult$;
     this.defectTpl = DefectTpl;
     this.defects$ = this.testRecordsService.amendedDefectData$;
-    this.edit$ = this.routerService.routeEditable$;
   }
 }

@@ -8,7 +8,7 @@
 </app-button-group>
 
 <section *ngIf="testResult$ | async as testResult">
-  <app-base-test-record [edit]="(isEditing$ | async) || false" [testResult]="testResult"></app-base-test-record>
+  <app-base-test-record [isEditing]="(isEditing$ | async) || false" [testResult]="testResult"></app-base-test-record>
 
   <app-defects
     *ngIf="defects$ | async as defects"

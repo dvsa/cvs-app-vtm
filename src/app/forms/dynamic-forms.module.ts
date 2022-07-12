@@ -59,7 +59,6 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent
-  ],
-  providers: [DefaultNullOrEmpty]
+  ]
 })
 export class DynamicFormsModule {}

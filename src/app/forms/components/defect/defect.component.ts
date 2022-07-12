@@ -9,6 +9,7 @@ import { DynamicFormGroupComponent } from '../dynamic-form-group/dynamic-form-gr
 @Component({
   selector: 'app-defect[defect]',
   templateUrl: './defect.component.html',
+  providers: [DefaultNullOrEmpty]
 })
 export class DefectComponent {
   @ViewChild(DynamicFormGroupComponent) private set dynamicFormGroupComponent(component: DynamicFormGroupComponent) {
