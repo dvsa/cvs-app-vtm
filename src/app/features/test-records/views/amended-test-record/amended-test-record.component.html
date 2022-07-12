@@ -11,6 +11,6 @@
   <app-base-test-record [edit]="(edit$ | async) || false" [testResult]="testResult"></app-base-test-record>
 
   <section class="section">
-    <app-defects [isEditing]="(edit$ | async) || false" [data$]="defectsData$"></app-defects>
+    <app-defects *ngIf="defects$ | async as defects" [isEditing]="(edit$ | async) || false" [defects]="defects"></app-defects>
   </section>
 </section>
