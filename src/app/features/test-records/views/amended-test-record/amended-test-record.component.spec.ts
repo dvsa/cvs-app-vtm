@@ -32,7 +32,6 @@ describe('AmendedTestRecordComponent', () => {
 
     fixture = TestBed.createComponent(AmendedTestRecordComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

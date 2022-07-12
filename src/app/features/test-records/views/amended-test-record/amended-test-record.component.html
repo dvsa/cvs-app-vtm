@@ -3,6 +3,7 @@
     <div class="govuk-notification-banner__header">
       <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
     </div>
+
     <div class="govuk-notification-banner__content">
       <p class="govuk-notification-banner__heading">Amended Test Record - created at {{ testResult.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
     </div>
@@ -10,7 +11,5 @@
 
   <app-base-test-record [edit]="(edit$ | async) || false" [testResult]="testResult"></app-base-test-record>
 
-  <section class="section">
-    <app-defects *ngIf="defects$ | async as defects" [isEditing]="(edit$ | async) || false" [defects]="defects"></app-defects>
-  </section>
+  <app-defects *ngIf="defects$ | async as defects" class="section" [isEditing]="(edit$ | async) || false" [defects]="defects"></app-defects>
 </section>
