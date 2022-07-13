@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TestResultModel } from '@models/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -24,7 +25,7 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   updateTestResultFailed,
-  updateTestResultState,
+  updateTestResult,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { TestResultsEffects } from './test-records.effects';
@@ -225,46 +226,47 @@ describe('TestResultsEffects', () => {
   });
 
   describe('updateTestResult$', () => {
+    const newTestResult = { testResultId: '1' } as TestResultModel;
     describe('debounce', () => {
       it('should only call API once and return updateTestResultSuccess', () => {
         testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' });
+          const action = updateTestResult({ value: {} as TestResultModel });
           actions$ = hot('a 100ms b', { a: action, b: action });
 
-          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', {}));
+          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', { a: newTestResult }));
 
           expectObservable(effects.updateTestResult$).toBe('601ms b', {
-            b: updateTestResultSuccess()
+            b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } })
           });
         });
       });
 
       it('should call API twice and dispatch updateTestResultSuccess both times', () => {
         testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' });
+          const action = updateTestResult({ value: {} as TestResultModel });
           actions$ = hot('a 500ms b', { a: action, b: action });
 
-          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', {}));
+          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', { a: newTestResult }));
 
           expectObservable(effects.updateTestResult$).toBe('500ms b 500ms c', {
-            b: updateTestResultSuccess(),
-            c: updateTestResultSuccess()
+            b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } }),
+            c: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } })
           });
         });
       });
 
       it('should call API twice and dispatch success and failure actions', () => {
         testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' });
+          const action = updateTestResult({ value: newTestResult });
           actions$ = hot('a 500ms b', { a: action, b: action });
 
           jest
             .spyOn(testResultsService, 'saveTestResult')
-            .mockReturnValueOnce(cold('a|', {}))
+            .mockReturnValueOnce(cold('a|', { a: newTestResult }))
             .mockReturnValueOnce(cold('#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
 
           expectObservable(effects.updateTestResult$).toBe('500ms b 500ms c', {
-            b: updateTestResultSuccess(),
+            b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } }),
             c: updateTestResultFailed({ errors: [] })
           });
         });
@@ -273,7 +275,7 @@ describe('TestResultsEffects', () => {
 
     it('should dispatch updateTestResultFailed action with empty errors array', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a-', { a: updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' }) });
+        actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
         jest
           .spyOn(testResultsService, 'saveTestResult')
@@ -287,7 +289,7 @@ describe('TestResultsEffects', () => {
 
     it('should dispatch updateTestResultFailed action with validation errors', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a-', { a: updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' }) });
+        actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
         jest
           .spyOn(testResultsService, 'saveTestResult')

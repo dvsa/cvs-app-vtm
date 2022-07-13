@@ -7,7 +7,8 @@ import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import merge from 'lodash.merge';
+import { Observable, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -32,7 +33,7 @@ export class TestRecordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService,
+    private testRecordsService: TestRecordsService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +54,11 @@ export class TestRecordComponent implements OnInit {
     this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  async handleSave(): Promise<void> {
+  /**
+   * Merge all section form values into one testResult and trigger action to update testResult.
+   * @returns void
+   */
+  handleSave(): void {
     this.sectionForms.concat(this.defectForms.filter(f => f));
 
     this.sectionForms.forEach(form => {
@@ -65,10 +70,12 @@ export class TestRecordComponent implements OnInit {
       return;
     }
 
-    const { testResultId, testTypeId } = await firstValueFrom(this.routerService.routeNestedParams$);
+    const updatedTestResult = {};
 
-    this.sectionForms.forEach(
-      form => this.testRecordsService.updateTestResultState(testResultId, testTypeId, form.meta.name, form.getCleanValue(form))
-    );
+    this.sectionForms.forEach(form => {
+      merge(updatedTestResult, form.getCleanValue(form));
+    });
+
+    this.testRecordsService.updateTestResult(updatedTestResult);
   }
 }
