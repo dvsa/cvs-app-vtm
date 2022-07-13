@@ -37,7 +37,8 @@ export enum FormNodeEditTypes {
   NUMBER = 'number',
   TEXTAREA = 'textarea',
   DATE = 'date',
-  RADIO = 'radio'
+  RADIO = 'radio',
+  HIDDEN = 'hidden'
 }
 
 export interface FormNodeOption<T> {
@@ -148,7 +149,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 
 const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: any } | Array<[]> => {
   const cleanValue = form instanceof CustomFormArray ? [] : ({} as { [key: string]: any });
-  Object.keys(form.controls).forEach((key) => {
+  Object.keys(form.controls).forEach(key => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
       cleanValue[key] = control.getCleanValue(control);
