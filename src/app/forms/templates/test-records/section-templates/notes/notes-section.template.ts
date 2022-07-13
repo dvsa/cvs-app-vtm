@@ -7,11 +7,24 @@ export const NotesSection: FormNode = {
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
-      name: 'additionalNotesRecorded',
-      label: 'Additional Notes',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXTAREA,
-      validators: [{ name: 'maxLength', args: 500 }]
+      name: 'testTypes',
+      label: 'Test Types',
+      type: FormNodeTypes.ARRAY,
+      children: [
+        {
+          name: '0', // it is important here that the name of the node for an ARRAY type should be an index value
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'additionalNotesRecorded',
+              label: 'Additional Notes',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXTAREA,
+              validators: [{ name: 'maxLength', args: 500 }]
+            }
+          ]
+        }
+      ]
     }
   ]
 };
