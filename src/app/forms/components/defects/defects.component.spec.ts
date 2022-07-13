@@ -12,8 +12,8 @@ import { DefectsComponent } from './defects.component';
   styles: []
 })
 class MockDefectComponent {
-  @Input() edit = false;
-  @Input() defectData!: Defect;
+  @Input() isEditing = false;
+  @Input() defect!: Defect;
 }
 
 describe('DefectsComponent', () => {

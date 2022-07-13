@@ -19,11 +19,12 @@ export class BaseTestRecordComponent {
 
   generateTemplate(): FormNode[] | undefined {
     if (this.testResult) {
-      const { vehicleType, testCode } = this.testResult;
+      const { vehicleType } = this.testResult;
+      const testTypeId = this.testResult.testTypes[0].testTypeId;
       if (vehicleType && masterTpl.hasOwnProperty(vehicleType)) {
-        const vehicleTpl: Partial<Record<TestCodes | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
-        if (testCode && vehicleTpl.hasOwnProperty(testCode)) {
-          const tpl = vehicleTpl[testCode as TestCodes];
+        const vehicleTpl: Partial<Record<string | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
+        if (testTypeId && vehicleTpl.hasOwnProperty(testTypeId)) {
+          const tpl = vehicleTpl[testTypeId];
           return tpl && Object.values(tpl);
         } else {
           const tpl: Record<string, FormNode> | undefined = vehicleTpl['default'];

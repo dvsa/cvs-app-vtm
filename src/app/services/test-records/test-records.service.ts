@@ -83,6 +83,7 @@ export class TestRecordsService {
     reportProgress?: boolean
   ): Observable<TestResultModel> {
     const { username, id } = user;
+    delete body.testHistory;
     return this.updateTestResultsService.testResultsTestResultIdPut(
       { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as TestResultPutBody,
       systemNumber,
