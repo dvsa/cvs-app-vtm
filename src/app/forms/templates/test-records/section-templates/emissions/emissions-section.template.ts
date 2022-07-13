@@ -1,5 +1,4 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',
@@ -32,6 +31,25 @@ export const EmissionsSection: FormNode = {
               label: 'Fuel type',
               type: FormNodeTypes.CONTROL,
               disabled: true
+            },
+            {
+              name: 'modType',
+              label: 'Modification Type',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'code',
+                  label: 'Modification code',
+                  type: FormNodeTypes.CONTROL,
+                  disabled: true
+                },
+                {
+                  name: 'description',
+                  label: 'Modification description',
+                  type: FormNodeTypes.CONTROL,
+                  disabled: true
+                }
+              ]
             },
             {
               name: 'modificationTypeUsed',

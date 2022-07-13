@@ -142,7 +142,7 @@ describe('TestRecordComponent', () => {
         [false, []]
       ])('should return %p for forms: %o', (expected, forms) => {
         component.sectionForms = forms as Array<CustomFormGroup>;
-        expect(component.sectionFormsInvalid).toBe(expected);
+        expect(component.sectionForms.some(form => form.invalid)).toBe(expected);
       });
     });
   });

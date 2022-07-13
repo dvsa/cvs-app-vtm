@@ -1,21 +1,34 @@
-import { Component, Input } from '@angular/core';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { DefectTpl } from '@forms/templates/general/defect.template';
 import { Defect } from '@models/defect';
 import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { DynamicFormGroupComponent } from '../dynamic-form-group/dynamic-form-group.component';
 
 @Component({
-  selector: 'app-defect',
+  selector: 'app-defect[defect]',
   templateUrl: './defect.component.html',
+  providers: [DefaultNullOrEmpty]
 })
 export class DefectComponent {
-  @Input() edit = false;
-  @Input() defectData!: Defect;
+  @ViewChild(DynamicFormGroupComponent) private set dynamicFormGroupComponent(component: DynamicFormGroupComponent) {
+    this.formChange.emit(component.form);
+  }
 
-  defectTpl: FormNode;
+  @Input() isEditing = false;
+  @Input() defect!: Defect;
 
-  constructor() {
-    this.defectTpl = DefectTpl;
+  @Output() formChange = new EventEmitter<CustomFormGroup | CustomFormArray>();
+
+  template: FormNode;
+
+  constructor(private pipe: DefaultNullOrEmpty) {
+    this.template = DefectTpl;
+  }
+
+  combined(...params: string[]): string {
+    return params.map(p => this.pipe.transform(p)).join(' / ');
   }
 
   /**
@@ -25,12 +38,12 @@ export class DefectComponent {
    * @param location - DefectAdditionalInformationLocation object
    * @returns string
    */
-  mapLocationText(location: DefectAdditionalInformationLocation) {
-    return Object.entries(location)
-      .filter(([key, value]) => {
-        return (typeof value === 'number' && isNaN(value) === false) || value;
-      })
-      .map(([key, value]) => `${key}: ${value}`)
-      .join(` / `);
+  mapLocationText(location: DefectAdditionalInformationLocation): string {
+    return !location
+      ? '-'
+      : Object.entries(location)
+        .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(' / ');
   }
 }

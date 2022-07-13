@@ -83,6 +83,7 @@ export class TestRecordsService {
     reportProgress?: boolean
   ): Observable<TestResultModel[]> {
     const { username, id } = user;
+    delete body.testHistory;
     return this.updateTestResultsService.testResultsTestResultIdPut(
       { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as TestResultPutBody,
       systemNumber,
@@ -91,17 +92,7 @@ export class TestRecordsService {
     ) as unknown as Observable<TestResultModel[]>;
   }
 
-  updateTestResultState({
-    testResultId,
-    testTypeId,
-    section,
-    value
-  }: {
-    testResultId: string;
-    testTypeId: string;
-    section: string;
-    value: any;
-  }): void {
+  updateTestResultState(testResultId: string, testTypeId: string, section: string, value: any): void {
     this.store.dispatch(updateTestResultState({ testResultId, testTypeId, section, value }));
   }
 }

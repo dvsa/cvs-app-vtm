@@ -103,7 +103,7 @@ describe('TestRecordsService', () => {
     it('should dispatch updateTestResultState action', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const args = { testResultId: 'testResultId', testTypeId: 'testTypeId', section: 'section', value: 'some value' };
-      service.updateTestResultState(args);
+      service.updateTestResultState(args.testResultId, args.testTypeId, args.section, args.value);
       expect(dispatchSpy).toHaveBeenCalledWith(updateTestResultState(args));
     });
   });
