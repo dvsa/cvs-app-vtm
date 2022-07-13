@@ -1,5 +1,5 @@
 <ng-container *ngIf="form" [formGroup]="form">
-  <ng-container *ngIf="control">
+  <ng-container *ngIf="control && control.value.meta.editType !== formNodeEditTypes.HIDDEN">
     <ng-container [ngSwitch]="control.value.meta.editType">
       <ng-container *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE">
         <app-autocomplete
