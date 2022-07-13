@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const RequiredSection: FormNode = {
   name: 'requiredSection',
@@ -7,46 +7,56 @@ export const RequiredSection: FormNode = {
     {
       name: 'testResultId',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'vehicleType',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'testStatus',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'systemNumber',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'testerStaffId',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'vehicleClass',
       type: FormNodeTypes.GROUP,
+      editType: FormNodeEditTypes.HIDDEN,
+
       viewType: FormNodeViewTypes.HIDDEN,
       children: [
         {
           name: 'code',
           type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.HIDDEN,
           viewType: FormNodeViewTypes.HIDDEN
         },
         {
           name: 'description',
           type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.HIDDEN,
           viewType: FormNodeViewTypes.HIDDEN
         }
       ]
@@ -54,83 +64,99 @@ export const RequiredSection: FormNode = {
     {
       name: 'vehicleType',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'noOfAxles',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'numberOfWheelsDriven',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'regnDate',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'firstUseDate',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'reasonForCreation',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'createdByName',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'createdById',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedAt',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedByName',
 
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedById',
 
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'shouldEmailCertificate',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'numberOfSeats',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'vehicleConfiguration',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'vehicleSize',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'reasonForCancellation',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
@@ -145,17 +171,20 @@ export const RequiredSection: FormNode = {
             {
               name: 'testTypeId',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'name',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
 
             {
               name: 'secondaryCertificateNumber',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
@@ -170,16 +199,19 @@ export const RequiredSection: FormNode = {
                     {
                       name: 'referenceNumber',
                       type: FormNodeTypes.CONTROL,
+                      editType: FormNodeEditTypes.HIDDEN,
                       viewType: FormNodeViewTypes.HIDDEN
                     },
                     {
                       name: 'defectName',
                       type: FormNodeTypes.CONTROL,
+                      editType: FormNodeEditTypes.HIDDEN,
                       viewType: FormNodeViewTypes.HIDDEN
                     },
                     {
                       name: 'defectNotes',
                       type: FormNodeTypes.CONTROL,
+                      editType: FormNodeEditTypes.HIDDEN,
                       viewType: FormNodeViewTypes.HIDDEN
                     }
                   ]
@@ -189,27 +221,32 @@ export const RequiredSection: FormNode = {
             {
               name: 'createdAt',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'lastUpdatedAt',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'certificateLink',
 
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'testTypeClassification',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'deletionFlag',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             }
           ]

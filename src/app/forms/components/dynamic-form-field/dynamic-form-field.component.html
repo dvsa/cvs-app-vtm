@@ -11,6 +11,8 @@
         </app-autocomplete>
       </ng-container>
 
+      <ng-container *ngSwitchCase="formNodeEditTypes.HIDDEN"> </ng-container>
+
       <ng-container *ngSwitchCase="formNodeEditTypes.NUMBER">
         <app-number-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-number-input>
       </ng-container>
