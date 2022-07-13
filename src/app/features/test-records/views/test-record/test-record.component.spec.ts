@@ -56,8 +56,10 @@ describe('TestRecordComponent', () => {
 
   it('should not display anything when there is no data', fakeAsync(() => {
     component.testResult$ = of(undefined);
+
     tick();
     fixture.detectChanges();
+
     expect(fixture.debugElement.query(By.css('h1'))).toBeNull();
   }));
 

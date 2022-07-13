@@ -18,7 +18,9 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
 })
 export class TestRecordComponent implements OnInit {
   @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(component: BaseTestRecordComponent) {
-    component?.dynamicFormGroupComponents?.forEach(component => this.sectionForms.push(component.form));
+    component?.sectionForms.forEach(form => {
+      this.sectionForms.push(form);
+    });
   }
 
   isEditing$: Observable<boolean> = of(false);
@@ -26,7 +28,6 @@ export class TestRecordComponent implements OnInit {
   defects$: Observable<Defects | undefined> = of(undefined);
 
   sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
-  defectForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   constructor(
     private errorService: GlobalErrorService,
@@ -42,10 +43,6 @@ export class TestRecordComponent implements OnInit {
     this.defects$ = this.testRecordsService.defectData$;
   }
 
-  defectFormsChange(forms: Array<CustomFormGroup | CustomFormArray>): void {
-    this.defectForms = forms;
-  }
-
   handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: true }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
@@ -59,8 +56,6 @@ export class TestRecordComponent implements OnInit {
    * @returns void
    */
   handleSave(): void {
-    this.sectionForms.concat(this.defectForms.filter(f => f));
-
     this.sectionForms.forEach(form => {
       const errors = DynamicFormService.updateValidity(form);
       errors.length > 0 && this.errorService.patchErrors(errors);

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Optional } from '@angular/core';
 import {
   AbstractControl,
   AbstractControlOptions,
@@ -10,6 +10,7 @@ import {
   ValidatorFn
 } from '@angular/forms';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { DynamicFormService } from './dynamic-form.service';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -132,6 +133,7 @@ export interface CustomArray extends FormArray {
 
 export class CustomFormArray extends FormArray implements CustomArray, BaseForm {
   meta: FormNode;
+  private dynamicFormService: DynamicFormService;
 
   constructor(
     meta: FormNode,
@@ -141,17 +143,22 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
+    this.dynamicFormService = new DynamicFormService();
   }
 
   getCleanValue = cleanValue.bind(this);
+
+  addControl() {
+    super.push(this.dynamicFormService.createForm(this.meta));
+  }
 }
 
 const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: any } | Array<[]> => {
   const cleanValue = form instanceof CustomFormArray ? [] : ({} as { [key: string]: any });
-  Object.keys(form.controls).forEach((key) => {
+  Object.keys(form.controls).forEach(key => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-      cleanValue[key] = control.getCleanValue(control);
+      cleanValue[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
@@ -163,3 +170,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
 
   return cleanValue;
 };
+
+function objectOrNull(obj: Object) {
+  return Object.values(obj).some(value => undefined !== value) ? obj : null;
+}

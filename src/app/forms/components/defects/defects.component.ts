@@ -1,25 +1,30 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { Defects } from '@models/defects';
 
 @Component({
-  selector: 'app-defects',
-  templateUrl: './defects.component.html',
+  selector: 'app-defects[form]',
+  templateUrl: './defects.component.html'
 })
 export class DefectsComponent {
   @Input() isEditing = false;
-  @Input() defects?: Defects;
+  @Input() form!: CustomFormGroup;
 
   @Output() formsChange = new EventEmitter<(CustomFormGroup | CustomFormArray)[]>();
 
-  forms: Array<CustomFormGroup | CustomFormArray>;
-
-  constructor() {
-    this.forms = new Array(this.defects?.length).fill(null);
+  get defectsForm() {
+    return this.form.get(['testTypes', '0', 'defects']) as CustomFormArray;
   }
 
-  emitFormChange(index: number, form: CustomFormGroup | CustomFormArray) {
-    this.forms[index] = form;
-    this.formsChange.emit(this.forms);
+  getDefectForm(i: number) {
+    return this.defectsForm.controls[i] as CustomFormGroup;
+  }
+
+  trackDefects(index: number, defect: AbstractControl): number {
+    return index;
+  }
+
+  get defectCount() {
+    return this.defectsForm.controls.length;
   }
 }

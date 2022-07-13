@@ -81,7 +81,6 @@ export class TestResultsEffects {
   updateTestResult$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTestResult),
-      debounceTime(500),
       mergeMap(action =>
         of(action.value).pipe(
           withLatestFrom(this.userService.userName$, this.userService.id$, this.routerService.getRouteParam$('systemNumber')),

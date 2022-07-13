@@ -227,51 +227,6 @@ describe('TestResultsEffects', () => {
 
   describe('updateTestResult$', () => {
     const newTestResult = { testResultId: '1' } as TestResultModel;
-    describe('debounce', () => {
-      it('should only call API once and return updateTestResultSuccess', () => {
-        testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResult({ value: {} as TestResultModel });
-          actions$ = hot('a 100ms b', { a: action, b: action });
-
-          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', { a: newTestResult }));
-
-          expectObservable(effects.updateTestResult$).toBe('601ms b', {
-            b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } })
-          });
-        });
-      });
-
-      it('should call API twice and dispatch updateTestResultSuccess both times', () => {
-        testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResult({ value: {} as TestResultModel });
-          actions$ = hot('a 500ms b', { a: action, b: action });
-
-          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', { a: newTestResult }));
-
-          expectObservable(effects.updateTestResult$).toBe('500ms b 500ms c', {
-            b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } }),
-            c: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } })
-          });
-        });
-      });
-
-      it('should call API twice and dispatch success and failure actions', () => {
-        testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResult({ value: newTestResult });
-          actions$ = hot('a 500ms b', { a: action, b: action });
-
-          jest
-            .spyOn(testResultsService, 'saveTestResult')
-            .mockReturnValueOnce(cold('a|', { a: newTestResult }))
-            .mockReturnValueOnce(cold('#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
-
-          expectObservable(effects.updateTestResult$).toBe('500ms b 500ms c', {
-            b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } }),
-            c: updateTestResultFailed({ errors: [] })
-          });
-        });
-      });
-    });
 
     it('should dispatch updateTestResultFailed action with empty errors array', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
@@ -281,7 +236,7 @@ describe('TestResultsEffects', () => {
           .spyOn(testResultsService, 'saveTestResult')
           .mockReturnValue(cold('---#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
 
-        expectObservable(effects.updateTestResult$).toBe('504ms b', {
+        expectObservable(effects.updateTestResult$).toBe('----b', {
           b: updateTestResultFailed({ errors: [] })
         });
       });
@@ -302,7 +257,7 @@ describe('TestResultsEffects', () => {
           { error: '"age" is missing', anchorLink: 'age' },
           { error: 'random error', anchorLink: '' }
         ];
-        expectObservable(effects.updateTestResult$).toBe('504ms b', {
+        expectObservable(effects.updateTestResult$).toBe('----b', {
           b: updateTestResultFailed({ errors: expectedErrors })
         });
       });
