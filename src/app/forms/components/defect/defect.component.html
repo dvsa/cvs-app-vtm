@@ -1,52 +1,52 @@
 <ng-template [ngTemplateOutlet]="isEditing ? editDefect : viewDefect" [ngTemplateOutletContext]="{ data: form }"></ng-template>
 
 <ng-template #viewDefect let-data="data">
-  <dl class="govuk-summary-list">
+  <dl *ngIf="data.getCleanValue(data) as defect" class="govuk-summary-list">
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
       [ngTemplateOutletContext]="{
         label: 'Defect label',
-        data: combined(getControlValue('deficiencyRef'), getControlValue('deficiencyCategory'))
+        data: combined(defect.deficiencyRef, defect.deficiencyCategory)
       }"
     ></ng-template>
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Category', data: combined(getControlValue('imNumber'), getControlValue('imDescription')) }"
+      [ngTemplateOutletContext]="{ label: 'Category', data: combined(defect.imNumber, defect.imDescription) }"
     ></ng-template>
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Item', data: combined(getControlValue('itemNumber'), getControlValue('itemDescription')) }"
+      [ngTemplateOutletContext]="{ label: 'Item', data: combined(defect.itemNumber, defect.itemDescription) }"
     ></ng-template>
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
       [ngTemplateOutletContext]="{
         label: 'Description',
-        data: combined(getControlValue('deficiencyId'), getControlValue('deficiencySubId'), getControlValue('deficiencyText'))
+        data: combined(defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText)
       }"
     ></ng-template>
 
-    <!-- <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(data.additionalInformation?.location)) }"
-    ></ng-template> -->
-
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Repaired during test', data: combined(getControlValue('prs')) }"
+      [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(defect.additionalInformation?.location)) }"
     ></ng-template>
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Prohibition issues', data: combined(getControlValue('prohibitionIssued')) }"
+      [ngTemplateOutletContext]="{ label: 'Repaired during test', data: combined(defect.prs) }"
     ></ng-template>
 
-    <!-- <ng-template
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Prohibition issues', data: combined(defect.prohibitionIssued) }"
+    ></ng-template>
+
+    <ng-template
       [ngTemplateOutlet]="viewDefectRow"
       [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(data.additionalInformation?.notes) }"
-    ></ng-template> -->
+    ></ng-template>
   </dl>
 </ng-template>
 
@@ -57,7 +57,7 @@
   </div>
 </ng-template>
 
-<ng-template #editDefect let-data="data">
+<ng-template #editDefect>
   <ng-container [formGroup]="form">
     <app-dynamic-form-field [control]="keyValueControl('deficiencyRef')" [form]="form"></app-dynamic-form-field>
     <app-dynamic-form-field [control]="keyValueControl('deficiencyCategory')" [form]="form"></app-dynamic-form-field>

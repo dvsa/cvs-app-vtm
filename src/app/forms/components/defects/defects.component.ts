@@ -20,7 +20,7 @@ export class DefectsComponent {
     return this.defectsForm.controls[i] as CustomFormGroup;
   }
 
-  trackDefects(index: number, defect: AbstractControl): number {
+  trackByFn(index: number, defect: AbstractControl): number {
     return index;
   }
 

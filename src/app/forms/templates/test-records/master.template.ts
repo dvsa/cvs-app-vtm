@@ -24,6 +24,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
+      defects: DefectsTpl,
       required: RequiredSection
     },
     '1': {
@@ -32,7 +33,6 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       seatbelts: SeatbeltSection,
       visit: VisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       required: RequiredSection
     }
   },

@@ -3,7 +3,7 @@
 <ng-container [formGroup]="form">
   <ng-container *ngIf="defectCount; else noDefects">
     <app-defect
-      *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackDefects"
+      *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
       [isEditing]="isEditing"
       [form]="getDefectForm(i)"
     ></app-defect>
