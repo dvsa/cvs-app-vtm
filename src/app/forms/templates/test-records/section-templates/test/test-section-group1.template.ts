@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const TestSection: FormNode = {
+export const TestSectionGroup1: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -123,17 +123,6 @@ export const TestSection: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
-            },
-            {
-              name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
-              value: '',
-              label: 'Prohibition issued',
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              disabled: true
             }
           ]
         }

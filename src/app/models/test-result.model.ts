@@ -28,11 +28,11 @@ export interface TestResultModel {
   testStationType: TestStationType;
   testerName: string;
   testerEmailAddress: string;
-  additionalNotesRecorded: string;
 
   reasonForCreation?: string;
   vehicleType?: string;
   testHistory?: TestResultModel[];
+  testStatus?: string;
 
   createdByName?: string;
   testVersion?: string | null;
