@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
-import { DefectTpl } from '@forms/templates/general/defect.template';
+import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
@@ -17,60 +16,59 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestRecordComponent implements OnInit {
-  @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(c: BaseTestRecordComponent) {
-    c?.dynamicFormGroupComponents?.forEach((component) => {
-      this.sectionForms.push(component.form);
-    });
+  @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(component: BaseTestRecordComponent) {
+    component?.dynamicFormGroupComponents?.forEach(component => this.sectionForms.push(component.form));
   }
+
+  isEditing$: Observable<boolean> = of(false);
+  testResult$: Observable<TestResultModel | undefined> = of(undefined);
+  defects$: Observable<Defects | undefined> = of(undefined);
 
   sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
-
-  defectTpl: FormNode = DefectTpl;
-  testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  defectsData$: Observable<Defects | undefined> = of(undefined);
-  edit$: Observable<boolean> = of(false);
+  defectForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   constructor(
-    private testRecordsService: TestRecordsService,
-    private routerService: RouterService,
-    private router: Router,
+    private errorService: GlobalErrorService,
     private route: ActivatedRoute,
-    private errorService: GlobalErrorService
+    private router: Router,
+    private routerService: RouterService,
+    private testRecordsService: TestRecordsService,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.isEditing$ = this.routerService.routeEditable$;
     this.testResult$ = this.testRecordsService.testResult$;
-    this.defectsData$ = this.testRecordsService.defectData$;
-    this.edit$ = this.routerService.routeEditable$;
+    this.defects$ = this.testRecordsService.defectData$;
   }
 
-  handleEdit() {
+  defectFormsChange(forms: Array<CustomFormGroup | CustomFormArray>): void {
+    this.defectForms = forms;
+  }
+
+  handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: true }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  handleCancel() {
+  handleCancel(): void {
     this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  get sectionFormsInvalid() {
-    return [...this.sectionForms].map((f) => f.invalid).some((b) => b);
-  }
+  async handleSave(): Promise<void> {
+    this.sectionForms.concat(this.defectForms.filter(f => f));
 
-  async handleSave() {
-    this.sectionForms.forEach((f) => {
-      const errors = DynamicFormService.updateValidity(f);
+    this.sectionForms.forEach(form => {
+      const errors = DynamicFormService.updateValidity(form);
       errors.length > 0 && this.errorService.patchErrors(errors);
     });
 
-    if (this.sectionFormsInvalid) {
+    if (this.sectionForms.some(form => form.invalid)) {
       return;
     }
 
     const { testResultId, testTypeId } = await firstValueFrom(this.routerService.routeNestedParams$);
 
-    this.sectionForms.forEach((form) => {
-      const testSection = form.meta.name;
-      this.testRecordsService.updateTestResultState({ testResultId, testTypeId, section: testSection, value: form.getCleanValue(form) });
-    });
+    this.sectionForms.forEach(
+      form => this.testRecordsService.updateTestResultState(testResultId, testTypeId, form.meta.name, form.getCleanValue(form))
+    );
   }
 }

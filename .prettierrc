@@ -6,7 +6,7 @@
   "quoteProps": "as-needed",
   "trailingComma": "none",
   "bracketSpacing": true,
-  "arrowParens": "always",
+  "arrowParens": "avoid",
   "endOfLine": "auto",
   "printWidth": 150,
   "overrides": [

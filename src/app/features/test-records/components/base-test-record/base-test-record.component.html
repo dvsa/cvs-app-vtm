@@ -1,5 +1,5 @@
 <ng-container *ngFor="let template of generateTemplate()">
-  <section class="section" id="{{ template.name }}">
-    <app-dynamic-form-group [template]="template" [data]="testResult" [edit]="edit || false"></app-dynamic-form-group>
+  <section class="section" [id]="template.name">
+    <app-dynamic-form-group [template]="template" [data]="testResult" [edit]="isEditing"></app-dynamic-form-group>
   </section>
 </ng-container>
