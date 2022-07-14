@@ -150,6 +150,12 @@ export const DefectsTpl: FormNode = {
                       label: 'Prohibition issued',
                       type: FormNodeTypes.CONTROL,
                       disabled: true
+                    },
+                    {
+                      name: 'stdForProhibition',
+                      label: 'STD for prohibition',
+                      type: FormNodeTypes.CONTROL,
+                      disabled: true
                     }
                   ]
                 }

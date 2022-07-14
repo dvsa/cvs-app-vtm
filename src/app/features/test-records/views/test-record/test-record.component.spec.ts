@@ -7,15 +7,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
+import { TestResultModel } from '@models/test-result.model';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { updateTestResultSuccess } from '@store/test-records';
 import merge from 'lodash.merge';
-import { of } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
@@ -30,12 +33,13 @@ describe('TestRecordComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let testRecordsService: TestRecordsService;
+  let actions$ = new ReplaySubject<Action>();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule, TestResultsApiModule],
-      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), RouterService]
+      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), RouterService, provideMockActions(() => actions$)]
     }).compileComponents();
   }));
 
@@ -186,6 +190,22 @@ describe('TestRecordComponent', () => {
       tick();
       expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
       expect(updateTestResultStateSpy).toHaveBeenCalledWith(expectedFinalValue);
+    }));
+  });
+
+  describe(TestRecordComponent.prototype.watchForUpdateSuccess.name, () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should call handleCancel when updateTestResultState is success', fakeAsync(() => {
+      const handleCancelSpy = jest.spyOn(component, 'handleCancel');
+
+      actions$.next(updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultModel } }));
+
+      tick();
+
+      expect(handleCancelSpy).toHaveBeenCalledTimes(1);
     }));
   });
 });
