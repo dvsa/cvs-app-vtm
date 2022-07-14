@@ -20,7 +20,7 @@ export const DefectsTpl: FormNode = {
               type: FormNodeTypes.ARRAY,
               children: [
                 {
-                  name: 'defect',
+                  name: '0',
                   type: FormNodeTypes.GROUP,
                   children: [
                     {
