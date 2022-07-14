@@ -33,6 +33,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       seatbelts: SeatbeltSection,
       visit: VisitSection,
       notes: NotesSection,
+      defects: DefectsTpl,
       required: RequiredSection
     }
   },
