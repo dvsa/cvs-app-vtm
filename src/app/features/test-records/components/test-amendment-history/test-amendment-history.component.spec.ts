@@ -3,10 +3,12 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result';
+import { TestResultModel } from '@models/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState } from '@store/.';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records';
+import { createMock, createMockList } from 'ts-auto-mock';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
 
 describe('TestAmendmentHistoryComponent', () => {
@@ -73,7 +75,16 @@ describe('TestAmendmentHistoryComponent', () => {
 
     describe('Table sorting', () => {
       beforeEach(() => {
-        component.testRecord = mockTestResult();
+        component.testRecord = createMock<TestResultModel>({
+          createdAt: '2020-01-01T00:00:00.000Z',
+          reasonForCreation: 'reasonForCreation',
+          createdByName: 'Testter Man',
+          testHistory: createMockList<TestResultModel>(1, i =>
+            createMock<TestResultModel>({
+              createdAt: new Date(`2020-01-0${i + 1}`).toISOString()
+            })
+          )
+        });
         fixture.detectChanges();
 
         const rows = fixture.debugElement.queryAll(By.css('.govuk-table__row'));
@@ -81,7 +92,6 @@ describe('TestAmendmentHistoryComponent', () => {
       });
 
       it('should have first row be the current record', () => {
-        component.testRecord = mockTestResult();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
         expect(cells[0].nativeElement.innerHTML).toBe(pipe.transform(component.testRecord?.reasonForCreation!));
         expect(cells[1].nativeElement.innerHTML).toBe(component.testRecord?.createdByName);
@@ -90,8 +100,7 @@ describe('TestAmendmentHistoryComponent', () => {
       });
 
       it('should have the second row be the first entry from amendement version history', fakeAsync(() => {
-        component.testRecord = mockTestResult();
-        store.overrideSelector(selectedTestSortedAmendmentHistory, mockTestResult().testHistory);
+        store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord!.testHistory!);
         tick();
         fixture.detectChanges();
         const cells = fixture.debugElement.queryAll(By.css('.govuk-table__cell'));
@@ -104,13 +113,13 @@ describe('TestAmendmentHistoryComponent', () => {
 
     it('should have links to view amended records', fakeAsync(() => {
       component.testRecord = mockTestResult();
-      store.overrideSelector(selectedTestSortedAmendmentHistory, mockTestResult().testHistory);
+      store.overrideSelector(selectedTestSortedAmendmentHistory, component.testRecord!.testHistory!);
       tick();
       fixture.detectChanges();
 
       const links = fixture.debugElement.queryAll(By.css('a'));
 
-      links.forEach((e) => expect(e.nativeElement.innerHTML).toBe('View'));
+      links.forEach(e => expect(e.nativeElement.innerHTML).toBe('View'));
       expect(links.length).toBe(component.testRecord?.testHistory?.length);
     }));
   });

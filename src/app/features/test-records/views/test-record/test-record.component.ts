@@ -7,7 +7,8 @@ import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import merge from 'lodash.merge';
+import { Observable, of } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -17,7 +18,9 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
 })
 export class TestRecordComponent implements OnInit {
   @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(component: BaseTestRecordComponent) {
-    component?.dynamicFormGroupComponents?.forEach(component => this.sectionForms.push(component.form));
+    component?.sectionForms.forEach(form => {
+      this.sectionForms.push(form);
+    });
   }
 
   isEditing$: Observable<boolean> = of(false);
@@ -25,7 +28,6 @@ export class TestRecordComponent implements OnInit {
   defects$: Observable<Defects | undefined> = of(undefined);
 
   sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
-  defectForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   constructor(
     private errorService: GlobalErrorService,
@@ -43,10 +45,6 @@ export class TestRecordComponent implements OnInit {
     this.defects$ = this.testRecordsService.defectData$;
   }
 
-  defectFormsChange(forms: Array<CustomFormGroup | CustomFormArray>): void {
-    this.defectForms = forms;
-  }
-
   handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
@@ -55,9 +53,11 @@ export class TestRecordComponent implements OnInit {
     this.router.navigate([], { queryParams: { edit: null }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
-  async handleSave(): Promise<void> {
-    this.sectionForms.concat(this.defectForms.filter(f => f));
-
+  /**
+   * Merge all section form values into one testResult and trigger action to update testResult.
+   * @returns void
+   */
+  handleSave(): void {
     this.sectionForms.forEach(form => {
       const errors = DynamicFormService.updateValidity(form);
       errors.length > 0 && this.errorService.patchErrors(errors);
@@ -67,10 +67,10 @@ export class TestRecordComponent implements OnInit {
       return;
     }
 
-    const { testResultId, testTypeId } = await firstValueFrom(this.routerService.routeNestedParams$);
+    const updatedTestResult = {};
 
-    this.sectionForms.forEach(
-      form => this.testRecordsService.updateTestResultState(testResultId, testTypeId, form.meta.name, form.getCleanValue(form))
-    );
+    this.sectionForms.forEach(form => merge(updatedTestResult, form.getCleanValue(form)));
+
+    this.testRecordsService.updateTestResult(updatedTestResult);
   }
 }

@@ -14,10 +14,11 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import merge from 'lodash.merge';
 import { of } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
-import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
 import { TestRecordComponent } from './test-record.component';
 
 describe('TestRecordComponent', () => {
@@ -55,8 +56,10 @@ describe('TestRecordComponent', () => {
 
   it('should not display anything when there is no data', fakeAsync(() => {
     component.testResult$ = of(undefined);
+
     tick();
     fixture.detectChanges();
+
     expect(fixture.debugElement.query(By.css('h1'))).toBeNull();
   }));
 
@@ -165,19 +168,24 @@ describe('TestRecordComponent', () => {
     });
 
     it('should return without calling updateTestResultState', fakeAsync(() => {
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResultState');
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
       component.handleSave();
       tick();
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
     }));
 
-    it('should call updateTestResultState for each form', fakeAsync(() => {
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResultState').mockImplementation(() => {});
+    it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
       store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testTypeId: 'a' });
       component.sectionForms[0].get('foo')?.patchValue('baz');
+
+      let expectedFinalValue;
+      forms.forEach(form => (expectedFinalValue = merge(form.getCleanValue(form), forms[1].getCleanValue(form))));
+
       component.handleSave();
       tick();
-      expect(updateTestResultStateSpy).toHaveBeenCalledTimes(2);
+      expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
+      expect(updateTestResultStateSpy).toHaveBeenCalledWith(expectedFinalValue);
     }));
   });
 });

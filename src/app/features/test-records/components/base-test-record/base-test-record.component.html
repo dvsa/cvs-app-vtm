@@ -1,3 +1,18 @@
-<ng-container *ngFor="let template of generateTemplate()">
-  <app-dynamic-form-group class="section" [id]="template.name" [template]="template" [data]="testResult" [edit]="isEditing"></app-dynamic-form-group>
+<ng-container *ngFor="let template of generateTemplate()" [ngSwitch]="template.name">
+  <app-defects
+    *ngSwitchCase="'defects'"
+    class="section"
+    [id]="template.name"
+    [isEditing]="isEditing"
+    [form]="getFormForTemplate(template)"
+  ></app-defects>
+
+  <app-dynamic-form-group
+    *ngSwitchDefault
+    class="section"
+    [id]="template.name"
+    [template]="template"
+    [data]="testResult"
+    [edit]="isEditing"
+  ></app-dynamic-form-group>
 </ng-container>

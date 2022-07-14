@@ -1,6 +1,7 @@
 import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
 
@@ -9,11 +10,15 @@ import { TestResultModel } from '@models/test-result.model';
   templateUrl: './base-test-record.component.html'
 })
 export class BaseTestRecordComponent {
-  @ViewChildren(DynamicFormGroupComponent) dynamicFormGroupComponents?: QueryList<DynamicFormGroupComponent>;
+  @ViewChildren(DynamicFormGroupComponent) set dynamicFormGroupComponents(sections: QueryList<DynamicFormGroupComponent>) {
+    sections.forEach(section => this.sectionForms.push(section.form as CustomFormGroup));
+  }
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
 
-  constructor() {}
+  sectionForms: CustomFormGroup[] = [];
+
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   generateTemplate(): FormNode[] | undefined {
     const { vehicleType } = this.testResult;
@@ -30,5 +35,11 @@ export class BaseTestRecordComponent {
       : vehicleTpl['default'];
 
     return tpl && Object.values(tpl);
+  }
+
+  getFormForTemplate(template: FormNode): CustomFormGroup {
+    const form = this.dynamicFormService.createForm(template, this.testResult) as CustomFormGroup;
+    this.sectionForms.push(form);
+    return form;
   }
 }

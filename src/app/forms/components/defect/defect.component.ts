@@ -1,31 +1,20 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
-import { DefectTpl } from '@forms/templates/general/defect.template';
-import { Defect } from '@models/defect';
+import { KeyValue } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { DynamicFormGroupComponent } from '../dynamic-form-group/dynamic-form-group.component';
 
 @Component({
-  selector: 'app-defect[defect]',
+  selector: 'app-defect[form]',
   templateUrl: './defect.component.html',
-  providers: [DefaultNullOrEmpty]
+  providers: [DefaultNullOrEmpty],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefectComponent {
-  @ViewChild(DynamicFormGroupComponent) private set dynamicFormGroupComponent(component: DynamicFormGroupComponent) {
-    this.formChange.emit(component.form);
-  }
-
+  @Input() form!: CustomFormGroup;
   @Input() isEditing = false;
-  @Input() defect!: Defect;
 
-  @Output() formChange = new EventEmitter<CustomFormGroup | CustomFormArray>();
-
-  template: FormNode;
-
-  constructor(private pipe: DefaultNullOrEmpty) {
-    this.template = DefectTpl;
-  }
+  constructor(private pipe: DefaultNullOrEmpty) {}
 
   combined(...params: string[]): string {
     return params.map(p => this.pipe.transform(p)).join(' / ');
@@ -42,8 +31,16 @@ export class DefectComponent {
     return !location
       ? '-'
       : Object.entries(location)
-        .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(' / ');
+          .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(' / ');
+  }
+
+  getControlValue(path: string) {
+    return this.form.get(path)?.value;
+  }
+
+  keyValueControl(key: string): KeyValue<string, CustomFormControl> {
+    return { key, value: this.form.get(key) as CustomFormControl };
   }
 }
