@@ -1,11 +1,10 @@
 import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { Defect } from '@models/defect';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { createMockList } from 'ts-auto-mock';
 import { DefectsComponent } from './defects.component';
 
 @Component({
@@ -26,6 +25,7 @@ describe('DefectsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DefectsComponent, MockDefectComponent],
+      imports: [ReactiveFormsModule],
       providers: [DynamicFormService]
     }).compileComponents();
   });
