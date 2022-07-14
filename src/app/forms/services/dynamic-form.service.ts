@@ -13,12 +13,14 @@ export class DynamicFormService {
 
   validatorMap: { [key: string]: (args: any) => ValidatorFn } = {
     required: () => Validators.required,
-    hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
     pattern: (args: string) => Validators.pattern(args),
     customPattern: (args: string[]) => CustomValidators.customPattern([...args]),
     numeric: () => CustomValidators.numeric(),
     maxLength: (args: number) => Validators.maxLength(args),
-    minLength: (args: number) => Validators.minLength(args)
+    minLength: (args: number) => Validators.minLength(args),
+    hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
+    requiredIfEquals: (args: { sibling: string, value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    requiredIfNotEquals: (args: { sibling: string, value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
