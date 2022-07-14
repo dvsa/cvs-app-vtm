@@ -7,6 +7,11 @@ import { BaseTestRecordComponent } from './base-test-record.component';
 import { TestResultModel } from '@models/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TestType } from '@models/test-type.model';
+import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { QueryList } from '@angular/core';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;
@@ -15,6 +20,7 @@ describe('BaseTestRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent],
+      imports: [DynamicFormsModule],
       providers: [RouterService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -53,6 +59,22 @@ describe('BaseTestRecordComponent', () => {
       component.testResult.vehicleType = VehicleTypes.PSV;
       component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
+    });
+  });
+
+  describe('form generation', () => {
+    it('should call create form and add it to sectionForms', () => {
+      component.getFormForTemplate({} as FormNode);
+      expect(component.sectionForms.length).toBe(1);
+    });
+  });
+
+  describe('set dynamicFormGroupComponents', () => {
+    it('should get form from each component and add it to sectionForms', () => {
+      const dfm = new DynamicFormGroupComponent(new DynamicFormService());
+      dfm.form = new CustomFormGroup({ name: 'test', type: FormNodeTypes.GROUP }, {});
+      component.dynamicFormGroupComponents = [dfm] as unknown as QueryList<DynamicFormGroupComponent>;
+      expect(component.sectionForms.length).toBe(1);
     });
   });
 });
