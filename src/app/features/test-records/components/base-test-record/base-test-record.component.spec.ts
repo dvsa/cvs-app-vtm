@@ -5,6 +5,8 @@ import { RouterService } from '@services/router/router.service';
 import { initialAppState } from '@store/.';
 import { BaseTestRecordComponent } from './base-test-record.component';
 import { TestResultModel } from '@models/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TestType } from '@models/test-type.model';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;
@@ -20,6 +22,7 @@ describe('BaseTestRecordComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BaseTestRecordComponent);
     component = fixture.componentInstance;
+    component.testResult = {} as TestResultModel;
     fixture.detectChanges();
   });
 
@@ -28,28 +31,27 @@ describe('BaseTestRecordComponent', () => {
   });
 
   describe('template generation', () => {
-    it('should return undefined if no test Result', () => {
-      component.testResult = undefined;
-      expect(component.generateTemplate()).toBeUndefined();
-    });
-
     it('should return undefined if vehicle type is not valid', () => {
-      component.testResult = { vehicleType: 'xxx', testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+      component.testResult.vehicleType = 'xxx' as VehicleTypes;
+      component.testResult.testTypes = [{ testTypeId: '1' } as TestType];
       expect(component.generateTemplate()).toBeUndefined();
     });
 
     it('should return the test code template if the test code is present', () => {
-      component.testResult = { vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+      component.testResult.vehicleType = VehicleTypes.PSV;
+      component.testResult.testTypes = [{ testTypeId: '1' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['1']!));
     });
 
     it('should return the default template if the testCode is not defined in the template', () => {
-      component.testResult = { vehicleType: 'psv', testTypes: [{ testTypeId: '23455' }] } as TestResultModel;
+      component.testResult.vehicleType = VehicleTypes.PSV;
+      component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
     });
 
     it('should return the default template if the testCode is not defined', () => {
-      component.testResult = { vehicleType: 'psv', testTypes: [{ testTypeId: '23455' }] } as TestResultModel;
+      component.testResult.vehicleType = VehicleTypes.PSV;
+      component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
     });
   });

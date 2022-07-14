@@ -32,8 +32,10 @@ export class TestRecordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService,
-  ) {}
+    private testRecordsService: TestRecordsService
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit(): void {
     this.isEditing$ = this.routerService.routeEditable$;
@@ -46,11 +48,11 @@ export class TestRecordComponent implements OnInit {
   }
 
   handleEdit(): void {
-    this.router.navigate([], { queryParams: { edit: true }, queryParamsHandling: 'merge', relativeTo: this.route });
+    this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
   handleCancel(): void {
-    this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
+    this.router.navigate([], { queryParams: { edit: null }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
   async handleSave(): Promise<void> {

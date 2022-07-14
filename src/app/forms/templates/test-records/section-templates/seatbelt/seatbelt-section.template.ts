@@ -18,25 +18,22 @@ export const SeatbeltSection: FormNode = {
             {
               name: 'seatbeltInstallationCheckDate',
               label: 'Carried out during test',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ]
             },
             {
               name: 'numberOfSeatbeltsFitted',
               label: 'Number of seatbelts fitted',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.NUMBER
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
               label: 'Most recent installation check',
-              value: '',
-              disabled: true,
-
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
