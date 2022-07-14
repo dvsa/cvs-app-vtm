@@ -106,10 +106,4 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   addValidators() {
     this.control?.addValidators([DateValidators.validDate]);
   }
-
-  getDate(d: string) {
-    var date = new Date(d);
-    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    return new Date(date.getTime() - userTimezoneOffset);
-  }
 }
