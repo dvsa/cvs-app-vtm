@@ -23,6 +23,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   private month$: Observable<number>;
   private year$: Observable<number>;
   private subscriptions: Array<Subscription | undefined> = [];
+  public originalDate: string = '';
 
   public day?: number;
   public month?: number;
@@ -41,12 +42,13 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
+    this.originalDate = this.value;
     this.addValidators();
     this.valueWriteBack(this.value);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s && s.unsubscribe());
+    this.subscriptions.forEach(s => s && s.unsubscribe());
   }
 
   onDayChange(event: any) {
@@ -85,7 +87,17 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
           return;
         }
 
-        const date = new Date(`${year}-${month}-${day}`);
+        const date = new Date(Date.UTC(year, month - 1, day));
+        const hours = new Date(this.originalDate).getUTCHours();
+        const minutes = new Date(this.originalDate).getUTCMinutes();
+        const seconds = new Date(this.originalDate).getUTCSeconds();
+
+        if ('Invalid Date' !== date.toString()) {
+          date.setUTCHours(hours || 0);
+          date.setUTCMinutes(minutes || 0);
+          date.setUTCSeconds(seconds || 0);
+        }
+
         this.onChange(date);
       }
     });
@@ -93,5 +105,11 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   addValidators() {
     this.control?.addValidators([DateValidators.validDate]);
+  }
+
+  getDate(d: string) {
+    var date = new Date(d);
+    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - userTimezoneOffset);
   }
 }

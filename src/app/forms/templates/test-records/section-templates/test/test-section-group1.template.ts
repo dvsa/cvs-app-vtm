@@ -102,7 +102,7 @@ export const TestSectionGroup1: FormNode = {
             {
               name: 'testAnniversaryDate',
               type: FormNodeTypes.CONTROL,
-              value: '',
+              value: null,
               disabled: true,
               label: 'Anniversary date',
               viewType: FormNodeViewTypes.DATE,

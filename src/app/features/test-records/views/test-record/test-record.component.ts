@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
+import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { updateTestResultSuccess } from '@store/test-records';
 import merge from 'lodash.merge';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -16,17 +18,18 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
   templateUrl: './test-record.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestRecordComponent implements OnInit {
+export class TestRecordComponent implements OnInit, OnDestroy {
   @ViewChild(BaseTestRecordComponent) private set baseTestRecordComponent(component: BaseTestRecordComponent) {
     component?.sectionForms.forEach(form => {
       this.sectionForms.push(form);
     });
   }
 
+  private destroy$ = new Subject<void>();
+
   isEditing$: Observable<boolean> = of(false);
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   defects$: Observable<Defects | undefined> = of(undefined);
-
   sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   constructor(
@@ -34,13 +37,20 @@ export class TestRecordComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService
+    private testRecordsService: TestRecordsService,
+    private actions$: Actions
   ) {}
 
   ngOnInit(): void {
     this.isEditing$ = this.routerService.routeEditable$;
     this.testResult$ = this.testRecordsService.testResult$;
     this.defects$ = this.testRecordsService.defectData$;
+    this.watchForUpdateSuccess();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   handleEdit(): void {
@@ -72,5 +82,11 @@ export class TestRecordComponent implements OnInit {
     });
 
     this.testRecordsService.updateTestResult(updatedTestResult);
+  }
+
+  watchForUpdateSuccess() {
+    this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      this.handleCancel();
+    });
   }
 }
