@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockDefectList } from '@mocks/mock-defects';
@@ -37,4 +37,14 @@ describe('AmendedTestRecordComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('sets class properties on component init', inject([TestRecordsService], (testRecordsService: TestRecordsService) => {
+    const amendedTestResultSpy = jest.spyOn(testRecordsService, 'amendedTestResult$', 'get');
+    const amendedDefectDataSpy = jest.spyOn(testRecordsService, 'amendedDefectData$', 'get');
+
+    fixture.detectChanges();
+
+    expect(amendedTestResultSpy).toHaveBeenCalled();
+    expect(amendedDefectDataSpy).toHaveBeenCalled();
+  }));
 });

@@ -4,6 +4,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -28,11 +29,9 @@ export class BaseTestRecordComponent {
     }
 
     const testTypeId = this.testResult.testTypes[0].testTypeId;
-    const vehicleTpl: Partial<Record<string | 'default', Record<string, FormNode>>> = masterTpl[vehicleType];
+    const vehicleTpl: Partial<Record<string | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
 
-    const tpl = testTypeId && vehicleTpl.hasOwnProperty(testTypeId)
-      ? vehicleTpl[testTypeId]
-      : vehicleTpl['default'];
+    const tpl = testTypeId && vehicleTpl.hasOwnProperty(testTypeId) ? vehicleTpl[testTypeId] : vehicleTpl['default'];
 
     return tpl && Object.values(tpl);
   }
