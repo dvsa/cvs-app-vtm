@@ -1,3 +1,4 @@
+import { TestResultModel } from '@models/test-result.model';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
   fetchSelectedTestResult,
@@ -10,7 +11,6 @@ import {
   fetchTestResultsSuccess,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultState,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { initialTestResultsState, testResultsReducer, TestResultsState } from './test-records.reducer';
@@ -132,64 +132,10 @@ describe('Test Results Reducer', () => {
     });
   });
 
-  describe('updateTestResultState', () => {
-    it('should update test result state', () => {
-      const testResults = mockTestResultList();
-      const state: TestResultsState = {
-        ...initialTestResultsState,
-        ids: ['TestResultId0001'],
-        entities: { ['TestResultId0001']: testResults[0] }
-      };
-      const newState = {
-        ...state,
-        entities: {
-          ['TestResultId0001']: {
-            ...testResults[0],
-            testCode: '2',
-            testTypes: [{ ...testResults[0].testTypes[0], testNumber: '2' }, { ...testResults[0].testTypes[1] }]
-          }
-        },
-        loading: true
-      };
-
-      const action = updateTestResultState({
-        testResultId: 'TestResultId0001',
-        testTypeId: '1',
-        section: '',
-        value: { testCode: '2', testTypes: [{ testNumber: '2' }] }
-      });
-      const selectedState = testResultsReducer(state, action);
-
-      expect(selectedState).toEqual(newState);
-      expect(selectedState).not.toBe(newState);
-    });
-
-    it('should do nothing if testResult is not in entities', () => {
-      const testResults = mockTestResultList();
-      const state: TestResultsState = {
-        ...initialTestResultsState,
-        ids: ['TestResultId0001'],
-        entities: { ['TestResultId0001']: testResults[0] }
-      };
-
-      const action = updateTestResultState({
-        testResultId: 'TestResultId0002',
-        testTypeId: '1',
-        section: '',
-        value: { testCode: '2', testTypes: [{ testNumber: '2' }] }
-      });
-
-      const selectedState = testResultsReducer(state, action);
-
-      expect(selectedState).toEqual(state);
-      expect(selectedState).not.toBe(state);
-    });
-  });
-
   describe('updateTestResult actions', () => {
     it('should set loading to true', () => {
       const state: TestResultsState = { ...initialTestResultsState, loading: true };
-      const action = updateTestResult();
+      const action = updateTestResult({ value: {} as TestResultModel });
       const newState = testResultsReducer(initialTestResultsState, action);
 
       expect(state).toEqual(newState);
@@ -199,7 +145,7 @@ describe('Test Results Reducer', () => {
     describe('updateTestResultSuccess', () => {
       it('should set loading to false', () => {
         const state: TestResultsState = { ...initialTestResultsState, loading: false };
-        const action = updateTestResultSuccess();
+        const action = updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultModel } });
         const newState = testResultsReducer({ ...initialTestResultsState, loading: true }, action);
 
         expect(state).toEqual(newState);
