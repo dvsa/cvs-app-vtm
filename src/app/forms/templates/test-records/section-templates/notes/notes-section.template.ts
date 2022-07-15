@@ -1,4 +1,4 @@
-import { Validators } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const NotesSection: FormNode = {
@@ -21,7 +21,7 @@ export const NotesSection: FormNode = {
               label: 'Additional Notes',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXTAREA,
-              validators: [{ name: Validators.MaxLength, args: 500 }]
+              validators: [{ name: ValidatorNames.MaxLength, args: 500 }]
             }
           ]
         }

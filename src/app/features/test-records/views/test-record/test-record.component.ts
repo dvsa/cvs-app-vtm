@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
@@ -69,8 +70,11 @@ export class TestRecordComponent implements OnInit, OnDestroy {
    */
   handleSave(): void {
     this.sectionForms.forEach(form => {
-      const errors = DynamicFormService.updateValidity(form);
-      errors.length > 0 && this.errorService.patchErrors(errors);
+      const errors: GlobalError[] = [];
+      DynamicFormService.updateValidity(form, errors);
+      if (errors.length > 0) {
+        this.errorService.patchErrors(errors);
+      }
     });
 
     if (this.sectionForms.some(form => form.invalid)) {
