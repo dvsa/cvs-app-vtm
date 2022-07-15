@@ -39,7 +39,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
     private actions$: Actions
-  ) {}
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   ngOnInit(): void {
     this.isEditing$ = this.routerService.routeEditable$;
@@ -54,11 +56,11 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   handleEdit(): void {
-    this.router.navigate([], { queryParams: { edit: true }, queryParamsHandling: 'merge', relativeTo: this.route });
+    this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
   handleCancel(): void {
-    this.router.navigate([], { queryParams: { edit: false }, queryParamsHandling: 'merge', relativeTo: this.route });
+    this.router.navigate([], { queryParams: { edit: null }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
   /**
@@ -77,9 +79,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
     const updatedTestResult = {};
 
-    this.sectionForms.forEach(form => {
-      merge(updatedTestResult, form.getCleanValue(form));
-    });
+    this.sectionForms.forEach(form => merge(updatedTestResult, form.getCleanValue(form)));
 
     this.testRecordsService.updateTestResult(updatedTestResult);
   }

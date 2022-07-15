@@ -98,7 +98,7 @@ describe('TestRecordComponent', () => {
       expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
     }));
 
-    it('should navigate with query param "edit=false" when cancel button is clicked', fakeAsync(() => {
+    it('should navigate without query param when cancel button is clicked', fakeAsync(() => {
       const handleCancelSpy = jest.spyOn(component, 'handleCancel');
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       mockRouteEditable = store.overrideSelector(routeEditable, true);
@@ -111,7 +111,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       expect(handleCancelSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: false }, queryParamsHandling: 'merge' });
+      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: null }, queryParamsHandling: 'merge' });
     }));
 
     it('should display edit button when edit query param is false', fakeAsync(() => {
@@ -136,7 +136,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       expect(handleEditSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: true }, queryParamsHandling: 'merge' });
+      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: 'true' }, queryParamsHandling: 'merge' });
     }));
   });
 

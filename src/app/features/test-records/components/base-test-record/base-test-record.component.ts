@@ -7,14 +7,14 @@ import { TestResultModel } from '@models/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 @Component({
-  selector: 'app-base-test-record',
+  selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html'
 })
 export class BaseTestRecordComponent {
   @ViewChildren(DynamicFormGroupComponent) set dynamicFormGroupComponents(sections: QueryList<DynamicFormGroupComponent>) {
     sections.forEach(section => this.sectionForms.push(section.form as CustomFormGroup));
   }
-  @Input() testResult: TestResultModel | undefined = undefined;
+  @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
 
   sectionForms: CustomFormGroup[] = [];
@@ -22,21 +22,18 @@ export class BaseTestRecordComponent {
   constructor(private dynamicFormService: DynamicFormService) {}
 
   generateTemplate(): FormNode[] | undefined {
-    if (this.testResult) {
-      const { vehicleType } = this.testResult;
-      const testTypeId = this.testResult.testTypes[0].testTypeId;
-      if (vehicleType && masterTpl.hasOwnProperty(vehicleType)) {
-        const vehicleTpl: Partial<Record<string | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
-        if (testTypeId && vehicleTpl.hasOwnProperty(testTypeId)) {
-          const tpl = vehicleTpl[testTypeId];
-          return tpl && Object.values(tpl);
-        } else {
-          const tpl: Record<string, FormNode> | undefined = vehicleTpl['default'];
-          return tpl && Object.values(tpl);
-        }
-      }
+    const { vehicleType } = this.testResult;
+
+    if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType) || this.testResult.testTypes.length == 0) {
+      return undefined;
     }
-    return undefined;
+
+    const testTypeId = this.testResult.testTypes[0].testTypeId;
+    const vehicleTpl: Partial<Record<string | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
+
+    const tpl = testTypeId && vehicleTpl.hasOwnProperty(testTypeId) ? vehicleTpl[testTypeId] : vehicleTpl['default'];
+
+    return tpl && Object.values(tpl);
   }
 
   getFormForTemplate(template: FormNode): CustomFormGroup {
