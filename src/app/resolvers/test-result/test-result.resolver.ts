@@ -17,7 +17,7 @@ export class TestResultResolver implements Resolve<boolean> {
     return this.action$.pipe(
       ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed),
       take(1),
-      map(action => (action.type === fetchSelectedTestResultSuccess.type ? true : false))
+      map(action => action.type === fetchSelectedTestResultSuccess.type)
     );
   }
 }
