@@ -84,7 +84,6 @@ describe('Test Results Selectors', () => {
 
   describe('selectSortedTestAmendmentHistory', () => {
     let mock: TestResultModel;
-    let sorted: TestResultModel[];
 
     beforeEach(() => {
       const date = new Date('2022-01-02');
@@ -108,7 +107,7 @@ describe('Test Results Selectors', () => {
       const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
       let previous = new Date(sortedTestHistory![0].createdAt!).getTime();
       let notfound: TestResultModel[] = [];
-      sortedTestHistory?.forEach((test) => {
+      sortedTestHistory?.forEach(test => {
         if (test.createdAt) {
           expect(new Date(test.createdAt!).getTime()).toBeLessThanOrEqual(previous);
           previous = new Date(test.createdAt!).getTime();
@@ -124,10 +123,10 @@ describe('Test Results Selectors', () => {
 
   describe('selectedAmendedTestResultState', () => {
     const testResult = createMock<TestResultModel>({
-      testHistory: createMockList<TestResultModel>(2, (i) =>
+      testHistory: createMockList<TestResultModel>(2, i =>
         createMock<TestResultModel>({
           createdAt: `2020-01-01T00:0${i}:00.000Z`,
-          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}` }))
+          testTypes: createMockList<TestType>(1, j => createMock<TestType>({ testTypeId: `${i}${j}` }))
         })
       )
     });
@@ -157,9 +156,9 @@ describe('Test Results Selectors', () => {
 
   describe('selectAmendedDefectData', () => {
     const amendedTestResultState = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(1, (i) =>
+      testTypes: createMockList<TestType>(1, i =>
         createMock<TestType>({
-          defects: createMockList<Defect>(1, (i) =>
+          defects: createMockList<Defect>(1, i =>
             createMock<Defect>({
               imNumber: i
             })

@@ -9,7 +9,9 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { DynamicFormService } from './dynamic-form.service';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -57,7 +59,7 @@ export interface FormNode {
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
-  validators?: { name: string; args?: any }[];
+  validators?: { name: ValidatorNames; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
@@ -133,6 +135,7 @@ export interface CustomArray extends FormArray {
 
 export class CustomFormArray extends FormArray implements CustomArray, BaseForm {
   meta: FormNode;
+  private dynamicFormService: DynamicFormService;
 
   constructor(
     meta: FormNode,
@@ -142,9 +145,14 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
+    this.dynamicFormService = new DynamicFormService();
   }
 
   getCleanValue = cleanValue.bind(this);
+
+  addControl() {
+    super.push(this.dynamicFormService.createForm(this.meta));
+  }
 }
 
 const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: any } | Array<[]> => {
@@ -152,7 +160,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
   Object.keys(form.controls).forEach(key => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
-      cleanValue[key] = control.getCleanValue(control);
+      cleanValue[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
@@ -164,3 +172,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
 
   return cleanValue;
 };
+
+function objectOrNull(obj: Object) {
+  return Object.values(obj).some(value => undefined !== value) ? obj : null;
+}

@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, FormGroup, FormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from './custom-validators';
 interface CustomPatternMessage {
@@ -13,90 +13,130 @@ describe('Hiding validators', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      bar: new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, null)
+      sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, children: [] }, null)
     });
   });
 
   describe('Hide if empty', () => {
     it('should return null', () => {
-      expect(CustomValidators.hideIfEmpty('foo')(form.controls['bar'] as AbstractControl)).toEqual(null);
+      expect(CustomValidators.hideIfEmpty('foo')(form.controls['sibling'] as AbstractControl)).toEqual(null);
     });
 
     it('should set meta.hide to true if content of sibling is empty', () => {
-      CustomValidators.hideIfEmpty('foo')(form.controls['bar'] as AbstractControl);
+      CustomValidators.hideIfEmpty('foo')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(true);
     });
 
     it('should set meta.hide to false if content of sibling is not empty', () => {
       (form.controls['foo'] as CustomFormControl).meta.hide = true;
-      form.controls['bar'].patchValue('bar');
-      CustomValidators.hideIfEmpty('foo')(form.controls['bar'] as AbstractControl);
+      form.controls['sibling'].patchValue('bar');
+      CustomValidators.hideIfEmpty('foo')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
     });
   });
 
   describe('Hide if equals', () => {
     it('should return null', () => {
-      expect(CustomValidators.hideIfEquals('foo', 'foo')(form.controls['bar'] as AbstractControl)).toEqual(null);
+      expect(CustomValidators.hideIfEquals('foo', 'foo')(form.controls['sibling'] as AbstractControl)).toEqual(null);
     });
 
     it('should set meta.hide to true if content of sibling is equal to the value passed', () => {
       const value = 'bar';
-      form.controls['bar'].patchValue(value);
-      CustomValidators.hideIfEquals('foo', 'bar')(form.controls['bar'] as AbstractControl);
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.hideIfEquals('foo', 'bar')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(true);
     });
 
     it('should set meta.hide to true if content of sibling is equal to one of the values passed in the array', () => {
       const value = 'bar';
-      form.controls['bar'].patchValue(value);
-      CustomValidators.hideIfEquals('foo', ['bar', 'foo', 'foobar'])(form.controls['bar'] as AbstractControl);
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.hideIfEquals('foo', ['bar', 'foo', 'foobar'])(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(true);
     });
 
     it('should set meta.hide to false if content of sibling is not equal to the value passed', () => {
       const value = 'bar';
-      form.controls['bar'].patchValue(value);
+      form.controls['sibling'].patchValue(value);
       (form.controls['foo'] as CustomFormControl).meta.hide = true;
-      CustomValidators.hideIfEquals('foo', 'foo')(form.controls['bar'] as AbstractControl);
+      CustomValidators.hideIfEquals('foo', 'foo')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
     });
   });
 
   describe('Hide if not equals', () => {
-    let form: FormGroup;
-
-    beforeEach(() => {
-      form = new FormGroup({
-        foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-        bar: new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, null)
-      });
-    });
-
     it('should return null', () => {
-      expect(CustomValidators.hideIfNotEqual('foo', 'foo')(form.controls['bar'] as AbstractControl)).toEqual(null);
+      expect(CustomValidators.hideIfNotEqual('foo', 'foo')(form.controls['sibling'] as AbstractControl)).toEqual(null);
     });
 
     it('should set meta.hide to true if content of sibling is not equal to the value passed', () => {
       const value = 'foo';
-      form.controls['bar'].patchValue(value);
-      CustomValidators.hideIfNotEqual('foo', 'bar')(form.controls['bar'] as AbstractControl);
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.hideIfNotEqual('foo', 'bar')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(true);
     });
 
     it('should set meta.hide to true if content of sibling is not equal to any of the values passed in the array', () => {
       const value = 'value';
-      form.controls['bar'].patchValue(value);
-      CustomValidators.hideIfNotEqual('foo', ['bar', 'foo', 'foobar'])(form.controls['bar'] as AbstractControl);
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.hideIfNotEqual('foo', ['bar', 'foo', 'foobar'])(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(true);
     });
 
     it('should set meta.hide to false if content of sibling is equal to the value passed', () => {
       const value = 'bar';
-      form.controls['bar'].patchValue(value);
+      form.controls['sibling'].patchValue(value);
       (form.controls['foo'] as CustomFormControl).meta.hide = true;
-      CustomValidators.hideIfNotEqual('foo', 'bar')(form.controls['bar'] as AbstractControl);
+      CustomValidators.hideIfNotEqual('foo', 'bar')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
+    });
+  });
+});
+
+describe('Required validators', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new FormGroup({
+      foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
+      sibling: new CustomFormControl({ name: 'sibling', label: 'Sibling', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+    form.controls['sibling'].patchValue('some value');
+  });
+
+  describe('Required if equals', () => {
+    it('should be required (return ValidationErrors) if content of sibling matches a value', () => {
+      const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      expect(result).toEqual({ requiredIfEquals: { sibling: 'Sibling' } });
+    });
+
+    it('should not be required (return null) if content of sibling does not match a value', () => {
+      form.controls['sibling'].patchValue('some other value');
+      const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      expect(result).toBeNull();
+    });
+
+    it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
+      form.controls['foo'].patchValue('some foo value');
+      const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('Required if not equal', () => {
+    it('should not be required (return null) if content of sibling does not match a value', () => {
+      const result = CustomValidators.requiredIfNotEqual('sibling', 'some value')(form.controls['foo'] as AbstractControl);
+      expect(result).toBeNull();
+    });
+
+    it('should be required (return ValidationErrors) if content of sibling does not match a value', () => {
+      const result = CustomValidators.requiredIfNotEqual('sibling', 'some other value')(form.controls['foo'] as AbstractControl);
+      expect(result).toEqual({ requiredIfNotEqual: { sibling: 'Sibling' } });
+    });
+
+    it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
+      form.controls['foo'].patchValue('some foo value');
+      const result = CustomValidators.requiredIfEquals('sibling', 'some othervalue')(form.controls['foo'] as AbstractControl);
+      expect(result).toBeNull();
     });
   });
 });

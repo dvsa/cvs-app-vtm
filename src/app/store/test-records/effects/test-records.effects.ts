@@ -16,8 +16,8 @@ import {
   fetchTestResultsBySystemNumber,
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
+  updateTestResult,
   updateTestResultFailed,
-  updateTestResultState,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 
@@ -28,8 +28,8 @@ export class TestResultsEffects {
       ofType(fetchTestResultsBySystemNumber),
       mergeMap(({ systemNumber }) =>
         this.testRecordsService.fetchTestResultbySystemNumber(systemNumber).pipe(
-          map((testResults) => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
-          catchError((e) => of(fetchTestResultsBySystemNumberFailed({ error: e.message })))
+          map(testResults => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
+          catchError(e => of(fetchTestResultsBySystemNumberFailed({ error: e.message })))
         )
       )
     )
@@ -38,10 +38,10 @@ export class TestResultsEffects {
   fetchTestResultsBySystemNumberAfterSearchByVinSucces$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getByVinSuccess),
-      mergeMap((action) =>
+      mergeMap(action =>
         this.testRecordsService.fetchTestResultbySystemNumber(action.vehicleTechRecords[0].systemNumber).pipe(
-          map((vehicleTestRecords) => fetchTestResultsBySystemNumberSuccess({ payload: vehicleTestRecords })),
-          catchError((e) => {
+          map(vehicleTestRecords => fetchTestResultsBySystemNumberSuccess({ payload: vehicleTestRecords })),
+          catchError(e => {
             if (e.status != 404) {
               return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
             } else {
@@ -57,17 +57,17 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(fetchSelectedTestResult),
       mergeMap(() => this.store.pipe(select(selectRouteNestedParams), take(1))),
-      mergeMap((params) => {
+      mergeMap(params => {
         const { systemNumber, testResultId } = params;
         return this.testRecordsService.fetchTestResultbySystemNumber(systemNumber, { testResultId, version: 'all' }).pipe(
-          map((vehicleTestRecords) => {
+          map(vehicleTestRecords => {
             if (vehicleTestRecords && vehicleTestRecords.length === 1) {
               return fetchSelectedTestResultSuccess({ payload: vehicleTestRecords[0] });
             } else {
               return fetchSelectedTestResultFailed({ error: 'Test result not found' });
             }
           }),
-          catchError((e) => {
+          catchError(e => {
             return of(fetchSelectedTestResultFailed({ error: e.message }));
           })
         );
@@ -75,21 +75,23 @@ export class TestResultsEffects {
     )
   );
 
+  /**
+   * Call PUT Test Results API to update test result
+   */
   updateTestResult$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateTestResultState),
-      debounceTime(500),
-      mergeMap(() =>
-        this.testRecordsService.testResult$.pipe(
+      ofType(updateTestResult),
+      mergeMap(action =>
+        of(action.value).pipe(
           withLatestFrom(this.userService.userName$, this.userService.id$, this.routerService.getRouteParam$('systemNumber')),
           take(1)
         )
       ),
       mergeMap(([testResult, username, id, systemNumber]) => {
-        return this.testRecordsService.saveTestResult(systemNumber!, { username, id }, testResult!).pipe(
+        return this.testRecordsService.saveTestResult(systemNumber!, { username, id }, testResult).pipe(
           take(1),
-          map(() => updateTestResultSuccess()),
-          catchError((e) => {
+          map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
+          catchError(e => {
             const validationsErrors: GlobalError[] = [];
             if (e.status === 400) {
               const {
