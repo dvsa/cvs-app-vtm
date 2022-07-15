@@ -18,9 +18,7 @@ export class CustomValidators {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
 
-        siblingControl.meta.hide = Array.isArray(value) && control.value
-          ? value.includes(control.value)
-          : control.value === value;
+        siblingControl.meta.hide = Array.isArray(value) && control.value ? value.includes(control.value) : control.value === value;
       }
 
       return null;
@@ -32,9 +30,7 @@ export class CustomValidators {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
 
-        siblingControl.meta.hide = Array.isArray(value)
-          ? !value.includes(control.value)
-          : control.value !== value;
+        siblingControl.meta.hide = Array.isArray(value) ? !value.includes(control.value) : control.value !== value;
       }
 
       return null;
@@ -48,7 +44,7 @@ export class CustomValidators {
         const siblingValue = siblingControl.value;
 
         if (siblingValue === value && !control.value) {
-          return { required: true };
+          return { requiredIfEquals: { sibling: siblingControl.meta.label } };
         }
       }
 
@@ -58,13 +54,12 @@ export class CustomValidators {
 
   static requiredIfNotEqual = (sibling: string, value: any): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const siblingValue = siblingControl.value;
 
         if (siblingValue !== value && !control.value) {
-          return { required: true };
+          return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
         }
       }
 
@@ -89,8 +84,6 @@ export class CustomValidators {
   }
 
   static invalidOption: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    return '[INVALID_OPTION]' === control.value
-      ? { invalidOption: true }
-      : null;
+    return '[INVALID_OPTION]' === control.value ? { invalidOption: true } : null;
   };
 }

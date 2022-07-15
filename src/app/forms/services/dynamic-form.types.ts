@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Optional } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 import {
   AbstractControl,
   AbstractControlOptions,
@@ -9,6 +9,7 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { DynamicFormService } from './dynamic-form.service';
 
@@ -58,7 +59,7 @@ export interface FormNode {
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
-  validators?: { name: string; args?: any }[];
+  validators?: { name: ValidatorNames; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
