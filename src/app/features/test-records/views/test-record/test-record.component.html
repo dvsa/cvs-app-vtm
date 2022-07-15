@@ -10,13 +10,5 @@
 <section *ngIf="testResult$ | async as testResult">
   <app-base-test-record [isEditing]="(isEditing$ | async) || false" [testResult]="testResult"></app-base-test-record>
 
-  <app-defects
-    *ngIf="defects$ | async as defects"
-    class="section"
-    [isEditing]="(isEditing$ | async) || false"
-    [defects]="defects"
-    (formsChange)="defectFormsChange($event)"
-  ></app-defects>
-
   <app-test-amendment-history class="section" [testRecord]="testResult"></app-test-amendment-history>
 </section>
