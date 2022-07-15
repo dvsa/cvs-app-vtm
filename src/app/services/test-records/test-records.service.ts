@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GetTestResultsService, TestResultPutBody, UpdateTestResultsService } from '@api/test-results';
+import { GetTestResultsService, CompleteTestResults, UpdateTestResultsService } from '@api/test-results';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
@@ -84,12 +84,12 @@ export class TestRecordsService {
   ): Observable<TestResultModel> {
     const { username, id } = user;
     delete body.testHistory;
-    return this.updateTestResultsService.testResultsTestResultIdPut(
-      { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as TestResultPutBody,
+    return this.updateTestResultsService.testResultsSystemNumberPut(
+      { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as CompleteTestResults,
       systemNumber,
       observe,
       reportProgress
-    ) as unknown as Observable<TestResultModel>;
+    ) as Observable<TestResultModel>;
   }
 
   updateTestResult(value: any): void {

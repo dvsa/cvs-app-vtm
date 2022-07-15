@@ -79,7 +79,7 @@ export interface CompleteTestResults {
     testStationType?: CompleteTestResults.TestStationTypeEnum;
     testerName?: string;
     testerStaffId?: string;
-    testResultId: string;
+    testResultId?: string;
     testerEmailAddress?: string;
     testStartTimestamp?: Date;
     testEndTimestamp?: Date;
