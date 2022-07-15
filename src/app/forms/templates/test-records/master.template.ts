@@ -1,6 +1,6 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { TestCodes } from '@models/testCodes.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { DefectsTpl } from '../general/defect.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
@@ -24,6 +24,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
+      defects: DefectsTpl,
       required: RequiredSection
     },
     '1': {
@@ -32,6 +33,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       seatbelts: SeatbeltSection,
       visit: VisitSection,
       notes: NotesSection,
+      defects: DefectsTpl,
       required: RequiredSection
     }
   },

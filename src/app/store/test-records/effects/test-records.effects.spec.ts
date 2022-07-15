@@ -3,6 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TestResultModel } from '@models/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -24,7 +25,7 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   updateTestResultFailed,
-  updateTestResultState,
+  updateTestResult,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { TestResultsEffects } from './test-records.effects';
@@ -225,61 +226,17 @@ describe('TestResultsEffects', () => {
   });
 
   describe('updateTestResult$', () => {
-    describe('debounce', () => {
-      it('should only call API once and return updateTestResultSuccess', () => {
-        testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' });
-          actions$ = hot('a 100ms b', { a: action, b: action });
-
-          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', {}));
-
-          expectObservable(effects.updateTestResult$).toBe('601ms b', {
-            b: updateTestResultSuccess()
-          });
-        });
-      });
-
-      it('should call API twice and dispatch updateTestResultSuccess both times', () => {
-        testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' });
-          actions$ = hot('a 500ms b', { a: action, b: action });
-
-          jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('a|', {}));
-
-          expectObservable(effects.updateTestResult$).toBe('500ms b 500ms c', {
-            b: updateTestResultSuccess(),
-            c: updateTestResultSuccess()
-          });
-        });
-      });
-
-      it('should call API twice and dispatch success and failure actions', () => {
-        testScheduler.run(({ hot, cold, expectObservable }) => {
-          const action = updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' });
-          actions$ = hot('a 500ms b', { a: action, b: action });
-
-          jest
-            .spyOn(testResultsService, 'saveTestResult')
-            .mockReturnValueOnce(cold('a|', {}))
-            .mockReturnValueOnce(cold('#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
-
-          expectObservable(effects.updateTestResult$).toBe('500ms b 500ms c', {
-            b: updateTestResultSuccess(),
-            c: updateTestResultFailed({ errors: [] })
-          });
-        });
-      });
-    });
+    const newTestResult = { testResultId: '1' } as TestResultModel;
 
     it('should dispatch updateTestResultFailed action with empty errors array', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a-', { a: updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' }) });
+        actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
         jest
           .spyOn(testResultsService, 'saveTestResult')
           .mockReturnValue(cold('---#|', {}, new HttpErrorResponse({ status: 500, error: 'some error' })));
 
-        expectObservable(effects.updateTestResult$).toBe('504ms b', {
+        expectObservable(effects.updateTestResult$).toBe('----b', {
           b: updateTestResultFailed({ errors: [] })
         });
       });
@@ -287,7 +244,7 @@ describe('TestResultsEffects', () => {
 
     it('should dispatch updateTestResultFailed action with validation errors', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions$ = hot('-a-', { a: updateTestResultState({ section: '', testResultId: '', testTypeId: '', value: '' }) });
+        actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
 
         jest
           .spyOn(testResultsService, 'saveTestResult')
@@ -300,7 +257,7 @@ describe('TestResultsEffects', () => {
           { error: '"age" is missing', anchorLink: 'age' },
           { error: 'random error', anchorLink: '' }
         ];
-        expectObservable(effects.updateTestResult$).toBe('504ms b', {
+        expectObservable(effects.updateTestResult$).toBe('----b', {
           b: updateTestResultFailed({ errors: expectedErrors })
         });
       });

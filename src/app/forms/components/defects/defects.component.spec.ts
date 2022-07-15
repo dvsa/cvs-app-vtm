@@ -1,19 +1,20 @@
 import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Defect } from '@models/defect';
-import { of } from 'rxjs';
-import { createMockList } from 'ts-auto-mock';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { DefectsComponent } from './defects.component';
 
 @Component({
-  selector: 'app-defect',
+  selector: 'app-defect[form]',
   template: ``,
-  styles: []
+  providers: [DefaultNullOrEmpty]
 })
-class MockDefectComponent {
+export class MockDefectComponent {
+  @Input() form!: CustomFormGroup;
   @Input() isEditing = false;
-  @Input() defect!: Defect;
 }
 
 describe('DefectsComponent', () => {
@@ -23,7 +24,9 @@ describe('DefectsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DefectsComponent, MockDefectComponent]
+      imports: [FormsModule, ReactiveFormsModule],
+      declarations: [DefectsComponent, MockDefectComponent],
+      providers: [DynamicFormService]
     }).compileComponents();
   });
 
@@ -31,6 +34,19 @@ describe('DefectsComponent', () => {
     fixture = TestBed.createComponent(DefectsComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
+    component.form = new CustomFormGroup(
+      { name: 'defects', type: FormNodeTypes.GROUP },
+      {
+        testTypes: new CustomFormArray({ name: 'testTypes', type: FormNodeTypes.ARRAY }, [
+          new CustomFormGroup(
+            { name: 'testType', type: FormNodeTypes.GROUP },
+            {
+              defects: new CustomFormArray({ name: 'defects', type: FormNodeTypes.ARRAY }, [])
+            }
+          )
+        ])
+      }
+    );
     fixture.detectChanges();
   });
 
@@ -45,15 +61,12 @@ describe('DefectsComponent', () => {
   describe('No defects', () => {
     it('should be dysplayed when defects is undefined or empty array', fakeAsync(() => {
       const expectedText = 'No defects';
-      component.defects = undefined;
 
       tick();
       fixture.detectChanges();
 
       let text: HTMLParagraphElement = el.query(By.css('p')).nativeElement;
       expect(text.innerHTML).toBe(expectedText);
-
-      component.defects = undefined;
 
       tick();
       fixture.detectChanges();
@@ -65,7 +78,8 @@ describe('DefectsComponent', () => {
 
   describe('Defects', () => {
     it('should render app-defect component', fakeAsync(() => {
-      component.defects = createMockList<Defect>(1);
+      const defectsForm = component.form.get(['testTypes', '0', 'defects']) as CustomFormArray;
+      defectsForm.addControl();
 
       tick();
       fixture.detectChanges();

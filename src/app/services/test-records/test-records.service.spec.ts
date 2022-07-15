@@ -1,9 +1,10 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { TestResultModel } from '@models/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { fetchTestResults, fetchTestResultsBySystemNumber, updateTestResultState } from '@store/test-records';
+import { fetchTestResults, fetchTestResultsBySystemNumber, updateTestResult } from '@store/test-records';
 import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
 
@@ -34,9 +35,9 @@ describe('TestRecordsService', () => {
 
   describe('API', () => {
     describe('fetchTestResultbyServiceId', () => {
-      it('should throw error when systemNumber is empty', (done) => {
+      it('should throw error when systemNumber is empty', done => {
         service.fetchTestResultbySystemNumber('').subscribe({
-          error: (e) => {
+          error: e => {
             expect(e.message).toBe('systemNumber is required');
             done();
           }
@@ -68,7 +69,7 @@ describe('TestRecordsService', () => {
       it('should get a single test result', () => {
         const systemNumber = 'SYS0001';
         const mockData = mockTestResult();
-        service.fetchTestResultbySystemNumber(systemNumber).subscribe((response) => {
+        service.fetchTestResultbySystemNumber(systemNumber).subscribe(response => {
           expect(response).toEqual(mockData);
         });
 
@@ -99,12 +100,11 @@ describe('TestRecordsService', () => {
     });
   });
 
-  describe(TestRecordsService.prototype.updateTestResultState.name, () => {
+  describe(TestRecordsService.prototype.updateTestResult.name, () => {
     it('should dispatch updateTestResultState action', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
-      const args = { testResultId: 'testResultId', testTypeId: 'testTypeId', section: 'section', value: 'some value' };
-      service.updateTestResultState(args.testResultId, args.testTypeId, args.section, args.value);
-      expect(dispatchSpy).toHaveBeenCalledWith(updateTestResultState(args));
+      service.updateTestResult({});
+      expect(dispatchSpy).toHaveBeenCalledWith(updateTestResult({ value: {} as TestResultModel }));
     });
   });
 });
