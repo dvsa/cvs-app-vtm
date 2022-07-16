@@ -42,7 +42,7 @@
     "@ngrx/effects": "^13.2.0",
     "@ngrx/entity": "^13.2.0",
     "@ngrx/router-store": "^13.2.0",
-    "@ngrx/store": "^13.0.2",
+    "@ngrx/store": "^13.2.0",
     "@ngrx/store-devtools": "^13.2.0",
     "@storybook/cli": "^6.5.9",
     "accessible-autocomplete": "^2.0.4",
