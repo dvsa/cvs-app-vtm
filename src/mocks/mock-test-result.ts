@@ -46,7 +46,14 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
       defects: mockDefectList(),
 
-      additionalNotesRecorded: 'notes for the test record will be displayed here...'
+      additionalNotesRecorded: 'notes for the test record will be displayed here...',
+      customDefects: [
+        {
+          referenceNumber: '90',
+          defectName: 'defect',
+          defectNotes: 'bad'
+        }
+      ]
     });
   });
 
@@ -82,7 +89,7 @@ export const mockTestResult = (i: number = 0, vehicleType: VehicleTypes = Vehicl
     testVersion: 'Current',
     createdByName: 'Jane Doe',
     testHistory: [
-      ...createMockList<TestResultModel>(5, (j) =>
+      ...createMockList<TestResultModel>(5, j =>
         mockTestResultArchived(j, `TestResultId${String(i + 1).padStart(4, '0')}`, vehicleType, systemNumber)
       )
     ]
@@ -127,10 +134,10 @@ export const mockTestResultArchived = (
 export const mockTestResultList = (items: number = 1, systemNumber: string = 'PSV') => {
   switch (systemNumber.substring(0, 3)) {
     case 'HGV':
-      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.HGV, systemNumber));
+      return createMockList<TestResultModel>(items, i => mockTestResult(i, VehicleTypes.HGV, systemNumber));
     case 'TRL':
-      return createMockList<TestResultModel>(items, (i) => mockTestResult(i, VehicleTypes.TRL, systemNumber));
+      return createMockList<TestResultModel>(items, i => mockTestResult(i, VehicleTypes.TRL, systemNumber));
     default:
-      return createMockList<TestResultModel>(items, (i) => mockTestResult(i));
+      return createMockList<TestResultModel>(items, i => mockTestResult(i));
   }
 };
