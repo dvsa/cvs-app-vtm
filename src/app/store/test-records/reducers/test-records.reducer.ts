@@ -11,7 +11,6 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
-  updateTestResultState,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess
@@ -34,33 +33,24 @@ export const initialTestResultsState = testResultAdapter.getInitialState({ error
 
 export const testResultsReducer = createReducer(
   initialTestResultsState,
-  on(fetchTestResults, (state) => ({ ...state, loading: true })),
+  on(fetchTestResults, state => ({ ...state, loading: true })),
   on(fetchTestResultsSuccess, (state, action) => ({ ...testResultAdapter.setAll(action.payload, state), loading: false })),
-  on(fetchTestResultsBySystemNumber, (state) => ({ ...state, loading: true })),
+  on(fetchTestResultsBySystemNumber, state => ({ ...state, loading: true })),
   on(fetchTestResultsBySystemNumberSuccess, (state, action) => ({ ...testResultAdapter.setAll(action.payload, state), loading: false })),
-  on(fetchTestResultsBySystemNumberFailed, (state) => ({ ...testResultAdapter.setAll([], state), loading: false })),
-  on(fetchSelectedTestResult, (state) => ({ ...state, loading: true })),
+  on(fetchTestResultsBySystemNumberFailed, state => ({ ...testResultAdapter.setAll([], state), loading: false })),
+  on(fetchSelectedTestResult, state => ({ ...state, loading: true })),
   on(fetchSelectedTestResultSuccess, (state, action) => ({ ...testResultAdapter.upsertOne(action.payload, state), loading: false })),
-  on(fetchSelectedTestResultFailed, (state) => ({ ...state, loading: false })),
-  on(updateTestResultState, (state, { testResultId, testTypeId, section, value }) => {
-    const testResult = state.entities[testResultId];
-    if (!testResult) {
-      return { ...state };
-    }
-
-    const updatedTestResult = updateTestResultBySection(section, testResult, testTypeId, value);
-
-    return { ...testResultAdapter.upsertOne(updatedTestResult, state), loading: true };
-  }),
-  on(updateTestResult, (state) => ({ ...state, loading: true })),
-  on(updateTestResultSuccess, updateTestResultFailed, (state) => ({ ...state, loading: false }))
+  on(fetchSelectedTestResultFailed, state => ({ ...state, loading: false })),
+  on(updateTestResult, state => ({ ...state, loading: true })),
+  on(updateTestResultSuccess, (state, action) => ({ ...testResultAdapter.updateOne(action.payload, state), loading: false })),
+  on(updateTestResultFailed, state => ({ ...state, loading: false }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
 
 function updateTestResultBySection(section: string, testResult: TestResultModel, testTypeId: string, value: any) {
-  const testType = testResult?.testTypes.find((t) => t.testTypeId === testTypeId);
-  const testTypeIndex = testResult?.testTypes.map((t) => t.testTypeId).indexOf(testTypeId);
+  const testType = testResult?.testTypes.find(t => t.testTypeId === testTypeId);
+  const testTypeIndex = testResult?.testTypes.map(t => t.testTypeId).indexOf(testTypeId);
 
   const newTestType = { ...testType };
   if (value && value.testTypes) {

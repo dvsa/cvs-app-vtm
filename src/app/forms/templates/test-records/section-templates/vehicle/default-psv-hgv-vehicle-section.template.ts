@@ -1,5 +1,6 @@
-import { Disabled } from '@forms/components/checkbox-group/checkbox-group.stories';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const VehicleSectionDefaultPsvHgv: FormNode = {
   name: 'vehicleSection',
@@ -28,14 +29,10 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'Country Of Registration',
       value: '',
       editType: FormNodeEditTypes.AUTOCOMPLETE,
-      options: [
-        { label: 'England', value: 'gb' },
-        { label: 'Wales', value: 'wa' },
-        { label: 'Scotland', value: 'sc' }
-      ],
-
+      options: [],
+      referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: 'required' }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',
@@ -60,7 +57,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
-      validators: [{ name: 'numeric' }, { name: 'required' }],
+      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }],
       editType: FormNodeEditTypes.NUMBER,
 
       type: FormNodeTypes.CONTROL,

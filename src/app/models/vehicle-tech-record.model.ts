@@ -171,6 +171,19 @@ export interface AxleWeights {
   designWeight: number;
 }
 
+export interface Purchaser {
+  name: string;
+  address1: string;
+  address2: string;
+  postTown: string;
+  address3: string;
+  postCode: string;
+  telephoneNumber: string;
+  emailAddress: string;
+  faxNumber: string;
+  purchaserNotes: string;
+}
+
 export interface TechRecordModel {
   createdAt: Date;
   createdByName: string;
@@ -230,6 +243,7 @@ export interface TechRecordModel {
   };
   functionCode?: string;
   conversionRefNo?: string;
+  purchaserDetails?: Purchaser;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
@@ -263,6 +277,39 @@ export interface TechRecordModel {
   // Coupling center to rear trailer
   couplingCenterToRearTrlMin?: number;
   couplingCenterToRearTrlMax?: number;
+  plates?: Plates[];
+  dda?: DDA;
+}
+
+export interface DDA {
+  certificateIssued: boolean;
+  wheelchairCapacity: number;
+  wheelchairFittings: string;
+  wheelchairLiftPresent: boolean;
+  wheelchairLiftInformation: string;
+  wheelchairRampPresent: boolean;
+  wheelchairRampInformation: string;
+  minEmergencyExits: number;
+  outswing: string;
+  ddaSchedules: string;
+  seatbeltsFitted: number;
+  ddaNotes: string;
+}
+
+export interface Plates {
+  plateSerialNumber: string;
+  plateIssueDate: Date;
+  plateReasonForIssue: PlateReasonForIssue;
+  plateIssuer: string;
+}
+
+export enum PlateReasonForIssue {
+  FREE_REPLACEMENT = 'Free replacement',
+  REPLACEMENT = 'Replacement',
+  DESTROYED = 'Destroyed',
+  PROVISIONAL = 'Provisional',
+  ORIGINAL = 'Original',
+  MANUAL = 'Manual'
 }
 
 export interface ApplicantDetails {
@@ -280,7 +327,7 @@ export interface Dimensions {
   height: number;
   length: number;
   width: number;
-  axleSpacing?: AxleSpacing[]
+  axleSpacing?: AxleSpacing[];
 }
 
 export interface AxleSpacing {

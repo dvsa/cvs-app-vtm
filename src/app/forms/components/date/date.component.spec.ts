@@ -53,12 +53,14 @@ describe('DateComponent', () => {
     });
 
     it.each([
-      [new Date(NaN), 234234, 6213, 234],
-      [new Date(`${2022}-${0o1}-${0o1}`), 2022, 0o1, 0o1],
+      [new Date(NaN), 2342346, 6213, 234],
+      [new Date(Date.UTC(2022, 0, 12, 1, 6, 0)), 2022, 0o1, 12],
+      [new Date(`2022-08-01T01:06:00.000Z`), 2022, 8, 0o1],
       [null, NaN, 0o1, 0o1],
       [null, 2022, NaN, 0o1],
       [null, 2022, 0o1, NaN]
     ])('should be %s for %d, %d, %d', (expected: Date | null, year: number, month: number, day: number) => {
+      component.dateComponent!.originalDate = '2022-01-01T01:06:00.000Z';
       component.dateComponent?.onDayChange(day);
       component.dateComponent?.onMonthChange(month);
       component.dateComponent?.onYearChange(year);
@@ -72,6 +74,8 @@ describe('DateComponent', () => {
     it('should propagate control value to subjects', fakeAsync(() => {
       const date = new Date(`${2022}-${0o1}-${0o1}`);
       component.dateComponent?.control?.patchValue(date.toISOString());
+
+      component.dateComponent?.valueWriteBack(date.toISOString());
 
       tick();
       component.dateComponent?.control?.meta.changeDetection?.detectChanges();

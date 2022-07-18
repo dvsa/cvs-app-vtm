@@ -31,7 +31,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
       defaultValue: '',
       showAllValues: true
     });
-    window.document.querySelector(`#${this.name}`)?.addEventListener('change', (event) => this.handleChange(event));
+    window.document.querySelector(`#${this.name}`)?.addEventListener('change', event => this.handleChange(event));
   }
 
   override ngAfterContentInit(): void {
@@ -54,13 +54,13 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 
   /**
    * Takes the value from the autocomplete element and looks for a matching option in the options array.
-   * Returns the dound value or undefined if not match.
+   * Returns the found value or undefined if no match.
    * If value is empty, returns `''`.
    * @param value - value to get option for
    * @returns `string | undefined`
    */
   findOptionValue(label: string) {
-    return label ? this.options.find((option) => option.label === label)?.value : '';
+    return label ? this.options.find(option => option.label === label)?.value : '';
   }
 
   addValidators() {

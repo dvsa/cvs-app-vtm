@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, ValidatorFn, Validators } from '@angular/forms';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { DynamicFormService } from './dynamic-form.service';
 import { CustomFormArray, CustomControl, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from './dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
@@ -32,7 +34,7 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'vin',
             label: 'Vechile Identification Number',
             type: FormNodeTypes.CONTROL,
@@ -57,11 +59,11 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'sub-group',
             type: FormNodeTypes.GROUP,
             children: [
-              <FormNode>{
+              {
                 name: 'vin',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
@@ -88,11 +90,11 @@ describe('DynamicFormService', () => {
         type: FormNodeTypes.GROUP,
         children: [
           <FormNode>{
-            name: 'nestedArray',
+            name: 'vins',
             type: FormNodeTypes.ARRAY,
             children: [
               <FormNode>{
-                name: 'vin',
+                name: '0',
                 label: 'Vechile Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
@@ -102,10 +104,14 @@ describe('DynamicFormService', () => {
         ]
       };
 
-      const outputGroup = service.createForm(node);
-      const formArray = outputGroup.get('nestedArray');
+      const data = {
+        vins: ['123', '456']
+      };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('vins');
       expect(formArray instanceof FormArray).toBeTruthy();
-      expect((formArray as FormArray).controls.length).toBe(1);
+      expect((formArray as FormArray).controls.length).toBe(2);
     });
 
     it('should return a formGroup with a nested FormArray with data given ', () => {
@@ -113,15 +119,15 @@ describe('DynamicFormService', () => {
         name: 'group',
         type: FormNodeTypes.GROUP,
         children: [
-          <FormNode>{
+          {
             name: 'axelsArray',
             type: FormNodeTypes.ARRAY,
             children: [
-              <FormNode>{
+              {
                 name: '0',
                 type: FormNodeTypes.GROUP,
                 children: [
-                  <FormNode>{
+                  {
                     name: 'vin',
                     label: 'Vechile Identification Number',
                     type: FormNodeTypes.CONTROL,
@@ -144,6 +150,35 @@ describe('DynamicFormService', () => {
           }
         ]
       };
+
+      const outputGroup = service.createForm(node, data);
+      const formArray = outputGroup.get('axelsArray');
+      const subGroup = (formArray as CustomFormArray).controls;
+
+      expect(subGroup.length).toBe(2);
+    });
+
+    it('should return a formGroup with a nested FormArray of simple controls', () => {
+      const node: FormNode = {
+        name: 'group',
+        type: FormNodeTypes.GROUP,
+        children: [
+          {
+            name: 'axelsArray',
+            type: FormNodeTypes.ARRAY,
+            children: [
+              {
+                name: 'vin',
+                label: 'Vechile Identification Number',
+                type: FormNodeTypes.CONTROL,
+                viewType: FormNodeViewTypes.STRING
+              }
+            ]
+          }
+        ]
+      };
+
+      let data = { axelsArray: ['12345', '78910'] };
 
       const outputGroup = service.createForm(node, data);
       const formArray = outputGroup.get('axelsArray');
@@ -175,10 +210,32 @@ describe('DynamicFormService', () => {
   describe('addValidators', () => {
     it('should add validators', () => {
       const control: CustomControl = new CustomFormControl({ name: 'testControl', type: FormNodeTypes.CONTROL, children: [] });
-      const validators: Array<{ name: string; args?: any[] }> = [{ name: 'required' }];
+      const validators: Array<{ name: ValidatorNames; args?: any[] }> = [{ name: ValidatorNames.Required }];
       const expectedValidator: ValidatorFn = Validators.required;
       service.addValidators(control, validators);
       expect(control.hasValidator(expectedValidator)).toBeTruthy();
+    });
+  });
+
+  describe('static validate functions', () => {
+    it('should return a list of global erros for invalid controls', () => {
+      const errors: GlobalError[] = [];
+      const form = new CustomFormGroup(
+        { name: 'group', type: FormNodeTypes.GROUP },
+        {
+          foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '', { validators: [Validators.required] }),
+          bar: new CustomFormGroup(
+            { name: 'innerGroup', type: FormNodeTypes.GROUP },
+            {
+              baz: new CustomFormControl({ name: 'baz', type: FormNodeTypes.CONTROL }, '', { validators: [Validators.required] })
+            }
+          )
+        }
+      );
+
+      DynamicFormService.updateValidity(form, errors);
+
+      expect(errors).toHaveLength(2);
     });
   });
 });

@@ -1,5 +1,4 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',

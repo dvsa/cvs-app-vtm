@@ -1,15 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordComponent } from './tech-record.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SpinnerService } from '@core/components/spinner/spinner.service';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 
 describe('TechRecordComponent', () => {
-  let service: SpinnerService;
   let component: TechRecordComponent;
   let fixture: ComponentFixture<TechRecordComponent>;
+  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,6 +21,9 @@ describe('TechRecordComponent', () => {
   });
 
   beforeEach(() => {
+    store = TestBed.inject(MockStore);
+    store.overrideSelector(selectRouteNestedParams, { vin: '123456' });
+
     fixture = TestBed.createComponent(TechRecordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

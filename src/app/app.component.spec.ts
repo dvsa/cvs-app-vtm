@@ -14,7 +14,7 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, StoreModule.forRoot({}), MsalModule, CoreModule],
+      imports: [CoreModule, MsalModule, RouterTestingModule, StoreModule.forRoot({})],
       declarations: [AppComponent],
       providers: [{ provide: UserService, useValue: MockUserService }]
     }).compileComponents();
@@ -23,6 +23,7 @@ describe('AppComponent', () => {
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    fixture.detectChanges();
     expect(app).toBeTruthy();
   });
 });

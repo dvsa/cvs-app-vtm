@@ -14,8 +14,8 @@ export default {
   ]
 } as Meta;
 
-const Template: Story = (args) => {
-  const { id, label, options, name, hint, defaultValue = "RED", disabled = false, validators = [] } = args;
+const Template: Story = args => {
+  const { id, label, options, name, hint, defaultValue = 'red', disabled = false, validators = [] } = args;
   const form = new FormGroup({ [name]: new FormControl({ defaultValue, disabled }, validators) });
   return {
     component: AutocompleteComponent,
@@ -28,7 +28,7 @@ const Template: Story = (args) => {
       options,
       defaultValue
     }
-  }
+  };
 };
 
 const defaultArgs = {
@@ -38,7 +38,6 @@ const defaultArgs = {
   id: 'name' + '-wrapper',
   options: ['red', 'yellow', 'blue', 'green'],
   defaultValue: 'red'
-  ,
 };
 
 export const Enabled = Template.bind({});

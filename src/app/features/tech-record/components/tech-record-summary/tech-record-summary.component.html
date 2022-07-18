@@ -29,6 +29,7 @@
     [data]="currentBrakeRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
+  <app-dynamic-form-group *ngIf="ddaTemplate" [template]="ddaTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="applicantDetailsTemplate"
     [template]="applicantDetailsTemplate"
@@ -110,6 +111,24 @@
   <app-dynamic-form-group
     *ngIf="secondMinMaxTemplate"
     [template]="secondMinMaxTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="platesTemplate"
+    [template]="platesTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="trlAuthIntoServiceTemplate"
+    [template]="trlAuthIntoServiceTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="trlManufacturerTemplate"
+    [template]="trlManufacturerTemplate"
     [data]="vehicleTechRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>

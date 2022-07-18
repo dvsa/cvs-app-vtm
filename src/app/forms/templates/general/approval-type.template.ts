@@ -55,7 +55,7 @@ export function getTypeApprovalSection(includeCoifSection: boolean = false): For
       }
     ]
 
-    approvalTypeSection.children?.splice(3, 0, ...COIFSection)
+    approvalTypeSection.children!.splice(3, 0, ...COIFSection)
   }
 
   return approvalTypeSection;

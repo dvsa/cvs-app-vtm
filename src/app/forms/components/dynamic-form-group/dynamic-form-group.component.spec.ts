@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideMockStore } from '@ngrx/store/testing';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
-import { FormNodeTypes, FormNode, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { DynamicFormGroupComponent } from './dynamic-form-group.component';
 
 describe('DynamicFormGroupComponent', () => {
@@ -12,7 +14,8 @@ describe('DynamicFormGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule]
+      imports: [DynamicFormsModule],
+      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
@@ -71,7 +74,7 @@ describe('DynamicFormGroupComponent', () => {
 
   describe('formNodeTypes', () => {
     it('should return FormNodeTypes enum', () => {
-      Object.entries(FormNodeTypes).forEach((entry) => {
+      Object.entries(FormNodeTypes).forEach(entry => {
         expect(FormNodeTypes).toEqual(component.formNodeTypes);
         expect(component.formNodeTypes[entry[0] as keyof typeof FormNodeTypes]).toBe(entry[1]);
       });
@@ -80,7 +83,7 @@ describe('DynamicFormGroupComponent', () => {
 
   describe('formNodeViewTypes', () => {
     it('should return FormNodeViewTypes enum', () => {
-      Object.entries(FormNodeViewTypes).forEach((entry) => {
+      Object.entries(FormNodeViewTypes).forEach(entry => {
         expect(FormNodeViewTypes).toEqual(component.formNodeViewTypes);
         expect(component.formNodeViewTypes[entry[0] as keyof typeof FormNodeViewTypes]).toBe(entry[1]);
       });
@@ -111,8 +114,21 @@ describe('DynamicFormGroupComponent', () => {
       ]
     };
 
+    const data = {
+      levelOneControl: 'some string',
+      levelOneGroup: {
+        levelTwoControl: 'some string',
+        levelTwoArray: [
+          {
+            levelTwoArrayControlOne: 'some string',
+            levelTwoArrayControlTwo: 'some string'
+          }
+        ]
+      }
+    };
+
     it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
-      component.form = dfs.createForm(template);
+      component.form = dfs.createForm(template, data);
 
       fixture.detectChanges();
 
@@ -125,7 +141,7 @@ describe('DynamicFormGroupComponent', () => {
 
     it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
       component.edit = true;
-      component.form = dfs.createForm(template);
+      component.form = dfs.createForm(template, data);
 
       fixture.detectChanges();
 

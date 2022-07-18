@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-field-error-message',
@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 })
 export class FieldErrorMessageComponent {
   @Input() name: string = '';
-  @Input() error?: () => string;
+  @Input() error?: string;
 }

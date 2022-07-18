@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
@@ -12,33 +12,32 @@ import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNode
 export class DynamicFormService {
   constructor() {}
 
-  validatorMap: { [key: string]: any } = {
-    required: () => Validators.required,
-    hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
-    pattern: (args: string) => Validators.pattern(args),
-    customPattern: (args: any) => CustomValidators.customPattern([...args]),
-    numeric: () => CustomValidators.numeric(),
-    maxLength: (args: number) => Validators.maxLength(args)
+  validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
+    [ValidatorNames.Required]: () => Validators.required,
+    [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
+    [ValidatorNames.CustomPattern]: (args: string[]) => CustomValidators.customPattern([...args]),
+    [ValidatorNames.Numeric]: () => CustomValidators.numeric(),
+    [ValidatorNames.MaxLength]: (args: number) => Validators.maxLength(args),
+    [ValidatorNames.MinLength]: (args: number) => Validators.minLength(args),
+    [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
+    [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value)
   };
 
-  createForm(f: FormNode, d?: any): CustomFormGroup | CustomFormArray {
-    if (!f) {
-      return new CustomFormGroup(f, {});
+  createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
+    if (!formNode) {
+      return new CustomFormGroup(formNode, {});
     }
 
-    const formType = f.type;
-    let form: CustomFormGroup | CustomFormArray = FormNodeTypes.ARRAY === formType ? new CustomFormArray(f, []) : new CustomFormGroup(f, {});
-    d = d ?? (FormNodeTypes.ARRAY === formType ? [] : {});
+    const form: CustomFormGroup | CustomFormArray =
+      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, []) : new CustomFormGroup(formNode, {});
+    data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
-    f?.children?.forEach((child) => {
+    formNode.children?.forEach(child => {
       const { name, type, value, validators, disabled } = child;
-      let control;
 
-      if (FormNodeTypes.CONTROL !== type) {
-        control = this.createForm(child, d[name]);
-      } else {
-        control = new CustomFormControl({ ...child }, { value, disabled: !!disabled });
-      }
+      const control =
+        FormNodeTypes.CONTROL === type ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
 
       if (validators && validators.length > 0) {
         this.addValidators(control, validators);
@@ -47,67 +46,45 @@ export class DynamicFormService {
       if (form instanceof FormGroup) {
         form.addControl(name, control);
       } else if (form instanceof FormArray) {
-        this.createControls(child, d).forEach((element) => {
-          (form as FormArray).push(element);
-        });
+        this.createControls(child, data).forEach(element => form.push(element));
       }
     });
 
-    if (d) {
-      form.patchValue(d);
+    if (data) {
+      form.patchValue(data);
     }
 
     return form;
   }
 
-  createControls(child: FormNode, d: any) {
-    const controls: any[] = [];
-    if (d.length && d.length > 0) {
-      d.forEach(() => {
-        if (FormNodeTypes.CONTROL !== child.type) {
-          // Note: There's a quirk here when dealing with arrays where if
-          // `d` is a array then `child.name` should be a correct index so
-          // make sure the template has the correct name to the node.
-          controls.push(this.createForm(child, d[child.name]));
-        } else {
-          controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
-        }
-      });
-    } else {
-      controls.push(new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled }));
-    }
-    return controls;
+  createControls(child: FormNode, data: any): (CustomFormGroup | CustomFormArray | CustomFormControl)[] {
+    // Note: There's a quirk here when dealing with arrays where if
+    // `data` is an array then `child.name` should be a correct index so
+    // make sure the template has the correct name to the node.
+    return Array.isArray(data)
+      ? data.map(() =>
+          FormNodeTypes.CONTROL !== child.type
+            ? this.createForm(child, data[Number(child.name)])
+            : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })
+        )
+      : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: string; args?: any[] }> = []) {
-    validators.forEach((v) => {
-      control.addValidators(this.validatorMap[v.name](v.args));
-    });
+  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: ValidatorNames; args?: any }> = []) {
+    validators.forEach(v => control.addValidators(this.validatorMap[v.name](v.args)));
   }
 
-  static updateValidity(form: CustomFormGroup | CustomFormArray): GlobalError[] {
-    const valildationErrors: GlobalError[] = [];
-
+  static updateValidity(form: CustomFormGroup | CustomFormArray, errors: GlobalError[]) {
     Object.entries(form.controls).forEach(([key, value]) => {
-      this.validate(value, valildationErrors);
+      if (!(value instanceof CustomFormControl)) {
+        this.updateValidity(value as CustomFormGroup | CustomFormArray, errors);
+      } else {
+        value.markAsTouched();
+        value.updateValueAndValidity({ emitEvent: true });
+        (value as CustomFormControl).meta.changeDetection?.detectChanges();
+        this.getControlErrors(value as CustomFormControl, errors);
+      }
     });
-
-    return valildationErrors;
-  }
-
-  static validate(control: CustomFormGroup | CustomFormArray | CustomFormControl | AbstractControl, validationErrorList: GlobalError[]) {
-    if (control instanceof CustomFormGroup) {
-      this.updateValidity(control);
-    } else if (control instanceof CustomFormArray) {
-      control.controls.forEach((i) => {
-        this.validate(i, validationErrorList);
-      });
-    } else {
-      control.markAsTouched();
-      control.updateValueAndValidity({ emitEvent: true });
-      (control as CustomFormControl).meta.changeDetection?.detectChanges();
-      this.getControlErrors(control as CustomFormControl, validationErrorList);
-    }
   }
 
   private static getControlErrors(control: CustomFormControl, validationErrorList: GlobalError[]) {
@@ -116,15 +93,12 @@ export class DynamicFormService {
       meta: { name, label }
     } = control;
 
-    // const valildationErrors: GlobalError[] = [];
-
     if (errors) {
       const errorList = Object.keys(errors);
-      errorList.forEach((error) => {
+
+      errorList.forEach(error => {
         validationErrorList.push({ error: ErrorMessageMap[error](errors[error], label), anchorLink: name } as GlobalError);
       });
     }
-
-    // return valildationErrors;
   }
 }

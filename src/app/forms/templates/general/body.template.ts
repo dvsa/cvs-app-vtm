@@ -9,7 +9,7 @@ export function getBodyTemplate(isPsv: boolean = false): FormNode {
     children: []
   };
   if(isPsv) {
-    bodyFormControl.children?.push(
+    bodyFormControl.children!.push(
       {
         name: 'modelLiteral',
         label: 'Model literal',
@@ -31,15 +31,15 @@ export function getBodyTemplate(isPsv: boolean = false): FormNode {
     )
   }
 
-  bodyFormControl.children?.push(
+  bodyFormControl.children!.push(
       {
-        name: 'bodyMake',
+        name: 'make',
         label: 'Body make',
         value: '',
         type: FormNodeTypes.CONTROL,
       },
       {
-        name: 'bodyModel',
+        name: 'model',
         label: 'Body model',
         value: '',
         type: FormNodeTypes.CONTROL,

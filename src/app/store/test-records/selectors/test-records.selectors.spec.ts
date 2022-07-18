@@ -68,20 +68,46 @@ describe('Test Results Selectors', () => {
       const defectState = selectDefectData.projector(noDefectState);
       expect(defectState?.length).toBe(0);
     });
+
+    it('should return an ampty array if there are no test types', () => {
+      const noTestTypeState = { ...state, testTypes: undefined };
+      const testTypeState = selectDefectData.projector(noTestTypeState);
+      expect(testTypeState?.length).toBe(0);
+    });
+
+    it('should return an ampty array if there are no test results', () => {
+      const noTestResultState = undefined;
+      const testResultState = selectDefectData.projector(noTestResultState);
+      expect(testResultState?.length).toBe(0);
+    });
   });
 
   describe('selectSortedTestAmendmentHistory', () => {
     let mock: TestResultModel;
-    let sorted: TestResultModel[];
+
     beforeEach(() => {
+      const date = new Date('2022-01-02');
       mock = mockTestResult();
+      mock.testHistory = mock.testHistory?.concat(...mock.testHistory);
+      mock.testHistory![0].createdAt = undefined;
+      mock.testHistory![1].createdAt = date.toISOString();
+      mock.testHistory![2].createdAt = date.toISOString();
+      mock.testHistory![3].createdAt = undefined;
+      mock.testHistory![4].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
+      mock.testHistory![5].createdAt = new Date(date.setDate(date.getDate() + 1)).toISOString();
+      mock.testHistory![6].createdAt = new Date(date.setDate(date.getDate() - 1)).toISOString();
+      mock.testHistory![7].createdAt = undefined;
+      mock.testHistory![8].createdAt = date.toISOString();
+      mock.testHistory![9].createdAt = date.toISOString();
     });
+
     it('should sort the test history', () => {
       // Adding entries with null created at at the end if they exist
+      const noDateMock: TestResultModel = { ...mock, createdAt: undefined };
       const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
       let previous = new Date(sortedTestHistory![0].createdAt!).getTime();
       let notfound: TestResultModel[] = [];
-      sortedTestHistory?.forEach((test) => {
+      sortedTestHistory?.forEach(test => {
         if (test.createdAt) {
           expect(new Date(test.createdAt!).getTime()).toBeLessThanOrEqual(previous);
           previous = new Date(test.createdAt!).getTime();
@@ -97,10 +123,10 @@ describe('Test Results Selectors', () => {
 
   describe('selectedAmendedTestResultState', () => {
     const testResult = createMock<TestResultModel>({
-      testHistory: createMockList<TestResultModel>(2, (i) =>
+      testHistory: createMockList<TestResultModel>(2, i =>
         createMock<TestResultModel>({
           createdAt: `2020-01-01T00:0${i}:00.000Z`,
-          testTypes: createMockList<TestType>(1, (j) => createMock<TestType>({ testTypeId: `${i}${j}` }))
+          testTypes: createMockList<TestType>(1, j => createMock<TestType>({ testTypeId: `${i}${j}` }))
         })
       )
     });
@@ -130,9 +156,9 @@ describe('Test Results Selectors', () => {
 
   describe('selectAmendedDefectData', () => {
     const amendedTestResultState = createMock<TestResultModel>({
-      testTypes: createMockList<TestType>(1, (i) =>
+      testTypes: createMockList<TestType>(1, i =>
         createMock<TestType>({
-          defects: createMockList<Defect>(1, (i) =>
+          defects: createMockList<Defect>(1, i =>
             createMock<Defect>({
               imNumber: i
             })

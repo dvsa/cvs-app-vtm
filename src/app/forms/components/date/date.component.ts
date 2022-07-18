@@ -1,6 +1,6 @@
 import { AfterContentInit, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, distinctUntilChanged, Observable, of, Subject, Subscription, takeWhile } from 'rxjs';
+import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -23,6 +23,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   private month$: Observable<number>;
   private year$: Observable<number>;
   private subscriptions: Array<Subscription | undefined> = [];
+  public originalDate: string = '';
 
   public day?: number;
   public month?: number;
@@ -41,12 +42,13 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
+    this.originalDate = this.value;
     this.addValidators();
-    this.subscriptions.push(this.watchValue());
+    this.valueWriteBack(this.value);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s && s.unsubscribe());
+    this.subscriptions.forEach(s => s && s.unsubscribe());
   }
 
   onDayChange(event: any) {
@@ -61,21 +63,16 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.year_.next(event);
   }
 
-  /**
-   * subscribe to value and propagate to date segments
-   */
-  watchValue() {
-    return this.control?.valueChanges.pipe(distinctUntilChanged()).subscribe((value) => {
-      if (value && typeof value === 'string') {
-        const date = new Date(value);
-        this.day = date.getDate();
-        this.day_.next(this.day);
-        this.month = date.getMonth() + 1;
-        this.month_.next(this.month);
-        this.year = date.getFullYear();
-        this.year_.next(this.year);
-      }
-    });
+  valueWriteBack(value: string | null): void {
+    if (value && typeof value === 'string') {
+      const date = new Date(value);
+      this.day = date.getDate();
+      this.day_.next(this.day);
+      this.month = date.getMonth() + 1;
+      this.month_.next(this.month);
+      this.year = date.getFullYear();
+      this.year_.next(this.year);
+    }
   }
 
   /**
@@ -90,7 +87,17 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
           return;
         }
 
-        const date = new Date(`${year}-${month}-${day}`);
+        const date = new Date(Date.UTC(year, month - 1, day));
+        const hours = new Date(this.originalDate).getUTCHours();
+        const minutes = new Date(this.originalDate).getUTCMinutes();
+        const seconds = new Date(this.originalDate).getUTCSeconds();
+
+        if ('Invalid Date' !== date.toString()) {
+          date.setUTCHours(hours || 0);
+          date.setUTCMinutes(minutes || 0);
+          date.setUTCSeconds(seconds || 0);
+        }
+
         this.onChange(date);
       }
     });

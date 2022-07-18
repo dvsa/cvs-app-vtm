@@ -1,36 +1,44 @@
 import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
-import { TestCodes } from '@models/testCodes.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 @Component({
-  selector: 'app-base-test-record',
+  selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html'
 })
 export class BaseTestRecordComponent {
-  @ViewChildren(DynamicFormGroupComponent) dynamicFormGroupComponents?: QueryList<DynamicFormGroupComponent>;
-  @Input() testResult: TestResultModel | undefined = undefined;
-  @Input() edit: boolean = false;
+  @ViewChildren(DynamicFormGroupComponent) set dynamicFormGroupComponents(sections: QueryList<DynamicFormGroupComponent>) {
+    sections.forEach(section => this.sectionForms.push(section.form as CustomFormGroup));
+  }
+  @Input() testResult!: TestResultModel;
+  @Input() isEditing: boolean = false;
 
-  constructor() {}
+  sectionForms: CustomFormGroup[] = [];
+
+  constructor(private dynamicFormService: DynamicFormService) {}
 
   generateTemplate(): FormNode[] | undefined {
-    if (this.testResult) {
-      const { vehicleType, testCode } = this.testResult;
-      if (vehicleType && masterTpl.hasOwnProperty(vehicleType)) {
-        const vehicleTpl: Partial<Record<TestCodes | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
-        if (testCode && vehicleTpl.hasOwnProperty(testCode)) {
-          const tpl = vehicleTpl[testCode as TestCodes];
-          return tpl && Object.values(tpl);
-        } else {
-          const tpl: Record<string, FormNode> | undefined = vehicleTpl['default'];
-          return tpl && Object.values(tpl);
-        }
-      }
+    const { vehicleType } = this.testResult;
+
+    if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType) || this.testResult.testTypes.length == 0) {
+      return undefined;
     }
-    return undefined;
+
+    const testTypeId = this.testResult.testTypes[0].testTypeId;
+    const vehicleTpl: Partial<Record<string | 'default', Record<string, FormNode>>> = masterTpl[vehicleType as VehicleTypes];
+
+    const tpl = testTypeId && vehicleTpl.hasOwnProperty(testTypeId) ? vehicleTpl[testTypeId] : vehicleTpl['default'];
+
+    return tpl && Object.values(tpl);
+  }
+
+  getFormForTemplate(template: FormNode): CustomFormGroup {
+    const form = this.dynamicFormService.createForm(template, this.testResult) as CustomFormGroup;
+    this.sectionForms.push(form);
+    return form;
   }
 }

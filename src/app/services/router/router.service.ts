@@ -8,7 +8,6 @@ import {
   selectQueryParams,
   selectRouteNestedParams,
   selectRouteParam,
-  currentRouteState,
   routerState
 } from '@store/router/selectors/router.selectors';
 import { Observable } from 'rxjs';

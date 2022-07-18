@@ -29,14 +29,33 @@ describe('TechRecordSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show record found', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop();
+  it('should show PSV record found', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
     fixture.detectChanges();
 
+    checkHeadingAndForm();
+  });
+
+  it('should show HGV record found', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+    fixture.detectChanges();
+
+    checkHeadingAndForm();
+  });
+
+  it('should show TRL record found', () => {
+    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+    fixture.detectChanges();
+
+    checkHeadingAndForm();
+  });
+
+  function checkHeadingAndForm(): void {
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
     expect(heading).toBeFalsy();
 
     const form = fixture.nativeElement.querySelector('app-dynamic-form-group');
     expect(form).toBeTruthy();
-  });
+  }
 });
+
