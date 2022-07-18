@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Dictionary } from '@ngrx/entity';
+import { Component } from '@angular/core';
 import { RouterService } from '@services/router/router.service';
-import { distinctUntilChanged, map, take } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -9,11 +8,14 @@ import { distinctUntilChanged, map, take } from 'rxjs';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent {
+  breadcrumbs: Array<{ label: string; path: string }> = [];
+
   constructor(private routerService: RouterService) {}
 
   get breadcrumbs$() {
     return this.routerService.router$.pipe(
-      map((router) => {
+      distinctUntilChanged(),
+      map(router => {
         let currentRoute = router?.state?.root;
         let breadcrumbs: Array<{ label: string; path: string }> = [];
 
@@ -21,7 +23,8 @@ export class BreadcrumbsComponent {
           const { routeConfig, data, url } = currentRoute.firstChild;
 
           if (data.hasOwnProperty('title') && routeConfig?.path) {
-            breadcrumbs.push({ label: data['title'], path: url.map((url) => url.path).join('/') });
+            const fullPath = [...breadcrumbs.map(breadcrumb => breadcrumb.path), ...url.map(url => url.path)].join('/');
+            breadcrumbs.push({ label: data['title'], path: fullPath });
           }
 
           currentRoute = currentRoute.firstChild;
@@ -29,5 +32,9 @@ export class BreadcrumbsComponent {
         return breadcrumbs;
       })
     );
+  }
+
+  trackByFn(index: number, breadcrumb: { label: string; path: string }) {
+    return breadcrumb.path || index;
   }
 }

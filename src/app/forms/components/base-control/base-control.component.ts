@@ -46,8 +46,6 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
         const firstError = ErrorMessageMap[errorList[0] as ValidatorNames];
         return firstError(errors[errorList[0]], this.label);
       }
-    } else if (this.control && this.control.touched && !this.control.invalid) {
-      return '';
     }
 
     return '';

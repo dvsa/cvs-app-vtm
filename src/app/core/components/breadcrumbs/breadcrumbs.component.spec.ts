@@ -48,7 +48,7 @@ describe('BreadcrumbsComponent', () => {
               data: { title: 'Path1' },
               routeConfig: { path: 'path1' },
               url: [{ path: 'path1' }],
-              firstChild: { data: { title: 'Path2' }, routeConfig: { path: 'path2' }, url: [{ path: 'path1' }, { path: 'path2' }] }
+              firstChild: { data: { title: 'Path2' }, routeConfig: { path: 'path2' }, url: [{ path: 'path2' }] }
             }
           }
         }

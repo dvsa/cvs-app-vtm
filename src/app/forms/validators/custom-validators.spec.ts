@@ -175,6 +175,7 @@ describe('customPattern', () => {
       expect(validation).toBeNull();
     }
   });
+
   it('should throw an error if an invalid regex is given', () => {
     expect(CustomValidators.customPattern(['regex', 'msg'])).toThrowError();
   });

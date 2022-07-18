@@ -28,7 +28,7 @@ const routes: Routes = [
       },
       {
         path: 'tech-records/:vin',
-        data: { title: 'Tech Records' },
+        data: { title: 'Tech Record' },
         canActivate: [MsalGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }
