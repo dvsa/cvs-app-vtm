@@ -21,16 +21,16 @@ export class DynamicFormFieldComponent implements AfterContentInit {
 
   get options(): Observable<FormNodeOption<string | number | boolean>[]> {
     return of(this.control?.value.meta).pipe(
-      mergeMap((meta) => {
-        if (meta && meta.referenceData) {
-          return this.referenceDataService.getAll$((this.control?.value.meta.referenceData ?? '') as ReferenceDataResourceType).pipe(
-            map((options) => {
-              return options.map((option) => ({ value: option.resourceKey, label: option.description } as FormNodeOption<string | number | boolean>));
-            })
-          );
-        } else {
-          return of((this.control?.value.meta.options ?? []) as FormNodeOption<string | number | boolean>[]);
+      mergeMap(meta => {
+        if (!meta || !meta.referenceData) {
+          return of(this.control?.value.meta.options as FormNodeOption<string | number | boolean>[] ?? []);
         }
+
+        return this.referenceDataService
+          .getAll$((this.control?.value.meta.referenceData ?? '') as ReferenceDataResourceType)
+          .pipe(
+            map(options => options.map(option => ({ value: option.resourceKey, label: option.description })))
+          );
       })
     );
   }

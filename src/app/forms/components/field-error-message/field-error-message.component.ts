@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class FieldErrorMessageComponent {
   @Input() name: string = '';
-  @Input() error?: () => string;
+  @Input() error?: string;
 }

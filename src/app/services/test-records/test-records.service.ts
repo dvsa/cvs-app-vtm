@@ -12,7 +12,7 @@ import {
   selectedAmendedTestResultState,
   selectedTestResultState,
   TestResultsState,
-  updateTestResultState
+  updateTestResult
 } from '@store/test-records';
 import { Observable, throwError } from 'rxjs';
 
@@ -81,27 +81,18 @@ export class TestRecordsService {
     body: TestResultModel,
     observe?: 'body',
     reportProgress?: boolean
-  ): Observable<TestResultModel[]> {
+  ): Observable<TestResultModel> {
     const { username, id } = user;
+    delete body.testHistory;
     return this.updateTestResultsService.testResultsTestResultIdPut(
       { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as TestResultPutBody,
       systemNumber,
       observe,
       reportProgress
-    ) as unknown as Observable<TestResultModel[]>;
+    ) as unknown as Observable<TestResultModel>;
   }
 
-  updateTestResultState({
-    testResultId,
-    testTypeId,
-    section,
-    value
-  }: {
-    testResultId: string;
-    testTypeId: string;
-    section: string;
-    value: any;
-  }): void {
-    this.store.dispatch(updateTestResultState({ testResultId, testTypeId, section, value }));
+  updateTestResult(value: any): void {
+    this.store.dispatch(updateTestResult({ value }));
   }
 }

@@ -1,41 +1,49 @@
-<ng-container *ngIf="form" [formGroup]="form">
-  <ng-container *ngIf="control">
-    <ng-container [ngSwitch]="control.value.meta.editType">
-      <ng-container *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE">
-        <app-autocomplete
-          [label]="control.value.meta.label"
-          [name]="control.value.meta.name"
-          [options]="(options | async) || []"
-          [formControlName]="control.key"
-        >
-        </app-autocomplete>
-      </ng-container>
+<ng-container
+  *ngIf="form && control && control.value.meta.editType !== formNodeEditTypes.HIDDEN"
+  [ngSwitch]="control.value.meta.editType"
+  [formGroup]="form"
+>
+  <app-autocomplete
+    *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+  ></app-autocomplete>
 
-      <ng-container *ngSwitchCase="formNodeEditTypes.NUMBER">
-        <app-number-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-number-input>
-      </ng-container>
+  <app-date
+    *ngSwitchCase="formNodeEditTypes.DATE"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+  ></app-date>
 
-      <ng-container *ngSwitchCase="formNodeEditTypes.RADIO">
-        <app-radio-group
-          [label]="control.value.meta.label"
-          [name]="control.value.meta.name"
-          [options]="(options | async) || []"
-          [formControlName]="control.key"
-        >
-        </app-radio-group>
-      </ng-container>
+  <app-number-input
+    *ngSwitchCase="formNodeEditTypes.NUMBER"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+  ></app-number-input>
 
-      <ng-container *ngSwitchCase="formNodeEditTypes.TEXTAREA">
-        <app-text-area [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-area>
-      </ng-container>
+  <app-radio-group
+    *ngSwitchCase="formNodeEditTypes.RADIO"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+  ></app-radio-group>
 
-      <ng-container *ngSwitchCase="formNodeEditTypes.DATE">
-        <app-date [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-date>
-      </ng-container>
+  <app-text-area
+    *ngSwitchCase="formNodeEditTypes.TEXTAREA"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+  ></app-text-area>
 
-      <ng-container *ngSwitchDefault>
-        <app-text-input [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key"></app-text-input>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+  <app-text-input
+    *ngSwitchDefault
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+  ></app-text-input>
 </ng-container>

@@ -2,6 +2,8 @@ import { EuVehicleCategory } from './eu-vehicle-category.enum';
 import { OdometerReadingUnits } from './odometer-unit.enum';
 import { TestStationType } from './test-station-type.enum';
 import { TestType } from './test-type.model';
+import { TestCodes } from './testCodes.enum';
+import { VehicleTypes } from './vehicle-tech-record.model';
 
 export interface TestResultModel {
   testResultId: string;
@@ -28,13 +30,13 @@ export interface TestResultModel {
   testStationType: TestStationType;
   testerName: string;
   testerEmailAddress: string;
-  additionalNotesRecorded: string;
 
   reasonForCreation?: string;
-  vehicleType?: string;
+  vehicleType?: VehicleTypes;
   testHistory?: TestResultModel[];
+  testStatus?: string;
 
   createdByName?: string;
   testVersion?: string | null;
-  testCode?: string;
+  testCode?: TestCodes;
 }

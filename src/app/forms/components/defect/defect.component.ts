@@ -1,21 +1,23 @@
-import { Component, Input } from '@angular/core';
-import { FormNode } from '@forms/services/dynamic-form.types';
-import { DefectTpl } from '@forms/templates/general/defect.template';
-import { Defect } from '@models/defect';
+import { KeyValue } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
-  selector: 'app-defect',
+  selector: 'app-defect[form]',
   templateUrl: './defect.component.html',
+  providers: [DefaultNullOrEmpty],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefectComponent {
-  @Input() edit = false;
-  @Input() defectData!: Defect;
+  @Input() form!: CustomFormGroup;
+  @Input() isEditing = false;
 
-  defectTpl: FormNode;
+  constructor(private pipe: DefaultNullOrEmpty) {}
 
-  constructor() {
-    this.defectTpl = DefectTpl;
+  combined(...params: string[]): string {
+    return params.map(p => this.pipe.transform(p)).join(' / ');
   }
 
   /**
@@ -25,12 +27,20 @@ export class DefectComponent {
    * @param location - DefectAdditionalInformationLocation object
    * @returns string
    */
-  mapLocationText(location: DefectAdditionalInformationLocation) {
-    return Object.entries(location)
-      .filter(([key, value]) => {
-        return (typeof value === 'number' && isNaN(value) === false) || value;
-      })
-      .map(([key, value]) => `${key}: ${value}`)
-      .join(` / `);
+  mapLocationText(location: DefectAdditionalInformationLocation): string {
+    return !location
+      ? '-'
+      : Object.entries(location)
+          .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(' / ');
+  }
+
+  getControlValue(path: string) {
+    return this.form.get(path)?.value;
+  }
+
+  keyValueControl(key: string): KeyValue<string, CustomFormControl> {
+    return { key, value: this.form.get(key) as CustomFormControl };
   }
 }

@@ -7,17 +7,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
+import { TestResultModel } from '@models/test-result.model';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { of } from 'rxjs';
+import { updateTestResultSuccess } from '@store/test-records';
+import merge from 'lodash.merge';
+import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
-import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
 import { TestRecordComponent } from './test-record.component';
 
 describe('TestRecordComponent', () => {
@@ -29,12 +33,13 @@ describe('TestRecordComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let testRecordsService: TestRecordsService;
+  let actions$ = new ReplaySubject<Action>();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule, TestResultsApiModule],
-      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), RouterService]
+      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), RouterService, provideMockActions(() => actions$)]
     }).compileComponents();
   }));
 
@@ -55,8 +60,10 @@ describe('TestRecordComponent', () => {
 
   it('should not display anything when there is no data', fakeAsync(() => {
     component.testResult$ = of(undefined);
+
     tick();
     fixture.detectChanges();
+
     expect(fixture.debugElement.query(By.css('h1'))).toBeNull();
   }));
 
@@ -91,7 +98,7 @@ describe('TestRecordComponent', () => {
       expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
     }));
 
-    it('should navigate with query param "edit=false" when cancel button is clicked', fakeAsync(() => {
+    it('should navigate without query param when cancel button is clicked', fakeAsync(() => {
       const handleCancelSpy = jest.spyOn(component, 'handleCancel');
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       mockRouteEditable = store.overrideSelector(routeEditable, true);
@@ -104,7 +111,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       expect(handleCancelSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: false }, queryParamsHandling: 'merge' });
+      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: null }, queryParamsHandling: 'merge' });
     }));
 
     it('should display edit button when edit query param is false', fakeAsync(() => {
@@ -129,7 +136,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       expect(handleEditSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: true }, queryParamsHandling: 'merge' });
+      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: 'true' }, queryParamsHandling: 'merge' });
     }));
   });
 
@@ -142,7 +149,7 @@ describe('TestRecordComponent', () => {
         [false, []]
       ])('should return %p for forms: %o', (expected, forms) => {
         component.sectionForms = forms as Array<CustomFormGroup>;
-        expect(component.sectionFormsInvalid).toBe(expected);
+        expect(component.sectionForms.some(form => form.invalid)).toBe(expected);
       });
     });
   });
@@ -165,19 +172,40 @@ describe('TestRecordComponent', () => {
     });
 
     it('should return without calling updateTestResultState', fakeAsync(() => {
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResultState');
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
       component.handleSave();
       tick();
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
     }));
 
-    it('should call updateTestResultState for each form', fakeAsync(() => {
-      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResultState').mockImplementation(() => {});
+    it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
       store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testTypeId: 'a' });
       component.sectionForms[0].get('foo')?.patchValue('baz');
+
+      let expectedFinalValue;
+      forms.forEach(form => (expectedFinalValue = merge(form.getCleanValue(form), forms[1].getCleanValue(form))));
+
       component.handleSave();
       tick();
-      expect(updateTestResultStateSpy).toHaveBeenCalledTimes(2);
+      expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
+      expect(updateTestResultStateSpy).toHaveBeenCalledWith(expectedFinalValue);
+    }));
+  });
+
+  describe(TestRecordComponent.prototype.watchForUpdateSuccess.name, () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should call handleCancel when updateTestResultState is success', fakeAsync(() => {
+      const handleCancelSpy = jest.spyOn(component, 'handleCancel');
+
+      actions$.next(updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultModel } }));
+
+      tick();
+
+      expect(handleCancelSpy).toHaveBeenCalledTimes(1);
     }));
   });
 });
