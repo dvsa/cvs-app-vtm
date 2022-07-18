@@ -23,8 +23,10 @@ export class BreadcrumbsComponent {
           const { routeConfig, data, url } = currentRoute.firstChild;
 
           if (data.hasOwnProperty('title') && routeConfig?.path) {
-            const fullPath = [...breadcrumbs.map(breadcrumb => breadcrumb.path), ...url.map(url => url.path)].join('/');
-            breadcrumbs.push({ label: data['title'], path: fullPath });
+            breadcrumbs.push({
+              label: data['title'],
+              path: [...breadcrumbs.map(breadcrumb => breadcrumb.path), ...url.map(url => url.path)].join('/')
+            });
           }
 
           currentRoute = currentRoute.firstChild;
