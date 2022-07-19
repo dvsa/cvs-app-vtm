@@ -19,8 +19,11 @@ export class DynamicFormService {
     maxLength: (args: number) => Validators.maxLength(args),
     minLength: (args: number) => Validators.minLength(args),
     hideIfEmpty: (args: string) => CustomValidators.hideIfEmpty(args),
-    requiredIfEquals: (args: { sibling: string, value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
-    requiredIfNotEquals: (args: { sibling: string, value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value)
+    requiredIfEquals: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
+    requiredIfNotEquals: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    hideIfNotEqual: (args: { sibling: string; value: any }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
+    hideIfParentSiblingNotEqual: (args: { sibling: string; value: any }) => CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
+    hideIfParentSiblingEqual: (args: { sibling: string; value: any }) => CustomValidators.hideIfParentSiblingEquals(args.sibling, args.value)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

@@ -6,6 +6,9 @@ export enum Validators {
   MaxLength = 'maxLength',
   MinLength = 'minLength',
   HideIfEmpty = 'hideIfEmpty',
+  HideIfNotEqual = 'hideIfNotEqual',
+  HideIfParentSiblingNotEqual = 'hideIfParentSiblingNotEqual',
+  HideIfParentSiblingEqual = 'hideIfParentSiblingEqual',
   RequiredIfEquals = 'requiredIfEquals',
   RequiredIfNotEquals = 'requiredIfNotEquals'
 }

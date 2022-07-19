@@ -6,6 +6,7 @@ import { NotesSection } from './section-templates/notes/notes-section.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { TestSectionGroup1 } from './section-templates/test/test-section-group1.template';
+import { TestSectionGroup15 } from './section-templates/test/test-section-group15.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
@@ -34,6 +35,14 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      required: RequiredSection
+    },
+    '39': {
+      emissions: EmissionsSection,
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: TestSectionGroup1,
+      visit: VisitSection,
+      notes: NotesSection,
       required: RequiredSection
     }
   },
