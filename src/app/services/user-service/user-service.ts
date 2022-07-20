@@ -4,6 +4,7 @@ import { EventMessage, EventType } from '@azure/msal-browser';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import jwt_decode from 'jwt-decode';
 import * as UserServiceActions from '../../store/user/user-service.actions';
 import * as UserServiceState from '../../store/user/user-service.reducer';
 
@@ -24,10 +25,11 @@ export class UserService implements OnDestroy {
               name,
               username,
               idTokenClaims: { oid }
-            }
+            },
+            accessToken
           }
         } = result;
-        this.logIn({ name, username, oid });
+        this.logIn({ name, username, oid, accessToken });
       });
   }
 
@@ -36,8 +38,10 @@ export class UserService implements OnDestroy {
     this._destroying$.complete();
   }
 
-  logIn({ name, username, oid }: { name: string; username: string; oid: string }): void {
-    this.store.dispatch(UserServiceActions.Login({ name, oid, username }));
+  logIn({ name, username, oid, accessToken }: { name: string; username: string; oid: string; accessToken: string }): void {
+    const decodedJWT = jwt_decode(accessToken);
+    const roles: string[] = (decodedJWT as any).roles;
+    this.store.dispatch(UserServiceActions.Login({ name, oid, username, roles }));
   }
 
   get name$(): Observable<string> {
@@ -50,6 +54,10 @@ export class UserService implements OnDestroy {
 
   get id$(): Observable<string | undefined> {
     return this.store.pipe(select(UserServiceState.id));
+  }
+
+  get roles$(): Observable<string[]> {
+    return this.store.pipe(select(UserServiceState.roles));
   }
 
   logOut(): void {
