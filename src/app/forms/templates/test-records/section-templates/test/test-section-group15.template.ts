@@ -17,12 +17,6 @@ export const TestSectionGroup15: FormNode = {
       editType: FormNodeEditTypes.DATE
     },
     {
-      name: 'prohbitionIssued',
-      label: 'Prohibition issued',
-      value: 'false',
-      type: FormNodeTypes.CONTROL
-    },
-    {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
@@ -120,6 +114,12 @@ export const TestSectionGroup15: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
+            },
+            {
+              name: 'prohibitionIssued',
+              label: 'Prohibition issued',
+              value: true,
+              type: FormNodeTypes.CONTROL
             }
           ]
         }

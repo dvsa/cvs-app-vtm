@@ -55,7 +55,7 @@ export const EmissionsSection: FormNode = {
               validators: [{ name: Validators.Required }]
             },
             {
-              name: 'modificationType',
+              name: 'modType',
               label: 'Modification Type',
               type: FormNodeTypes.GROUP,
               children: [
@@ -96,7 +96,8 @@ export const EmissionsSection: FormNode = {
                 { name: Validators.MaxLength, args: 100 },
                 { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'm' } },
                 { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'g' } }
-              ]
+              ],
+              value: ''
             },
             {
               name: 'particulateTrapFitted',
@@ -105,7 +106,8 @@ export const EmissionsSection: FormNode = {
               validators: [
                 { name: Validators.MaxLength, args: 100 },
                 { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
-              ]
+              ],
+              value: ''
             },
             {
               name: 'particulateTrapSerialNumber',
@@ -114,7 +116,8 @@ export const EmissionsSection: FormNode = {
               validators: [
                 { name: Validators.MaxLength, args: 100 },
                 { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
-              ]
+              ],
+              value: ''
             }
           ]
         }

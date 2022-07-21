@@ -38,9 +38,9 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<string | 'default', 
       required: RequiredSection
     },
     '39': {
-      emissions: EmissionsSection,
       vehicle: VehicleSectionDefaultPsvHgv,
-      test: TestSectionGroup1,
+      test: TestSectionGroup15,
+      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       required: RequiredSection
