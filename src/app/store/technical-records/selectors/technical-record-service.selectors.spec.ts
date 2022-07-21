@@ -2,7 +2,7 @@ import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-re
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { initialState, TechnicalRecordServiceState } from '../reducers/technical-record-service.reducer';
-import { selectVehicleTechnicalRecordsByVin, technicalRecordsLoadingState, vehicleTechRecords } from './technical-record-service.selectors';
+import { selectVehicleTechnicalRecordsBySystemNumber, technicalRecordsLoadingState, vehicleTechRecords } from './technical-record-service.selectors';
 
 describe('Tech Record Selectors', () => {
   describe('selectedTestResultState', () => {
@@ -21,12 +21,12 @@ describe('Tech Record Selectors', () => {
     });
   });
 
-  describe(selectVehicleTechnicalRecordsByVin.name, () => {
+  describe(selectVehicleTechnicalRecordsBySystemNumber.name, () => {
     it('should return the correct record by vin', () => {
-      const vin = 'VIN0001';
-      const vehicleTechRecords = createMockList<VehicleTechRecordModel>(1, (i) =>
+      const systemNumber = 'VIN0001';
+      const vehicleTechRecords = createMockList<VehicleTechRecordModel>(1, i =>
         createMock<VehicleTechRecordModel>({
-          vin,
+          systemNumber,
           techRecord: [
             createMock<TechRecordModel>({
               createdAt: new Date('2022-01-01').toISOString()
@@ -41,7 +41,7 @@ describe('Tech Record Selectors', () => {
         })
       );
 
-      const selectedState = selectVehicleTechnicalRecordsByVin.projector(vehicleTechRecords, { vin });
+      const selectedState = selectVehicleTechnicalRecordsBySystemNumber.projector(vehicleTechRecords, { systemNumber });
 
       const expectedTechRecord = vehicleTechRecords[0].techRecord;
       expect(selectedState?.techRecord[0].createdAt).toStrictEqual(expectedTechRecord[1].createdAt);
