@@ -1,9 +1,13 @@
-<div class="govuk-grid-row" *appUserRole="['CVSFullAccess', 'TechRecord.Read']">
+<div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <a class="govuk-back-link" (click)="navigateBack()">Back</a>
   </div>
 
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
-    <app-single-search-result class="govuk-grid-column-full" [vehicleTechRecord]="vehicleTechRecord"></app-single-search-result>
+    <app-single-search-result
+      class="govuk-grid-column-full"
+      [vehicleTechRecord]="vehicleTechRecord"
+      *appUserRole="['CVSFullAccess', 'TechRecord.Read']"
+    ></app-single-search-result>
   </ng-container>
 </div>
