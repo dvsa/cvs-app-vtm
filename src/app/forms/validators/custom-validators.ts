@@ -67,7 +67,7 @@ export class CustomValidators {
         const siblingValue = siblingControl.value;
 
         if (siblingValue === value && !control.value) {
-          return { required: true };
+          return { requiredIfEquals: { sibling: siblingControl.meta.label } };
         }
       }
 
@@ -82,7 +82,7 @@ export class CustomValidators {
         const siblingValue = siblingControl.value;
 
         if (siblingValue !== value && !control.value) {
-          return { required: true };
+          return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
         }
       }
 

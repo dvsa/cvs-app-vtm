@@ -1,5 +1,6 @@
 import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { CustomControl, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
@@ -37,17 +38,17 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     }
   }
 
-  get error() {
+  get error(): string {
     if (this.control && this.control.touched && this.control.invalid) {
       const { errors } = this.control;
       if (errors) {
         const errorList = Object.keys(errors);
-        const firstError = ErrorMessageMap[errorList[0]];
+        const firstError = ErrorMessageMap[errorList[0] as ValidatorNames];
         return firstError(errors[errorList[0]], this.label);
       }
-    } else if (this.control && this.control.touched && !this.control.invalid) {
-      return '';
     }
+
+    return '';
   }
 
   get value() {

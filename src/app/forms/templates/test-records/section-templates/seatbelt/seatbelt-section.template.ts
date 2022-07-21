@@ -1,4 +1,4 @@
-import { Validators } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const SeatbeltSection: FormNode = {
@@ -25,14 +25,14 @@ export const SeatbeltSection: FormNode = {
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
               ],
-              validators: [{ name: Validators.Required }]
+              validators: [{ name: ValidatorNames.Required }]
             },
             {
               name: 'numberOfSeatbeltsFitted',
               label: 'Number of seatbelts fitted',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
-              validators: [{ name: Validators.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
+              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
@@ -40,7 +40,7 @@ export const SeatbeltSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: Validators.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
+              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
             }
           ]
         }

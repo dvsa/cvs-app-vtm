@@ -1,3 +1,4 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
@@ -31,7 +32,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       options: [],
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: 'required' }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',
@@ -56,7 +57,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
-      validators: [{ name: 'numeric' }, { name: 'required' }],
+      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }],
       editType: FormNodeEditTypes.NUMBER,
 
       type: FormNodeTypes.CONTROL,

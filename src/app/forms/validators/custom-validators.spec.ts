@@ -132,7 +132,7 @@ describe('Required validators', () => {
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
-      sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, children: [] }, null)
+      sibling: new CustomFormControl({ name: 'sibling', label: 'Sibling', type: FormNodeTypes.CONTROL, children: [] }, null)
     });
     form.controls['sibling'].patchValue('some value');
   });
@@ -140,7 +140,7 @@ describe('Required validators', () => {
   describe('Required if equals', () => {
     it('should be required (return ValidationErrors) if content of sibling matches a value', () => {
       const result = CustomValidators.requiredIfEquals('sibling', 'some value')(form.controls['foo'] as AbstractControl);
-      expect(result).toEqual({ required: true });
+      expect(result).toEqual({ requiredIfEquals: { sibling: 'Sibling' } });
     });
 
     it('should not be required (return null) if content of sibling does not match a value', () => {
@@ -164,7 +164,7 @@ describe('Required validators', () => {
 
     it('should be required (return ValidationErrors) if content of sibling does not match a value', () => {
       const result = CustomValidators.requiredIfNotEqual('sibling', 'some other value')(form.controls['foo'] as AbstractControl);
-      expect(result).toEqual({ required: true });
+      expect(result).toEqual({ requiredIfNotEqual: { sibling: 'Sibling' } });
     });
 
     it('should not be required (return null) if content of sibling does matches a value and we have a value', () => {
