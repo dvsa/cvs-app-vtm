@@ -7,6 +7,7 @@ import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { SingleSearchResultComponent } from './single-search-result.component';
+import { UserRoleDirective } from '@directives/user-role-mock.directive';
 
 describe('SingleSearchResultComponent', () => {
   let component: SingleSearchResultComponent;
@@ -16,7 +17,7 @@ describe('SingleSearchResultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SingleSearchResultComponent],
+      declarations: [SingleSearchResultComponent, UserRoleDirective],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
@@ -38,10 +39,10 @@ describe('SingleSearchResultComponent', () => {
   it('should handle vehicle with no tech records', () => {
     component.vehicleTechRecord.techRecord = [];
     fixture.detectChanges();
-  })
+  });
 
   it('should handle vehicle with no vrms', () => {
     component.vehicleTechRecord.vrms = [];
     fixture.detectChanges();
-  })
+  });
 });
