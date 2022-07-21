@@ -15,38 +15,56 @@ import { UserRoleDirective } from './user-role.directive';
     <div id="hiddenBox" *appUserRole="['No Access']">
       <h1>This cannot display</h1>
     </div>
-    <div id="errorBox" *appUserRole="">
-      <h1>This is an error case</h1>
-    </div>
   `
 })
 class TestComponent {}
 
+@Component({
+  template: `
+    <div id="errorBox" *appUserRole="broken">
+      <h1>This is an error case</h1>
+    </div>
+  `
+})
+class BrokenTestComponent {}
+
 describe('UserDirectiveDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let des;
+  let brokenFixture: ComponentFixture<BrokenTestComponent>;
 
-  beforeEach(async () => {
-    fixture = TestBed.configureTestingModule({
-      declarations: [UserRoleDirective, TestComponent],
-      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(['CVSFullAccess']) } }]
-    }).createComponent(TestComponent);
+  describe('User Directive Works', () => {
+    beforeEach(async () => {
+      fixture = TestBed.configureTestingModule({
+        declarations: [UserRoleDirective, TestComponent],
+        providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(['CVSFullAccess']) } }]
+      }).createComponent(TestComponent);
 
-    fixture.detectChanges(); // initial binding
+      fixture.detectChanges(); // initial binding
+    });
+
+    it('should display the element', () => {
+      const seenBox = fixture.debugElement.queryAll(By.css('#displayBox'));
+      expect(seenBox.length).toEqual(1);
+    });
+
+    it('should hide the element', () => {
+      const hiddenBox = fixture.debugElement.queryAll(By.css('#hiddenBox'));
+      expect(hiddenBox.length).toEqual(0);
+    });
   });
 
-  it('should display the element', () => {
-    const seenBox = fixture.debugElement.queryAll(By.css('#displayBox'));
-    expect(seenBox.length).toEqual(1);
-  });
+  describe('User Directive Errors', () => {
+    beforeEach(async () => {
+      brokenFixture = TestBed.configureTestingModule({
+        declarations: [UserRoleDirective, BrokenTestComponent],
+        providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(['CVSFullAccess']) } }]
+      }).createComponent(BrokenTestComponent);
+    });
 
-  it('should hide the element', () => {
-    const hiddenBox = fixture.debugElement.queryAll(By.css('#hiddenBox'));
-    expect(hiddenBox.length).toEqual(0);
-  });
-
-  it('should hide the element when nothing is provided', () => {
-    const errorBox = fixture.debugElement.queryAll(By.css('#errorBox'));
-    expect(errorBox.length).toEqual(0);
+    it('should error when an array is not provided', () => {
+      expect(() => {
+        brokenFixture.detectChanges();
+      }).toThrowError('Roles value is empty or missed');
+    });
   });
 });
