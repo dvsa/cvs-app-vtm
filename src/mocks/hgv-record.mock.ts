@@ -13,7 +13,7 @@ import { createMock } from 'ts-auto-mock';
 
 export const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
-    systemNumber: `HGV${String(systemNumber + 1).padStart(4, '0')}`,
+    systemNumber: `HGV`,
     vin: `XMGDE03FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {

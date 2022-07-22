@@ -9,8 +9,8 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 
 // Add custom routes before JSON Server router
-server.get('/vehicles/:vin/*', (req, res) => {
-  switch (req.params.vin) {
+server.get('/vehicles/:systemNumber/*', (req, res) => {
+  switch (req.params.systemNumber) {
     case 'delayok':
       console.log('Delaying request');
       setTimeout(() => {
@@ -63,7 +63,7 @@ server.get('/vehicles/:vin/*', (req, res) => {
     default:
       res.status(404);
       res.statusMessage = 'NotFound';
-      res.jsonp('Error no test records found');
+      res.jsonp('Error no tech records found');
       break;
   }
 });
