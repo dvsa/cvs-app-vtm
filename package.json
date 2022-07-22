@@ -47,6 +47,7 @@
     "@storybook/cli": "^6.5.9",
     "accessible-autocomplete": "^2.0.4",
     "govuk-frontend": "^4.1.0",
+    "jwt-decode": "^3.1.2",
     "lodash.merge": "^4.6.2",
     "ngrx-store-localstorage": "^13.0.0",
     "rxjs": "^7.5.0",

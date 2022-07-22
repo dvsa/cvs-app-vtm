@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
+import { RoleGuard } from '@guards/roles.guard';
 import { TitleResolver } from './resolvers/title/title.resolver';
 
 const routes: Routes = [
@@ -10,14 +11,14 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: { title: 'Home' },
-        canActivate: [MsalGuard],
+        data: { title: 'Home', roles: ['CVSFullAccess', 'TechRecord.View'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'search',
-        data: { title: 'Technical record search' },
-        canActivate: [MsalGuard],
+        data: { title: 'Technical record search', roles: ['CVSFullAccess', 'TechRecord.View'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
@@ -27,7 +28,8 @@ const routes: Routes = [
       },
       {
         path: 'tech-records',
-        canActivate: [MsalGuard],
+        data: { roles: ['CVSFullAccess', 'TechRecord.View'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }
     ]

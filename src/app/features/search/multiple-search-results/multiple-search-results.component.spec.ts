@@ -10,6 +10,7 @@ import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { vehicleTechRecords } from '@store/technical-records';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
+import { UserRoleDirective } from '@directives/user-role-mock.directive';
 
 describe('MultipleSearchResultsComponent', () => {
   let component: MultipleSearchResultsComponent;
@@ -18,7 +19,7 @@ describe('MultipleSearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SingleSearchResultComponent, MultipleSearchResultsComponent],
+      declarations: [SingleSearchResultComponent, MultipleSearchResultsComponent, UserRoleDirective],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
@@ -44,7 +45,7 @@ describe('MultipleSearchResultsComponent', () => {
 
       const button = fixture.debugElement.query(By.css('.govuk-back-link'));
       expect(button).toBeTruthy();
-      (button.nativeElement as HTMLButtonElement).click()
+      (button.nativeElement as HTMLButtonElement).click();
 
       tick();
 
