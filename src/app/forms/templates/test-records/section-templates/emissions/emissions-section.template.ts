@@ -1,5 +1,5 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
-import { Validators } from '@forms/models/validators.enum';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { CodeChallengeMethodValues } from '@azure/msal-common/dist/utils/Constants';
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
@@ -30,13 +30,13 @@ export const EmissionsSection: FormNode = {
                 { value: 'Euro VI', label: 'Euro VI' },
                 { value: 'Full Electric', label: 'Full Electric' }
               ],
-              validators: [{ name: Validators.Required }]
+              validators: [{ name: ValidatorNames.Required }]
             },
             {
               name: 'smokeTestKLimitApplied',
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
-              validators: [{ name: Validators.MaxLength, args: 100 }, { name: Validators.Required }]
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }, { name: ValidatorNames.Required }]
             },
             {
               name: 'fuelType',
@@ -52,7 +52,7 @@ export const EmissionsSection: FormNode = {
                 { value: 'petrol', label: 'Petrol' },
                 { value: 'full electric', label: 'Full electric' }
               ],
-              validators: [{ name: Validators.Required }]
+              validators: [{ name: ValidatorNames.Required }]
             },
             {
               name: 'modType',
@@ -70,9 +70,9 @@ export const EmissionsSection: FormNode = {
                     { value: 'g', label: 'G' }
                   ],
                   validators: [
-                    { name: Validators.HideIfParentSiblingEqual, args: { sibling: 'modificationTypeUsed', value: 'p' } },
-                    { name: Validators.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapFitted', value: 'p' } },
-                    { name: Validators.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } }
+                    { name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'modificationTypeUsed', value: 'p' } },
+                    { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapFitted', value: 'p' } },
+                    { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } }
                   ]
                 },
                 {
@@ -93,9 +93,9 @@ export const EmissionsSection: FormNode = {
               label: 'Modification type used',
               type: FormNodeTypes.CONTROL,
               validators: [
-                { name: Validators.MaxLength, args: 100 },
-                { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'm' } },
-                { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'g' } }
+                { name: ValidatorNames.MaxLength, args: 100 },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'm' } },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'g' } }
               ],
               value: ''
             },
@@ -104,8 +104,8 @@ export const EmissionsSection: FormNode = {
               label: 'Particulate trap fitted',
               type: FormNodeTypes.CONTROL,
               validators: [
-                { name: Validators.MaxLength, args: 100 },
-                { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
+                { name: ValidatorNames.MaxLength, args: 100 },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
               ],
               value: ''
             },
@@ -114,8 +114,8 @@ export const EmissionsSection: FormNode = {
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL,
               validators: [
-                { name: Validators.MaxLength, args: 100 },
-                { name: Validators.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
+                { name: ValidatorNames.MaxLength, args: 100 },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
               ],
               value: ''
             }
