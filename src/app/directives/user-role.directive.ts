@@ -11,7 +11,7 @@ export class UserRoleDirective implements OnInit {
   @Input()
   set appUserRole(roles: string[]) {
     if (!roles || !roles.length) {
-      throw new Error('Roles value is empty or missed');
+      throw new Error('Roles value is empty or missing');
     }
     this.userRoles = roles;
   }
