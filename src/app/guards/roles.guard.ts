@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
-import { take } from 'rxjs';
+import { take, skipWhile, firstValueFrom } from 'rxjs';
 import { UserService } from '@services/user-service/user-service';
 
 @Injectable({
@@ -9,13 +9,10 @@ import { UserService } from '@services/user-service/user-service';
 export class RoleGuard implements CanActivate {
   constructor(private userService: UserService) {}
 
-  canActivate(next: ActivatedRouteSnapshot): boolean {
-    let matchingRoles = false;
-    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
-      const allowedRoles: string[] = next.data['roles'];
-      matchingRoles = allowedRoles.some(x => storedRoles.includes(x));
-    });
+  async canActivate(next: ActivatedRouteSnapshot): Promise<boolean> {
+    const storedRoles = await firstValueFrom(this.userService.roles$.pipe(skipWhile(msg => msg === null)).pipe(take(1)));
+    const allowedRoles: string[] = next.data['roles'];
 
-    return matchingRoles;
+    return allowedRoles.some(x => storedRoles?.includes(x));
   }
 }

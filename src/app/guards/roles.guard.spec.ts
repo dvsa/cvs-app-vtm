@@ -27,24 +27,24 @@ describe('RoleGuard', () => {
     expect(guard).toBeTruthy();
   });
 
-  it('should return true when I give it the correct role', () => {
+  it('should return true when I give it the correct role', async () => {
     const next = new ActivatedRouteSnapshot();
     next.data = { roles: ['CVSFullAccess'] };
 
-    expect(guard.canActivate(next)).toBeTruthy();
+    expect(await guard.canActivate(next)).toBeTruthy();
   });
 
-  it('should return false when I give it the incorrect role', () => {
+  it('should return false when I give it the incorrect role', async () => {
     const next = new ActivatedRouteSnapshot();
     next.data = { roles: ['BadRole'] };
 
-    expect(guard.canActivate(next)).toBeFalsy();
+    expect(await guard.canActivate(next)).toBeFalsy();
   });
 
-  it('should return true when I give it one incorrect role and one correct role', () => {
+  it('should return true when I give it one incorrect role and one correct role', async () => {
     const next = new ActivatedRouteSnapshot();
     next.data = { roles: ['CVSFullAccess', 'BadRole'] };
 
-    expect(guard.canActivate(next)).toBeTruthy();
+    expect(await guard.canActivate(next)).toBeTruthy();
   });
 });

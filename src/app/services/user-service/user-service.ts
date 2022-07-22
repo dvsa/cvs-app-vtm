@@ -56,7 +56,7 @@ export class UserService implements OnDestroy {
     return this.store.pipe(select(UserServiceState.id));
   }
 
-  get roles$(): Observable<string[]> {
+  get roles$(): Observable<string[] | null> {
     return this.store.pipe(select(UserServiceState.roles));
   }
 

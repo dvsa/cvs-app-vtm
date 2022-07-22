@@ -21,7 +21,7 @@ export class UserRoleDirective implements OnInit {
       let hasAccess = false;
 
       if (this.userRoles) {
-        hasAccess = this.userRoles.some(r => storedRoles.includes(r));
+        hasAccess = this.userRoles.some(r => storedRoles?.includes(r));
       }
 
       if (hasAccess) {

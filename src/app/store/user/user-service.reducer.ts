@@ -7,14 +7,14 @@ export interface UserServiceState {
   name: string;
   username: string;
   oid: string;
-  roles: string[];
+  roles: string[] | null;
 }
 
 export const initialState: UserServiceState = {
   name: '(Not logged in)',
   username: '',
   oid: '',
-  roles: []
+  roles: null
 };
 
 const getUserState = createFeatureSelector<UserServiceState>(STORE_FEATURE_USER_KEY);
