@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TestResultModel } from '@models/test-result.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
@@ -28,7 +29,13 @@ export class TestResultsEffects {
       mergeMap(({ systemNumber }) =>
         this.testRecordsService.fetchTestResultbySystemNumber(systemNumber).pipe(
           map(testResults => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
-          catchError(e => of(fetchTestResultsBySystemNumberFailed({ error: e.message })))
+          catchError(e => {
+            switch (e.status) {
+              case 404:
+                return of(fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultModel[] }));
+            }
+            return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
+          })
         )
       )
     )

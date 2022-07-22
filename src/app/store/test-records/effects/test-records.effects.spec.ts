@@ -111,13 +111,29 @@ describe('TestResultsEffects', () => {
         actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
         const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'server not available'
+        });
+        jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
+          b: fetchTestResultsBySystemNumberFailed({ error: 'Http failure response for (unknown url): 500 server not available' })
+        });
+      });
+    });
+
+    it('should return fetchTestResultsBySystemNumberFailed action on API error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
+
+        const expectedError = new HttpErrorResponse({
           status: 404,
           statusText: 'Not found'
         });
         jest.spyOn(testResultsService, 'fetchTestResultbySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchTestResultsBySystemNumber$).toBe('---b', {
-          b: fetchTestResultsBySystemNumberFailed({ error: 'Http failure response for (unknown url): 404 Not found' })
+          b: fetchTestResultsBySystemNumberSuccess({ payload: [] as TestResultModel[] })
         });
       });
     });
