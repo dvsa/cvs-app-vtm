@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function createSingleSearchResult(vin?: string): FormNode {
+export function createSingleSearchResult(systemNumber?: string): FormNode {
   return {
     name: 'singleSearchResult',
     type: FormNodeTypes.GROUP,
@@ -8,7 +8,7 @@ export function createSingleSearchResult(vin?: string): FormNode {
     viewType: FormNodeViewTypes.SUBHEADING,
     subHeadingLink: {
       label: 'Select technical record',
-      url: `/tech-records/${vin}`
+      url: `/tech-records/${systemNumber}`
     },
     children: [
       {

@@ -27,7 +27,7 @@ const routes: Routes = [
         loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
       },
       {
-        path: 'tech-records/:vin',
+        path: 'tech-records/:systemNumber',
         data: { title: 'Tech Record' },
         canActivate: [MsalGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)

@@ -19,7 +19,10 @@
       <td class="govuk-table__cell">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
       <td class="govuk-table__cell">
         <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
-          <a id="view-test-{{ vehicleTechRecord.vin }}" href="/tech-records/{{ vehicleTechRecord.vin }}/{{ convertToUnix(techRecord.createdAt) }}">
+          <a
+            id="view-test-{{ vehicleTechRecord.vin }}"
+            href="/tech-records/{{ vehicleTechRecord.systemNumber }}/{{ convertToUnix(techRecord.createdAt) }}"
+          >
             View
           </a>
         </ng-container>

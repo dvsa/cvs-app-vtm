@@ -46,7 +46,14 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       particulateTrapSerialNumber: 'ABC' + Math.round(Math.random() * 1000).toString(),
       defects: mockDefectList(),
 
-      additionalNotesRecorded: 'notes for the test record will be displayed here...'
+      additionalNotesRecorded: 'notes for the test record will be displayed here...',
+      customDefects: [
+        {
+          referenceNumber: '90',
+          defectName: 'defect',
+          defectNotes: 'bad'
+        }
+      ]
     });
   });
 
