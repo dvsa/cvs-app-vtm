@@ -17,8 +17,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { TestResultPutBody } from '../model/testResultPutBody';
-import { TestResults } from '../model/testResults';
+import { CompleteTestResults } from '../model/completeTestResults';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -57,24 +56,24 @@ export class UpdateTestResultsService {
 
 
     /**
-     * Update a test result, for a particular testResultId
+     * Update a test result using the systemNumber and testResultId as unique identifiers.
      * 
      * @param body The test result to be updated
-     * @param testResultId 
+     * @param systemNumber 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public testResultsTestResultIdPut(body: TestResultPutBody, testResultId: string, observe?: 'body', reportProgress?: boolean): Observable<TestResults>;
-    public testResultsTestResultIdPut(body: TestResultPutBody, testResultId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestResults>>;
-    public testResultsTestResultIdPut(body: TestResultPutBody, testResultId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestResults>>;
-    public testResultsTestResultIdPut(body: TestResultPutBody, testResultId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string, observe?: 'body', reportProgress?: boolean): Observable<CompleteTestResults>;
+    public testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CompleteTestResults>>;
+    public testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CompleteTestResults>>;
+    public testResultsSystemNumberPut(body: CompleteTestResults, systemNumber: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling testResultsTestResultIdPut.');
+            throw new Error('Required parameter body was null or undefined when calling testResultsSystemNumberPut.');
         }
 
-        if (testResultId === null || testResultId === undefined) {
-            throw new Error('Required parameter testResultId was null or undefined when calling testResultsTestResultIdPut.');
+        if (systemNumber === null || systemNumber === undefined) {
+            throw new Error('Required parameter systemNumber was null or undefined when calling testResultsSystemNumberPut.');
         }
 
         let headers = this.defaultHeaders;
@@ -105,7 +104,7 @@ export class UpdateTestResultsService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<TestResults>('put',`${this.basePath}/test-results/${encodeURIComponent(String(testResultId))}`,
+        return this.httpClient.request<CompleteTestResults>('put',`${this.basePath}/test-results/${encodeURIComponent(String(systemNumber))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
