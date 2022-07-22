@@ -64,7 +64,7 @@ describe('UserDirectiveDirective', () => {
     it('should error when an array is not provided', () => {
       expect(() => {
         brokenFixture.detectChanges();
-      }).toThrowError('Roles value is empty or missed');
+      }).toThrowError('Roles value is empty or missing');
     });
   });
 });

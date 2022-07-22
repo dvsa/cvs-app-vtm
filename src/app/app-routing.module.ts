@@ -11,13 +11,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: { title: 'Home', roles: ['CVSFullAccess', 'TechRecord.Read'] },
+        data: { title: 'Home', roles: ['CVSFullAccess', 'TechRecord.View'] },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'search',
-        data: { title: 'Technical record search', roles: ['CVSFullAccess', 'TechRecord.Read'] },
+        data: { title: 'Technical record search', roles: ['CVSFullAccess', 'TechRecord.View'] },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
@@ -28,7 +28,7 @@ const routes: Routes = [
       },
       {
         path: 'tech-records',
-        data: { roles: ['CVSFullAccess', 'TechRecord.Read'] },
+        data: { roles: ['CVSFullAccess', 'TechRecord.View'] },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }
