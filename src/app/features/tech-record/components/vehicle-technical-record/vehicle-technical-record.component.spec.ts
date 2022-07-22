@@ -12,6 +12,9 @@ import { TechRecordsModule } from '../../tech-record.module';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
+import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -20,8 +23,8 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TechRecordsModule, TestResultsApiModule],
-      declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent],
+      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TestResultsApiModule, DynamicFormsModule],
+      declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent, TechRecordHistoryComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -63,7 +66,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     component.vehicleTechRecord.techRecord = component.vehicleTechRecord.techRecord.filter(record => record.statusCode === StatusCodes.CURRENT);
     fixture.detectChanges();
 
-    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy())
+    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy());
   });
 
   it('should get archived tech record', () => {
@@ -71,7 +74,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     component.vehicleTechRecord.techRecord = component.vehicleTechRecord.techRecord.filter(record => record.statusCode === StatusCodes.ARCHIVED);
     fixture.detectChanges();
 
-    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy())
+    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy());
   });
 
   it('should get tech record using created date', () => {
@@ -81,6 +84,6 @@ describe('VehicleTechnicalRecordComponent', () => {
     component.vehicleTechRecord.techRecord[0].createdAt = expectedDate;
     fixture.detectChanges();
 
-    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy())
+    component.currentTechRecord?.subscribe(record => expect(record).toBeTruthy());
   });
 });

@@ -7,8 +7,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVinSuccess } from '@store/technical-records';
-import { catchError, debounceTime, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
+import { catchError, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
@@ -30,24 +29,6 @@ export class TestResultsEffects {
         this.testRecordsService.fetchTestResultbySystemNumber(systemNumber).pipe(
           map(testResults => fetchTestResultsBySystemNumberSuccess({ payload: testResults })),
           catchError(e => of(fetchTestResultsBySystemNumberFailed({ error: e.message })))
-        )
-      )
-    )
-  );
-
-  fetchTestResultsBySystemNumberAfterSearchByVinSucces$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getByVinSuccess),
-      mergeMap(action =>
-        this.testRecordsService.fetchTestResultbySystemNumber(action.vehicleTechRecords[0].systemNumber).pipe(
-          map(vehicleTestRecords => fetchTestResultsBySystemNumberSuccess({ payload: vehicleTestRecords })),
-          catchError(e => {
-            if (e.status != 404) {
-              return of(fetchTestResultsBySystemNumberFailed({ error: e.message }));
-            } else {
-              return of(fetchTestResultsBySystemNumberSuccess({ payload: [] }));
-            }
-          })
         )
       )
     )

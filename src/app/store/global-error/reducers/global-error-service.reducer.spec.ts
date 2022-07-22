@@ -1,5 +1,5 @@
 import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
-import { getByVin, getByVinFailure } from '@store/technical-records';
+import { getByAllFailure, getByPartialVinFailure, getByTrailerIdFailure, getByVin, getByVinFailure } from '@store/technical-records';
 import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
 import { patchErrors, setErrors } from '../actions/global-error.actions';
 
@@ -16,7 +16,14 @@ describe('Global Error Reducer', () => {
   });
 
   describe('Fail action', () => {
-    it.each([fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed, getByVinFailure])('should return the error state', (actionMethod) => {
+    it.each([
+      fetchTestResultsBySystemNumberFailed,
+      fetchTestResultsFailed,
+      getByVinFailure,
+      getByAllFailure,
+      getByTrailerIdFailure,
+      getByPartialVinFailure
+    ])('should return the error state', actionMethod => {
       const error = 'fetching test records failed';
       const newState: GlobalErrorState = { ...initialGlobalErrorState, errors: [{ error: error, anchorLink: undefined }] };
       const action = actionMethod({ error });
@@ -28,7 +35,7 @@ describe('Global Error Reducer', () => {
   });
 
   describe('Success action', () => {
-    it.each([fetchTestResultsBySystemNumber, getByVin, fetchTestResults])('should reset the error state', (actionMethod) => {
+    it.each([fetchTestResultsBySystemNumber, getByVin, fetchTestResults])('should reset the error state', actionMethod => {
       const newState = { ...initialGlobalErrorState, errors: [] };
       //all props must be supplied here
       const action = actionMethod({ systemNumber: '', vin: '' });
