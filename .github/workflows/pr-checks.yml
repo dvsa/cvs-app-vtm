@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: npm run build --prod
+        run: npm run build --omit=dev
       - name: Run tests
         run: npm run test:ci
       - name: Run linter
