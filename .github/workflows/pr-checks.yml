@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.pipeline-node-version }}
-        uses: action/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.pipeline-node-version }}
           cache: 'npm'
