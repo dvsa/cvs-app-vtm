@@ -97,6 +97,12 @@
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
+    *ngIf="purchasersTemplate"
+    [template]="purchasersTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
     *ngIf="dimensionsTemplate"
     [template]="dimensionsTemplate"
     [data]="vehicleTechRecord"

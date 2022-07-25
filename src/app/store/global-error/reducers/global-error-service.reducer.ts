@@ -17,7 +17,7 @@ export const initialGlobalErrorState: GlobalErrorState = {
 
 export const getGlobalErrorState = createFeatureSelector<GlobalErrorState>(STORE_GLOBAL_ERROR_KEY);
 
-export const globalErrorState = createSelector(getGlobalErrorState, (state) => state.errors);
+export const globalErrorState = createSelector(getGlobalErrorState, state => state.errors);
 
 export const globalErrorReducer = createReducer(
   initialGlobalErrorState,
@@ -27,6 +27,7 @@ export const globalErrorReducer = createReducer(
     TechnicalRecordServiceActions.getByPartialVin,
     TechnicalRecordServiceActions.getByVrm,
     TechnicalRecordServiceActions.getByTrailerId,
+    TechnicalRecordServiceActions.getByAll,
     TestResultActions.fetchTestResults,
     TestResultActions.fetchTestResultsBySystemNumber,
     TestResultActions.fetchSelectedTestResult,
@@ -41,6 +42,7 @@ export const globalErrorReducer = createReducer(
     TechnicalRecordServiceActions.getByPartialVinFailure,
     TechnicalRecordServiceActions.getByVrmFailure,
     TechnicalRecordServiceActions.getByTrailerIdFailure,
+    TechnicalRecordServiceActions.getByAllFailure,
     TestResultActions.fetchTestResultsFailed,
     TestResultActions.fetchTestResultsBySystemNumberFailed,
     TestResultActions.fetchSelectedTestResultFailed,

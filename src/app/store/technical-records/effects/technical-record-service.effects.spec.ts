@@ -9,7 +9,26 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { getByPartialVin, getByPartialVinFailure, getByPartialVinSuccess, getByTrailerId, getByTrailerIdFailure, getByTrailerIdSuccess, getByVin, getByVinFailure, getByVinSuccess, getByVrm, getByVrmFailure, getByVrmSuccess } from '../actions/technical-record-service.actions';
+import {
+  getByAll,
+  getByAllFailure,
+  getByAllSuccess,
+  getByPartialVin,
+  getByPartialVinFailure,
+  getByPartialVinSuccess,
+  getBySystemNumber,
+  getBySystemNumberFailure,
+  getBySystemNumberSuccess,
+  getByTrailerId,
+  getByTrailerIdFailure,
+  getByTrailerIdSuccess,
+  getByVin,
+  getByVinFailure,
+  getByVinSuccess,
+  getByVrm,
+  getByVrmFailure,
+  getByVrmSuccess
+} from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 
 describe('TechnicalRecordServiceEffects', () => {
@@ -21,7 +40,12 @@ describe('TechnicalRecordServiceEffects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TechnicalRecordServiceEffects, provideMockActions(() => actions$), TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
+      providers: [
+        TechnicalRecordServiceEffects,
+        provideMockActions(() => actions$),
+        TechnicalRecordService,
+        provideMockStore({ initialState: initialAppState })
+      ]
     });
 
     effects = TestBed.inject(TechnicalRecordServiceEffects);
@@ -65,7 +89,9 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVinFailure({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByVinFailure({ error: 'There was a problem getting the Tech Record by vin', anchorLink: 'search-term' })
+        });
       });
     });
 
@@ -82,7 +108,12 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByVin').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVinFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByVinFailure({
+            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+            anchorLink: 'search-term'
+          })
+        });
       });
     });
 
@@ -132,7 +163,9 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByPartialVinFailure({ error: 'There was a problem getting the Tech Record by partialVin', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByPartialVinFailure({ error: 'There was a problem getting the Tech Record by partialVin', anchorLink: 'search-term' })
+        });
       });
     });
 
@@ -149,7 +182,12 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByPartialVin').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByPartialVinFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByPartialVinFailure({
+            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+            anchorLink: 'search-term'
+          })
+        });
       });
     });
 
@@ -199,7 +237,9 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVrmFailure({ error: 'There was a problem getting the Tech Record by vrm', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByVrmFailure({ error: 'There was a problem getting the Tech Record by vrm', anchorLink: 'search-term' })
+        });
       });
     });
 
@@ -216,7 +256,12 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByVrm').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByVrmFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByVrmFailure({
+            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+            anchorLink: 'search-term'
+          })
+        });
       });
     });
 
@@ -266,7 +311,9 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByTrailerIdFailure({ error: 'There was a problem getting the Tech Record by trailerId', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByTrailerIdFailure({ error: 'There was a problem getting the Tech Record by trailerId', anchorLink: 'search-term' })
+        });
       });
     });
 
@@ -283,7 +330,12 @@ describe('TechnicalRecordServiceEffects', () => {
         });
         jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByTrailerIdFailure({ error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByTrailerIdFailure({
+            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+            anchorLink: 'search-term'
+          })
+        });
       });
     });
 
@@ -298,6 +350,154 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getByTrailerId').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByTrailerIdFailure({ error: 'string', anchorLink: 'search-term' }) });
+      });
+    });
+  });
+
+  describe('getBySystemNumber$', () => {
+    it('should return a technical record on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getBySystemNumber });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
+
+        // expect effect to return success action
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getBySystemNumberSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it('should return generic error message if not not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const systemNumber = { systemNumber: 'systemNumber' };
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getBySystemNumber(systemNumber) });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getBySystemNumberFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
+        });
+      });
+    });
+
+    it('should return not found error message if not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const systemNumber = { systemNumber: 'systemNumber' };
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getBySystemNumber(systemNumber) });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 404,
+          statusText: 'Vehicle not found'
+        });
+        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getBySystemNumberFailure({
+            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+            anchorLink: 'search-term'
+          })
+        });
+      });
+    });
+
+    it('should return error message if error is a string', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const systemNumber = { systemNumber: 'systemNumber' };
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getBySystemNumber(systemNumber) });
+
+        // mock service call
+        const expectedError = 'string';
+        jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getBySystemNumberFailure({ error: 'string', anchorLink: 'search-term' }) });
+      });
+    });
+  });
+
+  describe('getByAll$', () => {
+    it('should return a technical record on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByAll });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--a|', { a: technicalRecord }));
+
+        // expect effect to return success action
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByAllSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it('should return generic error message if not not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const all = { all: 'all' };
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByAll(all) });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByAllFailure({ error: 'There was a problem getting the Tech Record by the current search criteria', anchorLink: 'search-term' })
+        });
+      });
+    });
+
+    it('should return not found error message if not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const all = { all: 'all' };
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByAll(all) });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 404,
+          statusText: 'Vehicle not found'
+        });
+        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getByAllFailure({
+            error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
+            anchorLink: 'search-term'
+          })
+        });
+      });
+    });
+
+    it('should return error message if error is a string', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const all = { all: 'all' };
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: getByAll(all) });
+
+        // mock service call
+        const expectedError = 'string';
+        jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByAllFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
     });
   });
