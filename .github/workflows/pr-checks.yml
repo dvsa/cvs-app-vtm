@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        pipeline-node-versoin: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -34,6 +33,16 @@ jobs:
         run: npm run test:ci
       - name: Run linter
         run: npm run lint
+        
+        
+  audit:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        pipeline-node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v3
       - name: Setup Node.js ${{ matrix.pipeline-node-version }}
         uses: action/setup-node@v3
         with:
