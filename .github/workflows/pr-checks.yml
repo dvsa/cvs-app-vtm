@@ -49,5 +49,5 @@ jobs:
           node-version: ${{ matrix.pipeline-node-version }}
           cache: 'npm'
       - name: Run audit with pipeline version
-        run: npm audit
+        run: npm audit --audit-level=critical
           
