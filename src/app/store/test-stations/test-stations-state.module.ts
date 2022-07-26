@@ -9,8 +9,8 @@ import { STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer } from './reducers
   declarations: [],
   imports: [
     CommonModule,
-    EffectsModule.forFeature([TestStationsEffects]),
-    StoreModule.forFeature(STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer)
+    StoreModule.forFeature(STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer),
+    EffectsModule.forFeature([TestStationsEffects])
   ]
 })
 export class TestStationsStateModule {}
