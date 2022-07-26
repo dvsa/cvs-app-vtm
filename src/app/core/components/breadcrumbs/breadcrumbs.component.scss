@@ -1,0 +1,10 @@
+.govuk-breadcrumbs__link {
+  &:hover:not(.govuk-breadcrumbs__link--current) {
+    color: rgba(11, 12, 12, 0.99);
+    text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+    -webkit-text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
+    -webkit-text-decoration-skip: none;
+    text-decoration-skip: none;
+  }
+}

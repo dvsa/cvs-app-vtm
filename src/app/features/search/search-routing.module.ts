@@ -13,7 +13,8 @@ const routes: Routes = [
   {
     path: 'results',
     component: MultipleSearchResultsComponent,
-    canActivate: [NoQueryParamsGuard]
+    canActivate: [NoQueryParamsGuard],
+    data: { title: 'Search Results' }
   }
 ];
 

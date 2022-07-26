@@ -21,12 +21,14 @@ const routes: Routes = [
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
-        path: 'test-records',
+        path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+        data: { title: 'Test Result' },
         canActivate: [MsalGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
       },
       {
-        path: 'tech-records',
+        path: 'tech-records/:systemNumber',
+        data: { title: 'Tech Record' },
         canActivate: [MsalGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }
