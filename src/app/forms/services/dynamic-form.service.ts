@@ -23,7 +23,7 @@ export class DynamicFormService {
     [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
-    [ValidatorNames.validateDefectNotes]: () => DefectValidators.validateDefectNotes
+    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

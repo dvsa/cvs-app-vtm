@@ -12,7 +12,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
     `${label || DEFAULT_LABEL} must be greater than ${err.requiredLength} characters`,
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
-  [ValidatorNames.validateDefectNotes]: () => 'Notes is required'
+  [ValidatorNames.ValidateDefectNotes]: () => 'Notes is required'
 };
 
 function displayArray(array: string[]) {

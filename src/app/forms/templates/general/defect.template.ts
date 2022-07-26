@@ -91,44 +91,37 @@ export const DefectsTpl: FormNode = {
                             {
                               name: 'vertical',
                               label: 'Vertical',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'horizontal',
                               label: 'Horizontal',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'lateral',
                               label: 'Lateral',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'longitudinal',
                               label: 'Longitudinal',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'rowNumber',
                               label: 'Row number',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'seatNumber',
                               label: 'Seat number',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'axleNumber',
                               label: 'Axle number',
-                              type: FormNodeTypes.CONTROL,
-                              disabled: false
+                              type: FormNodeTypes.CONTROL
                             }
                           ]
                         },
@@ -136,8 +129,7 @@ export const DefectsTpl: FormNode = {
                           name: 'notes',
                           label: 'Notes',
                           type: FormNodeTypes.CONTROL,
-                          validators: [{ name: ValidatorNames.validateDefectNotes }],
-                          disabled: false
+                          validators: [{ name: ValidatorNames.ValidateDefectNotes }]
                         }
                       ]
                     },
@@ -161,8 +153,7 @@ export const DefectsTpl: FormNode = {
                           name: ValidatorNames.RequiredIfEquals,
                           args: { sibling: 'deficiencyCategory', value: ['dangerous', 'dangerous*', 'dangerous#'] }
                         }
-                      ],
-                      disabled: false
+                      ]
                     },
                     {
                       name: 'stdForProhibition',
