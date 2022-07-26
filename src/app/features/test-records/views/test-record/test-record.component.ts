@@ -4,6 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defects } from '@models/defects';
 import { TestResultModel } from '@models/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -11,7 +12,7 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import merge from 'lodash.merge';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil, map } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -92,5 +93,23 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.handleCancel();
     });
+  }
+
+  get testTypeGroupIsEditable$(): Observable<boolean> {
+    return this.testResult$.pipe(
+      map(testResult => {
+        if (testResult) {
+          const vehicleType = testResult.vehicleType;
+          const testTypeId = testResult.testTypes[0].testTypeId;
+          const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+          const vehicleTpl = vehicleType && masterTpl[vehicleType];
+          if (testTypeGroup && vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup)) {
+            return true;
+          }
+          return false;
+        }
+        return false;
+      })
+    );
   }
 }

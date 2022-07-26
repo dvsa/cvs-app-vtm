@@ -1,14 +1,26 @@
-<app-button-group>
-  <app-button *ngIf="(isEditing$ | async) === false; else editing" id="edit-test-result" (clicked)="handleEdit()">Edit</app-button>
+<ng-container *ngIf="testResult$ | async as testResult">
+  <app-button-group *ngIf="testTypeGroupIsEditable$ | async; else notSupported">
+    <app-button *ngIf="(isEditing$ | async) === false; else editing" id="edit-test-result" (clicked)="handleEdit()">Edit</app-button>
 
-  <ng-template #editing>
-    <app-button id="save-test-result" (clicked)="handleSave()">Submit</app-button>
-    <app-button id="cancel-edit-test-result" type="secondary" (clicked)="handleCancel()">Cancel</app-button>
-  </ng-template>
-</app-button-group>
+    <ng-template #editing>
+      <app-button id="save-test-result" (clicked)="handleSave()">Submit</app-button>
+      <app-button id="cancel-edit-test-result" type="secondary" (clicked)="handleCancel()">Cancel</app-button>
+    </ng-template>
+  </app-button-group>
 
-<section *ngIf="testResult$ | async as testResult">
   <app-base-test-record [isEditing]="(isEditing$ | async) || false" [testResult]="testResult"></app-base-test-record>
 
   <app-test-amendment-history class="section" [testRecord]="testResult"></app-test-amendment-history>
-</section>
+</ng-container>
+
+<ng-template #notSupported>
+  <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+    </div>
+
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-notification-banner__heading">Editing this record is not currently supported</p>
+    </div>
+  </div>
+</ng-template>
