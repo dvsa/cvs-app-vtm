@@ -7,7 +7,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { mockTestResult } from '@mocks/mock-test-result';
 import { TestResultModel } from '@models/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
@@ -21,7 +20,6 @@ import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/
 import { updateTestResultSuccess } from '@store/test-records';
 import merge from 'lodash.merge';
 import { firstValueFrom, of, ReplaySubject, take } from 'rxjs';
-import { Z_SYNC_FLUSH } from 'zlib';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
@@ -76,90 +74,75 @@ describe('TestRecordComponent', () => {
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
     });
-    it('should display save button when edit query param is true', fakeAsync(() => {
+    it('should display save button when edit query param is true', () => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
-      // jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
+      jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
 
-      tick();
       fixture.detectChanges();
-
       expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
-      discardPeriodicTasks();
-    }));
+    });
 
-    it('should run handleSave when save button is clicked', fakeAsync(() => {
+    it('should run handleSave when save button is clicked', () => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
 
       jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
 
-      tick();
       fixture.detectChanges();
 
       jest.spyOn(component, 'handleSave');
       el.query(By.css('button#save-test-result')).triggerEventHandler('click', {});
-      tick();
       expect(component.handleSave).toHaveBeenCalledTimes(1);
-      flush();
-    }));
+    });
 
-    it('should display cancel button when edit query param is true', fakeAsync(() => {
+    it('should display cancel button when edit query param is true', () => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
 
       jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
-
-      tick();
       fixture.detectChanges();
 
       expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
-      flush();
-    }));
+    });
 
-    it('should navigate without query param when cancel button is clicked', fakeAsync(() => {
+    it('should navigate without query param when cancel button is clicked', () => {
       const handleCancelSpy = jest.spyOn(component, 'handleCancel');
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
 
       mockRouteEditable = store.overrideSelector(routeEditable, true);
 
-      tick();
       fixture.detectChanges();
 
       el.query(By.css('button#cancel-edit-test-result')).nativeElement.click();
-      tick();
       fixture.detectChanges();
 
       expect(handleCancelSpy).toHaveBeenCalledTimes(1);
       expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: null }, queryParamsHandling: 'merge' });
-      flushMicrotasks();
-    }));
+    });
 
-    it('should display edit button when edit query param is false', fakeAsync(() => {
+    it('should display edit button when edit query param is false', () => {
       mockRouteEditable = store.overrideSelector(routeEditable, false);
       jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
 
-      tick();
       fixture.detectChanges();
 
       expect(el.query(By.css('button#edit-test-result'))).toBeTruthy();
-    }));
+    });
 
-    it('should navigate with query param "edit=true" when edit button is clicked', fakeAsync(() => {
+    it('should navigate with query param "edit=true" when edit button is clicked', () => {
       const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
       jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
 
       const handleEditSpy = jest.spyOn(component, 'handleEdit');
       mockRouteEditable = store.overrideSelector(routeEditable, false);
 
-      tick();
       fixture.detectChanges();
 
       el.query(By.css('button#edit-test-result')).nativeElement.click();
-      tick();
       fixture.detectChanges();
 
       expect(handleEditSpy).toHaveBeenCalledTimes(1);
       expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: 'true' }, queryParamsHandling: 'merge' });
-    }));
+    });
   });
 
   describe('getters', () => {
@@ -262,5 +245,25 @@ describe('TestRecordComponent', () => {
 
       expect(handleCancelSpy).toHaveBeenCalledTimes(1);
     }));
+  });
+
+  describe('Render banner', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(testRecordsService, 'testResult$', 'get')
+        .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
+    });
+    it('should render the banner is the test type id is not supported', () => {
+      jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(false));
+      fixture.detectChanges();
+      const banner = el.query(By.css('div.govuk-notification-banner'));
+      expect(banner).toBeTruthy();
+    });
+    it('should render the banner is the test type id is not supported', () => {
+      jest.spyOn(component, 'testTypeGroupIsEditable$', 'get').mockReturnValue(of(true));
+      fixture.detectChanges();
+      const banner = el.query(By.css('div.govuk-notification-banner'));
+      expect(banner).toBeNull();
+    });
   });
 });
