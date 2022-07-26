@@ -1,4 +1,5 @@
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
@@ -13,6 +14,9 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 export class BaseTestRecordComponent {
   @ViewChildren(DynamicFormGroupComponent) set dynamicFormGroupComponents(sections: QueryList<DynamicFormGroupComponent>) {
     sections.forEach(section => this.sectionForms.push(section.form as CustomFormGroup));
+  }
+  @ViewChild(DefectsComponent) set defects(defectsComponent: DefectsComponent) {
+    defectsComponent && defectsComponent.form && this.sectionForms.push(defectsComponent.form);
   }
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;

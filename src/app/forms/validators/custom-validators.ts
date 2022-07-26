@@ -42,8 +42,9 @@ export class CustomValidators {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const siblingValue = siblingControl.value;
+        const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
-        if (siblingValue === value && !control.value) {
+        if (newValue && (control.value === null || control.value === undefined)) {
           return { requiredIfEquals: { sibling: siblingControl.meta.label } };
         }
       }
@@ -57,8 +58,9 @@ export class CustomValidators {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const siblingValue = siblingControl.value;
+        const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
-        if (siblingValue !== value && !control.value) {
+        if (!newValue && (control.value === null || control.value === undefined)) {
           return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
         }
       }

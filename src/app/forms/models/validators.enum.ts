@@ -7,5 +7,6 @@ export enum ValidatorNames {
   MinLength = 'minlength',
   HideIfEmpty = 'hideIfEmpty',
   RequiredIfEquals = 'requiredIfEquals',
-  RequiredIfNotEquals = 'requiredIfNotEquals'
+  RequiredIfNotEquals = 'requiredIfNotEquals',
+  validateDefectNotes = 'validateDefectNotes'
 }

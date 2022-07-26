@@ -42,27 +42,4 @@ describe('DefectComponent', () => {
       expect(component.mapLocationText(location)).toBe(expected);
     });
   });
-
-  describe('util functions', () => {
-    beforeEach(() => {
-      component.form = new CustomFormGroup(
-        { name: 'test', type: FormNodeTypes.GROUP },
-        {
-          key1: new FormGroup({ key2: new FormControl('key2 value') })
-        }
-      );
-    });
-
-    describe(DefectComponent.prototype.getControlValue.name, () => {
-      it('should return control value for path', () => {
-        expect(component.getControlValue('key1.key2')).toBe('key2 value');
-      });
-    });
-
-    describe(DefectComponent.prototype.keyValueControl.name, () => {
-      it('shuld return a KeyValue object of given control', () => {
-        expect(component.keyValueControl('key1')).toEqual({ key: 'key1', value: component.form.get('key1') as FormControl });
-      });
-    });
-  });
 });

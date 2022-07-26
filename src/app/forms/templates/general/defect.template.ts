@@ -1,4 +1,5 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const DefectsTpl: FormNode = {
   name: 'defects',
@@ -79,7 +80,7 @@ export const DefectsTpl: FormNode = {
                     },
                     {
                       name: 'additionalInformation',
-                      label: 'Additional deatils',
+                      label: 'Additional details',
                       type: FormNodeTypes.GROUP,
                       children: [
                         {
@@ -91,43 +92,43 @@ export const DefectsTpl: FormNode = {
                               name: 'vertical',
                               label: 'Vertical',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             },
                             {
                               name: 'horizontal',
                               label: 'Horizontal',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             },
                             {
                               name: 'lateral',
                               label: 'Lateral',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             },
                             {
                               name: 'longitudinal',
                               label: 'Longitudinal',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             },
                             {
                               name: 'rowNumber',
                               label: 'Row number',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             },
                             {
                               name: 'seatNumber',
                               label: 'Seat number',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             },
                             {
                               name: 'axleNumber',
                               label: 'Axle number',
                               type: FormNodeTypes.CONTROL,
-                              disabled: true
+                              disabled: false
                             }
                           ]
                         },
@@ -135,7 +136,8 @@ export const DefectsTpl: FormNode = {
                           name: 'notes',
                           label: 'Notes',
                           type: FormNodeTypes.CONTROL,
-                          disabled: true
+                          validators: [{ name: ValidatorNames.validateDefectNotes }],
+                          disabled: false
                         }
                       ]
                     },
@@ -149,7 +151,18 @@ export const DefectsTpl: FormNode = {
                       name: 'prohibitionIssued',
                       label: 'Prohibition issued',
                       type: FormNodeTypes.CONTROL,
-                      disabled: true
+                      editType: FormNodeEditTypes.RADIO,
+                      options: [
+                        { value: true, label: 'Yes' },
+                        { value: false, label: 'No' }
+                      ],
+                      validators: [
+                        {
+                          name: ValidatorNames.RequiredIfEquals,
+                          args: { sibling: 'deficiencyCategory', value: ['dangerous', 'dangerous*', 'dangerous#'] }
+                        }
+                      ],
+                      disabled: false
                     },
                     {
                       name: 'stdForProhibition',

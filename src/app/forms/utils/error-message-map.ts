@@ -11,5 +11,15 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.MinLength]: (err: { requiredLength: number }, label?: string) =>
     `${label || DEFAULT_LABEL} must be greater than ${err.requiredLength} characters`,
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
-  [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`
+  [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
+  [ValidatorNames.validateDefectNotes]: () => 'Notes is required'
 };
+
+function displayArray(array: string[]) {
+  const message = array.join(', ');
+  const last = message.lastIndexOf(',');
+  if (last !== -1) {
+    return message.substring(0, last) + ' or ' + message.substring(last + 1, message.length);
+  }
+  return array[0];
+}
