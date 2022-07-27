@@ -76,7 +76,7 @@ describe('DynamicFormGroupComponent', () => {
 
   describe('formNodeTypes', () => {
     it('should return FormNodeTypes enum', () => {
-      Object.entries(FormNodeTypes).forEach((entry) => {
+      Object.entries(FormNodeTypes).forEach(entry => {
         expect(FormNodeTypes).toEqual(component.formNodeTypes);
         expect(component.formNodeTypes[entry[0] as keyof typeof FormNodeTypes]).toBe(entry[1]);
       });
@@ -85,7 +85,7 @@ describe('DynamicFormGroupComponent', () => {
 
   describe('formNodeViewTypes', () => {
     it('should return FormNodeViewTypes enum', () => {
-      Object.entries(FormNodeViewTypes).forEach((entry) => {
+      Object.entries(FormNodeViewTypes).forEach(entry => {
         expect(FormNodeViewTypes).toEqual(component.formNodeViewTypes);
         expect(component.formNodeViewTypes[entry[0] as keyof typeof FormNodeViewTypes]).toBe(entry[1]);
       });

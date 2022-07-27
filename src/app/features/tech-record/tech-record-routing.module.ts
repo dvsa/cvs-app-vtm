@@ -6,16 +6,22 @@ import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
-    path: ':systemNumber',
+    path: '',
     component: TechRecordComponent,
     canActivateChild: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: ':systemNumber/:techCreatedAt',
+    path: ':techCreatedAt',
     component: TechRecordComponent,
-    data: { title: 'Tech Record' },
+    data: { title: 'Historic Tech Record' },
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+    data: { title: 'Test Result' },
+    canActivate: [MsalGuard],
+    loadChildren: () => import('../test-records/test-records.module').then(m => m.TestRecordsModule)
   }
 ];
 

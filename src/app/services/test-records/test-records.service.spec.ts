@@ -107,4 +107,14 @@ describe('TestRecordsService', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(updateTestResult({ value: {} as TestResultModel }));
     });
   });
+
+  describe('get the testType group information', () => {
+    it('should get the correct testTypeGroup', () => {
+      expect(TestRecordsService.getTestTypeGroup('1')).toEqual('testTypesGroup1');
+    });
+
+    it('should return undefined if the testTypeGroup is not supported', () => {
+      expect(TestRecordsService.getTestTypeGroup('foo')).toBeUndefined();
+    });
+  });
 });

@@ -47,23 +47,23 @@ describe('DynamicFormFieldComponent', () => {
     expect(options).toBeTruthy();
   });
 
-  it('should return the metadata options', (done) => {
+  it('should return the metadata options', done => {
     component.control = {
       key: 'birthday',
       value: new CustomFormControl({ name: 'test', type: FormNodeTypes.CONTROL, options: [{ value: '1', label: 'test' }] })
     };
     component.form = new FormGroup({});
-    component.options.subscribe((value) => {
+    component.options.subscribe(value => {
       expect(value).toBeTruthy();
       expect(value).toEqual([{ value: '1', label: 'test' }]);
       done();
     });
   });
 
-  it('should return the reference data options', (done) => {
+  it('should return the reference data options', done => {
     service.getAll$ = jest.fn().mockReturnValue(of([{ resourceKey: '1', description: 'test' }]));
     component.form = new FormGroup({});
-    component.options.subscribe((value) => {
+    component.options.subscribe(value => {
       expect(value).toBeTruthy();
       expect(value).toEqual([{ value: '1', label: 'test' }]);
       done();

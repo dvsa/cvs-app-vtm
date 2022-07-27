@@ -4,7 +4,8 @@
     class="section"
     [id]="template.name"
     [isEditing]="isEditing"
-    [form]="getFormForTemplate(template)"
+    [template]="template"
+    [data]="testResult"
   ></app-defects>
 
   <app-dynamic-form-group

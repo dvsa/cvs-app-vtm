@@ -72,7 +72,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
    * @returns `string | undefined`
    */
   findOptionValue(label: string) {
-    return label ? this.options.find((option) => option.label === label)?.value : '';
+    return label ? this.options.find(option => option.label === label)?.value : '';
   }
 
   addValidators() {
