@@ -27,6 +27,10 @@ export class ReferenceDataService {
     // ** Until the reference data API is provisioned, return in-memory data ** //
     const mockData = this.getMockReferenceData(resourceType);
 
+    if (mockData instanceof Error) {
+      return throwError(() => mockData);
+    }
+
     if (!resourceKey) {
       return of(mockData);
     }
@@ -38,12 +42,12 @@ export class ReferenceDataService {
       : throwError(() => new Error('Reference data with specified resource key not found (404)'));
   }
 
-  private getMockReferenceData(type: ReferenceDataResourceType): ReferenceDataModelBase[] {
+  private getMockReferenceData(type: ReferenceDataResourceType): ReferenceDataModelBase[] | Error {
     switch (type) {
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
       default:
-        throw new Error('Unknown reference data resourceType');
+        return new Error('Unknown reference data resourceType');
     }
   }
 

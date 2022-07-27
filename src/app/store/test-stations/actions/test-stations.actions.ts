@@ -2,10 +2,16 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { TestStation } from '@models/test-station.model';
 import { createAction, props } from '@ngrx/store';
 
-export const fetchTestStations = createAction('[API/test-stations] Fetch All Test Stations');
-export const fetchTestStationsSuccess = createAction('[API/test-stations] Fetch All Test Stations Success', props<{ payload: TestStation[] }>());
-export const fetchTestStationsFailed = createAction('[API/test-stations] Fetch All Test Stations Failed', props<GlobalError>());
+export const fetchTestStations = createAction(getTitle(true));
+export const fetchTestStationsSuccess = createAction(getTitle(true, 'Success'), props<{ payload: TestStation[] }>());
+export const fetchTestStationsFailed = createAction(getTitle(true , 'Failed'), props<GlobalError>());
 
-export const fetchTestStation = createAction('[API/test-stations] Fetch Test Station by ID', props<{ id: string }>());
-export const fetchTestStationSuccess = createAction('[API/test-stations] Fetch Test Station by ID Success', props<{ id: string; payload: TestStation }>());
-export const fetchTestStationFailed = createAction('[API/test-stations] Fetch Test Station by ID Failed', props<GlobalError>());
+export const fetchTestStation = createAction(getTitle(), props<{ id: string }>());
+export const fetchTestStationSuccess = createAction(getTitle(false, 'Success'), props<{ id: string; payload: TestStation }>());
+export const fetchTestStationFailed = createAction(getTitle(false, 'Failed'), props<GlobalError>());
+
+function getTitle(isPlural: boolean = false, suffix: string = ''): string {
+  const plural = isPlural ? 's' : ' by ID';
+  suffix = suffix ? ' ' + suffix : suffix;
+  return '[API/test-stations] Fetch All Test Station' + plural + suffix;
+}
