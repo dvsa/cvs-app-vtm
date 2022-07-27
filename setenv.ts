@@ -13,7 +13,7 @@ const environmentFileContent = `export const environment = {
   VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",
   VTM_AUTHORITY_ID: "${process.env['VTM_AUTHORITY_ID']}",
   VTM_REDIRECT_URI: 'http://localhost:4200',
-  VTM_API_URI: 'http://localhost:3005',
+  VTM_API_URI: "${process.env['VTM_API_URI']}",
   VTM_API_CLIENT_ID: "${process.env['VTM_API_CLIENT_ID']}",
 };
 `;

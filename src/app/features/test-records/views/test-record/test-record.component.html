@@ -1,5 +1,5 @@
 <ng-container *ngIf="testResult$ | async as testResult">
-  <app-button-group *ngIf="testTypeGroupIsEditable$ | async; else notSupported">
+  <app-button-group *ngIf="isTestTypeGroupEditable$ | async; else notSupported">
     <app-button *ngIf="(isEditing$ | async) === false; else editing" id="edit-test-result" (clicked)="handleEdit()">Edit</app-button>
 
     <ng-template #editing>
@@ -14,13 +14,9 @@
 </ng-container>
 
 <ng-template #notSupported>
-  <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-    <div class="govuk-notification-banner__header">
-      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
-    </div>
+  <app-banner>
+    <ng-container title>Important</ng-container>
 
-    <div class="govuk-notification-banner__content">
-      <p class="govuk-notification-banner__heading">Editing this record is not currently supported</p>
-    </div>
-  </div>
+    <ng-container content>Editing this record is not currently supported</ng-container>
+  </app-banner>
 </ng-template>

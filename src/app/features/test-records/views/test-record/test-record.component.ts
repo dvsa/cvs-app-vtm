@@ -95,20 +95,19 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     });
   }
 
-  get testTypeGroupIsEditable$(): Observable<boolean> {
+  get isTestTypeGroupEditable$(): Observable<boolean> {
     return this.testResult$.pipe(
       map(testResult => {
-        if (testResult) {
-          const vehicleType = testResult.vehicleType;
-          const testTypeId = testResult.testTypes[0].testTypeId;
-          const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
-          const vehicleTpl = vehicleType && masterTpl[vehicleType];
-          if (testTypeGroup && vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup)) {
-            return true;
-          }
+        if (!testResult) {
           return false;
         }
-        return false;
+
+        const vehicleType = testResult.vehicleType;
+        const testTypeId = testResult.testTypes[0].testTypeId;
+        const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+        const vehicleTpl = vehicleType && masterTpl[vehicleType];
+
+        return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
       })
     );
   }
