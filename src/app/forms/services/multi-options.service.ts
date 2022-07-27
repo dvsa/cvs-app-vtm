@@ -36,5 +36,5 @@ export class MultiOptionsService {
 
 export enum SpecialRefData {
   TEST_STATION_NAME = 'testStationName',
-  TEST_STATION_P_NUMBER = 'testStationPNUmber'
+  TEST_STATION_P_NUMBER = 'testStationPNumber'
 }

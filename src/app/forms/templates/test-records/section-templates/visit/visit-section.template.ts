@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const VisitSection: FormNode = {
   name: 'visitSection',
@@ -24,6 +25,7 @@ export const VisitSection: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
+      referenceData: SpecialRefData.TEST_STATION_NAME,
       validators: [{ name: ValidatorNames.Required }]
     },
     {
@@ -32,6 +34,7 @@ export const VisitSection: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
+      referenceData: SpecialRefData.TEST_STATION_P_NUMBER,
       validators: [{ name: ValidatorNames.Required }]
     },
     {
