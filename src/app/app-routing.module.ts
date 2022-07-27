@@ -23,7 +23,8 @@ const routes: Routes = [
       },
       {
         path: 'test-records',
-        canActivate: [MsalGuard],
+        data: { roles: ['CVSFullAccess'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
       },
       {
