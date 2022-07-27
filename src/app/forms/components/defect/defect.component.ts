@@ -1,5 +1,7 @@
 import { KeyValue } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
+import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
@@ -7,8 +9,7 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 @Component({
   selector: 'app-defect[form]',
   templateUrl: './defect.component.html',
-  providers: [DefaultNullOrEmpty],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [DefaultNullOrEmpty]
 })
 export class DefectComponent {
   @Input() form!: CustomFormGroup;
@@ -34,13 +35,5 @@ export class DefectComponent {
           .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
           .map(([key, value]) => `${key}: ${value}`)
           .join(' / ');
-  }
-
-  getControlValue(path: string) {
-    return this.form.get(path)?.value;
-  }
-
-  keyValueControl(key: string): KeyValue<string, CustomFormControl> {
-    return { key, value: this.form.get(key) as CustomFormControl };
   }
 }
