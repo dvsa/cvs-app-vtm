@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
@@ -16,20 +17,23 @@ export class MultipleSearchResultsComponent implements OnDestroy {
   vehicleTechRecords$: Observable<VehicleTechRecordModel[]>;
   ngDestroy$ = new Subject();
 
-  constructor(public globalErrorService: GlobalErrorService, private technicalRecordService: TechnicalRecordService, private store: Store, private location: Location) {
-    this.store
-      .pipe(select(selectQueryParams), takeUntil(this.ngDestroy$))
-      .subscribe(params => {
-        if (Object.keys(params).length === 1) {
-          const type = Object.keys(params)[0] as SEARCH_TYPES;
-          const searchTerm = params[type] as string;
+  constructor(
+    public globalErrorService: GlobalErrorService,
+    private technicalRecordService: TechnicalRecordService,
+    private store: Store,
+    private location: Location
+  ) {
+    this.store.pipe(select(selectQueryParams), takeUntil(this.ngDestroy$)).subscribe(params => {
+      if (Object.keys(params).length === 1) {
+        const type = Object.keys(params)[0] as SEARCH_TYPES;
+        const searchTerm = params[type] as string;
 
-          if (searchTerm && Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
-            this.globalErrorService.clearError();
-            this.technicalRecordService.searchBy(type, searchTerm);
-          }
+        if (searchTerm && Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
+          this.globalErrorService.clearError();
+          this.technicalRecordService.searchBy(type, searchTerm);
         }
-      });
+      }
+    });
 
     this.vehicleTechRecords$ = this.technicalRecordService.vehicleTechRecords$;
   }

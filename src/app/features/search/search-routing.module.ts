@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NoQueryParamsGuard } from '@guards/no-query-params/no-query-params.guard';
 import { MultipleSearchResultsComponent } from './multiple-search-results/multiple-search-results.component';
 import { SearchComponent } from './search.component';
 
@@ -11,7 +12,9 @@ const routes: Routes = [
   },
   {
     path: 'results',
-    component: MultipleSearchResultsComponent
+    component: MultipleSearchResultsComponent,
+    canActivate: [NoQueryParamsGuard],
+    data: { title: 'Search Results' }
   }
 ];
 

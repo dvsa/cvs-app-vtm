@@ -16,6 +16,9 @@ export const {
   selectUrl // select the current url
 } = getSelectors();
 
+export const routerState = createSelector(selectRouter, (state) => state);
+export const currentRouteState = createSelector(selectCurrentRoute, (state) => state);
+
 export const selectRouteNestedParams = createSelector(selectRouter, (router) => {
   let currentRoute = router?.state?.root;
   let params: Params = {};

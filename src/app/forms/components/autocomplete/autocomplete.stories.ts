@@ -14,7 +14,7 @@ export default {
   ]
 } as Meta;
 
-const Template: Story = (args) => {
+const Template: Story = args => {
   const { id, label, options, name, hint, defaultValue = 'red', disabled = false, validators = [] } = args;
   const form = new FormGroup({ [name]: new FormControl({ defaultValue, disabled }, validators) });
   return {

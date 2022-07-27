@@ -17,7 +17,7 @@ import { createMock } from 'ts-auto-mock';
 
 export const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
-    systemNumber: `SYS${String(systemNumber + 1).padStart(4, '0')}`,
+    systemNumber: `PSV`,
     vin: `XMGDE02FS0H0${12344 + systemNumber + 1}`,
     vrms: [
       {

@@ -35,7 +35,7 @@
         class="govuk-select govuk-!-width-two-thirds"
         [ngClass]="{ 'govuk-input--error': getInlineErrorMessage('search-term') | async }"
       >
-        <option value="" selected disabled>Vehicle registration mark, trailer ID or vehicle identification number</option>
+        <option value="all" selected>Vehicle registration mark, trailer ID or vehicle identification number</option>
         <option value="vin">Vehicle identification number (VIN)</option>
         <option value="partialVin">Partial vehicle identification number (Partial VIN)</option>
         <option value="vrm">Vehicle registration mark (VRM)</option>

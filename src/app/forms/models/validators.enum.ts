@@ -10,5 +10,6 @@ export enum ValidatorNames {
   HideIfParentSiblingNotEqual = 'hideIfParentSiblingNotEqual',
   HideIfParentSiblingEqual = 'hideIfParentSiblingEqual',
   RequiredIfEquals = 'requiredIfEquals',
-  RequiredIfNotEquals = 'requiredIfNotEquals'
+  RequiredIfNotEquals = 'requiredIfNotEquals',
+  ValidateDefectNotes = 'validateDefectNotes'
 }

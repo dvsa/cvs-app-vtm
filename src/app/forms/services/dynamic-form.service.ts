@@ -5,6 +5,7 @@ import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { DefectValidators } from '@forms/validators/defects/defect.validators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,9 @@ export class DynamicFormService {
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
     [ValidatorNames.HideIfNotEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
-    [ValidatorNames.HideIfParentSiblingNotEqual]: (args: { sibling: string; value: any }) =>
-      CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
-    [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: any }) =>
-      CustomValidators.hideIfParentSiblingEquals(args.sibling, args.value)
+    [ValidatorNames.HideIfParentSiblingNotEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
+    [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfParentSiblingEquals(args.sibling, args.value),
+    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

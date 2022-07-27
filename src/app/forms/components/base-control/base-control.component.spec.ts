@@ -10,7 +10,6 @@ describe('BaseControlComponent', () => {
   const controlMetaData = { name: 'testControl', type: FormNodeTypes.CONTROL, children: [] };
 
   describe('has control binding', () => {
-
     beforeEach(async () => {
       const NG_CONTROL_PROVIDER = {
         provide: NgControl,
@@ -20,11 +19,10 @@ describe('BaseControlComponent', () => {
         }
       };
 
-      await TestBed
-        .configureTestingModule({
-          declarations: [BaseControlComponent],
-          imports: [FormsModule]
-        })
+      await TestBed.configureTestingModule({
+        declarations: [BaseControlComponent],
+        imports: [FormsModule]
+      })
         .overrideComponent(BaseControlComponent, { add: { providers: [NG_CONTROL_PROVIDER] } })
         .compileComponents();
     });
@@ -118,9 +116,7 @@ describe('BaseControlComponent', () => {
 
   describe('does not have control binding', () => {
     beforeEach(async () => {
-      await TestBed
-        .configureTestingModule({ declarations: [BaseControlComponent], imports: [FormsModule] })
-        .compileComponents();
+      await TestBed.configureTestingModule({ declarations: [BaseControlComponent], imports: [FormsModule] }).compileComponents();
     });
 
     beforeEach(() => {

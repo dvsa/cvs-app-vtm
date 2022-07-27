@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { ArchiveTestResultsService } from './api/archiveTestResults.service';
 import { DefaultService } from './api/default.service';
-import { GetTestHistoryService } from './api/getTestHistory.service';
 import { GetTestResultsService } from './api/getTestResults.service';
 import { UpdateTestResultsService } from './api/updateTestResults.service';
 
@@ -16,7 +15,6 @@ import { UpdateTestResultsService } from './api/updateTestResults.service';
   providers: [
     ArchiveTestResultsService,
     DefaultService,
-    GetTestHistoryService,
     GetTestResultsService,
     UpdateTestResultsService ]
 })

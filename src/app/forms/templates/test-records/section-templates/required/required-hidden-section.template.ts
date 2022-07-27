@@ -188,37 +188,6 @@ export const RequiredSection: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN
             },
             {
-              name: 'customDefects',
-              type: FormNodeTypes.ARRAY,
-              viewType: FormNodeViewTypes.HIDDEN,
-              children: [
-                {
-                  name: '0',
-                  type: FormNodeTypes.GROUP,
-                  children: [
-                    {
-                      name: 'referenceNumber',
-                      type: FormNodeTypes.CONTROL,
-                      editType: FormNodeEditTypes.HIDDEN,
-                      viewType: FormNodeViewTypes.HIDDEN
-                    },
-                    {
-                      name: 'defectName',
-                      type: FormNodeTypes.CONTROL,
-                      editType: FormNodeEditTypes.HIDDEN,
-                      viewType: FormNodeViewTypes.HIDDEN
-                    },
-                    {
-                      name: 'defectNotes',
-                      type: FormNodeTypes.CONTROL,
-                      editType: FormNodeEditTypes.HIDDEN,
-                      viewType: FormNodeViewTypes.HIDDEN
-                    }
-                  ]
-                }
-              ]
-            },
-            {
               name: 'createdAt',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
