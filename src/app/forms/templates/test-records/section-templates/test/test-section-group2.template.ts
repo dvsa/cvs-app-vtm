@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const TestSectionGroup1: FormNode = {
+export const TestSectionGroup2: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -59,30 +59,12 @@ export const TestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
-              name: 'certificateNumber',
-              label: 'Certificate number',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL
-            },
-            {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
               disabled: true,
 
               type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'reasonForAbandoning',
@@ -97,15 +79,6 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               label: 'Additional details for abandoning',
               disabled: true
-            },
-            {
-              name: 'testAnniversaryDate',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              disabled: true,
-              label: 'Anniversary date',
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',
