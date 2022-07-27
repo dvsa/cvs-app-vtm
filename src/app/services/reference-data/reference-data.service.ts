@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MultiOptions } from '@forms/models/options.model';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
@@ -8,7 +9,7 @@ import {
   selectAllReferenceDataByResourceType,
   selectReferenceDataByResourceKey
 } from '@store/reference-data';
-import { Observable, of, throwError } from 'rxjs';
+import { map, Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -62,4 +63,10 @@ export class ReferenceDataService {
   getByKey$ = (resourceType: ReferenceDataResourceType, resourceKey: string) => {
     return this.store.pipe(select(selectReferenceDataByResourceKey(resourceType, resourceKey)));
   };
+
+  getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions> {
+    return this.getAll$(resourceType).pipe(
+      map(options => options.map(option => ({ value: option.resourceKey, label: option.description })))
+    );
+  }
 }

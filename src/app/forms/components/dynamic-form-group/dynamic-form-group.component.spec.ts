@@ -1,7 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { initialAppState } from '@store/.';
 import { DynamicFormsModule } from '../../dynamic-forms.module';
 import { DynamicFormService } from '../../services/dynamic-form.service';
@@ -14,8 +16,8 @@ describe('DynamicFormGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule],
-      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
+      imports: [DynamicFormsModule, HttpClientTestingModule],
+      providers: [ReferenceDataService, TestStationsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
