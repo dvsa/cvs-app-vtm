@@ -14,8 +14,10 @@ export const testStationsFeatureState = createFeatureSelector<TestStationsState>
 
 export const testStationsAdapter: EntityAdapter<TestStation> = createEntityAdapter<TestStation>({ selectId: testStation => testStation.testStationId });
 
+export const initialTestStationsState  = testStationsAdapter.getInitialState({ loading: false, error: '' });
+
 export const testStationsReducer = createReducer(
-  testStationsAdapter.getInitialState({ loading: false, error: '' }),
+  initialTestStationsState,
 
   on(fetchTestStations, state => ({ ...state, loading: true })),
   on(fetchTestStationsSuccess, (state, action) => ({ ...testStationsAdapter.setAll(action.payload, state), loading: false })),

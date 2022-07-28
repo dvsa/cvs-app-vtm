@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { initialAppState } from '../../store';
 import { TestStationsService } from './test-stations.service';
 
-describe('TechnicalRecordService', () => {
+describe('TestStationsService', () => {
   let service: TestStationsService;
   let httpTestingController: HttpTestingController;
 
@@ -42,9 +42,16 @@ describe('TechnicalRecordService', () => {
       req.flush(expectedResult);
     });
 
-    it('should handle errors', () => {
-      const expectedResult = [{ testStationName: 'Some Name' } as TestStation];
-      service.fetchTestStations().subscribe(response => expect(response).toEqual(expectedResult));
+    it('should handle errors', done => {
+      service.fetchTestStations().subscribe({
+        next: () => {},
+        error: e => {
+          expect(e.error).toEqual('Deliberate 500 error');
+          expect(e.status).toEqual(500);
+          expect(e.statusText).toEqual('Server Error');
+          done();
+        }
+      });
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations/`);
@@ -69,10 +76,17 @@ describe('TechnicalRecordService', () => {
       req.flush(expectedResult);
     });
 
-    it('should handle errors', () => {
+    it('should handle errors', done => {
       const expectedId = 'some ID';
-      const expectedResult = [{ testStationName: 'Some Name' } as TestStation];
-      service.fetchTestStation(expectedId).subscribe(response => expect(response).toEqual(expectedResult));
+        service.fetchTestStation(expectedId).subscribe({
+          next: () => {},
+          error: e => {
+            expect(e.error).toEqual('Deliberate 500 error');
+            expect(e.status).toEqual(500);
+            expect(e.statusText).toEqual('Server Error');
+            done();
+          }
+        });
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations/${expectedId}`);

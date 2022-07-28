@@ -1,10 +1,8 @@
 import { TestStation } from "@models/test-station.model";
 import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsSuccess, fetchTestStationSuccess } from "../actions/test-stations.actions";
-import { testStationsAdapter, testStationsReducer, TestStationsState } from "./test-stations.reducer";
+import { initialTestStationsState, testStationsReducer, TestStationsState } from "./test-stations.reducer";
 
 describe('Test Stations Reducer', () => {
-  const initialTestStationsState = testStationsAdapter.getInitialState({ loading: false, error: '' });
-
   const expectedTestStations = [ { testStationId: 'someId' } as TestStation ];
 
   describe('unknown action', () => {
