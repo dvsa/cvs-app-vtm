@@ -1,3 +1,4 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const TestSectionGroup15And16: FormNode = {
@@ -114,6 +115,17 @@ export const TestSectionGroup15And16: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
+            },
+            {
+              name: 'prohibitionIssued',
+              type: FormNodeTypes.CONTROL,
+              label: 'Prohibition issued',
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             }
           ]
         }
