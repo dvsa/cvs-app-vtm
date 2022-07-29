@@ -170,9 +170,10 @@ export const RequiredSection: FormNode = {
           children: [
             {
               name: 'testTypeId',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              label: 'Test Type ID',
+              type: FormNodeTypes.CONTROL
+              // editType: FormNodeEditTypes.HIDDEN
+              // viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'name',

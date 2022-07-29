@@ -26,3 +26,33 @@ export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, s
   }
   return [];
 });
+
+export const formatData = createSelector(selectAllTestTypes, testTypes => {
+  const reducer = (accumulator: any, currentValue: any) => {
+    const newVal = { ...accumulator };
+
+    const getIds = (testType: any) => {
+      if (!testType['nextTestTypesOrCategories']) {
+        return [{ name: testType.testTypeName, id: testType.id }];
+      } else {
+        const ids: any[] = [];
+        testType['nextTestTypesOrCategories'].forEach((test: any) => {
+          ids.push(...getIds(test));
+        });
+
+        return ids;
+      }
+    };
+
+    for (const vt of currentValue.forVehicleType) {
+      if (!newVal[vt]) {
+        newVal[vt] = [...getIds(currentValue)];
+      } else {
+        newVal[vt] = [...newVal[vt], ...getIds(currentValue)];
+      }
+    }
+
+    return newVal;
+  };
+  return testTypes.reduce(reducer, {});
+});

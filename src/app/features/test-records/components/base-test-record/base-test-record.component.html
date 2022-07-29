@@ -1,3 +1,12 @@
+<div>
+  <select [(ngModel)]="testTypeId" (ngModelChange)="handleTestTypeIdChangeOrSomething($event)">
+    <option value="">...</option>
+    <optgroup *ngFor="let vehicle of vehicleTypes$ | async | keyvalue" [label]="vehicle.key">
+      <option *ngFor="let tt of vehicle.value" [value]="tt.id">{{ tt.name }}</option>
+    </optgroup>
+  </select>
+</div>
+
 <ng-container *ngFor="let template of generateTemplate()" [ngSwitch]="template.name">
   <app-defects
     *ngSwitchCase="'defects'"
@@ -5,7 +14,7 @@
     [id]="template.name"
     [isEditing]="isEditing"
     [template]="template"
-    [data]="testResult"
+    [data]="testResultCopy"
   ></app-defects>
 
   <app-dynamic-form-group
@@ -13,7 +22,8 @@
     class="section"
     [id]="template.name"
     [template]="template"
-    [data]="testResult"
+    [data]="testResultCopy"
     [edit]="isEditing"
+    (formChange)="handleFormChange($event)"
   ></app-dynamic-form-group>
 </ng-container>
