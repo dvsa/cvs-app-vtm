@@ -8,6 +8,7 @@ import { selectRouteParam } from '@store/router/selectors/router.selectors';
 import { getBySystemNumber, getBySystemNumberFailure } from '@store/technical-records';
 import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { getBySystemNumberSuccess } from '@store/technical-records';
+import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class TechRecordViewResolver implements Resolve<boolean> {
       const systemNumber = sn || '';
       this.store.dispatch(getBySystemNumber({ systemNumber }));
       this.store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
+      this.store.dispatch(fetchTestTypes());
     });
 
     return this.action$.pipe(

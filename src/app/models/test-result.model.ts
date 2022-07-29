@@ -32,7 +32,7 @@ export interface TestResultModel {
   testerEmailAddress: string;
 
   reasonForCreation?: string;
-  vehicleType?: VehicleTypes;
+  vehicleType: VehicleTypes;
   testHistory?: TestResultModel[];
   testStatus?: string;
 
