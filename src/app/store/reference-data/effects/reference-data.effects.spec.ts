@@ -76,7 +76,7 @@ describe('ReferenceDataEffects', () => {
     it.each(testCases)('should return fetchReferenceDataByKeySuccess action on successfull API call', (value) => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, resourceKey, payload } = value;
-        const entity = payload.find((p) => p.resourceKey === resourceKey)!;
+        const entity = payload.find(p => p.resourceKey === resourceKey)!;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey }) });
