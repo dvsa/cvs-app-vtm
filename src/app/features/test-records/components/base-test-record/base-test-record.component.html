@@ -1,13 +1,13 @@
-<div>
-  <select [(ngModel)]="testTypeId" (ngModelChange)="handleTestTypeIdChangeOrSomething($event)">
-    <option value="">...</option>
-    <optgroup *ngFor="let vehicle of vehicleTypes$ | async | keyvalue" [label]="vehicle.key">
-      <option *ngFor="let tt of vehicle.value" [value]="tt.id">{{ tt.name }}</option>
-    </optgroup>
-  </select>
-</div>
-
 <ng-container *ngFor="let template of generateTemplate()" [ngSwitch]="template.name">
+  <app-test-type-select
+    *ngSwitchCase="'requiredSection'"
+    class="section"
+    [isEditing]="isEditing"
+    [template]="template"
+    [data]="testResultCopy"
+    (formChange)="handleFormChange($event)"
+  ></app-test-type-select>
+
   <app-defects
     *ngSwitchCase="'defects'"
     class="section"

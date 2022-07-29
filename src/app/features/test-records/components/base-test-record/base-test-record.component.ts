@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { TestTypeSelectComponent } from '@forms/components/test-type-select/test-type-select.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
@@ -25,6 +26,9 @@ export class BaseTestRecordComponent implements OnInit {
   }
   @ViewChild(DefectsComponent) set defects(defectsComponent: DefectsComponent) {
     defectsComponent && defectsComponent.form && this.sectionForms.push(defectsComponent.form);
+  }
+  @ViewChild(TestTypeSelectComponent) set testTypeSelect(testTypeSelectComponent: TestTypeSelectComponent) {
+    testTypeSelectComponent && testTypeSelectComponent.form && this.sectionForms.push(testTypeSelectComponent.form);
   }
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;

@@ -1,0 +1,17 @@
+<div>
+  <form [formGroup]="form">
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
+        <label for="testTypeId">Test Type ID</label>
+        <select id="testTypeId" name="testsTypeId" formControlName="testTypeId">
+          <option value="">...</option>
+          <optgroup *ngFor="let vehicle of vehicleTypes$ | async | keyvalue" [label]="vehicle.key">
+            <option *ngFor="let tt of vehicle.value" [value]="tt.id">{{ tt.name }}</option>
+          </optgroup>
+        </select>
+      </ng-container>
+    </ng-container>
+  </form>
+
+  <pre>{{ form.value | json }}</pre>
+</div>
