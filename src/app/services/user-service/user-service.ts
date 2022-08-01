@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { EventMessage, EventType } from '@azure/msal-browser';
+import { EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import * as UserServiceActions from '../../store/user/user-service.actions';
 import * as UserServiceState from '../../store/user/user-service.reducer';
@@ -63,5 +63,9 @@ export class UserService implements OnDestroy {
   logOut(): void {
     this.store.dispatch(UserServiceActions.Logout());
     this.msal.logout();
+  }
+
+  get inProgress$(): Observable<InteractionStatus> {
+    return this.msalBroadcastService.inProgress$;
   }
 }

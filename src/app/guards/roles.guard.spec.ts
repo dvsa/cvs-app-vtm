@@ -4,8 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
-import { of } from 'rxjs';
+import { of, lastValueFrom } from 'rxjs';
 import { RoleGuard } from './roles.guard';
+import { InteractionStatus } from '@azure/msal-browser';
 
 describe('RoleGuard', () => {
   let guard: RoleGuard;
@@ -16,7 +17,7 @@ describe('RoleGuard', () => {
       providers: [
         RoleGuard,
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: { roles$: of(['CVSFullAccess']) } }
+        { provide: UserService, useValue: { roles$: of(['CVSFullAccess']), inProgress$: of(InteractionStatus.None) } }
       ]
     });
 
@@ -31,20 +32,26 @@ describe('RoleGuard', () => {
     const next = new ActivatedRouteSnapshot();
     next.data = { roles: ['CVSFullAccess'] };
 
-    expect(await guard.canActivate(next)).toBeTruthy();
+    const guardObservable = guard.canActivate(next);
+
+    await expect(lastValueFrom(guardObservable)).resolves.toEqual(true);
   });
 
   it('should return false when I give it the incorrect role', async () => {
     const next = new ActivatedRouteSnapshot();
     next.data = { roles: ['BadRole'] };
 
-    expect(await guard.canActivate(next)).toBeFalsy();
+    const guardObservable = guard.canActivate(next);
+
+    await expect(lastValueFrom(guardObservable)).resolves.toEqual(false);
   });
 
   it('should return true when I give it one incorrect role and one correct role', async () => {
     const next = new ActivatedRouteSnapshot();
     next.data = { roles: ['CVSFullAccess', 'BadRole'] };
 
-    expect(await guard.canActivate(next)).toBeTruthy();
+    const guardObservable = guard.canActivate(next);
+
+    await expect(lastValueFrom(guardObservable)).resolves.toEqual(true);
   });
 });
