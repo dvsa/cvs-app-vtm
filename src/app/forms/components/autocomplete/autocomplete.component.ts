@@ -3,6 +3,8 @@ import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, Inject, 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
+import { takeWhile } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
@@ -17,21 +19,31 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class AutocompleteComponent extends BaseControlComponent implements AfterViewInit, AfterContentInit {
-  @Input() options: any[] = [];
+  @Input() options$!: Observable<any[]>;
   @Input() defaultValue: string = '';
+
+  options: any[] = [];
 
   constructor(injector: Injector, @Inject(DOCUMENT) private document: Document, changeDetectorRef: ChangeDetectorRef) {
     super(injector, changeDetectorRef);
   }
 
   ngAfterViewInit(): void {
-    enhanceSelectElement({
-      selectElement: this.document.querySelector('#' + this.name),
-      autoselect: false,
-      defaultValue: '',
-      showAllValues: true
-    });
-    window.document.querySelector(`#${this.name}`)?.addEventListener('change', (event) => this.handleChange(event));
+    lastValueFrom(this.options$.pipe(takeWhile(options => !options || options.length === 0, true)))
+      .then(options => {
+        this.options = options;
+
+        this.ref.detectChanges();
+
+        enhanceSelectElement({
+          selectElement: this.document.querySelector('#' + this.name),
+          autoselect: false,
+          defaultValue: '',
+          showAllValues: true
+        });
+
+        window.document.querySelector(`#${this.name}`)?.addEventListener('change', (event) => this.handleChange(event));
+      });
   }
 
   override ngAfterContentInit(): void {
@@ -60,7 +72,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
    * @returns `string | undefined`
    */
   findOptionValue(label: string) {
-    return label ? this.options.find((option) => option.label === label)?.value : '';
+    return label ? this.options.find(option => option.label === label)?.value : '';
   }
 
   addValidators() {

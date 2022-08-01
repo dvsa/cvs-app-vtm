@@ -1,4 +1,6 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const VisitSection: FormNode = {
   name: 'visitSection',
@@ -22,14 +24,18 @@ export const VisitSection: FormNode = {
       label: 'Test Station Name',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      disabled: true
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
+      referenceData: SpecialRefData.TEST_STATION_NAME,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'testStationPNumber',
       label: 'Test Station Number',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      disabled: true
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
+      referenceData: SpecialRefData.TEST_STATION_P_NUMBER,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'testStationType',
@@ -41,13 +47,15 @@ export const VisitSection: FormNode = {
       name: 'testerName',
       label: 'Tester name',
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      editType: FormNodeEditTypes.TEXT,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'testerEmailAddress',
       label: 'Tester email address',
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      editType: FormNodeEditTypes.TEXT,
+      validators: [{ name: ValidatorNames.Required }]
     }
   ]
 };

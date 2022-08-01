@@ -4,16 +4,16 @@ import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInf
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockDefectList = (numberOfDefects = 1) =>
-  createMockList<Defect>(numberOfDefects, (i) => {
+  createMockList<Defect>(numberOfDefects, i => {
     return mockDefect(i);
   });
 
 export const mockDefect = (i = 0) =>
   createMock<Defect>({
     deficiencyRef: `DeficiencyRef${i}`,
-    deficiencyCategory: Defect.DeficiencyCategoryEnum.Advisory,
+    deficiencyCategory: Defect.DeficiencyCategoryEnum.Dangerous,
     deficiencyId: 'deficiency ID',
-    deficiencySubId: 'deficiency dub ID',
+    deficiencySubId: 'deficiency sub ID',
     deficiencyText: 'deficiency text',
     imDescription: 'IM description',
     imNumber: 34,

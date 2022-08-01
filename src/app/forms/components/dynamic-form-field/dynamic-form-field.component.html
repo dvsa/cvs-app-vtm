@@ -7,7 +7,7 @@
     *ngSwitchCase="formNodeEditTypes.AUTOCOMPLETE"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
-    [options]="(options | async) || []"
+    [options$]="options"
     [formControlName]="control.key"
   ></app-autocomplete>
 

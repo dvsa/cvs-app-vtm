@@ -22,14 +22,14 @@ const routes: Routes = [
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
-        path: 'test-records',
-        data: { roles: ['CVSFullAccess'] },
+        path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+        data: { title: 'Test Result', roles: ['CVSFullAccess'] },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
       },
       {
-        path: 'tech-records',
-        data: { roles: ['CVSFullAccess', 'TechRecord.View'] },
+        path: 'tech-records/:systemNumber',
+        data: { title: 'Tech Record', roles: ['CVSFullAccess', 'TechRecord.View'] },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }

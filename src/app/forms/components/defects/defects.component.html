@@ -1,12 +1,14 @@
 <h2 class="govuk-heading-m">Defects</h2>
 
-<ng-container [formGroup]="form">
-  <ng-container *ngIf="defectCount; else noDefects">
-    <app-defect
-      *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
-      [isEditing]="isEditing"
-      [form]="getDefectForm(i)"
-    ></app-defect>
+<ng-container *ngIf="form; else noDefects">
+  <ng-container [formGroup]="form">
+    <ng-container *ngIf="defectCount; else noDefects">
+      <app-defect
+        *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
+        [isEditing]="isEditing"
+        [form]="getDefectForm(i)"
+      ></app-defect>
+    </ng-container>
   </ng-container>
 </ng-container>
 

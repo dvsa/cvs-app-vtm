@@ -1,6 +1,6 @@
 import { AfterContentInit, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, distinctUntilChanged, Observable, of, Subject, Subscription, takeWhile } from 'rxjs';
+import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
 

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { DefectValidators } from '@forms/validators/defects/defect.validators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class DynamicFormService {
     [ValidatorNames.MinLength]: (args: number) => Validators.minLength(args),
     [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
-    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value)
+    [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

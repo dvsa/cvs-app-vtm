@@ -31,6 +31,13 @@ export interface TestType {
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
   defects?: Defect[];
+  customDefects: customDefects[];
 
   additionalNotesRecorded: string;
+}
+
+export interface customDefects {
+  referenceNumber: string;
+  defectName: string;
+  defectNotes: string;
 }

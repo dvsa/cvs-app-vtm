@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { of } from 'rxjs';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { AutocompleteComponent } from './autocomplete.component';
 
@@ -16,14 +17,14 @@ jest.mock('accessible-autocomplete/dist/accessible-autocomplete.min', () => {
 
 @Component({
   selector: 'app-host-component',
-  template: '<form [formGroup]="form"><app-autocomplete [name]="name" [options]="options" formControlName="foo"></app-autocomplete></form>'
+  template: '<form [formGroup]="form"><app-autocomplete [name]="name" [options$]="options$" formControlName="foo"></app-autocomplete></form>'
 })
 class HostComponent {
   name = 'autocomplete';
-  options = [
+  options$ = of([
     { label: 'option1', value: 'option1' },
     { label: 'option2', value: 'option2' }
-  ];
+  ]);
   form = new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') });
 }
 
@@ -51,10 +52,10 @@ describe('AutocompleteComponent', () => {
   });
 
   it.each([
-    ['val1', [{ label: 'val1', value: 'val1' }], 'val1'],
-    [undefined, [{ label: 'val1', value: 'val1' }], 'val2']
-  ])('should return %s for %o when looking for $s', (expected, options, label) => {
-    autocompleteComponent.options = options;
+    ['option1', of([{ label: 'option1', value: 'option1' }]), 'option1'],
+    [undefined, of([{ label: 'option1', value: 'option1' }]), 'option3']
+  ])('should return %s for %o when looking for $s', (expected, options$, label) => {
+    autocompleteComponent.options$ = options$;
     expect(autocompleteComponent.findOptionValue(label)).toBe(expected);
   });
 

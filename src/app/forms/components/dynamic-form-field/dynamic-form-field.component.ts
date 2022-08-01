@@ -2,42 +2,37 @@ import { KeyValue } from '@angular/common';
 import { AfterContentInit, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { map, mergeMap, Observable, of } from 'rxjs';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-dynamic-form-field',
-  templateUrl: './dynamic-form-field.component.html'
+  templateUrl: './dynamic-form-field.component.html',
+  providers: [MultiOptionsService]
 })
 export class DynamicFormFieldComponent implements AfterContentInit {
   @Input() control?: KeyValue<string, CustomFormControl>;
   @Input() form?: FormGroup;
-  constructor(private referenceDataService: ReferenceDataService) {}
+
+  constructor(private optionsService: MultiOptionsService) {}
 
   get formNodeEditTypes(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
 
   get options(): Observable<FormNodeOption<string | number | boolean>[]> {
-    return of(this.control?.value.meta).pipe(
-      mergeMap(meta => {
-        if (!meta || !meta.referenceData) {
-          return of(this.control?.value.meta.options as FormNodeOption<string | number | boolean>[] ?? []);
-        }
+    const meta = this.control?.value.meta
 
-        return this.referenceDataService
-          .getAll$((this.control?.value.meta.referenceData ?? '') as ReferenceDataResourceType)
-          .pipe(
-            map(options => options.map(option => ({ value: option.resourceKey, label: option.description })))
-          );
-      })
-    );
+    return meta?.referenceData
+      ? this.optionsService.getOptions(meta.referenceData)
+      : of(meta?.options as FormNodeOption<string | number | boolean>[] ?? []);
   }
 
   ngAfterContentInit(): void {
-    if (this.control?.value.meta.referenceData) {
-      this.referenceDataService.loadReferenceData(this.control.value.meta.referenceData);
+    const referenceData = this.control?.value.meta?.referenceData;
+
+    if (referenceData) {
+      this.optionsService.loadOptions(referenceData);
     }
   }
 }

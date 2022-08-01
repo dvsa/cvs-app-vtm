@@ -12,6 +12,7 @@ import {
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { DynamicFormService } from './dynamic-form.service';
+import { SpecialRefData } from './multi-options.service';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -65,7 +66,7 @@ export interface FormNode {
   hide?: boolean;
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
-  referenceData?: ReferenceDataResourceType;
+  referenceData?: ReferenceDataResourceType | SpecialRefData;
 }
 
 export interface FormNodeCombinationOptions {

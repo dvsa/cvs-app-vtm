@@ -1,4 +1,4 @@
-import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration';
+import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Dictionary } from '@ngrx/entity';
 import { fetchReferenceData, fetchReferenceDataByKey, fetchReferenceDataByKeyFailed, fetchReferenceDataByKeySuccess, fetchReferenceDataFailed, fetchReferenceDataSuccess } from '../actions/reference-data.actions';

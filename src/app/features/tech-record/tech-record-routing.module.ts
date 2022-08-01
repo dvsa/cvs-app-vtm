@@ -1,18 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
+import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
-    path: ':vin',
+    path: '',
     component: TechRecordComponent,
-    canActivateChild: [MsalGuard]
+    canActivateChild: [MsalGuard],
+    resolve: { load: TechRecordViewResolver }
   },
   {
-    path: ':vin/:techCreatedAt',
+    path: ':techCreatedAt',
     component: TechRecordComponent,
-    data: { title: 'Tech Record' }
+    data: { title: 'Historic Tech Record' },
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+    data: { title: 'Test Result' },
+    canActivate: [MsalGuard],
+    loadChildren: () => import('../test-records/test-records.module').then(m => m.TestRecordsModule)
   }
 ];
 

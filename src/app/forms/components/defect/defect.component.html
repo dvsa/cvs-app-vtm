@@ -40,12 +40,12 @@
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Prohibition issues', data: combined(defect.prohibitionIssued) }"
+      [ngTemplateOutletContext]="{ label: 'Prohibition issued', data: combined(defect.prohibitionIssued) }"
     ></ng-template>
 
     <ng-template
       [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(data.additionalInformation?.notes) }"
+      [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(defect.additionalInformation?.notes) }"
     ></ng-template>
   </dl>
 </ng-template>
@@ -59,17 +59,37 @@
 
 <ng-template #editDefect>
   <ng-container [formGroup]="form">
-    <app-dynamic-form-field [control]="keyValueControl('deficiencyRef')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('deficiencyCategory')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('imNumber')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('imDescription')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('itemNumber')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('itemDescription')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('deficiencyId')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('deficiencySubId')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('deficiencyText')" [form]="form"></app-dynamic-form-field>
+    <app-text-input formControlName="deficiencyRef" label="Deficiency ref"></app-text-input>
+    <app-text-input formControlName="deficiencyCategory" label="Deficiency category"></app-text-input>
+    <app-text-input formControlName="imNumber" label="IM number"></app-text-input>
+    <app-text-input formControlName="imDescription" label="IM description"></app-text-input>
+    <app-text-input formControlName="itemNumber" label="Item No."></app-text-input>
+    <app-text-input formControlName="itemDescription" label="Item description"></app-text-input>
+    <app-text-input formControlName="deficiencyId" label="Deficiency ID"></app-text-input>
+    <app-text-input formControlName="deficiencySubId" label="Deficiency sub ID"></app-text-input>
+    <app-text-input formControlName="deficiencyText" label="Deficiency text"></app-text-input>
 
-    <app-dynamic-form-field [control]="keyValueControl('prs')" [form]="form"></app-dynamic-form-field>
-    <app-dynamic-form-field [control]="keyValueControl('prohibitionIssued')" [form]="form"></app-dynamic-form-field>
+    <ng-container formGroupName="additionalInformation">
+      <ng-container formGroupName="location">
+        <app-text-input formControlName="vertical" label="Vertical"></app-text-input>
+        <app-text-input formControlName="horizontal" label="Horizontal"></app-text-input>
+        <app-text-input formControlName="lateral" label="Lateral"></app-text-input>
+        <app-text-input formControlName="longitudinal" label="Longitudinal"></app-text-input>
+        <app-text-input formControlName="rowNumber" label="Row number"></app-text-input>
+        <app-text-input formControlName="seatNumber" label="Seat number"></app-text-input>
+        <app-text-input formControlName="axleNumber" label="Axle number"></app-text-input>
+      </ng-container>
+      <app-text-input formControlName="notes" label="Notes"></app-text-input>
+    </ng-container>
+
+    <app-text-input formControlName="prs" label="PRS"></app-text-input>
+    <app-radio-group
+      formControlName="prohibitionIssued"
+      label="Prohibition issued"
+      [options]="[
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
+      ]"
+    ></app-radio-group>
   </ng-container>
 </ng-template>

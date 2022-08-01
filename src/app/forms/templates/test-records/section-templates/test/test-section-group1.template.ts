@@ -9,7 +9,6 @@ export const TestSectionGroup1: FormNode = {
     {
       name: 'createdAt',
       label: 'Created',
-      value: '',
       disabled: true,
 
       type: FormNodeTypes.CONTROL,

@@ -3,7 +3,16 @@ import { Injectable } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVin, getByPartialVin, selectVehicleTechnicalRecordsByVin, vehicleTechRecords, getByVrm, getByTrailerId } from '@store/technical-records';
+import {
+  getByVin,
+  getByPartialVin,
+  selectVehicleTechnicalRecordsBySystemNumber,
+  vehicleTechRecords,
+  getByVrm,
+  getByTrailerId,
+  getBySystemNumber,
+  getByAll
+} from '@store/technical-records';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -11,7 +20,9 @@ export enum SEARCH_TYPES {
   VIN = 'vin',
   PARTIAL_VIN = 'partialVin',
   VRM = 'vrm',
-  TRAILER_ID = 'trailerId'
+  TRAILER_ID = 'trailerId',
+  SYSTEM_NUMBER = 'systemNumber',
+  ALL = 'all'
 }
 
 @Injectable({ providedIn: 'root' })
@@ -34,6 +45,14 @@ export class TechnicalRecordService {
     return this.getVehicleTechRecordModels(id, SEARCH_TYPES.TRAILER_ID);
   }
 
+  getBySystemNumber(systemNumber: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(systemNumber, SEARCH_TYPES.SYSTEM_NUMBER);
+  }
+
+  getByAll(term: string): Observable<VehicleTechRecordModel[]> {
+    return this.getVehicleTechRecordModels(term, SEARCH_TYPES.ALL);
+  }
+
   private getVehicleTechRecordModels(id: string, type: SEARCH_TYPES) {
     const queryStr = `${id}/tech-records?status=all&metadata=true&searchCriteria=${type}`;
     const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
@@ -46,7 +65,7 @@ export class TechnicalRecordService {
   }
 
   get selectedVehicleTechRecord$() {
-    return this.store.pipe(select(selectVehicleTechnicalRecordsByVin));
+    return this.store.pipe(select(selectVehicleTechnicalRecordsBySystemNumber));
   }
 
   searchBy(type: SEARCH_TYPES, term: string) {
@@ -63,6 +82,12 @@ export class TechnicalRecordService {
       case SEARCH_TYPES.TRAILER_ID:
         this.store.dispatch(getByTrailerId({ [type]: term }));
         break;
+      case SEARCH_TYPES.SYSTEM_NUMBER:
+        this.store.dispatch(getBySystemNumber({ [type]: term }));
+        break;
+      case SEARCH_TYPES.ALL:
+        this.store.dispatch(getByAll({ [type]: term }));
+        break;
     }
   }
 
@@ -72,17 +97,16 @@ export class TechnicalRecordService {
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
   viewableTechRecord$(vehicleRecord: VehicleTechRecordModel, destroy$: Subject<any>): Observable<TechRecordModel | undefined> {
-    return this.store
-      .pipe(
-        select(selectRouteNestedParams),
-        takeUntil(destroy$),
-        map(params => {
-          const createdAt = params['techCreatedAt'];
-          return createdAt
-            ? vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt)
-            : this.filterTechRecordByStatusCode(vehicleRecord);
-        }
-      ));
+    return this.store.pipe(
+      select(selectRouteNestedParams),
+      takeUntil(destroy$),
+      map(params => {
+        const createdAt = params['techCreatedAt'];
+        return createdAt
+          ? vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt)
+          : this.filterTechRecordByStatusCode(vehicleRecord);
+      })
+    );
   }
 
   /**
@@ -91,8 +115,10 @@ export class TechnicalRecordService {
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
   private filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
-    return record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
-      ?? record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)
-      ?? record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED);
+    return (
+      record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
+      record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
+      record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED)
+    );
   }
 }
