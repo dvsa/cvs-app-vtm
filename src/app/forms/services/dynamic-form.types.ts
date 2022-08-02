@@ -165,7 +165,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
-      if (control.meta.type === FormNodeTypes.CONTROL) {
+      if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
         Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
       }
     }

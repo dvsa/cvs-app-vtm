@@ -37,6 +37,29 @@ export class CustomValidators {
     };
   };
 
+  static hideIfParentSiblingNotEqual = (parentSibling: string, value: any): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent && control.parent.parent) {
+        const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
+
+        siblingControl.meta.hide = Array.isArray(value) ? !value.includes(control.value) : control.value !== value;
+      }
+
+      return null;
+    };
+  };
+
+  static hideIfParentSiblingEquals = (parentSibling: string, value: any): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent && control.parent.parent) {
+        const siblingControl = control.parent.parent.get(parentSibling) as CustomFormControl;
+        siblingControl.meta.hide = Array.isArray(value) && control.value ? value.includes(control.value) : control.value === value;
+      }
+
+      return null;
+    };
+  };
+
   static requiredIfEquals = (sibling: string, value: any): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
