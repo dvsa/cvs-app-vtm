@@ -38,6 +38,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
       required: RequiredSection
     },
     testTypesGroup2: {
@@ -47,6 +48,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
       required: RequiredSection
     },
     testTypesGroup15And16: {
@@ -57,7 +59,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       required: RequiredSection
-    },
+    }
   },
   hgv: {
     default: {
