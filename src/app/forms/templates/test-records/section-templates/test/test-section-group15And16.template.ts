@@ -114,6 +114,12 @@ export const TestSectionGroup15And16: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
+            },
+            {
+              name: 'prohibitionIssued',
+              label: 'Prohibition issued',
+              value: true,
+              type: FormNodeTypes.CONTROL
             }
           ]
         }

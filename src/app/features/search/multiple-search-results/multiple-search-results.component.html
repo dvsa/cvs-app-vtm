@@ -4,6 +4,10 @@
   </div>
 
   <ng-container *ngFor="let vehicleTechRecord of vehicleTechRecords$ | async">
-    <app-single-search-result class="govuk-grid-column-full" [vehicleTechRecord]="vehicleTechRecord"></app-single-search-result>
+    <app-single-search-result
+      class="govuk-grid-column-full"
+      [vehicleTechRecord]="vehicleTechRecord"
+      *appUserRole="['CVSFullAccess', 'TechRecord.View']"
+    ></app-single-search-result>
   </ng-container>
 </div>

@@ -11,6 +11,7 @@ import { TestRecordsStateModule } from './test-records/test-records.module';
 import { UserStateModule } from './user/user-state.module';
 import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
+import { TestStationsStateModule } from './test-stations/test-stations-state.module';
 
 @NgModule({
   declarations: [],
@@ -29,7 +30,8 @@ import { ReferenceDataStateModule } from './reference-data/reference-data.module
     GlobalErrorStateModule,
     RouterStateModule,
     SpinnerStateModule,
-    ReferenceDataStateModule
+    ReferenceDataStateModule,
+    TestStationsStateModule
   ]
 })
 export class AppStoreModule {}

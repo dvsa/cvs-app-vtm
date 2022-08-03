@@ -4,7 +4,6 @@ import { TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { TestResultModel } from '@models/test-result.model';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -13,7 +12,6 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { getByVinSuccess } from '@store/technical-records';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';

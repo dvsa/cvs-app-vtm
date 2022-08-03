@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
+import { RoleGuard } from '@guards/roles.guard';
 import { TitleResolver } from './resolvers/title/title.resolver';
 
 const routes: Routes = [
@@ -10,26 +11,26 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        data: { title: 'Home' },
-        canActivate: [MsalGuard],
+        data: { title: 'Home', roles: ['CVSFullAccess', 'TechRecord.View'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'search',
-        data: { title: 'Technical record search' },
-        canActivate: [MsalGuard],
+        data: { title: 'Technical record search', roles: ['CVSFullAccess', 'TechRecord.View'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
         path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
-        data: { title: 'Test Result' },
-        canActivate: [MsalGuard],
+        data: { title: 'Test Result', roles: ['CVSFullAccess'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
       },
       {
         path: 'tech-records/:systemNumber',
-        data: { title: 'Tech Record' },
-        canActivate: [MsalGuard],
+        data: { title: 'Tech Record', roles: ['CVSFullAccess', 'TechRecord.View'] },
+        canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }
     ]

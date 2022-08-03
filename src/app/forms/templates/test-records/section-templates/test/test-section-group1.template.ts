@@ -16,6 +16,7 @@ export const TestSectionGroup1: FormNode = {
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
     },
+
     {
       name: 'testStartTimestamp',
       label: 'Test Date',
