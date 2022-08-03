@@ -1,4 +1,4 @@
-import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration';
+import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const testCases = [

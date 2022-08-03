@@ -5,7 +5,7 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 import { STORE_FEATURE_USER_KEY, userServiceReducer } from './user-service.reducer';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({ keys: ['name', 'username', 'oid'], rehydrate: true })(reducer);
+  return localStorageSync({ keys: ['name', 'username', 'oid', 'roles'], rehydrate: true })(reducer);
 }
 
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];

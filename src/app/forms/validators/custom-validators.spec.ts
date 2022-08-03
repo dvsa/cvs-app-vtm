@@ -1,5 +1,5 @@
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { CustomValidators } from './custom-validators';
 interface CustomPatternMessage {
   customPattern: {
@@ -89,6 +89,40 @@ describe('Hiding validators', () => {
       CustomValidators.hideIfNotEqual('foo', 'bar')(form.controls['sibling'] as AbstractControl);
       expect((form.controls['foo'] as CustomFormControl).meta.hide).toEqual(false);
     });
+  });
+});
+
+describe('parent sibling validators', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new FormGroup({
+      parent: new CustomFormGroup(
+        { name: 'parent', type: FormNodeTypes.GROUP },
+        { child: new CustomFormControl({ name: 'child', type: FormNodeTypes.CONTROL }) }
+      ),
+      sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, hide: false })
+    });
+  });
+
+  it('should return null', () => {
+    expect(CustomValidators.hideIfParentSiblingEquals('foo', 'bar')(form.controls['sibling'] as AbstractControl)).toEqual(null);
+  });
+
+  it('should set meta.hide to true if content of parent sibling is equal to the value passed', () => {
+    const value = 'bar';
+    const child = form.get(['parent', 'child']);
+    child?.patchValue(value);
+    CustomValidators.hideIfParentSiblingEquals('sibling', value)(child as AbstractControl);
+    expect((form.controls['sibling'] as CustomFormControl).meta.hide).toEqual(true);
+  });
+
+  it('should set meta.hide to true if content of parent sibling is not equal to the value passed', () => {
+    const value = true;
+    const child = form.get(['parent', 'child']);
+    child?.patchValue(value);
+    CustomValidators.hideIfParentSiblingNotEqual('sibling', !value)(child as AbstractControl);
+    expect((form.controls['sibling'] as CustomFormControl).meta.hide).toEqual(true);
   });
 });
 

@@ -1,7 +1,7 @@
 import { referenceDataLoadingState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from './reference-data.selectors';
 import { ReferenceDataState, initialReferenceDataState } from '../reducers/reference-data.reducer';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
-import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration';
+import { ReferenceDataModelBase } from '@models/reference-data.model';
+import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { Dictionary } from '@ngrx/entity';
 import { testCases } from '../reference-data.test-cases';
 
