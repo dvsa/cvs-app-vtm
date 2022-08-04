@@ -1,4 +1,5 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
 
 export const RequiredSection: FormNode = {
   name: 'requiredSection',
@@ -94,8 +95,8 @@ export const RequiredSection: FormNode = {
     {
       name: 'reasonForCreation',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'createdByName',
