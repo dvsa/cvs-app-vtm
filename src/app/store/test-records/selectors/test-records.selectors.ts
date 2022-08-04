@@ -21,13 +21,13 @@ export const selectTestResultsTotal = createSelector(testResultsFeatureState, st
 export const selectedTestResultState = createSelector(
   selectTestResultsEntities,
   selectRouteNestedParams,
-  (entities, { testResultId, testTypeId }) => {
+  (entities, { testResultId, testNumber }) => {
     const testResult = entities[testResultId];
     if (!testResult) {
       return undefined;
     }
 
-    const testType = testResult.testTypes.find(testType => testType.testTypeId === testTypeId);
+    const testType = testResult.testTypes.find(testType => testType.testNumber === testNumber);
 
     if (!testType) {
       return undefined;
@@ -50,14 +50,14 @@ export const selectedTestSortedAmendmentHistory = createSelector(selectedTestRes
   return testHistory.sort(byDate);
 });
 
-export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testTypeId, createdAt }) => {
+export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testNumber, createdAt }) => {
   const amendedTest = testRecord?.testHistory?.find(testResult => testResult.createdAt === createdAt);
 
   if (!amendedTest) {
     return undefined;
   }
 
-  const testType = amendedTest.testTypes.find(testType => testType.testTypeId === testTypeId);
+  const testType = amendedTest.testTypes.find(testType => testType.testNumber === testNumber);
 
   if (!testType) {
     return undefined;
