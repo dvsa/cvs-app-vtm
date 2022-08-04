@@ -49,7 +49,8 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               validators: [
                 { name: ValidatorNames.enableIfEquals, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.enableIfEquals, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.enableIfEquals, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.disableIfEquals, args: { sibling: 'testResult', value: ['pass', 'fail', 'prs', 'abandoned'] } }
               ],
               type: FormNodeTypes.CONTROL
             },

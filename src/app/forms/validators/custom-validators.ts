@@ -41,7 +41,19 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
-        control.value === value ? siblingControl.enable() : siblingControl.disable();
+        let isEqual = Array.isArray(value) ? value.includes(control.value) : control.value === value;
+        isEqual ? siblingControl.enable() : siblingControl.disable();
+      }
+      return null;
+    };
+  };
+
+  static disableIfEquals = (sibling: string, value: any): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        let isEqual = Array.isArray(value) ? value.includes(control.value) : control.value === value;
+        isEqual ? siblingControl.disable() : siblingControl.enable();
       }
       return null;
     };
