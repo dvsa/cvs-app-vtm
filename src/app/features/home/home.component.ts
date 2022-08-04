@@ -10,8 +10,5 @@ import { Observable } from 'rxjs';
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
-  testTypeId: string = '';
-
-  constructor(private store: Store<State>) {}
-
+  constructor() {}
 }

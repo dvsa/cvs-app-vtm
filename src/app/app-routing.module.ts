@@ -21,7 +21,7 @@ const routes: Routes = [
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
-        path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+        path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
         data: { title: 'Test Result' },
         canActivate: [MsalGuard],
         loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
