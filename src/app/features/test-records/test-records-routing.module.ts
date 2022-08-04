@@ -4,6 +4,8 @@ import { NoEditGuard } from '@guards/no-edit/no-edit.guard';
 import { TestResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { TestRecordComponent } from './views/test-record/test-record.component';
+import { RoleGuard } from '@guards/roles.guard';
+import { Roles } from '@models/roles.enum';
 
 const routes: Routes = [
   {
@@ -17,9 +19,9 @@ const routes: Routes = [
       {
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
-        data: { title: 'Amended Test Result' },
+        data: { title: 'Amended Test Result', roles: Roles.TestRecordUpdate},
         resolve: { load: TestResultResolver },
-        canActivate: [NoEditGuard]
+        canActivate: [NoEditGuard, RoleGuard]
       }
     ]
   }
