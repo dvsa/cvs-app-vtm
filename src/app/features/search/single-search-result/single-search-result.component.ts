@@ -4,6 +4,7 @@ import { createSingleSearchResult } from '@forms/templates/search/single-search-
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject } from 'rxjs';
+import { Roles } from '@models/roles.enum'
 
 @Component({
   selector: 'app-single-search-result[vehicleTechRecord]',
@@ -32,6 +33,10 @@ export class SingleSearchResultComponent implements OnInit {
     );
 
     this.template = createSingleSearchResult(this.vehicleTechRecord.systemNumber);
+  }
+
+  public get Roles() {
+    return Roles;
   }
 }
 
