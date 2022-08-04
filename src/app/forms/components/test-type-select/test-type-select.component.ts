@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { formatData } from '@store/test-types/selectors/test-types.selectors';
+import { formatData, selectAllTestTypes } from '@store/test-types/selectors/test-types.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -17,6 +19,9 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
   @Input() data: any = {};
   @Output() formChange = new EventEmitter();
 
+  edit = false;
+  categories: Array<TestTypeCategory> = [];
+  selected?: TestType | TestTypeCategory;
   form!: CustomFormGroup;
   private destroy$ = new Subject<void>();
 
@@ -34,5 +39,42 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
 
   get vehicleTypes$(): Observable<{ [key: string]: Array<{ name: string; id: string }> }> {
     return this.store.pipe(select(formatData));
+  }
+
+  get selectAllTestTypes$(): Observable<Array<TestType | TestTypeCategory>> {
+    return this.store.pipe(select(selectAllTestTypes));
+  }
+
+  tackByFn(i: number, testType: TestType | TestTypeCategory) {
+    testType.id;
+  }
+
+  handleCategory(category: TestType | TestTypeCategory, i: number) {
+    this.categories.length = i;
+
+    if (category.hasOwnProperty('nextTestTypesOrCategories')) {
+      this.categories.push(category as TestTypeCategory);
+    } else {
+      this.selected = category;
+      this.testTypeIdControl.setValue(category.id);
+      this.categories = [];
+    }
+  }
+
+  hasNext(category: TestType | TestTypeCategory) {
+    return category.hasOwnProperty('nextTestTypesOrCategories');
+  }
+
+  get testTypeIdControl(): FormControl {
+    return this.form.get(['testTypes', '0', 'testTypeId']) as FormControl;
+  }
+
+  handleChange() {
+    this.categories = [];
+    this.edit = !this.edit;
+  }
+
+  isSelected(id: string) {
+    return this.categories.map(t => t.id).includes(id);
   }
 }
