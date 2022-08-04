@@ -94,8 +94,10 @@ export const RequiredSection: FormNode = {
     },
     {
       name: 'reasonForCreation',
+      label: 'Reason for creation',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.TEXTAREA,
       validators: [{ name: ValidatorNames.MaxLength, args: 500 }, { name: ValidatorNames.Required }]
     },
     {
