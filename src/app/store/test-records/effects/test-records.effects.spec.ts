@@ -122,7 +122,7 @@ describe('TestResultsEffects', () => {
       });
     });
 
-    it('should return fetchTestResultsBySystemNumberFailed action on API error', () => {
+    it('should return fetchTestResultsBySystemNumberSuccess on a 404', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
