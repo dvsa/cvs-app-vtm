@@ -3,5 +3,5 @@ export enum Roles {
   TechRecordView = 'CVSFullAccess,TechRecord.View',
   TechRecordCreate = 'CVSFullAccess,TechRecord.Create',
   TestRecordView = 'CVSFullAccess,TestResult.View',
-  TestRecordUpdate = 'CVSFullAccess,TestResult.Update',
+  TestRecordAmend = 'CVSFullAccess,TestResult.Amend'
 }

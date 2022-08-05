@@ -33,5 +33,5 @@ export const userServiceReducer = createReducer(
 );
 
 function getRoles (roles: string[]): string[] {
-  return environment.AdminMode ? roles : roles.filter(role => role !== Roles.Admin);
+  return environment.RemoveAADFullAccessRole ? roles.filter(role => role !== Roles.Admin) : roles;
 }
