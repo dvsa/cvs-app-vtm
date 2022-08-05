@@ -92,6 +92,73 @@ describe('Hiding validators', () => {
   });
 });
 
+describe('enable/disable validators', () => {
+  let form: FormGroup;
+
+  beforeEach(() => {
+    form = new FormGroup({
+      foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
+      sibling: new CustomFormControl({ name: 'sibling', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+  });
+
+  describe('enable if equals', () => {
+    it('should return null', () => {
+      expect(CustomValidators.enableIfEquals('foo', 'foo')(form.controls['sibling'] as AbstractControl)).toEqual(null);
+    });
+
+    it('should set enabled to true if content of sibling is equal to the value passed', () => {
+      const value = 'bar';
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.enableIfEquals('foo', 'bar')(form.controls['sibling'] as AbstractControl);
+      expect((form.controls['foo'] as CustomFormControl).enabled).toEqual(true);
+    });
+
+    it('should set enabled to true if content of sibling is equal to one of the values passed in the array', () => {
+      const value = 'bar';
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.enableIfEquals('foo', ['bar', 'foo', 'foobar'])(form.controls['sibling'] as AbstractControl);
+      expect((form.controls['foo'] as CustomFormControl).enabled).toEqual(true);
+    });
+
+    it('should set enabled to false if content of sibling is not equal to the value passed', () => {
+      const value = 'bar';
+      form.controls['sibling'].patchValue(value);
+      (form.controls['foo'] as CustomFormControl).enable();
+      CustomValidators.enableIfEquals('foo', 'foo')(form.controls['sibling'] as AbstractControl);
+      expect((form.controls['foo'] as CustomFormControl).enabled).toEqual(false);
+    });
+  });
+
+  describe('disable if equals', () => {
+    it('should return null', () => {
+      expect(CustomValidators.disableIfEquals('foo', 'foo')(form.controls['sibling'] as AbstractControl)).toEqual(null);
+    });
+
+    it('should set disabled to true if content of sibling is equal to one of the values passed in the array', () => {
+      const value = 'bar';
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.disableIfEquals('foo', 'bar')(form.controls['sibling'] as AbstractControl);
+      expect((form.controls['foo'] as CustomFormControl).disabled).toEqual(true);
+    });
+
+    it('should set disabled to true if content of sibling is equal to one of the values passed in the array', () => {
+      const value = 'bar';
+      form.controls['sibling'].patchValue(value);
+      CustomValidators.disableIfEquals('foo', ['bar', 'foo', 'foobar'])(form.controls['sibling'] as AbstractControl);
+      expect((form.controls['foo'] as CustomFormControl).disabled).toEqual(true);
+    });
+
+    it('should set disabled to false if content of sibling is not equal to the value passed', () => {
+      const value = 'bar';
+      form.controls['sibling'].patchValue(value);
+      (form.controls['foo'] as CustomFormControl).disable();
+      CustomValidators.disableIfEquals('foo', 'foo')(form.controls['sibling'] as AbstractControl);
+      expect((form.controls['foo'] as CustomFormControl).disabled).toEqual(false);
+    });
+  });
+});
+
 describe('parent sibling validators', () => {
   let form: FormGroup;
 
