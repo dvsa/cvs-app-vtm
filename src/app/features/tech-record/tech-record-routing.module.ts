@@ -9,7 +9,7 @@ import { Roles } from '@models/roles.enum';
 const routes: Routes = [
   {
     path: '',
-    data: {roles: Roles.TechRecordView },
+    data: { roles: Roles.TechRecordView },
     component: TechRecordComponent,
     canActivateChild: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
-    data: { title: 'Test Result', roles: Roles.TestRecordView },
+    data: { title: 'Test Result', roles: Roles.TestResultView },
     canActivate: [MsalGuard, RoleGuard],
     loadChildren: () => import('../test-records/test-records.module').then(m => m.TestRecordsModule)
   }
