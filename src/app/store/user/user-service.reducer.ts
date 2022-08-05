@@ -33,5 +33,5 @@ export const userServiceReducer = createReducer(
 );
 
 function getRoles (roles: string[]): string[] {
-  return environment.production ? roles.filter(role => role !== Roles.NonProdAdmin) :  roles;
+  return environment.AdminMode ? roles : roles.filter(role => role !== Roles.Admin);
 }

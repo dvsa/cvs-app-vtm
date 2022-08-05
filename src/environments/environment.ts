@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  AdminMode: true,
+  DevTools: true,
   VTM_CLIENT_ID: '',
   VTM_AUTHORITY_ID: '',
   VTM_REDIRECT_URI: '/',

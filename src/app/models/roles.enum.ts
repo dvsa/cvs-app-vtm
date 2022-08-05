@@ -1,5 +1,5 @@
 export enum Roles {
-  NonProdAdmin = 'CVSFullAccess',
+  Admin = 'CVSFullAccess',
   TechRecordView = 'CVSFullAccess,TechRecord.View',
   TechRecordCreate = 'CVSFullAccess,TechRecord.Create',
   TestRecordView = 'CVSFullAccess,TestResult.View',

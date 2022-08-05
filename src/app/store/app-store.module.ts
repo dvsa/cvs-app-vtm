@@ -19,11 +19,12 @@ import { TestStationsStateModule } from './test-stations/test-stations-state.mod
     CommonModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    environment.DevTools ?
     StoreDevtoolsModule.instrument({
       name: 'VTM Web Dev Tools',
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Log-only mode in production
-    }),
+    }) : [],
     UserStateModule,
     TechnicalRecordsStateModule,
     TestRecordsStateModule,

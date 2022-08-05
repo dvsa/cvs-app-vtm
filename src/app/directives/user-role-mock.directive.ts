@@ -1,16 +1,13 @@
 import { Directive, Input } from '@angular/core';
 
-@Directive({ selector: '[appUserRole]' })
+@Directive({ selector: '[appRoleRequired]' })
 export class UserRoleDirective {
   constructor() {}
 
   userRoles: string[] | undefined;
 
   @Input()
-  set appUserRole(roles: string[]) {
-    if (!roles || !roles.length) {
-      throw new Error('Roles value is empty or missed');
-    }
+  set appRoleRequired(roles: string[]) {
     this.userRoles = roles;
   }
 }
