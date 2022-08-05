@@ -1,6 +1,6 @@
 <ng-container *ngIf="testResult$ | async as testResult">
   <ng-container *appRoleRequired="Roles.TestRecordAmend">
-    <app-button-group *ngIf="isTestTypeGroupEditable$  | async; else notSupported">
+    <app-button-group *ngIf="isTestTypeGroupEditable$ | async; else notSupported">
       <app-button *ngIf="(isEditing$ | async) === false; else editing" id="edit-test-result" (clicked)="handleEdit()">Edit</app-button>
 
       <ng-template #editing>
