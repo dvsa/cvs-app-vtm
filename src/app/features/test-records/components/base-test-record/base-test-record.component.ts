@@ -35,13 +35,11 @@ export class BaseTestRecordComponent implements OnInit {
 
   sectionForms: CustomFormGroup[] = [];
   testResultCopy: TestResultModel = {} as TestResultModel;
-  testTypeId: string = '';
 
   constructor(private dynamicFormService: DynamicFormService, private store: Store<State>) {}
 
   ngOnInit(): void {
     this.testResultCopy = cloneDeep(this.testResult);
-    this.testTypeId = this.testResultCopy.testTypes[0].testTypeId;
   }
 
   generateTemplate(): FormNode[] | undefined {
@@ -73,6 +71,5 @@ export class BaseTestRecordComponent implements OnInit {
 
   handleFormChange(event: any) {
     const newTest = merge(this.testResultCopy, event);
-    console.log(newTest);
   }
 }

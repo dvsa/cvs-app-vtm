@@ -5,8 +5,10 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Test name:</dt>
           <dd id="test-testTypeId" class="govuk-summary-list__value">
-            {{ testTypeIdControl.value | testTypeName: (selectAllTestTypes$ | async) }}
-            <app-button class="float-right" type="underline" (clicked)="handleChange()">{{ edit ? 'Cancel' : 'Change' }}</app-button>
+            {{ testTypeIdControl?.value | testTypeName: (selectAllTestTypes$ | async) }}
+            <app-button *ngIf="isEditing" class="float-right" type="underline" (clicked)="handleChange()">{{
+              edit ? 'Cancel' : 'Change'
+            }}</app-button>
           </dd>
         </div>
       </ng-container>

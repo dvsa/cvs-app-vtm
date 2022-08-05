@@ -10,7 +10,7 @@ import { formatData, selectAllTestTypes } from '@store/test-types/selectors/test
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-test-type-select',
+  selector: 'app-test-type-select[template]',
   templateUrl: './test-type-select.component.html',
   styleUrls: ['./test-type-select.component.scss']
 })
@@ -57,7 +57,7 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
       this.categories.push(category as TestTypeCategory);
     } else {
       this.selected = category;
-      this.testTypeIdControl.setValue(category.id);
+      this.testTypeIdControl?.setValue(category.id);
       this.categories = [];
     }
   }
@@ -66,7 +66,7 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
     return category.hasOwnProperty('nextTestTypesOrCategories');
   }
 
-  get testTypeIdControl(): FormControl {
+  get testTypeIdControl(): FormControl | null {
     return this.form.get(['testTypes', '0', 'testTypeId']) as FormControl;
   }
 

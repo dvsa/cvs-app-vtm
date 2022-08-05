@@ -44,20 +44,20 @@ describe('BaseTestRecordComponent', () => {
     });
 
     it('should return the test code template if the test code is present', () => {
-      component.testResult.vehicleType = VehicleTypes.PSV;
-      component.testResult.testTypes = [{ testTypeId: '1' } as TestType];
+      component.testResultCopy.vehicleType = VehicleTypes.PSV;
+      component.testResultCopy.testTypes = [{ testTypeId: '1' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['testTypesGroup1']!));
     });
 
     it('should return the default template if the testCode is not defined in the template', () => {
-      component.testResult.vehicleType = VehicleTypes.PSV;
-      component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
+      component.testResultCopy.vehicleType = VehicleTypes.PSV;
+      component.testResultCopy.testTypes = [{ testTypeId: '23455' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
     });
 
     it('should return the default template if the testCode is not defined', () => {
-      component.testResult.vehicleType = VehicleTypes.PSV;
-      component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
+      component.testResultCopy.vehicleType = VehicleTypes.PSV;
+      component.testResultCopy.testTypes = [{ testTypeId: '23455' } as TestType];
       expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
     });
   });
