@@ -10,6 +10,7 @@ import { TestResultModel } from '@models/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { TestTypesService } from '@services/test-types/test-types.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import merge from 'lodash.merge';
 import { Observable, of, Subject, takeUntil, map } from 'rxjs';
@@ -40,7 +41,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     private router: Router,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
-    private actions$: Actions
+    private actions$: Actions,
+    private testTypeService: TestTypesService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -59,6 +61,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
+    this.testTypeService.fetchTestTypes()
   }
 
   handleCancel(): void {

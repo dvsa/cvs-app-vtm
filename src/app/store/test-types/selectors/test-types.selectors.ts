@@ -1,3 +1,4 @@
+import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -28,7 +29,7 @@ export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, s
 });
 
 export const formatData = createSelector(selectAllTestTypes, testTypes => {
-  const reducer = (accumulator: any, currentValue: any) => {
+  const reducer = (accumulator: any, currentValue: TestType | TestTypeCategory) => {
     const newVal = { ...accumulator };
 
     const getIds = (testType: any) => {
@@ -44,13 +45,15 @@ export const formatData = createSelector(selectAllTestTypes, testTypes => {
       }
     };
 
-    for (const vt of currentValue.forVehicleType) {
+    if (currentValue.forVehicleType){
+      for (const vt of currentValue.forVehicleType) {
       if (!newVal[vt]) {
         newVal[vt] = [...getIds(currentValue)];
       } else {
         newVal[vt] = [...newVal[vt], ...getIds(currentValue)];
       }
     }
+  }
 
     return newVal;
   };

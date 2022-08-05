@@ -20,7 +20,6 @@ export class TechRecordViewResolver implements Resolve<boolean> {
       const systemNumber = sn || '';
       this.store.dispatch(getBySystemNumber({ systemNumber }));
       this.store.dispatch(fetchTestResultsBySystemNumber({ systemNumber }));
-      this.store.dispatch(fetchTestTypes());
     });
 
     return this.action$.pipe(
