@@ -1,11 +1,8 @@
-import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectedTestResultState } from '@store/test-records';
-import cloneDeep from 'lodash.clonedeep';
-import { filter } from 'rxjs';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -25,7 +22,7 @@ export const selectTestTypesTotal = createSelector(testTypesFeatureState, state 
 export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, selectedTestResultState, (testTypes, testResult) => {
   if (testResult) {
     const { vehicleType } = testResult;
-    return filterTestTypes(testTypes, vehicleType)
+    return filterTestTypes(testTypes, vehicleType);
   }
   return [];
 });

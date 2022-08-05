@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TestType, TestTypeCategory } from '@api/test-types';
+import { TestType, TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { TestTypesService } from '@services/test-types/test-types.service';
@@ -35,7 +35,7 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get selectAllTestTypes$(): Observable<Array<TestType | TestTypeCategory>> {
+  get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
     return this.testTypesService.selectAllTestTypes$;
   }
 

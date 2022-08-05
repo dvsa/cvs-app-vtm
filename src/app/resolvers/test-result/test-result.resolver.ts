@@ -4,7 +4,8 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess } from '@store/test-records';
-import { map, Observable, take } from 'rxjs';
+import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@store/test-types/actions/test-types.actions';
+import { count, filter, map, Observable, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,16 @@ export class TestResultResolver implements Resolve<boolean> {
 
   resolve(): Observable<boolean> {
     this.store.dispatch(fetchSelectedTestResult());
+    this.store.dispatch(fetchTestTypes());
+
     return this.action$.pipe(
-      ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed),
-      take(1),
-      map(action => action.type === fetchSelectedTestResultSuccess.type)
+      ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed, fetchTestTypesSuccess, fetchTestTypesFailed),
+      take(2),
+      filter(action => action.type === fetchSelectedTestResultSuccess.type || action.type === fetchTestTypesSuccess.type),
+      count(),
+      map(count => {
+        return count === 2;
+      })
     );
   }
 }

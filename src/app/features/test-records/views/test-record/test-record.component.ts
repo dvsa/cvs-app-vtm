@@ -61,7 +61,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
-    this.testTypeService.fetchTestTypes()
   }
 
   handleCancel(): void {
