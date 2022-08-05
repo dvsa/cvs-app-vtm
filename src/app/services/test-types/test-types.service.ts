@@ -4,7 +4,7 @@ import { BASE_PATH, Configuration, TestType, TestTypeCategory, TestTypesService 
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
-import { selectAllTestTypes } from '@store/test-types/selectors/test-types.selectors';
+import { selectAllTestTypes, selectTestTypesByVehicleType } from '@store/test-types/selectors/test-types.selectors';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -25,6 +25,6 @@ export class TestTypesService extends TestTypesApiService {
   }
 
   get selectAllTestTypes$(): Observable<Array<TestType | TestTypeCategory>> {
-    return this.store.pipe(select(selectAllTestTypes));
+    return this.store.pipe(select(selectTestTypesByVehicleType));
   }
 }

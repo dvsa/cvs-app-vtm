@@ -70,7 +70,7 @@ export interface TestTypeCategory {
     /**
      * This is an array composed of TestTypeCateogries and/or TestTypes
      */
-    nextTestTypesOrCategories?: Array<TestType>;
+    nextTestTypesOrCategories?: Array<TestType | TestTypeCategory>;
 }
 export namespace TestTypeCategory {
     export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle∂';

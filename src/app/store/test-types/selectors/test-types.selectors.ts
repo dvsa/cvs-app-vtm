@@ -4,6 +4,8 @@ import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectedTestResultState } from '@store/test-records';
+import cloneDeep from 'lodash.clonedeep';
+import { filter } from 'rxjs';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -23,7 +25,21 @@ export const selectTestTypesTotal = createSelector(testTypesFeatureState, state 
 export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, selectedTestResultState, (testTypes, testResult) => {
   if (testResult) {
     const { vehicleType } = testResult;
-    return testTypes.filter(testType => testType.forVehicleType?.includes(vehicleType));
+    return filterTestTypes(testTypes, vehicleType)
   }
   return [];
 });
+
+function filterTestTypes(testTypes: TestTypesTaxonomy, vehicleType: VehicleTypes): TestTypesTaxonomy {
+  return testTypes
+    .filter(testTypes => testTypes.forVehicleType?.includes(vehicleType))
+    .map(testType => {
+      const newTestType = { ...testType } as TestTypeCategory;
+
+      if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
+        newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, vehicleType);
+      }
+
+      return newTestType;
+    });
+}
