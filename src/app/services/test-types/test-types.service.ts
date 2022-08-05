@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
+import { BASE_PATH, Configuration, TestType, TestTypeCategory, TestTypesService as TestTypesApiService } from '@api/test-types';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { BASE_PATH, Configuration, TestType, TestTypeCategory, TestTypesService as TestTypesApiService } from '@api/test-types';
-import { HttpClient } from '@angular/common/http';
 import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
-import { formatData, selectAllTestTypes } from '@store/test-types/selectors/test-types.selectors';
+import { selectAllTestTypes } from '@store/test-types/selectors/test-types.selectors';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -21,10 +21,7 @@ export class TestTypesService extends TestTypesApiService {
   }
 
   fetchTestTypes(): void {
-    this.store.dispatch(fetchTestTypes())
-  }
-  get vehicleTypes$(): Observable<{ [key: string]: Array<{ name: string; id: string }> }> {
-    return this.store.pipe(select(formatData));
+    this.store.dispatch(fetchTestTypes());
   }
 
   get selectAllTestTypes$(): Observable<Array<TestType | TestTypeCategory>> {

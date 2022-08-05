@@ -7,14 +7,11 @@ import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { select, Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
+import { Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { State } from '@store/.';
-import { formatData } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -59,10 +56,6 @@ export class BaseTestRecordComponent implements OnInit {
     const form = this.dynamicFormService.createForm(template, this.testResultCopy) as CustomFormGroup;
     this.sectionForms.push(form);
     return form;
-  }
-
-  get vehicleTypes$(): Observable<{ [key: string]: Array<{ name: string; id: string }> }> {
-    return this.store.pipe(select(formatData));
   }
 
   handleTestTypeIdChangeOrSomething(event: string): void {
