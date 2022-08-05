@@ -17,7 +17,7 @@
 </div>
 
 <div *ngIf="edit" class="categories">
-  <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 }">
+  <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
     <ol class="list">
       <li
         *ngFor="let type of selectAllTestTypes$ | async; trackBy: tackByFn"
@@ -33,7 +33,7 @@
   <div
     *ngFor="let category of categories; trackBy: tackByFn; let i = index"
     class="list_container"
-    [ngClass]="{ 'list_container--shrink': categories.length > i + 1 }"
+    [ngClass]="{ 'list_container--shrink': categories.length > i + 2 }"
   >
     <h2 class="govuk-heading-m">Browse: {{ category.name }}</h2>
     <ol class="list">

@@ -18,6 +18,10 @@
     -webkit-flex-shrink: 1;
 
     overflow: hidden;
+
+    &:hover {
+      flex-basis: auto;
+    }
   }
 
   &:not(:first-child) {
