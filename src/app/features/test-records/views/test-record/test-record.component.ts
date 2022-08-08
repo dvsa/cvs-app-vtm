@@ -14,6 +14,7 @@ import { updateTestResultSuccess } from '@store/test-records';
 import merge from 'lodash.merge';
 import { Observable, of, Subject, takeUntil, map } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { Roles } from '@models/roles.enum'
 
 @Component({
   selector: 'app-test-records',
@@ -55,6 +56,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  public get Roles() {
+    return Roles;
   }
 
   handleEdit(): void {

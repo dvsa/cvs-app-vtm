@@ -13,6 +13,7 @@ import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
@@ -38,8 +39,19 @@ describe('TestRecordComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule, TestResultsApiModule],
-      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), RouterService, provideMockActions(() => actions$)]
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, TestResultsApiModule, SharedModule],
+      providers: [
+        TestRecordsService,
+        provideMockStore({ initialState: initialAppState }),
+        RouterService,
+        provideMockActions(() => actions$),
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of(['TestResult.Amend'])
+          }
+        }
+      ]
     }).compileComponents();
   }));
 

@@ -10,9 +10,11 @@ const targetPath = isProduction ? `./src/environments/environment.prod.ts` : `./
 // in the process.env object thanks to dotenv
 const environmentFileContent = `export const environment = {
   production: ${isProduction},
+  RemoveAADFullAccessRole: ${process.env['RemoveAADFullAccessRole']},
+  EnableDevTools: ${process.env['EnableDevTools']},
   VTM_CLIENT_ID: "${process.env['VTM_CLIENT_ID']}",
   VTM_AUTHORITY_ID: "${process.env['VTM_AUTHORITY_ID']}",
-  VTM_REDIRECT_URI: 'http://localhost:4200',
+  VTM_REDIRECT_URI: "${process.env['VTM_REDIRECT_URI']}",
   VTM_API_URI: "${process.env['VTM_API_URI']}",
   VTM_API_CLIENT_ID: "${process.env['VTM_API_CLIENT_ID']}",
 };

@@ -7,7 +7,7 @@
     <app-single-search-result
       class="govuk-grid-column-full"
       [vehicleTechRecord]="vehicleTechRecord"
-      *appUserRole="['CVSFullAccess', 'TechRecord.View']"
+      *appRoleRequired="Roles.TechRecordView"
     ></app-single-search-result>
   </ng-container>
 </div>
