@@ -28,7 +28,7 @@ describe('GlobalErrorService', () => {
 
   it('should dispatch action clearError', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    service.clearError();
+    service.clearErrors();
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     expect(dispatchSpy).toHaveBeenCalledWith(clearError());
   });

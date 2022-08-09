@@ -70,6 +70,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   handleCancel(): void {
     this.testRecordsService.cancelEditingTestResult();
+    this.errorService.clearErrors();
+
     this.router.navigate([], { queryParams: { edit: null }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 
@@ -109,7 +111,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     });
 
     if (errors.length > 0) {
-      this.errorService.patchErrors(errors);
+      this.errorService.setErrors(errors);
     }
 
     if (forms.some(form => form.invalid)) {
