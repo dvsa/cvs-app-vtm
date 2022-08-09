@@ -181,7 +181,6 @@ export const RequiredSection: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
-
             {
               name: 'secondaryCertificateNumber',
               type: FormNodeTypes.CONTROL,

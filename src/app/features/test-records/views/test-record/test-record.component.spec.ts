@@ -145,17 +145,6 @@ describe('TestRecordComponent', () => {
   });
 
   describe('getters', () => {
-    describe('sectionFormsInvalid', () => {
-      it.each([
-        [true, [{ invalid: true }, { invalid: true }]],
-        [true, [{ invalid: true }, { invalid: false }]],
-        [false, [{ invalid: false }, { invalid: false }]],
-        [false, []]
-      ])('should return %p for forms: %o', (expected, forms) => {
-        component.sectionForms = forms as Array<CustomFormGroup>;
-        expect(component.sectionForms.some(form => form.invalid)).toBe(expected);
-      });
-    });
     describe('isTestTypeGroupEditable$', () => {
       it('should return true if the test type id is in a valid test type group and the test type group is in the master template', done => {
         component.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
@@ -204,7 +193,6 @@ describe('TestRecordComponent', () => {
     ];
 
     beforeEach(() => {
-      component.sectionForms = forms as Array<CustomFormGroup>;
       store.resetSelectors();
     });
 
@@ -218,7 +206,6 @@ describe('TestRecordComponent', () => {
     it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
       store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testTypeId: 'a' });
-      component.sectionForms[0].get('foo')?.patchValue('baz');
 
       let expectedFinalValue;
       forms.forEach(form => (expectedFinalValue = merge(form.getCleanValue(form), forms[1].getCleanValue(form))));

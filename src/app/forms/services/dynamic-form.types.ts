@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { map, Observable } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 
 export enum FormNodeViewTypes {
@@ -105,6 +106,8 @@ interface BaseForm {
    * @returns form json value
    */
   getCleanValue: (form: CustomFormGroup | CustomFormArray) => { [key: string]: any } | Array<[]>;
+
+  cleanValueChanges: Observable<any>;
 }
 
 export interface CustomGroup extends FormGroup {
@@ -127,6 +130,10 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
   }
 
   getCleanValue = cleanValue.bind(this);
+
+  get cleanValueChanges() {
+    return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
+  }
 }
 
 export interface CustomArray extends FormArray {
@@ -149,6 +156,10 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   }
 
   getCleanValue = cleanValue.bind(this);
+
+  get cleanValueChanges() {
+    return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
+  }
 
   addControl() {
     super.push(this.dynamicFormService.createForm(this.meta));

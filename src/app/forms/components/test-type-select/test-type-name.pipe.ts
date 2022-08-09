@@ -5,23 +5,33 @@ import { TestType, TestTypeCategory } from '@api/test-types';
   name: 'testTypeName'
 })
 export class TestTypeNamePipe implements PipeTransform {
-  findTestTypeNameById(id: string, testTypes: Array<TestType | TestTypeCategory>): string {
-    const name =
-      testTypes.find(testType => {
-        if (testType.hasOwnProperty('nextTestTypesOrCategories')) {
-          return this.findTestTypeNameById(id, (testType as TestTypeCategory).nextTestTypesOrCategories!!);
-        }
+  findTestTypeNameById(id: string, testTypes: Array<TestType | TestTypeCategory>): TestType | undefined {
+    function idMatch(testType: TestType | TestTypeCategory) {
+      if (testType.id === id) {
+        result = testType;
+        return true;
+      }
 
-        return testType.id === id;
-      })?.name || '-';
+      return testType.hasOwnProperty('nextTestTypesOrCategories') && (testType as TestTypeCategory).nextTestTypesOrCategories!!.some(idMatch);
+    }
 
-    return name;
+    let result;
+    testTypes.some(idMatch);
+    return result;
   }
 
   transform(value: string, testTypes: Array<TestType | TestTypeCategory> | null): unknown {
     if (!testTypes) {
       return value;
     }
-    return this.findTestTypeNameById(value, testTypes);
+
+    const match = this.findTestTypeNameById(value, testTypes);
+
+    if (!match) {
+      return '-';
+    }
+
+    const { suggestedTestTypeDisplayName, testTypeName, name } = match;
+    return suggestedTestTypeDisplayName || testTypeName || name || '-';
   }
 }

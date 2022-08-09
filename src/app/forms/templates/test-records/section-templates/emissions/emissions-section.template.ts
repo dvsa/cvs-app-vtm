@@ -18,19 +18,19 @@ export const EmissionsSection: FormNode = {
               name: 'emissionStandard',
               label: 'Emissions standard',
               type: FormNodeTypes.CONTROL,
-              disabled: true
+              disabled: false
             },
             {
               name: 'smokeTestKLimitApplied',
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
-              disabled: true
+              disabled: false
             },
             {
               name: 'fuelType',
               label: 'Fuel type',
               type: FormNodeTypes.CONTROL,
-              disabled: true
+              disabled: false
             },
             {
               name: 'modType',
@@ -41,13 +41,13 @@ export const EmissionsSection: FormNode = {
                   name: 'code',
                   label: 'Modification code',
                   type: FormNodeTypes.CONTROL,
-                  disabled: true
+                  disabled: false
                 },
                 {
                   name: 'description',
                   label: 'Modification description',
                   type: FormNodeTypes.CONTROL,
-                  disabled: true
+                  disabled: false
                 }
               ]
             },
@@ -55,19 +55,19 @@ export const EmissionsSection: FormNode = {
               name: 'modificationTypeUsed',
               label: 'Modification type used',
               type: FormNodeTypes.CONTROL,
-              disabled: true
+              disabled: false
             },
             {
               name: 'particulateTrapFitted',
               label: 'Particulate trap fitted',
               type: FormNodeTypes.CONTROL,
-              disabled: true
+              disabled: false
             },
             {
               name: 'particulateTrapSerialNumber',
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL,
-              disabled: true
+              disabled: false
             }
           ]
         }

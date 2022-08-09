@@ -1,20 +1,25 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GetTestResultsService, CompleteTestResults, UpdateTestResultsService } from '@api/test-results';
+import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
+  cancelEditingTestResult,
+  editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
+  sectionTemplates,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
   selectedAmendedTestResultState,
   selectedTestResultState,
+  testResultInEdit,
   TestResultsState,
+  updateEditingTestResult,
   updateTestResult
 } from '@store/test-records';
+import cloneDeep from 'lodash.clonedeep';
 import { Observable, throwError } from 'rxjs';
 
 @Injectable({
@@ -58,6 +63,9 @@ export class TestRecordsService {
   get testResult$() {
     return this.store.pipe(select(selectedTestResultState));
   }
+  get editingTestResult$() {
+    return this.store.pipe(select(testResultInEdit));
+  }
 
   get testRecords$() {
     return this.store.pipe(select(selectAllTestResults));
@@ -75,6 +83,10 @@ export class TestRecordsService {
     return this.store.pipe(select(selectAmendedDefectData));
   }
 
+  get sectionTemplates$() {
+    return this.store.pipe(select(sectionTemplates));
+  }
+
   saveTestResult(
     systemNumber: string,
     user: { username: string; id?: string },
@@ -83,9 +95,10 @@ export class TestRecordsService {
     reportProgress?: boolean
   ): Observable<TestResultModel> {
     const { username, id } = user;
-    delete body.testHistory;
+    const tr = cloneDeep(body);
+    delete tr.testHistory;
     return this.updateTestResultsService.testResultsSystemNumberPut(
-      { msUserDetails: { msOid: id, msUser: username }, testResult: body as any } as CompleteTestResults,
+      { msUserDetails: { msOid: id, msUser: username }, testResult: tr as any } as CompleteTestResults,
       systemNumber,
       observe,
       reportProgress
@@ -103,5 +116,17 @@ export class TestRecordsService {
       }
     }
     return undefined;
+  }
+
+  editingTestResult(testResult: TestResultModel): void {
+    this.store.dispatch(editingTestResult({ testResult }));
+  }
+
+  cancelEditingTestResult(): void {
+    this.store.dispatch(cancelEditingTestResult());
+  }
+
+  updateEditingTestResult(testResult: any): void {
+    this.store.dispatch(updateEditingTestResult({ testResult }));
   }
 }

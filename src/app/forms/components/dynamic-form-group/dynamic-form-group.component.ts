@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { skip, Subject, takeUntil } from 'rxjs';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
@@ -10,13 +11,15 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeView
   styleUrls: ['./dynamic-form-group.component.scss']
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DynamicFormGroupComponent implements OnChanges, OnInit {
+export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   @Input() data: any = {};
   @Input() template?: FormNode;
   @Input() edit = false;
   @Output() formChange = new EventEmitter();
 
   form: CustomFormGroup | CustomFormArray = new CustomFormGroup({ name: 'dynamic-form', type: FormNodeTypes.GROUP, children: [] }, {});
+
+  private destroy$ = new Subject<void>();
 
   constructor(private dfs: DynamicFormService) {}
 
@@ -28,7 +31,12 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.form.valueChanges.pipe().subscribe(e => this.formChange.emit(e));
+    this.form.cleanValueChanges.pipe(takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   entriesOf(obj: FormGroup): { key: string; value: any }[] {

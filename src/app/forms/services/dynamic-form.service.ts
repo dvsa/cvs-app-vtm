@@ -82,7 +82,7 @@ export class DynamicFormService {
         this.updateValidity(value as CustomFormGroup | CustomFormArray, errors);
       } else {
         value.markAsTouched();
-        value.updateValueAndValidity({ emitEvent: true });
+        value.updateValueAndValidity({ emitEvent: false });
         (value as CustomFormControl).meta.changeDetection?.detectChanges();
         this.getControlErrors(value as CustomFormControl, errors);
       }

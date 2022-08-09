@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-defects[template]',
   templateUrl: './defects.component.html'
 })
-export class DefectsComponent implements OnInit {
+export class DefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
   @Input() template!: FormNode;
   @Input() data: any = {};
@@ -15,10 +16,18 @@ export class DefectsComponent implements OnInit {
   @Output() formsChange = new EventEmitter<(CustomFormGroup | CustomFormArray)[]>();
   form!: CustomFormGroup;
 
+  private destroy$ = new Subject<void>();
+
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
+    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(e => this.formsChange.emit(e));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get defectsForm() {

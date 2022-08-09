@@ -1,4 +1,4 @@
-import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from '@ngrx/store';
+import { createAction, createFeatureSelector, createReducer, on, props } from '@ngrx/store';
 
 export const STORE_SPINNER_KEY = 'Spinner';
 
@@ -11,8 +11,6 @@ export const initialSpinnerState: SpinnerState = {
 };
 
 export const getSpinnerState = createFeatureSelector<SpinnerState>(STORE_SPINNER_KEY);
-
-export const spinnerState = createSelector(getSpinnerState, (state) => state.showSpinner);
 
 export const setSpinnerState = createAction('[UI/spinner] set spinner state', props<{ showSpinner: boolean }>());
 

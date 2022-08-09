@@ -1,5 +1,8 @@
+import { TEST_TYPES } from '@forms/models/testTypeId.enum';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defect } from '@models/defect';
 import { TestResultModel } from '@models/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
 import { testResultAdapter, testResultsFeatureState } from '../reducers/test-records.reducer';
@@ -37,6 +40,12 @@ export const selectedTestResultState = createSelector(
   }
 );
 
+export const testResultInEdit = createSelector(testResultsFeatureState, state => state.editingTestResult);
+
+export const toEditOrNotToEdit = createSelector(testResultInEdit, selectedTestResultState, (editingTestResult, selectedTestResult) => {
+  return editingTestResult ? editingTestResult : selectedTestResult;
+});
+
 export const testResultLoadingState = createSelector(testResultsFeatureState, state => state.loading);
 
 export const selectDefectData = createSelector(selectedTestResultState, testResult => getDefectFromTestResult(testResult));
@@ -69,6 +78,8 @@ export const selectedAmendedTestResultState = createSelector(selectedTestResultS
 export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, amendedTestResult => {
   return getDefectFromTestResult(amendedTestResult);
 });
+
+export const sectionTemplates = createSelector(testResultsFeatureState, state => state.sectionTemplates);
 
 // Common Functions
 /**

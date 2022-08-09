@@ -57,7 +57,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       required: RequiredSection
     }

@@ -39,7 +39,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -47,7 +46,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Result',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -55,7 +53,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -63,7 +60,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Certificate number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -71,7 +67,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Test Number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -79,7 +74,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Expiry Date',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
