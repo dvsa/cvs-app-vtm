@@ -3,10 +3,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { Store } from '@ngrx/store';
 import { Logout } from '@store/user/user-service.actions';
+import jwtDecode from 'jwt-decode';
 import { of, take } from 'rxjs';
 import { AppModule } from '../../app.module';
 import { UserServiceState } from '../../store/user/user-service.reducer';
 import { UserService } from './user-service';
+
+jest.mock('jwt-decode', () => jest.fn());
 
 describe('User-Service', () => {
   let service: UserService;
@@ -33,29 +36,37 @@ describe('User-Service', () => {
   });
 
   describe('User getters', () => {
-    const user = { name: 'name', username: 'name@mail.com', oid: '123' };
+    const user = { name: 'name', username: 'name@mail.com', oid: '123', accessToken: '12345' };
 
     beforeEach(() => {
+      (jwtDecode as jest.Mock).mockImplementationOnce(() => ({ roles: ['12345'] }));
       service.logIn(user);
     });
 
-    it('should get the username', (done) => {
-      service.userName$.pipe(take(1)).subscribe((data) => {
+    it('should get the username', done => {
+      service.userName$.pipe(take(1)).subscribe(data => {
         expect(data).toEqual(user.username);
         done();
       });
     });
 
-    it('should get the name', (done) => {
-      service.name$.pipe(take(1)).subscribe((data) => {
+    it('should get the name', done => {
+      service.name$.pipe(take(1)).subscribe(data => {
         expect(data).toEqual(user.name);
         done();
       });
     });
 
-    it('should get the id', (done) => {
-      service.id$.pipe(take(1)).subscribe((data) => {
+    it('should get the id', done => {
+      service.id$.pipe(take(1)).subscribe(data => {
         expect(data).toEqual(user.oid);
+        done();
+      });
+    });
+
+    it('should get the roles', done => {
+      service.roles$.pipe(take(1)).subscribe(data => {
+        expect(data).toEqual([user.accessToken]);
         done();
       });
     });

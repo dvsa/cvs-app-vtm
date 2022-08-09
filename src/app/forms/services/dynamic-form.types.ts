@@ -13,6 +13,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { map, Observable } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
+import { SpecialRefData } from './multi-options.service';
 
 export enum FormNodeViewTypes {
   STRING = 'string',
@@ -66,7 +67,7 @@ export interface FormNode {
   hide?: boolean;
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
-  referenceData?: ReferenceDataResourceType;
+  referenceData?: ReferenceDataResourceType | SpecialRefData;
 }
 
 export interface FormNodeCombinationOptions {
@@ -175,7 +176,7 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
-      if (control.meta.type === FormNodeTypes.CONTROL) {
+      if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
         Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
       }
     }

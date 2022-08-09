@@ -4,6 +4,7 @@ import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-te
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, Subject } from 'rxjs';
+import { Roles } from '@models/roles.enum'
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -34,5 +35,9 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngDestroy$.next(true);
     this.ngDestroy$.complete();
+  }
+
+  public get Roles() {
+    return Roles;
   }
 }

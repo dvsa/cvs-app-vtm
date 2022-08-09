@@ -1,4 +1,6 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { CodeChallengeMethodValues } from '@azure/msal-common/dist/utils/Constants';
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',
@@ -18,19 +20,39 @@ export const EmissionsSection: FormNode = {
               name: 'emissionStandard',
               label: 'Emissions standard',
               type: FormNodeTypes.CONTROL,
-              disabled: false
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: '0.10 g/kWh Euro 3 PM', label: '0.10 g/kWh Euro 3 PM' },
+                { value: '0.03 g/kWh Euro IV PM', label: '0.03 g/kWh Euro IV PM' },
+                { value: 'Euro 3', label: 'Euro 3' },
+                { value: 'Euro 4', label: 'Euro 4' },
+                { value: 'Euro 6', label: 'Euro 6' },
+                { value: 'Euro VI', label: 'Euro VI' },
+                { value: 'Full Electric', label: 'Full Electric' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             },
             {
               name: 'smokeTestKLimitApplied',
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
-              disabled: false
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }, { name: ValidatorNames.Required }]
             },
             {
               name: 'fuelType',
               label: 'Fuel type',
               type: FormNodeTypes.CONTROL,
-              disabled: false
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'diesel', label: 'Diesel' },
+                { value: 'gas-cng', label: 'Gas-CNG' },
+                { value: 'gas-lng', label: 'Gas-LNG' },
+                { value: 'gas-lpg', label: 'Gas-LPG' },
+                { value: 'fuel cell', label: 'Fuel cell' },
+                { value: 'petrol', label: 'Petrol' },
+                { value: 'full electric', label: 'Full electric' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             },
             {
               name: 'modType',
@@ -41,13 +63,28 @@ export const EmissionsSection: FormNode = {
                   name: 'code',
                   label: 'Modification code',
                   type: FormNodeTypes.CONTROL,
-                  disabled: false
+                  editType: FormNodeEditTypes.RADIO,
+                  options: [
+                    { value: 'p', label: 'P' },
+                    { value: 'm', label: 'M' },
+                    { value: 'g', label: 'G' }
+                  ],
+                  validators: [
+                    { name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'modificationTypeUsed', value: 'p' } },
+                    { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapFitted', value: 'p' } },
+                    { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } }
+                  ]
                 },
                 {
                   name: 'description',
                   label: 'Modification description',
                   type: FormNodeTypes.CONTROL,
-                  disabled: false
+                  editType: FormNodeEditTypes.RADIO,
+                  options: [
+                    { value: 'particulate trap', label: 'Particulate trap' },
+                    { value: 'modification or change of engine', label: 'Modification or change of engine' },
+                    { value: 'gas engine', label: 'Gas engine' }
+                  ]
                 }
               ]
             },
@@ -55,19 +92,32 @@ export const EmissionsSection: FormNode = {
               name: 'modificationTypeUsed',
               label: 'Modification type used',
               type: FormNodeTypes.CONTROL,
-              disabled: false
+              validators: [
+                { name: ValidatorNames.MaxLength, args: 100 },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'm' } },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'g' } }
+              ],
+              value: ''
             },
             {
               name: 'particulateTrapFitted',
               label: 'Particulate trap fitted',
               type: FormNodeTypes.CONTROL,
-              disabled: false
+              validators: [
+                { name: ValidatorNames.MaxLength, args: 100 },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
+              ],
+              value: ''
             },
             {
               name: 'particulateTrapSerialNumber',
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL,
-              disabled: false
+              validators: [
+                { name: ValidatorNames.MaxLength, args: 100 },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
+              ],
+              value: ''
             }
           ]
         }

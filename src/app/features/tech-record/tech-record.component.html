@@ -1,5 +1,8 @@
 <ng-container *ngIf="vehicleTechRecord$ | async as vehicleTechRecord">
-  <app-vehicle-technical-record [vehicleTechRecord]="vehicleTechRecord || undefined"></app-vehicle-technical-record>
+  <app-vehicle-technical-record
+    [vehicleTechRecord]="vehicleTechRecord || undefined"
+    *appRoleRequired="Roles.TechRecordView"
+  ></app-vehicle-technical-record>
 </ng-container>
 
 <h1 *ngIf="(spinnerService.showSpinner$ | async) === false && (vehicleTechRecord$ | async) === undefined">

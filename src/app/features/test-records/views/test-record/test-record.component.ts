@@ -15,6 +15,7 @@ import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { firstValueFrom, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-test-records',
@@ -57,6 +58,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  public get Roles() {
+    return Roles;
   }
 
   async handleEdit(): Promise<void> {
