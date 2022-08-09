@@ -1,4 +1,4 @@
-import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { ActionReducerMap } from '@ngrx/store';
 import {
   globalErrorReducer,
   GlobalErrorState,
@@ -6,7 +6,7 @@ import {
   STORE_GLOBAL_ERROR_KEY
 } from '@store/global-error/reducers/global-error-service.reducer';
 import { initialSpinnerState, spinnerReducer, SpinnerState, STORE_SPINNER_KEY } from '@store/spinner/reducers/spinner.reducer';
-import { environment } from '../../environments/environment';
+import { defectsReducer, DefectsState, initialDefectsState, STORE_FEATURE_DEFECTS_KEY } from './defects';
 import { initialReferenceDataState, referenceDataReducer, ReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from './reference-data';
 import {
   initialState as initialTechnicalRecordsState,
@@ -15,42 +15,39 @@ import {
   vehicleTechRecordReducer
 } from './technical-records/reducers/technical-record-service.reducer';
 import { initialTestResultsState, STORE_FEATURE_TEST_RESULTS_KEY, testResultsReducer, TestResultsState } from './test-records';
-import {
-  initialTestStationsState,
-  STORE_FEATURE_TEST_STATIONS_KEY,
-  testStationsAdapter,
-  testStationsReducer,
-  TestStationsState
-} from './test-stations';
+import { initialTestStationsState, STORE_FEATURE_TEST_STATIONS_KEY, testStationsReducer, TestStationsState } from './test-stations';
 import { initialState as initialUserState, STORE_FEATURE_USER_KEY, userServiceReducer, UserServiceState } from './user/user-service.reducer';
 
 export interface State {
-  [STORE_FEATURE_USER_KEY]: UserServiceState;
+  [STORE_FEATURE_DEFECTS_KEY]: DefectsState;
+  [STORE_FEATURE_REFERENCE_DATA_KEY]: ReferenceDataState;
   [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: TechnicalRecordServiceState;
   [STORE_FEATURE_TEST_RESULTS_KEY]: TestResultsState;
+  [STORE_FEATURE_TEST_STATIONS_KEY]: TestStationsState;
+  [STORE_FEATURE_USER_KEY]: UserServiceState;
   [STORE_GLOBAL_ERROR_KEY]: GlobalErrorState;
   [STORE_SPINNER_KEY]: SpinnerState;
-  [STORE_FEATURE_REFERENCE_DATA_KEY]: ReferenceDataState;
-  [STORE_FEATURE_TEST_STATIONS_KEY]: TestStationsState;
   router?: any;
 }
 
 export const initialAppState = {
-  [STORE_FEATURE_USER_KEY]: initialUserState,
+  [STORE_FEATURE_DEFECTS_KEY]: initialDefectsState,
+  [STORE_FEATURE_REFERENCE_DATA_KEY]: initialReferenceDataState,
   [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: initialTechnicalRecordsState,
   [STORE_FEATURE_TEST_RESULTS_KEY]: initialTestResultsState,
+  [STORE_FEATURE_TEST_STATIONS_KEY]: initialTestStationsState,
+  [STORE_FEATURE_USER_KEY]: initialUserState,
   [STORE_GLOBAL_ERROR_KEY]: initialGlobalErrorState,
-  [STORE_SPINNER_KEY]: initialSpinnerState,
-  [STORE_FEATURE_REFERENCE_DATA_KEY]: initialReferenceDataState,
-  [STORE_FEATURE_TEST_STATIONS_KEY]: initialTestStationsState
+  [STORE_SPINNER_KEY]: initialSpinnerState
 };
 
 export const reducers: ActionReducerMap<State> = {
-  [STORE_FEATURE_USER_KEY]: userServiceReducer,
+  [STORE_FEATURE_DEFECTS_KEY]: defectsReducer,
+  [STORE_FEATURE_REFERENCE_DATA_KEY]: referenceDataReducer,
   [STORE_FEATURE_TECHNICAL_RECORDS_KEY]: vehicleTechRecordReducer,
   [STORE_FEATURE_TEST_RESULTS_KEY]: testResultsReducer,
+  [STORE_FEATURE_TEST_STATIONS_KEY]: testStationsReducer,
+  [STORE_FEATURE_USER_KEY]: userServiceReducer,
   [STORE_GLOBAL_ERROR_KEY]: globalErrorReducer,
-  [STORE_SPINNER_KEY]: spinnerReducer,
-  [STORE_FEATURE_REFERENCE_DATA_KEY]: referenceDataReducer,
-  [STORE_FEATURE_TEST_STATIONS_KEY]: testStationsReducer
+  [STORE_SPINNER_KEY]: spinnerReducer
 };
