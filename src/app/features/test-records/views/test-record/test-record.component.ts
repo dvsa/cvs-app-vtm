@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
@@ -6,16 +7,15 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defects } from '@models/defects';
+import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { TestTypesService } from '@services/test-types/test-types.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { firstValueFrom, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
-import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-test-records',
@@ -38,8 +38,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     private router: Router,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
-    private actions$: Actions,
-    private testTypeService: TestTypesService
+    private actions$: Actions
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -101,8 +100,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     }
 
     // if all forms are not marcked as dirty, return
-    if (!forms.some(form => form.dirty)) {
-      console.log('Clean');
+    if (!this.isAnyFormDirty(forms)) {
       return;
     }
 
@@ -114,8 +112,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       this.errorService.setErrors(errors);
     }
 
-    if (forms.some(form => form.invalid)) {
-      console.log('Invalid');
+    if (this.isAnyFormInvalid(forms)) {
       return;
     }
 
@@ -149,5 +146,13 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   handleNewTestResult(testResult: any) {
     this.testRecordsService.updateEditingTestResult(testResult);
+  }
+
+  isAnyFormDirty(forms: Array<FormGroup>) {
+    return forms.some(form => form.dirty);
+  }
+
+  isAnyFormInvalid(forms: Array<FormGroup>) {
+    return forms.some(form => form.invalid);
   }
 }

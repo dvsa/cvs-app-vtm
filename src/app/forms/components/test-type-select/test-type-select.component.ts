@@ -19,7 +19,6 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
 
   edit = false;
   categories: Array<TestTypeCategory> = [];
-  selected?: TestType | TestTypeCategory;
   form!: CustomFormGroup;
   private destroy$ = new Subject<void>();
 
@@ -40,7 +39,7 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
   }
 
   tackByFn(i: number, testType: TestType | TestTypeCategory) {
-    testType.id;
+    return testType.id;
   }
 
   handleCategory(category: TestType | TestTypeCategory, i: number) {
@@ -49,8 +48,8 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
     if (category.hasOwnProperty('nextTestTypesOrCategories')) {
       this.categories.push(category as TestTypeCategory);
     } else {
-      this.selected = category;
       this.testTypeIdControl?.setValue(category.id);
+
       this.categories = [];
     }
   }

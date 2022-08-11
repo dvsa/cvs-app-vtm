@@ -13,20 +13,20 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, exhaustMap, filter, map, mergeMap, of, skip, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, filter, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
+  editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
   fetchTestResultsBySystemNumber,
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
+  templateSectionsChanged,
+  updateEditingTestResult,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess,
-  editingTestResult,
-  templateSectionsChanged,
-  updateEditingTestResult
+  updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { selectedTestResultState } from '../selectors/test-records.selectors';
 
@@ -109,25 +109,23 @@ export class TestResultsEffects {
   generateSectionTemplatesAndtestResultToUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(editingTestResult, updateEditingTestResult),
-      concatLatestFrom(action => this.store.pipe(select(selectedTestResultState))),
-      filter(([action, selectedTestResult]) => {
+      filter(action => {
         const { testResult, type } = action;
 
         return (
-          type === editingTestResult.type || (type === updateEditingTestResult.type && testResult.testTypes && !!testResult.testTypes[0].testTypeId)
+          type === editingTestResult.type ||
+          (type === updateEditingTestResult.type && testResult?.testTypes && testResult.testTypes.length > 0 && !!testResult.testTypes[0].testTypeId)
         );
       }),
+      concatLatestFrom(action => this.store.pipe(select(selectedTestResultState), take(1))),
       concatMap(([action, selectedTestResult]) => {
         const { testResult } = action;
-        if (!testResult) {
-          return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
-        }
 
         const { vehicleType } = testResult;
-        if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType) || testResult.testTypes.length == 0) {
+        if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType)) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
-        const testTypeId = testResult.testTypes[0].testTypeId;
+        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
         const testTypeGroup = this.getTestTypeGroup(testTypeId);
         const vehicleTpl = masterTpl[vehicleType as VehicleTypes];
         const tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup] : undefined;
@@ -146,7 +144,7 @@ export class TestResultsEffects {
           (mergedForms as TestResultModel).testTypes[0].testTypeId = testTypeId;
         }
 
-        return of(templateSectionsChanged({ sectionTemplates: tpl ? Object.values(tpl) : [], sectionsValue: mergedForms as TestResultModel }));
+        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }));
       })
     )
   );

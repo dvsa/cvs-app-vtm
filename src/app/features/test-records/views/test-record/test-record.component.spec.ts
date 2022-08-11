@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
@@ -16,9 +17,8 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
-import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { updateTestResultSuccess } from '@store/test-records';
-import merge from 'lodash.merge';
+import { routeEditable } from '@store/router/selectors/router.selectors';
+import { sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
@@ -208,8 +208,17 @@ describe('TestRecordComponent', () => {
       store.resetSelectors();
     });
 
-    it('should return without calling updateTestResultState', fakeAsync(() => {
+    it('should return without calling updateTestResultState if forms are clean', fakeAsync(() => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
+      component.handleSave();
+      tick();
+      expect(updateTestResultStateSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should return without calling updateTestResultState if any forms are invalid', fakeAsync(() => {
+      const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
+      component.isAnyFormDirty = jest.fn().mockReturnValue(true);
+      component.isAnyFormInvalid = jest.fn().mockReturnValue(true);
       component.handleSave();
       tick();
       expect(updateTestResultStateSpy).not.toHaveBeenCalled();
@@ -217,15 +226,22 @@ describe('TestRecordComponent', () => {
 
     it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
-      store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testTypeId: 'a' });
+      const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
+      store.overrideSelector(testResultInEdit, testRecord);
+      store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']));
 
-      let expectedFinalValue;
-      forms.forEach(form => (expectedFinalValue = merge(form.getCleanValue(form), forms[1].getCleanValue(form))));
+      tick();
+      fixture.detectChanges();
+
+      component.isAnyFormDirty = jest.fn().mockReturnValue(true);
+      component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
 
       component.handleSave();
+
       tick();
+
       expect(updateTestResultStateSpy).toHaveBeenCalledTimes(1);
-      expect(updateTestResultStateSpy).toHaveBeenCalledWith(expectedFinalValue);
+      expect(updateTestResultStateSpy).toHaveBeenCalledWith(testRecord);
     }));
   });
 
@@ -251,13 +267,15 @@ describe('TestRecordComponent', () => {
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
     });
-    it('should render the banner is the test type id is not supported', () => {
+
+    it('should render the banner if the test type id is not supported', () => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(false));
       fixture.detectChanges();
       const banner = el.query(By.css('div.govuk-notification-banner'));
       expect(banner).toBeTruthy();
     });
-    it('should render the banner is the test type id is not supported', () => {
+
+    it('should not render the banner if the test type id is supported', () => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
       fixture.detectChanges();
       const banner = el.query(By.css('div.govuk-notification-banner'));

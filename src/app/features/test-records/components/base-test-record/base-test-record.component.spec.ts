@@ -1,17 +1,11 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { masterTpl } from '../../../../forms/templates/test-records/master.template';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { TestResultModel } from '@models/test-result.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { initialAppState } from '@store/.';
 import { BaseTestRecordComponent } from './base-test-record.component';
-import { TestResultModel } from '@models/test-result.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TestType } from '@models/test-type.model';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { QueryList } from '@angular/core';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;
@@ -20,7 +14,7 @@ describe('BaseTestRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent],
-      imports: [DynamicFormsModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule],
       providers: [RouterService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -34,6 +28,22 @@ describe('BaseTestRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe(BaseTestRecordComponent.prototype.handleFormChange.name, () => {
+    it('should emit the new test result', done => {
+      const event = { vin: 'ABC001' } as TestResultModel;
+      const expectedValue = { vin: 'ABC001' };
+
+      fixture.detectChanges();
+
+      component.newTestResult.subscribe(testResult => {
+        expect(testResult).toEqual(expectedValue);
+        done();
+      });
+
+      component.handleFormChange(event);
+    });
   });
 
   // describe('template generation', () => {

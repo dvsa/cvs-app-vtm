@@ -41,7 +41,6 @@ describe('TestTypeNamePipe', () => {
     ['Test Type Display Name 1', '1']
   ])('should %s for id: %s', (expected: string, id: string) => {
     const pipe = new TestTypeNamePipe();
-    console.log(id, expected);
     expect(pipe.transform(id, testTypes)).toBe(expected);
   });
 });
