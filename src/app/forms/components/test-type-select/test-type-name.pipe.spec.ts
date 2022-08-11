@@ -1,7 +1,7 @@
 import { TestTypesTaxonomy } from '@api/test-types';
 import { TestTypeNamePipe } from './test-type-name.pipe';
 
-const testTypes: TestTypesTaxonomy = [
+const testTypes = [
   {
     id: '1',
     suggestedTestTypeDisplayName: 'Test Type Display Name 1'
@@ -25,7 +25,7 @@ const testTypes: TestTypesTaxonomy = [
       }
     ]
   }
-];
+] as TestTypesTaxonomy;
 
 describe('TestTypeNamePipe', () => {
   it('create an instance', () => {

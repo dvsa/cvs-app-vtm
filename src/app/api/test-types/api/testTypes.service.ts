@@ -59,7 +59,7 @@ export class TestTypesService {
     /**
      * Return test types
      * This endpoint will return all the data for test types based on filters provided. By default it will return all testTypes where forVtmOnly is false.
-     * @param applicableTo 
+     * @param applicableTo NOTE: NOT CURRENTLY IMPLEMENTED
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -124,10 +124,10 @@ export class TestTypesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTestTypesid(id: string, fields: string, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe?: 'body', reportProgress?: boolean): Observable<TestTypeInfo>;
-    public getTestTypesid(id: string, fields: string, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestTypeInfo>>;
-    public getTestTypesid(id: string, fields: string, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestTypeInfo>>;
-    public getTestTypesid(id: string, fields: string, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getTestTypesid(id: string, fields: Array<string>, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe?: 'body', reportProgress?: boolean): Observable<TestTypeInfo>;
+    public getTestTypesid(id: string, fields: Array<string>, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestTypeInfo>>;
+    public getTestTypesid(id: string, fields: Array<string>, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestTypeInfo>>;
+    public getTestTypesid(id: string, fields: Array<string>, vehicleType: string, vehicleSize?: string, vehicleConfiguration?: string, vehicleAxles?: number, euVehicleCategory?: string, vehicleClass?: string, vehicleSubclass?: string, vehicleWheels?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getTestTypesid.');
@@ -149,8 +149,8 @@ export class TestTypesService {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (fields !== undefined && fields !== null) {
-            queryParameters = queryParameters.set('fields', <any>fields);
+        if (fields) {
+            queryParameters = queryParameters.set('fields', fields.join(COLLECTION_FORMATS['csv']));
         }
         if (vehicleType !== undefined && vehicleType !== null) {
             queryParameters = queryParameters.set('vehicleType', <any>vehicleType);

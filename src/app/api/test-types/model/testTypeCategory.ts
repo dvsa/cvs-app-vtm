@@ -18,7 +18,7 @@ export interface TestTypeCategory {
     /**
      * Unique identifier
      */
-    id?: string;
+    id: string;
     /**
      * used in helping to sort test types
      */
@@ -30,11 +30,11 @@ export interface TestTypeCategory {
     /**
      * Name of the category
      */
-    name?: string;
+    name: string;
     /**
      * This category is applying only to these vehicle types.
      */
-    forVehicleType?: Array<TestTypeCategory.ForVehicleTypeEnum>;
+    forVehicleType: Array<TestTypeCategory.ForVehicleTypeEnum>;
     /**
      * true for test specific to VTM else false.
      */
@@ -68,19 +68,19 @@ export interface TestTypeCategory {
      */
     forVehicleWheels?: Array<number>;
     /**
-     * This is an array composed of TestTypeCateogries and/or TestTypes
+     * This is an array composed of TestTypeCategories and/or TestTypes
      */
     nextTestTypesOrCategories?: Array<TestType | TestTypeCategory>;
 }
 export namespace TestTypeCategory {
-    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle∂';
+    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle';
     export const ForVehicleTypeEnum = {
         Psv: 'psv' as ForVehicleTypeEnum,
         Hgv: 'hgv' as ForVehicleTypeEnum,
         Trl: 'trl' as ForVehicleTypeEnum,
         Car: 'car' as ForVehicleTypeEnum,
         Lgv: 'lgv' as ForVehicleTypeEnum,
-        Motorcycle: 'motorcycle∂' as ForVehicleTypeEnum
+        Motorcycle: 'motorcycle' as ForVehicleTypeEnum
     };
     export type ForVehicleSizeEnum = 'small' | 'large';
     export const ForVehicleSizeEnum = {
