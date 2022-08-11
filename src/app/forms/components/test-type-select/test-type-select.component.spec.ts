@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { RequiredSection } from '@forms/templates/test-records/section-templates/required/required-hidden-section.template';
@@ -21,7 +22,8 @@ describe('TestTypeSelectComponent', () => {
         DynamicFormService,
         provideMockStore({ initialState: initialAppState }),
         { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]) } }
-      ]
+      ],
+      imports: [ReactiveFormsModule]
     }).compileComponents();
   });
 

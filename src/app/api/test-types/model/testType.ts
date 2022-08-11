@@ -17,7 +17,7 @@ export interface TestType {
     /**
      * Unique identifier
      */
-    id?: string;
+    id: string;
     /**
      * The list of test type IDs or categories IDs, used to determine if two test types can be added as linked within the same test.
      */
@@ -29,7 +29,7 @@ export interface TestType {
     /**
      * Name of the test type
      */
-    name?: string;
+    name: string;
     /**
      * Full name of the test type containing the entire path, having a business value
      */
@@ -45,7 +45,7 @@ export interface TestType {
     /**
      * This category is applying only to these vehicle types. The vehicle types should descend from its parent, but should not be necessarily the same
      */
-    forVehicleType?: Array<TestType.ForVehicleTypeEnum>;
+    forVehicleType: Array<TestType.ForVehicleTypeEnum>;
     /**
      * True for test specific to VTM false for tests specific to VTA. null if it is a parent for test types where both VTA and VTM child test type exists.
      */

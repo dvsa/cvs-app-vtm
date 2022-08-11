@@ -1,4 +1,4 @@
-import { TestTypesTaxonomy } from '@api/test-types';
+import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../actions/test-types.actions';
 import { initialTestTypeState, testTypesReducer, TestTypeState } from './test-types.reducer';
 
@@ -30,8 +30,8 @@ describe('Test Types Reducer', () => {
       const newState: TestTypeState = {
         ...initialTestTypeState,
         entities: {
-          1: { id: '1', name: 'foo' },
-          12: { id: '12', name: 'bar' }
+          1: { id: '1', name: 'foo' } as TestTypeCategory,
+          12: { id: '12', name: 'bar' } as TestTypeCategory
         },
         ids: ['1', '12'],
         loading: false
