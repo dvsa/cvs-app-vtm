@@ -45,46 +45,4 @@ describe('BaseTestRecordComponent', () => {
       component.handleFormChange(event);
     });
   });
-
-  // describe('template generation', () => {
-  //   it('should return undefined if vehicle type is not valid', () => {
-  //     component.testResult.vehicleType = 'xxx' as VehicleTypes;
-  //     component.testResult.testTypes = [{ testTypeId: '1' } as TestType];
-  //     expect(component.generateTemplate()).toBeUndefined();
-  //   });
-
-  //   it('should return the test code template if the test code is present', () => {
-  //     component.testResultCopy.vehicleType = VehicleTypes.PSV;
-  //     component.testResultCopy.testTypes = [{ testTypeId: '1' } as TestType];
-  //     expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['testTypesGroup1']!));
-  //   });
-
-  //   it('should return the default template if the testCode is not defined in the template', () => {
-  //     component.testResultCopy.vehicleType = VehicleTypes.PSV;
-  //     component.testResultCopy.testTypes = [{ testTypeId: '23455' } as TestType];
-  //     expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
-  //   });
-
-  //   it('should return the default template if the testCode is not defined', () => {
-  //     component.testResultCopy.vehicleType = VehicleTypes.PSV;
-  //     component.testResultCopy.testTypes = [{ testTypeId: '23455' } as TestType];
-  //     expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
-  //   });
-  // });
-
-  // describe('form generation', () => {
-  //   it('should call create form and add it to sectionForms', () => {
-  //     component.getFormForTemplate({} as FormNode);
-  //     expect(component.sectionForms.length).toBe(1);
-  //   });
-  // });
-
-  // describe('set dynamicFormGroupComponents', () => {
-  //   it('should get form from each component and add it to sectionForms', () => {
-  //     const dfm = new DynamicFormGroupComponent(new DynamicFormService());
-  //     dfm.form = new CustomFormGroup({ name: 'test', type: FormNodeTypes.GROUP }, {});
-  //     component.dynamicFormGroupComponents = [dfm] as unknown as QueryList<DynamicFormGroupComponent>;
-  //     expect(component.sectionForms.length).toBe(1);
-  //   });
-  // });
 });
