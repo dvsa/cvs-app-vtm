@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
-import { Subject, takeUntil } from 'rxjs';
+import { Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-defects[template]',
@@ -16,18 +15,17 @@ export class DefectsComponent implements OnInit, OnDestroy {
   @Output() formsChange = new EventEmitter<(CustomFormGroup | CustomFormArray)[]>();
   form!: CustomFormGroup;
 
-  private destroy$ = new Subject<void>();
+  private formSubscription = new Subscription();
 
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(e => this.formsChange.emit(e));
+    this.formSubscription = this.form.valueChanges.subscribe(event => this.formsChange.emit(event));
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.formSubscription.unsubscribe();
   }
 
   get defectsForm() {
@@ -38,7 +36,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm?.controls[i] as CustomFormGroup;
   }
 
-  trackByFn(index: number, defect: AbstractControl): number {
+  trackByFn(index: number): number {
     return index;
   }
 
