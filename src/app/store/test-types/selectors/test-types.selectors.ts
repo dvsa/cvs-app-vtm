@@ -70,27 +70,3 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, vehicleType: VehicleTypes
       return newTestType;
     });
 }
-
-// function sortTestTypes(testTypes: TestTypesTaxonomy): TestTypesTaxonomy {
-//   return testTypes
-//     .sort((a, b) => {
-//       if (!b.hasOwnProperty('sortId')) {
-//         return 1;
-//       }
-
-//       if (!a.hasOwnProperty('sortId')) {
-//         return -1;
-//       }
-
-//       return parseInt((a as TestTypeCategory).sortId || '0') - parseInt((b as TestTypeCategory).sortId || '0');
-//     })
-//     .map(testType => {
-//       const newTestType = { ...testType } as TestTypeCategory;
-
-//       if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
-//         newTestType.nextTestTypesOrCategories = sortTestTypes(newTestType.nextTestTypesOrCategories!);
-//       }
-
-//       return newTestType;
-//     });
-// }
