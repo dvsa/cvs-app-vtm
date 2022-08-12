@@ -6,6 +6,7 @@ import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
 import {
+  isSameTestTypeId,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
@@ -179,6 +180,50 @@ describe('Test Results Selectors', () => {
 
     it('should return empty array if testTypes is empty', () => {
       expect(selectAmendedDefectData.projector({ testTypes: [] })).toEqual([]);
+    });
+  });
+
+  describe('isSameTestTypeId', () => {
+    it('should return false if the testTypeId is different', () => {
+      const amendTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '1'
+          }
+        ]
+      } as TestResultModel;
+      const oldTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '2'
+          }
+        ]
+      } as TestResultModel;
+      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      expect(state).toBe(false);
+    });
+
+    it('should return true if the testTypeId is the same', () => {
+      const amendTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '1'
+          }
+        ]
+      } as TestResultModel;
+      const oldTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '1'
+          }
+        ]
+      } as TestResultModel;
+      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      expect(state).toBe(true);
     });
   });
 });

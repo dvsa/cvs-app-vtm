@@ -81,6 +81,10 @@ export const selectAmendedDefectData = createSelector(selectedAmendedTestResultS
 
 export const sectionTemplates = createSelector(testResultsFeatureState, state => state.sectionTemplates);
 
+export const isSameTestTypeId = createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
+  return testRecord?.testTypes[0].testTypeId === amendedTestRecord?.testTypes[0].testTypeId;
+});
+
 // Common Functions
 /**
  * Returns the selected test record defects for the first testType (if any).

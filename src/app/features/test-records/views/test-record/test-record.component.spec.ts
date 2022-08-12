@@ -18,7 +18,14 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
 import { routeEditable } from '@store/router/selectors/router.selectors';
-import { sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
+import {
+  isSameTestTypeId,
+  sectionTemplates,
+  selectedAmendedTestResultState,
+  selectedTestResultState,
+  testResultInEdit,
+  updateTestResultSuccess
+} from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
@@ -193,19 +200,20 @@ describe('TestRecordComponent', () => {
   });
 
   describe(TestRecordComponent.prototype.handleSave.name, () => {
-    const forms = [
-      new CustomFormGroup(
-        { name: 'form1', type: FormNodeTypes.GROUP },
-        { foo: new CustomFormControl({ name: 'foo', label: 'Foo', type: FormNodeTypes.CONTROL }, '', [Validators.required]) }
-      ),
-      new CustomFormGroup(
-        { name: 'form2', type: FormNodeTypes.GROUP },
-        { foo: new CustomFormControl({ name: 'bar', label: 'Bar', type: FormNodeTypes.CONTROL }, '') }
-      )
-    ];
-
     beforeEach(() => {
       store.resetSelectors();
+      store.setState({
+        ...initialAppState,
+        testRecords: {
+          ids: ['1'],
+          entities: { '1': { testTypes: [{ testNumber: 'foo' }] } },
+          editingTestResult: { testTypes: [{ testNumber: 'foo' }] }
+        }
+      });
+      // store.overrideSelector(isSameTestTypeId, true);
+      // store.overrideSelector(selectedAmendedTestResultState, { testTypes: [{ testNumber: 'foo' }] } as TestResultModel);
+      // store.overrideSelector(selectedTestResultState, { testTypes: [{ testNumber: 'foo' }] } as TestResultModel);
+      // jest.spyOn(testRecordsService, 'isSameTestTypeId$', 'get').mockReturnValue(of(true));
     });
 
     it('should return without calling updateTestResultState if forms are clean', fakeAsync(() => {

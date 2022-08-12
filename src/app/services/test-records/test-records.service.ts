@@ -8,6 +8,7 @@ import {
   editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
+  isSameTestTypeId,
   sectionTemplates,
   selectAllTestResults,
   selectAmendedDefectData,
@@ -128,5 +129,9 @@ export class TestRecordsService {
 
   updateEditingTestResult(testResult: any): void {
     this.store.dispatch(updateEditingTestResult({ testResult }));
+  }
+
+  get isSameTestTypeId$(): Observable<boolean> {
+    return this.store.pipe(select(isSameTestTypeId));
   }
 }
