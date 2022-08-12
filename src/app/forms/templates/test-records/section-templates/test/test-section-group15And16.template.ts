@@ -1,3 +1,4 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const TestSectionGroup15And16: FormNode = {
@@ -47,8 +48,10 @@ export const TestSectionGroup15And16: FormNode = {
               name: 'testResult',
               label: 'Result',
               value: '',
-              disabled: true,
-
+              validators: [
+                { name: ValidatorNames.enableIfEquals, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
+                { name: ValidatorNames.enableIfEquals, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+              ],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -118,13 +121,13 @@ export const TestSectionGroup15And16: FormNode = {
             {
               name: 'prohibitionIssued',
               type: FormNodeTypes.CONTROL,
-              value: true,
               label: 'Prohibition issued',
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
-              ]
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             }
           ]
         }

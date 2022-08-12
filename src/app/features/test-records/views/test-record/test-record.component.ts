@@ -63,7 +63,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     return Roles;
   }
 
-  async handleEdit(): Promise<void> {
+  handleEdit(): void {
     this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
   }
 

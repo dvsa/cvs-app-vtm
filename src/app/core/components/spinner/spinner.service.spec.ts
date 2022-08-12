@@ -5,6 +5,8 @@ import { initialAppState, State } from '@store/.';
 import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
+import { testStationsLoadingState } from '@store/test-stations';
+import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
 import { firstValueFrom, take } from 'rxjs';
 import { SpinnerComponent } from './spinner.component';
 import { SpinnerService } from './spinner.service';
@@ -52,6 +54,16 @@ describe('Spinner-Service', () => {
 
     it('Should return true when TechnicalRecords loading state is true', async () => {
       mockStore.overrideSelector(technicalRecordsLoadingState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
+
+    it('Should return true when testTypes loading state is true', async () => {
+      mockStore.overrideSelector(selectTestTypesLoadingState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
+
+    it('Should return true when test stations loading state is true', async () => {
+      mockStore.overrideSelector(testStationsLoadingState, true);
       expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
     });
   });

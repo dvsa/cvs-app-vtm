@@ -8,8 +8,8 @@ import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeView
 @Component({
   selector: 'app-dynamic-form-group',
   templateUrl: './dynamic-form-group.component.html',
-  styleUrls: ['./dynamic-form-group.component.scss']
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./dynamic-form-group.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   @Input() data: any = {};
