@@ -20,7 +20,7 @@ export class TestTypeNamePipe implements PipeTransform {
     return result;
   }
 
-  transform(value: string, testTypes: Array<TestType | TestTypeCategory> | null): unknown {
+  transform(value: string, testTypes: Array<TestType | TestTypeCategory> | null): string {
     if (!testTypes) {
       return value;
     }
