@@ -23,9 +23,14 @@ export class DynamicFormService {
     [ValidatorNames.HideIfEmpty]: (args: string) => CustomValidators.hideIfEmpty(args),
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
+    [ValidatorNames.enableIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.enableIfEquals(args.sibling, args.value),
+    [ValidatorNames.disableIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.disableIfEquals(args.sibling, args.value),
     [ValidatorNames.HideIfNotEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfNotEqual(args.sibling, args.value),
-    [ValidatorNames.HideIfParentSiblingNotEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
-    [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: any }) => CustomValidators.hideIfParentSiblingEquals(args.sibling, args.value),
+    [ValidatorNames.HideIfParentSiblingNotEqual]: (args: { sibling: string; value: any }) =>
+      CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
+    [ValidatorNames.HideIfParentSiblingEqual]: (args: { sibling: string; value: any }) =>
+      CustomValidators.hideIfParentSiblingEquals(args.sibling, args.value),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
   };
 

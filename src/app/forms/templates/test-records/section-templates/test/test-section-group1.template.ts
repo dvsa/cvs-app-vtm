@@ -1,3 +1,4 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const TestSectionGroup1: FormNode = {
@@ -40,15 +41,16 @@ export const TestSectionGroup1: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testResult',
               label: 'Result',
               value: '',
-              disabled: true,
-
+              validators: [
+                { name: ValidatorNames.enableIfEquals, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
+                { name: ValidatorNames.enableIfEquals, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+              ],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -56,7 +58,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -64,7 +65,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Certificate number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -72,7 +72,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Test Number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -80,7 +79,6 @@ export const TestSectionGroup1: FormNode = {
               label: 'Expiry Date',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
@@ -89,8 +87,8 @@ export const TestSectionGroup1: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              value: '',
-              disabled: true
+              disabled: true,
+              value: ''
             },
             {
               name: 'additionalCommentsForAbandon',
