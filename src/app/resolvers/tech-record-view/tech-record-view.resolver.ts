@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { Action, select, Store } from '@ngrx/store';
-import { Observable, of, take, map, count } from 'rxjs';
+import { Resolve } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { Observable, take, map, count } from 'rxjs';
 import { State } from '@store/.';
 import { Actions, ofType } from '@ngrx/effects';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
 import { getBySystemNumber, getBySystemNumberFailure } from '@store/technical-records';
 import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { getBySystemNumberSuccess } from '@store/technical-records';
-import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
 
 @Injectable({
   providedIn: 'root'
