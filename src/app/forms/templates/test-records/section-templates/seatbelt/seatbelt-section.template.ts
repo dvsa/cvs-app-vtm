@@ -21,7 +21,7 @@ export const SeatbeltSection: FormNode = {
               label: 'Carried out during test',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.RADIO,
-              value: false,
+              value: null,
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
@@ -33,7 +33,7 @@ export const SeatbeltSection: FormNode = {
               label: 'Number of seatbelts fitted',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
-              value: 0,
+              value: null,
               validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
             },
             {
@@ -42,6 +42,7 @@ export const SeatbeltSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
+              value: null,
               validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
             }
           ]
