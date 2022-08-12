@@ -50,7 +50,7 @@ export class TestTypeSelectComponent implements OnInit, OnDestroy {
     } else {
       this.testTypeIdControl?.setValue(category.id);
 
-      this.categories = [];
+      this.handleChange();
     }
   }
 
