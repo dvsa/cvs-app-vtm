@@ -31,7 +31,6 @@ describe('TestResultsEffects', () => {
         provideMockStore({
           initialState: initialAppState
         }),
-        // { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } },
         RouterService
       ]
     });
@@ -54,12 +53,10 @@ describe('TestResultsEffects', () => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchTestTypes });
 
-        // type FetchTestTypesWatchBody = () => Observable<TestTypesTaxonomy>;
         // mock service call
         (testTypesService.getTestTypes as () => Observable<TestTypesTaxonomy>) = jest.fn((): Observable<TestTypesTaxonomy> => {
           return cold('--a|', { a: testTypes });
         });
-        //jest.spyOn(testTypesService, 'getTestTypes').mockReturnValue(cold('--a|', { a: testTypes }));
 
         // expect effect to return success action
         expectObservable(effects.fetchTestTypeTaxonomy$).toBe('---b', {
