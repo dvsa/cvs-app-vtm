@@ -204,11 +204,6 @@ describe('TestRecordComponent', () => {
           editingTestResult: { testTypes: [{ testNumber: 'foo' }] } as TestResultModel
         }
       });
-
-      // store.overrideSelector(isSameTestTypeId, true);
-      // store.overrideSelector(selectedAmendedTestResultState, { testTypes: [{ testNumber: 'foo' }] } as TestResultModel);
-      // store.overrideSelector(selectedTestResultState, { testTypes: [{ testNumber: 'foo' }] } as TestResultModel);
-      // jest.spyOn(testRecordsService, 'isSameTestTypeId$', 'get').mockReturnValue(of(true));
     });
 
     it('should return without calling updateTestResultState if forms are clean', fakeAsync(() => {
