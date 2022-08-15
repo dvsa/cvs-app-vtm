@@ -37,7 +37,6 @@
   >
     <h2 class="govuk-heading-m">Browse: {{ category.name }}</h2>
     <ol class="list">
-      <!-- <ol *ngFor="let category of categories; trackBy: tackByFn; let i = index" class="list"> -->
       <ng-container *ngIf="hasNext(category)">
         <li
           *ngFor="let type of category.nextTestTypesOrCategories; trackBy: tackByFn"
