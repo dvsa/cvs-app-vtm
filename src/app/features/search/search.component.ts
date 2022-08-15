@@ -4,6 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { SEARCH_TYPES } from '@services/technical-record/technical-record.service';
 import { map, Observable } from 'rxjs';
+import { Roles } from '@models/roles.enum'
 
 @Component({
   selector: 'app-search',
@@ -34,5 +35,9 @@ export class SearchComponent {
 
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
     return errors.find(error => error.anchorLink === name);
+  }
+
+  public get Roles() {
+    return Roles;
   }
 }

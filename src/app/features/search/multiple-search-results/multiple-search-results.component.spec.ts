@@ -2,26 +2,40 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { vehicleTechRecords } from '@store/technical-records';
+import { of, ReplaySubject } from 'rxjs';
 import { SingleSearchResultComponent } from '../single-search-result/single-search-result.component';
 import { MultipleSearchResultsComponent } from './multiple-search-results.component';
-import { UserRoleDirective } from '@directives/user-role-mock.directive';
 
 describe('MultipleSearchResultsComponent', () => {
   let component: MultipleSearchResultsComponent;
   let fixture: ComponentFixture<MultipleSearchResultsComponent>;
   let store: MockStore;
+  let actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SingleSearchResultComponent, MultipleSearchResultsComponent, UserRoleDirective],
+      declarations: [SingleSearchResultComponent, MultipleSearchResultsComponent, RoleRequiredDirective],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        provideMockActions(() => actions$),
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of(['TechRecord.View'])
+          }
+        }
+      ]
     }).compileComponents();
   });
 
