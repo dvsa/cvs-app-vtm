@@ -42,6 +42,7 @@ describe('Test Results Selectors', () => {
           })
         }
       };
+
       const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1', testNumber: '1' } as Params);
       expect(selectedState).toEqual(state.entities['testResult1']);
     });

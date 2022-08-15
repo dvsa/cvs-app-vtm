@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { addError, clearError } from '@store/global-error/actions/global-error.actions';
 import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
 
 describe('GlobalErrorService', () => {
   let service: GlobalErrorService;
-  let store: MockStore;
+  let store: MockStore<State>;
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [provideMockStore({ initialState: initialAppState })] });
     service = TestBed.inject(GlobalErrorService);

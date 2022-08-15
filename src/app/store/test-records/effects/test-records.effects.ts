@@ -29,6 +29,7 @@ import {
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { selectedTestResultState } from '../selectors/test-records.selectors';
+import { selectQueryParam } from '@store/router/selectors/router.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -117,8 +118,10 @@ export class TestResultsEffects {
           (type === updateEditingTestResult.type && testResult?.testTypes && testResult.testTypes.length > 0 && !!testResult.testTypes[0].testTypeId)
         );
       }),
-      concatLatestFrom(action => this.store.pipe(select(selectedTestResultState), take(1))),
-      concatMap(([action, selectedTestResult]) => {
+      mergeMap(action =>
+        of(action).pipe(withLatestFrom(this.store.pipe(select(selectedTestResultState)), this.store.pipe(select(selectQueryParam('edit')))), take(1))
+      ),
+      concatMap(([action, selectedTestResult, isEditing]) => {
         const { testResult } = action;
 
         const { vehicleType } = testResult;
@@ -126,9 +129,19 @@ export class TestResultsEffects {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
         const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
-        const testTypeGroup = this.getTestTypeGroup(testTypeId);
+        const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
         const vehicleTpl = masterTpl[vehicleType as VehicleTypes];
-        const tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup] : undefined;
+
+        let tpl;
+        if (testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)) {
+          tpl = vehicleTpl[testTypeGroup];
+        } else {
+          if (isEditing === 'true') {
+            tpl = undefined;
+          } else {
+            tpl = vehicleTpl['default'];
+          }
+        }
 
         if (!tpl) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
@@ -157,13 +170,4 @@ export class TestResultsEffects {
     private routerService: RouterService,
     private dfs: DynamicFormService
   ) {}
-
-  getTestTypeGroup(testTypeId: string): string | undefined {
-    for (const groupName in TEST_TYPES) {
-      if (TEST_TYPES[groupName as keyof typeof TEST_TYPES].includes(testTypeId)) {
-        return groupName;
-      }
-    }
-    return undefined;
-  }
 }

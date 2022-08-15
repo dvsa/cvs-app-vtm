@@ -1,12 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
-import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -16,16 +14,9 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/.';
-import { routeEditable } from '@store/router/selectors/router.selectors';
-import {
-  isSameTestTypeId,
-  sectionTemplates,
-  selectedAmendedTestResultState,
-  selectedTestResultState,
-  testResultInEdit,
-  updateTestResultSuccess
-} from '@store/test-records';
+import { initialAppState, State } from '@store/.';
+import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { initialTestResultsState, isSameTestTypeId, sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
@@ -37,7 +28,7 @@ describe('TestRecordComponent', () => {
   let fixture: ComponentFixture<TestRecordComponent>;
   let el: DebugElement;
   let mockRouteEditable: MemoizedSelector<any, boolean, DefaultProjectorFn<boolean>>;
-  let store: MockStore;
+  let store: MockStore<State>;
   let router: Router;
   let route: ActivatedRoute;
   let testRecordsService: TestRecordsService;
@@ -71,6 +62,9 @@ describe('TestRecordComponent', () => {
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
     testRecordsService = TestBed.inject(TestRecordsService);
+
+    store.resetSelectors();
+    store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);
   });
 
   it('should create', () => {
@@ -201,15 +195,16 @@ describe('TestRecordComponent', () => {
 
   describe(TestRecordComponent.prototype.handleSave.name, () => {
     beforeEach(() => {
-      store.resetSelectors();
       store.setState({
         ...initialAppState,
         testRecords: {
+          ...initialTestResultsState,
           ids: ['1'],
-          entities: { '1': { testTypes: [{ testNumber: 'foo' }] } },
-          editingTestResult: { testTypes: [{ testNumber: 'foo' }] }
+          entities: { '1': { testTypes: [{ testNumber: 'foo' }] } as TestResultModel },
+          editingTestResult: { testTypes: [{ testNumber: 'foo' }] } as TestResultModel
         }
       });
+
       // store.overrideSelector(isSameTestTypeId, true);
       // store.overrideSelector(selectedAmendedTestResultState, { testTypes: [{ testNumber: 'foo' }] } as TestResultModel);
       // store.overrideSelector(selectedTestResultState, { testTypes: [{ testNumber: 'foo' }] } as TestResultModel);
@@ -217,6 +212,7 @@ describe('TestRecordComponent', () => {
     });
 
     it('should return without calling updateTestResultState if forms are clean', fakeAsync(() => {
+      store.overrideSelector(isSameTestTypeId, true);
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
       component.handleSave();
       tick();
@@ -235,6 +231,7 @@ describe('TestRecordComponent', () => {
     it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
+      store.overrideSelector(isSameTestTypeId, false);
       store.overrideSelector(testResultInEdit, testRecord);
       store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']));
 

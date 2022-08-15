@@ -14,8 +14,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState } from '@store/.';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { initialAppState, State } from '@store/.';
+import { selectQueryParams, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { createMock, createMockList } from 'ts-auto-mock';
@@ -43,6 +43,19 @@ jest.mock('../../../forms/templates/test-records/master.template', () => ({
   default: jest.fn(),
   masterTpl: {
     psv: {
+      default: {
+        test: <FormNode>{
+          name: 'Default',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testTypes',
+              type: FormNodeTypes.ARRAY,
+              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }]
+            }
+          ]
+        }
+      },
       testTypesGroup1: {
         test: <FormNode>{
           name: 'Test',
@@ -65,7 +78,7 @@ describe('TestResultsEffects', () => {
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   let testResultsService: TestRecordsService;
-  let store: MockStore;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -350,6 +363,8 @@ describe('TestResultsEffects', () => {
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+
         actions$ = hot('-a', {
           a: updateEditingTestResult({
             testResult
@@ -360,6 +375,54 @@ describe('TestResultsEffects', () => {
           b: templateSectionsChanged({
             sectionTemplates: [],
             sectionsValue: undefined
+          })
+        });
+      });
+    });
+
+    it('should return empty section templates if testTypeId is known but not in master template and edit is true', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '39' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: [],
+            sectionsValue: undefined
+          })
+        });
+      });
+    });
+
+    it('should return default section templates if testTypeId is known but not in master template and edit is false', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '39' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'false' });
+
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(masterTpl.psv['default']),
+            sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
           })
         });
       });

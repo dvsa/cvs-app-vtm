@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TestResultModel } from '@models/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { fetchTestResults, fetchTestResultsBySystemNumber, updateTestResult } from '@store/test-records';
 import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
@@ -11,7 +11,7 @@ import { TestRecordsService } from './test-records.service';
 describe('TestRecordsService', () => {
   let service: TestRecordsService;
   let httpTestingController: HttpTestingController;
-  let store: MockStore;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { SingleSearchResultComponent } from './single-search-result.component';
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -17,7 +17,7 @@ describe('SingleSearchResultComponent', () => {
   let component: SingleSearchResultComponent;
   let fixture: ComponentFixture<SingleSearchResultComponent>;
   let router: Router;
-  let store: MockStore;
+  let store: MockStore<State>;
   let actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {

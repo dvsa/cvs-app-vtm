@@ -59,21 +59,25 @@ export const selectedTestSortedAmendmentHistory = createSelector(selectedTestRes
   return testHistory.sort(byDate);
 });
 
-export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testNumber, createdAt }) => {
-  const amendedTest = testRecord?.testHistory?.find(testResult => testResult.createdAt === createdAt);
+export const selectedAmendedTestResultState = createSelector(
+  selectedTestResultState,
+  selectRouteNestedParams,
+  (testRecord, { testNumber, createdAt }) => {
+    const amendedTest = testRecord?.testHistory?.find(testResult => testResult.createdAt === createdAt);
 
-  if (!amendedTest) {
-    return undefined;
+    if (!amendedTest) {
+      return undefined;
+    }
+
+    const testType = amendedTest.testTypes.find(testType => testType.testNumber === testNumber);
+
+    if (!testType) {
+      return undefined;
+    }
+
+    return { ...amendedTest, testTypes: [testType] };
   }
-
-  const testType = amendedTest.testTypes.find(testType => testType.testNumber === testNumber);
-
-  if (!testType) {
-    return undefined;
-  }
-
-  return { ...amendedTest, testTypes: [testType] };
-});
+);
 
 export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, amendedTestResult => {
   return getDefectFromTestResult(amendedTestResult);
