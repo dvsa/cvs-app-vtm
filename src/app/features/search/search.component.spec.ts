@@ -6,7 +6,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { globalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { of } from 'rxjs';
 import { SearchComponent } from './search.component';
@@ -16,7 +16,7 @@ describe('SearchComponent', () => {
   let fixture: ComponentFixture<SearchComponent>;
   let globalErrorService: GlobalErrorService;
   let router: Router;
-  let store: MockStore;
+  let store: MockStore<State>;
   const expectedError: GlobalError = { error: 'some-error', anchorLink: 'some-link' };
   const expectedErrors: GlobalError[] = [expectedError];
 
@@ -24,11 +24,7 @@ describe('SearchComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SearchComponent],
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [
-        GlobalErrorService,
-        TechnicalRecordService,
-        provideMockStore({ initialState: initialAppState })
-      ]
+      providers: [GlobalErrorService, TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
@@ -100,19 +96,16 @@ describe('SearchComponent', () => {
 
         expect(addErrorSpy).toHaveBeenCalledWith({ error: component.missingTypeErrorMessage, anchorLink: 'search-type' });
       });
-    })
+    });
 
     describe('helper methods', () => {
-      it('should get inline error message', (done) => {
-        const addErrorSpy = jest
-          .spyOn(globalErrorService, 'errors$', 'get')
-          .mockImplementation(() => of(expectedErrors));
+      it('should get inline error message', done => {
+        const addErrorSpy = jest.spyOn(globalErrorService, 'errors$', 'get').mockImplementation(() => of(expectedErrors));
 
-        component.getInlineErrorMessage(expectedError.anchorLink!)
-          .subscribe(response => {
-            expect(response).toBeTruthy();
-            done();
-          }); // subscribe to activate the map inside 'getInlineErrorMessage()'
+        component.getInlineErrorMessage(expectedError.anchorLink!).subscribe(response => {
+          expect(response).toBeTruthy();
+          done();
+        }); // subscribe to activate the map inside 'getInlineErrorMessage()'
 
         expect(addErrorSpy).toHaveBeenCalled();
       });
@@ -122,6 +115,6 @@ describe('SearchComponent', () => {
 
         expect(error).toEqual(expectedError);
       });
-    })
+    });
   });
 });

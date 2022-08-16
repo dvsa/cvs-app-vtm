@@ -3,36 +3,82 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-result.model';
+import { TestType } from '@models/test-type.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState } from '@store/.';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { initialAppState, State } from '@store/.';
+import { selectQueryParams, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
+import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
+import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
+  editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
   fetchTestResultsBySystemNumber,
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
-  updateTestResultFailed,
+  templateSectionsChanged,
+  updateEditingTestResult,
   updateTestResult,
+  updateTestResultFailed,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
+import { selectedTestResultState } from '../selectors/test-records.selectors';
 import { TestResultsEffects } from './test-records.effects';
+
+jest.mock('../../../forms/templates/test-records/master.template', () => ({
+  __esModule: true,
+  default: jest.fn(),
+  masterTpl: {
+    psv: {
+      default: {
+        test: <FormNode>{
+          name: 'Default',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testTypes',
+              type: FormNodeTypes.ARRAY,
+              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }]
+            }
+          ]
+        }
+      },
+      testTypesGroup1: {
+        test: <FormNode>{
+          name: 'Test',
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testTypes',
+              type: FormNodeTypes.ARRAY,
+              children: [{ name: '0', type: FormNodeTypes.GROUP, children: [{ name: 'testTypeId', type: FormNodeTypes.CONTROL, value: '' }] }]
+            }
+          ]
+        }
+      }
+    }
+  }
+}));
 
 describe('TestResultsEffects', () => {
   let effects: TestResultsEffects;
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   let testResultsService: TestRecordsService;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,10 +102,12 @@ describe('TestResultsEffects', () => {
           ]
         }),
         { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } },
-        RouterService
+        RouterService,
+        DynamicFormService
       ]
     });
 
+    store = TestBed.inject(MockStore);
     effects = TestBed.inject(TestResultsEffects);
     testResultsService = TestBed.inject(TestRecordsService);
   });
@@ -120,7 +168,7 @@ describe('TestResultsEffects', () => {
       });
     });
 
-    it('should return fetchTestResultsBySystemNumberFailed action on API error', () => {
+    it('should return fetchTestResultsBySystemNumberSuccess on a 404', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a--', { a: fetchTestResultsBySystemNumber });
 
@@ -185,6 +233,18 @@ describe('TestResultsEffects', () => {
   describe('updateTestResult$', () => {
     const newTestResult = { testResultId: '1' } as TestResultModel;
 
+    it('should dispatch updateTestResultSuccess with return payload', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
+
+        jest.spyOn(testResultsService, 'saveTestResult').mockReturnValue(cold('---b', { b: newTestResult }));
+
+        expectObservable(effects.updateTestResult$).toBe('----b', {
+          b: updateTestResultSuccess({ payload: { id: '1', changes: newTestResult } })
+        });
+      });
+    });
+
     it('should dispatch updateTestResultFailed action with empty errors array', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a-', { a: updateTestResult({ value: newTestResult }) });
@@ -216,6 +276,168 @@ describe('TestResultsEffects', () => {
         ];
         expectObservable(effects.updateTestResult$).toBe('----b', {
           b: updateTestResultFailed({ errors: expectedErrors })
+        });
+      });
+    });
+  });
+
+  describe('generateSectionTemplatesAndtestResultToUpdate$', () => {
+    beforeEach(() => {
+      store.resetSelectors();
+      jest.resetModules();
+    });
+
+    it('should dispatch templateSectionsChanged with new sections and test result', () => {
+      // const { masterTpl } = require('../../../forms/templates/test-records/master.template');
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '1' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectedTestResultState, testResult);
+
+        actions$ = hot('-a', {
+          a: editingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']),
+            sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel
+          })
+        });
+      });
+    });
+
+    it('should return empty section templates if action testResult.vehicleType === undefined', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: undefined,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '1' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: [],
+            sectionsValue: undefined
+          })
+        });
+      });
+    });
+
+    it('should return empty section templates if action testResult.vehicleType is not known by masterTpl', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: 'car' as VehicleTypes,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '1' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: [],
+            sectionsValue: undefined
+          })
+        });
+      });
+    });
+
+    it('should return empty section templates if testTypeId doesnt apply to vehicleType', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '190' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: [],
+            sectionsValue: undefined
+          })
+        });
+      });
+    });
+
+    it('should return empty section templates if testTypeId is known but not in master template and edit is true', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '39' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'true' });
+
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: [],
+            sectionsValue: undefined
+          })
+        });
+      });
+    });
+
+    it('should return default section templates if testTypeId is known but not in master template and edit is false', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '39' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectQueryParams, { edit: 'false' });
+
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(masterTpl.psv['default']),
+            sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
+          })
+        });
+      });
+    });
+
+    it('should not dispatch any actions when updateEditingTestResult is caught without testTypeId', () => {
+      testScheduler.run(({ hot, expectObservable }) => {
+        actions$ = hot('-a', {
+          a: updateEditingTestResult({
+            testResult: {} as TestResultModel
+          })
+        });
+
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('--', {
+          b: []
         });
       });
     });

@@ -77,7 +77,6 @@ export const TestSectionGroup1: FormNode = {
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
-              value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,

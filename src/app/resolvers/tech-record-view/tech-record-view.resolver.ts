@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { Action, select, Store } from '@ngrx/store';
-import { Observable, of, take, map, count } from 'rxjs';
+import { Resolve } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { Observable, take, map, count } from 'rxjs';
 import { State } from '@store/.';
 import { Actions, ofType } from '@ngrx/effects';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';

@@ -22,6 +22,8 @@ import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-head
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
+import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
+import { TestTypeNamePipe } from './components/test-type-select/test-type-name.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
+    TestTypeSelectComponent,
+    TestTypeNamePipe,
     VehicleHeaderComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
@@ -61,6 +65,7 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
+    TestTypeSelectComponent,
     VehicleHeaderComponent
   ]
 })

@@ -1,17 +1,11 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { masterTpl } from '../../../../forms/templates/test-records/master.template';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { TestResultModel } from '@models/test-result.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { initialAppState } from '@store/.';
 import { BaseTestRecordComponent } from './base-test-record.component';
-import { TestResultModel } from '@models/test-result.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TestType } from '@models/test-type.model';
-import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { QueryList } from '@angular/core';
-import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;
@@ -20,7 +14,7 @@ describe('BaseTestRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent],
-      imports: [DynamicFormsModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule],
       providers: [RouterService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -36,45 +30,19 @@ describe('BaseTestRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('template generation', () => {
-    it('should return undefined if vehicle type is not valid', () => {
-      component.testResult.vehicleType = 'xxx' as VehicleTypes;
-      component.testResult.testTypes = [{ testTypeId: '1' } as TestType];
-      expect(component.generateTemplate()).toBeUndefined();
-    });
+  describe(BaseTestRecordComponent.prototype.handleFormChange.name, () => {
+    it('should emit the new test result', done => {
+      const event = { vin: 'ABC001' } as TestResultModel;
+      const expectedValue = { vin: 'ABC001' };
 
-    it('should return the test code template if the test code is present', () => {
-      component.testResult.vehicleType = VehicleTypes.PSV;
-      component.testResult.testTypes = [{ testTypeId: '1' } as TestType];
-      expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['testTypesGroup1']!));
-    });
+      fixture.detectChanges();
 
-    it('should return the default template if the testCode is not defined in the template', () => {
-      component.testResult.vehicleType = VehicleTypes.PSV;
-      component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
-      expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
-    });
+      component.newTestResult.subscribe(testResult => {
+        expect(testResult).toEqual(expectedValue);
+        done();
+      });
 
-    it('should return the default template if the testCode is not defined', () => {
-      component.testResult.vehicleType = VehicleTypes.PSV;
-      component.testResult.testTypes = [{ testTypeId: '23455' } as TestType];
-      expect(component.generateTemplate()).toEqual(Object.values(masterTpl.psv['default']!));
-    });
-  });
-
-  describe('form generation', () => {
-    it('should call create form and add it to sectionForms', () => {
-      component.getFormForTemplate({} as FormNode);
-      expect(component.sectionForms.length).toBe(1);
-    });
-  });
-
-  describe('set dynamicFormGroupComponents', () => {
-    it('should get form from each component and add it to sectionForms', () => {
-      const dfm = new DynamicFormGroupComponent(new DynamicFormService());
-      dfm.form = new CustomFormGroup({ name: 'test', type: FormNodeTypes.GROUP }, {});
-      component.dynamicFormGroupComponents = [dfm] as unknown as QueryList<DynamicFormGroupComponent>;
-      expect(component.sectionForms.length).toBe(1);
+      component.handleFormChange(event);
     });
   });
 });

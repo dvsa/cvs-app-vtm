@@ -7,7 +7,7 @@ import { select, Store } from '@ngrx/store';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { Roles } from '@models/roles.enum'
+import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-multiple-search-results',
@@ -30,7 +30,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
         const searchTerm = params[type] as string;
 
         if (searchTerm && Object.values(SEARCH_TYPES).includes(type as SEARCH_TYPES)) {
-          this.globalErrorService.clearError();
+          this.globalErrorService.clearErrors();
           this.technicalRecordService.searchBy(type, searchTerm);
         }
       }
@@ -40,7 +40,7 @@ export class MultipleSearchResultsComponent implements OnDestroy {
   }
 
   navigateBack() {
-    this.globalErrorService.clearError();
+    this.globalErrorService.clearErrors();
     this.location.back();
   }
 
