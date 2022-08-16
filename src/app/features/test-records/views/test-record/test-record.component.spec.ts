@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';

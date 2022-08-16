@@ -4,14 +4,14 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { initialAppState } from '@store/.';
 import { BaseTestRecordComponent } from './base-test-record.component';
-import { TestResultModel } from '@models/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { TestType } from '@models/test-type.model';
 import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { QueryList } from '@angular/core';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { TestType } from '@models/test-types/test-type.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;

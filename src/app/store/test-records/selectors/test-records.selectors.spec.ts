@@ -1,7 +1,7 @@
 import { Params } from '@angular/router';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType } from '@models/test-type.model';
+import { TestType } from '@models/test-types/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';

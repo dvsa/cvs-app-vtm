@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
 
 import { DefectSelectComponent } from './defect-select.component';
 
@@ -8,7 +10,8 @@ describe('DefectSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DefectSelectComponent ]
+      declarations: [ DefectSelectComponent ],
+      providers: [provideMockStore({ initialState: initialAppState })]
     })
     .compileComponents();
   });

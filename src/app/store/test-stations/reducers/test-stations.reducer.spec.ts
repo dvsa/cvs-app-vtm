@@ -1,4 +1,4 @@
-import { TestStation } from "@models/test-station.model";
+import { TestStation } from "@models/test-stations/test-station.model";
 import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsSuccess, fetchTestStationSuccess } from "../actions/test-stations.actions";
 import { initialTestStationsState, testStationsReducer, TestStationsState } from "./test-stations.reducer";
 

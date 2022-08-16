@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
