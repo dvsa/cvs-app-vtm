@@ -64,6 +64,7 @@ export const TestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
               editType: FormNodeEditTypes.RADIO,
+              required: true,
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
@@ -130,6 +131,7 @@ export const TestSectionGroup1: FormNode = {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
+              required: true,
               label: 'Additional details for abandoning',
               editType: FormNodeEditTypes.TEXTAREA,
               validators: [
