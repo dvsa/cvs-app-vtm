@@ -151,7 +151,7 @@ export const DefectsTpl: FormNode = {
                       validators: [
                         {
                           name: ValidatorNames.RequiredIfEquals,
-                          args: { sibling: 'deficiencyCategory', value: ['dangerous', 'dangerous*', 'dangerous#'] }
+                          args: { sibling: 'deficiencyCategory', value: ['dangerous', 'dangerous*'] }
                         }
                       ]
                     },
