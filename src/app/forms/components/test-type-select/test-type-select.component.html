@@ -44,7 +44,7 @@
           [ngClass]="{ 'list__item--active': isSelected(type.id!!) }"
         >
           <button (click)="handleCategory(type, i + 1)">
-            {{ type.id }}: {{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span>
+            {{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span>
           </button>
         </li>
       </ng-container>
