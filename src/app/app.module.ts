@@ -23,6 +23,7 @@ import { CoreModule } from './core/core.module';
 import { InterceptorModule } from './interceptors/interceptor.module';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
+import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -68,7 +69,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     AppStoreModule,
     InterceptorModule,
     CoreModule,
-    TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI }))
+    TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
+    TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI }))
   ],
   providers: [
     {

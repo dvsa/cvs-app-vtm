@@ -6,7 +6,7 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
@@ -19,7 +19,7 @@ import { of } from 'rxjs';
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
-  let store: MockStore;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

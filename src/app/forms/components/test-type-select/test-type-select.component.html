@@ -1,0 +1,49 @@
+<div class="govuk-summary-list">
+  <ng-container [formGroup]="form">
+    <ng-container formArrayName="testTypes">
+      <ng-container formGroupName="0">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Test name:</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ testTypeIdControl?.value | testTypeName: (selectAllTestTypes$ | async) }}
+            <app-button *ngIf="isEditing" class="float-right" type="underline" (clicked)="handleChange()">{{
+              edit ? 'Cancel' : 'Change'
+            }}</app-button>
+          </dd>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>
+
+<div *ngIf="edit" class="categories">
+  <div class="list_container" [ngClass]="{ 'list_container--shrink': categories.length > 0 + 1 }">
+    <ol class="list">
+      <li
+        *ngFor="let type of selectAllTestTypes$ | async; trackBy: tackByFn"
+        class="list__item"
+        [ngClass]="{ 'list__item--active': isSelected(type.id!!) }"
+      >
+        <button (click)="handleCategory(type, 0)">{{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span></button>
+      </li>
+    </ol>
+  </div>
+  <div
+    *ngFor="let category of categories; trackBy: tackByFn; let i = index"
+    class="list_container"
+    [ngClass]="{ 'list_container--shrink': categories.length > i + 2 }"
+  >
+    <h2 class="govuk-heading-m">Browse: {{ category.name }}</h2>
+    <ol class="list">
+      <ng-container *ngIf="hasNext(category)">
+        <li
+          *ngFor="let type of category.nextTestTypesOrCategories; trackBy: tackByFn"
+          class="list__item"
+          [ngClass]="{ 'list__item--active': isSelected(type.id!!) }"
+        >
+          <button (click)="handleCategory(type, i + 1)">{{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span></button>
+        </li>
+      </ng-container>
+    </ol>
+  </div>
+</div>

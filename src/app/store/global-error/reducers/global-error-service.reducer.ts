@@ -5,7 +5,7 @@ import * as TechnicalRecordServiceActions from '../../technical-records/actions/
 import * as GlobalErrorActions from '../actions/global-error.actions';
 import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
 
-export const STORE_GLOBAL_ERROR_KEY = 'GlobalError';
+export const STORE_FEATURE_GLOBAL_ERROR_KEY = 'globalError';
 
 export interface GlobalErrorState {
   errors: Array<GlobalError>;
@@ -15,7 +15,7 @@ export const initialGlobalErrorState: GlobalErrorState = {
   errors: []
 };
 
-export const getGlobalErrorState = createFeatureSelector<GlobalErrorState>(STORE_GLOBAL_ERROR_KEY);
+export const getGlobalErrorState = createFeatureSelector<GlobalErrorState>(STORE_FEATURE_GLOBAL_ERROR_KEY);
 
 export const globalErrorState = createSelector(getGlobalErrorState, state => state.errors);
 

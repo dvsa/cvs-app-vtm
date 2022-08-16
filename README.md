@@ -56,6 +56,8 @@ This talks to the following backends:
 
 - cvs-svc-technical-records
 - cvs-svc-test-results
+- cvs-svc-test-stations
+- cvs-svc-test-types
 
 ### Running Locally End-2-End
 
