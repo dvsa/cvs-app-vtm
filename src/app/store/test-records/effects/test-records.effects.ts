@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';

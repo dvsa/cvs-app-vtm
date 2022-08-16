@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Defect } from '@models/defect';
-import { Defects } from '@models/defects';
+import { Defect } from '@models/defects/defect.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DefectsService {
@@ -10,8 +10,8 @@ export class DefectsService {
 
   constructor(private http: HttpClient) {}
 
-  fetchDefects(): Observable<Defects> {
-    return this.http.get<Defects>(this.url, { responseType: 'json' });
+  fetchDefects(): Observable<Defect[]> {
+    return this.http.get<Defect[]>(this.url, { responseType: 'json' });
   }
 
   fetchDefect(id: string): Observable<Defect> {

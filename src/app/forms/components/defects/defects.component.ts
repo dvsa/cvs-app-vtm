@@ -2,6 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { Defect } from '@models/defects/defect.model';
+import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
+import { Deficiency } from '@models/defects/deficiency.model';
+import { Item } from '@models/defects/item.model';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 
 @Component({
   selector: 'app-defects[template]',
@@ -35,5 +40,25 @@ export class DefectsComponent implements OnInit {
 
   get defectCount() {
     return this.defectsForm?.controls.length;
+  }
+
+  handleDefectSelection(selection: { defect: Defect, item: Item, deficiency: Deficiency }): void {
+    const testResultDefect: TestResultDefect = {
+      additionalInformation: selection.defect.additionalInfo,
+      imDescription: selection.defect.imDescription,
+      imNumber: selection.defect.imNumber,
+
+      itemDescription: selection.item.itemDescription,
+      itemNumber: selection.item.itemNumber,
+
+      deficiencyCategory: selection.deficiency.deficiencyCategory,
+      deficiencyId: selection.deficiency.deficiencyId,
+      deficiencySubId: selection.deficiency.deficiencySubId,
+      deficiencyText: selection.deficiency.deficiencyText,
+      deficiencyRef: selection.deficiency.ref,
+      stdForProhibition: selection.deficiency.stdForProhibition
+    };
+
+    this.defectsForm.addControl(testResultDefect);
   }
 }

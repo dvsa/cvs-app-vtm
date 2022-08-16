@@ -1,5 +1,4 @@
-import { TestResultModel } from '@models/test-result.model';
-import { TestType } from '@models/test-type.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {

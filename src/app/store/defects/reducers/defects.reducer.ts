@@ -1,4 +1,4 @@
-import { Defect } from "@models/defect";
+import { Defect } from "@models/defects/defect.model";
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from "../actions/defects.actions";
@@ -12,7 +12,7 @@ export const STORE_FEATURE_DEFECTS_KEY = 'Defects';
 
 export const defectsFeatureState = createFeatureSelector<DefectsState>(STORE_FEATURE_DEFECTS_KEY);
 
-export const defectsAdapter: EntityAdapter<Defect> = createEntityAdapter<Defect>({ selectId: defect => defect.deficiencyId! });
+export const defectsAdapter: EntityAdapter<Defect> = createEntityAdapter<Defect>({ selectId: defect => defect.imNumber! });
 
 export const initialDefectsState  = defectsAdapter.getInitialState({ loading: false, error: '' });
 

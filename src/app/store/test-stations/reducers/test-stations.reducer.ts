@@ -1,4 +1,4 @@
-import { TestStation } from "@models/test-station.model";
+import { TestStation } from "@models/test-stations/test-station.model";
 import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from "../actions/test-stations.actions";

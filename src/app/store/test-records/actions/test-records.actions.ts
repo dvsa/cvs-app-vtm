@@ -1,5 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
 

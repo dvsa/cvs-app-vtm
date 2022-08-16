@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Defect } from '@models/defect';
-import { Defects } from '@models/defects';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DefectsService } from '@services/services/defects.service';
+import { DefectsService } from '@services/defects/defects.service';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import {
   fetchDefect,
@@ -19,7 +17,7 @@ export class DefectsEffects {
     this.actions$.pipe(
       ofType(fetchDefects),
       mergeMap(() => this.defectsService.fetchDefects().pipe(
-        map(defects => fetchDefectsSuccess({ payload: defects as Defects })),
+        map(defects => fetchDefectsSuccess({ payload: defects })),
         catchError(e => of(fetchDefectsFailed({ error: e.message })))
       ))
     )
@@ -29,7 +27,7 @@ export class DefectsEffects {
     this.actions$.pipe(
       ofType(fetchDefect),
       mergeMap(({ id }) => this.defectsService.fetchDefect(id).pipe(
-        map(defect => fetchDefectSuccess({ id, payload: defect as Defect })),
+        map(defect => fetchDefectSuccess({ id, payload: defect })),
         catchError(e => of(fetchDefectFailed({ error: e.message })))
       ))
     )

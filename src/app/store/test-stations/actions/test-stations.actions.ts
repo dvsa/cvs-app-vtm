@@ -1,5 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { TestStation } from '@models/test-station.model';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { createAction, props } from '@ngrx/store';
 
 export const fetchTestStations = createAction(getTitle(true));

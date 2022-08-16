@@ -5,8 +5,6 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { Defects } from '@models/defects';
-import { TestResultModel } from '@models/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -15,6 +13,8 @@ import merge from 'lodash.merge';
 import { Observable, of, Subject, takeUntil, map } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 import { Roles } from '@models/roles.enum'
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 
 @Component({
   selector: 'app-test-records',
@@ -32,7 +32,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   isEditing$: Observable<boolean> = of(false);
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  defects$: Observable<Defects | undefined> = of(undefined);
+  defects$: Observable<TestResultDefects | undefined> = of(undefined);
   sectionForms: Array<CustomFormGroup | CustomFormArray> = [];
 
   constructor(

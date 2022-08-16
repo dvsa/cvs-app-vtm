@@ -1,17 +1,17 @@
-import { Defect } from '../app/models/defect';
-import { DefectAdditionalInformation } from '@models/defectAdditionalInformation';
-import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
+import { TestResultDefect } from '../app/models/test-results/test-result-defect.model';
+import { AdditionalInformation } from '@models/defects/defectAdditionalInformation';
+import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
 import { createMock, createMockList } from 'ts-auto-mock';
 
 export const mockDefectList = (numberOfDefects = 1) =>
-  createMockList<Defect>(numberOfDefects, i => {
+  createMockList<TestResultDefect>(numberOfDefects, i => {
     return mockDefect(i);
   });
 
 export const mockDefect = (i = 0) =>
-  createMock<Defect>({
+  createMock<TestResultDefect>({
     deficiencyRef: `DeficiencyRef${i}`,
-    deficiencyCategory: Defect.DeficiencyCategoryEnum.Dangerous,
+    deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Dangerous,
     deficiencyId: 'deficiency ID',
     deficiencySubId: 'deficiency sub ID',
     deficiencyText: 'deficiency text',
@@ -26,7 +26,7 @@ export const mockDefect = (i = 0) =>
   });
 
 export const mockDefectAdditionalInformation = (i = 0) =>
-  createMock<DefectAdditionalInformation>({
+  createMock<AdditionalInformation>({
     location: mockDefectLocation(i),
     notes: 'Defect notes'
   });

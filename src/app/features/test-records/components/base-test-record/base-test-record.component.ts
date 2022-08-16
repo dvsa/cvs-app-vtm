@@ -4,9 +4,8 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 
 @Component({
@@ -44,5 +43,9 @@ export class BaseTestRecordComponent {
     const form = this.dynamicFormService.createForm(template, this.testResult) as CustomFormGroup;
     this.sectionForms.push(form);
     return form;
+  }
+
+  handleFormChange(event: any): void {
+
   }
 }

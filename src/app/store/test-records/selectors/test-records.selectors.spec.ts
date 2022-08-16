@@ -1,6 +1,6 @@
 import { Params } from '@angular/router';
-import { Defect } from '@models/defect';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
@@ -158,8 +158,8 @@ describe('Test Results Selectors', () => {
     const amendedTestResultState = createMock<TestResultModel>({
       testTypes: createMockList<TestType>(1, i =>
         createMock<TestType>({
-          defects: createMockList<Defect>(1, i =>
-            createMock<Defect>({
+          defects: createMockList<TestResultDefect>(1, i =>
+            createMock<TestResultDefect>({
               imNumber: i
             })
           )

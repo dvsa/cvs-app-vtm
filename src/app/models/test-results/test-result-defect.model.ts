@@ -1,22 +1,22 @@
-import { DefectAdditionalInformation } from './defectAdditionalInformation';
+import { AdditionalInformation } from '../defects/additional-information.model';
 
-export interface Defect {
+export interface TestResultDefect {
   imNumber?: number;
   imDescription?: string;
-  additionalInformation?: DefectAdditionalInformation;
+  additionalInformation?: AdditionalInformation;
   itemNumber?: number;
   itemDescription?: string;
   deficiencyRef?: string;
   deficiencyId?: string;
   deficiencySubId?: string;
-  deficiencyCategory: Defect.DeficiencyCategoryEnum;
+  deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum;
   deficiencyText?: string;
   stdForProhibition?: boolean;
   prs?: boolean;
   prohibitionIssued?: boolean;
 }
 
-export namespace Defect {
+export namespace TestResultDefect {
   export type DeficiencyCategoryEnum = 'advisory' | 'dangerous' | 'major' | 'minor';
   export const DeficiencyCategoryEnum = {
     Advisory: 'advisory' as DeficiencyCategoryEnum,
