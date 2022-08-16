@@ -1,4 +1,13 @@
-<ng-container *ngFor="let template of generateTemplate()" [ngSwitch]="template.name">
+<ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
+  <app-test-type-select
+    *ngSwitchCase="'requiredSection'"
+    class="section"
+    [isEditing]="isEditing"
+    [template]="template"
+    [data]="testResult"
+    (formChange)="handleFormChange($event)"
+  ></app-test-type-select>
+
   <app-defects
     *ngSwitchCase="'defects'"
     class="section"
@@ -6,6 +15,7 @@
     [isEditing]="isEditing"
     [template]="template"
     [data]="testResult"
+    (formChange)="handleFormChange($event)"
   ></app-defects>
 
   <app-dynamic-form-group
@@ -15,5 +25,6 @@
     [template]="template"
     [data]="testResult"
     [edit]="isEditing"
+    (formChange)="handleFormChange($event)"
   ></app-dynamic-form-group>
 </ng-container>

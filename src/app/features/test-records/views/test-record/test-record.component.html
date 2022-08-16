@@ -10,7 +10,12 @@
     </app-button-group>
   </ng-container>
 
-  <app-base-test-record [isEditing]="(isEditing$ | async) || false" [testResult]="testResult"></app-base-test-record>
+  <app-base-test-record
+    [isEditing]="(isEditing$ | async) || false"
+    [testResult]="testResult"
+    [sectionTemplates]="(sectionTemplates$ | async) || []"
+    (newTestResult)="handleNewTestResult($event)"
+  ></app-base-test-record>
 
   <app-test-amendment-history class="section" [testRecord]="testResult"></app-test-amendment-history>
 </ng-container>

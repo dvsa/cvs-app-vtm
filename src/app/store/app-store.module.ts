@@ -12,6 +12,7 @@ import { UserStateModule } from './user/user-state.module';
 import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
+import { TestTypesStateModule } from './test-types/test-types.module';
 
 @NgModule({
   declarations: [],
@@ -19,12 +20,13 @@ import { TestStationsStateModule } from './test-stations/test-stations-state.mod
     CommonModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    environment.EnableDevTools ?
-      StoreDevtoolsModule.instrument({
-        name: 'VTM Web Dev Tools',
-        maxAge: 25, // Retains last 25 states
-        logOnly: environment.production // Log-only mode in production
-      }) : [],
+    environment.EnableDevTools
+      ? StoreDevtoolsModule.instrument({
+          name: 'VTM Web Dev Tools',
+          maxAge: 25, // Retains last 25 states
+          logOnly: environment.production // Log-only mode in production
+        })
+      : [],
     UserStateModule,
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
@@ -32,7 +34,8 @@ import { TestStationsStateModule } from './test-stations/test-stations-state.mod
     RouterStateModule,
     SpinnerStateModule,
     ReferenceDataStateModule,
-    TestStationsStateModule
+    TestStationsStateModule,
+    TestTypesStateModule
   ]
 })
 export class AppStoreModule {}

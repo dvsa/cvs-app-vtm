@@ -32,7 +32,7 @@ export class GlobalErrorService {
     this.store.dispatch(patchErrors({ errors }));
   }
 
-  clearError(): void {
+  clearErrors(): void {
     this.store.dispatch(clearError());
   }
 }

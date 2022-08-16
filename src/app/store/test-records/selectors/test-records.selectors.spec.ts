@@ -6,6 +6,7 @@ import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
 import {
+  isSameTestTypeId,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
@@ -37,11 +38,12 @@ describe('Test Results Selectors', () => {
         entities: {
           testResult1: createMock<TestResultModel>({
             testResultId: 'testResult1',
-            testTypes: [createMock<TestType>({ testTypeId: '1' })]
+            testTypes: [createMock<TestType>({ testNumber: '1' })]
           })
         }
       };
-      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1', testTypeId: '1' } as Params);
+
+      const selectedState = selectedTestResultState.projector(state.entities, { testResultId: 'testResult1', testNumber: '1' } as Params);
       expect(selectedState).toEqual(state.entities['testResult1']);
     });
   });
@@ -126,13 +128,13 @@ describe('Test Results Selectors', () => {
       testHistory: createMockList<TestResultModel>(2, i =>
         createMock<TestResultModel>({
           createdAt: `2020-01-01T00:0${i}:00.000Z`,
-          testTypes: createMockList<TestType>(1, j => createMock<TestType>({ testTypeId: `${i}${j}` }))
+          testTypes: createMockList<TestType>(1, j => createMock<TestType>({ testTypeId: `${i}${j}`, testNumber: 'ABC00' }))
         })
       )
     });
 
     it('should return amended record that matches "createdAt" route param value', () => {
-      const selectedState = selectedAmendedTestResultState.projector(testResult, { testTypeId: '00', createdAt: '2020-01-01T00:00:00.000Z' });
+      const selectedState = selectedAmendedTestResultState.projector(testResult, { testNumber: 'ABC00', createdAt: '2020-01-01T00:00:00.000Z' });
       expect(selectedState).not.toBeUndefined();
       expect(testResult.testHistory![1].testTypes.length).toEqual(1);
     });
@@ -179,6 +181,50 @@ describe('Test Results Selectors', () => {
 
     it('should return empty array if testTypes is empty', () => {
       expect(selectAmendedDefectData.projector({ testTypes: [] })).toEqual([]);
+    });
+  });
+
+  describe('isSameTestTypeId', () => {
+    it('should return false if the testTypeId is different', () => {
+      const amendTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '1'
+          }
+        ]
+      } as TestResultModel;
+      const oldTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '2'
+          }
+        ]
+      } as TestResultModel;
+      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      expect(state).toBe(false);
+    });
+
+    it('should return true if the testTypeId is the same', () => {
+      const amendTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '1'
+          }
+        ]
+      } as TestResultModel;
+      const oldTestResult = {
+        testTypes: [
+          {
+            testNumber: 'foo',
+            testTypeId: '1'
+          }
+        ]
+      } as TestResultModel;
+      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      expect(state).toBe(true);
     });
   });
 });

@@ -1,6 +1,8 @@
-import { createSelector } from '@ngrx/store';
-import { getSpinnerState } from '@store/spinner/reducers/spinner.reducer';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { SpinnerState, STORE_FEATURE_SPINNER_KEY } from '../reducers/spinner.reducer';
 
-export const getSpinner = createSelector(getSpinnerState, (state) => {
+export const getSpinnerState = createFeatureSelector<SpinnerState>(STORE_FEATURE_SPINNER_KEY);
+
+export const getSpinner = createSelector(getSpinnerState, state => {
   return state.showSpinner;
 });

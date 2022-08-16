@@ -8,7 +8,6 @@ import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { RoleRequiredDirective } from './app-role-required.directive';
 
-
 @Component({
   template: `
     <div id="displayBox" *appRoleRequired="Roles.TechRecordView">
