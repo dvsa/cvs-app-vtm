@@ -24,9 +24,7 @@
         class="list__item"
         [ngClass]="{ 'list__item--active': isSelected(type.id!!) }"
       >
-        <button (click)="handleCategory(type, 0)">
-          {{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span>
-        </button>
+        <button (click)="handleCategory(type, 0)">{{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span></button>
       </li>
     </ol>
   </div>
@@ -43,9 +41,7 @@
           class="list__item"
           [ngClass]="{ 'list__item--active': isSelected(type.id!!) }"
         >
-          <button (click)="handleCategory(type, i + 1)">
-            {{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span>
-          </button>
+          <button (click)="handleCategory(type, i + 1)">{{ type.name }} <span [ngClass]="{ 'list__item--more': hasNext(type) }"></span></button>
         </li>
       </ng-container>
     </ol>
