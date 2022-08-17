@@ -4,7 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { SEARCH_TYPES } from '@services/technical-record/technical-record.service';
 import { map, Observable } from 'rxjs';
-import { Roles } from '@models/roles.enum'
+import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-search',
@@ -17,7 +17,7 @@ export class SearchComponent {
   constructor(public globalErrorService: GlobalErrorService, private router: Router) {}
 
   navigateSearch(term: string, type: string): void {
-    this.globalErrorService.clearError();
+    this.globalErrorService.clearErrors();
     term = term.trim();
 
     if (!term) {

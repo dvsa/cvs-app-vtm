@@ -1,19 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import {
-  selectQueryParam,
-  selectQueryParams,
-  selectRouteNestedParams,
-  selectRouteParam,
-  selectRouteParams
-} from '@store/router/selectors/router.selectors';
+import { initialAppState, State } from '@store/.';
+import { selectQueryParams, selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
 import { firstValueFrom, take } from 'rxjs';
 import { RouterService } from './router.service';
 
 describe('RouterService', () => {
   let service: RouterService;
-  let store: MockStore;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [RouterService, provideMockStore({ initialState: initialAppState })] });
@@ -52,10 +46,10 @@ describe('RouterService', () => {
   });
 
   describe('get routeNestedParams$', () => {
-    it('should return an Observable route Params', (done) => {
+    it('should return an Observable route Params', done => {
       store.overrideSelector(selectRouteNestedParams, { foo: 'bar' });
       store.refreshState();
-      service.routeNestedParams$.subscribe((value) => {
+      service.routeNestedParams$.subscribe(value => {
         expect(value).toEqual({ foo: 'bar' });
         done();
       });

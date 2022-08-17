@@ -4,6 +4,7 @@ import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
+import { reasonForCreationSection } from './section-templates/reasonForCreation/resonForCreation.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { TestSectionGroup1 } from './section-templates/test/test-section-group1.template';
@@ -39,6 +40,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
     testTypesGroup2: {
@@ -49,6 +51,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
     testTypesGroup15And16: {
@@ -58,6 +61,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     }
   },

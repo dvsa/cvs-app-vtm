@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
+import { initialAppState } from '@store/.';
 import { GlobalErrorComponent } from './global-error.component';
 import { GlobalErrorService } from './global-error.service';
 
@@ -22,7 +22,7 @@ describe('GlobalErrorComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [GlobalErrorComponent, MockComponent],
       imports: [],
-      providers: [GlobalErrorService, provideMockStore({ initialState: initialGlobalErrorState })]
+      providers: [GlobalErrorService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 

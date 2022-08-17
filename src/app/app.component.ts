@@ -5,7 +5,7 @@ import { initAll } from 'govuk-frontend/govuk/all';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   constructor(public userService: UserService) {}

@@ -4,6 +4,9 @@ import { TestStationType } from './test-station-type.enum';
 import { TestType } from './test-type.model';
 import { TestCodes } from './testCodes.enum';
 import { VehicleTypes } from './vehicle-tech-record.model';
+import { VehicleConfiguration } from './vehicle-configuration.enum';
+import { VehicleSize } from './vehicle-size.enum';
+import { VehicleClass } from './vehicle-class.model';
 
 export interface TestResultModel {
   testResultId: string;
@@ -32,11 +35,18 @@ export interface TestResultModel {
   testerEmailAddress: string;
 
   reasonForCreation?: string;
-  vehicleType?: VehicleTypes;
+  vehicleType: VehicleTypes;
   testHistory?: TestResultModel[];
   testStatus?: string;
 
   createdByName?: string;
   testVersion?: string | null;
   testCode?: TestCodes;
+
+  vehicleSize?: VehicleSize;
+  vehicleConfiguration?: VehicleConfiguration;
+  noOfAxles?: number;
+  vehicleClass?: VehicleClass;
+  vehicleSubclass?: Array<string>;
+  numberOfWheelsDriven?: number;
 }
