@@ -72,7 +72,8 @@ export const TestSection: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              editType: FormNodeEditTypes.RADIO,
+              editType: FormNodeEditTypes.CHECKBOX,
+              separator: '. ',
               required: true,
               validators: [
                 {
