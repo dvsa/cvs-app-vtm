@@ -66,4 +66,8 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
     this.defectsForm.addControl(testResultDefect);
   }
+
+  handleRemoveDefect(index: number): void {
+    this.defectsForm.removeAt(index);
+  }
 }

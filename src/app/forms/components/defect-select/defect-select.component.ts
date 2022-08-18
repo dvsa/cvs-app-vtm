@@ -4,7 +4,7 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { Store } from '@ngrx/store';
 import { defects, DefectsState, fetchDefects } from '@store/defects';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-defect-select',
