@@ -1,7 +1,7 @@
 <ng-container *ngIf="vehicleTechRecord$ | async as vehicleTechRecord">
   <app-vehicle-technical-record
     [vehicleTechRecord]="vehicleTechRecord || undefined"
-    *appUserRole="['CVSFullAccess', 'TechRecord.View']"
+    *appRoleRequired="Roles.TechRecordView"
   ></app-vehicle-technical-record>
 </ng-container>
 

@@ -6,26 +6,34 @@ import { StatusCodes } from '@models/vehicle-tech-record.model';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { TechRecordsModule } from '../../tech-record.module';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { TestRecordSummaryComponent } from '../test-record-summary/test-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './vehicle-technical-record.component';
-import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
+import { UserService } from '@services/user-service/user-service';
+import { of } from 'rxjs';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
   let fixture: ComponentFixture<VehicleTechnicalRecordComponent>;
-  let store: MockStore;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TestResultsApiModule, DynamicFormsModule],
       declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent, TechRecordHistoryComponent],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of(['TestResult.View'])
+          }
+        }
+      ]
     }).compileComponents();
   });
 
