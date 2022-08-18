@@ -43,4 +43,8 @@ export class DefectsComponent implements OnInit, OnDestroy {
   get defectCount() {
     return this.defectsForm?.controls.length;
   }
+
+  handleRemoveDefect(index: number): void {
+    this.defectsForm.removeAt(index);
+  }
 }
