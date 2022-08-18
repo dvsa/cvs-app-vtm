@@ -18,21 +18,21 @@ import { DefectsStateModule } from './defects/defects-state.module';
 @NgModule({
   declarations: [],
   imports: [
+    CommonModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     environment.EnableDevTools
       ? StoreDevtoolsModule.instrument({
-        name: 'VTM Web Dev Tools',
-        maxAge: 25, // Retains last 25 states
-        logOnly: environment.production // Log-only mode in production
-      })
+          name: 'VTM Web Dev Tools',
+          maxAge: 25, // Retains last 25 states
+          logOnly: environment.production // Log-only mode in production
+        })
       : [],
-    CommonModule,
     DefectsStateModule,
-    EffectsModule.forRoot([]),
     GlobalErrorStateModule,
     ReferenceDataStateModule,
     RouterStateModule,
     SpinnerStateModule,
-    StoreModule.forRoot({}),
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
     TestStationsStateModule,

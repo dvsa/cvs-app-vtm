@@ -4,7 +4,6 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { TestTypeSelectComponent } from '@forms/components/test-type-select/test-type-select.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import merge from 'lodash.merge';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -22,14 +21,6 @@ export class BaseTestRecordComponent {
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 
   handleFormChange(event: any) {
-    let latestTest = {};
-    this.sections?.forEach(section => {
-      const { form } = section;
-      latestTest = merge(latestTest, form.getCleanValue(form));
-    });
-    const defectsValue = this.defects?.form?.getCleanValue(this.defects?.form);
-    const requiredProps = this.requiredProps?.form?.getCleanValue(this.requiredProps?.form);
-    latestTest = merge(latestTest, defectsValue, requiredProps, event);
     this.newTestResult.emit(event);
   }
 }

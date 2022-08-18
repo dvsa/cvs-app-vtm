@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
-import { Subscription } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-defects[template]',
@@ -16,7 +16,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
   @Input() template!: FormNode;
   @Input() data: any = {};
 
-  @Output() formChange = new EventEmitter<(CustomFormGroup | CustomFormArray)[]>();
+  @Output() formChange = new EventEmitter();
   form!: CustomFormGroup;
 
   private formSubscription = new Subscription();
@@ -25,7 +25,9 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this.formSubscription = this.form.valueChanges.subscribe(event => this.formChange.emit(event));
+    this.formSubscription = this.form.cleanValueChanges.subscribe(event => {
+      this.formChange.emit(event);
+    });
   }
 
   ngOnDestroy(): void {
@@ -48,7 +50,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm?.controls.length;
   }
 
-  handleDefectSelection(selection: { defect: Defect, item: Item, deficiency: Deficiency }): void {
+  handleDefectSelection(selection: { defect: Defect; item: Item; deficiency: Deficiency }): void {
     const testResultDefect: TestResultDefect = {
       imDescription: selection.defect.imDescription,
       imNumber: selection.defect.imNumber,
