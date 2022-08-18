@@ -155,8 +155,6 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     if (this.meta?.children) {
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
     }
-
-    // super.push(this.dynamicFormService.createForm(this.meta));
   }
 }
 

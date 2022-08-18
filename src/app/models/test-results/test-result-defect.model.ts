@@ -1,9 +1,9 @@
-import { AdditionalInformation } from '../defects/additional-information.model';
+import { DefectAdditionalInformation } from './defectAdditionalInformation';
 
 export interface TestResultDefect {
   imNumber?: number;
   imDescription?: string;
-  additionalInformation?: AdditionalInformation;
+  additionalInformation?: DefectAdditionalInformation;
   itemNumber?: number;
   itemDescription?: string;
   deficiencyRef?: string;

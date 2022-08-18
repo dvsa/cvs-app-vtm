@@ -23,9 +23,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   get defects$(): Observable<Defect[]> {
-    return this.store.select(defects).pipe(tap(defects => {
-      console.log(defects)
-    }));
+    return this.store.select(defects);
   }
 
   get types(): typeof Types {
@@ -51,7 +49,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  handleNewEdit(): void {
+  toggleEditMode(): void {
     this.isEditing = !this.isEditing;
   }
 
@@ -69,6 +67,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
         this.formChange.emit({ defect: this.selectedDefect!, item: this.selectedItem!, deficiency: this.selectedDeficiency })
+        this.toggleEditMode();
         break;
     }
   }

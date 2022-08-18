@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { DefectAdditionalInformation } from '@api/test-results';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
-import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
@@ -17,7 +17,7 @@ export class DefectsComponent implements OnInit {
   @Input() template!: FormNode;
   @Input() data: any = {};
 
-  @Output() formsChange = new EventEmitter<(CustomFormGroup | CustomFormArray)[]>();
+  @Output() formChange = new EventEmitter<(CustomFormGroup | CustomFormArray)[]>();
   form!: CustomFormGroup;
 
   constructor(private dfs: DynamicFormService) {}
@@ -43,8 +43,10 @@ export class DefectsComponent implements OnInit {
   }
 
   handleDefectSelection(selection: { defect: Defect, item: Item, deficiency: Deficiency }): void {
+    //
+    //
+    //
     const testResultDefect: TestResultDefect = {
-      additionalInformation: selection.defect.additionalInfo,
       imDescription: selection.defect.imDescription,
       imNumber: selection.defect.imNumber,
 

@@ -2,7 +2,7 @@
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Defect name:</dt>
     <dd id="test-defect" class="govuk-summary-list__value">
-      <app-button *ngIf="isParentEditing" class="float-right" type="underline" (clicked)="handleNewEdit()">
+      <app-button *ngIf="isParentEditing" class="float-right" type="underline" (clicked)="toggleEditMode()">
         {{ isEditing ? 'Cancel' : 'Change' }}
       </app-button>
     </dd>

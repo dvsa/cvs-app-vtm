@@ -3,6 +3,9 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
+import { DefectSelectComponent } from '../defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
 
@@ -14,8 +17,8 @@ describe('DefectsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [DefectsComponent, DefectComponent],
-      providers: [DynamicFormService]
+      declarations: [DefectComponent, DefectSelectComponent, DefectsComponent],
+      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 

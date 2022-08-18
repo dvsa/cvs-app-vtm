@@ -1,7 +1,7 @@
 import { TestResultDefect } from '../app/models/test-results/test-result-defect.model';
-import { AdditionalInformation } from '@models/defects/defectAdditionalInformation';
 import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
 import { createMock, createMockList } from 'ts-auto-mock';
+import { DefectAdditionalInformation } from '@api/test-results';
 
 export const mockDefectList = (numberOfDefects = 1) =>
   createMockList<TestResultDefect>(numberOfDefects, i => {
@@ -26,7 +26,7 @@ export const mockDefect = (i = 0) =>
   });
 
 export const mockDefectAdditionalInformation = (i = 0) =>
-  createMock<AdditionalInformation>({
+  createMock<DefectAdditionalInformation>({
     location: mockDefectLocation(i),
     notes: 'Defect notes'
   });
