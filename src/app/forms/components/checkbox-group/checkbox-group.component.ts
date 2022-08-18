@@ -45,7 +45,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
       }
       newValue = this.separator ? newValue.join(this.separator) : newValue;
     }
-    if (newValue && newValue.length === 0) {
+    if ((newValue === '' || newValue) && newValue.length === 0) {
       newValue = null;
     }
     this.value = newValue;
