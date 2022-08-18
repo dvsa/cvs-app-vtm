@@ -51,6 +51,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   toggleEditMode(): void {
     this.isEditing = !this.isEditing;
+    this.selectedDefect = undefined;
+    this.selectedItem = undefined;
+    this.selectedDeficiency = undefined;
   }
 
   handleSelect(selected: Defect | Item | Deficiency, type: Types): void {

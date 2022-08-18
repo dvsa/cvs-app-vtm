@@ -1,9 +1,9 @@
-<div class="govuk-summary-list">
+<div class="govuk-summary-list" *ngIf="isParentEditing">
   <div class="govuk-summary-list__row">
-    <dt class="govuk-summary-list__key">Defect name:</dt>
+    <dt class="govuk-summary-list__key">Add a defect:</dt>
     <dd id="test-defect" class="govuk-summary-list__value">
-      <app-button *ngIf="isParentEditing" class="float-right" type="underline" (clicked)="toggleEditMode()">
-        {{ isEditing ? 'Cancel' : 'Change' }}
+      <app-button class="float-right" type="underline" (clicked)="toggleEditMode()">
+        {{ isEditing ? 'Cancel' : 'Add' }}
       </app-button>
     </dd>
   </div>
