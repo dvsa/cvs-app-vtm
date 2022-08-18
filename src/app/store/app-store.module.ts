@@ -12,6 +12,7 @@ import { UserStateModule } from './user/user-state.module';
 import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
+import { TestTypesStateModule } from './test-types/test-types.module';
 import { DefectsStateModule } from './defects/defects-state.module';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { DefectsStateModule } from './defects/defects-state.module';
     TechnicalRecordsStateModule,
     TestRecordsStateModule,
     TestStationsStateModule,
+    TestTypesStateModule,
     UserStateModule
   ]
 })

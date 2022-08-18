@@ -6,7 +6,7 @@ import { mockTestResult, mockTestResultArchived } from '@mocks/mock-test-result'
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { TestAmendmentHistoryComponent } from './test-amendment-history.component';
@@ -14,7 +14,7 @@ import { TestAmendmentHistoryComponent } from './test-amendment-history.componen
 describe('TestAmendmentHistoryComponent', () => {
   let component: TestAmendmentHistoryComponent;
   let fixture: ComponentFixture<TestAmendmentHistoryComponent>;
-  let store: MockStore;
+  let store: MockStore<State>;
   const pipe = new DefaultNullOrEmpty();
 
   beforeEach(async () => {

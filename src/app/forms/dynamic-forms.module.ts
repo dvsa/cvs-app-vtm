@@ -21,6 +21,8 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
+import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
+import { TestTypeNamePipe } from './components/test-type-select/test-type-name.pipe';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 
 @NgModule({
@@ -42,6 +44,8 @@ import { DefectSelectComponent } from './components/defect-select/defect-select.
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
+    TestTypeSelectComponent,
+    TestTypeNamePipe,
     DefectSelectComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
@@ -61,6 +65,7 @@ import { DefectSelectComponent } from './components/defect-select/defect-select.
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
+    TestTypeSelectComponent,
     DefectSelectComponent
   ]
 })

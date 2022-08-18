@@ -22,7 +22,7 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: 'test-records/:systemNumber/test-result/:testResultId/:testTypeId',
+    path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
     data: { title: 'Test Result', roles: Roles.TestResultView },
     canActivate: [MsalGuard, RoleGuard],
     loadChildren: () => import('../test-records/test-records.module').then(m => m.TestRecordsModule)

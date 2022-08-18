@@ -2,6 +2,9 @@ import { TestStationType } from "@models/test-stations/test-station-type.enum";
 import { EuVehicleCategory } from "@models/test-types/eu-vehicle-category.enum";
 import { OdometerReadingUnits } from "@models/test-types/odometer-unit.enum";
 import { TestType } from "@models/test-types/test-type.model";
+import { VehicleClass } from "@models/vehicle-class.model";
+import { VehicleConfiguration } from "@models/vehicle-configuration.enum";
+import { VehicleSize } from "@models/vehicle-size.enum";
 import { VehicleTypes } from "@models/vehicle-tech-record.model";
 import { TestCodes } from "./testCodes.enum";
 
@@ -32,11 +35,18 @@ export interface TestResultModel {
   testerEmailAddress: string;
 
   reasonForCreation?: string;
-  vehicleType?: VehicleTypes;
+  vehicleType: VehicleTypes;
   testHistory?: TestResultModel[];
   testStatus?: string;
 
   createdByName?: string;
   testVersion?: string | null;
   testCode?: TestCodes;
+
+  vehicleSize?: VehicleSize;
+  vehicleConfiguration?: VehicleConfiguration;
+  noOfAxles?: number;
+  vehicleClass?: VehicleClass;
+  vehicleSubclass?: Array<string>;
+  numberOfWheelsDriven?: number;
 }

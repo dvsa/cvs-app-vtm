@@ -29,12 +29,12 @@ describe('Test Results Reducer', () => {
 
   describe('fetchTestResults', () => {
     it('should set loading to true', () => {
-      const newState: TestResultsState = { ...initialTestResultsState, loading: true };
+      const oldState: TestResultsState = { ...initialTestResultsState, loading: false };
       const action = fetchTestResults();
-      const state = testResultsReducer(initialTestResultsState, action);
+      const state = testResultsReducer(oldState, action);
 
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
+      expect(state.loading).toBe(true);
+      expect(state).not.toBe(oldState);
     });
   });
 

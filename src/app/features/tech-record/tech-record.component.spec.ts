@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordComponent } from './tech-record.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -10,7 +10,7 @@ import { selectRouteNestedParams } from '@store/router/selectors/router.selector
 describe('TechRecordComponent', () => {
   let component: TechRecordComponent;
   let fixture: ComponentFixture<TechRecordComponent>;
-  let store: MockStore;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

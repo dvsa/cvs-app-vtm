@@ -9,7 +9,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { UserService } from '@services/user-service/user-service';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
 import { selectQueryParams } from '@store/router/selectors/router.selectors';
 import { vehicleTechRecords } from '@store/technical-records';
 import { of, ReplaySubject } from 'rxjs';
@@ -19,7 +19,7 @@ import { MultipleSearchResultsComponent } from './multiple-search-results.compon
 describe('MultipleSearchResultsComponent', () => {
   let component: MultipleSearchResultsComponent;
   let fixture: ComponentFixture<MultipleSearchResultsComponent>;
-  let store: MockStore;
+  let store: MockStore<State>;
   let actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {

@@ -1,4 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
@@ -21,3 +22,11 @@ export const fetchSelectedTestResultFailed = createAction('[API/test-results], F
 export const updateTestResult = createAction('[test-results] Update test result', props<{ value: TestResultModel }>());
 export const updateTestResultSuccess = createAction('[API/test-results] Update test result Success', props<{ payload: Update<TestResultModel> }>());
 export const updateTestResultFailed = createAction('[API/test-results] Update test result Failed', props<{ errors: GlobalError[] }>());
+
+export const editingTestResult = createAction('[test-results] Editing', props<{ testResult: TestResultModel }>());
+export const cancelEditingTestResult = createAction('[test-results] Cancel editing');
+export const templateSectionsChanged = createAction(
+  '[test-results] Template sections changed',
+  props<{ sectionTemplates: FormNode[]; sectionsValue: TestResultModel | undefined }>()
+);
+export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());

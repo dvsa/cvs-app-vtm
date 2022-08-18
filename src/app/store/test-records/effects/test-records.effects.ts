@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
@@ -8,18 +11,24 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { catchError, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
+import merge from 'lodash.merge';
+import { catchError, concatMap, filter, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
+  editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
   fetchTestResultsBySystemNumber,
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
+  templateSectionsChanged,
+  updateEditingTestResult,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
+import { selectedTestResultState } from '../selectors/test-records.selectors';
+import { selectQueryParam } from '@store/router/selectors/router.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -97,11 +106,67 @@ export class TestResultsEffects {
     )
   );
 
+  generateSectionTemplatesAndtestResultToUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(editingTestResult, updateEditingTestResult),
+      filter(action => {
+        const { testResult, type } = action;
+
+        return (
+          type === editingTestResult.type ||
+          (type === updateEditingTestResult.type && testResult?.testTypes && testResult.testTypes.length > 0 && !!testResult.testTypes[0].testTypeId)
+        );
+      }),
+      mergeMap(action =>
+        of(action).pipe(withLatestFrom(this.store.pipe(select(selectedTestResultState)), this.store.pipe(select(selectQueryParam('edit')))), take(1))
+      ),
+      concatMap(([action, selectedTestResult, isEditing]) => {
+        const { testResult } = action;
+
+        const { vehicleType } = testResult;
+        if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType)) {
+          return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
+        }
+        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
+        const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+        const vehicleTpl = masterTpl[vehicleType as VehicleTypes];
+
+        let tpl;
+        if (testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)) {
+          tpl = vehicleTpl[testTypeGroup];
+        } else {
+          if (isEditing === 'true') {
+            tpl = undefined;
+          } else {
+            tpl = vehicleTpl['default'];
+          }
+        }
+
+        if (!tpl) {
+          return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
+        }
+
+        const mergedForms = {};
+        Object.values(tpl).forEach(node => {
+          const form = this.dfs.createForm(node, selectedTestResult);
+          merge(mergedForms, form.getCleanValue(form));
+        });
+
+        if (testTypeId) {
+          (mergedForms as TestResultModel).testTypes[0].testTypeId = testTypeId;
+        }
+
+        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }));
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private dfs: DynamicFormService
   ) {}
 }

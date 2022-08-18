@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-amended-test-record',
@@ -11,11 +11,14 @@ import { Observable, of } from 'rxjs';
 export class AmendedTestRecordComponent implements OnInit {
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   defects$: Observable<TestResultDefects | undefined> = of(undefined);
+  sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   constructor(private testRecordsService: TestRecordsService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.testResult$ = this.testRecordsService.amendedTestResult$;
     this.defects$ = this.testRecordsService.amendedDefectData$;
+    this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
+    this.testRecordsService.editingTestResult((await firstValueFrom(this.testResult$)) as TestResultModel);
   }
 }

@@ -2,9 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { spinnerState } from '@store/spinner/reducers/spinner.reducer';
+import { getSpinner } from '@store/spinner/selectors/spinner.selectors';
 import { technicalRecordsLoadingState } from '@store/technical-records';
 import { testResultLoadingState } from '@store/test-records';
+import { testStationsLoadingState } from '@store/test-stations';
+import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
 import { firstValueFrom, take } from 'rxjs';
 import { SpinnerComponent } from './spinner.component';
 import { SpinnerService } from './spinner.service';
@@ -34,14 +36,14 @@ describe('Spinner-Service', () => {
     });
 
     it('Should return false when global spinner, testResult and technicalRecords loading state is false', async () => {
-      mockStore.overrideSelector(spinnerState, false);
+      mockStore.overrideSelector(getSpinner, false);
       mockStore.overrideSelector(testResultLoadingState, false);
       mockStore.overrideSelector(technicalRecordsLoadingState, false);
       expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeFalsy();
     });
 
     it('Should return true when global spinner state is true', async () => {
-      mockStore.overrideSelector(spinnerState, true);
+      mockStore.overrideSelector(getSpinner, true);
       expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
     });
 
@@ -52,6 +54,16 @@ describe('Spinner-Service', () => {
 
     it('Should return true when TechnicalRecords loading state is true', async () => {
       mockStore.overrideSelector(technicalRecordsLoadingState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
+
+    it('Should return true when testTypes loading state is true', async () => {
+      mockStore.overrideSelector(selectTestTypesLoadingState, true);
+      expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
+    });
+
+    it('Should return true when test stations loading state is true', async () => {
+      mockStore.overrideSelector(testStationsLoadingState, true);
       expect(await firstValueFrom(service.showSpinner$.pipe(take(1)))).toBeTruthy();
     });
   });

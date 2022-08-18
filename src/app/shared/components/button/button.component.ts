@@ -12,6 +12,4 @@ export class ButtonComponent {
   @Input() type: '' | 'secondary' | 'warning' | 'link' | 'underline' = '';
 
   @Output() clicked = new EventEmitter();
-
-  constructor() {}
 }

@@ -1,4 +1,5 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
 
 export const RequiredSection: FormNode = {
   name: 'requiredSection',
@@ -92,12 +93,6 @@ export const RequiredSection: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
-      name: 'reasonForCreation',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
-    },
-    {
       name: 'createdByName',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
@@ -170,6 +165,7 @@ export const RequiredSection: FormNode = {
           children: [
             {
               name: 'testTypeId',
+              label: 'Test Type ID',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
@@ -180,7 +176,6 @@ export const RequiredSection: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
             },
-
             {
               name: 'secondaryCertificateNumber',
               type: FormNodeTypes.CONTROL,
