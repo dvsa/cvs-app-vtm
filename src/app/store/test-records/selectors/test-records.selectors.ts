@@ -1,5 +1,8 @@
+import { TEST_TYPES } from '@forms/models/testTypeId.enum';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defect } from '@models/defect';
 import { TestResultModel } from '@models/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
 import { testResultAdapter, testResultsFeatureState } from '../reducers/test-records.reducer';
@@ -21,13 +24,13 @@ export const selectTestResultsTotal = createSelector(testResultsFeatureState, st
 export const selectedTestResultState = createSelector(
   selectTestResultsEntities,
   selectRouteNestedParams,
-  (entities, { testResultId, testTypeId }) => {
+  (entities, { testResultId, testNumber }) => {
     const testResult = entities[testResultId];
     if (!testResult) {
       return undefined;
     }
 
-    const testType = testResult.testTypes.find(testType => testType.testTypeId === testTypeId);
+    const testType = testResult.testTypes.find(testType => testType.testNumber === testNumber);
 
     if (!testType) {
       return undefined;
@@ -36,6 +39,12 @@ export const selectedTestResultState = createSelector(
     return { ...testResult, testTypes: [testType] };
   }
 );
+
+export const testResultInEdit = createSelector(testResultsFeatureState, state => state.editingTestResult);
+
+export const toEditOrNotToEdit = createSelector(testResultInEdit, selectedTestResultState, (editingTestResult, selectedTestResult) => {
+  return editingTestResult ? editingTestResult : selectedTestResult;
+});
 
 export const testResultLoadingState = createSelector(testResultsFeatureState, state => state.loading);
 
@@ -50,24 +59,34 @@ export const selectedTestSortedAmendmentHistory = createSelector(selectedTestRes
   return testHistory.sort(byDate);
 });
 
-export const selectedAmendedTestResultState = createSelector(selectedTestResultState, selectRouteParams, (testRecord, { testTypeId, createdAt }) => {
-  const amendedTest = testRecord?.testHistory?.find(testResult => testResult.createdAt === createdAt);
+export const selectedAmendedTestResultState = createSelector(
+  selectedTestResultState,
+  selectRouteNestedParams,
+  (testRecord, { testNumber, createdAt }) => {
+    const amendedTest = testRecord?.testHistory?.find(testResult => testResult.createdAt === createdAt);
 
-  if (!amendedTest) {
-    return undefined;
+    if (!amendedTest) {
+      return undefined;
+    }
+
+    const testType = amendedTest.testTypes.find(testType => testType.testNumber === testNumber);
+
+    if (!testType) {
+      return undefined;
+    }
+
+    return { ...amendedTest, testTypes: [testType] };
   }
-
-  const testType = amendedTest.testTypes.find(testType => testType.testTypeId === testTypeId);
-
-  if (!testType) {
-    return undefined;
-  }
-
-  return { ...amendedTest, testTypes: [testType] };
-});
+);
 
 export const selectAmendedDefectData = createSelector(selectedAmendedTestResultState, amendedTestResult => {
   return getDefectFromTestResult(amendedTestResult);
+});
+
+export const sectionTemplates = createSelector(testResultsFeatureState, state => state.sectionTemplates);
+
+export const isSameTestTypeId = createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
+  return testRecord?.testTypes[0].testTypeId === amendedTestRecord?.testTypes[0].testTypeId;
 });
 
 // Common Functions

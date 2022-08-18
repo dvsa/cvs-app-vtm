@@ -1,0 +1,92 @@
+import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
+import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
+import { TestResultModel } from '@models/test-result.model';
+import { createSelector } from '@ngrx/store';
+import { selectedTestResultState } from '@store/test-records';
+import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
+
+const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
+
+// select the array of ids
+export const selectTestTypesIds = createSelector(testTypesFeatureState, state => selectIds(state));
+
+// select the dictionary of test types entities
+export const selectTestTypesEntities = createSelector(testTypesFeatureState, state => selectEntities(state));
+
+// select the array of tests result
+export const selectAllTestTypes = createSelector(testTypesFeatureState, state => selectAll(state));
+
+// select the total test types count
+export const selectTestTypesTotal = createSelector(testTypesFeatureState, state => selectTotal(state));
+
+export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, state => state.loading);
+
+export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, selectedTestResultState, (testTypes, testResult) => {
+  if (testResult) {
+    return filterTestTypes(testTypes, testResult);
+  }
+  return [];
+});
+
+export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, testTypes => {
+  const sortTestTypes = (testTypes: TestTypesTaxonomy): TestTypesTaxonomy => {
+    return testTypes
+      .sort((a, b) => {
+        if (!b.hasOwnProperty('sortId')) {
+          return 1;
+        }
+
+        if (!a.hasOwnProperty('sortId')) {
+          return -1;
+        }
+
+        return parseInt((a as TestTypeCategory).sortId || '0') - parseInt((b as TestTypeCategory).sortId || '0');
+      })
+      .map(testType => {
+        const newTestType = { ...testType } as TestTypeCategory;
+
+        if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
+          newTestType.nextTestTypesOrCategories = sortTestTypes(newTestType.nextTestTypesOrCategories!);
+        }
+
+        return newTestType;
+      });
+  };
+
+  return sortTestTypes(testTypes);
+});
+
+function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
+  const { vehicleType, euVehicleCategory, vehicleSize, vehicleConfiguration, noOfAxles, vehicleClass, vehicleSubclass, numberOfWheelsDriven } =
+    testResult;
+
+  return testTypes
+    .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
+    .filter(testTypes => !euVehicleCategory || !testTypes.forEuVehicleCategory || testTypes.forEuVehicleCategory.includes(euVehicleCategory))
+    .filter(testTypes => !vehicleSize || !testTypes.forVehicleSize || testTypes.forVehicleSize.includes(vehicleSize))
+    .filter(
+      testTypes => !vehicleConfiguration || !testTypes.forVehicleConfiguration || testTypes.forVehicleConfiguration.includes(vehicleConfiguration)
+    )
+    .filter(testTypes => !noOfAxles || !testTypes.forVehicleAxles || testTypes.forVehicleAxles.includes(noOfAxles))
+    .filter(testTypes => !vehicleClass || !vehicleClass.code || !testTypes.forVehicleClass || testTypes.forVehicleClass.includes(vehicleClass.code))
+    .filter(
+      testTypes =>
+        !vehicleClass || !vehicleClass.description || !testTypes.forVehicleClass || testTypes.forVehicleClass.includes(vehicleClass.description)
+    )
+    .filter(
+      testTypes =>
+        !vehicleSubclass ||
+        !testTypes.forVehicleSubclass ||
+        testTypes.forVehicleSubclass.some(forVehicleSubclass => vehicleSubclass.includes(forVehicleSubclass))
+    )
+    .filter(testTypes => !numberOfWheelsDriven || !testTypes.forVehicleWheels || testTypes.forVehicleWheels.includes(numberOfWheelsDriven))
+    .map(testType => {
+      const newTestType = { ...testType } as TestTypeCategory;
+
+      if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
+        newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult);
+      }
+
+      return newTestType;
+    });
+}

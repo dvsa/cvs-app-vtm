@@ -21,6 +21,8 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
+import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
+import { TestTypeNamePipe } from './components/test-type-select/test-type-name.pipe';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     DateComponent,
     SelectComponent,
     DynamicFormFieldComponent,
-    FieldErrorMessageComponent
+    FieldErrorMessageComponent,
+    TestTypeSelectComponent,
+    TestTypeNamePipe
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -58,7 +62,8 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     DateComponent,
     SelectComponent,
     DynamicFormFieldComponent,
-    FieldErrorMessageComponent
+    FieldErrorMessageComponent,
+    TestTypeSelectComponent
   ]
 })
 export class DynamicFormsModule {}
