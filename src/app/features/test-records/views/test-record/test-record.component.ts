@@ -9,8 +9,10 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defects } from '@models/defects';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-result.model';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
@@ -31,6 +33,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   defects$: Observable<Defects | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
+  techRecord$: Observable<TechRecordModel | undefined> = this.techRecordService.selectedVehicleTechRecord$.pipe(
+    switchMap(techRecord => (techRecord ? this.techRecordService.viewableTechRecord$(techRecord, this.destroy$) : of(undefined)))
+  );
 
   constructor(
     private errorService: GlobalErrorService,
@@ -38,7 +43,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     private router: Router,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
-    private actions$: Actions
+    private actions$: Actions,
+    private techRecordService: TechnicalRecordService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }

@@ -1,4 +1,16 @@
 <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
+  <ng-container *ngSwitchCase="'vehicleSection'">
+    <app-vehicle-header [template]="template" [data]="testResult" [techRecord]="techRecord" [isEditing]="isEditing"></app-vehicle-header>
+    <app-dynamic-form-group
+      class="section"
+      [id]="template.name"
+      [template]="template"
+      [data]="testResult"
+      [edit]="isEditing"
+      (formChange)="handleFormChange($event)"
+    ></app-dynamic-form-group>
+  </ng-container>
+
   <app-test-type-select
     *ngSwitchCase="'requiredSection'"
     class="section"

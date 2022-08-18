@@ -4,7 +4,9 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { TestTypeSelectComponent } from '@forms/components/test-type-select/test-type-select.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-result.model';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import merge from 'lodash.merge';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -18,6 +20,7 @@ export class BaseTestRecordComponent {
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
   @Input() sectionTemplates: FormNode[] = [];
+  @Input() techRecord?: TechRecordModel | null | undefined;
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 

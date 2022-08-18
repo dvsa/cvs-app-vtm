@@ -14,6 +14,7 @@
     [isEditing]="(isEditing$ | async) || false"
     [testResult]="testResult"
     [sectionTemplates]="(sectionTemplates$ | async) || []"
+    [techRecord]="techRecord$ | async"
     (newTestResult)="handleNewTestResult($event)"
   ></app-base-test-record>
 
