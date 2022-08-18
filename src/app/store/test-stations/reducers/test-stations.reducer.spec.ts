@@ -1,5 +1,5 @@
 import { TestStation } from "@models/test-stations/test-station.model";
-import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsSuccess, fetchTestStationSuccess } from "../actions/test-stations.actions";
+import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from "../actions/test-stations.actions";
 import { initialTestStationsState, testStationsReducer, TestStationsState } from "./test-stations.reducer";
 
 describe('Test Stations Reducer', () => {
@@ -16,7 +16,7 @@ describe('Test Stations Reducer', () => {
     });
   });
 
-  describe('fetchTestStations', () => {
+  describe('fetchTestStations actions', () => {
     it('should set loading to true', () => {
       const newState: TestStationsState = { ...initialTestStationsState, loading: true };
       const action = fetchTestStations();
@@ -25,20 +25,31 @@ describe('Test Stations Reducer', () => {
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);
     });
-  });
 
-  describe('fetchTestStationsSuccess', () => {
-    it('should set all test result records', () => {
-      const newState: TestStationsState = {
-        ...initialTestStationsState,
-        ids: ['someId'],
-        entities: { someId: expectedTestStations[0] }
-      };
-      const action = fetchTestStationsSuccess({ payload: [...expectedTestStations] });
-      const state = testStationsReducer(initialTestStationsState, action);
+    describe('fetchTestStationsSuccess', () => {
+      it('should set all test result records', () => {
+        const newState: TestStationsState = {
+          ...initialTestStationsState,
+          ids: ['someId'],
+          entities: { someId: expectedTestStations[0] }
+        };
+        const action = fetchTestStationsSuccess({ payload: [...expectedTestStations] });
+        const state = testStationsReducer(initialTestStationsState, action);
 
-      expect(state).toEqual(newState);
-      expect(state).not.toBe(newState);
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
+
+      describe('fetchTestStationsFailed', () => {
+        it('should set error state', () => {
+          const newState = { ...initialTestStationsState, loading: false };
+          const action = fetchTestStationsFailed({ error: 'unit testing error message' });
+          const state = testStationsReducer({ ...initialTestStationsState, loading: true }, action);
+
+          expect(state).toEqual(newState);
+          expect(state).not.toBe(newState);
+        });
+      });
     });
   });
 

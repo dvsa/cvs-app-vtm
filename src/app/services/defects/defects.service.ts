@@ -14,7 +14,7 @@ export class DefectsService {
     return this.http.get<Defect[]>(this.url, { responseType: 'json' });
   }
 
-  fetchDefect(id: string): Observable<Defect> {
+  fetchDefect(id: number): Observable<Defect> {
     return this.http.get<Defect>(`${this.url}/${id}`, { responseType: 'json' });
   }
 }

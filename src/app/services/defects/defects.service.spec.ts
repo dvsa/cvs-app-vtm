@@ -63,7 +63,7 @@ describe('DefectsService', () => {
 
   describe('fetchDefect', () => {
     it('should get a matching result', () => {
-      const expectedId = 'some ID';
+      const expectedId = 1;
       const expectedResult = { imDescription: 'Some Description' } as Defect;
       service.fetchDefect(expectedId).subscribe(response => expect(response).toEqual(expectedResult));
 
@@ -76,7 +76,7 @@ describe('DefectsService', () => {
     });
 
     it('should handle errors', done => {
-      const expectedId = 'some ID';
+      const expectedId = 1;
         service.fetchDefect(expectedId).subscribe({
           next: () => {},
           error: e => {
