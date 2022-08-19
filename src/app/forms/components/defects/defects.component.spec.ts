@@ -78,7 +78,4 @@ describe('DefectsComponent', () => {
       expect(text.innerHTML).toBe(expectedText);
     }));
   });
-
-  // describe('handleDefectSelection', () => {
-  // });
 });
