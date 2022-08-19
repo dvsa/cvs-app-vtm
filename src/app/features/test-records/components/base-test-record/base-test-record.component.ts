@@ -7,7 +7,7 @@ import { Defect } from '@models/defects/defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 
 @Component({
-  selector: 'app-base-test-record[testResult][defectsData]',
+  selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html'
 })
 export class BaseTestRecordComponent {
@@ -18,7 +18,7 @@ export class BaseTestRecordComponent {
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
   @Input() sectionTemplates: FormNode[] = [];
-  @Input() defectsData!: Defect[] | null;
+  @Input() defectsData: Defect[] | null = null;
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 
