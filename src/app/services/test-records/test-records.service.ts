@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
   cancelEditingTestResult,

@@ -1,11 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { TestResultModel } from '@models/test-result.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { initialAppState } from '@store/.';
 import { BaseTestRecordComponent } from './base-test-record.component';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { TestResultModel } from '@models/test-results/test-result.model';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;

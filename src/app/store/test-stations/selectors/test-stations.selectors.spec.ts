@@ -1,5 +1,5 @@
-import { initialTestStationsState, TestStationsState } from "../reducers/test-stations.reducer";
-import { testStation, testStations, testStationsLoadingState } from "./test-stations.selectors";
+import { initialTestStationsState, TestStationsState } from '../reducers/test-stations.reducer';
+import { testStation, testStations, testStationsLoadingState } from './test-stations.selectors';
 
 describe('Test Results Selectors', () => {
   describe('adapter selectors', () => {
