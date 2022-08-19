@@ -10,7 +10,7 @@
 </div>
 
 <div *ngIf="isEditing" class="defects">
-  <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedDefect }">
+  <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
     <ol class="list">
       <li *ngFor="let defect of defects" class="list__item" [ngClass]="{ 'list__item--active': defect === selectedDefect }">
         <button (click)="handleSelect(defect, types.Defect)">
@@ -20,7 +20,7 @@
     </ol>
   </div>
 
-  <div *ngIf="selectedDefect" class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
+  <div *ngIf="selectedDefect" class="list_container">
     <ol class="list">
       <li *ngFor="let item of selectedDefect?.items" class="list__item" [ngClass]="{ 'list__item--active': item === selectedItem }">
         <button (click)="handleSelect(item, types.Item)">

@@ -13,15 +13,20 @@
 }
 
 .list_container {
+  max-width: 28em;
+  overflow-wrap: break-word;
+
   &--shrink {
+    flex-basis: 100px;
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 100px;
+    overflow: hidden;
+    overflow-wrap: normal;
+    white-space: nowrap;
 
     -webkit-flex-grow: 1;
     -webkit-flex-shrink: 1;
 
-    overflow: hidden;
 
     &:hover {
       flex-basis: auto;
@@ -70,7 +75,6 @@
       min-width: 150px;
       text-align: left;
       padding: 15px 30px 20px 15px;
-      white-space: nowrap;
       width: 100%;
     }
 
