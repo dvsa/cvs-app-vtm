@@ -1,12 +1,12 @@
-import { EuVehicleCategory } from './eu-vehicle-category.enum';
-import { OdometerReadingUnits } from './odometer-unit.enum';
-import { TestStationType } from './test-station-type.enum';
-import { TestType } from './test-type.model';
+import { TestStationType } from '@models/test-stations/test-station-type.enum';
+import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
+import { TestType } from '@models/test-types/test-type.model';
+import { VehicleClass } from '@models/vehicle-class.model';
+import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
+import { VehicleSize } from '@models/vehicle-size.enum';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TestCodes } from './testCodes.enum';
-import { VehicleTypes } from './vehicle-tech-record.model';
-import { VehicleConfiguration } from './vehicle-configuration.enum';
-import { VehicleSize } from './vehicle-size.enum';
-import { VehicleClass } from './vehicle-class.model';
 
 export interface TestResultModel {
   testResultId: string;

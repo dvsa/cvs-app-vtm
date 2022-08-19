@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { resultOfTestEnum } from '@models/test-type.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { resultOfTestSelector } from '@store/test-records';

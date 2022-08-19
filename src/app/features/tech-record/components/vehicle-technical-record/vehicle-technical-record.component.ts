@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TestResultModel } from '@models/test-result.model';
 import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, Subject } from 'rxjs';
 import { Roles } from '@models/roles.enum'
+import { TestResultModel } from '@models/test-results/test-result.model';
 
 @Component({
   selector: 'app-vehicle-technical-record',

@@ -42,7 +42,8 @@ export enum FormNodeEditTypes {
   TEXTAREA = 'textarea',
   DATE = 'date',
   RADIO = 'radio',
-  HIDDEN = 'hidden'
+  HIDDEN = 'hidden',
+  CHECKBOX = 'checkbox'
 }
 
 export interface FormNodeOption<T> {
@@ -58,6 +59,7 @@ export interface FormNode {
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
   label?: string;
+  separator?: string;
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
@@ -65,6 +67,7 @@ export interface FormNode {
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
+  required?: boolean;
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
@@ -162,8 +165,10 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
 
-  addControl() {
-    super.push(this.dynamicFormService.createForm(this.meta));
+  addControl(data?: any): void {
+    if (this.meta?.children) {
+      super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
+    }
   }
 }
 
@@ -176,7 +181,9 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
-      if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
+      if (control.meta.type === FormNodeTypes.CONTROL && control.meta.required && control.meta.hide) {
+        Array.isArray(cleanValue) ? cleanValue.push(control.meta.value || null) : (cleanValue[key] = control.meta.value || null);
+      } else if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
         Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
       }
     }

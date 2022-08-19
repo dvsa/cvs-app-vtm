@@ -84,14 +84,14 @@ export function getDimensionsMinMaxSection(heading: string, minField: string, ma
     children: [
       {
         name: minField,
-        label: "Minimum (mm)",
+        label: 'Minimum (mm)',
         value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
         name: maxField,
-        label: "Maximum (mm)",
+        label: 'Maximum (mm)',
         value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING

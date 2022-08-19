@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { resultOfTestEnum } from '@models/test-type.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { resultOfTestSelector, updateResultOfTest } from '@store/test-records';

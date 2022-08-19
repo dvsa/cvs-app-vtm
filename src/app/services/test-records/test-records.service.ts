@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
-  calculateTestResult,
   cancelEditingTestResult,
   editingTestResult,
   fetchTestResults,
@@ -121,7 +120,7 @@ export class TestRecordsService {
   }
 
   editingTestResult(testResult: TestResultModel): void {
-    this.store.dispatch(editingTestResult({ testResult }));
+    this.store.dispatch(editingTestResult({ testTypeId: testResult.testTypes[0].testTypeId }));
   }
 
   cancelEditingTestResult(): void {

@@ -1,4 +1,4 @@
-import { Defect } from './defect';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import * as Emissions from './emissions.enum';
 
 export interface TestType {
@@ -30,7 +30,7 @@ export interface TestType {
   modificationTypeUsed: string;
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
-  defects?: Defect[];
+  defects?: TestResultDefects;
   customDefects: customDefects[];
 
   additionalNotesRecorded: string;

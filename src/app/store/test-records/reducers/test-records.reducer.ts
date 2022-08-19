@@ -1,7 +1,7 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { Defect } from '@models/defect';
-import { TestResultModel } from '@models/test-result.model';
-import { resultOfTestEnum } from '@models/test-type.model';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
@@ -61,7 +61,10 @@ export const testResultsReducer = createReducer(
   on(updateTestResultFailed, state => ({ ...state, loading: false })),
   on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
   on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
-  on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, state.editingTestResult, action.testResult) })),
+  on(updateEditingTestResult, (state, action) => ({
+    ...state,
+    editingTestResult: merge({}, action.testResult)
+  })),
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) }))
 );
 
@@ -84,7 +87,8 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 
     const failOrPrs = testType.defects.some(
       defect =>
-        defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Major || defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Dangerous
+        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Major ||
+        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Dangerous
     );
     if (!failOrPrs) {
       testType.testResult = resultOfTestEnum.pass;
@@ -93,10 +97,10 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
 
     testType.testResult = testType.defects.every(
       defect =>
-        defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Advisory ||
-        defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Minor ||
-        (defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Dangerous && defect.prs) ||
-        (defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Major && defect.prs)
+        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Advisory ||
+        defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Minor ||
+        (defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Dangerous && defect.prs) ||
+        (defect.deficiencyCategory === TestResultDefect.DeficiencyCategoryEnum.Major && defect.prs)
     )
       ? resultOfTestEnum.prs
       : resultOfTestEnum.fail;

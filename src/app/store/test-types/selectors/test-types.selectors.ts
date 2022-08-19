@@ -1,6 +1,6 @@
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { createSelector } from '@ngrx/store';
 import { selectedTestResultState } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';

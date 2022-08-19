@@ -1,11 +1,8 @@
-import { TEST_TYPES } from '@forms/models/testTypeId.enum';
-import { masterTpl } from '@forms/templates/test-records/master.template';
-import { Defect } from '@models/defect';
-import { TestResultModel } from '@models/test-result.model';
-import { TestType } from '@models/test-type.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestType } from '@models/test-types/test-type.model';
 import { createSelector } from '@ngrx/store';
-import { selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { testResultAdapter, testResultsFeatureState } from '../reducers/test-records.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testResultAdapter.getSelectors();
@@ -37,7 +34,7 @@ export const selectedTestResultState = createSelector(
       return undefined;
     }
 
-    return { ...testResult, testTypes: [testType] };
+    return { ...testResult, testTypes: [testType] } as TestResultModel;
   }
 );
 
@@ -102,7 +99,7 @@ export const isTestTypeKeySame = (key: keyof TestType) =>
  * Returns the selected test record defects for the first testType (if any).
  * TODO: When we have better routing set up, we need to revisit this so that the testType is also selected based on route paramerets/queries.
  */
-function getDefectFromTestResult(testResult: TestResultModel | undefined): Defect[] {
+function getDefectFromTestResult(testResult: TestResultModel | undefined): TestResultDefects {
   return (testResult?.testTypes && testResult.testTypes.length > 0 && testResult.testTypes[0].defects) || [];
 }
 
