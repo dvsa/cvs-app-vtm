@@ -6,7 +6,7 @@ import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
 import {
-  isSameTestTypeId,
+  isTestTypeKeySame,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
@@ -185,7 +185,7 @@ describe('Test Results Selectors', () => {
   });
 
   describe('isSameTestTypeId', () => {
-    it('should return false if the testTypeId is different', () => {
+    it('should return false if the property is different', () => {
       const amendTestResult = {
         testTypes: [
           {
@@ -202,11 +202,11 @@ describe('Test Results Selectors', () => {
           }
         ]
       } as TestResultModel;
-      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(false);
     });
 
-    it('should return true if the testTypeId is the same', () => {
+    it('should return true if the property is the same', () => {
       const amendTestResult = {
         testTypes: [
           {
@@ -223,7 +223,7 @@ describe('Test Results Selectors', () => {
           }
         ]
       } as TestResultModel;
-      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(true);
     });
   });

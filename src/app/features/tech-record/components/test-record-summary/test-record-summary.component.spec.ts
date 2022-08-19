@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestResultModel } from '@models/test-result.model';
-import { TestType } from '@models/test-type.model';
+import { resultOfTestEnum, TestType } from '@models/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 
@@ -52,7 +52,7 @@ describe('TestRecordSummaryComponent', () => {
   it('should concatinate multiple test types', () => {
     const testTypeNames = component.getTestTypeName(
       createMock<TestResultModel>({
-        testTypes: createMockList<TestType>(2, (itr) =>
+        testTypes: createMockList<TestType>(2, itr =>
           createMock<TestType>({
             testTypeName: 'name'
           })
@@ -65,9 +65,9 @@ describe('TestRecordSummaryComponent', () => {
   it('should concatinate multiple test results', () => {
     const testTypeResults = component.getTestTypeResults(
       createMock<TestResultModel>({
-        testTypes: createMockList<TestType>(2, (itr) =>
+        testTypes: createMockList<TestType>(2, itr =>
           createMock<TestType>({
-            testResult: 'pass'
+            testResult: resultOfTestEnum.pass
           })
         )
       })

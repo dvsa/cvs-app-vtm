@@ -7,6 +7,7 @@ import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
 import { TestStationType } from '../app/models/test-station-type.enum';
 import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
+import { resultOfTestEnum } from '../app/models/test-type.model';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
@@ -29,7 +30,7 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
       testAnniversaryDate: new Date(now.setFullYear(now.getFullYear() - 1)).toISOString(),
       prohibitionIssued: false,
-      testResult: 'pass',
+      testResult: resultOfTestEnum.pass,
       seatbeltInstallationCheckDate: true,
       numberOfSeatbeltsFitted: 4,
       lastSeatbeltInstallationCheckDate: new Date().toISOString(),

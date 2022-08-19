@@ -13,7 +13,7 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, filter, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
+import { catchError, concat, concatMap, filter, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
   editingTestResult,
   fetchSelectedTestResult,
@@ -30,6 +30,7 @@ import {
 } from '../actions/test-records.actions';
 import { selectedTestResultState } from '../selectors/test-records.selectors';
 import { selectQueryParam } from '@store/router/selectors/router.selectors';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 
 @Injectable()
 export class TestResultsEffects {
@@ -168,6 +169,7 @@ export class TestResultsEffects {
     private store: Store<State>,
     private userService: UserService,
     private routerService: RouterService,
-    private dfs: DynamicFormService
+    private dfs: DynamicFormService,
+    private resultService: ResultOfTestService
   ) {}
 }

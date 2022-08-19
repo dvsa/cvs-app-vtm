@@ -1,7 +1,10 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
+import { Defect } from '@models/defect';
 import { TestResultModel } from '@models/test-result.model';
+import { resultOfTestEnum } from '@models/test-type.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
+import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
@@ -15,6 +18,7 @@ import {
   fetchTestResultsSuccess,
   templateSectionsChanged,
   updateEditingTestResult,
+  updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess
@@ -57,7 +61,47 @@ export const testResultsReducer = createReducer(
   on(updateTestResultFailed, state => ({ ...state, loading: false })),
   on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
   on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
-  on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, state.editingTestResult, action.testResult) }))
+  on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, state.editingTestResult, action.testResult) })),
+  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
+
+function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  const newTestTypes = testResult.testTypes.map(testType => {
+    if (testType.testResult === resultOfTestEnum.abandoned || !testType.defects) {
+      return testType;
+    }
+
+    if (!testType.defects.length) {
+      testType.testResult = resultOfTestEnum.pass;
+      return testType;
+    }
+
+    const failOrPrs = testType.defects.some(
+      defect =>
+        defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Major || defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Dangerous
+    );
+    if (!failOrPrs) {
+      testType.testResult = resultOfTestEnum.pass;
+      return testType;
+    }
+
+    testType.testResult = testType.defects.every(
+      defect =>
+        defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Advisory ||
+        defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Minor ||
+        (defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Dangerous && defect.prs) ||
+        (defect.deficiencyCategory === Defect.DeficiencyCategoryEnum.Major && defect.prs)
+    )
+      ? resultOfTestEnum.prs
+      : resultOfTestEnum.fail;
+
+    return testType;
+  });
+  return { ...testResult, testTypes: [...newTestTypes] };
+}

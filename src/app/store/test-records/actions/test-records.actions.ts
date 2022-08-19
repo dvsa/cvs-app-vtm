@@ -30,3 +30,5 @@ export const templateSectionsChanged = createAction(
   props<{ sectionTemplates: FormNode[]; sectionsValue: TestResultModel | undefined }>()
 );
 export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());
+
+export const updateResultOfTest = createAction('[test-results] update the result of the test');

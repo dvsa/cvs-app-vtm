@@ -4,11 +4,12 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { TestResultModel } from '@models/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
+  calculateTestResult,
   cancelEditingTestResult,
   editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
-  isSameTestTypeId,
+  isTestTypeKeySame,
   sectionTemplates,
   selectAllTestResults,
   selectAmendedDefectData,
@@ -132,6 +133,6 @@ export class TestRecordsService {
   }
 
   get isSameTestTypeId$(): Observable<boolean> {
-    return this.store.pipe(select(isSameTestTypeId));
+    return this.store.pipe(select(isTestTypeKeySame('testTypeId')));
   }
 }

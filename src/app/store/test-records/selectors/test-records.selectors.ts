@@ -2,6 +2,7 @@ import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defect } from '@models/defect';
 import { TestResultModel } from '@models/test-result.model';
+import { TestType } from '@models/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
@@ -88,6 +89,13 @@ export const sectionTemplates = createSelector(testResultsFeatureState, state =>
 export const isSameTestTypeId = createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
   return testRecord?.testTypes[0].testTypeId === amendedTestRecord?.testTypes[0].testTypeId;
 });
+
+export const resultOfTestSelector = createSelector(toEditOrNotToEdit, testRecord => testRecord?.testTypes[0].testResult);
+
+export const isTestTypeKeySame = (key: keyof TestType) =>
+  createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
+    return testRecord?.testTypes[0][key] === amendedTestRecord?.testTypes[0][key];
+  });
 
 // Common Functions
 /**
