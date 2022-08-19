@@ -33,7 +33,7 @@ export const selectedTestResultState = createSelector(
       return undefined;
     }
 
-    return { ...testResult, testTypes: [testType] };
+    return { ...testResult, testTypes: [testType] } as TestResultModel;
   }
 );
 

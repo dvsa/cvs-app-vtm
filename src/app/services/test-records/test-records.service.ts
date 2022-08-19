@@ -120,7 +120,7 @@ export class TestRecordsService {
   }
 
   editingTestResult(testResult: TestResultModel): void {
-    this.store.dispatch(editingTestResult({ testResult }));
+    this.store.dispatch(editingTestResult({ testTypeId: testResult.testTypes[0].testTypeId }));
   }
 
   cancelEditingTestResult(): void {

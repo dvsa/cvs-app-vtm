@@ -2,7 +2,7 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import mergeWith from 'lodash.mergewith';
+import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
   fetchSelectedTestResult,
@@ -57,20 +57,10 @@ export const testResultsReducer = createReducer(
   on(updateTestResultFailed, state => ({ ...state, loading: false })),
   on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
   on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
-  on(updateEditingTestResult, (state, action) => {
-    const customizer = (objValue: any, srcValue: any) => {
-      // if source value is an array with length of 0, then return the source value.
-      // this is for cases where we remove items from a FormArray.
-      if (Array.isArray(objValue) && srcValue.length === 0) {
-        return srcValue;
-      }
-    };
-
-    return {
-      ...state,
-      editingTestResult: mergeWith({}, state.editingTestResult, action.testResult, customizer)
-    };
-  })
+  on(updateEditingTestResult, (state, action) => ({
+    ...state,
+    editingTestResult: merge({}, action.testResult)
+  }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

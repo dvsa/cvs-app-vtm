@@ -35,8 +35,6 @@ describe('BaseTestRecordComponent', () => {
       const event = { vin: 'ABC001' } as TestResultModel;
       const expectedValue = { vin: 'ABC001' };
 
-      fixture.detectChanges();
-
       component.newTestResult.subscribe(testResult => {
         expect(testResult).toEqual(expectedValue);
         done();

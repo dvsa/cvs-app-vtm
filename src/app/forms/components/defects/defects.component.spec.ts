@@ -8,8 +8,6 @@ import { mockTestResult } from '@mocks/mock-test-result';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
 import { DefectSelectComponent } from '../defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
@@ -23,7 +21,7 @@ describe('DefectsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
       declarations: [DefectComponent, DefectSelectComponent, DefectsComponent],
-      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
+      providers: [DynamicFormService]
     }).compileComponents();
   });
 
@@ -53,8 +51,8 @@ describe('DefectsComponent', () => {
     const expectedSelection = {
       defect: { imNumber: 1 } as Defect,
       item: { itemNumber: 2 } as Item,
-      deficiency: { deficiencyId: '3' }  as Deficiency
-    }
+      deficiency: { deficiencyId: '3' } as Deficiency
+    };
 
     component.handleDefectSelection(expectedSelection);
 

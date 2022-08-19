@@ -10,9 +10,9 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { selectQueryParam, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, filter, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
   editingTestResult,
   fetchSelectedTestResult,
@@ -22,13 +22,12 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   templateSectionsChanged,
-  updateEditingTestResult,
+  testTypeIdChanged,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { selectedTestResultState } from '../selectors/test-records.selectors';
-import { selectQueryParam } from '@store/router/selectors/router.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -108,26 +107,17 @@ export class TestResultsEffects {
 
   generateSectionTemplatesAndtestResultToUpdate$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(editingTestResult, updateEditingTestResult),
-      filter(action => {
-        const { testResult, type } = action;
-
-        return (
-          type === editingTestResult.type ||
-          (type === updateEditingTestResult.type && testResult?.testTypes && testResult.testTypes.length > 0 && !!testResult.testTypes[0].testTypeId)
-        );
-      }),
+      ofType(editingTestResult, testTypeIdChanged),
       mergeMap(action =>
         of(action).pipe(withLatestFrom(this.store.pipe(select(selectedTestResultState)), this.store.pipe(select(selectQueryParam('edit')))), take(1))
       ),
       concatMap(([action, selectedTestResult, isEditing]) => {
-        const { testResult } = action;
+        const { testTypeId } = action;
 
-        const { vehicleType } = testResult;
+        const { vehicleType } = selectedTestResult!;
         if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType)) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
-        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
         const vehicleTpl = masterTpl[vehicleType as VehicleTypes];
 
