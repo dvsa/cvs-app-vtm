@@ -3,6 +3,8 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { DefectsTpl } from '@forms/templates/general/defect.template';
+import { mockTestResult } from '@mocks/mock-test-result';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
@@ -28,10 +30,7 @@ describe('DefectsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DefectsComponent);
     component = fixture.componentInstance;
-    // component.template = DefectsTpl;
-    // component.data = mockTestResult();
     el = fixture.debugElement;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -39,19 +38,27 @@ describe('DefectsComponent', () => {
   });
 
   it('should render correct header', () => {
+    fixture.detectChanges();
     expect(el.query(By.css('h2')).nativeElement.innerHTML).toBe('Defects');
   });
 
   it('should add the selected defect into the defects form', () => {
+    component.template = DefectsTpl;
+    component.data = mockTestResult();
+
+    fixture.detectChanges();
+
+    expect(component.defectsForm.length).toBe(1);
+
     const expectedSelection = {
       defect: { imNumber: 1 } as Defect,
       item: { itemNumber: 2 } as Item,
       deficiency: { deficiencyId: '3' }  as Deficiency
     }
 
-    // component.handleDefectSelection(expectedSelection);
+    component.handleDefectSelection(expectedSelection);
 
-    // TODO: Test to check whether a new control has been added to the form.
+    expect(component.defectsForm.length).toBe(2);
   });
 
   describe('No defects', () => {

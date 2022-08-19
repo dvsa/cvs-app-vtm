@@ -21,15 +21,15 @@ export class DefectSelectComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  get types(): typeof Types {
-    return Types;
-  }
-
   constructor() { }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get types(): typeof Types {
+    return Types;
   }
 
   hasItems(defect: Defect): boolean {
