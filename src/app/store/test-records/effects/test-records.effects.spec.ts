@@ -30,7 +30,7 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   templateSectionsChanged,
-  updateEditingTestResult,
+  testTypeIdChanged,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess
@@ -299,7 +299,7 @@ describe('TestResultsEffects', () => {
 
         actions$ = hot('-a', {
           a: editingTestResult({
-            testResult
+            testTypeId: '1'
           })
         });
 
@@ -319,9 +319,10 @@ describe('TestResultsEffects', () => {
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectedTestResultState, testResult);
         actions$ = hot('-a', {
-          a: updateEditingTestResult({
-            testResult
+          a: testTypeIdChanged({
+            testTypeId: '1'
           })
         });
 
@@ -341,9 +342,11 @@ describe('TestResultsEffects', () => {
       });
 
       testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(selectedTestResultState, testResult);
+
         actions$ = hot('-a', {
-          a: updateEditingTestResult({
-            testResult
+          a: testTypeIdChanged({
+            testTypeId: '1'
           })
         });
 
@@ -364,10 +367,11 @@ describe('TestResultsEffects', () => {
 
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'true' });
+        store.overrideSelector(selectedTestResultState, testResult);
 
         actions$ = hot('-a', {
-          a: updateEditingTestResult({
-            testResult
+          a: testTypeIdChanged({
+            testTypeId: '190'
           })
         });
 
@@ -388,10 +392,11 @@ describe('TestResultsEffects', () => {
 
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'true' });
+        store.overrideSelector(selectedTestResultState, testResult);
 
         actions$ = hot('-a', {
-          a: updateEditingTestResult({
-            testResult
+          a: testTypeIdChanged({
+            testTypeId: '39'
           })
         });
 
@@ -409,13 +414,13 @@ describe('TestResultsEffects', () => {
         vehicleType: VehicleTypes.PSV,
         testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '39' }))
       });
-
       testScheduler.run(({ hot, expectObservable }) => {
         store.overrideSelector(selectQueryParams, { edit: 'false' });
+        store.overrideSelector(selectedTestResultState, testResult);
 
         actions$ = hot('-a', {
-          a: updateEditingTestResult({
-            testResult
+          a: testTypeIdChanged({
+            testTypeId: '39'
           })
         });
 
@@ -424,20 +429,6 @@ describe('TestResultsEffects', () => {
             sectionTemplates: Object.values(masterTpl.psv['default']),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
           })
-        });
-      });
-    });
-
-    it('should not dispatch any actions when updateEditingTestResult is caught without testTypeId', () => {
-      testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a', {
-          a: updateEditingTestResult({
-            testResult: {} as TestResultModel
-          })
-        });
-
-        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('--', {
-          b: []
         });
       });
     });

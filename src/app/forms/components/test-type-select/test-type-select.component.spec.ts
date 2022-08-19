@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { RequiredSection } from '@forms/templates/test-records/section-templates/required/required-hidden-section.template';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { initialAppState } from '@store/.';
@@ -14,6 +14,7 @@ import { TestTypeSelectComponent } from './test-type-select.component';
 describe('TestTypeSelectComponent', () => {
   let component: TestTypeSelectComponent;
   let fixture: ComponentFixture<TestTypeSelectComponent>;
+  let testTypesService: TestTypesService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,7 +22,7 @@ describe('TestTypeSelectComponent', () => {
       providers: [
         DynamicFormService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]) } }
+        { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }
       ],
       imports: [ReactiveFormsModule]
     }).compileComponents();
@@ -30,8 +31,8 @@ describe('TestTypeSelectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestTypeSelectComponent);
     component = fixture.componentInstance;
-    component.template = RequiredSection;
-    component.data = { testTypes: [{ testTypeId: '7' }] };
+    testTypesService = TestBed.inject(TestTypesService);
+    component.data = { testTypes: [{ testTypeId: '7' }] } as TestResultModel;
     fixture.detectChanges();
   });
 
@@ -64,9 +65,10 @@ describe('TestTypeSelectComponent', () => {
 
   describe(TestTypeSelectComponent.prototype.handleCategory.name, () => {
     it('should set testTypeId control value and reset categories', () => {
+      testTypesService.testTypeIdChanged = jest.fn();
       component.categories = createMockList<TestTypeCategory>(3, id => createMock<TestTypeCategory>({ id: `${id + 1}` }));
       component.handleCategory(createMock<TestType>({ id: '1' }), 0);
-      expect(component.testTypeIdControl?.value).toBe('1');
+      expect(testTypesService.testTypeIdChanged).toHaveBeenCalledWith('1');
       expect(component.categories.length).toBe(0);
     });
 
