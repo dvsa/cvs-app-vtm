@@ -29,7 +29,7 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
       testAnniversaryDate: new Date(now.setFullYear(now.getFullYear() - 1)).toISOString(),
       prohibitionIssued: false,
-      testResult: 'pass',
+      testResult: 'abandoned',
       seatbeltInstallationCheckDate: true,
       numberOfSeatbeltsFitted: 4,
       lastSeatbeltInstallationCheckDate: new Date().toISOString(),

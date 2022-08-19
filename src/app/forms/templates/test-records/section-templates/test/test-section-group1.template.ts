@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
 export const TestSectionGroup1: FormNode = {
   name: 'testSection',
@@ -46,12 +47,48 @@ export const TestSectionGroup1: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              value: '',
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'fail', label: 'Fail' },
+                { value: 'pass', label: 'Pass' },
+                { value: 'prs', label: 'PRS' },
+                { value: 'abandoned', label: 'Abandoned' }
+              ],
               validators: [
-                { name: ValidatorNames.enableIfEquals, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.enableIfEquals, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
               type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              label: 'Reason for abandoning',
+              editType: FormNodeEditTypes.CHECKBOX,
+              separator: '. ',
+              required: true,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                }
+              ],
+              options: TestAbandonmentReasonsPsvData
+            },
+            {
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              required: true,
+              label: 'Additional details for abandoning',
+              editType: FormNodeEditTypes.TEXTAREA,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                },
+                { name: ValidatorNames.MaxLength, args: { length: 500 } }
+              ]
             },
             {
               name: 'testTypeName',
@@ -81,20 +118,6 @@ export const TestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
-            },
-            {
-              name: 'reasonForAbandoning',
-              type: FormNodeTypes.CONTROL,
-              label: 'Reason for abandoning',
-              disabled: true,
-              value: ''
-            },
-            {
-              name: 'additionalCommentsForAbandon',
-              type: FormNodeTypes.CONTROL,
-              value: '',
-              label: 'Additional details for abandoning',
-              disabled: true
             },
             {
               name: 'testAnniversaryDate',
