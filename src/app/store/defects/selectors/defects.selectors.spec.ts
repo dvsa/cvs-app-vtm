@@ -1,5 +1,5 @@
-import { DefectsState, initialDefectsState } from "../reducers/defects.reducer";
-import { defect, defects, defectsLoadingState } from "./defects.selectors";
+import { DefectsState, initialDefectsState } from '../reducers/defects.reducer';
+import { defect, defects, defectsLoadingState } from './defects.selectors';
 
 describe('Defects Selectors', () => {
   describe('adapter selectors', () => {

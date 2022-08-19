@@ -1,6 +1,6 @@
-import { Defect } from "@models/defects/defect.model";
-import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from "../actions/defects.actions";
-import { defectsReducer, DefectsState, initialDefectsState } from "./defects.reducer";
+import { Defect } from '@models/defects/defect.model';
+import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from '../actions/defects.actions';
+import { defectsReducer, DefectsState, initialDefectsState } from './defects.reducer';
 
 describe('Defects Reducer', () => {
   const expectedDefects = [ { imNumber: 1 } as Defect ];

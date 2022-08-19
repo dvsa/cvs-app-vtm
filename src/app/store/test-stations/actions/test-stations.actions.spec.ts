@@ -1,4 +1,4 @@
-import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from "./test-stations.actions";
+import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from './test-stations.actions';
 
 describe('Test Result Actions', () => {
   it('should return correct types', () => {

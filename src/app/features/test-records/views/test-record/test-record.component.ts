@@ -6,16 +6,18 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
+import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { defects, DefectsState, fetchDefects } from '@store/defects';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { firstValueFrom, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 
 @Component({
   selector: 'app-test-records',
@@ -29,16 +31,16 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   isEditing$: Observable<boolean> = of(false);
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  defects$: Observable<TestResultDefects | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   constructor(
+    private actions$: Actions,
+    private defectsStore: Store<DefectsState>,
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService,
-    private actions$: Actions
+    private testRecordsService: TestRecordsService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -48,7 +50,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
       switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
-    this.defects$ = this.testRecordsService.defectData$;
+    this.defectsStore.dispatch(fetchDefects());
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.watchForUpdateSuccess();
     this.testRecordsService.editingTestResult((await firstValueFrom(this.testResult$)) as TestResultModel);
@@ -61,6 +63,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   public get Roles() {
     return Roles;
+  }
+
+  get defects$(): Observable<Defect[]> {
+    return this.defectsStore.select(defects);
   }
 
   handleEdit(): void {

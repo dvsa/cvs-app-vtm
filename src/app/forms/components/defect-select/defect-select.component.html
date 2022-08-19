@@ -12,7 +12,7 @@
 <div *ngIf="isEditing" class="defects">
   <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedDefect }">
     <ol class="list">
-      <li *ngFor="let defect of defects$ | async" class="list__item" [ngClass]="{ 'list__item--active': defect === selectedDefect }">
+      <li *ngFor="let defect of defects" class="list__item" [ngClass]="{ 'list__item--active': defect === selectedDefect }">
         <button (click)="handleSelect(defect, types.Defect)">
           {{ defect.imNumber }}: {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
         </button>

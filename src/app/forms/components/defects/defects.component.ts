@@ -8,11 +8,12 @@ import { TestResultDefect } from '@models/test-results/test-result-defect.model'
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-defects[template]',
+  selector: 'app-defects[defects][template]',
   templateUrl: './defects.component.html'
 })
 export class DefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
+  @Input() defects!: Defect[] | null;
   @Input() template!: FormNode;
   @Input() data: any = {};
 

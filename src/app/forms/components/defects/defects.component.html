@@ -14,4 +14,4 @@
   <p class="govuk-body">No defects</p>
 </ng-template>
 
-<app-defect-select class="section" [isParentEditing]="isEditing" (formChange)="handleDefectSelection($event)"></app-defect-select>
+<app-defect-select class="section" [isParentEditing]="isEditing" [defects]="defects" (formChange)="handleDefectSelection($event)"></app-defect-select>

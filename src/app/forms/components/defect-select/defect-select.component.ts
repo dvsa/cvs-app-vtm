@@ -1,17 +1,16 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
-import { Store } from '@ngrx/store';
-import { defects, DefectsState, fetchDefects } from '@store/defects';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-defect-select',
+  selector: 'app-defect-select[isParentEditing][defects]',
   templateUrl: './defect-select.component.html',
   styleUrls: ['./defect-select.component.scss']
 })
-export class DefectSelectComponent implements OnInit, OnDestroy {
+export class DefectSelectComponent implements OnDestroy {
+  @Input() defects!: Defect[] | null;
   @Input() isParentEditing = false;
   @Output() formChange = new EventEmitter<{ defect: Defect, item: Item, deficiency: Deficiency }>();
 
@@ -22,12 +21,15 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  get defects$(): Observable<Defect[]> {
-    return this.store.select(defects);
-  }
-
   get types(): typeof Types {
     return Types;
+  }
+
+  constructor() { }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   hasItems(defect: Defect): boolean {
@@ -36,17 +38,6 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   hasDeficiencies(item: Item): boolean {
     return item.deficiencies && item.deficiencies.length > 0;
-  }
-
-  constructor(private store: Store<DefectsState>) { }
-
-  ngOnInit(): void {
-    this.store.dispatch(fetchDefects());
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   toggleEditMode(): void {

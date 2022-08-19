@@ -1,4 +1,4 @@
-import { TestStationType } from "./test-station-type.enum";
+import { TestStationType } from './test-station-type.enum';
 
 export interface TestStation {
   testStationId: string;

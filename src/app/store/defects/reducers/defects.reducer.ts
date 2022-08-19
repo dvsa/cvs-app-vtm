@@ -1,7 +1,7 @@
-import { Defect } from "@models/defects/defect.model";
-import { createEntityAdapter, EntityAdapter, EntityState } from "@ngrx/entity";
+import { Defect } from '@models/defects/defect.model';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from "../actions/defects.actions";
+import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from '../actions/defects.actions';
 
 export interface DefectsState extends EntityState<Defect> {
   loading: boolean;
