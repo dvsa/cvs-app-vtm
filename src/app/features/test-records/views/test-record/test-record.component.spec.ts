@@ -33,6 +33,7 @@ describe('TestRecordComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let testRecordsService: TestRecordsService;
+  let techRecordService: TechnicalRecordService;
   let actions$ = new ReplaySubject<Action>();
 
   beforeEach(waitForAsync(() => {
@@ -64,6 +65,7 @@ describe('TestRecordComponent', () => {
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
     testRecordsService = TestBed.inject(TestRecordsService);
+    techRecordService = TestBed.inject(TechnicalRecordService);
 
     store.resetSelectors();
     store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);
@@ -268,6 +270,7 @@ describe('TestRecordComponent', () => {
       jest
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
+      jest.spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
     });
 
     it('should render the banner if the test type id is not supported', () => {

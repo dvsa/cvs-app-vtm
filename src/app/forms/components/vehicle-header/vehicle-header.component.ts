@@ -1,28 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-vehicle-header',
   templateUrl: './vehicle-header.component.html',
-  styleUrls: ['./vehicle-header.component.scss']
+  styleUrls: ['./vehicle-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VehicleHeaderComponent implements OnInit {
-  @Input() template!: FormNode;
-  @Input() data: any = {};
+export class VehicleHeaderComponent {
   @Input() isEditing = false;
+  @Input() testResult?: TestResultModel;
   @Input() techRecord?: TechRecordModel | null | undefined;
 
-  form!: CustomFormGroup;
-
-  constructor(private dfs: DynamicFormService) {}
-
-  ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-  }
-
-  getControl(path: string) {
-    return this.form.get(path);
+  get vehicleType(): string {
+    return this.techRecord?.vehicleType ?? '';
   }
 }

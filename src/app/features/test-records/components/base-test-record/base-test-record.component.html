@@ -1,18 +1,8 @@
+<app-vehicle-header [testResult]="testResult" [techRecord]="techRecord" [isEditing]="isEditing"></app-vehicle-header>
+
 <ng-container *ngIf="sectionTemplates.length > 0">
   <app-test-type-select class="section" [isEditing]="isEditing" [data]="testResult"></app-test-type-select>
   <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
-    <ng-container *ngSwitchCase="'vehicleSection'">
-      <app-vehicle-header [template]="template" [data]="testResult" [techRecord]="techRecord" [isEditing]="isEditing"></app-vehicle-header>
-      <app-dynamic-form-group
-        class="section"
-        [id]="template.name"
-        [template]="template"
-        [data]="testResult"
-        [edit]="isEditing"
-        (formChange)="handleFormChange($event)"
-      ></app-dynamic-form-group>
-    </ng-container>
-
     <app-defects
       *ngSwitchCase="'defects'"
       class="section"
