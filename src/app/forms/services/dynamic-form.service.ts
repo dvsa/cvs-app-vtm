@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { FormArray, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ErrorMessageMap } from '@forms/utils/error-message-map';
@@ -12,7 +12,6 @@ import { DefectValidators } from '@forms/validators/defects/defect.validators';
 })
 export class DynamicFormService {
   constructor() {}
-
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
