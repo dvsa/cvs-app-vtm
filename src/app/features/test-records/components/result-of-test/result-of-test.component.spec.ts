@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -5,7 +6,6 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState, State } from '@store/.';
 import { of } from 'rxjs';
-import { runOnPushChangeDetection } from 'src/test-utils/test-utils';
 
 import { ResultOfTestComponent } from './result-of-test.component';
 
@@ -42,3 +42,9 @@ describe('ResultOfTestComponent', () => {
     expect(value.nativeElement.innerHTML).toBe('Fail');
   });
 });
+
+export async function runOnPushChangeDetection(fixture: ComponentFixture<any>): Promise<void> {
+  const changeDetectorRef = fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
+  changeDetectorRef.detectChanges();
+  return fixture.whenStable();
+}
