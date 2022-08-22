@@ -184,7 +184,7 @@ describe('Test Results Selectors', () => {
     });
   });
 
-  describe('isSameTestTypeId', () => {
+  describe('isTestTypeKeySame', () => {
     it('should return false if the property is different', () => {
       const amendTestResult = {
         testTypes: [

@@ -83,10 +83,6 @@ export const selectAmendedDefectData = createSelector(selectedAmendedTestResultS
 
 export const sectionTemplates = createSelector(testResultsFeatureState, state => state.sectionTemplates);
 
-export const isSameTestTypeId = createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
-  return testRecord?.testTypes[0].testTypeId === amendedTestRecord?.testTypes[0].testTypeId;
-});
-
 export const resultOfTestSelector = createSelector(toEditOrNotToEdit, testRecord => testRecord?.testTypes[0].testResult);
 
 export const isTestTypeKeySame = (key: keyof TestType) =>
