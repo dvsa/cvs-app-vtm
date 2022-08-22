@@ -153,6 +153,7 @@ export const DefectsTpl: FormNode = {
                         { value: true, label: 'Yes' },
                         { value: false, label: 'No' }
                       ],
+                      value: null,
                       validators: [
                         {
                           name: ValidatorNames.RequiredIfEquals,

@@ -5,6 +5,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState, State } from '@store/.';
 import { of } from 'rxjs';
+import { runOnPushChangeDetection } from 'src/test-utils/test-utils';
 
 import { ResultOfTestComponent } from './result-of-test.component';
 
@@ -31,13 +32,13 @@ describe('ResultOfTestComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render on the dom with the correct test result from the service', () => {
+  it('should render on the dom with the correct test result from the service', async () => {
     jest.spyOn(component, 'resultOfTest$', 'get').mockReturnValue(of(resultOfTestEnum.pass));
-    fixture.detectChanges();
+    await runOnPushChangeDetection(fixture);
     const value = fixture.debugElement.query(By.css('.govuk-summary-list__value'));
     expect(value.nativeElement.innerHTML).toBe('Pass');
     jest.spyOn(component, 'resultOfTest$', 'get').mockReturnValue(of(resultOfTestEnum.fail));
-    fixture.detectChanges();
+    await runOnPushChangeDetection(fixture);
     expect(value.nativeElement.innerHTML).toBe('Fail');
   });
 });
