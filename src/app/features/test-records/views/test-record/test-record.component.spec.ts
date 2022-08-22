@@ -16,7 +16,7 @@ import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { routeEditable, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
-import { initialTestResultsState, isSameTestTypeId, sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
+import { initialTestResultsState, isTestTypeKeySame, sectionTemplates, testResultInEdit, updateTestResultSuccess } from '@store/test-records';
 import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
@@ -208,7 +208,7 @@ describe('TestRecordComponent', () => {
     });
 
     it('should return without calling updateTestResultState if forms are clean', fakeAsync(() => {
-      store.overrideSelector(isSameTestTypeId, true);
+      store.overrideSelector(isTestTypeKeySame('testTypeId'), true);
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult');
       component.handleSave();
       tick();
@@ -227,7 +227,7 @@ describe('TestRecordComponent', () => {
     it('should call updateTestResult with value of all forms merged into one', fakeAsync(() => {
       const updateTestResultStateSpy = jest.spyOn(testRecordsService, 'updateTestResult').mockImplementation(() => {});
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
-      store.overrideSelector(isSameTestTypeId, false);
+      store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
       store.overrideSelector(testResultInEdit, testRecord);
       store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']));
 
