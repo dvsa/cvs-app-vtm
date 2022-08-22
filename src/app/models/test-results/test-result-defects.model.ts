@@ -9,7 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Defect } from './defect';
+import { TestResultDefect } from './test-result-defect.model';
 
-export interface Defects extends Array<Defect> { 
+export interface TestResultDefects extends Array<TestResultDefect> {
 }

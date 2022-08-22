@@ -1,5 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { TestStation } from '@models/test-station.model';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { createAction, props } from '@ngrx/store';
 
 export const fetchTestStations = createAction(getTitle(true));
@@ -13,5 +13,5 @@ export const fetchTestStationFailed = createAction(getTitle(false, 'Failed'), pr
 function getTitle(isPlural: boolean = false, suffix: string = ''): string {
   const plural = isPlural ? 's' : ' by ID';
   suffix = suffix ? ' ' + suffix : suffix;
-  return '[API/test-stations] Fetch All Test Station' + plural + suffix;
+  return '[API/test-stations] Fetch Test Station' + plural + suffix;
 }

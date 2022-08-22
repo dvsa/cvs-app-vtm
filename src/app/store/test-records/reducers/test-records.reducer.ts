@@ -1,5 +1,5 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import merge from 'lodash.merge';
@@ -57,7 +57,10 @@ export const testResultsReducer = createReducer(
   on(updateTestResultFailed, state => ({ ...state, loading: false })),
   on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
   on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
-  on(updateEditingTestResult, (state, action) => ({ ...state, editingTestResult: merge({}, state.editingTestResult, action.testResult) }))
+  on(updateEditingTestResult, (state, action) => ({
+    ...state,
+    editingTestResult: merge({}, action.testResult)
+  }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

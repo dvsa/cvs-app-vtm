@@ -13,6 +13,7 @@
   <app-base-test-record
     [isEditing]="(isEditing$ | async) || false"
     [testResult]="testResult"
+    [defectsData]="defects$ | async"
     [sectionTemplates]="(sectionTemplates$ | async) || []"
     [techRecord]="techRecord$ | async"
     (newTestResult)="handleNewTestResult($event)"

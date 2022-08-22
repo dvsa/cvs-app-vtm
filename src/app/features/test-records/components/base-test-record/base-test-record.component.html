@@ -1,7 +1,31 @@
-<ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
-  <ng-container *ngSwitchCase="'vehicleSection'">
-    <app-vehicle-header [template]="template" [data]="testResult" [techRecord]="techRecord" [isEditing]="isEditing"></app-vehicle-header>
+<ng-container *ngIf="sectionTemplates.length > 0">
+  <app-test-type-select class="section" [isEditing]="isEditing" [data]="testResult"></app-test-type-select>
+  <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
+    <ng-container *ngSwitchCase="'vehicleSection'">
+      <app-vehicle-header [template]="template" [data]="testResult" [techRecord]="techRecord" [isEditing]="isEditing"></app-vehicle-header>
+      <app-dynamic-form-group
+        class="section"
+        [id]="template.name"
+        [template]="template"
+        [data]="testResult"
+        [edit]="isEditing"
+        (formChange)="handleFormChange($event)"
+      ></app-dynamic-form-group>
+    </ng-container>
+
+    <app-defects
+      *ngSwitchCase="'defects'"
+      class="section"
+      [id]="template.name"
+      [isEditing]="isEditing"
+      [defects]="defectsData"
+      [template]="template"
+      [data]="testResult"
+      (formChange)="handleFormChange($event)"
+    ></app-defects>
+
     <app-dynamic-form-group
+      *ngSwitchDefault
       class="section"
       [id]="template.name"
       [template]="template"
@@ -10,33 +34,4 @@
       (formChange)="handleFormChange($event)"
     ></app-dynamic-form-group>
   </ng-container>
-
-  <app-test-type-select
-    *ngSwitchCase="'requiredSection'"
-    class="section"
-    [isEditing]="isEditing"
-    [template]="template"
-    [data]="testResult"
-    (formChange)="handleFormChange($event)"
-  ></app-test-type-select>
-
-  <app-defects
-    *ngSwitchCase="'defects'"
-    class="section"
-    [id]="template.name"
-    [isEditing]="isEditing"
-    [template]="template"
-    [data]="testResult"
-    (formChange)="handleFormChange($event)"
-  ></app-defects>
-
-  <app-dynamic-form-group
-    *ngSwitchDefault
-    class="section"
-    [id]="template.name"
-    [template]="template"
-    [data]="testResult"
-    [edit]="isEditing"
-    (formChange)="handleFormChange($event)"
-  ></app-dynamic-form-group>
 </ng-container>
