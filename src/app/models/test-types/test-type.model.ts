@@ -18,7 +18,7 @@ export interface TestType {
   testAnniversaryDate: string | Date;
   prohibitionIssued: boolean;
 
-  testResult: string;
+  testResult: resultOfTestEnum;
 
   seatbeltInstallationCheckDate: boolean;
   numberOfSeatbeltsFitted: number;
@@ -40,4 +40,11 @@ export interface customDefects {
   referenceNumber: string;
   defectName: string;
   defectNotes: string;
+}
+
+export enum resultOfTestEnum {
+  fail = 'fail',
+  prs = 'prs',
+  pass = 'pass',
+  abandoned = 'abandoned'
 }

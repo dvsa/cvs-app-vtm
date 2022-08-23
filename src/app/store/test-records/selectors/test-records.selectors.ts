@@ -1,7 +1,8 @@
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestType } from '@models/test-types/test-type.model';
 import { createSelector } from '@ngrx/store';
-import { selectRouteNestedParams, selectRouteParams } from '@store/router/selectors/router.selectors';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { testResultAdapter, testResultsFeatureState } from '../reducers/test-records.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testResultAdapter.getSelectors();
@@ -82,9 +83,12 @@ export const selectAmendedDefectData = createSelector(selectedAmendedTestResultS
 
 export const sectionTemplates = createSelector(testResultsFeatureState, state => state.sectionTemplates);
 
-export const isSameTestTypeId = createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
-  return testRecord?.testTypes[0].testTypeId === amendedTestRecord?.testTypes[0].testTypeId;
-});
+export const resultOfTestSelector = createSelector(toEditOrNotToEdit, testRecord => testRecord?.testTypes[0].testResult);
+
+export const isTestTypeKeySame = (key: keyof TestType) =>
+  createSelector(selectedAmendedTestResultState, selectedTestResultState, (testRecord, amendedTestRecord) => {
+    return testRecord?.testTypes[0][key] === amendedTestRecord?.testTypes[0][key];
+  });
 
 // Common Functions
 /**
