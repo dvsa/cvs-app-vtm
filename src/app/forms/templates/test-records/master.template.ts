@@ -9,7 +9,7 @@ import { RequiredSection } from './section-templates/required/required-hidden-se
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { TestSectionGroup1 } from './section-templates/test/test-section-group1.template';
-import { TestSectionGroup3And4And8 } from './section-templates/test/test-section-group3and4and8.template';
+import { TestSectionGroup3And4And8 } from './section-templates/test/test-section-group3And4And8.template';
 import { TestSectionGroup5And13 } from './section-templates/test/test-section-group5And13.template';
 import { TestSectionGroup6And11 } from './section-templates/test/test-section-group6And11.template';
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
