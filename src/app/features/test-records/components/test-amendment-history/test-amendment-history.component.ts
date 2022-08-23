@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import { selectedTestSortedAmendmentHistory } from '@store/test-records/selectors/test-records.selectors';
 import { Observable } from 'rxjs/internal/Observable';

@@ -58,6 +58,7 @@
 </ng-template>
 
 <ng-template #editDefect>
+  <app-button type="underline" (click)="removeDefect.emit(index)">Remove</app-button>
   <ng-container [formGroup]="form">
     <app-text-input formControlName="deficiencyRef" label="Deficiency ref"></app-text-input>
     <app-text-input formControlName="deficiencyCategory" label="Deficiency category"></app-text-input>

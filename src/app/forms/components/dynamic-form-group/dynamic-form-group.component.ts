@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { skip, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
@@ -24,9 +23,12 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { template } = changes;
+    const { template, data } = changes;
     if (template && template.currentValue) {
       this.form = this.dfs.createForm(template.currentValue, this.data);
+    }
+    if (data.currentValue && data.currentValue !== data.previousValue) {
+      this.form.patchValue(data.currentValue);
     }
   }
 

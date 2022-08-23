@@ -1,19 +1,18 @@
-import { KeyValue } from '@angular/common';
-import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
-import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { CustomFormControl, CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CustomFormGroup } from '@forms/services/dynamic-form.types';
+import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 
 @Component({
-  selector: 'app-defect[form]',
+  selector: 'app-defect[form][index]',
   templateUrl: './defect.component.html',
   providers: [DefaultNullOrEmpty]
 })
 export class DefectComponent {
   @Input() form!: CustomFormGroup;
   @Input() isEditing = false;
+  @Input() index!: number;
+  @Output() removeDefect = new EventEmitter<number>();
 
   constructor(private pipe: DefaultNullOrEmpty) {}
 

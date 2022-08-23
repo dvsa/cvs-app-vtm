@@ -1,4 +1,4 @@
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
   fetchSelectedTestResult,

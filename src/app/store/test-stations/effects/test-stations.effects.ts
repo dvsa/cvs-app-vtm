@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TestStation } from '@models/test-station.model';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TestStationsService } from '@services/test-stations/test-stations.service';
 import { catchError, map, mergeMap, of } from 'rxjs';

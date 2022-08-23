@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { Defects } from '@models/defects';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { firstValueFrom, Observable, of } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { firstValueFrom, Observable, of } from 'rxjs';
 })
 export class AmendedTestRecordComponent implements OnInit {
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  defects$: Observable<Defects | undefined> = of(undefined);
+  defects$: Observable<TestResultDefects | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   constructor(private testRecordsService: TestRecordsService) {}

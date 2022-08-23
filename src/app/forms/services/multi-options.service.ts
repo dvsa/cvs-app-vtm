@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { MultiOptions } from "@forms/models/options.model";
-import { ReferenceDataResourceType } from "@models/reference-data.model";
-import { Store } from "@ngrx/store";
-import { ReferenceDataService } from "@services/reference-data/reference-data.service";
-import { TestStationsService } from "@services/test-stations/test-stations.service";
-import { fetchTestStations, TestStationsState } from "@store/test-stations";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { MultiOptions } from '@forms/models/options.model';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Store } from '@ngrx/store';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { TestStationsService } from '@services/test-stations/test-stations.service';
+import { fetchTestStations, TestStationsState } from '@store/test-stations';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class MultiOptionsService {
