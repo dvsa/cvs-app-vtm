@@ -136,7 +136,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
+      CustomDefectsSection: CustomDefectsSection
     },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -202,7 +203,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
+      CustomDefectsSection: CustomDefectsSection
     },
 
     testTypesGroup12And14: {

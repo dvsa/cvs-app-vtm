@@ -10,8 +10,6 @@ export const TestSectionGroup9And10: FormNode = {
     {
       name: 'createdAt',
       label: 'Created',
-      value: '',
-      disabled: true,
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
@@ -126,17 +124,6 @@ export const TestSectionGroup9And10: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
-            },
-            {
-              name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
-              label: 'Prohibition issued',
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              validators: [{ name: ValidatorNames.Required }]
             }
           ]
         }
