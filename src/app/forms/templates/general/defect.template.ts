@@ -139,7 +139,6 @@ export const DefectsTpl: FormNode = {
                       value: null,
                       type: FormNodeTypes.CONTROL,
                       editType: FormNodeEditTypes.RADIO,
-                      value: null,
                       options: [
                         { value: true, label: 'Yes' },
                         { value: false, label: 'No' }
@@ -148,13 +147,13 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'prohibitionIssued',
                       label: 'Prohibition issued',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       editType: FormNodeEditTypes.RADIO,
                       options: [
                         { value: true, label: 'Yes' },
                         { value: false, label: 'No' }
                       ],
-                      value: null,
                       validators: [
                         {
                           name: ValidatorNames.RequiredIfEquals,
