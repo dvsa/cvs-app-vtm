@@ -136,13 +136,13 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'prs',
                       label: 'PRS',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       editType: FormNodeEditTypes.RADIO,
                       options: [
                         { value: true, label: 'Yes' },
                         { value: false, label: 'No' }
-                      ],
-                      validators: [{ name: ValidatorNames.Required }]
+                      ]
                     },
                     {
                       name: 'prohibitionIssued',
