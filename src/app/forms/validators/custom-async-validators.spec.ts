@@ -5,7 +5,7 @@ import { mockTestResult } from '@mocks/mock-test-result';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { testResultInEdit, TestResultsState } from '@store/test-records';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAsyncValidators } from './custom-async-validators';
 
 describe('resultDependantOnCustomDefects', () => {
@@ -29,7 +29,7 @@ describe('resultDependantOnCustomDefects', () => {
 
     store.overrideSelector(testResultInEdit, mockTestResult());
 
-    const result = await firstEmitted(
+    const result = await firstValueFrom(
       CustomAsyncValidators.resultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
     );
 
@@ -44,7 +44,7 @@ describe('resultDependantOnCustomDefects', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstEmitted(
+    const result = await firstValueFrom(
       CustomAsyncValidators.resultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
     );
 
@@ -59,7 +59,7 @@ describe('resultDependantOnCustomDefects', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstEmitted(
+    const result = await firstValueFrom(
       CustomAsyncValidators.resultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
     );
 
@@ -71,20 +71,10 @@ describe('resultDependantOnCustomDefects', () => {
 
     store.overrideSelector(testResultInEdit, mockTestResult());
 
-    const result = await firstEmitted(
+    const result = await firstValueFrom(
       CustomAsyncValidators.resultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
     );
 
     expect(result).toBeNull();
   });
 });
-
-function firstEmitted<T>(obs$: Observable<T>): Promise<T> {
-  return new Promise<T>(resolve => {
-      const finalise = new Subject<void>();
-      obs$.pipe(takeUntil(finalise)).subscribe(value => {
-          finalise.next();
-          resolve(value);
-      });
-  });
-}
