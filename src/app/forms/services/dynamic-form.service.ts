@@ -9,6 +9,7 @@ import { DefectValidators } from '@forms/validators/defects/defect.validators';
 import { TestResultsState } from '@store/test-records';
 import { Store } from '@ngrx/store';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class DynamicFormService {
   };
 
   asyncValidatorMap: Record<string, (args: any) => AsyncValidatorFn> = {
-    [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomValidators.resultDependantOnCustomDefects(this.store)
+    [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

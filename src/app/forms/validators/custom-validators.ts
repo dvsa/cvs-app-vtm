@@ -1,8 +1,5 @@
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
-import { select, Store } from '@ngrx/store';
-import { testResultInEdit, TestResultsState } from '@store/test-records';
-import { map, Observable, take } from 'rxjs';
 
 export class CustomValidators {
   static hideIfEmpty = (sibling: string): ValidatorFn => {
@@ -136,25 +133,4 @@ export class CustomValidators {
   static invalidOption: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     return '[INVALID_OPTION]' === control.value ? { invalidOption: true } : null;
   };
-
-  static resultDependantOnCustomDefects(store: Store<TestResultsState>): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> =>
-      store.pipe(
-        take(1),
-        select(testResultInEdit),
-        map(testResult => {
-          const hasCustomDefects = testResult?.testTypes?.some(testType => testType?.customDefects && testType.customDefects.length > 0);
-
-          if (control.value === 'pass' && hasCustomDefects) {
-            return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
-          } else if (control.value === 'fail' && !hasCustomDefects) {
-            return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
-          } else if (control.value === 'prs' && !hasCustomDefects) {
-            return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
-          } else {
-            return null;
-          }
-        })
-      );
-  }
 }
