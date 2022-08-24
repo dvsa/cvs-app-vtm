@@ -8,8 +8,6 @@ import { distinctUntilChanged, map } from 'rxjs';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent {
-  breadcrumbs: Array<{ label: string; path: string }> = [];
-
   constructor(private routerService: RouterService) {}
 
   get breadcrumbs$() {
