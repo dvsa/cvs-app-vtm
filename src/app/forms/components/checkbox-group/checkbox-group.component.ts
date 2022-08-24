@@ -16,7 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class CheckboxGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<string | number | boolean>[] = [];
-  @Input() separator?: string;
+  @Input() delimited?: { regex?: string; separator: string };
 
   isChecked(option: string | number | boolean): boolean {
     const checked = this.value && this.value.includes(option);
@@ -28,8 +28,8 @@ export class CheckboxGroupComponent extends BaseControlComponent {
   }
 
   private add(option: FormNodeOption<string | number | boolean>) {
-    if (this.separator) {
-      !this.value ? (this.value = option.value) : (this.value += this.separator + option.value);
+    if (this.delimited) {
+      !this.value ? (this.value = option.value) : (this.value += this.delimited.separator + option.value);
     } else {
       !this.value ? (this.value = [option.value]) : this.value.push(option.value);
     }
@@ -37,18 +37,14 @@ export class CheckboxGroupComponent extends BaseControlComponent {
   }
 
   private remove(option: FormNodeOption<string | number | boolean>) {
-    let newValue;
-    if (this.separator) {
-      newValue = this.separator === '. ' ? this.value.split(/\. (?<!\..\. )/) : this.value.split(new RegExp(this.separator));
-    } else {
-      newValue = [...this.value];
-    }
+    const separator = this.delimited && this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
+    let newValue = separator ? this.value.split(separator) : [...this.value];
     if (newValue && newValue.length > 0) {
       const i = newValue.indexOf(option.value);
       if (i > -1) {
         newValue.splice(i, 1);
       }
-      newValue = this.separator ? newValue.join(this.separator) : newValue;
+      newValue = separator ? newValue.join(this.delimited?.separator) : newValue;
     }
     if ((newValue === '' || newValue) && newValue.length === 0) {
       newValue = null;

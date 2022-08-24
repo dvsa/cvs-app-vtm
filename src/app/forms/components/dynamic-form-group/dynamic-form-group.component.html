@@ -79,3 +79,5 @@
     <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list"></app-view-combination>
   </div>
 </ng-template>
+
+<pre>{{ form.getCleanValue(form) | json }}</pre>
