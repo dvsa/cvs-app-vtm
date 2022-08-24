@@ -56,13 +56,8 @@ export const TestSection: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'fail', label: 'Fail' },
-                { value: 'pass', label: 'Pass' },
-                { value: 'prs', label: 'PRS' },
-                { value: 'abandoned', label: 'Abandoned' }
-              ],
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN,
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
@@ -74,7 +69,7 @@ export const TestSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
               editType: FormNodeEditTypes.CHECKBOX,
-              separator: '. ',
+              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
               required: true,
               validators: [
                 {

@@ -9,9 +9,12 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { map, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { TestResultsState } from '@store/test-records';
+import { map, Observable, debounceTime } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
@@ -59,11 +62,12 @@ export interface FormNode {
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
   label?: string;
-  separator?: string;
+  delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
   validators?: { name: ValidatorNames; args?: any }[];
+  asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
@@ -136,7 +140,10 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
   getCleanValue = cleanValue.bind(this);
 
   get cleanValueChanges() {
-    return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
+    return this.valueChanges.pipe(
+      debounceTime(500),
+      map(() => this.getCleanValue(this))
+    );
   }
 }
 
@@ -151,18 +158,22 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   constructor(
     meta: FormNode,
     controls: AbstractControl[],
+    store: Store<TestResultsState>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
-    this.dynamicFormService = new DynamicFormService();
+    this.dynamicFormService = new DynamicFormService(store);
   }
 
   getCleanValue = cleanValue.bind(this);
 
   get cleanValueChanges() {
-    return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
+    return this.valueChanges.pipe(
+      debounceTime(500),
+      map(() => this.getCleanValue(this))
+    );
   }
 
   addControl(data?: any): void {
