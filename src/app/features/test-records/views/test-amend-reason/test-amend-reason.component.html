@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="handleSubmit()">
-  <app-radio-group label="Why do you want to amend this test?" name="reason" [options]="reasons" formControlName="reason"></app-radio-group>
+  <app-radio-group name="reason" label="Why do you want to amend this test?" formControlName="reason" [options]="reasons"></app-radio-group>
   <button
     id="submit"
     class="govuk-button govuk-button--primary"

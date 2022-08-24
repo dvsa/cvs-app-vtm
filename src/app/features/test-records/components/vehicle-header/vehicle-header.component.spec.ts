@@ -1,11 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TestTypesService } from '@api/test-types';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { provideMockActions } from '@ngrx/effects/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/.';
+import { ResultOfTestComponent } from '../result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 
 describe('VehicleHeaderComponent', () => {
@@ -14,9 +14,9 @@ describe('VehicleHeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [VehicleHeaderComponent],
+      declarations: [VehicleHeaderComponent, ResultOfTestComponent],
       imports: [SharedModule, HttpClientTestingModule],
-      providers: [TestTypesService, provideMockStore({ initialState: initialAppState })]
+      providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
     }).compileComponents();
   }));
 

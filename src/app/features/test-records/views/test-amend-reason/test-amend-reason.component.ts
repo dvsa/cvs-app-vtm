@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 @Component({
   selector: 'app-test-amend-reason',
   templateUrl: './test-amend-reason.component.html',
-  styleUrls: ['./test-amend-reason.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestAmendReasonComponent {
   private routes: Record<number, string> = { 1: 'incorrect-test-type', 2: 'amend-test-details' };
@@ -16,11 +16,16 @@ export class TestAmendReasonComponent {
     { label: 'The test details are incorrecnt', value: 2, hint: 'Change test location, assessor, test details, defects, and results.' }
   ];
 
-  form = new FormGroup({
-    reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required])
-  });
+  form: CustomFormGroup;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.form = new CustomFormGroup(
+      { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
+      {
+        reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required])
+      }
+    );
+  }
 
   handleSubmit() {
     const reason: number = this.form.get('reason')?.value;

@@ -25,12 +25,17 @@
           {{ testResult.vin }}
         </dd>
       </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Result</dt>
+        <dd class="govuk-summary-list__value">
+          <app-result-of-test></app-result-of-test>
+        </dd>
+      </div>
     </dl>
   </div>
 </div>
 
 <ng-container *ngIf="sectionTemplates.length > 0">
-  <app-result-of-test></app-result-of-test>
   <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
     <app-defects
       *ngSwitchCase="'defects'"

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { AmendTestComponent } from './amend-test.component';
 
@@ -8,9 +9,9 @@ describe('AmendTestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AmendTestComponent ]
-    })
-    .compileComponents();
+      declarations: [AmendTestComponent],
+      imports: [RouterTestingModule]
+    }).compileComponents();
   });
 
   beforeEach(() => {

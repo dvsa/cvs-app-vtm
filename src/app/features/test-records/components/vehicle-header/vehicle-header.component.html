@@ -3,7 +3,7 @@
     <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
     <div class="date_and_result">
       <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
-      <app-tag [type]="testResultType">{{ test?.testResult | defaultNullOrEmpty }}</app-tag>
+      <app-result-of-test></app-result-of-test>
     </div>
   </div>
 
@@ -22,9 +22,3 @@
 </div>
 
 <ng-content></ng-content>
-
-<!-- <div class="header_container">
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">{{ techRecord?.bodyMake + '-' + techRecord?.bodyModel | defaultNullOrEmpty }}</h1>
-  <app-icon [icon]="vehicleType"></app-icon>
-  <app-tag *ngIf="isEditing" [type]="'red'">EDITING</app-tag>
-</div> -->
