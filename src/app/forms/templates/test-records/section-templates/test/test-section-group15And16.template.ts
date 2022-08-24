@@ -68,7 +68,7 @@ export const TestSectionGroup15And16: FormNode = {
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
               editType: FormNodeEditTypes.CHECKBOX,
-              separator: '. ',
+              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
               required: true,
               validators: [
                 {

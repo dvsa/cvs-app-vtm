@@ -84,7 +84,7 @@
     </ng-container>
 
     <app-radio-group
-      name="prs"
+      [name]="'prs-' + index"
       formControlName="prs"
       label="PRS"
       [options]="[
@@ -94,7 +94,7 @@
     ></app-radio-group>
 
     <app-radio-group
-      name="prohibitionIssued"
+      [name]="'prohibitionIssued-' + index"
       formControlName="prohibitionIssued"
       label="Prohibition issued"
       [options]="[
