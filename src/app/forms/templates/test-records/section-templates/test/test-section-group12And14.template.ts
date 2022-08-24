@@ -47,10 +47,11 @@ export const TestSectionGroup12And14: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              value: '',
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN,
               validators: [
-                { name: ValidatorNames.enableIfEquals, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.enableIfEquals, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
               type: FormNodeTypes.CONTROL
             },
