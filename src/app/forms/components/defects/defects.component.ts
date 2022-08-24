@@ -6,7 +6,7 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-defects[defects][template]',
@@ -27,7 +27,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this.formSubscription = this.form.cleanValueChanges.subscribe(event => {
+    this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
       this.formChange.emit(event);
       this.resultService.updateResultOfTest();
     });
