@@ -15,7 +15,6 @@ import { DefectSelectComponent } from '../defect-select/defect-select.component'
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import exp from 'constants';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
@@ -85,7 +84,7 @@ describe('DefectsComponent', () => {
   });
 
   describe('update the result of the test', () => {
-    it('should dispatch the action to udpate the result of the test on form change', () => {
+    it('should dispatch the action to udpate the result of the test on form change', fakeAsync(() => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const template = DefectsTpl;
       const data = mockTestResult();
@@ -96,9 +95,10 @@ describe('DefectsComponent', () => {
       expect(component.defectsForm.length).toBe(1);
 
       component.handleRemoveDefect(0);
+      tick(500);
       expect(dispatchSpy).toHaveBeenCalledTimes(1);
       fixture.detectChanges();
       expect(component.defectsForm.length).toBe(0);
-    });
+    }));
   });
 });

@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -151,5 +151,31 @@ describe('DynamicFormGroupComponent', () => {
 
       expect(inputList.length).toBe(4);
     }));
+  });
+
+  describe('value changes', () => {
+    const template = <FormNode>{
+      name: 'myForm',
+      type: FormNodeTypes.GROUP,
+      children: [{ name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' }]
+    };
+
+    const data = {
+      levelOneControl: 'some string'
+    };
+    it('should output an event when the value of the control changes', fakeAsync(
+      inject([DynamicFormService], (dfs: DynamicFormService) => {
+        component.edit = true;
+        component.form = dfs.createForm(template, data);
+
+        fixture.detectChanges();
+
+        const control = component.form.get('levelOneControl');
+        control?.patchValue('foo');
+        const emitter = jest.spyOn(component.formChange, 'emit');
+        tick(500);
+        expect(emitter).toHaveBeenCalledTimes(1);
+      })
+    ));
   });
 });
