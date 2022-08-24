@@ -1,30 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { createMock, createMockList } from 'ts-auto-mock';
-import { TestTypeNamePipe } from './test-type-name.pipe';
 import { TestTypeSelectComponent } from './test-type-select.component';
 
 describe('TestTypeSelectComponent', () => {
   let component: TestTypeSelectComponent;
   let fixture: ComponentFixture<TestTypeSelectComponent>;
   let testTypesService: TestTypesService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestTypeSelectComponent, TestTypeNamePipe],
+      declarations: [TestTypeSelectComponent],
+      imports: [RouterTestingModule],
       providers: [
         DynamicFormService,
         provideMockStore({ initialState: initialAppState }),
         { provide: TestTypesService, useValue: { selectAllTestTypes$: of([]), testTypeIdChanged: () => {} } }
-      ],
-      imports: [ReactiveFormsModule]
+      ]
     }).compileComponents();
   });
 
@@ -32,7 +32,7 @@ describe('TestTypeSelectComponent', () => {
     fixture = TestBed.createComponent(TestTypeSelectComponent);
     component = fixture.componentInstance;
     testTypesService = TestBed.inject(TestTypesService);
-    component.data = { testTypes: [{ testTypeId: '7' }] } as TestResultModel;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -49,14 +49,6 @@ describe('TestTypeSelectComponent', () => {
     expect(component.hasNext(createMock<TestType>())).toBeFalsy();
   });
 
-  it('should reset categories and toggle edit', () => {
-    component.edit = true;
-    component.categories = [createMock<TestTypeCategory>({ nextTestTypesOrCategories: [] })];
-    component.handleChange();
-    expect(component.categories.length).toBe(0);
-    expect(component.edit).toBeFalsy();
-  });
-
   it('should return true if category with given id exists in array', () => {
     component.categories = createMockList<TestTypeCategory>(3, id => createMock<TestTypeCategory>({ id: `${id + 1}` }));
     expect(component.isSelected('1')).toBeTruthy();
@@ -65,10 +57,10 @@ describe('TestTypeSelectComponent', () => {
 
   describe(TestTypeSelectComponent.prototype.handleCategory.name, () => {
     it('should set testTypeId control value and reset categories', () => {
-      testTypesService.testTypeIdChanged = jest.fn();
+      router.navigate = jest.fn();
       component.categories = createMockList<TestTypeCategory>(3, id => createMock<TestTypeCategory>({ id: `${id + 1}` }));
       component.handleCategory(createMock<TestType>({ id: '1' }), 0);
-      expect(testTypesService.testTypeIdChanged).toHaveBeenCalledWith('1');
+      expect(router.navigate).toHaveBeenCalled();
       expect(component.categories.length).toBe(0);
     });
 

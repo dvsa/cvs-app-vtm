@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
@@ -17,11 +18,13 @@ import {
   selectedTestResultState,
   testResultInEdit,
   TestResultsState,
+  testTypeIdChanged,
+  toEditOrNotToEdit,
   updateEditingTestResult,
   updateTestResult
 } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { Observable, throwError } from 'rxjs';
+import { map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -133,5 +136,26 @@ export class TestRecordsService {
 
   get isSameTestTypeId$(): Observable<boolean> {
     return this.store.pipe(select(isSameTestTypeId));
+  }
+
+  testTypeChange(testTypeId: string) {
+    this.store.dispatch(testTypeIdChanged({ testTypeId }));
+  }
+
+  get isTestTypeGroupEditable$() {
+    return this.store.pipe(select(toEditOrNotToEdit)).pipe(
+      map(testResult => {
+        if (!testResult) {
+          return false;
+        }
+
+        const vehicleType = testResult.vehicleType;
+        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
+        const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+        const vehicleTpl = vehicleType && masterTpl[vehicleType];
+
+        return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
+      })
+    );
   }
 }

@@ -1,20 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TestTypesService } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
-
+import { initialAppState } from '@store/.';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
   let fixture: ComponentFixture<VehicleHeaderComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent],
-      imports: [SharedModule],
-      providers: [DynamicFormService]
+      imports: [SharedModule, HttpClientTestingModule],
+      providers: [TestTypesService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
-  });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VehicleHeaderComponent);

@@ -1,0 +1,30 @@
+<div class="test_result_header">
+  <div class="test_name_and_date">
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
+    <div class="date_and_result">
+      <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
+      <app-tag [type]="testResultType">{{ test?.testResult | defaultNullOrEmpty }}</app-tag>
+    </div>
+  </div>
+
+  <div class="tester_and_location">
+    <dl class="govuk-summary-list govuk-summary-list--no-border">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Accessor</dt>
+        <dd class="govuk-summary-list__value">{{ testResult?.testerName | defaultNullOrEmpty }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Test location</dt>
+        <dd class="govuk-summary-list__value">{{ testResult?.testStationName | defaultNullOrEmpty }}</dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<ng-content></ng-content>
+
+<!-- <div class="header_container">
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-3">{{ techRecord?.bodyMake + '-' + techRecord?.bodyModel | defaultNullOrEmpty }}</h1>
+  <app-icon [icon]="vehicleType"></app-icon>
+  <app-tag *ngIf="isEditing" [type]="'red'">EDITING</app-tag>
+</div> -->

@@ -1,0 +1,14 @@
+<form [formGroup]="form" (submit)="handleSubmit()">
+  <app-radio-group label="Why do you want to amend this test?" name="reason" [options]="reasons" formControlName="reason"></app-radio-group>
+  <button
+    id="submit"
+    class="govuk-button govuk-button--primary"
+    type="submit"
+    [disabled]="false"
+    [attr.aria-disabled]="false"
+    data-module="govuk-button"
+    data-prevent-double-click="true"
+  >
+    Continue
+  </button>
+</form>

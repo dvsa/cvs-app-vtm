@@ -1,14 +1,43 @@
-<app-vehicle-header [testResult]="testResult" [techRecord]="techRecord" [isEditing]="isEditing"></app-vehicle-header>
+<div class="govuk-grid-row vehicle-overview govuk-!-margin-bottom-4">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="vehicle_heading">
+      <h1 class="govuk-heading-l">
+        <span>{{ (test$ | async)?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
+
+        <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
+      </h1>
+    </div>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-half">
+    <h2 class="govuk-heading-m">Vehicle details</h2>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VRM</dt>
+        <dd class="govuk-summary-list__value">
+          <app-number-plate>{{ testResult.vrm }}</app-number-plate>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">VIN</dt>
+        <dd class="govuk-summary-list__value">
+          {{ testResult.vin }}
+        </dd>
+      </div>
+    </dl>
+  </div>
+</div>
 
 <ng-container *ngIf="sectionTemplates.length > 0">
-  <app-test-type-select class="section" [isEditing]="isEditing" [data]="testResult"></app-test-type-select>
   <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
     <app-defects
       *ngSwitchCase="'defects'"
       class="section"
       [id]="template.name"
       [isEditing]="isEditing"
-      [defects]="defectsData"
+      [defects]="defects$ | async"
       [template]="template"
       [data]="testResult"
       (formChange)="handleFormChange($event)"

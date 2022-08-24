@@ -8,6 +8,7 @@ import { DefaultNullOrEmpty } from './pipes/default-null-or-empty/default-null-o
 import { TagComponent } from './components/tag/tag.component';
 import { NumberPlateComponent } from './components/number-plate/number-plate.component';
 import { IconComponent } from './components/icon/icon.component';
+import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { IconComponent } from './components/icon/icon.component';
     RoleRequiredDirective,
     TagComponent,
     NumberPlateComponent,
-    IconComponent
+    IconComponent,
+    TestTypeNamePipe
   ],
   imports: [CommonModule],
   exports: [
@@ -29,7 +31,8 @@ import { IconComponent } from './components/icon/icon.component';
     RoleRequiredDirective,
     TagComponent,
     NumberPlateComponent,
-    IconComponent
+    IconComponent,
+    TestTypeNamePipe
   ]
 })
 export class SharedModule {}

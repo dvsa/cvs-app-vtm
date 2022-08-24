@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { DateComponent } from './components/date/date.component';
+import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 import { DefectComponent } from './components/defect/defect.component';
 import { DefectsComponent } from './components/defects/defects.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
@@ -18,13 +18,9 @@ import { RadioGroupComponent } from './components/radio-group/radio-group.compon
 import { SelectComponent } from './components/select/select.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
-import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-header.component';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
-import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
-import { TestTypeNamePipe } from './components/test-type-select/test-type-name.pipe';
-import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 
 @NgModule({
   declarations: [
@@ -45,10 +41,7 @@ import { DefectSelectComponent } from './components/defect-select/defect-select.
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    TestTypeSelectComponent,
-    TestTypeNamePipe,
-    DefectSelectComponent,
-    VehicleHeaderComponent
+    DefectSelectComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -67,9 +60,7 @@ import { DefectSelectComponent } from './components/defect-select/defect-select.
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    TestTypeSelectComponent,
-    DefectSelectComponent,
-    VehicleHeaderComponent
+    DefectSelectComponent
   ]
 })
 export class DynamicFormsModule {}

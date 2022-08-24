@@ -1,0 +1,123 @@
+<ng-container *ngIf="testResult$ | async as testResult">
+  <ng-container *ngIf="techRecord$ | async as techRecord">
+    <app-vehicle-header
+      [testResult]="testResult"
+      [techRecord]="techRecord"
+      [isEditing]="false"
+      [testNumber]="(routerParam('testNumber') | async) || ''"
+    >
+      <ng-container *appRoleRequired="Roles.TestResultAmend">
+        <a
+          *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
+          [routerLink]="['amend-test']"
+          role="button"
+          draggable="false"
+          class="govuk-button govuk-button--secondary"
+          data-module="govuk-button"
+          >Amend this test
+        </a>
+      </ng-container>
+    </app-vehicle-header>
+
+    <article>
+      <!-- <div class="header_container">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ techRecord?.bodyMake + '-' + techRecord?.bodyModel | defaultNullOrEmpty }}</h1>
+        <app-icon [icon]="techRecord?.vehicleType || ''"></app-icon>
+      </div> -->
+      <div class="vehicle_heading govuk-!-margin-bottom-6">
+        <h2 class="govuk-heading-l">
+          <span>{{ techRecord?.bodyMake + '-' + techRecord?.bodyModel | defaultNullOrEmpty }}</span>
+
+          <app-icon [icon]="techRecord?.vehicleType || ''"></app-icon>
+        </h2>
+      </div>
+      <h3 class="govuk-heading-m">Vehicle overview</h3>
+      <div class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">VRM</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            <app-number-plate>
+              {{ testResult?.vrm | defaultNullOrEmpty }}
+            </app-number-plate>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">VIN</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ testResult?.vin | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Vehicle type</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ techRecord?.vehicleType | defaultNullOrEmpty | uppercase }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Country of registration</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ testResult?.countryOfRegistration | defaultNullOrEmpty | uppercase }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">EU vehicle ategory</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ testResult?.euVehicleCategory | defaultNullOrEmpty }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Odometer reading</dt>
+          <dd id="test-testTypeId" class="govuk-summary-list__value">
+            {{ testResult?.odometerReading | number: '2.' | defaultNullOrEmpty }}
+            {{ testResult?.odometerReadingUnits === 'kilometres' ? 'km' : ('mi' | defaultNullOrEmpty) }}
+          </dd>
+        </div>
+      </div>
+    </article>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <h2 class="govuk-heading-m">Defects</h2>
+        <p class="govuk-hint">Any unresolved major or dangerous defects will result in failed test.</p>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Reference</th>
+              <th scope="col" class="govuk-table__header">Description</th>
+              <th scope="col" class="govuk-table__header">Category</th>
+              <th scope="col" class="govuk-table__header">Status</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr *ngFor="let defect of testDefects$ | async" class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <a class="govuk-link govuk-link--no-visited-state" href="#"
+                  >{{ defect.deficiencyRef }}&nbsp;{{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : '' }}&nbsp;{{
+                    defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : ''
+                  }}</a
+                >
+              </td>
+              <td class="govuk-table__cell">{{ defect.itemDescription }} {{ defect.imDescription }}{{ defect.deficiencyText }}</td>
+              <td class="govuk-table__cell">
+                <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
+              </td>
+              <td class="govuk-table__cell">
+                <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'repaired' : 'not repaired' }}</app-tag>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+
+  <app-test-amendment-history class="section" [testRecord]="testResult"></app-test-amendment-history>
+</ng-container>
+
+<ng-template #notSupported>
+  <app-banner>
+    <ng-container title>Important</ng-container>
+
+    <ng-container content>Editing this record is not currently supported</ng-container>
+  </app-banner>
+</ng-template>
