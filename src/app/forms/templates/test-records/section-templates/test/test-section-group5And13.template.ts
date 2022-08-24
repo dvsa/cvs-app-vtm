@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
 export const TestSectionGroup5And13: FormNode = {
   name: 'testSection',
@@ -83,8 +84,16 @@ export const TestSectionGroup5And13: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               label: 'Reason for abandoning',
-              value: '',
-              disabled: true
+              editType: FormNodeEditTypes.CHECKBOX,
+              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
+              required: true,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                }
+              ],
+              options: TestAbandonmentReasonsPsvData
             },
             {
               name: 'additionalCommentsForAbandon',
