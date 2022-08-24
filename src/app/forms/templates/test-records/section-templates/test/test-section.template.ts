@@ -56,13 +56,8 @@ export const TestSection: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'fail', label: 'Fail' },
-                { value: 'pass', label: 'Pass' },
-                { value: 'prs', label: 'PRS' },
-                { value: 'abandoned', label: 'Abandoned' }
-              ],
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN,
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }

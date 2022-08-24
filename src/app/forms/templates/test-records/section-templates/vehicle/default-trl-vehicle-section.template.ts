@@ -15,14 +15,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       type: FormNodeTypes.CONTROL
     },
     {
-      name: 'vrm',
-      label: 'VRM',
-      value: '',
-      disabled: true,
-
-      type: FormNodeTypes.CONTROL
-    },
-    {
       name: 'trailerId',
       label: 'Trailer ID',
       value: '',
