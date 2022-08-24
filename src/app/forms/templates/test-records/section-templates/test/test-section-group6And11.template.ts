@@ -99,8 +99,16 @@ export const TestSectionGroup6And11: FormNode = {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
+              required: true,
               label: 'Additional details for abandoning',
-              disabled: true
+              editType: FormNodeEditTypes.TEXTAREA,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                },
+                { name: ValidatorNames.MaxLength, args: { length: 500 } }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',
