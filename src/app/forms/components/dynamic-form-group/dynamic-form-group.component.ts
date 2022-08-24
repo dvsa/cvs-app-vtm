@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, debounceTime, tap, distinctUntilChanged, map } from 'rxjs';
 import { DynamicFormService } from '../../services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
@@ -28,7 +28,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
       this.form = this.dfs.createForm(template.currentValue, this.data);
     }
     if (data.currentValue && data.currentValue !== data.previousValue) {
-      this.form.patchValue(data.currentValue);
+      this.form.patchValue(data.currentValue, { emitEvent: false });
     }
   }
 
