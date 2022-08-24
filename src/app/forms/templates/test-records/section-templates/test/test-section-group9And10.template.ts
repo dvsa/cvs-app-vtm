@@ -11,7 +11,8 @@ export const TestSectionGroup9And10: FormNode = {
     {
       name: 'createdAt',
       label: 'Created',
-
+      disabled: true,
+      
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
