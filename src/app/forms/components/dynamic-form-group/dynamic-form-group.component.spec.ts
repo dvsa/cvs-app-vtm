@@ -174,6 +174,7 @@ describe('DynamicFormGroupComponent', () => {
         control?.patchValue('foo');
         const emitter = jest.spyOn(component.formChange, 'emit');
         tick(500);
+        expect(emitter).toHaveBeenCalledWith({ ...data, levelOneControl: 'foo' });
         expect(emitter).toHaveBeenCalledTimes(1);
       })
     ));

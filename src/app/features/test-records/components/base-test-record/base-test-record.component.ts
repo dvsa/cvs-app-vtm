@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
@@ -17,7 +17,7 @@ import { map, Observable, of, Subject, switchMap } from 'rxjs';
   selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html'
 })
-export class BaseTestRecordComponent implements AfterViewChecked, OnDestroy {
+export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
 
@@ -40,7 +40,7 @@ export class BaseTestRecordComponent implements AfterViewChecked, OnDestroy {
     private routerService: RouterService
   ) {}
 
-  ngAfterViewChecked(): void {
+  ngAfterViewInit(): void {
     this.handleFormChange({});
   }
 
