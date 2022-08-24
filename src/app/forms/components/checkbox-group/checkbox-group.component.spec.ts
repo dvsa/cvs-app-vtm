@@ -11,7 +11,7 @@ import { CheckboxGroupComponent } from './checkbox-group.component';
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
-    <app-checkbox-group name="foo" label="Foo" [options]="options" formControlName="foo" [separator]="separator"></app-checkbox-group>
+    <app-checkbox-group name="foo" label="Foo" [options]="options" formControlName="foo" [delimited]="delimited"></app-checkbox-group>
   </form> `,
   styles: []
 })
@@ -19,7 +19,7 @@ class HostComponent {
   form = new FormGroup({
     foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
   });
-  separator?: string;
+  delimited?: { regex: string; separator: string };
   options: MultiOptions = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
@@ -63,7 +63,7 @@ describe('CheckboxGroupComponent', () => {
 
   describe('value as separated string', () => {
     it('should be propagated from element to the form control', () => {
-      component.separator = '. ';
+      component.delimited = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
       fixture.detectChanges();
 
       const foo = component.form.get('foo');

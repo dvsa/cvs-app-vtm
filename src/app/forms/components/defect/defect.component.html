@@ -83,8 +83,17 @@
       <app-text-input formControlName="notes" label="Notes"></app-text-input>
     </ng-container>
 
-    <app-text-input formControlName="prs" label="PRS"></app-text-input>
     <app-radio-group
+      [name]="'prs-' + index"
+      formControlName="prs"
+      label="PRS"
+      [options]="[
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
+      ]"
+    ></app-radio-group>
+    <app-radio-group
+      [name]="'prohibitionIssued-' + index"
       formControlName="prohibitionIssued"
       label="Prohibition issued"
       [options]="[

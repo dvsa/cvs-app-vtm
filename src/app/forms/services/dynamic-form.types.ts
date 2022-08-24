@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
-import { map, Observable } from 'rxjs';
+import { map, Observable, debounceTime } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
@@ -59,7 +59,7 @@ export interface FormNode {
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
   label?: string;
-  separator?: string;
+  delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
@@ -136,7 +136,10 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
   getCleanValue = cleanValue.bind(this);
 
   get cleanValueChanges() {
-    return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
+    return this.valueChanges.pipe(
+      debounceTime(500),
+      map(() => this.getCleanValue(this))
+    );
   }
 }
 
@@ -162,7 +165,10 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   getCleanValue = cleanValue.bind(this);
 
   get cleanValueChanges() {
-    return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
+    return this.valueChanges.pipe(
+      debounceTime(500),
+      map(() => this.getCleanValue(this))
+    );
   }
 
   addControl(data?: any): void {

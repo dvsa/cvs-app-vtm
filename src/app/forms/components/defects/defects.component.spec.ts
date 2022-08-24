@@ -8,24 +8,30 @@ import { mockTestResult } from '@mocks/mock-test-result';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { State } from '@store/.';
+import { initialAppState } from '@store/.';
 import { DefectSelectComponent } from '../defect-select/defect-select.component';
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
   let fixture: ComponentFixture<DefectsComponent>;
   let el: DebugElement;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [DefectComponent, DefectSelectComponent, DefectsComponent],
-      providers: [DynamicFormService]
+      declarations: [DefectComponent, DefectSelectComponent, DefectsComponent, ButtonComponent],
+      providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
   beforeEach(() => {
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(DefectsComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
@@ -74,6 +80,25 @@ describe('DefectsComponent', () => {
 
       text = el.query(By.css('p')).nativeElement;
       expect(text.innerHTML).toBe(expectedText);
+    }));
+  });
+
+  describe('update the result of the test', () => {
+    it('should dispatch the action to udpate the result of the test on form change', fakeAsync(() => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const template = DefectsTpl;
+      const data = mockTestResult();
+      component.data = data;
+      component.template = template;
+      fixture.detectChanges();
+
+      expect(component.defectsForm.length).toBe(1);
+
+      component.handleRemoveDefect(0);
+      tick(500);
+      expect(dispatchSpy).toHaveBeenCalledTimes(1);
+      fixture.detectChanges();
+      expect(component.defectsForm.length).toBe(0);
     }));
   });
 });

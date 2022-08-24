@@ -10,6 +10,7 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { selectAmendedDefectData, selectedAmendedTestResultState } from '@store/test-records';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { ResultOfTestComponent } from '../../components/result-of-test/result-of-test.component';
 import { AmendedTestRecordComponent } from './amended-test-record.component';
 
 describe('AmendedTestRecordComponent', () => {
@@ -19,7 +20,7 @@ describe('AmendedTestRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AmendedTestRecordComponent, BaseTestRecordComponent],
+      declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, ResultOfTestComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule],
       providers: [TestRecordsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
