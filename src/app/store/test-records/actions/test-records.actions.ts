@@ -31,3 +31,5 @@ export const templateSectionsChanged = createAction(
 );
 export const updateEditingTestResult = createAction('[test-results] Update editing', props<{ testResult: TestResultModel }>());
 export const testTypeIdChanged = createAction('[test-results] test type id changed', props<{ testTypeId: string }>());
+
+export const updateResultOfTest = createAction('[test-results] update the result of the test');

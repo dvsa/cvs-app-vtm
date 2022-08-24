@@ -9,7 +9,7 @@ import {
   editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
-  isSameTestTypeId,
+  isTestTypeKeySame,
   sectionTemplates,
   selectAllTestResults,
   selectAmendedDefectData,
@@ -135,7 +135,7 @@ export class TestRecordsService {
   }
 
   get isSameTestTypeId$(): Observable<boolean> {
-    return this.store.pipe(select(isSameTestTypeId));
+    return this.store.pipe(select(isTestTypeKeySame('testTypeId')));
   }
 
   testTypeChange(testTypeId: string) {

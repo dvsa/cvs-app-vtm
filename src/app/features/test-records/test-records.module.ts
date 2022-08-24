@@ -7,6 +7,7 @@ import { TestAmendmentHistoryComponent } from './components/test-amendment-histo
 import { TestRecordsRoutingModule } from './test-records-routing.module';
 import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { TestRecordComponent } from './views/test-record/test-record.component';
+import { ResultOfTestComponent } from './components/result-of-test/result-of-test.component';
 import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
 import { IncorrectTestTypeComponent } from './views/incorrect-test-type/incorrect-test-type.component';
 import { AmendTestComponent } from './views/amend-test/amend-test.component';
@@ -21,6 +22,7 @@ import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-head
     AmendedTestRecordComponent,
     TestAmendmentHistoryComponent,
     BaseTestRecordComponent,
+    ResultOfTestComponent,
     TestResultSummaryComponent,
     IncorrectTestTypeComponent,
     AmendTestComponent,

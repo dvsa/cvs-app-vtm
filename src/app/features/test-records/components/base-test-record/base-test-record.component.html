@@ -3,7 +3,6 @@
     <div class="vehicle_heading">
       <h1 class="govuk-heading-l">
         <span>{{ (test$ | async)?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
-
         <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
       </h1>
     </div>
@@ -31,6 +30,7 @@
 </div>
 
 <ng-container *ngIf="sectionTemplates.length > 0">
+  <app-result-of-test></app-result-of-test>
   <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
     <app-defects
       *ngSwitchCase="'defects'"

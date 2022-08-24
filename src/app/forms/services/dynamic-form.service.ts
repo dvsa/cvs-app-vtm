@@ -11,8 +11,6 @@ import { DefectValidators } from '@forms/validators/defects/defect.validators';
   providedIn: 'root'
 })
 export class DynamicFormService {
-  constructor() {}
-
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),

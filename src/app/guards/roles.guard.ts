@@ -13,7 +13,7 @@ export class RoleGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean> {
     return this.userService.inProgress$.pipe(
       filter((status: InteractionStatus) => InteractionStatus.None === status),
-      switchMap(msg => this.userService.roles$),
+      switchMap(() => this.userService.roles$),
       map(roles => {
         return roles?.some(x => next.data['roles'].includes(x)) || false;
       })
