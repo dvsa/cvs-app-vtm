@@ -124,13 +124,3 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
   });
   return { ...testResult, testTypes: [...newTestTypes] };
 }
-
-// function updateTestStation(testResultState: TestResultModel | undefined, testStationDetails: TestStation | undefined) {
-//   if (!testResultState || !testStationDetails) {
-//     return;
-//   }
-//   const testResult = cloneDeep(testResultState);
-//   testResult.testStationName = testStationDetails.testStationName;
-//   testResult.testStationPNumber = testStationDetails.testStationPNumber;
-//   testResult.testStationType = testStationDetails.testStationType;
-// }

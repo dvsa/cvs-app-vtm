@@ -21,14 +21,6 @@ export const VisitSection: FormNode = {
       disabled: true
     },
     {
-      name: 'testStationName',
-      label: 'Test Station Name',
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.Required }]
-    },
-    {
       name: 'testStationPNumber',
       label: 'Test Station Details',
       type: FormNodeTypes.CONTROL,
