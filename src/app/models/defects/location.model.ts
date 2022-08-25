@@ -1,10 +1,10 @@
 export interface Location {
-  axleNumber: number[];
-  horizontal: Location.Horizontal[];
-  lateral: Location.Lateral[];
+  axleNumber?: number[];
+  horizontal?: Location.Horizontal[];
+  lateral?: Location.Lateral[];
   longitudinal?: Location.Longitudinal[];
-  rowNumber?: number;
-  seatNumber?: number;
+  rowNumber?: number[];
+  seatNumber?: number[];
   vertical?: Location.Vertical[];
 }
 
