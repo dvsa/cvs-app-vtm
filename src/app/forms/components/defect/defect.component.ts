@@ -65,10 +65,10 @@ export class DefectComponent {
    * @param location - DefectAdditionalInformationLocation object
    * @returns string
    */
-  mapLocationText = (location: DefectAdditionalInformationLocation): string => location
-    ? Object.entries(location)
+  mapLocationText = (location: DefectAdditionalInformationLocation): string => !location
+    ? '-'
+    : Object.entries(location)
       .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
       .map(([key, value]) => `${key}: ${value}`)
-      .join(' / ')
-    : '-';
+      .join(' / ');
 }
