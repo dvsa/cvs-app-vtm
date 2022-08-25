@@ -382,7 +382,6 @@ describe('Test Results Reducer', () => {
       const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: { testStationName: 'bar' } as TestResultModel }, action);
       expect(newState.editingTestResult?.testStationName).toBe('foo');
       expect(newState.editingTestResult?.testStationType).toBe('atf');
-      expect(newState.editingTestResult?.testStationPNumber).toBe('7890');
     });
   });
 });
