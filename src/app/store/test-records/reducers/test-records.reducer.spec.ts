@@ -1,5 +1,7 @@
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { Action } from '@ngrx/store';
+import { updateTestStation } from '@store/test-stations';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
   fetchSelectedTestResult,
@@ -366,6 +368,21 @@ describe('Test Results Reducer', () => {
       expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('fail');
       expect(newState.editingTestResult?.testTypes[1].testResult).toEqual('prs');
       expect(newState.editingTestResult?.testTypes[2].testResult).toEqual('pass');
+    });
+  });
+
+  describe('update the test station details', () => {
+    it('should update the test station details', () => {
+      const testStation = {
+        testStationName: 'foo',
+        testStationType: 'atf',
+        testStationPNumber: '7890'
+      } as TestStation;
+      const action = updateTestStation({ payload: testStation });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: { testStationName: 'bar' } as TestResultModel }, action);
+      expect(newState.editingTestResult?.testStationName).toBe('foo');
+      expect(newState.editingTestResult?.testStationType).toBe('atf');
+      expect(newState.editingTestResult?.testStationPNumber).toBe('7890');
     });
   });
 });

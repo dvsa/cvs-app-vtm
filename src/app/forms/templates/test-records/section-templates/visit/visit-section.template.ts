@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
@@ -24,18 +25,18 @@ export const VisitSection: FormNode = {
       label: 'Test Station Name',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.AUTOCOMPLETE,
-      referenceData: SpecialRefData.TEST_STATION_NAME,
+      editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'testStationPNumber',
-      label: 'Test Station Number',
+      label: 'Test Station Details',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: SpecialRefData.TEST_STATION_P_NUMBER,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      asyncValidators: [{ name: AsyncValidatorNames.UpdateTestStationDetails }]
     },
     {
       name: 'testStationType',

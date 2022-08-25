@@ -6,16 +6,16 @@ import { CustomValidators } from '@forms/validators/custom-validators';
 import { CustomFormArray, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes } from './dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { DefectValidators } from '@forms/validators/defects/defect.validators';
-import { TestResultsState } from '@store/test-records';
 import { Store } from '@ngrx/store';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
+import { State } from '@store/.';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DynamicFormService {
-  constructor(private store: Store<TestResultsState>) {}
+  constructor(private store: Store<State>) {}
 
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.CustomPattern]: (args: string[]) => CustomValidators.customPattern([...args]),
@@ -37,8 +37,9 @@ export class DynamicFormService {
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
   };
 
-  asyncValidatorMap: Record<string, (args: any) => AsyncValidatorFn> = {
-    [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store)
+  asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
+    [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
@@ -47,7 +48,7 @@ export class DynamicFormService {
     }
 
     const form: CustomFormGroup | CustomFormArray =
-      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray( formNode, [], this.store) : new CustomFormGroup(formNode, {});
+      formNode.type === FormNodeTypes.ARRAY ? new CustomFormArray(formNode, [], this.store) : new CustomFormGroup(formNode, {});
     data = data ?? (formNode.type === FormNodeTypes.ARRAY ? [] : {});
 
     formNode.children?.forEach(child => {

@@ -13,7 +13,7 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
-import { TestResultsState } from '@store/test-records';
+import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
@@ -155,7 +155,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   constructor(
     meta: FormNode,
     controls: AbstractControl[],
-    store: Store<TestResultsState>,
+    store: Store<State>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
   ) {

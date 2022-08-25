@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const fetchTestStations = createAction(getTitle(true));
 export const fetchTestStationsSuccess = createAction(getTitle(true, 'Success'), props<{ payload: TestStation[] }>());
-export const fetchTestStationsFailed = createAction(getTitle(true , 'Failed'), props<GlobalError>());
+export const fetchTestStationsFailed = createAction(getTitle(true, 'Failed'), props<GlobalError>());
 
 export const fetchTestStation = createAction(getTitle(), props<{ id: string }>());
 export const fetchTestStationSuccess = createAction(getTitle(false, 'Success'), props<{ id: string; payload: TestStation }>());
@@ -15,3 +15,5 @@ function getTitle(isPlural: boolean = false, suffix: string = ''): string {
   suffix = suffix ? ' ' + suffix : suffix;
   return '[API/test-stations] Fetch Test Station' + plural + suffix;
 }
+
+export const updateTestStation = createAction('[test-stations] update the test station', props<{ payload: TestStation }>());
