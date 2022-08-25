@@ -25,6 +25,13 @@ export const VisitSection: FormNode = {
       label: 'Test Station Details',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'testStationPNumber',
+      label: 'Test Station Details',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: SpecialRefData.TEST_STATION_P_NUMBER,
       validators: [{ name: ValidatorNames.Required }],
