@@ -67,19 +67,16 @@ export const testResultsReducer = createReducer(
     editingTestResult: merge({}, action.testResult)
   })),
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
-  on(updateTestStation, (state, action) => {
-    if (!state.editingTestResult) {
-      return { ...state };
-    }
-    return {
+  on(updateTestStation, (state, action) => !state.editingTestResult
+    ?  { ...state }
+    : {
       ...state,
       editingTestResult: {
         ...state.editingTestResult,
         testStationName: action.payload.testStationName,
         testStationType: action.payload.testStationType
       }
-    };
-  })
+    }
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
