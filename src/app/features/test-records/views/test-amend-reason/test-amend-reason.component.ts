@@ -13,7 +13,7 @@ export class TestAmendReasonComponent {
 
   reasons: Array<FormNodeOption<number>> = [
     { label: 'The test type is incorrect', value: 1 },
-    { label: 'The test details are incorrecnt', value: 2, hint: 'Change test location, assessor, test details, defects, and results.' }
+    { label: 'The test details are incorrect', value: 2, hint: 'Change test location, assessor, test details, defects, and results.' }
   ];
 
   form: CustomFormGroup;
