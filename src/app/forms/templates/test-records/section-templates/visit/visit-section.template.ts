@@ -21,8 +21,8 @@ export const VisitSection: FormNode = {
       disabled: true
     },
     {
-      name: 'testStationPNumber',
-      label: 'Test Station Details',
+      name: 'testStationName',
+      label: 'Test Station Name',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
