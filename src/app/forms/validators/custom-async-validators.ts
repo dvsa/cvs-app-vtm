@@ -34,7 +34,6 @@ export class CustomAsyncValidators {
       store
         .pipe(select(getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStation, control.value)), take(1))
         .subscribe(stations => {
-          // store.dispatch(updateResultOfTest());
           stations && store.dispatch(updateTestStation({ payload: stations }));
         });
       return of(null);

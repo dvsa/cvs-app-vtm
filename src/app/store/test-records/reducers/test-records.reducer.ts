@@ -76,7 +76,6 @@ export const testResultsReducer = createReducer(
       editingTestResult: {
         ...state.editingTestResult,
         testStationName: action.payload.testStationName,
-        testStationPNumber: action.payload.testStationPNumber,
         testStationType: action.payload.testStationType
       }
     };
