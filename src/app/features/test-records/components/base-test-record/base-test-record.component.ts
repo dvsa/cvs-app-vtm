@@ -4,12 +4,12 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
-import { defects, DefectsState } from '@store/defects';
+import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
 import { map, Observable, of, Subject, switchMap } from 'rxjs';
 
@@ -72,8 +72,8 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
     return this.testTypesService.selectAllTestTypes$;
   }
 
-  get defects$(): Observable<Defect[]> {
-    return this.defectsStore.select(defects);
+  getDefects$(type: VehicleTypes): Observable<Defect[]> {
+    return this.defectsStore.select(filteredDefects(type));
   }
 
   get testNumber$(): Observable<string | undefined> {

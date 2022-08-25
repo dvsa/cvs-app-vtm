@@ -108,6 +108,7 @@
   },
   "defaultProject": "cvs-app-vtm",
   "cli": {
+    "analytics": false,
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

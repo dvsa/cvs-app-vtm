@@ -42,7 +42,7 @@
       class="section"
       [id]="template.name"
       [isEditing]="isEditing"
-      [defects]="defects$ | async"
+      [defects]="getDefects$(testResult.vehicleType) | async"
       [template]="template"
       [data]="testResult"
       (formChange)="handleFormChange($event)"
