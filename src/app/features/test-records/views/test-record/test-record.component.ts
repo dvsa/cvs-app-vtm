@@ -9,11 +9,12 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { defects, DefectsState, fetchDefects } from '@store/defects';
+import { DefectsState, fetchDefects, filteredDefects } from '@store/defects';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { firstValueFrom, map, Observable, of, skipWhile, Subject, switchMap, take, takeUntil, takeWhile } from 'rxjs';
@@ -72,8 +73,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     return Roles;
   }
 
-  get defects$(): Observable<Defect[]> {
-    return this.defectsStore.select(defects);
+  getDefects$(type: VehicleTypes): Observable<Defect[]> {
+    return this.defectsStore.select(filteredDefects(type));
   }
 
   handleEdit(): void {

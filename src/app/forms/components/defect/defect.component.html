@@ -72,35 +72,25 @@
 
     <ng-container formGroupName="additionalInformation">
       <ng-container formGroupName="location">
-        <app-text-input formControlName="vertical" label="Vertical"></app-text-input>
-        <app-text-input formControlName="horizontal" label="Horizontal"></app-text-input>
-        <app-text-input formControlName="lateral" label="Lateral"></app-text-input>
-        <app-text-input formControlName="longitudinal" label="Longitudinal"></app-text-input>
-        <app-text-input formControlName="rowNumber" label="Row number"></app-text-input>
-        <app-text-input formControlName="seatNumber" label="Seat number"></app-text-input>
-        <app-text-input formControlName="axleNumber" label="Axle number"></app-text-input>
+        <app-radio-group
+          *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn"
+          [name]="item.key + index"
+          [label]="pascalCase(item.key)"
+          [formControlName]="item.key"
+          [options]="item.value"
+        ></app-radio-group>
       </ng-container>
-      <app-text-input formControlName="notes" label="Notes"></app-text-input>
+      <app-text-input *ngIf="info?.notes" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-input>
     </ng-container>
 
-    <app-radio-group
-      [name]="'prs-' + index"
-      formControlName="prs"
-      label="PRS"
-      [options]="[
-        { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]"
-    ></app-radio-group>
+    <app-radio-group [name]="'prs-' + index" label="PRS" formControlName="prs" [options]="booleanOptions"></app-radio-group>
 
     <app-radio-group
+      *ngIf="isDangerous"
       [name]="'prohibitionIssued-' + index"
-      formControlName="prohibitionIssued"
       label="Prohibition issued"
-      [options]="[
-        { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]"
+      formControlName="prohibitionIssued"
+      [options]="booleanOptions"
     ></app-radio-group>
   </ng-container>
 </ng-template>

@@ -5,6 +5,9 @@
     *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
     [isEditing]="isEditing"
     [form]="getDefectForm(i)"
+    [defect]="getDefect(i)"
+    [vehicleType]="data.vehicleType!"
+    [isDangerous]="isDangerous(i)"
     [index]="i"
     (removeDefect)="handleRemoveDefect($event)"
   ></app-defect>
