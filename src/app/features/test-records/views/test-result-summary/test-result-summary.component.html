@@ -20,10 +20,6 @@
     </app-vehicle-header>
 
     <article>
-      <!-- <div class="header_container">
-        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ techRecord?.bodyMake + '-' + techRecord?.bodyModel | defaultNullOrEmpty }}</h1>
-        <app-icon [icon]="techRecord?.vehicleType || ''"></app-icon>
-      </div> -->
       <div class="vehicle_heading govuk-!-margin-bottom-6">
         <h2 class="govuk-heading-l">
           <span>{{ techRecord?.bodyMake + '-' + techRecord?.bodyModel | defaultNullOrEmpty }}</span>
@@ -73,6 +69,21 @@
           </dd>
         </div>
       </div>
+
+      <ng-container *ngIf="sectionTemplates$ | async as sectionTemplates">
+        <ng-container *ngIf="sectionTemplates.length > 0">
+          <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
+            <app-dynamic-form-group
+              *ngIf="template.name !== 'defects' && template.name !== 'vehicleSection'"
+              class="section"
+              [id]="template.name"
+              [template]="template"
+              [data]="testResult"
+              [edit]="false"
+            ></app-dynamic-form-group>
+          </ng-container>
+        </ng-container>
+      </ng-container>
     </article>
 
     <div class="govuk-grid-row">

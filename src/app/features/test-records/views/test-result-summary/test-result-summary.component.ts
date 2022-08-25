@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Defect } from '@api/test-results';
+import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -10,7 +11,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { defects, DefectsState } from '@store/defects';
-import { map, Observable, of, Subject, switchMap } from 'rxjs';
+import { map, Observable, of, Subject, switchMap, skipWhile, take } from 'rxjs';
 
 @Component({
   selector: 'app-test-result-summary',
@@ -22,6 +23,7 @@ export class TestResultSummaryComponent implements OnInit, OnDestroy {
   techRecord$: Observable<TechRecordModel | undefined> = this.techRecordService.selectedVehicleTechRecord$.pipe(
     switchMap(techRecord => (techRecord ? this.techRecordService.viewableTechRecord$(techRecord, this.destroy$) : of(undefined)))
   );
+  sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   private destroy$ = new Subject<void>();
 
@@ -36,6 +38,15 @@ export class TestResultSummaryComponent implements OnInit, OnDestroy {
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
       switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
+    this.testResult$
+      .pipe(
+        skipWhile(testResult => !testResult),
+        take(1)
+      )
+      .subscribe(testResult => {
+        this.testRecordsService.editingTestResult(testResult!);
+      });
+    this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
   }
 
   ngOnDestroy(): void {
