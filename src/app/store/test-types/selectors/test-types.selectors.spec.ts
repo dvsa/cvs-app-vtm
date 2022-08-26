@@ -1,5 +1,5 @@
 import { TestTypesTaxonomy } from '@api/test-types';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
 
 describe('selectors', () => {

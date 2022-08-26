@@ -1,19 +1,11 @@
 <div class="govuk-summary-list">
-  <ng-container [formGroup]="form">
-    <ng-container formArrayName="testTypes">
-      <ng-container formGroupName="0">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Test name:</dt>
-          <dd id="test-testTypeId" class="govuk-summary-list__value">
-            {{ testTypeIdControl?.value | testTypeName: (selectAllTestTypes$ | async) }}
-            <app-button *ngIf="isEditing" class="float-right" type="underline" (clicked)="handleChange()">{{
-              edit ? 'Cancel' : 'Change'
-            }}</app-button>
-          </dd>
-        </div>
-      </ng-container>
-    </ng-container>
-  </ng-container>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Test name:</dt>
+    <dd id="test-testTypeId" class="govuk-summary-list__value">
+      {{ testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}
+      <app-button *ngIf="isEditing" class="float-right" type="underline" (clicked)="handleChange()">{{ edit ? 'Cancel' : 'Change' }}</app-button>
+    </dd>
+  </div>
 </div>
 
 <div *ngIf="edit" class="categories">

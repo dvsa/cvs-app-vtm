@@ -6,15 +6,18 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { masterTpl } from '@forms/templates/test-records/master.template';
-import { Defects } from '@models/defects';
+import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { DefectsState, fetchDefects, filteredDefects } from '@store/defects';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { firstValueFrom, map, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { firstValueFrom, map, Observable, of, skipWhile, Subject, switchMap, take, takeUntil, takeWhile } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -29,29 +32,36 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   isEditing$: Observable<boolean> = of(false);
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  defects$: Observable<Defects | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   constructor(
+    private actions$: Actions,
+    private defectsStore: Store<DefectsState>,
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService,
-    private actions$: Actions
+    private testRecordsService: TestRecordsService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.isEditing$ = this.routerService.routeEditable$;
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
       switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
-    this.defects$ = this.testRecordsService.defectData$;
+    this.defectsStore.dispatch(fetchDefects());
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.watchForUpdateSuccess();
-    this.testRecordsService.editingTestResult((await firstValueFrom(this.testResult$)) as TestResultModel);
+    this.testResult$
+      .pipe(
+        skipWhile(testResult => !testResult),
+        take(1)
+      )
+      .subscribe(testResult => {
+        this.testRecordsService.editingTestResult(testResult!);
+      });
   }
 
   ngOnDestroy(): void {
@@ -61,6 +71,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   public get Roles() {
     return Roles;
+  }
+
+  getDefects$(type: VehicleTypes): Observable<Defect[]> {
+    return this.defectsStore.select(filteredDefects(type));
   }
 
   handleEdit(): void {
@@ -83,7 +97,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     const forms = [];
 
     if (this.baseTestRecordComponent) {
-      const { sections, defects, requiredProps } = this.baseTestRecordComponent;
+      const { sections, defects } = this.baseTestRecordComponent;
       if (sections) {
         sections.forEach(section => {
           forms.push(section.form);
@@ -92,10 +106,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
       if (defects) {
         forms.push(defects.form);
-      }
-
-      if (requiredProps) {
-        forms.push(requiredProps.form);
       }
     }
 
@@ -135,7 +145,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
         }
 
         const vehicleType = testResult.vehicleType;
-        const testTypeId = testResult.testTypes[0].testTypeId;
+        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
         const vehicleTpl = vehicleType && masterTpl[vehicleType];
 

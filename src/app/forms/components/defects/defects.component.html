@@ -1,19 +1,20 @@
 <h2 class="govuk-heading-m">Defects</h2>
 
-<ng-container *ngIf="form; else noDefects">
-  <ng-container [formGroup]="form">
-    <ng-container *ngIf="defectCount; else noDefects">
-      <app-defect
-        *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
-        [isEditing]="isEditing"
-        [form]="getDefectForm(i)"
-        [index]="i"
-        (removeDefect)="handleRemoveDefect($event)"
-      ></app-defect>
-    </ng-container>
-  </ng-container>
+<ng-container *ngIf="form && defectCount; else noDefects" [formGroup]="form">
+  <app-defect
+    *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
+    [isEditing]="isEditing"
+    [form]="getDefectForm(i)"
+    [defect]="getDefect(i)"
+    [vehicleType]="data.vehicleType!"
+    [isDangerous]="isDangerous(i)"
+    [index]="i"
+    (removeDefect)="handleRemoveDefect($event)"
+  ></app-defect>
 </ng-container>
 
 <ng-template #noDefects>
   <p class="govuk-body">No defects</p>
 </ng-template>
+
+<app-defect-select class="section" [isParentEditing]="isEditing" [defects]="defects" (formChange)="handleDefectSelection($event)"></app-defect-select>

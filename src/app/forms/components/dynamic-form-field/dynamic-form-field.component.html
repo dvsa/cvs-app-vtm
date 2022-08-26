@@ -40,6 +40,15 @@
     [formControlName]="control.key"
   ></app-text-area>
 
+  <app-checkbox-group
+    *ngSwitchCase="formNodeEditTypes.CHECKBOX"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+    [delimited]="control.value.meta.delimited"
+  ></app-checkbox-group>
+
   <app-text-input
     *ngSwitchDefault
     [label]="control.value.meta.label"

@@ -1,4 +1,4 @@
-import { Defect } from './defect';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import * as Emissions from './emissions.enum';
 
 export interface TestType {
@@ -18,7 +18,7 @@ export interface TestType {
   testAnniversaryDate: string | Date;
   prohibitionIssued: boolean;
 
-  testResult: string;
+  testResult: resultOfTestEnum;
 
   seatbeltInstallationCheckDate: boolean;
   numberOfSeatbeltsFitted: number;
@@ -30,7 +30,7 @@ export interface TestType {
   modificationTypeUsed: string;
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
-  defects?: Defect[];
+  defects?: TestResultDefects;
   customDefects: customDefects[];
 
   additionalNotesRecorded: string;
@@ -40,4 +40,11 @@ export interface customDefects {
   referenceNumber: string;
   defectName: string;
   defectNotes: string;
+}
+
+export enum resultOfTestEnum {
+  fail = 'fail',
+  prs = 'prs',
+  pass = 'pass',
+  abandoned = 'abandoned'
 }

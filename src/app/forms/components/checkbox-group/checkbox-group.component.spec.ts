@@ -11,7 +11,7 @@ import { CheckboxGroupComponent } from './checkbox-group.component';
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
-    <app-checkbox-group name="foo" label="Foo" [options]="options" formControlName="foo"></app-checkbox-group>
+    <app-checkbox-group name="foo" label="Foo" [options]="options" formControlName="foo" [delimited]="delimited"></app-checkbox-group>
   </form> `,
   styles: []
 })
@@ -19,6 +19,7 @@ class HostComponent {
   form = new FormGroup({
     foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
   });
+  delimited?: { regex: string; separator: string };
   options: MultiOptions = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
@@ -45,7 +46,7 @@ describe('CheckboxGroupComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('value', () => {
+  describe('value as array', () => {
     it('should be propagated from element to the form control', () => {
       const foo = component.form.get('foo');
       const boxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"]'));
@@ -58,13 +59,33 @@ describe('CheckboxGroupComponent', () => {
       (boxes[0].nativeElement as HTMLInputElement).click();
       expect(foo?.value).toBeNull();
     });
+  });
 
+  describe('value as separated string', () => {
+    it('should be propagated from element to the form control', () => {
+      component.delimited = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
+      fixture.detectChanges();
+
+      const foo = component.form.get('foo');
+      const boxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"]'));
+      expect(boxes.length).toBe(3);
+
+      (boxes[1].nativeElement as HTMLInputElement).click();
+      (boxes[0].nativeElement as HTMLInputElement).click();
+      expect(foo?.value).toEqual('2. 1');
+      (boxes[1].nativeElement as HTMLInputElement).click();
+      (boxes[0].nativeElement as HTMLInputElement).click();
+      expect(foo?.value).toBeNull();
+    });
+  });
+
+  describe('value propagated to element', () => {
     it('should be propagated from the form control to the element', () => {
       component.form.patchValue({ foo: ['1', '2'] });
       fixture.detectChanges();
       const checkedBoxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"][checked=true]'));
 
-      checkedBoxes.forEach((box) => {
+      checkedBoxes.forEach(box => {
         const {
           nativeElement: { value, checked, name }
         } = box;

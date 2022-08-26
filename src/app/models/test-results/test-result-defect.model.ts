@@ -1,6 +1,6 @@
 import { DefectAdditionalInformation } from './defectAdditionalInformation';
 
-export interface Defect {
+export interface TestResultDefect {
   imNumber?: number;
   imDescription?: string;
   additionalInformation?: DefectAdditionalInformation;
@@ -9,14 +9,14 @@ export interface Defect {
   deficiencyRef?: string;
   deficiencyId?: string;
   deficiencySubId?: string;
-  deficiencyCategory: Defect.DeficiencyCategoryEnum;
+  deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum;
   deficiencyText?: string;
   stdForProhibition?: boolean;
   prs?: boolean;
   prohibitionIssued?: boolean;
 }
 
-export namespace Defect {
+export namespace TestResultDefect {
   export type DeficiencyCategoryEnum = 'advisory' | 'dangerous' | 'major' | 'minor';
   export const DeficiencyCategoryEnum = {
     Advisory: 'advisory' as DeficiencyCategoryEnum,
