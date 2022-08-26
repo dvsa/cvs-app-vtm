@@ -79,11 +79,11 @@ export class TestResultsEffects {
       ofType(updateTestResult),
       mergeMap(action =>
         of(action.value).pipe(
-          withLatestFrom(this.userService.userName$, this.userService.id$, this.routerService.getRouteParam$('systemNumber')),
+          withLatestFrom(this.userService.userName$, this.userService.id$, this.store.pipe(select(selectRouteNestedParams))),
           take(1)
         )
       ),
-      mergeMap(([testResult, username, id, systemNumber]) => {
+      mergeMap(([testResult, username, id, { systemNumber }]) => {
         return this.testRecordsService.saveTestResult(systemNumber!, { username, id }, testResult).pipe(
           take(1),
           map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),

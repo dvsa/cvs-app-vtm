@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TestType, TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
-import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { Observable } from 'rxjs';
 
@@ -10,13 +10,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./test-type-select.component.scss']
 })
 export class TestTypeSelectComponent {
-  @Input() isEditing = false;
-  @Input() data?: TestResultModel;
-
-  edit = false;
   categories: Array<TestTypeCategory> = [];
 
-  constructor(private testTypesService: TestTypesService) {}
+  constructor(private testTypesService: TestTypesService, private router: Router, private route: ActivatedRoute) {}
 
   get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
     return this.testTypesService.selectAllTestTypes$;
@@ -32,23 +28,16 @@ export class TestTypeSelectComponent {
     if (category.hasOwnProperty('nextTestTypesOrCategories')) {
       this.categories.push(category as TestTypeCategory);
     } else {
-      this.testTypesService.testTypeIdChanged(category.id);
-
-      this.handleChange();
+      this.router.navigate(['..', 'amend-test-details'], {
+        queryParams: { testType: category.id },
+        queryParamsHandling: 'merge',
+        relativeTo: this.route
+      });
     }
   }
 
   hasNext(category: TestType | TestTypeCategory) {
     return category.hasOwnProperty('nextTestTypesOrCategories');
-  }
-
-  get testTypeId() {
-    return this.data?.testTypes[0]?.testTypeId;
-  }
-
-  handleChange() {
-    this.categories = [];
-    this.edit = !this.edit;
   }
 
   isSelected(id: string) {

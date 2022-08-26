@@ -3,7 +3,7 @@ import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-te
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, Subject } from 'rxjs';
-import { Roles } from '@models/roles.enum'
+import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 
 @Component({
@@ -12,7 +12,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  currentTechRecord?: Observable<TechRecordModel | undefined>;
+  currentTechRecord$?: Observable<TechRecordModel | undefined>;
   records: Observable<TestResultModel[]>;
   ngDestroy$ = new Subject();
 
@@ -21,15 +21,15 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTechRecord = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!, this.ngDestroy$);
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
   }
 
   get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find((vrm) => vrm.isPrimary === true)?.vrm;
+    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
   get otherVrms(): Vrm[] | undefined {
-    return this.vehicleTechRecord?.vrms.filter((vrm) => vrm.isPrimary === false);
+    return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
   ngOnDestroy() {

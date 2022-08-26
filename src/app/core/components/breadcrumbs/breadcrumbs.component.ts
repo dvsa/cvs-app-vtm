@@ -23,7 +23,7 @@ export class BreadcrumbsComponent {
           if (data.hasOwnProperty('title') && routeConfig?.path) {
             breadcrumbs.push({
               label: data['title'],
-              path: [...breadcrumbs.map(breadcrumb => breadcrumb.path), ...url.map(url => url.path)].join('/')
+              path: [...breadcrumbs.slice(-1).map(b => b.path), ...url.map(url => url.path)].join('/')
             });
           }
 
