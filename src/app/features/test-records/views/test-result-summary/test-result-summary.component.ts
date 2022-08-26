@@ -11,7 +11,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { defects, DefectsState } from '@store/defects';
-import { map, Observable, of, Subject, switchMap, skipWhile, take } from 'rxjs';
+import { map, Observable, of, skipWhile, Subject, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-test-result-summary',
@@ -20,9 +20,7 @@ import { map, Observable, of, Subject, switchMap, skipWhile, take } from 'rxjs';
 })
 export class TestResultSummaryComponent implements OnInit, OnDestroy {
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  techRecord$: Observable<TechRecordModel | undefined> = this.techRecordService.selectedVehicleTechRecord$.pipe(
-    switchMap(techRecord => (techRecord ? this.techRecordService.viewableTechRecord$(techRecord, this.destroy$) : of(undefined)))
-  );
+  techRecord$: Observable<TechRecordModel | undefined>;
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   private destroy$ = new Subject<void>();
@@ -32,7 +30,9 @@ export class TestResultSummaryComponent implements OnInit, OnDestroy {
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
     private techRecordService: TechnicalRecordService
-  ) {}
+  ) {
+    this.techRecord$ = this.techRecordService.techRecord$;
+  }
 
   ngOnInit(): void {
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(

@@ -11,7 +11,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { map, Observable, of, Subject, switchMap } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -29,16 +29,16 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  techRecord$: Observable<TechRecordModel | undefined> = this.techRecordService.selectedVehicleTechRecord$.pipe(
-    switchMap(techRecord => (techRecord ? this.techRecordService.viewableTechRecord$(techRecord, this.destroy$) : of(undefined)))
-  );
+  techRecord$: Observable<TechRecordModel | undefined>;
 
   constructor(
     private defectsStore: Store<DefectsState>,
     private techRecordService: TechnicalRecordService,
     private testTypesService: TestTypesService,
     private routerService: RouterService
-  ) {}
+  ) {
+    this.techRecord$ = this.techRecordService.techRecord$;
+  }
 
   ngAfterViewInit(): void {
     this.handleFormChange({});

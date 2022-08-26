@@ -23,9 +23,9 @@
         <dd class="govuk-summary-list__value"></dd>
       </div>
     </dl>
-    <app-tech-record-summary [vehicleTechRecord]="(currentTechRecord | async) || undefined"></app-tech-record-summary>
+    <app-tech-record-summary [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"></app-tech-record-summary>
     <app-tech-record-history
-      [currentRecord]="(currentTechRecord | async) || undefined"
+      [currentRecord]="(currentTechRecord$ | async) || undefined"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     ></app-tech-record-history>
     <app-test-record-summary *appRoleRequired="Roles.TestResultView" [testRecords]="(records | async) || []"> </app-test-record-summary>

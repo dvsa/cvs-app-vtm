@@ -3,8 +3,8 @@ import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Subject } from 'rxjs';
-import { Roles } from '@models/roles.enum'
+import { Subject, takeUntil } from 'rxjs';
+import { Roles } from '@models/roles.enum';
 
 @Component({
   selector: 'app-single-search-result[vehicleTechRecord]',
@@ -20,17 +20,20 @@ export class SingleSearchResultComponent implements OnInit {
   constructor(private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
-    this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord, this.ngDestroy$).subscribe(
-      record =>
-        (this.vehicleDisplayData = {
-          vin: this.vehicleTechRecord.vin,
-          vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
-          make: record?.chassisMake,
-          model: record?.chassisModel,
-          manufactureYear: record?.manufactureYear,
-          vehicleType: record?.vehicleType.toUpperCase()
-        })
-    );
+    this.technicalRecordService
+      .viewableTechRecord$(this.vehicleTechRecord)
+      .pipe(takeUntil(this.ngDestroy$))
+      .subscribe(
+        record =>
+          (this.vehicleDisplayData = {
+            vin: this.vehicleTechRecord.vin,
+            vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
+            make: record?.chassisMake,
+            model: record?.chassisModel,
+            manufactureYear: record?.manufactureYear,
+            vehicleType: record?.vehicleType.toUpperCase()
+          })
+      );
 
     this.template = createSingleSearchResult(this.vehicleTechRecord.systemNumber);
   }

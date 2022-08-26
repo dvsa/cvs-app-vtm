@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestType, TestTypeCategory } from '@api/test-types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -15,6 +15,7 @@ describe('TestTypeSelectComponent', () => {
   let fixture: ComponentFixture<TestTypeSelectComponent>;
   let testTypesService: TestTypesService;
   let router: Router;
+  let route: ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,6 +34,7 @@ describe('TestTypeSelectComponent', () => {
     component = fixture.componentInstance;
     testTypesService = TestBed.inject(TestTypesService);
     router = TestBed.inject(Router);
+    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
@@ -60,7 +62,11 @@ describe('TestTypeSelectComponent', () => {
       router.navigate = jest.fn();
       component.categories = createMockList<TestTypeCategory>(3, id => createMock<TestTypeCategory>({ id: `${id + 1}` }));
       component.handleCategory(createMock<TestType>({ id: '1' }), 0);
-      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['..', 'amend-test-details'], {
+        queryParams: { testType: '1' },
+        queryParamsHandling: 'merge',
+        relativeTo: route
+      });
       expect(component.categories.length).toBe(0);
     });
 
