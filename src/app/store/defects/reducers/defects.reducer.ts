@@ -12,7 +12,7 @@ export const STORE_FEATURE_DEFECTS_KEY = 'Defects';
 
 export const defectsFeatureState = createFeatureSelector<DefectsState>(STORE_FEATURE_DEFECTS_KEY);
 
-export const defectsAdapter: EntityAdapter<Defect> = createEntityAdapter<Defect>({ selectId: defect => defect.imNumber! });
+export const defectsAdapter: EntityAdapter<Defect> = createEntityAdapter<Defect>({ selectId: defect => defect.imNumber + defect.imDescription });
 
 export const initialDefectsState  = defectsAdapter.getInitialState({ loading: false, error: '' });
 
