@@ -11,6 +11,8 @@ import { IncorrectTestTypeComponent } from './views/incorrect-test-type/incorrec
 import { AmendTestComponent } from './views/amend-test/amend-test.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
 import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
+import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 
 const routes: Routes = [
   {
@@ -59,6 +61,24 @@ const routes: Routes = [
         data: { title: 'Amended Test Result', roles: Roles.TestResultAmend },
         resolve: { load: TestResultResolver },
         canActivate: [NoEditGuard, RoleGuard]
+      }
+    ]
+  },
+  {
+    path: 'create-test',
+    component: AmendTestComponent,
+    data: { title: 'Contingency test', roles: Roles.TestResultAmend },
+    resolve: { contingencyTest: ContingencyTestResolver },
+    children: [
+      {
+        path: 'type',
+        component: TestTypeSelectComponent,
+        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver }
+      },
+      {
+        path: 'amend-test-details',
+        component: TestRecordComponent,
+        data: { title: 'Test details', roles: Roles.TestResultAmend }
       }
     ]
   }

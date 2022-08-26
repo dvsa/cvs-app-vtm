@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -6,8 +7,10 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
+import { Action } from 'rxjs/internal/scheduler/Action';
 import {
   cancelEditingTestResult,
+  editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
@@ -16,6 +19,7 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
+  initialContingencyTest,
   templateSectionsChanged,
   updateEditingTestResult,
   updateResultOfTest,
@@ -65,7 +69,12 @@ export const testResultsReducer = createReducer(
     ...state,
     editingTestResult: merge({}, action.testResult)
   })),
-  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) }))
+  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
+  on(initialContingencyTest, (state, action) => ({
+    ...state,
+    ...testResultAdapter.upsertOne(action.testResult as TestResultModel, state),
+    editingTestResult: { ...action.testResult } as TestResultModel
+  }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

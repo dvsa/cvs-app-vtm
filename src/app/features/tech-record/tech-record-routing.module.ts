@@ -22,7 +22,7 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
+    path: 'test-records/test-result/:testResultId/:testNumber',
     data: { title: 'Test record', roles: Roles.TestResultView },
     resolve: { techRecord: TechRecordViewResolver },
     canActivate: [MsalGuard, RoleGuard],

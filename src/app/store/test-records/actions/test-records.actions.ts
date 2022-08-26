@@ -33,3 +33,5 @@ export const updateEditingTestResult = createAction('[test-results] Update editi
 export const testTypeIdChanged = createAction('[test-results] test type id changed', props<{ testTypeId: string }>());
 
 export const updateResultOfTest = createAction('[test-results] update the result of the test');
+
+export const initialContingencyTest = createAction('[Contingency test] Create', props<{ testResult: Partial<TestResultModel> }>());
