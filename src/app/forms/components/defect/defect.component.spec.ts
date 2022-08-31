@@ -25,7 +25,7 @@ describe('DefectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe(DefectComponent.prototype.mapLocationText.name, () => {
+  describe("mapLocationText", () => {
     it.each([
       ['', createMock<DefectAdditionalInformationLocation>()],
       ['', createMock<DefectAdditionalInformationLocation>({ axleNumber: undefined })],

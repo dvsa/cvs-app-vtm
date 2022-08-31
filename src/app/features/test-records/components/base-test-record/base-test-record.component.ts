@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
@@ -10,7 +10,7 @@ import merge from 'lodash.merge';
   selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html'
 })
-export class BaseTestRecordComponent implements AfterViewChecked {
+export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
 
@@ -21,7 +21,7 @@ export class BaseTestRecordComponent implements AfterViewChecked {
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 
-  ngAfterViewChecked(): void {
+  ngAfterViewInit(): void {
     this.handleFormChange({});
   }
 

@@ -1,9 +1,8 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const TestSectionGroup15And16: FormNode = {
+export const TestSectionGroup7: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -55,7 +54,38 @@ export const TestSectionGroup15And16: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testTypeName',
+              label: 'Description',
+              value: '',
+              disabled: true,
+
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
+              value: '',
+              disabled: true,
+
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
+            },
+            {
+              name: 'testNumber',
+              label: 'Test Number',
+              value: '',
+              disabled: true,
+
               type: FormNodeTypes.CONTROL
             },
             {
@@ -77,9 +107,9 @@ export const TestSectionGroup15And16: FormNode = {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: '',
+              required: true,
               label: 'Additional details for abandoning',
               editType: FormNodeEditTypes.TEXTAREA,
-              required: true,
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
@@ -87,40 +117,6 @@ export const TestSectionGroup15And16: FormNode = {
                 },
                 { name: ValidatorNames.MaxLength, args: { length: 500 } }
               ]
-            },
-            {
-              name: 'testTypeName',
-              label: 'Description',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'certificateNumber',
-              label: 'Certificate number',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'testNumber',
-              label: 'Test Number',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              value: '',
-              disabled: true,
-
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',

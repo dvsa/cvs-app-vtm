@@ -91,36 +91,43 @@ export const DefectsTpl: FormNode = {
                             {
                               name: 'vertical',
                               label: 'Vertical',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'horizontal',
                               label: 'Horizontal',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'lateral',
                               label: 'Lateral',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'longitudinal',
                               label: 'Longitudinal',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'rowNumber',
                               label: 'Row number',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'seatNumber',
                               label: 'Seat number',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             },
                             {
                               name: 'axleNumber',
                               label: 'Axle number',
+                              value: null,
                               type: FormNodeTypes.CONTROL
                             }
                           ]
@@ -128,6 +135,7 @@ export const DefectsTpl: FormNode = {
                         {
                           name: 'notes',
                           label: 'Notes',
+                          value: null,
                           type: FormNodeTypes.CONTROL,
                           validators: [{ name: ValidatorNames.ValidateDefectNotes }]
                         }
@@ -136,9 +144,9 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'prs',
                       label: 'PRS',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       editType: FormNodeEditTypes.RADIO,
-                      value: null,
                       options: [
                         { value: true, label: 'Yes' },
                         { value: false, label: 'No' }
@@ -147,13 +155,13 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'prohibitionIssued',
                       label: 'Prohibition issued',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       editType: FormNodeEditTypes.RADIO,
                       options: [
                         { value: true, label: 'Yes' },
                         { value: false, label: 'No' }
                       ],
-                      value: null,
                       validators: [
                         {
                           name: ValidatorNames.RequiredIfEquals,

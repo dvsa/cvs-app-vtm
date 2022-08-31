@@ -1,8 +1,16 @@
-import { inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
 import { DynamicFormService } from './dynamic-form.service';
 import { FormNode, FormNodeTypes } from './dynamic-form.types';
 
 describe('Custom Classes', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
+  });
+
   describe('getCleanValue', () => {
     const template = <FormNode>{
       name: 'myForm',
