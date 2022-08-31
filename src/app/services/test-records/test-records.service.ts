@@ -1,11 +1,13 @@
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
   cancelEditingTestResult,
+  createTestResult,
   editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
@@ -33,7 +35,8 @@ export class TestRecordsService {
   constructor(
     private store: Store<TestResultsState>,
     private updateTestResultsService: UpdateTestResultsService,
-    private getTestResultService: GetTestResultsService
+    private getTestResultService: GetTestResultsService,
+    private createTestResultsService: CreateTestResultsService
   ) {}
 
   fetchTestResultbySystemNumber(
@@ -111,6 +114,14 @@ export class TestRecordsService {
 
   updateTestResult(value: any): void {
     this.store.dispatch(updateTestResult({ value }));
+  }
+
+  postTestResult(body: TestResultModel) {
+    return this.createTestResultsService.testResultsPost(body as CompleteTestResults, 'response', false);
+  }
+
+  createTestResult(value: any): void {
+    this.store.dispatch(createTestResult({ value }));
   }
 
   static getTestTypeGroup(testTypeId: string): string | undefined {

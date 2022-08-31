@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType } from '@models/test-types/test-type.model';
 import { Actions } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -23,19 +24,30 @@ export class ContingencyTestResolver implements Resolve<boolean> {
         const { vin, vrms, systemNumber } = techRecord!;
         const vrm = vrms.find(vrm => vrm.isPrimary);
         return this.techRecordService.viewableTechRecord$(techRecord!).pipe(
-          map(viewableTechRecord => ({
-            vin,
-            vrm: vrm?.vrm,
-            systemNumber,
-            vehicleType: viewableTechRecord?.vehicleType,
-            testResultId,
-            testTypes: [
-              {
-                testTypeId: '1',
-                testNumber: '0'
-              } as TestType
-            ]
-          }))
+          map(
+            viewableTechRecord =>
+              ({
+                vin,
+                vrm: vrm?.vrm,
+                systemNumber,
+                vehicleType: viewableTechRecord?.vehicleType,
+                testResultId,
+                euVehicleCategory: viewableTechRecord?.euVehicleCategory,
+                vehicleSize: viewableTechRecord?.vehicleSize,
+                vehicleConfiguration: viewableTechRecord?.vehicleConfiguration,
+                vehicleClass: viewableTechRecord?.vehicleClass,
+                noOfAxles: viewableTechRecord?.noOfAxles,
+                numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven,
+                testStatus: 'submitted',
+                testerStaffId: 'leeb',
+                testTypes: [
+                  {
+                    testTypeId: '1',
+                    testNumber: '0'
+                  } as TestType
+                ]
+              } as Partial<TestResultModel>)
+          )
         );
       }),
       tap(testResult => {

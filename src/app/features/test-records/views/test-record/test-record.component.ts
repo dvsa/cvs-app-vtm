@@ -23,8 +23,19 @@ import { BaseTestRecordComponent } from '../../components/base-test-record/base-
 })
 export class TestRecordComponent implements OnInit, OnDestroy {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
+  @ViewChild(BaseTestRecordComponent) private set stuff(baseTestRecordComponent: BaseTestRecordComponent) {
+    if (baseTestRecordComponent) {
+      const { sections, defects } = baseTestRecordComponent;
+      if (sections) {
+        sections.forEach(section => {
+          section.form.enable();
+        });
+      }
+    }
+  }
 
   private destroy$ = new Subject<void>();
+  private action = 'update';
 
   isEditing = true;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
@@ -65,6 +76,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       .subscribe(testTypeId => {
         this.testRecordsService.testTypeChange(testTypeId!);
       });
+
+    this.route.data.pipe(take(1)).subscribe(({ action }) => {
+      this.action = action ?? 'update';
+    });
   }
 
   ngOnDestroy(): void {
@@ -123,7 +138,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
     const testResult = await firstValueFrom(this.testResult$);
 
-    this.testRecordsService.updateTestResult(cloneDeep(testResult));
+    this.action === 'update'
+      ? this.testRecordsService.updateTestResult(cloneDeep(testResult))
+      : this.testRecordsService.createTestResult(cloneDeep(testResult));
   }
 
   watchForUpdateSuccess() {

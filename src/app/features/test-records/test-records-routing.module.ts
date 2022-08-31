@@ -78,7 +78,7 @@ const routes: Routes = [
       {
         path: 'amend-test-details',
         component: TestRecordComponent,
-        data: { title: 'Test details', roles: Roles.TestResultAmend }
+        data: { title: 'Test details', roles: Roles.TestResultAmend, action: 'create' }
       }
     ]
   }

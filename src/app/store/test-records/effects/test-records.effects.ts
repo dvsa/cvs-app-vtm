@@ -14,6 +14,9 @@ import { selectQueryParam, selectRouteNestedParams } from '@store/router/selecto
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
 import {
+  createTestResult,
+  createTestResultFailed,
+  createTestResultSuccess,
   editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
@@ -151,12 +154,45 @@ export class TestResultsEffects {
     )
   );
 
+  /**
+   * Call POST Test Results API to update test result
+   */
+  createTestResult$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createTestResult),
+      mergeMap(action =>
+        of(action.value).pipe(
+          withLatestFrom(this.userService.userName$, this.userService.id$, this.store.pipe(select(selectRouteNestedParams))),
+          take(1)
+        )
+      ),
+      mergeMap(([testResult, username, id, { systemNumber }]) => {
+        return this.testRecordsService.postTestResult(testResult).pipe(
+          take(1),
+          map(responseBody => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
+          catchError(e => {
+            const validationsErrors: GlobalError[] = [];
+            if (e.status === 400) {
+              const {
+                error: { errors }
+              } = e;
+              errors.forEach((error: string) => {
+                const field = error.match(/"([^"]+)"/);
+                validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
+              });
+            }
+            return of(createTestResultFailed({ errors: validationsErrors }));
+          })
+        );
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private routerService: RouterService,
     private dfs: DynamicFormService
   ) {}
 }
