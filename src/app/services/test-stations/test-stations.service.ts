@@ -21,12 +21,14 @@ export class TestStationsService {
     return this.http.get<TestStation>(this.url + id, { responseType: 'json' });
   }
 
-  getTestStationsOptions(propertyName: string): Observable<MultiOptions> {
+  getTestStationsOptions(): Observable<MultiOptions> {
     return this.store.select(testStations).pipe(
-      map(testStations => testStations.map(testStation => {
-        const value = String(testStation[propertyName as keyof typeof testStation]);
-        return { value, label: value };
-      }))
+      map(testStations =>
+        testStations.map(testStation => {
+          const label = testStation.testStationName + ' - ' + testStation.testStationPNumber;
+          return { value: testStation.testStationPNumber, label };
+        })
+      )
     );
   }
 }
