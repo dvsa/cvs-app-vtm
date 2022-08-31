@@ -64,7 +64,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup3And4And8,
-      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -95,7 +94,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup3And4And8,
-      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -174,7 +172,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup3And4And8,
-      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
