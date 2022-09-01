@@ -226,6 +226,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
+
     },
   }
 };

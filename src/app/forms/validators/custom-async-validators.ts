@@ -1,10 +1,14 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { select, Store } from '@ngrx/store';
-import { testResultInEdit, TestResultsState } from '@store/test-records';
-import { map, Observable, take } from 'rxjs';
+import { State } from '@store/.';
+import { testResultInEdit } from '@store/test-records';
+import { getTestStationFromProperty, updateTestStation } from '@store/test-stations';
+import { map, Observable, of, take } from 'rxjs';
 
 export class CustomAsyncValidators {
-  static resultDependantOnCustomDefects(store: Store<TestResultsState>): AsyncValidatorFn {
+  static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
@@ -23,5 +27,16 @@ export class CustomAsyncValidators {
           }
         })
       );
+  }
+
+  static updateTestStationDetails(store: Store<State>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<null> => {
+      store
+        .pipe(select(getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStation, control.value)), take(1))
+        .subscribe(stations => {
+          stations && store.dispatch(updateTestStation({ payload: stations }));
+        });
+      return of(null);
+    };
   }
 }
