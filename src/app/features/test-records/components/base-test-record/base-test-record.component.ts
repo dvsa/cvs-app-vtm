@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
@@ -11,13 +11,13 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { map, Observable, Subject } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
   templateUrl: './base-test-record.component.html'
 })
-export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
+export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
 
@@ -26,8 +26,6 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
   @Input() sectionTemplates: FormNode[] = [];
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
-
-  private destroy$ = new Subject<void>();
 
   techRecord$: Observable<TechRecordModel | undefined>;
 
@@ -44,11 +42,6 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
     this.handleFormChange({});
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   handleFormChange(event: any) {
     let latestTest: any;
     this.sections?.forEach(section => {
@@ -63,7 +56,7 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
   get test$() {
     return this.testNumber$.pipe(
       map(testNumber => {
-        return this.testResult.testTypes?.find(t => testNumber && testNumber === t.testNumber);
+        return this.testResult.testTypes?.find(t => testNumber === t.testNumber);
       })
     );
   }
