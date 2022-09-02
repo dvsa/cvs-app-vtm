@@ -63,18 +63,21 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'deficiencyId',
                       label: 'Deficiency ID',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       disabled: true
                     },
                     {
                       name: 'deficiencySubId',
                       label: 'Deficiency sub ID',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       disabled: true
                     },
                     {
                       name: 'deficiencyText',
                       label: 'Deficiency text',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       disabled: true
                     },
@@ -172,6 +175,7 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'stdForProhibition',
                       label: 'STD for prohibition',
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       disabled: true
                     }
