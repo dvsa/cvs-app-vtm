@@ -16,20 +16,23 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 export class DefectComponent {
   @Input() form!: CustomFormGroup;
   @Input() vehicleType!: VehicleTypes;
-  @Input() isDangerous = false;
+  @Input() category!: string;
   @Input() isEditing = false;
   @Input() index!: number;
 
   @Input() set defect(defect: Defect | undefined) {
     const infoShorthand = defect?.additionalInfo;
 
+    if (!infoShorthand) { return }
+
     this.info = defect?.additionalInfo[this.vehicleType as keyof typeof infoShorthand] as AdditionalInfoSection | undefined;
 
-    if (this.info) {
-      type LocationKey = keyof typeof this.info.location;
+    if (this.info && !this.isAdvisory) {
+      const location = this.info.location;
+      type LocationKey = keyof typeof location;
 
-      Object.keys(this.info.location).forEach(key => {
-        const options = this.info?.location[key as LocationKey];
+      Object.keys(location).forEach(key => {
+        const options = location[key as LocationKey];
         if (options) {
           this.infoDictionary[key] = this.mapOptions(options);
         }
@@ -49,6 +52,14 @@ export class DefectComponent {
   ];
 
   constructor(private pipe: DefaultNullOrEmpty) {}
+
+  get isAdvisory(): Boolean {
+    return this.category === 'advisory';
+  }
+
+  get isDangerous(): Boolean {
+    return this.category === 'dangerous';
+  }
 
   trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<any>>): string => keyValuePair.key;
 

@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 export class DefectSelectComponent implements OnDestroy {
   @Input() defects!: Defect[] | null;
   @Input() isParentEditing = false;
-  @Output() formChange = new EventEmitter<{ defect: Defect, item: Item, deficiency: Deficiency }>();
+  @Output() formChange = new EventEmitter<{ defect: Defect, item: Item, deficiency?: Deficiency }>();
 
   isEditing = false;
   selectedDefect?: Defect;
@@ -47,7 +47,7 @@ export class DefectSelectComponent implements OnDestroy {
     this.selectedDeficiency = undefined;
   }
 
-  handleSelect(selected: Defect | Item | Deficiency, type: Types): void {
+  handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
     switch (type) {
       case Types.Defect:
         this.selectedDefect = selected as Defect;
@@ -61,6 +61,10 @@ export class DefectSelectComponent implements OnDestroy {
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
         this.formChange.emit({ defect: this.selectedDefect!, item: this.selectedItem!, deficiency: this.selectedDeficiency })
+        this.toggleEditMode();
+        break;
+      default:
+        this.formChange.emit({ defect: this.selectedDefect!, item: this.selectedItem! })
         this.toggleEditMode();
         break;
     }

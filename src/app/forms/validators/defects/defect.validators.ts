@@ -7,7 +7,9 @@ export class DefectValidators {
       const grandParent = control.parent.parent;
       const prohibitionIssued = grandParent.get('prohibitionIssued') as CustomFormControl;
       const deficiencyCategory = grandParent?.get('deficiencyCategory') as CustomFormControl;
-      if (deficiencyCategory.value === 'dangerous*' && prohibitionIssued.value === false && !control.value) {
+      if (!control.value
+        && deficiencyCategory.value === 'advisory'
+        || (deficiencyCategory.value === 'dangerous*' && prohibitionIssued.value === false)) {
         return { validateDefectNotes: true };
       }
     }
