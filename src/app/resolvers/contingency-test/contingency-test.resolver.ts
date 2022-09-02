@@ -38,8 +38,13 @@ export class ContingencyTestResolver implements Resolve<boolean> {
                 vehicleClass: viewableTechRecord?.vehicleClass,
                 noOfAxles: viewableTechRecord?.noOfAxles,
                 numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven,
+                testStartTimestamp: new Date().toISOString(),
+                testEndTimestamp: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(),
                 testStatus: 'submitted',
                 testerStaffId: 'leeb',
+                regnDate: viewableTechRecord?.regnDate,
+                numberOfSeats: (viewableTechRecord?.seatsLowerDeck ?? 0) + (viewableTechRecord?.seatsUpperDeck ?? 0),
+                reasonForCancellation: '',
                 testTypes: [
                   {
                     testTypeId: '1',
