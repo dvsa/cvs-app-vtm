@@ -1,15 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-defect-select[isParentEditing][defects]',
   templateUrl: './defect-select.component.html',
   styleUrls: ['./defect-select.component.scss']
 })
-export class DefectSelectComponent implements OnDestroy {
+export class DefectSelectComponent {
   @Input() defects!: Defect[] | null;
   @Input() isParentEditing = false;
   @Output() formChange = new EventEmitter<{ defect: Defect, item: Item, deficiency?: Deficiency }>();
@@ -19,14 +18,7 @@ export class DefectSelectComponent implements OnDestroy {
   selectedItem?: Item;
   selectedDeficiency?: Deficiency;
 
-  private destroy$ = new Subject<void>();
-
   constructor() { }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   get types(): typeof Types {
     return Types;
