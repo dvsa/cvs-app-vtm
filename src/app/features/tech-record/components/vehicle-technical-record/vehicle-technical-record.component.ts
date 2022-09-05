@@ -37,7 +37,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  public get Roles() {
+  public get roles() {
     return Roles;
   }
 
