@@ -13,14 +13,17 @@
             name="{{ name }}-day"
             type="text"
             inputmode="numeric"
+            minlength="1"
+            maxlength="2"
             [(ngModel)]="day"
-            [disabled]="disabled ?? false"
+            [disabled]="disabled"
             (ngModelChange)="onDayChange($event)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
           />
         </div>
       </div>
+
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="{{ name }}-month"> Month </label>
@@ -30,14 +33,17 @@
             name="{{ name }}-month"
             type="text"
             inputmode="numeric"
+            minlength="1"
+            maxlength="2"
             [(ngModel)]="month"
-            [disabled]="disabled ?? false"
+            [disabled]="disabled"
             (ngModelChange)="onMonthChange($event)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
           />
         </div>
       </div>
+
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="{{ name }}-year"> Year </label>
@@ -47,15 +53,58 @@
             name="{{ name }}-year"
             type="text"
             inputmode="numeric"
-            [minlength]="4"
+            minlength="4"
+            maxlength="4"
             [(ngModel)]="year"
-            [disabled]="disabled ?? false"
+            [disabled]="disabled"
             (ngModelChange)="onYearChange($event)"
             (blur)="onTouched(); handleEvent($event)"
             (focus)="handleEvent($event)"
           />
         </div>
       </div>
+
+      <ng-container *ngIf="includeTime">
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="{{ name }}-hour"> Hour </label>
+            <input
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              id="{{ name }}-hour"
+              name="{{ name }}-hour"
+              type="text"
+              inputmode="numeric"
+              minlength="2"
+              maxlength="2"
+              [(ngModel)]="hour"
+              [disabled]="disabled"
+              (ngModelChange)="onYearChange($event)"
+              (blur)="onTouched(); handleEvent($event)"
+              (focus)="handleEvent($event)"
+            />
+          </div>
+        </div>
+
+        <div class="govuk-date-input__item">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-date-input__label" for="{{ name }}-minute"> Minute </label>
+            <input
+              class="govuk-input govuk-date-input__input govuk-input--width-2"
+              id="{{ name }}-minute"
+              name="{{ name }}-minute"
+              type="text"
+              inputmode="numeric"
+              minlength="2"
+              maxlength="2"
+              [(ngModel)]="minute"
+              [disabled]="disabled"
+              (ngModelChange)="onYearChange($event)"
+              (blur)="onTouched(); handleEvent($event)"
+              (focus)="handleEvent($event)"
+            />
+          </div>
+        </div>
+      </ng-container>
     </div>
   </fieldset>
 </div>

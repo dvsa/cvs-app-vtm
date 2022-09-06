@@ -14,8 +14,8 @@ export const TestSectionGroup2: FormNode = {
       disabled: true,
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      viewType: FormNodeViewTypes.DATETIME,
+      editType: FormNodeEditTypes.DATETIME
     },
     {
       name: 'testStartTimestamp',
