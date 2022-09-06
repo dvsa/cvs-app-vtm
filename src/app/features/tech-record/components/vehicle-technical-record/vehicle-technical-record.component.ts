@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable, Subject } from 'rxjs';
@@ -12,12 +12,12 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 })
 export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  currentTechRecord$?: Observable<TechRecordModel | undefined>;
-  records: Observable<TestResultModel[]>;
+  currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  records$: Observable<TestResultModel[]>;
   ngDestroy$ = new Subject();
 
   constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService) {
-    this.records = testRecordService.testRecords$;
+    this.records$ = testRecordService.testRecords$;
   }
 
   ngOnInit(): void {
@@ -32,12 +32,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, OnDestroy {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  ngOnDestroy() {
-    this.ngDestroy$.next(true);
-    this.ngDestroy$.complete();
+  public get roles() {
+    return Roles;
   }
 
-  public get Roles() {
-    return Roles;
+  get vehicleTypes() {
+    return VehicleTypes;
   }
 }

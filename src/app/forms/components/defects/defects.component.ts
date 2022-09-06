@@ -62,12 +62,12 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return imNumber && this.defects?.find(defect => defect.imNumber === imNumber);
   }
 
-  isDangerous(i: number): boolean {
+  getDefectCategory(i: number): string {
     const defectForm = this.getDefectForm(i);
-    return defectForm.get(['deficiencyCategory'])?.value === 'dangerous';
+    return defectForm.get(['deficiencyCategory'])?.value;
   }
 
-  handleDefectSelection(selection: { defect: Defect; item: Item; deficiency: Deficiency }): void {
+  handleDefectSelection(selection: { defect: Defect; item: Item; deficiency?: Deficiency }): void {
     const testResultDefect: TestResultDefect = {
       imDescription: selection.defect.imDescription,
       imNumber: selection.defect.imNumber,
@@ -75,13 +75,18 @@ export class DefectsComponent implements OnInit, OnDestroy {
       itemDescription: selection.item.itemDescription,
       itemNumber: selection.item.itemNumber,
 
-      deficiencyCategory: selection.deficiency.deficiencyCategory,
-      deficiencyId: selection.deficiency.deficiencyId,
-      deficiencySubId: selection.deficiency.deficiencySubId,
-      deficiencyText: selection.deficiency.deficiencyText,
-      deficiencyRef: selection.deficiency.ref,
-      stdForProhibition: selection.deficiency.stdForProhibition
+      deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
+      deficiencyRef: `${selection.defect.imNumber}.${selection.item.itemNumber}`
     };
+
+    if (selection.deficiency) {
+      testResultDefect.deficiencyCategory = selection.deficiency.deficiencyCategory;
+      testResultDefect.deficiencyId = selection.deficiency.deficiencyId;
+      testResultDefect.deficiencySubId = selection.deficiency.deficiencySubId;
+      testResultDefect.deficiencyText = selection.deficiency.deficiencyText;
+      testResultDefect.deficiencyRef = selection.deficiency.ref;
+      testResultDefect.stdForProhibition = selection.deficiency.stdForProhibition;
+    }
 
     this.defectsForm.addControl(testResultDefect);
   }

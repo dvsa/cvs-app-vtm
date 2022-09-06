@@ -98,10 +98,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
-    testTypesGroup3and4and8: {
+    testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup3And4And8,
-      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -129,10 +128,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
-    testTypesGroup3and4and8: {
+    testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup3And4And8,
-      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -155,7 +153,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -174,7 +173,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL,
-      CustomDefectsSection: CustomDefectsSection
+      customDefects: CustomDefectsSection
     },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -183,7 +182,18 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
+    },
+    testTypesGroup15And16: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: TestSectionGroup15And16,
+      emissions: EmissionsSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSection
     }
   },
   trl: {
@@ -195,10 +205,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
-    testTypesGroup3and4and8: {
+    testTypesGroup3And4And8: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup3And4And8,
-      emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -221,7 +230,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultTrl,
@@ -240,7 +250,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL,
-      CustomDefectsSection: CustomDefectsSection
+      customDefects: CustomDefectsSection
     },
 
     testTypesGroup12And14: {
@@ -250,7 +260,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL
+      required: RequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
     }
   }
 };

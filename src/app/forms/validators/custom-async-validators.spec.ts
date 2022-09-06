@@ -2,15 +2,17 @@ import { TestBed } from '@angular/core/testing';
 import { FormGroup, ValidationErrors } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { mockTestResult } from '@mocks/mock-test-result';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import { testResultInEdit, TestResultsState } from '@store/test-records';
+import { initialAppState, State } from '@store/.';
+import { testResultInEdit } from '@store/test-records';
+import { initialTestStationsState } from '@store/test-stations';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAsyncValidators } from './custom-async-validators';
 
 describe('resultDependantOnCustomDefects', () => {
   let form: FormGroup;
-  let store: MockStore<TestResultsState>;;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -76,5 +78,43 @@ describe('resultDependantOnCustomDefects', () => {
     );
 
     expect(result).toBeNull();
+  });
+});
+
+describe('updateTestStationDetails', () => {
+  let form: FormGroup;
+  let store: MockStore<State>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideMockStore({
+          initialState: {
+            ...initialAppState,
+            testStations: { ...initialTestStationsState, ids: ['1'], entities: { ['1']: { testStationName: 'foo', testStationPNumber: '1234' } } }
+          }
+        })
+      ]
+    });
+
+    store = TestBed.inject(MockStore);
+
+    form = new FormGroup({
+      testStationName: new CustomFormControl({ name: 'testStationName', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+  });
+  it('should dispatch the action to update the test stations details', async () => {
+    form.controls['testStationName'].patchValue('foo');
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    expect(form.controls['testStationName']).toBeTruthy;
+    await firstValueFrom(CustomAsyncValidators.updateTestStationDetails(store)(form.controls['testStationName']) as Observable<null>);
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith({
+      payload: {
+        testStationName: 'foo',
+        testStationPNumber: '1234'
+      },
+      type: '[test-stations] update the test station'
+    });
   });
 });
