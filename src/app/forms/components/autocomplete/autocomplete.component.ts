@@ -29,6 +29,8 @@ export class AutocompleteComponent extends BaseControlComponent implements After
   }
 
   ngAfterViewInit(): void {
+    var self = this;
+
     lastValueFrom(this.options$.pipe(takeWhile(options => !options || options.length === 0, true)))
       .then(options => {
         this.options = options;
@@ -39,7 +41,9 @@ export class AutocompleteComponent extends BaseControlComponent implements After
           selectElement: this.document.querySelector('#' + this.name),
           autoselect: false,
           defaultValue: '',
-          showAllValues: true
+          showAllValues: true,
+          confirmOnBlur: false,
+          onConfirm (selected){self.handleChangeForOption(selected)}
         });
 
         window.document.querySelector(`#${this.name}`)?.addEventListener('change', (event) => this.handleChange(event));
@@ -56,6 +60,10 @@ export class AutocompleteComponent extends BaseControlComponent implements After
       target: { value }
     } = event;
 
+    this.handleChangeForOption(value);
+  }
+
+  handleChangeForOption(value: string){
     const optionValue = this.findOptionValue(value);
 
     this.control?.patchValue(optionValue ?? '[INVALID_OPTION]');
