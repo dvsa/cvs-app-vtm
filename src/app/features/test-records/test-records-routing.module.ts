@@ -26,7 +26,7 @@ const routes: Routes = [
         data: { title: 'Test record', roles: Roles.TestResultView },
         canActivate: [RoleGuard],
         component: TestRouterOutletComponent,
-        resolve: { load: TestResultResolver },
+        resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver },
         children: [
           {
             path: '',

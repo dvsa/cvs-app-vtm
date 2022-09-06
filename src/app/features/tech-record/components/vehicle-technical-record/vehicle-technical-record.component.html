@@ -41,8 +41,8 @@
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     ></app-tech-record-history>
     <app-test-record-summary
-      *appRoleRequired="Roles.TestResultView"
-      [testRecords]="(records | async) || []"
+      *appRoleRequired="roles.TestResultView"
+      [testRecords]="(records$ | async) || []"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     >
     </app-test-record-summary>

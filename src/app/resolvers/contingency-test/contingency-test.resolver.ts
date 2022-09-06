@@ -19,9 +19,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.techRecordService.selectedVehicleTechRecord$.pipe(
-      withLatestFrom(this.store.pipe(select(selectRouteNestedParams))),
-      switchMap(([techRecord, params]) => {
-        const { testResultId } = params;
+      switchMap(techRecord => {
         const { vin, vrms, systemNumber } = techRecord!;
         const vrm = vrms.find(vrm => vrm.isPrimary);
         return this.techRecordService.viewableTechRecord$(techRecord!).pipe(
@@ -48,7 +46,6 @@ export class ContingencyTestResolver implements Resolve<boolean> {
                 lastUpdatedAt: new Date().toISOString(),
                 testTypes: [
                   {
-                    testTypeId: '1',
                     testResult: 'pass'
                   } as TestType
                 ]
@@ -64,7 +61,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
         return true;
       }),
       catchError(e => {
-        return of(true);
+        return of(false);
       })
     );
   }

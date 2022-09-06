@@ -39,12 +39,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
-      tap(editingTestResult => {
-        console.log(editingTestResult);
-        !editingTestResult && this.backToTechRecord();
-      })
-    );
+    this.testResult$ = this.testRecordsService.editingTestResult$.pipe(tap(editingTestResult => !editingTestResult && this.backToTechRecord()));
 
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 
@@ -70,7 +65,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
   }
 
   backToTechRecord(): void {
-    this.router.navigate(['..', '..'], { relativeTo: this.route.parent });
+    this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   /**

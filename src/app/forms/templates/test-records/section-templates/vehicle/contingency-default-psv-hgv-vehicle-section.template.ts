@@ -48,7 +48,6 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
       validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }],
       editType: FormNodeEditTypes.NUMBER,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
@@ -60,8 +59,8 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
         { value: 'kilometres', label: 'Kilometres' },
         { value: 'miles', label: 'Miles' }
       ],
-
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Required }],
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO
     },

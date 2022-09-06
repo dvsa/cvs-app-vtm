@@ -189,7 +189,6 @@ export class TestResultsEffects {
         (mergedForms as TestResultModel).testTypes[0].testTypeId = testType;
         (mergedForms as TestResultModel).testTypes[0].name = testTypeTaxonomy?.name ?? '';
         (mergedForms as TestResultModel).testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
-        console.log(mergedForms);
 
         return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }));
       })

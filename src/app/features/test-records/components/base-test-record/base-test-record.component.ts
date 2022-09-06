@@ -6,12 +6,11 @@ import { Defect } from '@models/defects/defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { map, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -34,8 +33,7 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
   constructor(
     private defectsStore: Store<DefectsState>,
     private techRecordService: TechnicalRecordService,
-    private testTypesService: TestTypesService,
-    private routerService: RouterService
+    private testTypesService: TestTypesService
   ) {
     this.techRecord$ = this.techRecordService.techRecord$;
   }
@@ -58,7 +56,6 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
     latestTest = merge(latestTest, defectsValue, event);
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
-    console.log(latestTest);
   }
 
   get test$() {
