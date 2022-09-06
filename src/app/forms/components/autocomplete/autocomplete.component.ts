@@ -29,7 +29,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
   }
 
   ngAfterViewInit(): void {
-    var self = this;
+    const self = this;
 
     lastValueFrom(this.options$.pipe(takeWhile(options => !options || options.length === 0, true)))
       .then(options => {
