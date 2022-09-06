@@ -6,6 +6,7 @@ import { AmendedTestRecordComponent } from './views/amended-test-record/amended-
 import { TestRecordComponent } from './views/test-record/test-record.component';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { DefectComponent } from '@forms/components/defect/defect.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,13 @@ const routes: Routes = [
         data: { title: 'Amended Test Result', roles: Roles.TestResultAmend },
         resolve: { load: TestResultResolver },
         canActivate: [NoEditGuard, RoleGuard]
+      },
+      {
+        path: 'defect/:defectIndex',
+        component: DefectComponent,
+        data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+        resolve: { load: TestResultResolver },
+        canActivate: [RoleGuard]
       }
     ]
   }

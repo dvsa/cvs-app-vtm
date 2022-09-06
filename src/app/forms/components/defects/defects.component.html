@@ -1,16 +1,32 @@
 <h2 class="govuk-heading-m">Defects</h2>
 
 <ng-container *ngIf="form && defectCount; else noDefects" [formGroup]="form">
-  <app-defect
-    *ngFor="let defect of defectsForm?.controls; let i = index; trackBy: trackByFn"
-    [isEditing]="isEditing"
-    [form]="getDefectForm(i)"
-    [defect]="getDefect(i)"
-    [vehicleType]="data.vehicleType!"
-    [isDangerous]="isDangerous(i)"
-    [index]="i"
-    (removeDefect)="handleRemoveDefect($event)"
-  ></app-defect>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Reference</th>
+        <th scope="col" class="govuk-table__header">Description</th>
+        <th scope="col" class="govuk-table__header">Category</th>
+        <th scope="col" class="govuk-table__header">Status</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr *ngFor="let defect of defectsForm?.controls; let i = index" class="govuk-table__row">
+        <td class="govuk-table__cell">
+          <a data-action="retain-data" routerLink="defect/{{ i }}" class="govuk-link govuk-link--no-visited-state">{{
+            getDefect(i).deficiencyRef
+          }}</a>
+        </td>
+        <td class="govuk-table__cell">{{ getDefect(i).imDescription }}</td>
+        <td class="govuk-table__cell">
+          <span class="govuk-tag govuk-tag--orange">{{ getDefect(i).deficiencyCategory }}</span>
+        </td>
+        <td class="govuk-table__cell">
+          <span class="govuk-tag govuk-tag--green">{{ getDefect(i).prs }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </ng-container>
 
 <ng-template #noDefects>
@@ -18,3 +34,5 @@
 </ng-template>
 
 <app-defect-select class="section" [isParentEditing]="isEditing" [defects]="defects" (formChange)="handleDefectSelection($event)"></app-defect-select>
+
+<!-- <pre>{{ form.getCleanValue(form) | json }}}</pre> -->

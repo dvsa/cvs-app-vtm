@@ -1,11 +1,21 @@
-import { KeyValue } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
-import { AdditionalInfoSection } from '@models/defects/additional-information.model';
-import { Defect } from '@models/defects/defect.model';
-import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { Store } from '@ngrx/store';
+import { sectionTemplates, selectedTestResultState, TestResultsState } from '@store/test-records';
+import { TestResultDefects } from '@models/test-results/test-result-defects.model';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { Defect } from '@models/defects/defect.model';
+import { AdditionalInfoSection } from '@models/defects/additional-information.model';
+import { KeyValue } from '@angular/common';
+import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DefectsState, filteredDefects } from '@store/defects';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { DefectsTpl } from '@forms/templates/general/defect.template';
+import { BaseTestRecordComponent } from 'src/app/features/test-records/components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-defect[form][index][defect][vehicleType]',
@@ -13,33 +23,17 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
   providers: [DefaultNullOrEmpty],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DefectComponent {
-  @Input() form!: CustomFormGroup;
-  @Input() vehicleType!: VehicleTypes;
-  @Input() isDangerous = false;
-  @Input() isEditing = false;
-  @Input() index!: number;
+export class DefectComponent implements OnInit, OnDestroy {
+  @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
 
-  @Input() set defect(defect: Defect | undefined) {
-    const infoShorthand = defect?.additionalInfo;
+  form!: CustomFormGroup;
+  index!: number;
+  isEditing: boolean;
+  includeNotes = false;
+  vehicleType!: VehicleTypes;
 
-    this.info = defect?.additionalInfo[this.vehicleType as keyof typeof infoShorthand] as AdditionalInfoSection | undefined;
-
-    if (this.info) {
-      type LocationKey = keyof typeof this.info.location;
-
-      Object.keys(this.info.location).forEach(key => {
-        const options = this.info?.location[key as LocationKey];
-        if (options) {
-          this.infoDictionary[key] = this.mapOptions(options);
-        }
-      });
-    }
-  }
-
-  @Output() removeDefect = new EventEmitter<number>();
-
-  info?: AdditionalInfoSection;
+  private _defectsForm?: CustomFormArray;
+  defects?: TestResultDefects;
 
   infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
 
@@ -48,15 +42,97 @@ export class DefectComponent {
     { value: false, label: 'No' }
   ];
 
-  constructor(private pipe: DefaultNullOrEmpty) {}
+  onDestroy$ = new Subject();
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private defectsStore: Store<DefectsState>,
+    private dfs: DynamicFormService,
+    private pipe: DefaultNullOrEmpty,
+    private router: Router,
+    private testResultsStore: Store<TestResultsState>
+  ) {
+    this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
+  }
+
+  ngOnInit(): void {
+    this.index = +this.router.url.split('/').pop()!;
+
+    this.testResultsStore
+      .select(selectedTestResultState)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        filter(testResult => !!testResult)
+      )
+      .subscribe(testResult => {
+        this.defects = testResult!.testTypes[0].defects;
+        this.vehicleType = testResult!.vehicleType;
+        this._defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
+        this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
+      });
+
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe(defectsTaxonomy => {
+      const selectedDefect = defectsTaxonomy.find(defect => defect.imNumber === this.defect.imNumber);
+      this.initializeInfoDictionary(selectedDefect);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(true);
+    this.onDestroy$.complete();
+  }
+
+  get defect(): TestResultDefect {
+    return this.defects![this.index];
+  }
+
+  get isDangerous(): boolean {
+    return this.defect.deficiencyCategory === 'dangerous';
+  }
+
+  logDefect() {
+    // TODO: remove
+    console.log(this.defect);
+  }
+
+  handleSubmit() {
+    //save
+    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+  }
+
+  handleRemove() {
+    this._defectsForm?.removeAt(this.index);
+    this.handleSubmit();
+    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+  }
+
+  initializeInfoDictionary(defect: Defect | undefined) {
+    const infoShorthand = defect?.additionalInfo;
+
+    const info = defect?.additionalInfo[this.vehicleType as keyof typeof infoShorthand] as AdditionalInfoSection | undefined;
+
+    this.includeNotes = !!info?.notes;
+
+    if (info) {
+      type LocationKey = keyof typeof info.location;
+
+      Object.keys(info.location).forEach(key => {
+        const options = info?.location[key as LocationKey];
+        if (options) {
+          this.infoDictionary[key] = this.mapOptions(options);
+        }
+      });
+    }
+  }
 
   trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<any>>): string => keyValuePair.key;
 
-  mapOptions = (options: Array<any>): Array<FormNodeOption<any>> => options.map(option => ({ value: option, label: this.pascalCase(String(option)) }));
+  mapOptions = (options: Array<any>): Array<FormNodeOption<any>> =>
+    options.map(option => ({ value: option, label: this.pascalCase(String(option)) }));
 
   pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
 
-  combined = (...params: string[]): string => params.map(p => this.pipe.transform(p)).join(' / ');
+  combined = (...params: any[]): string => params.map(p => this.pipe.transform(p)).join(' / ');
 
   /**
    * takes the location object where all properties are optional and returns a string with all the properties that have values separated with ` / `.
@@ -65,10 +141,11 @@ export class DefectComponent {
    * @param location - DefectAdditionalInformationLocation object
    * @returns string
    */
-  mapLocationText = (location: DefectAdditionalInformationLocation): string => !location
-    ? '-'
-    : Object.entries(location)
-      .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join(' / ');
+  mapLocationText = (location?: DefectAdditionalInformationLocation): string =>
+    !location
+      ? '-'
+      : Object.entries(location)
+          .filter(([, value]) => (typeof value === 'number' && isNaN(value) === false) || value)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(' / ');
 }

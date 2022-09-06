@@ -42,7 +42,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   get defectsForm(): CustomFormArray {
     if (!this._defectsForm) {
-      this._defectsForm = this.form?.get(['testTypes', '0', 'defects']) as CustomFormArray
+      this._defectsForm = this.form?.get(['testTypes', '0', 'defects']) as CustomFormArray;
     }
     return this._defectsForm;
   }
@@ -51,21 +51,28 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm?.controls.length;
   }
 
-  trackByFn = (index: number): number => index;
+  // trackByFn = (index: number): number => index;
 
-  getDefectForm = (i: number): CustomFormGroup => this.defectsForm?.controls[i] as CustomFormGroup;
+  getDefect = (i: number): TestResultDefect => {
+    let data = this.defectsForm?.controls[i] as CustomFormGroup;
+    let defect = data.getCleanValue(data) as TestResultDefect;
+    return defect;
+  };
 
-  getDefect(i: number): Defect | undefined {
-    const defectForm = this.getDefectForm(i);
-    const imNumber = defectForm.get(['imNumber'])?.value;
+  // getDefectForm = (i: number): CustomFormGroup => this.defectsForm?.controls[i] as CustomFormGroup;
 
-    return imNumber && this.defects?.find(defect => defect.imNumber === imNumber);
-  }
+  // getDefect(i: number): Defect | undefined {
+  //   const defectForm = this.getDefectForm(i);
+  //   const imNumber = defectForm.get(['imNumber'])?.value;
 
-  isDangerous(i: number): boolean {
-    const defectForm = this.getDefectForm(i);
-    return defectForm.get(['deficiencyCategory'])?.value === 'dangerous';
-  }
+  //   console.log(this.defects?.find(defect => defect.imNumber === imNumber));
+  //   return imNumber && this.defects?.find(defect => defect.imNumber === imNumber);
+  // }
+
+  // isDangerous(i: number): boolean {
+  //   const defectForm = this.getDefectForm(i);
+  //   return defectForm.get(['deficiencyCategory'])?.value === 'dangerous';
+  // }
 
   handleDefectSelection(selection: { defect: Defect; item: Item; deficiency: Deficiency }): void {
     const testResultDefect: TestResultDefect = {

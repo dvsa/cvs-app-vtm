@@ -3,6 +3,7 @@ import { Resolve } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
+import { fetchDefects, fetchDefectsFailed, fetchDefectsSuccess } from '@store/defects';
 import { cancelEditingTestResult, fetchSelectedTestResult, fetchSelectedTestResultFailed, fetchSelectedTestResultSuccess } from '@store/test-records';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '@store/test-types/actions/test-types.actions';
 import { count, filter, map, Observable, take } from 'rxjs';
@@ -17,14 +18,22 @@ export class TestResultResolver implements Resolve<boolean> {
     this.store.dispatch(fetchSelectedTestResult());
     this.store.dispatch(fetchTestTypes());
     this.store.dispatch(cancelEditingTestResult());
+    this.store.dispatch(fetchDefects());
 
     return this.action$.pipe(
-      ofType(fetchSelectedTestResultSuccess, fetchSelectedTestResultFailed, fetchTestTypesSuccess, fetchTestTypesFailed),
+      ofType(
+        fetchSelectedTestResultSuccess,
+        fetchSelectedTestResultFailed,
+        fetchTestTypesSuccess,
+        fetchTestTypesFailed,
+        fetchDefectsSuccess,
+        fetchDefectsFailed
+      ),
       take(2),
       filter(action => action.type === fetchSelectedTestResultSuccess.type || action.type === fetchTestTypesSuccess.type),
       count(),
       map(count => {
-        return count === 2;
+        return count === 3;
       })
     );
   }

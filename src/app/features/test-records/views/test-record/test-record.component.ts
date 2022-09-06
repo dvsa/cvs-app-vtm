@@ -109,7 +109,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       }
     }
 
-    // if all forms are not marcked as dirty, return
+    // if all forms are not marked as dirty, return
     if (!this.isAnyFormDirty(forms) && (await firstValueFrom(this.testRecordsService.isSameTestTypeId$))) {
       return;
     }
