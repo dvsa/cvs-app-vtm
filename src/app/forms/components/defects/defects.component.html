@@ -7,7 +7,7 @@
     [form]="getDefectForm(i)"
     [defect]="getDefect(i)"
     [vehicleType]="data.vehicleType!"
-    [isDangerous]="isDangerous(i)"
+    [category]="getDefectCategory(i)"
     [index]="i"
     (removeDefect)="handleRemoveDefect($event)"
   ></app-defect>

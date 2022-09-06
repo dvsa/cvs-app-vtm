@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TechRecordModel, VehicleTechRecordModel, Vrm } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { Observable } from 'rxjs';
@@ -12,11 +12,11 @@ import { Observable } from 'rxjs';
 })
 export class VehicleTechnicalRecordComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  currentTechRecord$?: Observable<TechRecordModel | undefined>;
-  records: Observable<TestResultModel[]>;
+  currentTechRecord$!: Observable<TechRecordModel | undefined>;
+  records$: Observable<TestResultModel[]>;
 
   constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService) {
-    this.records = testRecordService.testRecords$;
+    this.records$ = testRecordService.testRecords$;
   }
 
   ngOnInit(): void {
@@ -31,7 +31,11 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  public get Roles() {
+  public get roles() {
     return Roles;
+  }
+
+  get vehicleTypes() {
+    return VehicleTypes;
   }
 }
