@@ -11,6 +11,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
@@ -33,6 +34,7 @@ describe('TestRecordComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let testRecordsService: TestRecordsService;
+  let techRecordService: TechnicalRecordService;
   let actions$ = new ReplaySubject<Action>();
 
   beforeEach(waitForAsync(() => {
@@ -49,7 +51,8 @@ describe('TestRecordComponent', () => {
           useValue: {
             roles$: of(['TestResult.Amend'])
           }
-        }
+        },
+        TechnicalRecordService
       ]
     }).compileComponents();
   }));
@@ -63,6 +66,7 @@ describe('TestRecordComponent', () => {
     router = TestBed.inject(Router);
     route = TestBed.inject(ActivatedRoute);
     testRecordsService = TestBed.inject(TestRecordsService);
+    techRecordService = TestBed.inject(TechnicalRecordService);
 
     store.resetSelectors();
     store.overrideSelector(selectRouteNestedParams, { testResultId: '1', testNumber: 'foo' } as Params);
@@ -92,7 +96,7 @@ describe('TestRecordComponent', () => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
       fixture.detectChanges();
-      expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
+      expect(el.query(By.css('button#save-test-result'))).toBeTruthy();
     });
 
     it('should run handleSave when save button is clicked', () => {
@@ -105,92 +109,6 @@ describe('TestRecordComponent', () => {
       jest.spyOn(component, 'handleSave');
       el.query(By.css('button#save-test-result')).triggerEventHandler('click', {});
       expect(component.handleSave).toHaveBeenCalledTimes(1);
-    });
-
-    it('should display cancel button when edit query param is true', () => {
-      mockRouteEditable = store.overrideSelector(routeEditable, true);
-
-      jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
-      fixture.detectChanges();
-
-      expect(el.query(By.css('button#cancel-edit-test-result'))).toBeTruthy();
-    });
-
-    it('should navigate without query param when cancel button is clicked', () => {
-      const handleCancelSpy = jest.spyOn(component, 'handleCancel');
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
-
-      mockRouteEditable = store.overrideSelector(routeEditable, true);
-
-      fixture.detectChanges();
-
-      el.query(By.css('button#cancel-edit-test-result')).nativeElement.click();
-      fixture.detectChanges();
-
-      expect(handleCancelSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: null }, queryParamsHandling: 'merge' });
-    });
-
-    it('should display edit button when edit query param is false', () => {
-      mockRouteEditable = store.overrideSelector(routeEditable, false);
-      jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
-
-      fixture.detectChanges();
-
-      expect(el.query(By.css('button#edit-test-result'))).toBeTruthy();
-    });
-
-    it('should navigate with query param "edit=true" when edit button is clicked', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate').mockImplementation(() => Promise.resolve(true));
-      jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
-
-      const handleEditSpy = jest.spyOn(component, 'handleEdit');
-      mockRouteEditable = store.overrideSelector(routeEditable, false);
-
-      fixture.detectChanges();
-
-      el.query(By.css('button#edit-test-result')).nativeElement.click();
-      fixture.detectChanges();
-
-      expect(handleEditSpy).toHaveBeenCalledTimes(1);
-      expect(navigateSpy).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { edit: 'true' }, queryParamsHandling: 'merge' });
-    });
-  });
-
-  describe('getters', () => {
-    describe('isTestTypeGroupEditable$', () => {
-      it('should return true if the test type id is in a valid test type group and the test type group is in the master template', done => {
-        component.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
-        component.isTestTypeGroupEditable$.subscribe(isValid => {
-          expect(isValid).toBe(true);
-          done();
-        });
-      });
-
-      it('should return false if the test type id is not in a test type gorup', done => {
-        component.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: 'foo' }] } as TestResultModel);
-        component.isTestTypeGroupEditable$.subscribe(isValid => {
-          expect(isValid).toBe(false);
-          done();
-        });
-      });
-
-      it('should return false if the test type group is not in the master template', done => {
-        component.testResult$ = of({ vehicleType: 'psv', testTypes: [{ testTypeId: '185' }] } as TestResultModel);
-        component.isTestTypeGroupEditable$.subscribe(isValid => {
-          expect(isValid).toBe(false);
-          done();
-        });
-      });
-
-      it('should return false if the testResult is undefined', done => {
-        component.testResult$ = of(undefined);
-        component.isTestTypeGroupEditable$.subscribe(isValid => {
-          expect(isValid).toBe(false);
-          done();
-        });
-      });
     });
   });
 
@@ -252,7 +170,7 @@ describe('TestRecordComponent', () => {
     });
 
     it('should call handleCancel when updateTestResultState is success', fakeAsync(() => {
-      const handleCancelSpy = jest.spyOn(component, 'handleCancel');
+      const handleCancelSpy = jest.spyOn(component, 'backToTestRecord');
 
       actions$.next(updateTestResultSuccess({ payload: { id: '', changes: {} as TestResultModel } }));
 
@@ -267,6 +185,7 @@ describe('TestRecordComponent', () => {
       jest
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
+      jest.spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
     });
 
     it('should render the banner if the test type id is not supported', () => {
