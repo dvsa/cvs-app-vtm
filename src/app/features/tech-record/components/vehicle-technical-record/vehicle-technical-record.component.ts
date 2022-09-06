@@ -4,7 +4,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -14,7 +14,6 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   records$: Observable<TestResultModel[]>;
-  ngDestroy$ = new Subject();
 
   constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService) {
     this.records$ = testRecordService.testRecords$;

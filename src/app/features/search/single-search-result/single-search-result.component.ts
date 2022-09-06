@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
@@ -11,18 +11,18 @@ import { Roles } from '@models/roles.enum';
   templateUrl: './single-search-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SingleSearchResultComponent implements OnInit {
+export class SingleSearchResultComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord!: VehicleTechRecordModel;
   vehicleDisplayData?: vehicleDisplayData;
   template?: FormNode;
-  ngDestroy$ = new Subject();
+  destroy$ = new Subject<void>();
 
   constructor(private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
     this.technicalRecordService
       .viewableTechRecord$(this.vehicleTechRecord)
-      .pipe(takeUntil(this.ngDestroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         record =>
           (this.vehicleDisplayData = {
@@ -36,6 +36,11 @@ export class SingleSearchResultComponent implements OnInit {
       );
 
     this.template = createSingleSearchResult(this.vehicleTechRecord.systemNumber);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   public get Roles() {

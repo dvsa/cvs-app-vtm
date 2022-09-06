@@ -64,8 +64,7 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">Odometer reading</dt>
           <dd id="test-testTypeId" class="govuk-summary-list__value">
-            {{ testResult?.odometerReading | number: '2.' | defaultNullOrEmpty }}
-            {{ testResult?.odometerReadingUnits === 'kilometres' ? 'km' : ('mi' | defaultNullOrEmpty) }}
+            {{ combinedOdometerReading(testResult?.odometerReading, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
           </dd>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Defect } from '@api/test-results';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
@@ -11,19 +11,17 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { defects, DefectsState } from '@store/defects';
-import { map, Observable, of, skipWhile, Subject, switchMap, take } from 'rxjs';
+import { map, Observable, of, skipWhile, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-test-result-summary',
   templateUrl: './test-result-summary.component.html',
   styleUrls: ['./test-result-summary.component.scss']
 })
-export class TestResultSummaryComponent implements OnInit, OnDestroy {
+export class TestResultSummaryComponent implements OnInit {
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   techRecord$: Observable<TechRecordModel | undefined>;
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
-
-  private destroy$ = new Subject<void>();
 
   constructor(
     private defectsStore: Store<DefectsState>,
@@ -47,11 +45,6 @@ export class TestResultSummaryComponent implements OnInit, OnDestroy {
         this.testRecordsService.editingTestResult(testResult!);
       });
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   public get Roles() {
@@ -88,5 +81,9 @@ export class TestResultSummaryComponent implements OnInit, OnDestroy {
 
   categoryColor(category: string): 'red' | 'yellow' | 'green' | 'blue' {
     return (<Record<string, 'red' | 'green' | 'yellow' | 'blue'>>{ major: 'red', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[category];
+  }
+
+  combinedOdometerReading(reading: number | undefined, unit: string | undefined) {
+    return `${reading ?? ''} ${(unit && ('kilometres' === unit ? 'km' : 'mi')) ?? ''}`;
   }
 }
