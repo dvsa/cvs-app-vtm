@@ -9,6 +9,7 @@ import { State } from '@store/.';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { initialContingencyTest } from '@store/test-records';
 import { catchError, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
                 vrm: vrm?.vrm,
                 systemNumber,
                 vehicleType: viewableTechRecord?.vehicleType,
-                testResultId,
+                testResultId: uuidv4(),
                 euVehicleCategory: viewableTechRecord?.euVehicleCategory,
                 vehicleSize: viewableTechRecord?.vehicleSize,
                 vehicleConfiguration: viewableTechRecord?.vehicleConfiguration,
@@ -39,16 +40,16 @@ export class ContingencyTestResolver implements Resolve<boolean> {
                 noOfAxles: viewableTechRecord?.noOfAxles,
                 numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven,
                 testStartTimestamp: new Date().toISOString(),
-                testEndTimestamp: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString(),
                 testStatus: 'submitted',
                 testerStaffId: 'leeb',
                 regnDate: viewableTechRecord?.regnDate,
                 numberOfSeats: (viewableTechRecord?.seatsLowerDeck ?? 0) + (viewableTechRecord?.seatsUpperDeck ?? 0),
                 reasonForCancellation: '',
+                lastUpdatedAt: new Date().toISOString(),
                 testTypes: [
                   {
                     testTypeId: '1',
-                    testNumber: '0'
+                    testResult: 'pass'
                   } as TestType
                 ]
               } as Partial<TestResultModel>)

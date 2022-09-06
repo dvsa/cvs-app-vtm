@@ -39,3 +39,5 @@ export const initialContingencyTest = createAction('[Contingency test] Create', 
 export const createTestResult = createAction('[test-results] Create test result', props<{ value: TestResultModel }>());
 export const createTestResultSuccess = createAction('[API/test-results] Create test result Success', props<{ payload: Update<TestResultModel> }>());
 export const createTestResultFailed = createAction('[API/test-results] Create test result Failed', props<{ errors: GlobalError[] }>());
+
+export const contingencyTestTypeSelected = createAction('[Test Results] contingency test type selected', props<{ testType: string }>());

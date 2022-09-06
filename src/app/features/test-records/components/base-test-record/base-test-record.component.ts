@@ -58,14 +58,11 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
     latestTest = merge(latestTest, defectsValue, event);
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
+    console.log(latestTest);
   }
 
   get test$() {
-    return this.testNumber$.pipe(
-      map(testNumber => {
-        return this.testResult.testTypes?.find(t => testNumber && testNumber === t.testNumber);
-      })
-    );
+    return this.testResult.testTypes[0];
   }
 
   get selectAllTestTypes$() {
@@ -74,9 +71,5 @@ export class BaseTestRecordComponent implements AfterViewInit, OnDestroy {
 
   getDefects$(type: VehicleTypes): Observable<Defect[]> {
     return this.defectsStore.select(filteredDefects(type));
-  }
-
-  get testNumber$(): Observable<string | undefined> {
-    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
   }
 }

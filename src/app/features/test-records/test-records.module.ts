@@ -10,11 +10,14 @@ import { TestRecordComponent } from './views/test-record/test-record.component';
 import { ResultOfTestComponent } from './components/result-of-test/result-of-test.component';
 import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
 import { IncorrectTestTypeComponent } from './views/incorrect-test-type/incorrect-test-type.component';
-import { AmendTestComponent } from './views/amend-test/amend-test.component';
+import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
 import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-header.component';
+import { TestTypeSelectWrapperComponent } from './views/test-type-select-wrapper/test-type-select-wrapper.component';
+import { CreateTestTypeComponent } from './views/create-test-type/create-test-type.component';
+import { CreateTestRecordComponent } from './views/create-test-record/create-test-record.component';
 
 @NgModule({
   declarations: [
@@ -25,10 +28,13 @@ import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-head
     ResultOfTestComponent,
     TestResultSummaryComponent,
     IncorrectTestTypeComponent,
-    AmendTestComponent,
+    TestRouterOutletComponent,
     TestAmendReasonComponent,
     TestTypeSelectComponent,
-    VehicleHeaderComponent
+    VehicleHeaderComponent,
+    TestTypeSelectWrapperComponent,
+    CreateTestTypeComponent,
+    CreateTestRecordComponent
   ],
   imports: [CommonModule, TestRecordsRoutingModule, DynamicFormsModule, SharedModule, FormsModule, ReactiveFormsModule]
 })

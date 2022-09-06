@@ -1,6 +1,6 @@
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset" role="group" attr.aria-describedby="{{ name }}-hint">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">{{ label }}</legend>
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ label }}</legend>
     <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
     <div class="govuk-date-input" id="{{ name }}">

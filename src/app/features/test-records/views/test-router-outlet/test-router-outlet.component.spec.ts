@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AmendTestComponent } from './amend-test.component';
+import { TestRouterOutletComponent } from './test-router-outlet.component';
 
-describe('AmendTestComponent', () => {
-  let component: AmendTestComponent;
-  let fixture: ComponentFixture<AmendTestComponent>;
+describe('TestRouterOutletComponent', () => {
+  let component: TestRouterOutletComponent;
+  let fixture: ComponentFixture<TestRouterOutletComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AmendTestComponent],
+      declarations: [TestRouterOutletComponent],
       imports: [RouterTestingModule]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AmendTestComponent);
+    fixture = TestBed.createComponent(TestRouterOutletComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

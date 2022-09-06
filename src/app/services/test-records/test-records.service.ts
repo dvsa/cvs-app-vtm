@@ -1,12 +1,12 @@
-import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
+import { CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
   cancelEditingTestResult,
+  contingencyTestTypeSelected,
   createTestResult,
   editingTestResult,
   fetchTestResults,
@@ -168,5 +168,9 @@ export class TestRecordsService {
         return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
       })
     );
+  }
+
+  contingencyTestTypeSelected(testType: string) {
+    this.store.dispatch(contingencyTestTypeSelected({ testType }));
   }
 }

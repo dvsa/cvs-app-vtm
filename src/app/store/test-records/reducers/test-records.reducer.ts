@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
@@ -7,10 +6,11 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
-import { Action } from 'rxjs/internal/scheduler/Action';
 import {
   cancelEditingTestResult,
-  editingTestResult,
+  createTestResult,
+  createTestResultFailed,
+  createTestResultSuccess,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
@@ -60,9 +60,9 @@ export const testResultsReducer = createReducer(
   on(fetchSelectedTestResult, state => ({ ...state, loading: true })),
   on(fetchSelectedTestResultSuccess, (state, action) => ({ ...testResultAdapter.upsertOne(action.payload, state), loading: false })),
   on(fetchSelectedTestResultFailed, state => ({ ...state, loading: false })),
-  on(updateTestResult, state => ({ ...state, loading: true })),
+  on(updateTestResult, createTestResult, state => ({ ...state, loading: true })),
   on(updateTestResultSuccess, (state, action) => ({ ...testResultAdapter.updateOne(action.payload, state), loading: false })),
-  on(updateTestResultFailed, state => ({ ...state, loading: false })),
+  on(updateTestResultFailed, createTestResultSuccess, createTestResultFailed, state => ({ ...state, loading: false })),
   on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
   on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
   on(updateEditingTestResult, (state, action) => ({
@@ -72,7 +72,6 @@ export const testResultsReducer = createReducer(
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
   on(initialContingencyTest, (state, action) => ({
     ...state,
-    ...testResultAdapter.upsertOne(action.testResult as TestResultModel, state),
     editingTestResult: { ...action.testResult } as TestResultModel
   }))
 );

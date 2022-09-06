@@ -4,7 +4,7 @@ import * as Emissions from './emissions.enum';
 export interface TestType {
   testTypeId: string;
   testNumber: string;
-
+  name: string;
   testCode: string;
   testTypeName: string;
 
