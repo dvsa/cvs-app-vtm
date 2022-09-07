@@ -1,7 +1,14 @@
-import { CountryOfRegistration, ReferenceDataModelBase } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { fetchReferenceData, fetchReferenceDataByKey, fetchReferenceDataFailed, fetchReferenceDataSuccess, fetchReferenceDataByKeySuccess, fetchReferenceDataByKeyFailed } from '../actions/reference-data.actions';
+import {
+  fetchReferenceData,
+  fetchReferenceDataByKey,
+  fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySuccess,
+  fetchReferenceDataFailed,
+  fetchReferenceDataSuccess
+} from '../actions/reference-data.actions';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
 const selectResourceKey = (a: ReferenceDataModelBase): string => {
@@ -11,32 +18,48 @@ const selectResourceKey = (a: ReferenceDataModelBase): string => {
 export interface ReferenceDataState {
   error: string;
   loading: boolean;
-  COUNTRY_OF_REGISTRATION: EntityState<CountryOfRegistration>;
+  [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
+  [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
 }
 
-export const countriesOfRegistrationEntityAdapter: EntityAdapter<CountryOfRegistration> = createEntityAdapter<CountryOfRegistration>({ selectId: selectResourceKey });
+function createAdapter() {
+  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
+}
 
+export const countriesOfRegistrationEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
+
+export const usersEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
+export const initialUsersState = usersEntityAdapter.getInitialState();
 
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
-  COUNTRY_OF_REGISTRATION: initialCountriesOfRegistrationState
+  [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
+  [ReferenceDataResourceType.User]: initialUsersState
 };
 
 export const referenceDataReducer = createReducer(
   initialReferenceDataState,
-  on(fetchReferenceData, (state) => ({ ...state, loading: true })),
+  on(fetchReferenceData, state => ({ ...state, loading: true })),
   on(fetchReferenceDataSuccess, (state, action) => {
     const { resourceType, payload } = action;
-    return { ...state, [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).setAll(payload, state[resourceType]), loading: false };
+    return {
+      ...state,
+      [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).setAll(payload, state[resourceType]),
+      loading: false
+    };
   }),
   on(fetchReferenceDataFailed, (state, action) => ({ ...state, loading: false })),
 
-  on(fetchReferenceDataByKey, (state) => ({ ...state, loading: true })),
+  on(fetchReferenceDataByKey, state => ({ ...state, loading: true })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
     const { resourceType, payload } = action;
-    return { ...state, [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).upsertOne(payload, state[resourceType]), loading: false };
+    return {
+      ...state,
+      [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).upsertOne(payload, state[resourceType]),
+      loading: false
+    };
   }),
   on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, loading: false }))
 );
@@ -44,5 +67,6 @@ export const referenceDataReducer = createReducer(
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);
 
 export const resourceTypeAdapters = {
-  COUNTRY_OF_REGISTRATION: countriesOfRegistrationEntityAdapter
+  [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
+  [ReferenceDataResourceType.User]: usersEntityAdapter
 };

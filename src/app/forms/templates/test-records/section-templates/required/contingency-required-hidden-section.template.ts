@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
@@ -26,20 +27,22 @@ export const CreateRequiredSection: FormNode = {
       options: [
         { label: 'Submitted', value: 'submitted' },
         { label: 'Cancelled', value: 'cancelled' }
-      ]
+      ],
+      validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForCancellation', value: 'cancelled' } }]
+    },
+    {
+      name: 'reasonForCancellation',
+      type: FormNodeTypes.CONTROL,
+      label: 'Reason for cancellation',
+      editType: FormNodeEditTypes.TEXTAREA,
+      viewType: FormNodeViewTypes.STRING,
+      validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'testStatus', value: 'cancelled' } }]
     },
     {
       name: 'systemNumber',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
-    },
-    {
-      name: 'testerStaffId',
-      type: FormNodeTypes.CONTROL,
-      label: 'Tester staff ID',
-      viewType: FormNodeViewTypes.STRING,
-      editType: FormNodeEditTypes.TEXT
     },
     {
       name: 'vehicleClass',
@@ -88,22 +91,22 @@ export const CreateRequiredSection: FormNode = {
       type: FormNodeTypes.CONTROL,
       label: 'First use date',
       value: null,
-      editType: FormNodeEditTypes.DATE,
-      viewType: FormNodeViewTypes.DATE
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'createdByName',
       type: FormNodeTypes.CONTROL,
       label: 'Created by name',
-      editType: FormNodeEditTypes.TEXT,
-      viewType: FormNodeViewTypes.STRING
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'createdById',
       type: FormNodeTypes.CONTROL,
       label: 'Create by ID',
-      editType: FormNodeEditTypes.TEXT,
-      viewType: FormNodeViewTypes.STRING
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedAt',
@@ -115,22 +118,22 @@ export const CreateRequiredSection: FormNode = {
       name: 'lastUpdatedByName',
       type: FormNodeTypes.CONTROL,
       label: 'Last update by?',
-      editType: FormNodeEditTypes.TEXT,
-      viewType: FormNodeViewTypes.STRING
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedById',
       type: FormNodeTypes.CONTROL,
       label: 'Last updated by ID',
-      editType: FormNodeEditTypes.TEXT,
-      viewType: FormNodeViewTypes.STRING
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'shouldEmailCertificate',
       type: FormNodeTypes.CONTROL,
       label: 'Should email certificate?',
-      viewType: FormNodeViewTypes.STRING,
-      editType: FormNodeEditTypes.RADIO,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       options: [
         { label: 'Yes', value: 'yes' },
         { label: 'No', value: 'no' }
@@ -153,13 +156,6 @@ export const CreateRequiredSection: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
-    },
-    {
-      name: 'reasonForCancellation',
-      type: FormNodeTypes.CONTROL,
-      label: 'Reason for cancellation',
-      editType: FormNodeEditTypes.TEXTAREA,
-      viewType: FormNodeViewTypes.STRING
     },
     {
       name: 'testTypes',
@@ -193,16 +189,16 @@ export const CreateRequiredSection: FormNode = {
               name: 'secondaryCertificateNumber',
               type: FormNodeTypes.CONTROL,
               label: 'Second ceritificate number',
-              editType: FormNodeEditTypes.TEXT,
-              viewType: FormNodeViewTypes.STRING,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: [20] }]
+              value: null,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'certificateLink',
               type: FormNodeTypes.CONTROL,
               label: 'Certificate link',
-              editType: FormNodeEditTypes.TEXT,
-              viewType: FormNodeViewTypes.STRING
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'deletionFlag',
@@ -219,7 +215,8 @@ export const CreateRequiredSection: FormNode = {
               options: [
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
-              ]
+              ],
+              asyncValidators: [{ name: AsyncValidatorNames.TestWithDefectTaxonomy }]
             }
           ]
         }

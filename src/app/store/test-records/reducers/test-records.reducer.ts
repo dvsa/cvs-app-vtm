@@ -26,7 +26,8 @@ import {
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess
+  updateTestResultSuccess,
+  updateTesterDatails
 } from '../actions/test-records.actions';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
@@ -86,7 +87,19 @@ export const testResultsReducer = createReducer(
   on(initialContingencyTest, (state, action) => ({
     ...state,
     editingTestResult: { ...action.testResult } as TestResultModel
-  }))
+  })),
+  on(updateTesterDatails, (state, action) => {
+    return !state.editingTestResult
+      ? { ...state }
+      : {
+          ...state,
+          editingTestResult: {
+            ...state.editingTestResult,
+            testerName: action.payload.name,
+            testerEmailAddress: action.payload.email
+          }
+        };
+  })
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);

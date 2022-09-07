@@ -1,5 +1,6 @@
 export enum ReferenceDataResourceType {
-  CountryOfRegistration = 'COUNTRY_OF_REGISTRATION'
+  CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
+  User = 'USER'
 }
 
 export interface ReferenceDataModelBase {
@@ -9,3 +10,7 @@ export interface ReferenceDataModelBase {
 }
 
 export interface CountryOfRegistration extends ReferenceDataModelBase {}
+export interface User extends ReferenceDataModelBase {
+  name: string;
+  email: string;
+}

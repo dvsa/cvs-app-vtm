@@ -78,7 +78,9 @@ export const ContingencyTestSectionGroup1: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testExpiryDate',

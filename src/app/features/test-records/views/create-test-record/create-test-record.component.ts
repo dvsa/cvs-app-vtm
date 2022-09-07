@@ -89,11 +89,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
       }
     }
 
-    // if all forms are not marcked as dirty, return
-    if (!this.isAnyFormDirty(forms) && (await firstValueFrom(this.testRecordsService.isSameTestTypeId$))) {
-      return;
-    }
-
     forms.forEach(form => {
       DynamicFormService.updateValidity(form, errors);
     });
@@ -119,10 +114,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
 
   handleNewTestResult(testResult: any) {
     this.testRecordsService.updateEditingTestResult(testResult);
-  }
-
-  isAnyFormDirty(forms: Array<FormGroup>) {
-    return forms.some(form => form.dirty);
   }
 
   isAnyFormInvalid(forms: Array<FormGroup>) {

@@ -1,9 +1,11 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { User } from '@models/reference-data.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
-import { testResultInEdit } from '@store/test-records';
+import { selectUserByResourceKey } from '@store/reference-data';
+import { sectionTemplates, testResultInEdit, updateTesterDatails } from '@store/test-records';
 import { getTestStationFromProperty, updateTestStation } from '@store/test-stations';
 import { map, Observable, of, take } from 'rxjs';
 
@@ -36,6 +38,24 @@ export class CustomAsyncValidators {
         .subscribe(stations => {
           stations && store.dispatch(updateTestStation({ payload: stations }));
         });
+      return of(null);
+    };
+  }
+
+  static updateTesterDetails(store: Store<State>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<null> => {
+      store.pipe(select(selectUserByResourceKey(control.value)), take(1)).subscribe(user => {
+        user && store.dispatch(updateTesterDatails({ payload: user as User }));
+      });
+      return of(null);
+    };
+  }
+
+  static testWithDefectTaxonomy(store: Store<State>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<null> => {
+      store.pipe(select(sectionTemplates), take(1)).subscribe(sections => {
+        (control as CustomFormControl).meta.hide = sections && sections?.map(section => section.name).some(name => 'defects' === name);
+      });
       return of(null);
     };
   }
