@@ -75,17 +75,12 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
     const errors: GlobalError[] = [];
     const forms = [];
 
-    if (this.baseTestRecordComponent) {
-      const { sections, defects } = this.baseTestRecordComponent;
-      if (sections) {
-        sections.forEach(section => {
-          forms.push(section.form);
-        });
-      }
-
-      if (defects) {
-        forms.push(defects.form);
-      }
+    if (this.baseTestRecordComponent?.sections) {
+      this.baseTestRecordComponent.sections.forEach(section => forms.push(section.form));
+    }
+    
+    if (this.baseTestRecordComponent?.defects) {
+      forms.push(this.baseTestRecordComponent.defects.form);
     }
 
     forms.forEach(form => {
