@@ -21,6 +21,7 @@ import { TestSection } from './section-templates/test/test-section.template';
 import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
+import { VehicleSectionTrlGroups5n6n11n13 } from './section-templates/vehicle/groups11and13-trl-vehicle-section.template';
 import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency-test-section-group1.template';
 import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
@@ -215,7 +216,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       required: RequiredSectionHGVTRL
     },
     testTypesGroup5And13: {
-      vehicle: VehicleSectionDefaultTrl,
+      vehicle: VehicleSectionTrlGroups5n6n11n13,
       test: TestSectionGroup5And13,
       visit: VisitSection,
       notes: NotesSection,
@@ -224,7 +225,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       required: RequiredSectionHGVTRL
     },
     testTypesGroup6And11: {
-      vehicle: VehicleSectionDefaultTrl,
+      vehicle: VehicleSectionTrlGroups5n6n11n13,
       test: TestSectionGroup6And11,
       visit: VisitSection,
       notes: NotesSection,
