@@ -4,6 +4,7 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { TitleResolver } from './resolvers/title/title.resolver';
 import { Roles } from '@models/roles.enum';
+import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 
 const routes: Routes = [
   {
@@ -23,9 +24,9 @@ const routes: Routes = [
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
-        path: 'test-records',
-        canActivate: [MsalGuard, RoleGuard],
-        loadChildren: () => import('./features/test-records/test-records.module').then(m => m.TestRecordsModule)
+        path: 'test-records/test-result/:testResultId/:testNumber',
+        resolve: { techRecord: TechRecordViewResolver },
+        loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
       },
       {
         path: 'tech-records/:systemNumber',

@@ -22,9 +22,16 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: 'test-records',
+    path: 'test-records/test-result/:testResultId/:testNumber',
+    data: { title: 'Test record', roles: Roles.TestResultView },
+    canActivate: [RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },
-    loadChildren: () => import('../test-records/test-records.module').then(m => m.TestRecordsModule)
+    loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
+  },
+  {
+    path: 'test-records/create-test',
+    resolve: { techRecord: TechRecordViewResolver },
+    loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
   }
 ];
 

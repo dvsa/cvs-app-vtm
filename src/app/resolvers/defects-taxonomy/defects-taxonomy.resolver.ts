@@ -11,7 +11,7 @@ import { map, Observable, take } from 'rxjs';
 export class DefectsTaxonomyResolver implements Resolve<boolean> {
   constructor(private store: Store<DefectsState>, private action$: Actions) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  resolve(): Observable<boolean> {
     this.store.dispatch(fetchDefects());
 
     return this.action$.pipe(

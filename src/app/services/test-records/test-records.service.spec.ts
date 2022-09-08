@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
@@ -16,7 +16,13 @@ describe('TestRecordsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), GetTestResultsService, UpdateTestResultsService]
+      providers: [
+        TestRecordsService,
+        provideMockStore({ initialState: initialAppState }),
+        GetTestResultsService,
+        UpdateTestResultsService,
+        CreateTestResultsService
+      ]
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);

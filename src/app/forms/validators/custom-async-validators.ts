@@ -5,9 +5,9 @@ import { TestStation } from '@models/test-stations/test-station.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
-import { sectionTemplates, testResultInEdit, updateTesterDatails } from '@store/test-records';
+import { sectionTemplates, testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty, updateTestStation } from '@store/test-stations';
-import { map, Observable, of, take } from 'rxjs';
+import { catchError, map, Observable, of, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -44,19 +44,34 @@ export class CustomAsyncValidators {
 
   static updateTesterDetails(store: Store<State>): AsyncValidatorFn {
     return (control: AbstractControl): Observable<null> => {
-      store.pipe(select(selectUserByResourceKey(control.value)), take(1)).subscribe(user => {
-        user && store.dispatch(updateTesterDatails({ payload: user as User }));
-      });
-      return of(null);
+      return store.pipe(
+        select(selectUserByResourceKey(control.value)),
+        take(1),
+        tap(user => {
+          const testerName = control.parent?.get('testerName');
+          const testerEmail = control.parent?.get('testerEmailAddress');
+          if (user && testerName && testerEmail) {
+            testerName.setValue((user as User).name, { emitEvent: false, onlySelf: true });
+            testerEmail.setValue((user as User).email, { emitEvent: false, onlySelf: true });
+          }
+        }),
+        map(() => null),
+        catchError(() => of(null))
+      );
     };
   }
 
   static testWithDefectTaxonomy(store: Store<State>): AsyncValidatorFn {
     return (control: AbstractControl): Observable<null> => {
-      store.pipe(select(sectionTemplates), take(1)).subscribe(sections => {
-        (control as CustomFormControl).meta.hide = sections && sections?.map(section => section.name).some(name => 'defects' === name);
-      });
-      return of(null);
+      return store.pipe(
+        select(sectionTemplates),
+        take(1),
+        tap(sections => {
+          (control as CustomFormControl).meta.hide = sections && sections?.map(section => section.name).some(name => 'defects' === name);
+        }),
+        map(() => null),
+        catchError(() => of(null))
+      );
     };
   }
 }

@@ -22,21 +22,19 @@ export const CreateRequiredSection: FormNode = {
       name: 'testStatus',
       type: FormNodeTypes.CONTROL,
       label: 'Test status',
-      viewType: FormNodeViewTypes.STRING,
-      editType: FormNodeEditTypes.RADIO,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       options: [
         { label: 'Submitted', value: 'submitted' },
         { label: 'Cancelled', value: 'cancelled' }
-      ],
-      validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForCancellation', value: 'cancelled' } }]
+      ]
     },
     {
       name: 'reasonForCancellation',
       type: FormNodeTypes.CONTROL,
       label: 'Reason for cancellation',
-      editType: FormNodeEditTypes.TEXTAREA,
-      viewType: FormNodeViewTypes.STRING,
-      validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'testStatus', value: 'cancelled' } }]
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'systemNumber',

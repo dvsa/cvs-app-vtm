@@ -8,7 +8,6 @@ import { contingencyTestTypeSelected } from '@store/test-records';
 @Component({
   selector: 'app-create-test-type',
   templateUrl: './create-test-type.component.html',
-  styleUrls: ['./create-test-type.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateTestTypeComponent {

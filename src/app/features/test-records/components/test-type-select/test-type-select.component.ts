@@ -14,7 +14,7 @@ export class TestTypeSelectComponent {
 
   categories: Array<TestTypeCategory> = [];
 
-  constructor(private testTypesService: TestTypesService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private testTypesService: TestTypesService) {}
 
   get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
     return this.testTypesService.selectAllTestTypes$;

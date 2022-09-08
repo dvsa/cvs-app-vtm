@@ -1,6 +1,5 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { User } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
@@ -42,8 +41,3 @@ export const createTestResultSuccess = createAction('[API/test-results] Create t
 export const createTestResultFailed = createAction('[API/test-results] Create test result Failed', props<{ errors: GlobalError[] }>());
 
 export const contingencyTestTypeSelected = createAction('[Test Results] contingency test type selected', props<{ testType: string }>());
-
-/**
- * Async validator actions
- */
-export const updateTesterDatails = createAction('[Reference data] update the tester details', props<{ payload: User }>());
