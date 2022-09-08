@@ -16,7 +16,7 @@ export interface TestType {
   reasonForAbandoning: string;
   additionalCommentsForAbandon?: string;
   testAnniversaryDate: string | Date;
-  prohibitionIssued: boolean;
+  prohibitionIssued: boolean | null;
 
   testResult: resultOfTestEnum;
 

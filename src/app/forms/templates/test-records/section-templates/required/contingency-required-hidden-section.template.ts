@@ -1,5 +1,3 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const CreateRequiredSection: FormNode = {
@@ -203,18 +201,6 @@ export const CreateRequiredSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
-            },
-            {
-              name: 'prohibitionIssued',
-              label: 'Prohibition issued',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              asyncValidators: [{ name: AsyncValidatorNames.TestWithDefectTaxonomy }]
             }
           ]
         }

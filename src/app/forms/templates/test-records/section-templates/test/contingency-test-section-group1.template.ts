@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
@@ -107,6 +108,19 @@ export const ContingencyTestSectionGroup1: FormNode = {
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [{ name: ValidatorNames.Required }]
+            },
+            {
+              name: 'prohibitionIssued',
+              label: 'Prohibition issued',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
+              asyncValidators: [{ name: AsyncValidatorNames.TestWithDefectTaxonomy }],
+              required: true
             }
           ]
         }

@@ -57,7 +57,8 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               lastUpdatedById: user.oid,
               testTypes: [
                 {
-                  testResult: 'pass'
+                  testResult: 'pass',
+                  prohibitionIssued: null
                 } as TestType
               ]
             } as Partial<TestResultModel>;
