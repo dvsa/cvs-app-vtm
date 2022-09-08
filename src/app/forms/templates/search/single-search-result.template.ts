@@ -1,3 +1,4 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export function createSingleSearchResult(systemNumber?: string): FormNode {
@@ -14,42 +15,42 @@ export function createSingleSearchResult(systemNumber?: string): FormNode {
       {
         name: 'vin',
         label: 'Vehicle identification number (VIN)',
-        value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
         name: 'vrm',
         label: 'Vehicle registration mark (VRM)',
-        value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
+        name: 'trailerId',
+        label: 'Trailer ID',
+        type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.HideIfEmpty, args: 'trailerId' }]
+      },
+      {
         name: 'vehicleType',
         label: 'Vehicle type',
-        value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
         name: 'manufactureYear',
         label: 'Year of manufacture',
-        value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
         name: 'make',
         label: 'Make',
-        value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       },
       {
         name: 'model',
         label: 'Model',
-        value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING
       }
