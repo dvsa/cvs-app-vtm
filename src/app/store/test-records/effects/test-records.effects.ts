@@ -172,12 +172,9 @@ export class TestResultsEffects {
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testType);
         const vehicleTpl = contingencyTestTemplates[vehicleType as VehicleTypes];
 
-        let tpl;
-        if (testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)) {
-          tpl = vehicleTpl[testTypeGroup];
-        } else {
-          tpl = vehicleTpl['default'];
-        }
+        const  tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)
+          ? vehicleTpl[testTypeGroup]
+          : vehicleTpl['default'];
 
         const mergedForms = {};
         Object.values(tpl).forEach(node => {
