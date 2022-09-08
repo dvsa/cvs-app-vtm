@@ -24,13 +24,15 @@ const routes: Routes = [
   {
     path: 'test-records/test-result/:testResultId/:testNumber',
     data: { title: 'Test record', roles: Roles.TestResultView },
-    canActivate: [RoleGuard],
+    canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },
     loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
   },
   {
     path: 'test-records/create-test',
     resolve: { techRecord: TechRecordViewResolver },
+    data: { roles: Roles.TestResultAmend },
+    canActivate: [MsalGuard, RoleGuard],
     loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
   }
 ];
