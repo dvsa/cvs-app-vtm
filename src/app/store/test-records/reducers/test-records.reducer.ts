@@ -4,7 +4,6 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { updateTestStation } from '@store/test-stations';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
@@ -71,18 +70,6 @@ export const testResultsReducer = createReducer(
     editingTestResult: merge({}, action.testResult)
   })),
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
-  on(updateTestStation, (state, action) => {
-    return !state.editingTestResult
-      ? { ...state }
-      : {
-          ...state,
-          editingTestResult: {
-            ...state.editingTestResult,
-            testStationName: action.payload.testStationName,
-            testStationType: action.payload.testStationType
-          }
-        };
-  }),
   on(initialContingencyTest, (state, action) => ({
     ...state,
     editingTestResult: { ...action.testResult } as TestResultModel

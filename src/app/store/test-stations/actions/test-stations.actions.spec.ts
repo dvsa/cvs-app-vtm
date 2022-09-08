@@ -5,7 +5,6 @@ import {
   fetchTestStationsFailed,
   fetchTestStationsSuccess,
   fetchTestStationSuccess,
-  updateTestStation
 } from './test-stations.actions';
 
 describe('Test Stations Actions', () => {
@@ -16,6 +15,5 @@ describe('Test Stations Actions', () => {
     expect(fetchTestStation.type).toBe('[API/test-stations] Fetch Test Station by ID');
     expect(fetchTestStationSuccess.type).toBe('[API/test-stations] Fetch Test Station by ID Success');
     expect(fetchTestStationFailed.type).toBe('[API/test-stations] Fetch Test Station by ID Failed');
-    expect(updateTestStation.type).toBe('[test-stations] update the test station');
   });
 });
