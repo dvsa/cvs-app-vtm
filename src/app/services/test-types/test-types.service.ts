@@ -34,17 +34,12 @@ export class TestTypesService extends TestTypesApiService {
   }
 
   findTestTypeNameById(id: string, testTypes: Array<TestType | TestTypeCategory>): TestType | undefined {
-    function idMatch(testType: TestType | TestTypeCategory) {
-      if (testType.id === id) {
-        result = testType;
-        return true;
-      }
-
-      return testType.hasOwnProperty('nextTestTypesOrCategories') && (testType as TestTypeCategory).nextTestTypesOrCategories!!.some(idMatch);
+    function usingIdMatch(testType: TestType | TestTypeCategory) {
+      return testType.id === id
+        || testType.hasOwnProperty('nextTestTypesOrCategories')
+        && (testType as TestTypeCategory).nextTestTypesOrCategories?.some(usingIdMatch);
     }
 
-    let result;
-    testTypes.some(idMatch);
-    return result;
+    return testTypes.find(usingIdMatch);
   }
 }
