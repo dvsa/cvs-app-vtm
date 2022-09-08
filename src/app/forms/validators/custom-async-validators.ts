@@ -75,7 +75,7 @@ export class CustomAsyncValidators {
         select(sectionTemplates),
         take(1),
         tap(sections => {
-          (control as CustomFormControl).meta.hide = sections && sections?.map(section => section.name).some(name => 'defects' === name);
+          (control as CustomFormControl).meta.hide = sections && sections.some(section => section.name === 'defects');
         }),
         map(() => null),
         catchError(() => of(null))
