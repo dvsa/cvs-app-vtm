@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormGroup, ValidationErrors } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { mockTestResult } from '@mocks/mock-test-result';
@@ -91,7 +91,7 @@ describe('updateTestStationDetails', () => {
         provideMockStore({
           initialState: {
             ...initialAppState,
-            testStations: { ...initialTestStationsState, ids: ['1'], entities: { ['1']: { testStationName: 'foo', testStationPNumber: '1234' } } }
+            testStations: { ...initialTestStationsState, ids: ['1'], entities: { ['1']: { testStationName: 'foo', testStationPNumber: '1234', testStationType: 'bar' } } }
           }
         })
       ]
@@ -100,21 +100,16 @@ describe('updateTestStationDetails', () => {
     store = TestBed.inject(MockStore);
 
     form = new FormGroup({
-      testStationName: new CustomFormControl({ name: 'testStationName', type: FormNodeTypes.CONTROL, children: [] }, null)
+      testStationName: new CustomFormControl({ name: 'testStationName', type: FormNodeTypes.CONTROL, children: [] }, null),
+      testStationType: new CustomFormControl({ name: 'testStationType', type: FormNodeTypes.CONTROL, children: [] }, null),
+      testStationPNumber: new CustomFormControl({ name: 'testStationPNumber', type: FormNodeTypes.CONTROL, children: [] }, null),
     });
   });
-  it('should dispatch the action to update the test stations details', async () => {
-    form.controls['testStationName'].patchValue('foo');
-    const dispatchSpy = jest.spyOn(store, 'dispatch');
-    expect(form.controls['testStationName']).toBeTruthy;
-    await firstValueFrom(CustomAsyncValidators.updateTestStationDetails(store)(form.controls['testStationName']) as Observable<null>);
-    expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith({
-      payload: {
-        testStationName: 'foo',
-        testStationPNumber: '1234'
-      },
-      type: '[test-stations] update the test station'
-    });
+  it('should update the test stations details', async () => {
+    form.controls['testStationPNumber'].patchValue('1234');
+    expect(form.controls['testStationPNumber']).toBeTruthy();
+    await firstValueFrom(CustomAsyncValidators.updateTestStationDetails(store)(form.controls['testStationPNumber']) as Observable<null>);
+    expect(form.controls['testStationType'].value).toBe('bar')
+    expect(form.controls['testStationName'].value).toBe('foo')
   });
 });
