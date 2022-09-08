@@ -3,7 +3,7 @@ import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@
 
 export const SeatbeltSection: FormNode = {
   name: 'seatbeltSection',
-  label: 'Seatbelt',
+  label: 'Seatbelt Installation Check',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
@@ -18,7 +18,7 @@ export const SeatbeltSection: FormNode = {
           children: [
             {
               name: 'seatbeltInstallationCheckDate',
-              label: 'Carried out during test',
+              label: 'Was a seatbelt installation check carried out?',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.RADIO,
               value: null,
@@ -43,7 +43,8 @@ export const SeatbeltSection: FormNode = {
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
               value: null,
-              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
+              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }],
+              hint: 'For example, 27 3 2022'
             }
           ]
         }

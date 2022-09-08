@@ -3,7 +3,6 @@ import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@
 
 export const NotesSection: FormNode = {
   name: 'notesSection',
-  label: 'Notes',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
@@ -18,7 +17,7 @@ export const NotesSection: FormNode = {
           children: [
             {
               name: 'additionalNotesRecorded',
-              label: 'Additional Notes',
+              label: 'Notes',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXTAREA,
               validators: [{ name: ValidatorNames.MaxLength, args: 500 }]

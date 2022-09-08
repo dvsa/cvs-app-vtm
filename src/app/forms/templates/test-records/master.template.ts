@@ -42,8 +42,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesGroup1: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup1,
-      seatbelts: SeatbeltSection,
       visit: VisitSection,
+      seatbelts: SeatbeltSection,
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,

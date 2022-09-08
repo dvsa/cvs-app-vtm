@@ -39,7 +39,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-
+      editType: FormNodeEditTypes.HIDDEN,
       type: FormNodeTypes.CONTROL
     },
     {

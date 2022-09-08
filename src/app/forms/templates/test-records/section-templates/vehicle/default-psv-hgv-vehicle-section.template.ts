@@ -40,8 +40,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'odometerCombination',
@@ -56,23 +56,21 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
     },
     {
       name: 'odometerReading',
-      label: 'Odometer Reading',
+      label: 'Odometer reading at time of test',
       value: '',
       validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }],
       editType: FormNodeEditTypes.NUMBER,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'odometerReadingUnits',
-      label: 'Odometer Reading Units',
+      label: 'Odometer unit',
       value: '',
       options: [
         { value: 'kilometres', label: 'Kilometres' },
         { value: 'miles', label: 'Miles' }
       ],
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO
@@ -95,6 +93,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       disabled: true
     },
     {
@@ -104,6 +103,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       disabled: true
     }
   ]

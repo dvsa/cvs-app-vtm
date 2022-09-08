@@ -14,6 +14,7 @@
   <app-date
     *ngSwitchCase="formNodeEditTypes.DATE"
     [label]="control.value.meta.label"
+    [hint]="control.value.meta.hint"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
   ></app-date>

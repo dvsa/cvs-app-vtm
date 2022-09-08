@@ -4,7 +4,7 @@ import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
 export const TestSectionGroup1: FormNode = {
   name: 'testSection',
-  label: 'Test',
+  label: 'Test Details',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
@@ -15,18 +15,20 @@ export const TestSectionGroup1: FormNode = {
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.HIDDEN
     },
 
     {
       name: 'testStartTimestamp',
-      label: 'Test Date',
+      label: 'When did this test take place?',
+      hint: 'For example, 27 3 2022',
       value: '',
       disabled: true,
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
+      
     },
     {
       name: 'testTypes',
@@ -42,7 +44,8 @@ export const TestSectionGroup1: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testResult',
@@ -90,21 +93,24 @@ export const TestSectionGroup1: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testExpiryDate',
@@ -112,16 +118,16 @@ export const TestSectionGroup1: FormNode = {
               disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testAnniversaryDate',
+              label: 'Anniversary date',
               type: FormNodeTypes.CONTROL,
               value: null,
               disabled: true,
-              label: 'Anniversary date',
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeStartTimestamp',
@@ -129,7 +135,8 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeEndTimestamp',
@@ -137,7 +144,8 @@ export const TestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }

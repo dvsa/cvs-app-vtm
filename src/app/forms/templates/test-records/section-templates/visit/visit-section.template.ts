@@ -5,7 +5,7 @@ import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const VisitSection: FormNode = {
   name: 'visitSection',
-  label: 'Visit',
+  label: '',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
@@ -29,7 +29,7 @@ export const VisitSection: FormNode = {
     },
     {
       name: 'testStationPNumber',
-      label: 'Test Station Details',
+      label: 'Where did this test take place?',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
@@ -41,11 +41,12 @@ export const VisitSection: FormNode = {
       name: 'testStationType',
       label: 'Type of test facility',
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      disabled: true,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testerName',
-      label: 'Tester name',
+      label: 'Who Carried Out This Test?',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.Required }]

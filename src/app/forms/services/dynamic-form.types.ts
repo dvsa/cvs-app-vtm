@@ -75,6 +75,7 @@ export interface FormNode {
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
+  hint?: string;
 }
 
 export interface FormNodeCombinationOptions {
@@ -86,6 +87,7 @@ export interface FormNodeCombinationOptions {
 export interface SubHeadingLink {
   label: string;
   url: string;
+  hint?: string;
 }
 
 export interface CustomControl extends FormControl {
