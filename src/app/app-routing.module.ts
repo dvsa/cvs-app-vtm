@@ -24,7 +24,9 @@ const routes: Routes = [
         loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule)
       },
       {
-        path: 'test-records/test-result/:testResultId/:testNumber',
+        path: 'test-records/:systemNumber/test-result/:testResultId/:testNumber',
+        data: { title: 'Test Result', roles: Roles.TestResultView },
+        canActivate: [MsalGuard, RoleGuard],
         resolve: { techRecord: TechRecordViewResolver },
         loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
       },
