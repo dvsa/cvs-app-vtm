@@ -6,9 +6,8 @@
 
 <ng-container *ngIf="testResult$ | async as testResult">
   <app-base-test-record
-    [isEditing]="isEditing"
+    [isEditing]="true"
     [testResult]="testResult"
-    [sectionTemplates]="(sectionTemplates$ | async) || []"
     (newTestResult)="handleNewTestResult($event)"
   ></app-base-test-record>
 
