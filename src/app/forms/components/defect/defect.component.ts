@@ -90,6 +90,10 @@ export class DefectComponent implements OnInit, OnDestroy {
     return this.defect.deficiencyCategory === 'dangerous';
   }
 
+  get isAdvisory(): Boolean {
+    return this.defect.deficiencyCategory === 'advisory';
+  }
+
   logDefect() {
     // TODO: remove
     console.log(this.defect);

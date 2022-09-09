@@ -4,16 +4,16 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
-  getByVin,
+  getByAll,
   getByPartialVin,
-  selectVehicleTechnicalRecordsBySystemNumber,
-  vehicleTechRecords,
-  getByVrm,
-  getByTrailerId,
   getBySystemNumber,
-  getByAll
+  getByTrailerId,
+  getByVin,
+  getByVrm,
+  selectVehicleTechnicalRecordsBySystemNumber,
+  vehicleTechRecords
 } from '@store/technical-records';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -96,10 +96,9 @@ export class TechnicalRecordService {
    * @param vehicleRecord This is a VehicleTechRecordModel passed in from the parent component
    * @returns returns the tech record of correct hierarchy precedence or if none exists returns undefined
    */
-  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel, destroy$: Subject<any>): Observable<TechRecordModel | undefined> {
+  viewableTechRecord$(vehicleRecord: VehicleTechRecordModel): Observable<TechRecordModel | undefined> {
     return this.store.pipe(
       select(selectRouteNestedParams),
-      takeUntil(destroy$),
       map(params => {
         const createdAt = params['techCreatedAt'];
         return createdAt
@@ -120,5 +119,9 @@ export class TechnicalRecordService {
       record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED)
     );
+  }
+
+  get techRecord$(): Observable<TechRecordModel | undefined> {
+    return this.selectedVehicleTechRecord$.pipe(switchMap(techRecord => (techRecord ? this.viewableTechRecord$(techRecord) : of(undefined))));
   }
 }

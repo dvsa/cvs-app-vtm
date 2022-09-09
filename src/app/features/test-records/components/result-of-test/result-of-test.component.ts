@@ -9,10 +9,15 @@ import { distinctUntilChanged, tap } from 'rxjs';
 })
 export class ResultOfTestComponent {
   constructor(private ref: ChangeDetectorRef, private resultService: ResultOfTestService) {}
+
   get resultOfTest$() {
     return this.resultService.resultOfTest.pipe(
       distinctUntilChanged(),
       tap(() => this.ref.markForCheck())
     );
+  }
+
+  testResultType(result: string): 'red' | 'green' {
+    return (<Record<string, 'red' | 'green'>>{ pass: 'green', prs: 'green', fail: 'red' })[result ?? 'pass'];
   }
 }

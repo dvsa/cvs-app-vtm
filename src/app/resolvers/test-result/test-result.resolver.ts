@@ -12,11 +12,13 @@ import { count, filter, map, Observable, take } from 'rxjs';
   providedIn: 'root'
 })
 export class TestResultResolver implements Resolve<boolean> {
+  private readonly SUCCESS_COUNT = 3;
   constructor(private store: Store<State>, private action$: Actions) {}
 
   resolve(): Observable<boolean> {
     this.store.dispatch(fetchSelectedTestResult());
     this.store.dispatch(fetchTestTypes());
+    this.store.dispatch(fetchDefects());
     this.store.dispatch(cancelEditingTestResult());
     this.store.dispatch(fetchDefects());
 
@@ -29,11 +31,16 @@ export class TestResultResolver implements Resolve<boolean> {
         fetchDefectsSuccess,
         fetchDefectsFailed
       ),
-      take(2),
-      filter(action => action.type === fetchSelectedTestResultSuccess.type || action.type === fetchTestTypesSuccess.type),
+      take(this.SUCCESS_COUNT),
+      filter(
+        action =>
+          action.type === fetchSelectedTestResultSuccess.type ||
+          action.type === fetchTestTypesSuccess.type ||
+          action.type === fetchDefectsSuccess.type
+      ),
       count(),
       map(count => {
-        return count === 3;
+        return count === 2;
       })
     );
   }

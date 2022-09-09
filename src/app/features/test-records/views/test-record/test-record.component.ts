@@ -5,19 +5,15 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { masterTpl } from '@forms/templates/test-records/master.template';
-import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { DefectsState, fetchDefects, filteredDefects } from '@store/defects';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { firstValueFrom, map, Observable, of, skipWhile, Subject, switchMap, take, takeUntil, takeWhile } from 'rxjs';
+import { filter, firstValueFrom, Observable, of, skipWhile, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -30,13 +26,12 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  isEditing$: Observable<boolean> = of(false);
+  isEditing = true;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   constructor(
     private actions$: Actions,
-    private defectsStore: Store<DefectsState>,
     private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -47,11 +42,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isEditing$ = this.routerService.routeEditable$;
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
       switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
-    this.defectsStore.dispatch(fetchDefects());
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.watchForUpdateSuccess();
     this.testResult$
@@ -62,9 +55,22 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       .subscribe(testResult => {
         this.testRecordsService.editingTestResult(testResult!);
       });
+
+    this.routerService
+      .getQueryParam$('testType')
+      .pipe(
+        take(1),
+        filter(testType => !!testType)
+      )
+      .subscribe(testTypeId => {
+        this.testRecordsService.testTypeChange(testTypeId!);
+      });
   }
 
   ngOnDestroy(): void {
+    this.testRecordsService.cancelEditingTestResult();
+    this.errorService.clearErrors();
+
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -73,19 +79,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     return Roles;
   }
 
-  getDefects$(type: VehicleTypes): Observable<Defect[]> {
-    return this.defectsStore.select(filteredDefects(type));
-  }
-
-  handleEdit(): void {
-    this.router.navigate([], { queryParams: { edit: 'true' }, queryParamsHandling: 'merge', relativeTo: this.route });
-  }
-
-  handleCancel(): void {
-    this.testRecordsService.cancelEditingTestResult();
-    this.errorService.clearErrors();
-
-    this.router.navigate([], { queryParams: { edit: null }, queryParamsHandling: 'merge', relativeTo: this.route });
+  backToTestRecord(): void {
+    this.router.navigate(['..'], { relativeTo: this.route.parent });
   }
 
   /**
@@ -133,25 +128,12 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   watchForUpdateSuccess() {
     this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
-      this.handleCancel();
+      this.backToTestRecord();
     });
   }
 
   get isTestTypeGroupEditable$(): Observable<boolean> {
-    return this.testResult$.pipe(
-      map(testResult => {
-        if (!testResult) {
-          return false;
-        }
-
-        const vehicleType = testResult.vehicleType;
-        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
-        const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
-        const vehicleTpl = vehicleType && masterTpl[vehicleType];
-
-        return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
-      })
-    );
+    return this.testRecordsService.isTestTypeGroupEditable$;
   }
 
   handleNewTestResult(testResult: any) {

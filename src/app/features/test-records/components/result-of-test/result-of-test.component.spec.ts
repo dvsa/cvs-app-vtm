@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TagComponent } from '@shared/components/tag/tag.component';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { initialAppState, State } from '@store/.';
 import { of } from 'rxjs';
@@ -16,7 +17,7 @@ describe('ResultOfTestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ResultOfTestComponent, DefaultNullOrEmpty],
+      declarations: [ResultOfTestComponent, DefaultNullOrEmpty, TagComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -35,11 +36,11 @@ describe('ResultOfTestComponent', () => {
   it('should render on the dom with the correct test result from the service', async () => {
     jest.spyOn(component, 'resultOfTest$', 'get').mockReturnValue(of(resultOfTestEnum.pass));
     await runOnPushChangeDetection(fixture);
-    const value = fixture.debugElement.query(By.css('.govuk-summary-list__value'));
-    expect(value.nativeElement.innerHTML).toBe('Pass');
+    const tag = fixture.debugElement.query(By.css('.govuk-tag'));
+    expect(tag.nativeElement.innerHTML).toBe('Pass');
     jest.spyOn(component, 'resultOfTest$', 'get').mockReturnValue(of(resultOfTestEnum.fail));
     await runOnPushChangeDetection(fixture);
-    expect(value.nativeElement.innerHTML).toBe('Fail');
+    expect(tag.nativeElement.innerHTML).toBe('Fail');
   });
 });
 

@@ -2,3 +2,21 @@
 @import 'node_modules/govuk-frontend/govuk/all';
 @import 'node_modules/accessible-autocomplete';
 @import './styles';
+
+.vehicle_heading {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: 25px;
+  margin-top: -5px;
+
+  > h1,
+  > h2,
+  > h3 {
+    flex: 1;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+}
