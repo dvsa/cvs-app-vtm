@@ -13,7 +13,7 @@ import { Roles } from '@models/roles.enum';
 })
 export class SingleSearchResultComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord!: VehicleTechRecordModel;
-  vehicleDisplayData?: vehicleDisplayData;
+  vehicleDisplayData?: VehicleDisplayData;
   template?: FormNode;
   destroy$ = new Subject<void>();
 
@@ -49,7 +49,7 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
   }
 }
 
-interface vehicleDisplayData {
+interface VehicleDisplayData {
   vin?: string;
   vrm?: string;
   trailerId?: string;

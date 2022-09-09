@@ -27,14 +27,14 @@ export function createSingleSearchResult(systemNumber?: string): FormNode {
       {
         name: 'trailerId',
         label: 'Trailer ID',
-        type: FormNodeTypes.CONTROL,
-        validators: [{ name: ValidatorNames.HideIfEmpty, args: 'trailerId' }]
+        type: FormNodeTypes.CONTROL
       },
       {
         name: 'vehicleType',
         label: 'Vehicle type',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.STRING
+        viewType: FormNodeViewTypes.STRING,
+        validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'trailerId', value: 'TRL' } }]
       },
       {
         name: 'manufactureYear',
