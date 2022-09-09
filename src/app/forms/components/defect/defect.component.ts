@@ -3,9 +3,9 @@ import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/service
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { Store } from '@ngrx/store';
-import { sectionTemplates, selectedTestResultState, TestResultsState } from '@store/test-records';
+import { selectedTestResultState, TestResultsState } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { filter, Subject, Subscription, takeUntil, debounceTime } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
@@ -15,7 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DefectsState, filteredDefects } from '@store/defects';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
-import { BaseTestRecordComponent } from 'src/app/features/test-records/components/base-test-record/base-test-record.component';
+import { TestRecordsService } from '@services/test-records/test-records.service';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 
 @Component({
   selector: 'app-defect[form][index][defect][vehicleType]',
@@ -24,8 +25,6 @@ import { BaseTestRecordComponent } from 'src/app/features/test-records/component
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DefectComponent implements OnInit, OnDestroy {
-  @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
-
   form!: CustomFormGroup;
   index!: number;
   isEditing: boolean;
@@ -43,6 +42,7 @@ export class DefectComponent implements OnInit, OnDestroy {
   ];
 
   onDestroy$ = new Subject();
+  private _formSubscription = new Subscription();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -50,7 +50,9 @@ export class DefectComponent implements OnInit, OnDestroy {
     private dfs: DynamicFormService,
     private pipe: DefaultNullOrEmpty,
     private router: Router,
-    private testResultsStore: Store<TestResultsState>
+    private testResultsStore: Store<TestResultsState>,
+    private testRecordsService: TestRecordsService,
+    private resultService: ResultOfTestService
   ) {
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
   }
@@ -74,6 +76,11 @@ export class DefectComponent implements OnInit, OnDestroy {
     this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe(defectsTaxonomy => {
       const selectedDefect = defectsTaxonomy.find(defect => defect.imNumber === this.defect.imNumber);
       this.initializeInfoDictionary(selectedDefect);
+    });
+
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
+      this.handleNewTestResult(event);
+      this.resultService.updateResultOfTest();
     });
   }
 
@@ -108,6 +115,10 @@ export class DefectComponent implements OnInit, OnDestroy {
     this._defectsForm?.removeAt(this.index);
     this.handleSubmit();
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+  }
+
+  handleNewTestResult(testResult: any) {
+    this.testRecordsService.updateEditingTestResult(testResult);
   }
 
   initializeInfoDictionary(defect: Defect | undefined) {

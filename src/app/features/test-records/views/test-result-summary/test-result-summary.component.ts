@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Defect } from '@api/test-results';
 import { FormNode } from '@forms/services/dynamic-form.types';
+import { Defect } from '@models/defects/defect.model';
 import { Roles } from '@models/roles.enum';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';

@@ -75,15 +75,7 @@
       <p class="govuk-hint">Fill any defect details that apply</p>
     </div>
   </div>
-  <!-- <ng-container [formGroup]="form">
-    <app-text-input formControlName="imNumber" label="IM number"></app-text-input>
-    <app-text-input formControlName="imDescription" label="IM description"></app-text-input>
-    <app-text-input formControlName="itemNumber" label="Item No."></app-text-input>
-    <app-text-input formControlName="itemDescription" label="Item description"></app-text-input>
-    <app-text-input formControlName="deficiencyId" label="Deficiency ID"></app-text-input>
-    <app-text-input formControlName="deficiencySubId" label="Deficiency sub ID"></app-text-input>
-    <app-text-input formControlName="deficiencyText" label="Deficiency text"></app-text-input>
-
+  <ng-container [formGroup]="form">
     <ng-container formGroupName="additionalInformation">
       <ng-container formGroupName="location">
         <app-radio-group
@@ -118,5 +110,4 @@
   </div>
 </ng-template>
 
-<pre>{{ form.getCleanValue(form) | json }}</pre> -->
-</ng-template>
+<pre>{{ form.getCleanValue(form) | json }}</pre>

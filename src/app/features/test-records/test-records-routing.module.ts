@@ -47,10 +47,22 @@ const routes: Routes = [
           },
           {
             path: 'amend-test-details',
-            component: TestRecordComponent,
+            component: AmendTestComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
             resolve: { load: TestResultResolver },
-            canActivate: [RoleGuard]
+            canActivate: [RoleGuard],
+            children: [
+              {
+                path: '',
+                component: TestRecordComponent
+              },
+              {
+                path: 'defect/:defectIndex',
+                component: DefectComponent,
+                data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+                canActivate: [RoleGuard]
+              }
+            ]
           }
         ]
       },
@@ -64,7 +76,7 @@ const routes: Routes = [
       {
         path: 'defect/:defectIndex',
         component: DefectComponent,
-        data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+        data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
         resolve: { load: TestResultResolver },
         canActivate: [RoleGuard]
       }

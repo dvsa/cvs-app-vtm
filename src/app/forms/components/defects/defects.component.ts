@@ -51,28 +51,11 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm?.controls.length;
   }
 
-  // trackByFn = (index: number): number => index;
-
   getDefect = (i: number): TestResultDefect => {
     let data = this.defectsForm?.controls[i] as CustomFormGroup;
     let defect = data.getCleanValue(data) as TestResultDefect;
     return defect;
   };
-
-  // getDefectForm = (i: number): CustomFormGroup => this.defectsForm?.controls[i] as CustomFormGroup;
-
-  // getDefect(i: number): Defect | undefined {
-  //   const defectForm = this.getDefectForm(i);
-  //   const imNumber = defectForm.get(['imNumber'])?.value;
-
-  //   console.log(this.defects?.find(defect => defect.imNumber === imNumber));
-  //   return imNumber && this.defects?.find(defect => defect.imNumber === imNumber);
-  // }
-
-  // isDangerous(i: number): boolean {
-  //   const defectForm = this.getDefectForm(i);
-  //   return defectForm.get(['deficiencyCategory'])?.value === 'dangerous';
-  // }
 
   handleDefectSelection(selection: { defect: Defect; item: Item; deficiency?: Deficiency }): void {
     const testResultDefect: TestResultDefect = {
