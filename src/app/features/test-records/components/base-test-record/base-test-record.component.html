@@ -24,9 +24,9 @@
       [data]="testResult"
       (formChange)="handleFormChange($event)"
     ></app-defects>
-    <ng-container *ngIf="isEditing">
+    <ng-container *ngSwitchCase="'vehicleSection'">
       <app-dynamic-form-group
-        *ngSwitchCase="'vehicleSection'"
+        *ngIf="isEditing"
         class="section"
         [id]="template.name"
         [template]="template"
