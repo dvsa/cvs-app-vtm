@@ -1,10 +1,7 @@
 <ng-container *ngIf="testResult$ | async as testResult">
   <ng-container *ngIf="techRecord$ | async as techRecord">
-    <app-base-test-record [testResult]="testResult">
-    </app-base-test-record>
+    <app-base-test-record [testResult]="testResult"> </app-base-test-record>
   </ng-container>
 
   <app-test-amendment-history class="section" [testRecord]="testResult"></app-test-amendment-history>
 </ng-container>
-
-

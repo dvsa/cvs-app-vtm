@@ -26,7 +26,7 @@
     ></app-defects>
     <ng-container *ngIf="isEditing">
       <app-dynamic-form-group
-      *ngSwitchCase="'vehicleSection'"
+        *ngSwitchCase="'vehicleSection'"
         class="section"
         [id]="template.name"
         [template]="template"
@@ -35,15 +35,15 @@
         (formChange)="handleFormChange($event)"
       ></app-dynamic-form-group>
     </ng-container>
-      <app-dynamic-form-group
-        *ngSwitchDefault
-        class="section"
-        [id]="template.name"
-        [template]="template"
-        [data]="testResult"
-        [edit]="isEditing"
-        (formChange)="handleFormChange($event)"
-      ></app-dynamic-form-group>
+    <app-dynamic-form-group
+      *ngSwitchDefault
+      class="section"
+      [id]="template.name"
+      [template]="template"
+      [data]="testResult"
+      [edit]="isEditing"
+      (formChange)="handleFormChange($event)"
+    ></app-dynamic-form-group>
   </ng-container>
 </ng-container>
 
