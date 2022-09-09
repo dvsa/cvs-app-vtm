@@ -16,4 +16,3 @@ function getTitle(isPlural: boolean = false, suffix: string = ''): string {
   return '[API/test-stations] Fetch Test Station' + plural + suffix;
 }
 
-export const updateTestStation = createAction('[test-stations] update the test station', props<{ payload: TestStation }>());

@@ -7,7 +7,6 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -26,7 +25,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  isEditing = true;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 

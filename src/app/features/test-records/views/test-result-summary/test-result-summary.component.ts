@@ -47,9 +47,7 @@ export class TestResultSummaryComponent implements OnInit {
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
   }
 
-  public get Roles() {
-    return Roles;
-  }
+  
 
   public get defects$(): Observable<Defect[]> {
     return this.defectsStore.select(defects);
@@ -71,9 +69,7 @@ export class TestResultSummaryComponent implements OnInit {
     return this.test$.pipe(map(test => test?.defects));
   }
 
-  public get isTestTypeGroupEditable$(): Observable<boolean> {
-    return this.testRecordsService.isTestTypeGroupEditable$;
-  }
+
 
   routerParam(param: string): Observable<string | undefined> {
     return this.routerService.getRouteParam$(param);
@@ -83,7 +79,5 @@ export class TestResultSummaryComponent implements OnInit {
     return (<Record<string, 'red' | 'green' | 'yellow' | 'blue'>>{ major: 'red', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[category];
   }
 
-  combinedOdometerReading(reading: number | undefined, unit: string | undefined) {
-    return `${reading ?? ''} ${(unit && ('kilometres' === unit ? 'km' : 'mi')) ?? ''}`;
-  }
+  
 }

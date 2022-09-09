@@ -4,8 +4,8 @@ import { TestStation } from '@models/test-stations/test-station.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { testResultInEdit } from '@store/test-records';
-import { getTestStationFromProperty, updateTestStation } from '@store/test-stations';
-import { map, Observable, of, take } from 'rxjs';
+import { getTestStationFromProperty } from '@store/test-stations';
+import { map, Observable, of, take, tap, catchError } from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -31,12 +31,20 @@ export class CustomAsyncValidators {
 
   static updateTestStationDetails(store: Store<State>): AsyncValidatorFn {
     return (control: AbstractControl): Observable<null> => {
-      store
-        .pipe(select(getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStation, control.value)), take(1))
-        .subscribe(stations => {
-          stations && store.dispatch(updateTestStation({ payload: stations }));
-        });
-      return of(null);
+      return store.pipe(
+        select(getTestStationFromProperty((control as CustomFormControl).meta.name as keyof TestStation, control.value)),
+        take(1),
+        tap(stations => {
+          const testStationName = control.parent?.get('testStationName');
+          const testStationType = control.parent?.get('testStationType');
+          if (stations) {
+            testStationName && testStationName.setValue(stations.testStationName, { emitEvent: true, onlySelf: true });
+            testStationType && testStationType.setValue(stations.testStationType, { emitEvent: true, onlySelf: true });
+          }
+        }),
+        map(() => null),
+        catchError(() => of(null))
+      );
     };
   }
 }

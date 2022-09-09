@@ -1,24 +1,116 @@
-<div class="test_result_header">
-  <div class="test_name_and_date">
-    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
-    <div class="date_and_result">
-      <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
-      <app-result-of-test></app-result-of-test>
+<ng-container [ngSwitch]="isEditing">
+  <ng-container *ngSwitchCase="true">
+    <div class="govuk-grid-row vehicle-overview govuk-!-margin-bottom-4">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="vehicle_heading">
+          <h1 class="govuk-heading-l">
+            <span>{{ test?.testTypeId ?? '' | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
+            <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
+          </h1>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="tester_and_location">
-    <dl class="govuk-summary-list govuk-summary-list--no-border">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half">
+        <h2 class="govuk-heading-m">Vehicle details</h2>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">VRM</dt>
+            <dd class="govuk-summary-list__value">
+              <app-number-plate>{{ testResult?.vrm }}</app-number-plate>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">VIN</dt>
+            <dd class="govuk-summary-list__value">
+              {{ testResult?.vin }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Result</dt>
+            <dd class="govuk-summary-list__value">
+              <app-result-of-test></app-result-of-test>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="false">
+    <div class="test_result_header">
+      <div class="test_name_and_date">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
+        <div class="date_and_result">
+          <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
+          <app-result-of-test></app-result-of-test>
+        </div>
+      </div>
+
+      <div class="tester_and_location">
+        <dl class="govuk-summary-list govuk-summary-list--no-border">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Accessor</dt>
+            <dd class="govuk-summary-list__value">{{ testResult?.testerName | defaultNullOrEmpty }}</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Test location</dt>
+            <dd class="govuk-summary-list__value">{{ testResult?.testStationName | defaultNullOrEmpty }}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <ng-content></ng-content>
+
+    <div class="vehicle_heading govuk-!-margin-bottom-6">
+      <h2 class="govuk-heading-l">
+        <span>{{ (techRecord$ | async)?.bodyMake + '-' + (techRecord$ | async)?.bodyModel | defaultNullOrEmpty }}</span>
+
+        <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
+      </h2>
+    </div>
+    <h3 class="govuk-heading-m">Vehicle overview</h3>
+    <div class="govuk-summary-list">
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Accessor</dt>
-        <dd class="govuk-summary-list__value">{{ testResult?.testerName | defaultNullOrEmpty }}</dd>
+        <dt class="govuk-summary-list__key">VRM</dt>
+        <dd id="test-testTypeId" class="govuk-summary-list__value">
+          <app-number-plate>
+            {{ testResult?.vrm | defaultNullOrEmpty }}
+          </app-number-plate>
+        </dd>
       </div>
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Test location</dt>
-        <dd class="govuk-summary-list__value">{{ testResult?.testStationName | defaultNullOrEmpty }}</dd>
+        <dt class="govuk-summary-list__key">VIN</dt>
+        <dd id="test-testTypeId" class="govuk-summary-list__value">
+          {{ testResult?.vin | defaultNullOrEmpty }}
+        </dd>
       </div>
-    </dl>
-  </div>
-</div>
-
-<ng-content></ng-content>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle type</dt>
+        <dd id="test-testTypeId" class="govuk-summary-list__value">
+          {{ (techRecord$ | async)?.vehicleType | defaultNullOrEmpty | uppercase }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Country of registration</dt>
+        <dd id="test-testTypeId" class="govuk-summary-list__value">
+          {{ testResult?.countryOfRegistration | defaultNullOrEmpty | uppercase }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">EU vehicle ategory</dt>
+        <dd id="test-testTypeId" class="govuk-summary-list__value">
+          {{ testResult?.euVehicleCategory | defaultNullOrEmpty }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Odometer reading</dt>
+        <dd id="test-testTypeId" class="govuk-summary-list__value">
+          {{ combinedOdometerReading(testResult?.odometerReading, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
+        </dd>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
