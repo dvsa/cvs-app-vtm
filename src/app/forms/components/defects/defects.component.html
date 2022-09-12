@@ -11,18 +11,20 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr *ngFor="let defect of defectsForm?.controls; let i = index" class="govuk-table__row">
+      <tr *ngFor="let defect of testDefects; let i = index" class="govuk-table__row">
         <td class="govuk-table__cell">
-          <a data-action="retain-data" routerLink="defect/{{ i }}" class="govuk-link govuk-link--no-visited-state">{{
-            getDefect(i).deficiencyRef
-          }}</a>
+          <a data-action="retain-data" routerLink="defect/{{ i }}" class="govuk-link govuk-link--no-visited-state"
+            >{{ defect.deficiencyRef }}&nbsp;{{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : '' }}&nbsp;{{
+              defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : ''
+            }}</a
+          >
         </td>
-        <td class="govuk-table__cell">{{ getDefect(i).imDescription }}</td>
+        <td class="govuk-table__cell">{{ defect.itemDescription }} {{ defect.imDescription }} {{ defect.deficiencyText }}</td>
         <td class="govuk-table__cell">
-          <span class="govuk-tag govuk-tag--orange">{{ getDefect(i).deficiencyCategory }}</span>
+          <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
         </td>
         <td class="govuk-table__cell">
-          <span class="govuk-tag govuk-tag--green">{{ getDefect(i).prs }}</span>
+          <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'repaired' : 'not repaired' }}</app-tag>
         </td>
       </tr>
     </tbody>

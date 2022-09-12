@@ -21,8 +21,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   @Output() formChange = new EventEmitter();
 
-  form!: CustomFormGroup;
-
+  public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
   private _defectsForm?: CustomFormArray;
 
@@ -51,11 +50,20 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm?.controls.length;
   }
 
-  getDefect = (i: number): TestResultDefect => {
-    let data = this.defectsForm?.controls[i] as CustomFormGroup;
-    let defect = data.getCleanValue(data) as TestResultDefect;
-    return defect;
-  };
+  get testDefects(): TestResultDefect[] {
+    let defectArray: TestResultDefect[] = [];
+
+    for (let i = 0; i < this.defectCount; i++) {
+      const data = this.defectsForm.controls[i] as CustomFormGroup;
+      const defect = data.getCleanValue(data) as TestResultDefect;
+      defectArray = [...defectArray, defect];
+    }
+    return defectArray;
+  }
+
+  categoryColor(category: string): 'red' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'green' | 'yellow' | 'blue'>>{ major: 'red', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[category];
+  }
 
   handleDefectSelection(selection: { defect: Defect; item: Item; deficiency?: Deficiency }): void {
     const testResultDefect: TestResultDefect = {
@@ -79,9 +87,5 @@ export class DefectsComponent implements OnInit, OnDestroy {
     }
 
     this.defectsForm.addControl(testResultDefect);
-  }
-
-  handleRemoveDefect(index: number): void {
-    this.defectsForm.removeAt(index);
   }
 }
