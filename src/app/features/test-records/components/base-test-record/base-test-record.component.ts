@@ -59,6 +59,10 @@ export class BaseTestRecordComponent implements AfterViewInit {
     return this.testTypesService.selectAllTestTypes$;
   }
 
+  get isTrailer(): Boolean {
+    return this.testResult.vehicleType === VehicleTypes.TRL;
+  }
+
   getDefects$(type: VehicleTypes): Observable<Defect[]> {
     return this.defectsStore.select(filteredDefects(type));
   }
