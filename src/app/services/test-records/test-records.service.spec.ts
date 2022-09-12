@@ -1,10 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
+import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService, DefaultService } from '@api/test-results';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { fetchTestResults, fetchTestResultsBySystemNumber, toEditOrNotToEdit, updateTestResult } from '@store/test-records';
+import { createTestResult, fetchTestResults, fetchTestResultsBySystemNumber, toEditOrNotToEdit, updateTestResult } from '@store/test-records';
+import { of } from 'rxjs';
 import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
 
@@ -114,6 +115,14 @@ describe('TestRecordsService', () => {
     });
   });
 
+  describe(TestRecordsService.prototype.createTestResult.name, () => {
+    it('should dispatch createTestResult action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.createTestResult({});
+      expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultModel }));
+    });
+  });
+
   describe('getTestTypeGroup', () => {
     it('should get the correct testTypeGroup', () => {
       expect(TestRecordsService.getTestTypeGroup('1')).toEqual('testTypesGroup1');
@@ -159,6 +168,13 @@ describe('TestRecordsService', () => {
         expect(isValid).toBe(false);
         done();
       });
+    });
+  });
+
+  describe('postTestResult', () => {
+    it('should call the service', () => {
+      service['createTestResultsService'].testResultsPost = jest.fn().mockReturnValue('foo');
+      expect(service.postTestResult({} as TestResultModel)).toBe('foo');
     });
   });
 });

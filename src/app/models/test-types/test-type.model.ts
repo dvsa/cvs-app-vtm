@@ -13,8 +13,8 @@ export interface TestType {
   testExpiryDate: string | Date;
 
   certificateNumber: string;
-  reasonForAbandoning: string;
-  additionalCommentsForAbandon?: string;
+  reasonForAbandoning: string | null;
+  additionalCommentsForAbandon?: string | null;
   testAnniversaryDate: string | Date;
   prohibitionIssued: boolean | null;
 
@@ -22,7 +22,7 @@ export interface TestType {
 
   seatbeltInstallationCheckDate: boolean;
   numberOfSeatbeltsFitted: number;
-  lastSeatbeltInstallationCheckDate: Date | null;
+  lastSeatbeltInstallationCheckDate: string | Date | null;
   emissionStandard: Emissions.EmissionStandard;
   smokeTestKLimitApplied: string;
   fuelType: Emissions.FuelType;
@@ -34,6 +34,9 @@ export interface TestType {
   customDefects: customDefects[];
 
   additionalNotesRecorded: string;
+  certificateLink?: string | null;
+  deletionFlag?: boolean;
+  secondaryCertificateNumber?: string | null;
 }
 
 export interface customDefects {

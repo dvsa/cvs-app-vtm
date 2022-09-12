@@ -22,47 +22,9 @@ import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { VehicleSectionTrlGroups5n6n11n13 } from './section-templates/vehicle/groups11and13-trl-vehicle-section.template';
-import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency-test-section-group1.template';
-import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
-import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
-import { CreateRequiredSection } from './section-templates/required/contingency-required-hidden-section.template';
-
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
-
-export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
-  psv: {
-    default: {
-      vehicle: VehicleSectionDefaultPsvHgv,
-      test: TestSection,
-      seatbelts: SeatbeltSection,
-      emissions: EmissionsSection,
-      visit: VisitSection,
-      notes: NotesSection,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
-      required: RequiredSection
-    },
-    testTypesGroup1: {
-      required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
-      test: ContingencyTestSectionGroup1,
-      seatbelts: SeatbeltSection,
-      visit: ContingencyVisitSection,
-      notes: NotesSection,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
-      reasonForCreation: reasonForCreationSection
-    }
-  },
-  hgv: {
-    default: {}
-  },
-  trl: {
-    default: {}
-  }
-};
 
 export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
   psv: {

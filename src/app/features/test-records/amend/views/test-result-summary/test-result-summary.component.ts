@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Defect } from '@api/test-results';
+import { Defect } from '@models/defects/defect.model';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
@@ -47,7 +47,7 @@ export class TestResultSummaryComponent implements OnInit {
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
   }
 
-  public get Roles() {
+  public get roles() {
     return Roles;
   }
 

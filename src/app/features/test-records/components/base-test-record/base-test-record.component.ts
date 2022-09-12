@@ -51,7 +51,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
-  get test$() {
+  get test() {
     return this.testResult.testTypes[0];
   }
 

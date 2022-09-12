@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { contingencyTestTemplates, masterTpl } from '@forms/templates/test-records/master.template';
+import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -12,7 +12,9 @@ import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import merge from 'lodash.merge';
-import { catchError, concatMap, map, mergeMap, of, take, withLatestFrom } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
+
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -165,16 +167,14 @@ export class TestResultsEffects {
         const { testType } = action;
 
         const { vehicleType } = editingTestResult!;
-        if (!vehicleType || !masterTpl.hasOwnProperty(vehicleType)) {
+        if (!vehicleType || !contingencyTestTemplates.hasOwnProperty(vehicleType)) {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
 
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testType);
         const vehicleTpl = contingencyTestTemplates[vehicleType as VehicleTypes];
 
-        const  tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)
-          ? vehicleTpl[testTypeGroup]
-          : vehicleTpl['default'];
+        const tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup] : vehicleTpl['default'];
 
         const mergedForms = {};
         Object.values(tpl).forEach(node => {
@@ -198,16 +198,11 @@ export class TestResultsEffects {
   createTestResult$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createTestResult),
-      mergeMap(action =>
-        of(action.value).pipe(
-          withLatestFrom(this.userService.userName$, this.userService.id$, this.store.pipe(select(selectRouteNestedParams))),
-          take(1)
-        )
-      ),
-      mergeMap(([testResult, username, id, { systemNumber }]) => {
+      switchMap(action => {
+        const testResult = action.value;
         return this.testRecordsService.postTestResult(testResult).pipe(
           take(1),
-          map(responseBody => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
+          map(() => createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })),
           catchError(e => {
             const validationsErrors: GlobalError[] = [];
             if (e.status === 400) {

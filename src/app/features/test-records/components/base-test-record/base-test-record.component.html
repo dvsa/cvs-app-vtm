@@ -2,7 +2,7 @@
   <div class="govuk-grid-column-two-thirds">
     <div class="vehicle_heading">
       <h1 class="govuk-heading-l">
-        <span>{{ test$.testTypeId | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
+        <span>{{ test.testTypeId | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
         <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
       </h1>
     </div>
