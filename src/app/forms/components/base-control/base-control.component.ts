@@ -60,7 +60,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   }
 
   get disabled() {
-    return this.control?.disabled;
+    return this.control?.disabled ?? false;
   }
 
   get meta() {

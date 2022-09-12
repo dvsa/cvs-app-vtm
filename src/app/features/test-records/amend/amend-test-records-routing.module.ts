@@ -1,29 +1,31 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NoEditGuard } from '@guards/no-edit/no-edit.guard';
-import { TestResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
-import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
-import { TestRecordComponent } from './views/test-record/test-record.component';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
-import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
-import { IncorrectTestTypeComponent } from './views/incorrect-test-type/incorrect-test-type.component';
-import { AmendTestComponent } from './views/amend-test/amend-test.component';
+import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
+import { TestResultResolver } from 'src/app/resolvers/test-result/test-result.resolver';
+import { TestTypeTaxonomyResolver } from 'src/app/resolvers/test-type-taxonomy/test-type-taxonomy.resolver';
+import { AmendedTestRecordComponent } from './views/amended-test-record/amended-test-record.component';
 import { TestAmendReasonComponent } from './views/test-amend-reason/test-amend-reason.component';
-import { TestTypeSelectComponent } from './components/test-type-select/test-type-select.component';
+import { TestRecordComponent } from './views/test-record/test-record.component';
+import { TestResultSummaryComponent } from './views/test-result-summary/test-result-summary.component';
+import { TestRouterOutletComponent } from './views/test-router-outlet/test-router-outlet.component';
+import { TestTypeSelectWrapperComponent } from './views/test-type-select-wrapper/test-type-select-wrapper.component';
 
 const routes: Routes = [
   {
     path: '',
+    component: TestRouterOutletComponent,
+    resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver },
     children: [
       {
         path: '',
-        component: TestResultSummaryComponent,
-        resolve: { load: TestResultResolver }
+        component: TestResultSummaryComponent
       },
       {
         path: 'amend-test',
-        component: AmendTestComponent,
+        component: TestRouterOutletComponent,
         data: { title: 'Amend test record', roles: Roles.TestResultAmend },
         canActivate: [RoleGuard],
         children: [
@@ -33,14 +35,14 @@ const routes: Routes = [
           },
           {
             path: 'incorrect-test-type',
-            component: IncorrectTestTypeComponent,
+            component: TestRouterOutletComponent,
             data: { title: 'Select a test type', roles: Roles.TestResultAmend },
-            resolve: { load: TestResultResolver },
+            resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver },
             canActivate: [RoleGuard],
             children: [
               {
                 path: '',
-                component: TestTypeSelectComponent
+                component: TestTypeSelectWrapperComponent
               }
             ]
           },
@@ -48,7 +50,7 @@ const routes: Routes = [
             path: 'amend-test-details',
             component: TestRecordComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
-            resolve: { load: TestResultResolver },
+            resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
             canActivate: [RoleGuard]
           }
         ]
@@ -56,9 +58,8 @@ const routes: Routes = [
       {
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
-        data: { title: 'Amended Test Result', roles: Roles.TestResultAmend },
-        resolve: { load: TestResultResolver },
-        canActivate: [NoEditGuard, RoleGuard]
+        data: { title: 'Amended test result' },
+        canActivate: [NoEditGuard]
       }
     ]
   }
@@ -68,4 +69,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TestRecordsRoutingModule {}
+export class AmendTestRecordsRoutingModule {}

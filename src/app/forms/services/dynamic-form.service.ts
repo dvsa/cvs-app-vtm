@@ -39,7 +39,9 @@ export class DynamicFormService {
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
-    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
+    [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
+    [AsyncValidatorNames.TestWithDefectTaxonomy]: () => CustomAsyncValidators.testWithDefectTaxonomy(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

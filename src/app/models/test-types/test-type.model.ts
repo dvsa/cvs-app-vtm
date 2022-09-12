@@ -4,7 +4,7 @@ import * as Emissions from './emissions.enum';
 export interface TestType {
   testTypeId: string;
   testNumber: string;
-
+  name: string;
   testCode: string;
   testTypeName: string;
 
@@ -13,16 +13,16 @@ export interface TestType {
   testExpiryDate: string | Date;
 
   certificateNumber: string;
-  reasonForAbandoning: string;
-  additionalCommentsForAbandon?: string;
+  reasonForAbandoning: string | null;
+  additionalCommentsForAbandon?: string | null;
   testAnniversaryDate: string | Date;
-  prohibitionIssued: boolean;
+  prohibitionIssued: boolean | null;
 
   testResult: resultOfTestEnum;
 
   seatbeltInstallationCheckDate: boolean;
   numberOfSeatbeltsFitted: number;
-  lastSeatbeltInstallationCheckDate: Date | null;
+  lastSeatbeltInstallationCheckDate: string | Date | null;
   emissionStandard: Emissions.EmissionStandard;
   smokeTestKLimitApplied: string;
   fuelType: Emissions.FuelType;
@@ -34,6 +34,9 @@ export interface TestType {
   customDefects: customDefects[];
 
   additionalNotesRecorded: string;
+  certificateLink?: string | null;
+  deletionFlag?: boolean;
+  secondaryCertificateNumber?: string | null;
 }
 
 export interface customDefects {

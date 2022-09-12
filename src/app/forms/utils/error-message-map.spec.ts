@@ -18,8 +18,10 @@ describe('ErrorMessageMap', () => {
     ['Name must be greater than 14 characters', ValidatorNames.MinLength, [{ requiredLength: 14 }, 'Name']],
     ['This field must be greater than 14 characters', ValidatorNames.MinLength, [{ requiredLength: 14 }, '']],
     ['Name is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, 'Name']],
-    ['This field is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, '']]
+    ['This field is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, '']],
+    ['Notes is required', ValidatorNames.ValidateDefectNotes, undefined],
+    ['foo', 'invalidTestResult', [{ message: 'foo' }]]
   ])('should return "%s" for %s with %o', (expected, key, props) => {
-    expect(ErrorMessageMap[key](...props)).toBe(expected);
+    props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });
 });

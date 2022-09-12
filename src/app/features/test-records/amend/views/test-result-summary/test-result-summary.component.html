@@ -6,7 +6,7 @@
       [isEditing]="false"
       [testNumber]="(routerParam('testNumber') | async) || ''"
     >
-      <ng-container *appRoleRequired="Roles.TestResultAmend">
+      <ng-container *appRoleRequired="roles.TestResultAmend">
         <a
           *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
           [routerLink]="['amend-test']"

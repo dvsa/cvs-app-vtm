@@ -6,12 +6,11 @@ import { Defect } from '@models/defects/defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -32,8 +31,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
   constructor(
     private defectsStore: Store<DefectsState>,
     private techRecordService: TechnicalRecordService,
-    private testTypesService: TestTypesService,
-    private routerService: RouterService
+    private testTypesService: TestTypesService
   ) {
     this.techRecord$ = this.techRecordService.techRecord$;
   }
@@ -53,12 +51,8 @@ export class BaseTestRecordComponent implements AfterViewInit {
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
-  get test$() {
-    return this.testNumber$.pipe(
-      map(testNumber => {
-        return this.testResult.testTypes?.find(t => testNumber === t.testNumber);
-      })
-    );
+  get test() {
+    return this.testResult.testTypes[0];
   }
 
   get selectAllTestTypes$() {
@@ -67,9 +61,5 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
   getDefects$(type: VehicleTypes): Observable<Defect[]> {
     return this.defectsStore.select(filteredDefects(type));
-  }
-
-  get testNumber$(): Observable<string | undefined> {
-    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
   }
 }

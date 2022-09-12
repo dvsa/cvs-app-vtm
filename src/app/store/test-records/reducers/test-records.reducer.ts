@@ -8,6 +8,9 @@ import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
+  createTestResult,
+  createTestResultFailed,
+  createTestResultSuccess,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
@@ -16,6 +19,7 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
+  initialContingencyTest,
   templateSectionsChanged,
   updateEditingTestResult,
   updateResultOfTest,
@@ -56,16 +60,20 @@ export const testResultsReducer = createReducer(
   on(fetchSelectedTestResult, state => ({ ...state, loading: true })),
   on(fetchSelectedTestResultSuccess, (state, action) => ({ ...testResultAdapter.upsertOne(action.payload, state), loading: false })),
   on(fetchSelectedTestResultFailed, state => ({ ...state, loading: false })),
-  on(updateTestResult, state => ({ ...state, loading: true })),
+  on(updateTestResult, createTestResult, state => ({ ...state, loading: true })),
   on(updateTestResultSuccess, (state, action) => ({ ...testResultAdapter.updateOne(action.payload, state), loading: false })),
-  on(updateTestResultFailed, state => ({ ...state, loading: false })),
+  on(updateTestResultFailed, createTestResultSuccess, createTestResultFailed, state => ({ ...state, loading: false })),
   on(templateSectionsChanged, (state, action) => ({ ...state, sectionTemplates: action.sectionTemplates, editingTestResult: action.sectionsValue })),
   on(cancelEditingTestResult, state => ({ ...state, editingTestResult: undefined, sectionTemplates: undefined })),
   on(updateEditingTestResult, (state, action) => ({
     ...state,
     editingTestResult: merge({}, action.testResult)
   })),
-  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) }))
+  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
+  on(initialContingencyTest, (state, action) => ({
+    ...state,
+    editingTestResult: { ...action.testResult } as TestResultModel
+  }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
