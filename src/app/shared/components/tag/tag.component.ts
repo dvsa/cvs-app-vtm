@@ -6,5 +6,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TagComponent {
-  @Input() type: 'blue' | 'red' | 'green' | 'yellow' = 'blue';
+  @Input() type: 'blue' | 'orange' | 'red' | 'green' | 'yellow' = 'blue';
 }

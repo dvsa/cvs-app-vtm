@@ -61,8 +61,10 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return defectArray;
   }
 
-  categoryColor(category: string): 'red' | 'yellow' | 'green' | 'blue' {
-    return (<Record<string, 'red' | 'green' | 'yellow' | 'blue'>>{ major: 'red', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[category];
+  categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+      category
+    ];
   }
 
   handleDefectSelection(selection: { defect: Defect; item: Item; deficiency?: Deficiency }): void {
