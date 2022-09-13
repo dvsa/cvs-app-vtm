@@ -12,7 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -69,6 +69,6 @@ export class BaseTestRecordComponent implements AfterViewInit {
   }
 
   get testNumber$(): Observable<string | undefined> {
-    return this.routerService.getRouteParam$('testNumber');
+    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
   }
 }
