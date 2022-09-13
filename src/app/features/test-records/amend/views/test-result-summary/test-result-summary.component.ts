@@ -46,28 +46,4 @@ export class TestResultSummaryComponent implements OnInit {
 
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
   }
-
-  get defects$(): Observable<Defect[]> {
-    return this.defectsStore.select(defects);
-  }
-
-  get test$(): Observable<TestType | undefined> {
-    return this.routerService.getRouteParam$('testNumber').pipe(
-      switchMap(testNumber => {
-        return this.testResult$.pipe(map(testResult => testResult?.testTypes.find(t => t.testNumber === testNumber)));
-      })
-    );
-  }
-
-  get testDefects$(): Observable<TestResultDefects | undefined> {
-    return this.test$.pipe(map(test => test?.defects));
-  }
-
-  routerParam(param: string): Observable<string | undefined> {
-    return this.routerService.getRouteParam$(param);
-  }
-
-  categoryColor(category: string): 'red' | 'yellow' | 'green' | 'blue' {
-    return (<Record<string, 'red' | 'green' | 'yellow' | 'blue'>>{ major: 'red', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[category];
-  }
 }
