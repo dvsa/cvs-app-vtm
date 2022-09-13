@@ -66,7 +66,12 @@
 
     <div class="vehicle_heading govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-l">
-        <span>{{ (techRecord$ | async)?.bodyMake + '-' + (techRecord$ | async)?.bodyModel | defaultNullOrEmpty }}</span>
+        <span *ngIf="testResult?.vehicleType === vehicleTypes.TRL; else bodyMakeModel">
+          {{ (techRecord$ | async)?.vehicleConfiguration | defaultNullOrEmpty | titlecase }}
+        </span>
+        <ng-template #bodyMakeModel>
+          <span>{{ (techRecord$ | async)?.bodyMake + '-' + (techRecord$ | async)?.bodyModel | defaultNullOrEmpty }}</span>
+        </ng-template>
 
         <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
       </h2>
@@ -74,11 +79,12 @@
     <h3 class="govuk-heading-m">Vehicle overview</h3>
     <div class="govuk-summary-list">
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">VRM</dt>
+        <dt class="govuk-summary-list__key">{{ testResult?.vehicleType === vehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}</dt>
         <dd id="test-testTypeId" class="govuk-summary-list__value">
-          <app-number-plate>
+          <app-number-plate *ngIf="testResult?.vehicleType !== vehicleTypes.TRL; else trailerId">
             {{ testResult?.vrm | defaultNullOrEmpty }}
           </app-number-plate>
+          <ng-template #trailerId>{{ testResult?.trailerId | defaultNullOrEmpty }}</ng-template>
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -105,7 +111,7 @@
           {{ testResult?.euVehicleCategory | defaultNullOrEmpty }}
         </dd>
       </div>
-      <div class="govuk-summary-list__row">
+      <div *ngIf="testResult?.vehicleType !== vehicleTypes.TRL" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Odometer reading</dt>
         <dd id="test-testTypeId" class="govuk-summary-list__value">
           {{ combinedOdometerReading(testResult?.odometerReading, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
