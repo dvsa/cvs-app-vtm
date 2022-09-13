@@ -12,9 +12,9 @@ import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
 import { selectAmendedDefectData, selectedAmendedTestResultState } from '@store/test-records';
 import { of } from 'rxjs';
-import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
-import { ResultOfTestComponent } from '../../components/result-of-test/result-of-test.component';
-import { VehicleHeaderComponent } from '../../components/vehicle-header/vehicle-header.component';
+import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
+import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { AmendedTestRecordComponent } from './amended-test-record.component';
 
 describe('AmendedTestRecordComponent', () => {
@@ -24,7 +24,7 @@ describe('AmendedTestRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, ResultOfTestComponent, VehicleHeaderComponent],
+      declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, VehicleHeaderComponent, ResultOfTestComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule],
       providers: [
         TestRecordsService,

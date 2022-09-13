@@ -46,22 +46,6 @@ describe('TestResultSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get the roles', () => {
-    expect(component.roles).toBe(Roles);
-  });
-
-  it('should combine the odometer reading', () => {
-    expect(component.combinedOdometerReading(1234, 'kilometres')).toEqual('1234 km');
-  });
-
-  it('should display the unit if the reading is undefined', () => {
-    expect(component.combinedOdometerReading(undefined, 'kilometres')).toEqual(' km');
-  });
-
-  it('should display the reading if the unit is undefined', () => {
-    expect(component.combinedOdometerReading(1234, undefined)).toEqual('1234 ');
-  });
-
   it('should return the color of the category', () => {
     expect(component.categoryColor('major')).toEqual('red');
   });
@@ -122,11 +106,5 @@ describe('TestResultSummaryComponent', () => {
       expect(defects![1].additionalInformation).toEqual('one other defect');
       done();
     });
-  });
-
-  it('should call the service', () => {
-    const serviceSpy = jest.spyOn(testRecordsService, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
-    component.isTestTypeGroupEditable$;
-    expect(serviceSpy).toHaveBeenCalledTimes(1);
   });
 });
