@@ -90,9 +90,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
       this.month_.next(this.month);
       this.year = date.getFullYear();
       this.year_.next(this.year);
-      this.hour = date.getUTCHours();
+      this.hour = date.getHours();
       this.hour_.next(this.hour);
-      this.minute = date.getUTCMinutes();
+      this.minute = date.getMinutes();
       this.minute_.next(this.minute);
     }
   }
@@ -111,14 +111,14 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
         const date = new Date(Date.UTC(year, month - 1, day));
 
-        hour = hour ?? new Date(this.originalDate).getUTCHours();
-        minute = minute ?? new Date(this.originalDate).getUTCMinutes();
-        const second = new Date(this.originalDate).getUTCSeconds();
+        hour = hour ?? new Date(this.originalDate).getHours();
+        minute = minute ?? new Date(this.originalDate).getMinutes();
+        const second = new Date(this.originalDate).getSeconds();
 
         if ('Invalid Date' !== date.toString()) {
-          date.setUTCHours(hour || 0);
-          date.setUTCMinutes(minute || 0);
-          date.setUTCSeconds(second || 0);
+          date.setHours(hour || 0);
+          date.setMinutes(minute || 0);
+          date.setSeconds(second || 0);
         }
 
         this.onChange(date);

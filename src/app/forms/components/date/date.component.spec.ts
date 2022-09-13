@@ -55,12 +55,13 @@ describe('DateComponent', () => {
     it.each([
       [new Date(NaN), 2342346, 6213, 234, 1, 6],
       [new Date(Date.UTC(2022, 0, 12, 1, 6, 0)), 2022, 0o1, 12, 1, 6],
-      [new Date(`2022-08-01T01:06:00.000Z`), 2022, 8, 0o1, 1, 6],
+      [new Date(`2022-08-01T01:06:00.000`), 2022, 8, 0o1, 1, 6],
+      [new Date(`2022-02-01T01:06:00.000`), 2022, 2, 0o1, 1, 6],
       [null, NaN, 0o1, 0o1, 0o1, 0o1],
       [null, 2022, NaN, 0o1, 0o1, 0o1],
       [null, 2022, 0o1, NaN, 0o1, 0o1]
     ])('should be %s for %d, %d, %d', (expected: Date | null, year: number, month: number, day: number, hour: number, minute: number) => {
-      component.dateComponent!.originalDate = '2022-01-01T01:06:00.000Z';
+      component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
       component.dateComponent?.onDayChange(day);
       component.dateComponent?.onMonthChange(month);
       component.dateComponent?.onYearChange(year);
