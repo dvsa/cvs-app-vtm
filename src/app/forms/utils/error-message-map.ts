@@ -4,7 +4,7 @@ const DEFAULT_LABEL = 'This field';
 export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidDate: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is an invalid date`,
   invalidOption: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is invalid`,
-  invalidTestResult: (err: { message: string}) => err.message,
+  invalidTestResult: (err: { message: string }) => err.message,
   [ValidatorNames.CustomPattern]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL} ${err.message}`,
   [ValidatorNames.MaxLength]: (err: { requiredLength: number }, label?: string) =>
     `${label || DEFAULT_LABEL} must be less than ${err.requiredLength} characters`,
@@ -14,6 +14,8 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
   [ValidatorNames.ValidateDefectNotes]: () => 'Notes is required',
+  [ValidatorNames.Max]: (err: { max: number }, label?: string) => `${label || DEFAULT_LABEL} must be less than ${err.max}`,
+  [ValidatorNames.Min]: (err: { min: number }, label?: string) => `${label || DEFAULT_LABEL} must be more than ${err.min}`
 };
 
 function displayArray(array: string[]) {
