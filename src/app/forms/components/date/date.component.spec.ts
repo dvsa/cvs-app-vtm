@@ -69,8 +69,10 @@ describe('DateComponent', () => {
       component.dateComponent?.onMinuteChange(minute);
       if (expected === null) {
         expect(component.form.get('foo')?.value).toBeNull();
+      } else if (expected.toString() === 'Invalid Date') {
+        expect((component.form.get('foo')?.value as Date).toString()).toEqual('Invalid Date');
       } else {
-        expect((component.form.get('foo')?.value as Date).toString()).toEqual(expected.toString());
+        expect((component.form.get('foo')?.value as Date).toISOString()).toEqual(expected.toISOString());
       }
     });
 
