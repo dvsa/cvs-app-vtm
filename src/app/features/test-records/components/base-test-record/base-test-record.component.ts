@@ -7,6 +7,7 @@ import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
@@ -65,5 +66,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
   get sectionTemplates$(): Observable<FormNode[] | undefined> {
     return this.testRecordsService.sectionTemplates$;
+  }
+
+  get testNumber$(): Observable<string | undefined> {
+    return this.routerService.getRouteParam$('testNumber');
   }
 }
