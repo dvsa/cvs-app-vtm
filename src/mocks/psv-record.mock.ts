@@ -109,7 +109,8 @@ const provisionalTechRecord = {
   euroStandard: '123',
   fuelPropulsionSystem: FuelTypes.HYBRID,
   vehicleClass: {
-    description: 'Description'
+    description: 'Description',
+    code: '1'
   },
   vehicleConfiguration: VehicleConfigurations.ARTICULATED,
   euVehicleCategory: EuVehicleCategories.M1,
@@ -247,7 +248,8 @@ const archivedTechRecord = {
   euroStandard: '123',
   fuelPropulsionSystem: FuelTypes.HYBRID,
   vehicleClass: {
-    description: 'Description'
+    description: 'Description',
+    code: '2'
   },
   vehicleConfiguration: VehicleConfigurations.ARTICULATED,
   euVehicleCategory: EuVehicleCategories.M1,
@@ -371,7 +373,8 @@ const currentTechRecord = {
   euroStandard: '123',
   fuelPropulsionSystem: FuelTypes.HYBRID,
   vehicleClass: {
-    description: 'Description'
+    description: 'Description',
+    code: '3'
   },
   vehicleConfiguration: VehicleConfigurations.ARTICULATED,
   euVehicleCategory: EuVehicleCategories.M1,

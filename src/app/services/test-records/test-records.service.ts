@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
   cancelEditingTestResult,
+  contingencyTestTypeSelected,
+  createTestResult,
   editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
@@ -33,7 +35,8 @@ export class TestRecordsService {
   constructor(
     private store: Store<TestResultsState>,
     private updateTestResultsService: UpdateTestResultsService,
-    private getTestResultService: GetTestResultsService
+    private getTestResultService: GetTestResultsService,
+    private createTestResultsService: CreateTestResultsService
   ) {}
 
   fetchTestResultbySystemNumber(
@@ -113,6 +116,14 @@ export class TestRecordsService {
     this.store.dispatch(updateTestResult({ value }));
   }
 
+  postTestResult(body: TestResultModel) {
+    return this.createTestResultsService.testResultsPost(body as CompleteTestResults, 'response', false);
+  }
+
+  createTestResult(value: any): void {
+    this.store.dispatch(createTestResult({ value }));
+  }
+
   static getTestTypeGroup(testTypeId: string): string | undefined {
     for (const groupName in TEST_TYPES) {
       if (TEST_TYPES[groupName as keyof typeof TEST_TYPES].includes(testTypeId)) {
@@ -157,5 +168,9 @@ export class TestRecordsService {
         return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
       })
     );
+  }
+
+  contingencyTestTypeSelected(testType: string) {
+    this.store.dispatch(contingencyTestTypeSelected({ testType }));
   }
 }

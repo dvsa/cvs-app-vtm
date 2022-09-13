@@ -39,7 +39,22 @@ export interface TestResultModel {
   testHistory?: TestResultModel[];
   testStatus?: string;
 
+  /**
+   * Applicable only when updating/creating a test from VTM
+   */
   createdByName?: string;
+  /**
+   * Applicable only when updating/creating a test from VTM
+   */
+  createdById?: string;
+  /**
+   * Applicable only when updating/creating a test from VTM
+   */
+  lastUpdatedByName?: string;
+  /**
+   * Applicable only when updating/creating a test from VTM
+   */
+  lastUpdatedById?: string;
   testVersion?: string | null;
   testCode?: TestCodes;
 
@@ -49,4 +64,8 @@ export interface TestResultModel {
   vehicleClass?: VehicleClass;
   vehicleSubclass?: Array<string>;
   numberOfWheelsDriven?: number;
+  /**
+   * Used only for TRL
+   */
+  firstUseDate?: string;
 }

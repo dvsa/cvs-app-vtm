@@ -25,13 +25,14 @@ export const name = createSelector(getUserState, state => state.name);
 export const username = createSelector(getUserState, state => state.username);
 export const id = createSelector(getUserState, state => state.oid);
 export const roles = createSelector(getUserState, state => state.roles);
+export const user = createSelector(getUserState, state => state);
 
 export const userServiceReducer = createReducer(
   initialState,
-  on(UserServiceActions.Login, (state, { name, username, oid, roles }) => ({ name, username, oid, roles: getRoles(roles)})),
+  on(UserServiceActions.Login, (state, { name, username, oid, roles }) => ({ name, username, oid, roles: getRoles(roles) })),
   on(UserServiceActions.Logout, state => initialState)
 );
 
-function getRoles (roles: string[]): string[] {
+function getRoles(roles: string[]): string[] {
   return environment.RemoveAADFullAccessRole ? roles.filter(role => role !== Roles.Admin) : roles;
 }

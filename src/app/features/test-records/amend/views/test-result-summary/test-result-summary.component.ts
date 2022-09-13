@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Defect } from '@api/test-results';
+import { Defect } from '@models/defects/defect.model';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestType } from '@models/test-types/test-type.model';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -36,31 +36,25 @@ export class TestResultSummaryComponent implements OnInit {
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
       switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
     );
+
     this.testResult$
       .pipe(
         skipWhile(testResult => !testResult),
         take(1)
       )
-      .subscribe(testResult => {
-        this.testRecordsService.editingTestResult(testResult!);
-      });
+      .subscribe(testResult => this.testRecordsService.editingTestResult(testResult!));
+
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
   }
 
-  
-
-  public get defects$(): Observable<Defect[]> {
+  get defects$(): Observable<Defect[]> {
     return this.defectsStore.select(defects);
   }
 
   get test$(): Observable<TestType | undefined> {
     return this.routerService.getRouteParam$('testNumber').pipe(
       switchMap(testNumber => {
-        return this.testResult$.pipe(
-          map(testResult => {
-            return testResult?.testTypes.find(t => t.testNumber === testNumber);
-          })
-        );
+        return this.testResult$.pipe(map(testResult => testResult?.testTypes.find(t => t.testNumber === testNumber)));
       })
     );
   }
@@ -69,8 +63,6 @@ export class TestResultSummaryComponent implements OnInit {
     return this.test$.pipe(map(test => test?.defects));
   }
 
-
-
   routerParam(param: string): Observable<string | undefined> {
     return this.routerService.getRouteParam$(param);
   }
@@ -78,6 +70,4 @@ export class TestResultSummaryComponent implements OnInit {
   categoryColor(category: string): 'red' | 'yellow' | 'green' | 'blue' {
     return (<Record<string, 'red' | 'green' | 'yellow' | 'blue'>>{ major: 'red', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[category];
   }
-
-  
 }

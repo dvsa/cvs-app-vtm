@@ -1,26 +1,24 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { updateTestResultSuccess } from '@store/test-records';
+import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { filter, firstValueFrom, Observable, of, skipWhile, Subject, switchMap, take, takeUntil } from 'rxjs';
-import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
+import { firstValueFrom, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
+import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
-  selector: 'app-test-records',
-  templateUrl: './test-record.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-create-test-record',
+  templateUrl: './create-test-record.component.html'
 })
-export class TestRecordComponent implements OnInit, OnDestroy {
+export class CreateTestRecordComponent implements OnInit, OnDestroy {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
 
   private destroy$ = new Subject<void>();
@@ -40,29 +38,21 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.testResult$ = this.testRecordsService.editingTestResult$.pipe(
-      switchMap(editingTestResult => (editingTestResult ? of(editingTestResult) : this.testRecordsService.testResult$))
-    );
+    this.testResult$ = this.testRecordsService.editingTestResult$.pipe(tap(editingTestResult => !editingTestResult && this.backToTechRecord()));
+
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
-    this.watchForUpdateSuccess();
-    this.testResult$
-      .pipe(
-        skipWhile(testResult => !testResult),
-        take(1)
-      )
-      .subscribe(testResult => {
-        this.testRecordsService.editingTestResult(testResult!);
-      });
 
     this.routerService
       .getQueryParam$('testType')
       .pipe(
         take(1),
-        filter(testType => !!testType)
+        tap(testType => !testType && this.backToTechRecord())
       )
       .subscribe(testTypeId => {
-        this.testRecordsService.testTypeChange(testTypeId!);
+        this.testRecordsService.contingencyTestTypeSelected(testTypeId!);
       });
+
+    this.watchForCreateSuccess();
   }
 
   ngOnDestroy(): void {
@@ -73,12 +63,8 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public get Roles() {
-    return Roles;
-  }
-
-  backToTestRecord(): void {
-    this.router.navigate(['..'], { relativeTo: this.route.parent });
+  backToTechRecord(): void {
+    this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   /**
@@ -89,22 +75,12 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     const errors: GlobalError[] = [];
     const forms = [];
 
-    if (this.baseTestRecordComponent) {
-      const { sections, defects } = this.baseTestRecordComponent;
-      if (sections) {
-        sections.forEach(section => {
-          forms.push(section.form);
-        });
-      }
-
-      if (defects) {
-        forms.push(defects.form);
-      }
+    if (this.baseTestRecordComponent?.sections) {
+      this.baseTestRecordComponent.sections.forEach(section => forms.push(section.form));
     }
-
-    // if all forms are not marcked as dirty, return
-    if (!this.isAnyFormDirty(forms) && (await firstValueFrom(this.testRecordsService.isSameTestTypeId$))) {
-      return;
+    
+    if (this.baseTestRecordComponent?.defects) {
+      forms.push(this.baseTestRecordComponent.defects.form);
     }
 
     forms.forEach(form => {
@@ -121,25 +97,17 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
     const testResult = await firstValueFrom(this.testResult$);
 
-    this.testRecordsService.updateTestResult(cloneDeep(testResult));
+    this.testRecordsService.createTestResult(cloneDeep(testResult));
   }
 
-  watchForUpdateSuccess() {
-    this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
-      this.backToTestRecord();
+  watchForCreateSuccess() {
+    this.actions$.pipe(ofType(createTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
+      this.backToTechRecord();
     });
-  }
-
-  get isTestTypeGroupEditable$(): Observable<boolean> {
-    return this.testRecordsService.isTestTypeGroupEditable$;
   }
 
   handleNewTestResult(testResult: any) {
     this.testRecordsService.updateEditingTestResult(testResult);
-  }
-
-  isAnyFormDirty(forms: Array<FormGroup>) {
-    return forms.some(form => form.dirty);
   }
 
   isAnyFormInvalid(forms: Array<FormGroup>) {

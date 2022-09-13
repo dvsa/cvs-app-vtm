@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
+import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
 import {
@@ -38,15 +39,15 @@ export class ReferenceDataService {
 
     const result = mockData.find(model => model.resourceKey === resourceKey);
 
-    return result
-      ? of(result)
-      : throwError(() => new Error('Reference data with specified resource key not found (404)'));
+    return result ? of(result) : throwError(() => new Error('Reference data with specified resource key not found (404)'));
   }
 
   private getMockReferenceData(type: ReferenceDataResourceType): ReferenceDataModelBase[] | Error {
     switch (type) {
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
+      case ReferenceDataResourceType.User:
+        return mockUsers;
       default:
         return new Error('Unknown reference data resourceType');
     }
@@ -65,8 +66,6 @@ export class ReferenceDataService {
   };
 
   getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions> {
-    return this.getAll$(resourceType).pipe(
-      map(options => options.map(option => ({ value: option.resourceKey, label: option.description })))
-    );
+    return this.getAll$(resourceType).pipe(map(options => options.map(option => ({ value: option.resourceKey, label: option.description }))));
   }
 }

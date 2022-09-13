@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestType, TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TestTypesService } from '@services/test-types/test-types.service';
@@ -10,9 +10,11 @@ import { Observable } from 'rxjs';
   styleUrls: ['./test-type-select.component.scss']
 })
 export class TestTypeSelectComponent {
+  @Output() testTypeSelected = new EventEmitter<TestType>();
+
   categories: Array<TestTypeCategory> = [];
 
-  constructor(private testTypesService: TestTypesService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private testTypesService: TestTypesService) {}
 
   get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
     return this.testTypesService.selectAllTestTypes$;
@@ -28,11 +30,7 @@ export class TestTypeSelectComponent {
     if (category.hasOwnProperty('nextTestTypesOrCategories')) {
       this.categories.push(category as TestTypeCategory);
     } else {
-      this.router.navigate(['..', 'amend-test-details'], {
-        queryParams: { testType: category.id },
-        queryParamsHandling: 'merge',
-        relativeTo: this.route
-      });
+      this.testTypeSelected.emit(category);
     }
   }
 

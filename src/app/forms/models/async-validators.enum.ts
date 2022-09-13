@@ -1,4 +1,6 @@
 export enum AsyncValidatorNames {
   ResultDependantOnCustomDefects = 'resultDependantOnCustomDefects',
-  UpdateTestStationDetails = 'updateTestStationDetails'
+  UpdateTestStationDetails = 'updateTestStationDetails',
+  UpdateTesterDetails = 'updateTesterDetails',
+  TestWithDefectTaxonomy = 'testWithDefectTaxonomy'
 }

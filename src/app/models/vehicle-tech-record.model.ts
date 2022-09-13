@@ -204,6 +204,7 @@ export interface TechRecordModel {
   drawbarCouplingFitted?: boolean;
   vehicleClass: {
     description: string;
+    code: string;
   };
   vehicleConfiguration: VehicleConfigurations;
   couplingType?: string;

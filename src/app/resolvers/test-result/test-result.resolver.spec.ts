@@ -48,9 +48,9 @@ describe('TestResultResolver', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       store.overrideSelector(selectedTestResultState, undefined);
       testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-c', { a: fetchSelectedTestResultSuccess, b: fetchTestTypesSuccess, c: fetchDefectsSuccess });
-        expectObservable(resolver.resolve()).toBe('-----(c|)', {
-          c: true
+        actions$ = hot('-a', { a: fetchSelectedTestResultSuccess });
+        expectObservable(resolver.resolve()).toBe('-(b|)', {
+          b: true
         });
       });
 
@@ -61,8 +61,8 @@ describe('TestResultResolver', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       store.overrideSelector(selectedTestResultState, undefined);
       testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-c', { a: fetchSelectedTestResultFailed, b: fetchTestTypesSuccess, c: fetchDefectsFailed });
-        expectObservable(resolver.resolve()).toBe('-----(b|)', {
+        actions$ = hot('-a', { a: fetchSelectedTestResultFailed });
+        expectObservable(resolver.resolve()).toBe('-(b|)', {
           b: false
         });
       });

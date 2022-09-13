@@ -21,7 +21,6 @@ import { TestSection } from './section-templates/test/test-section.template';
 import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
@@ -100,7 +99,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
-    testTypesGroup5And13:{
+    testTypesGroup5And13: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup5And13,
       visit: VisitSection,
@@ -109,7 +108,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
-    testTypesGroup6And11:{
+    testTypesGroup6And11: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup6And11,
       visit: VisitSection,
@@ -119,7 +118,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       required: RequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
     },
-    testTypesGroup7:{
+    testTypesGroup7: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: TestSectionGroup7,
       visit: VisitSection,
@@ -158,7 +157,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     }
-    
   },
   trl: {
     default: {
@@ -178,7 +176,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
-    testTypesGroup5And13:{
+    testTypesGroup5And13: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup5And13,
       visit: VisitSection,
@@ -187,7 +185,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
-    testTypesGroup6And11:{
+    testTypesGroup6And11: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup6And11,
       visit: VisitSection,
@@ -197,7 +195,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       required: RequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
     },
-    testTypesGroup7:{
+    testTypesGroup7: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup7,
       visit: VisitSection,
@@ -226,6 +224,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
-    },
+    }
   }
 };

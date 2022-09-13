@@ -26,10 +26,16 @@ describe('AmendedTestRecordComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, ResultOfTestComponent, VehicleHeaderComponent],
       imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule],
-      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), {provide: UserService,
-        useValue: {
-          roles$: of([Roles.TestResultView])
-        }}]
+      providers: [
+        TestRecordsService,
+        provideMockStore({ initialState: initialAppState }),
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of([Roles.TestResultView])
+          }
+        }
+      ]
     }).compileComponents();
   });
 

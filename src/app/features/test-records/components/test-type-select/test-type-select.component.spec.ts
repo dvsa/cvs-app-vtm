@@ -14,13 +14,11 @@ describe('TestTypeSelectComponent', () => {
   let component: TestTypeSelectComponent;
   let fixture: ComponentFixture<TestTypeSelectComponent>;
   let testTypesService: TestTypesService;
-  let router: Router;
-  let route: ActivatedRoute;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TestTypeSelectComponent],
-      imports: [RouterTestingModule],
+      imports: [],
       providers: [
         DynamicFormService,
         provideMockStore({ initialState: initialAppState }),
@@ -32,9 +30,6 @@ describe('TestTypeSelectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestTypeSelectComponent);
     component = fixture.componentInstance;
-    testTypesService = TestBed.inject(TestTypesService);
-    router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
   });
 
@@ -58,16 +53,13 @@ describe('TestTypeSelectComponent', () => {
   });
 
   describe(TestTypeSelectComponent.prototype.handleCategory.name, () => {
-    it('should set testTypeId control value and reset categories', () => {
-      router.navigate = jest.fn();
+    it('should emit selected testType through testTypeSelected', done => {
+      component.testTypeSelected.subscribe(val => {
+        expect(val.id).toBe('1');
+        done();
+      });
       component.categories = createMockList<TestTypeCategory>(3, id => createMock<TestTypeCategory>({ id: `${id + 1}` }));
       component.handleCategory(createMock<TestType>({ id: '1' }), 0);
-      expect(router.navigate).toHaveBeenCalledWith(['..', 'amend-test-details'], {
-        queryParams: { testType: '1' },
-        queryParamsHandling: 'merge',
-        relativeTo: route
-      });
-      expect(component.categories.length).toBe(0);
     });
 
     it('should push a new category into categories', () => {

@@ -13,7 +13,7 @@ import { Roles } from '@models/roles.enum';
 })
 export class SingleSearchResultComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord!: VehicleTechRecordModel;
-  vehicleDisplayData?: vehicleDisplayData;
+  vehicleDisplayData?: VehicleDisplayData;
   template?: FormNode;
   destroy$ = new Subject<void>();
 
@@ -28,6 +28,7 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
           (this.vehicleDisplayData = {
             vin: this.vehicleTechRecord.vin,
             vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
+            trailerId: this.vehicleTechRecord.trailerId,
             make: record?.chassisMake,
             model: record?.chassisModel,
             manufactureYear: record?.manufactureYear,
@@ -43,14 +44,15 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public get Roles() {
+  public get roles() {
     return Roles;
   }
 }
 
-interface vehicleDisplayData {
+interface VehicleDisplayData {
   vin?: string;
   vrm?: string;
+  trailerId?: string;
   make?: string;
   model?: string;
   manufactureYear?: number;

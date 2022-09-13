@@ -19,14 +19,14 @@ import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
 export enum FormNodeViewTypes {
-  STRING = 'string',
   DATE = 'date',
   DATETIME = 'dateTime',
-  TIME = 'time',
+  FULLWIDTH = 'fullWidth',
   HIDDEN = 'hidden',
-  VEHICLETYPE = 'vehicleType',
+  STRING = 'string',
   SUBHEADING = 'subHeading',
-  FULLWIDTH = 'fullWidth'
+  TIME = 'time',
+  VEHICLETYPE = 'vehicleType'
 }
 
 export enum FormNodeTypes {
@@ -39,14 +39,15 @@ export enum FormNodeTypes {
 }
 
 export enum FormNodeEditTypes {
-  TEXT = 'text',
   AUTOCOMPLETE = 'autocomplete',
-  NUMBER = 'number',
-  TEXTAREA = 'textarea',
+  CHECKBOX = 'checkbox',
   DATE = 'date',
-  RADIO = 'radio',
+  DATETIME = 'datetime',
   HIDDEN = 'hidden',
-  CHECKBOX = 'checkbox'
+  NUMBER = 'number',
+  RADIO = 'radio',
+  TEXT = 'text',
+  TEXTAREA = 'textarea'
 }
 
 export interface FormNodeOption<T> {

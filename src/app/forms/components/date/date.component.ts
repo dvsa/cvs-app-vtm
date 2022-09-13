@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { DateValidators } from '../../validators/date/date.validators';
@@ -16,24 +16,34 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
+  @Input() includeTime = false;
+
   private day_: Subject<number> = new Subject();
   private month_: Subject<number> = new Subject();
   private year_: Subject<number> = new Subject();
+  private hour_: Subject<number> = new Subject();
+  private minute_: Subject<number> = new Subject();
   private day$: Observable<number>;
   private month$: Observable<number>;
   private year$: Observable<number>;
+  private hour$: Observable<number>;
+  private minute$: Observable<number>;
   private subscriptions: Array<Subscription | undefined> = [];
   public originalDate: string = '';
 
   public day?: number;
   public month?: number;
   public year?: number;
+  public hour?: number;
+  public minute?: number;
 
   constructor(injector: Injector, changeDetectorRef: ChangeDetectorRef) {
     super(injector, changeDetectorRef);
     this.day$ = this.day_.asObservable();
     this.month$ = this.month_.asObservable();
     this.year$ = this.year_.asObservable();
+    this.hour$ = this.hour_.asObservable();
+    this.minute$ = this.minute_.asObservable();
   }
 
   ngOnInit(): void {
@@ -63,6 +73,14 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.year_.next(event);
   }
 
+  onHourChange(event: any) {
+    this.hour_.next(event);
+  }
+
+  onMinuteChange(event: any) {
+    this.minute_.next(event);
+  }
+
   valueWriteBack(value: string | null): void {
     if (value && typeof value === 'string') {
       const date = new Date(value);
@@ -72,6 +90,10 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
       this.month_.next(this.month);
       this.year = date.getFullYear();
       this.year_.next(this.year);
+      this.hour = date.getHours();
+      this.hour_.next(this.hour);
+      this.minute = date.getMinutes();
+      this.minute_.next(this.minute);
     }
   }
 
@@ -80,22 +102,23 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    return combineLatest({ day: this.day$, month: this.month$, year: this.year$ }).subscribe({
-      next: ({ day, month, year }) => {
-        if (!day || !month || !year) {
+    return combineLatest({ day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }).subscribe({
+      next: ({ day, month, year, hour, minute }) => {
+        if (!day || !month || !year || (this.includeTime && (!hour || !minute))) {
           this.onChange(null);
           return;
         }
 
         const date = new Date(Date.UTC(year, month - 1, day));
-        const hours = new Date(this.originalDate).getUTCHours();
-        const minutes = new Date(this.originalDate).getUTCMinutes();
-        const seconds = new Date(this.originalDate).getUTCSeconds();
+
+        hour = hour ?? new Date(this.originalDate).getHours();
+        minute = minute ?? new Date(this.originalDate).getMinutes();
+        const second = new Date(this.originalDate).getSeconds();
 
         if ('Invalid Date' !== date.toString()) {
-          date.setUTCHours(hours || 0);
-          date.setUTCMinutes(minutes || 0);
-          date.setUTCSeconds(seconds || 0);
+          date.setHours(hour || 0);
+          date.setMinutes(minute || 0);
+          date.setSeconds(second || 0);
         }
 
         this.onChange(date);

@@ -7,12 +7,11 @@ import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -53,13 +52,8 @@ export class BaseTestRecordComponent implements AfterViewInit {
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
-
   getDefects$(type: VehicleTypes): Observable<Defect[]> {
     return this.defectsStore.select(filteredDefects(type));
-  }
-
-  get testNumber$(): Observable<string | undefined> {
-    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
   }
 
   public get isTestTypeGroupEditable$(): Observable<boolean> {
@@ -72,5 +66,4 @@ export class BaseTestRecordComponent implements AfterViewInit {
   get sectionTemplates$(): Observable<FormNode[] | undefined> {
     return this.testRecordsService.sectionTemplates$;
   }
-
 }
