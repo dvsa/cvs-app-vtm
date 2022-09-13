@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '../../../forms/dynamic-forms.module';
-import { BaseTestRecordComponent } from '../components/base-test-record/base-test-record.component';
 import { TestRecordsModule } from '../test-records.module';
 import { AmendTestRecordsRoutingModule } from './amend-test-records-routing.module';
 import { TestAmendmentHistoryComponent } from './components/test-amendment-history/test-amendment-history.component';
