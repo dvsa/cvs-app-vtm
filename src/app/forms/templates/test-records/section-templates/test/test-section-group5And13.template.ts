@@ -125,6 +125,17 @@ export const TestSectionGroup5And13: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
+            },
+            {
+              name: 'prohibitionIssued',
+              type: FormNodeTypes.CONTROL,
+              label: 'Prohibition issued',
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             }
           ]
         }
