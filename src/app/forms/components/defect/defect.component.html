@@ -1,53 +1,49 @@
 <ng-template [ngTemplateOutlet]="isEditing ? editDefect : viewDefect" [ngTemplateOutletContext]="{ data: form }"></ng-template>
 
 <ng-template #viewDefect let-data="data">
-  <dl *ngIf="data.getCleanValue(data) as defect" class="govuk-summary-list">
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{
-        label: 'Defect label',
-        data: combined(defect.deficiencyRef, defect.deficiencyCategory)
-      }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Category', data: combined(defect.imNumber, defect.imDescription) }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Item', data: combined(defect.itemNumber, defect.itemDescription) }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{
-        label: 'Description',
-        data: combined(defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText)
-      }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(defect.additionalInformation?.location)) }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Repaired during test', data: combined(defect.prs) }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Prohibition issued', data: combined(defect.prohibitionIssued) }"
-    ></ng-template>
-
-    <ng-template
-      [ngTemplateOutlet]="viewDefectRow"
-      [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(defect.additionalInformation?.notes) }"
-    ></ng-template>
-  </dl>
+  <h1 class="govuk-heading-l">Defect details</h1>
+  <div class="govuk-grid-row govuk-!-margin-bottom-5">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-m">{{ defect.imDescription }}</span>
+      <h2 class="govuk-heading-s">{{ defect.deficiencyRef }} - {{ defect.itemDescription }} {{ defect.deficiencyText }}</h2>
+      <span class="govuk-tag govuk-tag--orange">{{ defect.deficiencyCategory }}</span>
+      <span *ngIf="defect.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-m">Defect Details</h2>
+      <dl class="govuk-summary-list">
+        <ng-template
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Category', data: combined(defect.imNumber, defect.imDescription) }"
+        ></ng-template>
+      </dl>
+    </div>
+  </div>
+  <ng-template
+    [ngTemplateOutlet]="viewDefectRow"
+    [ngTemplateOutletContext]="{ label: 'Item', data: combined(defect.itemNumber, defect.itemDescription) }"
+  ></ng-template>
+  <ng-template
+    [ngTemplateOutlet]="viewDefectRow"
+    [ngTemplateOutletContext]="{
+      label: 'Description',
+      data: combined(defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText)
+    }"
+  ></ng-template>
+  <ng-template
+    [ngTemplateOutlet]="viewDefectRow"
+    [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(defect.additionalInformation?.location)) }"
+  ></ng-template>
+  <ng-template
+    [ngTemplateOutlet]="viewDefectRow"
+    [ngTemplateOutletContext]="{ label: 'Prohibition issued', data: combined(defect.prohibitionIssued) }"
+  ></ng-template>
+  <ng-template
+    [ngTemplateOutlet]="viewDefectRow"
+    [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(defect.additionalInformation?.notes) }"
+  ></ng-template>
 </ng-template>
 
 <ng-template #viewDefectRow let-label="label" let-data="data">
@@ -58,18 +54,22 @@
 </ng-template>
 
 <ng-template #editDefect>
-  <app-button type="underline" (click)="removeDefect.emit(index)">Remove</app-button>
+  <h1 class="govuk-heading-l">Defect details</h1>
+  <div class="govuk-grid-row govuk-!-margin-bottom-5">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-m">{{ defect.imDescription }}</span>
+      <h2 class="govuk-heading-s">{{ defect.deficiencyRef }} - {{ defect.itemDescription }} {{ defect.deficiencyText }}</h2>
+      <span class="govuk-tag govuk-tag--orange">{{ defect.deficiencyCategory }}</span>
+      <span *ngIf="defect.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h3 class="govuk-heading-m">Defect details</h3>
+      <p class="govuk-hint">Fill any defect details that apply</p>
+    </div>
+  </div>
   <ng-container [formGroup]="form">
-    <app-text-input formControlName="deficiencyRef" label="Deficiency ref"></app-text-input>
-    <app-text-input formControlName="deficiencyCategory" label="Deficiency category"></app-text-input>
-    <app-text-input formControlName="imNumber" label="IM number"></app-text-input>
-    <app-text-input formControlName="imDescription" label="IM description"></app-text-input>
-    <app-text-input formControlName="itemNumber" label="Item No."></app-text-input>
-    <app-text-input formControlName="itemDescription" label="Item description"></app-text-input>
-    <app-text-input *ngIf="!isAdvisory" formControlName="deficiencyId" label="Deficiency ID"></app-text-input>
-    <app-text-input *ngIf="!isAdvisory" formControlName="deficiencySubId" label="Deficiency sub ID"></app-text-input>
-    <app-text-input *ngIf="!isAdvisory" formControlName="deficiencyText" label="Deficiency text"></app-text-input>
-
     <ng-container formGroupName="additionalInformation">
       <ng-container formGroupName="location">
         <app-radio-group
@@ -80,11 +80,10 @@
           [options]="item.value"
         ></app-radio-group>
       </ng-container>
-      <app-text-input *ngIf="info?.notes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-input>
+      <app-text-input *ngIf="includeNotes" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-input>
     </ng-container>
 
     <app-radio-group *ngIf="!isAdvisory" [name]="'prs-' + index" label="PRS" formControlName="prs" [options]="booleanOptions"></app-radio-group>
-
     <app-radio-group
       *ngIf="isDangerous"
       [name]="'prohibitionIssued-' + index"
@@ -93,4 +92,13 @@
       [options]="booleanOptions"
     ></app-radio-group>
   </ng-container>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-button-group">
+        <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
+        <a class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
+        <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">Cancel changes</a>
+      </div>
+    </div>
+  </div>
 </ng-template>

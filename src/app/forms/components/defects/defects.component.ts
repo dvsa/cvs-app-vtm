@@ -11,7 +11,8 @@ import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-defects[defects][template]',
-  templateUrl: './defects.component.html'
+  templateUrl: './defects.component.html',
+  styleUrls: ['./defects.component.scss']
 })
 export class DefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
@@ -21,8 +22,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   @Output() formChange = new EventEmitter();
 
-  form!: CustomFormGroup;
-
+  public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
   private _defectsForm?: CustomFormArray;
 
@@ -51,20 +51,21 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm?.controls.length;
   }
 
-  trackByFn = (index: number): number => index;
+  get testDefects(): TestResultDefect[] {
+    let defectArray: TestResultDefect[] = [];
 
-  getDefectForm = (i: number): CustomFormGroup => this.defectsForm?.controls[i] as CustomFormGroup;
-
-  getDefect(i: number): Defect | undefined {
-    const defectForm = this.getDefectForm(i);
-    const imNumber = defectForm.get(['imNumber'])?.value;
-
-    return imNumber && this.defects?.find(defect => defect.imNumber === imNumber);
+    for (let i = 0; i < this.defectCount; i++) {
+      const data = this.defectsForm.controls[i] as CustomFormGroup;
+      const defect = data.getCleanValue(data) as TestResultDefect;
+      defectArray = [...defectArray, defect];
+    }
+    return defectArray;
   }
 
-  getDefectCategory(i: number): string {
-    const defectForm = this.getDefectForm(i);
-    return defectForm.get(['deficiencyCategory'])?.value;
+  categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+      category
+    ];
   }
 
   handleDefectSelection(selection: { defect: Defect; item: Item; deficiency?: Deficiency }): void {
@@ -89,9 +90,5 @@ export class DefectsComponent implements OnInit, OnDestroy {
     }
 
     this.defectsForm.addControl(testResultDefect);
-  }
-
-  handleRemoveDefect(index: number): void {
-    this.defectsForm.removeAt(index);
   }
 }

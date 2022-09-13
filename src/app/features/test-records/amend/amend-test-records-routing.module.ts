@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DefectComponent } from '@forms/components/defect/defect.component';
 import { NoEditGuard } from '@guards/no-edit/no-edit.guard';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
@@ -48,10 +49,22 @@ const routes: Routes = [
           },
           {
             path: 'amend-test-details',
-            component: TestRecordComponent,
+            component: TestRouterOutletComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
             resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
-            canActivate: [RoleGuard]
+            canActivate: [RoleGuard],
+            children: [
+              {
+                path: '',
+                component: TestRecordComponent
+              },
+              {
+                path: 'defect/:defectIndex',
+                component: DefectComponent,
+                data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+                canActivate: [RoleGuard]
+              }
+            ]
           }
         ]
       },
@@ -60,6 +73,13 @@ const routes: Routes = [
         component: AmendedTestRecordComponent,
         data: { title: 'Amended test result' },
         canActivate: [NoEditGuard]
+      },
+      {
+        path: 'defect/:defectIndex',
+        component: DefectComponent,
+        data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
+        resolve: { load: TestResultResolver },
+        canActivate: [RoleGuard]
       }
     ]
   }
