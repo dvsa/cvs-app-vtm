@@ -9,7 +9,7 @@ describe('truncatePipe pipe tests', () => {
   });
 
   it('transforms "this string is too long" to "this string is too..."', () => {
-    expect(pipe.transform('this string is too long', [11, '...'])).toBe('this string...');
+    expect(pipe.transform('this string is too long', [11])).toBe('this string...');
   });
 
   it('transforms "this string is too long" to "this string is too:::"', () => {

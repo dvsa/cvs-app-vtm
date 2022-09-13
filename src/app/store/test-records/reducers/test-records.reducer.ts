@@ -1,4 +1,5 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
+import { Defect } from '@models/defects/defect.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
@@ -16,6 +17,8 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
+  removeDefect,
+  saveDefect,
   templateSectionsChanged,
   updateEditingTestResult,
   updateResultOfTest,
@@ -65,10 +68,42 @@ export const testResultsReducer = createReducer(
     ...state,
     editingTestResult: merge({}, action.testResult)
   })),
-  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) }))
+  on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
+  on(saveDefect, (state, action) => ({ ...state, editingTestResult: saveDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
+  on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
+
+function saveDefectAtIndex(testResultState: TestResultModel | undefined, defect: TestResultDefect, index: number): TestResultModel | undefined {
+  console.log(defect);
+
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  const testType = testResult.testTypes[0];
+  if (!testType.defects) {
+    return;
+  }
+  testType.defects[index] = defect;
+
+  return { ...testResult };
+}
+
+function removeDefectAtIndex(testResultState: TestResultModel | undefined, index: number): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  const testType = testResult.testTypes[0];
+  if (!testType.defects) {
+    return;
+  }
+  testType.defects.splice(index, 1);
+
+  return { ...testResult };
+}
 
 function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
   if (!testResultState) {

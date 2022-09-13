@@ -24,6 +24,7 @@ import { InterceptorModule } from './interceptors/interceptor.module';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
+import { SelectDefectComponent } from './app/forms/components/select-defect/select-defect.component';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -60,7 +61,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SelectDefectComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

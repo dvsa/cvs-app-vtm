@@ -12,7 +12,7 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { filter, firstValueFrom, Observable, of, skipWhile, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, Observable, of, skipWhile, Subject, switchMap, take, takeUntil, withLatestFrom } from 'rxjs';
 import { BaseTestRecordComponent } from '../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -45,28 +45,20 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     );
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.watchForUpdateSuccess();
-    this.testResult$
-      .pipe(
-        skipWhile(testResult => !testResult),
-        take(1)
-      )
-      .subscribe(testResult => {
-        this.testRecordsService.editingTestResult(testResult!);
-      });
 
-    this.routerService
-      .getQueryParam$('testType')
-      .pipe(
-        take(1),
-        filter(testType => !!testType)
-      )
-      .subscribe(testTypeId => {
-        this.testRecordsService.testTypeChange(testTypeId!);
+    combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
+      .pipe(take(1))
+      .subscribe(([testResult, testType, sectionTemplates]) => {
+        if (!sectionTemplates) {
+          this.testRecordsService.editingTestResult(testResult!);
+        }
+        if (testType && testType !== testResult?.testTypes[0].testTypeId) {
+          this.testRecordsService.testTypeChange(testType!);
+        }
       });
   }
 
   ngOnDestroy(): void {
-    this.testRecordsService.cancelEditingTestResult();
     this.errorService.clearErrors();
 
     this.destroy$.next();

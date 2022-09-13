@@ -27,6 +27,7 @@ const routes: Routes = [
         component: AmendTestComponent,
         data: { title: 'Amend test record', roles: Roles.TestResultAmend },
         canActivate: [RoleGuard],
+        resolve: { load: TestResultResolver },
         children: [
           {
             path: '',
@@ -36,7 +37,6 @@ const routes: Routes = [
             path: 'incorrect-test-type',
             component: IncorrectTestTypeComponent,
             data: { title: 'Select a test type', roles: Roles.TestResultAmend },
-            resolve: { load: TestResultResolver },
             canActivate: [RoleGuard],
             children: [
               {
@@ -56,6 +56,7 @@ const routes: Routes = [
                 path: '',
                 component: TestRecordComponent
               },
+
               {
                 path: 'defect/:defectIndex',
                 component: DefectComponent,

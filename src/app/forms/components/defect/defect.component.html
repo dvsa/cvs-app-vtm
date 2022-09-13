@@ -104,7 +104,7 @@
       <div class="govuk-button-group">
         <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
         <a class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
-        <a class="govuk-link govuk-link--no-visited-state" [routerLink]="['../../']">Cancel changes</a>
+        <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">Cancel changes</a>
       </div>
     </div>
   </div>
