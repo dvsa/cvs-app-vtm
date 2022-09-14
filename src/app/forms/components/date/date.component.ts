@@ -137,34 +137,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   
   }
 
-  /*subscribeAndPropagateChanges2() {
-    return combineLatest({ day: this.day$, month: this.month$, year: this.year$ }).subscribe({
-      
-      next: ({ day, month, year }) => {
-        console.log('YO!!!');
-        if (!day || !month || !year) {
-          console.log('YO2!!!');
-          this.onChange(null);
-          return;
-        }
-
-        const date = new Date(Date.UTC(year, month - 1, day));
-
-        const second = new Date(this.originalDate).getSeconds();
-
-        if ('Invalid Date' !== date.toString()) {
-          date.setHours( 0);
-          date.setMinutes( 0);
-          date.setSeconds( 0);
-        }
-
-        this.onChange(date);
-      }
-    });
-
-    
-  }*/
-
   addValidators() {
     this.control?.addValidators([DateValidators.validDate]);
   }
