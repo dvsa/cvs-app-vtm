@@ -16,6 +16,7 @@ import { DefectsState, filteredDefects } from '@store/defects';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 
 @Component({
   selector: 'app-defect[form][index][defect][vehicleType]',
@@ -47,7 +48,8 @@ export class DefectComponent implements OnInit, OnDestroy {
     private dfs: DynamicFormService,
     private pipe: DefaultNullOrEmpty,
     private router: Router,
-    private testResultsStore: Store<TestResultsState>
+    private testResultsStore: Store<TestResultsState>,
+    private resultService: ResultOfTestService
   ) {
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
   }
@@ -95,11 +97,13 @@ export class DefectComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     this.testResultsStore.dispatch(saveDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index }));
+    this.resultService.updateResultOfTest();
     this.navigateBack();
   }
 
   handleRemove() {
     this.testResultsStore.dispatch(removeDefect({ index: this.index }));
+    this.resultService.updateResultOfTest();
     this.navigateBack();
   }
 

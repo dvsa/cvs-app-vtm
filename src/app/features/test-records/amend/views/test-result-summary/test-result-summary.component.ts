@@ -23,12 +23,7 @@ export class TestResultSummaryComponent implements OnInit {
   techRecord$: Observable<TechRecordModel | undefined>;
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
-  constructor(
-    private defectsStore: Store<DefectsState>,
-    private routerService: RouterService,
-    private testRecordsService: TestRecordsService,
-    private techRecordService: TechnicalRecordService
-  ) {
+  constructor(private testRecordsService: TestRecordsService, private techRecordService: TechnicalRecordService) {
     this.techRecord$ = this.techRecordService.techRecord$;
   }
 
