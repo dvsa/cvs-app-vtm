@@ -102,7 +102,16 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    return combineLatest({ day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }).subscribe({
+    let dateFields;
+
+    if(this.includeTime){
+      dateFields = { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }
+    }else{
+      dateFields = { day: this.day$, month: this.month$, year: this.year$ }
+    }
+
+    return combineLatest(dateFields).subscribe({
+      
       next: ({ day, month, year, hour, minute }) => {
         if (!day || !month || !year || (this.includeTime && (!hour || !minute))) {
           this.onChange(null);
@@ -124,7 +133,37 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
         this.onChange(date);
       }
     });
+
+  
   }
+
+  /*subscribeAndPropagateChanges2() {
+    return combineLatest({ day: this.day$, month: this.month$, year: this.year$ }).subscribe({
+      
+      next: ({ day, month, year }) => {
+        console.log('YO!!!');
+        if (!day || !month || !year) {
+          console.log('YO2!!!');
+          this.onChange(null);
+          return;
+        }
+
+        const date = new Date(Date.UTC(year, month - 1, day));
+
+        const second = new Date(this.originalDate).getSeconds();
+
+        if ('Invalid Date' !== date.toString()) {
+          date.setHours( 0);
+          date.setMinutes( 0);
+          date.setSeconds( 0);
+        }
+
+        this.onChange(date);
+      }
+    });
+
+    
+  }*/
 
   addValidators() {
     this.control?.addValidators([DateValidators.validDate]);
