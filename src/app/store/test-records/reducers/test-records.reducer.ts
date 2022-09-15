@@ -22,7 +22,7 @@ import {
   fetchTestResultsSuccess,
   initialContingencyTest,
   removeDefect,
-  saveDefect,
+  updateDefect,
   templateSectionsChanged,
   updateEditingTestResult,
   updateResultOfTest,
@@ -77,26 +77,12 @@ export const testResultsReducer = createReducer(
     ...state,
     editingTestResult: { ...action.testResult } as TestResultModel
   })),
-  on(saveDefect, (state, action) => ({ ...state, editingTestResult: saveDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
   on(createDefect, (state, action) => ({ ...state, editingTestResult: createNewDefect(state.editingTestResult, action.defect) })),
+  on(updateDefect, (state, action) => ({ ...state, editingTestResult: updateDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
   on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
-
-function saveDefectAtIndex(testResultState: TestResultModel | undefined, defect: TestResultDefect, index: number): TestResultModel | undefined {
-  if (!testResultState) {
-    return;
-  }
-  const testResult = cloneDeep(testResultState);
-  const testType = testResult.testTypes[0];
-  if (!testType.defects) {
-    return;
-  }
-  testType.defects[index] = defect;
-
-  return { ...testResult };
-}
 
 function createNewDefect(testResultState: TestResultModel | undefined, defect: TestResultDefect): TestResultModel | undefined {
   if (!testResultState) {
@@ -108,6 +94,20 @@ function createNewDefect(testResultState: TestResultModel | undefined, defect: T
     return;
   }
   testType.defects.push(defect);
+
+  return { ...testResult };
+}
+
+function updateDefectAtIndex(testResultState: TestResultModel | undefined, defect: TestResultDefect, index: number): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  const testType = testResult.testTypes[0];
+  if (!testType.defects) {
+    return;
+  }
+  testType.defects[index] = defect;
 
   return { ...testResult };
 }

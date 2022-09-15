@@ -1,8 +1,11 @@
+import { Defect } from '@api/test-results';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { Action } from '@ngrx/store';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
+  createDefect,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
   fetchSelectedTestResultSuccess,
@@ -11,6 +14,8 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
+  removeDefect,
+  updateDefect,
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
@@ -370,4 +375,60 @@ describe('Test Results Reducer', () => {
     });
   });
 
+  describe('createDefect', () => {
+    it('should create defect', () => {
+      const defect = { imNumber: 2 } as TestResultDefect;
+      const testResult = {
+        testTypes: [
+          {
+            defects: [defect]
+          }
+        ]
+      } as unknown as TestResultModel;
+      const action = createDefect({ defect });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].defects?.length).toEqual(2);
+    });
+  });
+
+  describe('updateDefect', () => {
+    it('should create defect', () => {
+      const defect = { imNumber: 2 } as TestResultDefect;
+      const newDefect = { imNumber: 1 } as TestResultDefect;
+      const testResult = {
+        testTypes: [
+          {
+            defects: [defect]
+          }
+        ]
+      } as unknown as TestResultModel;
+      const action = updateDefect({ defect: newDefect, index: 0 });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      const path =
+        newState.editingTestResult?.testTypes[0] &&
+        newState.editingTestResult?.testTypes[0].defects &&
+        newState.editingTestResult?.testTypes[0].defects[0].imNumber;
+
+      expect(path).toEqual(1);
+    });
+  });
+
+  describe('removeDefect', () => {
+    it('should create defect', () => {
+      const defect = { imNumber: 2 } as TestResultDefect;
+      const testResult = {
+        testTypes: [
+          {
+            defects: [defect]
+          }
+        ]
+      } as unknown as TestResultModel;
+      const action = removeDefect({ index: 0 });
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+
+      expect(newState.editingTestResult?.testTypes[0].defects?.length).toEqual(0);
+    });
+  });
 });

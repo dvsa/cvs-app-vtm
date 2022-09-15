@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { select, Store } from '@ngrx/store';
-import { createDefect, removeDefect, saveDefect, selectedTestResultState, TestResultsState, toEditOrNotToEdit } from '@store/test-records';
+import { createDefect, removeDefect, TestResultsState, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { filter, Subject, Subscription, takeUntil, debounceTime, take, withLatestFrom } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
@@ -119,8 +119,8 @@ export class DefectComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.index) {
-      this.testResultsStore.dispatch(saveDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index }));
+    if (this.index || this.index === 0) {
+      this.testResultsStore.dispatch(updateDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index }));
     } else {
       this.testResultsStore.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect }));
     }

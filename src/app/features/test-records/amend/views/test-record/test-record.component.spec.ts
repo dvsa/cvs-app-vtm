@@ -193,7 +193,6 @@ describe('TestRecordComponent', () => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(false));
       fixture.detectChanges();
       const banner = el.query(By.css('div.govuk-notification-banner'));
-      console.log(banner);
       expect(banner).toBeTruthy();
     }));
 

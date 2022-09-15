@@ -80,7 +80,7 @@
           [options]="item.value"
         ></app-radio-group>
       </ng-container>
-      <app-text-input *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-input>
+      <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
     </ng-container>
 
     <app-radio-group *ngIf="!isAdvisory" [name]="'prs-' + index" label="PRS" formControlName="prs" [options]="booleanOptions"></app-radio-group>
@@ -96,8 +96,8 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-button-group">
         <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
-        <a *ngIf="index" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
-        <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">Cancel changes</a>
+        <a *ngIf="index || index === 0" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
+        <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">{{ index || index === 0 ? 'Cancel changes' : 'Cancel' }}</a>
       </div>
     </div>
   </div>
