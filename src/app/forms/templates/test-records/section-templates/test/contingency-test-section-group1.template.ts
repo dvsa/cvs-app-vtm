@@ -10,6 +10,13 @@ export const ContingencyTestSectionGroup1: FormNode = {
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
+      name: 'contingencyTestNumber',
+      label: 'Contingency Test Number',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMERICSTRING,
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }]
+    },
+    {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,

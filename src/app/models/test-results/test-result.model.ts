@@ -7,6 +7,7 @@ import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TestCodes } from './testCodes.enum';
+import { TypeOfTest } from './typeOfTest.enum';
 
 export interface TestResultModel {
   testResultId: string;
@@ -51,6 +52,12 @@ export interface TestResultModel {
    * Applicable only when updating/creating a test from VTM
    */
   lastUpdatedByName?: string;
+  /**
+   * Applicable only when updating/creating a test from VTM
+   */
+  typeOfTest?: TypeOfTest;
+  contingencyTestNumber?: string;
+  source?: string;
   /**
    * Applicable only when updating/creating a test from VTM
    */

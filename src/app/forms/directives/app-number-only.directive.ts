@@ -1,3 +1,4 @@
+import { keyframes } from '@angular/animations';
 import { Directive, ElementRef, HostListener, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
@@ -12,8 +13,8 @@ export class NumberOnlyDirective {
 
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent): void {
-    const exclude = ['+', '-', 'e', '.'];
-    if (exclude.includes(e.key)) {
+    const number = new RegExp(/^\d*$/);
+    if (!number.test(e.key.toString())) {
       e.preventDefault();
     }
   }
