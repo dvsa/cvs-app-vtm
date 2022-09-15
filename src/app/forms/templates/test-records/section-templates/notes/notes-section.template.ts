@@ -20,6 +20,7 @@ export const NotesSection: FormNode = {
               name: 'additionalNotesRecorded',
               label: 'Additional Notes',
               type: FormNodeTypes.CONTROL,
+              value: '',
               editType: FormNodeEditTypes.TEXTAREA,
               validators: [{ name: ValidatorNames.MaxLength, args: 500 }]
             }

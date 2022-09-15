@@ -1,4 +1,6 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const VehicleSectionDefaultTrl: FormNode = {
   name: 'vehicleSection',
@@ -9,14 +11,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
     {
       name: 'vin',
       label: 'VIN/chassis number',
-      value: '',
-      disabled: true,
-
-      type: FormNodeTypes.CONTROL
-    },
-    {
-      name: 'vrm',
-      label: 'VRM',
       value: '',
       disabled: true,
 
@@ -34,10 +28,11 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
-      disabled: true,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
-
-      type: FormNodeTypes.CONTROL
+      options: [],
+      referenceData: ReferenceDataResourceType.CountryOfRegistration,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',

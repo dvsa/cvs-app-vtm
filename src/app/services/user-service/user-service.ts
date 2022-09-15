@@ -68,4 +68,8 @@ export class UserService implements OnDestroy {
   get inProgress$(): Observable<InteractionStatus> {
     return this.msalBroadcastService.inProgress$;
   }
+
+  get user$(): Observable<UserServiceState.UserServiceState> {
+    return this.store.pipe(select(UserServiceState.user));
+  }
 }

@@ -10,7 +10,7 @@
     name="{{ name }}"
     type="number"
     [(ngModel)]="value"
-    [disabled]="disabled ?? false"
+    [disabled]="disabled"
     (ngModelChange)="onChange($event)"
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"

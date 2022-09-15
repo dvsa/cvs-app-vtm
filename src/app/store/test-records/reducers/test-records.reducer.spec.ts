@@ -1,4 +1,6 @@
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestStation } from '@models/test-stations/test-station.model';
+import { Action } from '@ngrx/store';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {
   fetchSelectedTestResult,
@@ -9,6 +11,7 @@ import {
   fetchTestResultsBySystemNumberFailed,
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
+  updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
   updateTestResultSuccess
@@ -164,4 +167,207 @@ describe('Test Results Reducer', () => {
       });
     });
   });
+
+  describe('calculateTestResult', () => {
+    let action: Action;
+    beforeEach(() => {
+      action = updateResultOfTest();
+    });
+
+    it('should return a testType with a testResult of pass if empty defects', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'fail',
+            defects: []
+          }
+        ]
+      } as unknown as TestResultModel;
+      // const updatedTestResult = service.calculateTestResult(testResult);
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('pass');
+    });
+
+    it('should not change the test result of defects key is not present', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'fail'
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual(testResult.testTypes[0].testResult);
+    });
+    it('should return a testType with a testResult of pass if advisory defect', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'fail',
+            defects: [
+              {
+                deficiencyCategory: 'advisory'
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('pass');
+    });
+    it('should return a testType with a testResult of pass if minor defect', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'fail',
+            defects: [
+              {
+                deficiencyCategory: 'minor'
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('pass');
+    });
+    it('should return a testType with a testResult of pass if minor and advisory defect', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'fail',
+            defects: [
+              {
+                deficiencyCategory: 'minor'
+              },
+              {
+                deficiencyCategory: 'advisory'
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('pass');
+    });
+    it('should return a testType with a testResult of fail if at least one major defect', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'pass',
+            defects: [
+              {
+                deficiencyCategory: 'major'
+              },
+              {
+                deficiencyCategory: 'advisory'
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('fail');
+    });
+    it('should return a testType with a testResult of fail if at least one dangerous defect', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'pass',
+            defects: [
+              {
+                deficiencyCategory: 'dangerous'
+              },
+              {
+                deficiencyCategory: 'advisory'
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('fail');
+    });
+    it('should return a testType with a testResult of prs if major defect is prs and other defects are advisory', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'pass',
+            defects: [
+              {
+                deficiencyCategory: 'major',
+                prs: true
+              },
+              {
+                deficiencyCategory: 'advisory'
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('prs');
+    });
+    it('should return a testType with a testResult of fail if not all major/dangerous defects are prs', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'pass',
+            defects: [
+              {
+                deficiencyCategory: 'major'
+              },
+              {
+                deficiencyCategory: 'dangerous',
+                prs: true
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('fail');
+    });
+    it('should handle multiple testTypes', () => {
+      const testResult = {
+        testTypes: [
+          {
+            testResult: 'pass',
+            defects: [
+              {
+                deficiencyCategory: 'major'
+              },
+              {
+                deficiencyCategory: 'dangerous',
+                prs: true
+              }
+            ]
+          },
+          {
+            testResult: 'pass',
+            defects: [
+              {
+                deficiencyCategory: 'dangerous',
+                prs: true
+              }
+            ]
+          },
+          {
+            testResult: 'fail',
+            defects: [
+              {
+                deficiencyCategory: 'advisory',
+                prs: true
+              }
+            ]
+          }
+        ]
+      } as TestResultModel;
+      const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
+      expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('fail');
+      expect(newState.editingTestResult?.testTypes[1].testResult).toEqual('prs');
+      expect(newState.editingTestResult?.testTypes[2].testResult).toEqual('pass');
+    });
+  });
+
 });

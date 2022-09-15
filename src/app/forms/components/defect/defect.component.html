@@ -66,31 +66,31 @@
     <app-text-input formControlName="imDescription" label="IM description"></app-text-input>
     <app-text-input formControlName="itemNumber" label="Item No."></app-text-input>
     <app-text-input formControlName="itemDescription" label="Item description"></app-text-input>
-    <app-text-input formControlName="deficiencyId" label="Deficiency ID"></app-text-input>
-    <app-text-input formControlName="deficiencySubId" label="Deficiency sub ID"></app-text-input>
-    <app-text-input formControlName="deficiencyText" label="Deficiency text"></app-text-input>
+    <app-text-input *ngIf="!isAdvisory" formControlName="deficiencyId" label="Deficiency ID"></app-text-input>
+    <app-text-input *ngIf="!isAdvisory" formControlName="deficiencySubId" label="Deficiency sub ID"></app-text-input>
+    <app-text-input *ngIf="!isAdvisory" formControlName="deficiencyText" label="Deficiency text"></app-text-input>
 
     <ng-container formGroupName="additionalInformation">
       <ng-container formGroupName="location">
-        <app-text-input formControlName="vertical" label="Vertical"></app-text-input>
-        <app-text-input formControlName="horizontal" label="Horizontal"></app-text-input>
-        <app-text-input formControlName="lateral" label="Lateral"></app-text-input>
-        <app-text-input formControlName="longitudinal" label="Longitudinal"></app-text-input>
-        <app-text-input formControlName="rowNumber" label="Row number"></app-text-input>
-        <app-text-input formControlName="seatNumber" label="Seat number"></app-text-input>
-        <app-text-input formControlName="axleNumber" label="Axle number"></app-text-input>
+        <app-radio-group
+          *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn"
+          [name]="item.key + index"
+          [label]="pascalCase(item.key)"
+          [formControlName]="item.key"
+          [options]="item.value"
+        ></app-radio-group>
       </ng-container>
-      <app-text-input formControlName="notes" label="Notes"></app-text-input>
+      <app-text-input *ngIf="info?.notes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-input>
     </ng-container>
 
-    <app-text-input formControlName="prs" label="PRS"></app-text-input>
+    <app-radio-group *ngIf="!isAdvisory" [name]="'prs-' + index" label="PRS" formControlName="prs" [options]="booleanOptions"></app-radio-group>
+
     <app-radio-group
-      formControlName="prohibitionIssued"
+      *ngIf="isDangerous"
+      [name]="'prohibitionIssued-' + index"
       label="Prohibition issued"
-      [options]="[
-        { value: true, label: 'Yes' },
-        { value: false, label: 'No' }
-      ]"
+      formControlName="prohibitionIssued"
+      [options]="booleanOptions"
     ></app-radio-group>
   </ng-container>
 </ng-template>

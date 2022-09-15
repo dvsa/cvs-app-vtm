@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-
 import { TechRecordHistoryComponent } from './tech-record-history.component';
 
 describe('TechRecordHistoryComponent', () => {
@@ -9,9 +8,8 @@ describe('TechRecordHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TechRecordHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [TechRecordHistoryComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,17 +1,17 @@
 export enum ValidatorNames {
-  Required = 'required',
-  Pattern = 'pattern',
   CustomPattern = 'customPattern',
-  Numeric = 'numeric',
-  MaxLength = 'maxlength',
-  MinLength = 'minlength',
+  DisableIfEquals = 'disableIfEquals',
+  EnableIfEquals = 'enableIfEquals',
   HideIfEmpty = 'hideIfEmpty',
   HideIfNotEqual = 'hideIfNotEqual',
-  HideIfParentSiblingNotEqual = 'hideIfParentSiblingNotEqual',
   HideIfParentSiblingEqual = 'hideIfParentSiblingEqual',
+  HideIfParentSiblingNotEqual = 'hideIfParentSiblingNotEqual',
+  MaxLength = 'maxlength',
+  MinLength = 'minlength',
+  Numeric = 'numeric',
+  Pattern = 'pattern',
+  Required = 'required',
   RequiredIfEquals = 'requiredIfEquals',
   RequiredIfNotEquals = 'requiredIfNotEquals',
-  ValidateDefectNotes = 'validateDefectNotes',
-  enableIfEquals = 'enableIfEquals',
-  disableIfEquals = 'disableIfEquals'
+  ValidateDefectNotes = 'validateDefectNotes'
 }

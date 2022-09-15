@@ -9,21 +9,24 @@ import {
   FormGroup,
   ValidatorFn
 } from '@angular/forms';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { Store } from '@ngrx/store';
+import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
 export enum FormNodeViewTypes {
-  STRING = 'string',
   DATE = 'date',
   DATETIME = 'dateTime',
-  TIME = 'time',
+  FULLWIDTH = 'fullWidth',
   HIDDEN = 'hidden',
-  VEHICLETYPE = 'vehicleType',
+  STRING = 'string',
   SUBHEADING = 'subHeading',
-  FULLWIDTH = 'fullWidth'
+  TIME = 'time',
+  VEHICLETYPE = 'vehicleType'
 }
 
 export enum FormNodeTypes {
@@ -36,13 +39,15 @@ export enum FormNodeTypes {
 }
 
 export enum FormNodeEditTypes {
-  TEXT = 'text',
   AUTOCOMPLETE = 'autocomplete',
-  NUMBER = 'number',
-  TEXTAREA = 'textarea',
+  CHECKBOX = 'checkbox',
   DATE = 'date',
+  DATETIME = 'datetime',
+  HIDDEN = 'hidden',
+  NUMBER = 'number',
   RADIO = 'radio',
-  HIDDEN = 'hidden'
+  TEXT = 'text',
+  TEXTAREA = 'textarea'
 }
 
 export interface FormNodeOption<T> {
@@ -58,13 +63,16 @@ export interface FormNode {
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
   label?: string;
+  delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
   validators?: { name: ValidatorNames; args?: any }[];
+  asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;
   hide?: boolean;
+  required?: boolean;
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
@@ -148,12 +156,13 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   constructor(
     meta: FormNode,
     controls: AbstractControl[],
+    store: Store<State>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
     asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
-    this.dynamicFormService = new DynamicFormService();
+    this.dynamicFormService = new DynamicFormService(store);
   }
 
   getCleanValue = cleanValue.bind(this);
@@ -162,8 +171,10 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
 
-  addControl() {
-    super.push(this.dynamicFormService.createForm(this.meta));
+  addControl(data?: any): void {
+    if (this.meta?.children) {
+      super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
+    }
   }
 }
 
@@ -176,7 +187,9 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
     } else if (control instanceof CustomFormControl) {
-      if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
+      if (control.meta.type === FormNodeTypes.CONTROL && control.meta.required && control.meta.hide) {
+        Array.isArray(cleanValue) ? cleanValue.push(control.meta.value || null) : (cleanValue[key] = control.meta.value || null);
+      } else if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
         Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
       }
     }

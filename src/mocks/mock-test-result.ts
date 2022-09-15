@@ -1,12 +1,13 @@
-import { TestResultModel } from '@models/test-result.model';
-import { TestType } from '@models/test-type.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestStationType } from '@models/test-stations/test-station-type.enum';
+import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
+import { TestType } from '@models/test-types/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
-import * as Emissions from '../app/models/emissions.enum';
-import { EuVehicleCategory } from '../app/models/eu-vehicle-category.enum';
-import { OdometerReadingUnits } from '../app/models/odometer-unit.enum';
-import { TestStationType } from '../app/models/test-station-type.enum';
+import * as Emissions from '../app/models/test-types/emissions.enum';
 import { VehicleTypes } from '../app/models/vehicle-tech-record.model';
 import { mockDefectList } from './mock-defects';
+import { resultOfTestEnum } from '../app/models/test-types/test-type.model';
 
 const mockTestTypeList = (numberOfItems: number = 1) =>
   createMockList<TestType>(numberOfItems, (i: number) => {
@@ -29,7 +30,7 @@ const mockTestTypeList = (numberOfItems: number = 1) =>
       additionalCommentsForAbandon: 'The vehicle was not submitted for test at the appointed time',
       testAnniversaryDate: new Date(now.setFullYear(now.getFullYear() - 1)).toISOString(),
       prohibitionIssued: false,
-      testResult: 'pass',
+      testResult: resultOfTestEnum.pass,
       seatbeltInstallationCheckDate: true,
       numberOfSeatbeltsFitted: 4,
       lastSeatbeltInstallationCheckDate: new Date().toISOString(),

@@ -1,0 +1,50 @@
+<div class="govuk-summary-list" *ngIf="isParentEditing">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Add a defect:</dt>
+    <dd id="test-defect" class="govuk-summary-list__value">
+      <app-button class="float-right" type="underline" (clicked)="toggleEditMode()">
+        {{ isEditing ? 'Cancel' : 'Add' }}
+      </app-button>
+    </dd>
+  </div>
+</div>
+
+<div *ngIf="isEditing" class="defects">
+  <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
+    <ol class="list">
+      <li *ngFor="let defect of defects" class="list__item" [ngClass]="{ 'list__item--active': defect === selectedDefect }">
+        <button (click)="handleSelect(defect, types.Defect)">
+          {{ defect.imNumber }}: {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
+        </button>
+      </li>
+    </ol>
+  </div>
+
+  <div *ngIf="selectedDefect" class="list_container">
+    <ol class="list">
+      <li *ngFor="let item of selectedDefect?.items" class="list__item" [ngClass]="{ 'list__item--active': item === selectedItem }">
+        <button (click)="handleSelect(item, types.Item)">
+          {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
+        </button>
+      </li>
+    </ol>
+  </div>
+
+  <div *ngIf="selectedItem" class="list_container">
+    <ol class="list">
+      <li
+        *ngFor="let deficiency of selectedItem?.deficiencies"
+        class="list__item"
+        [ngClass]="{ 'list__item--active': deficiency === selectedDeficiency }"
+      >
+        <button (click)="handleSelect(deficiency, types.Deficiency)">
+          {{ deficiency.deficiencyText }}
+        </button>
+      </li>
+
+      <li class="list__item">
+        <button (click)="handleSelect()">advisory (add an advisory note).</button>
+      </li>
+    </ol>
+  </div>
+</div>

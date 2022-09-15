@@ -4,12 +4,16 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { DynamicFormService } from './dynamic-form.service';
 import { CustomFormArray, CustomControl, CustomFormControl, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from './dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
 
 describe('DynamicFormService', () => {
   let service: DynamicFormService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
     service = TestBed.inject(DynamicFormService);
   });
 

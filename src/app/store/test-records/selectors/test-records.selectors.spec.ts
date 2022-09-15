@@ -1,12 +1,12 @@
 import { Params } from '@angular/router';
-import { Defect } from '@models/defect';
-import { TestResultModel } from '@models/test-result.model';
-import { TestType } from '@models/test-type.model';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestType } from '@models/test-types/test-type.model';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult } from '../../../../mocks/mock-test-result';
 import { initialTestResultsState, TestResultsState } from '../reducers/test-records.reducer';
 import {
-  isSameTestTypeId,
+  isTestTypeKeySame,
   selectAllTestResults,
   selectAmendedDefectData,
   selectDefectData,
@@ -160,8 +160,8 @@ describe('Test Results Selectors', () => {
     const amendedTestResultState = createMock<TestResultModel>({
       testTypes: createMockList<TestType>(1, i =>
         createMock<TestType>({
-          defects: createMockList<Defect>(1, i =>
-            createMock<Defect>({
+          defects: createMockList<TestResultDefect>(1, i =>
+            createMock<TestResultDefect>({
               imNumber: i
             })
           )
@@ -184,8 +184,8 @@ describe('Test Results Selectors', () => {
     });
   });
 
-  describe('isSameTestTypeId', () => {
-    it('should return false if the testTypeId is different', () => {
+  describe('isTestTypeKeySame', () => {
+    it('should return false if the property is different', () => {
       const amendTestResult = {
         testTypes: [
           {
@@ -202,11 +202,11 @@ describe('Test Results Selectors', () => {
           }
         ]
       } as TestResultModel;
-      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(false);
     });
 
-    it('should return true if the testTypeId is the same', () => {
+    it('should return true if the property is the same', () => {
       const amendTestResult = {
         testTypes: [
           {
@@ -223,7 +223,7 @@ describe('Test Results Selectors', () => {
           }
         ]
       } as TestResultModel;
-      const state = isSameTestTypeId.projector(amendTestResult, oldTestResult);
+      const state = isTestTypeKeySame('testTypeId').projector(amendTestResult, oldTestResult);
       expect(state).toBe(true);
     });
   });

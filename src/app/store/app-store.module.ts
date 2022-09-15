@@ -13,6 +13,7 @@ import { SpinnerStateModule } from '@store/spinner/spinner-state.module';
 import { ReferenceDataStateModule } from './reference-data/reference-data.module';
 import { TestStationsStateModule } from './test-stations/test-stations-state.module';
 import { TestTypesStateModule } from './test-types/test-types.module';
+import { DefectsStateModule } from './defects/defects-state.module';
 
 @NgModule({
   declarations: [],
@@ -27,15 +28,16 @@ import { TestTypesStateModule } from './test-types/test-types.module';
           logOnly: environment.production // Log-only mode in production
         })
       : [],
-    UserStateModule,
-    TechnicalRecordsStateModule,
-    TestRecordsStateModule,
+    DefectsStateModule,
     GlobalErrorStateModule,
+    ReferenceDataStateModule,
     RouterStateModule,
     SpinnerStateModule,
-    ReferenceDataStateModule,
+    TechnicalRecordsStateModule,
+    TestRecordsStateModule,
     TestStationsStateModule,
-    TestTypesStateModule
+    TestTypesStateModule,
+    UserStateModule
   ]
 })
 export class AppStoreModule {}

@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { CompleteTestResults, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
-import { TestResultModel } from '@models/test-result.model';
+import { masterTpl } from '@forms/templates/test-records/master.template';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { select, Store } from '@ngrx/store';
 import {
   cancelEditingTestResult,
+  contingencyTestTypeSelected,
+  createTestResult,
   editingTestResult,
   fetchTestResults,
   fetchTestResultsBySystemNumber,
-  isSameTestTypeId,
+  isTestTypeKeySame,
   sectionTemplates,
   selectAllTestResults,
   selectAmendedDefectData,
@@ -17,11 +20,13 @@ import {
   selectedTestResultState,
   testResultInEdit,
   TestResultsState,
+  testTypeIdChanged,
+  toEditOrNotToEdit,
   updateEditingTestResult,
   updateTestResult
 } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { Observable, throwError } from 'rxjs';
+import { map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +35,8 @@ export class TestRecordsService {
   constructor(
     private store: Store<TestResultsState>,
     private updateTestResultsService: UpdateTestResultsService,
-    private getTestResultService: GetTestResultsService
+    private getTestResultService: GetTestResultsService,
+    private createTestResultsService: CreateTestResultsService
   ) {}
 
   fetchTestResultbySystemNumber(
@@ -110,6 +116,14 @@ export class TestRecordsService {
     this.store.dispatch(updateTestResult({ value }));
   }
 
+  postTestResult(body: TestResultModel) {
+    return this.createTestResultsService.testResultsPost(body as CompleteTestResults, 'response', false);
+  }
+
+  createTestResult(value: any): void {
+    this.store.dispatch(createTestResult({ value }));
+  }
+
   static getTestTypeGroup(testTypeId: string): string | undefined {
     for (const groupName in TEST_TYPES) {
       if (TEST_TYPES[groupName as keyof typeof TEST_TYPES].includes(testTypeId)) {
@@ -120,7 +134,7 @@ export class TestRecordsService {
   }
 
   editingTestResult(testResult: TestResultModel): void {
-    this.store.dispatch(editingTestResult({ testResult }));
+    this.store.dispatch(editingTestResult({ testTypeId: testResult.testTypes[0].testTypeId }));
   }
 
   cancelEditingTestResult(): void {
@@ -132,6 +146,31 @@ export class TestRecordsService {
   }
 
   get isSameTestTypeId$(): Observable<boolean> {
-    return this.store.pipe(select(isSameTestTypeId));
+    return this.store.pipe(select(isTestTypeKeySame('testTypeId')));
+  }
+
+  testTypeChange(testTypeId: string) {
+    this.store.dispatch(testTypeIdChanged({ testTypeId }));
+  }
+
+  get isTestTypeGroupEditable$() {
+    return this.store.pipe(select(toEditOrNotToEdit)).pipe(
+      map(testResult => {
+        if (!testResult) {
+          return false;
+        }
+
+        const vehicleType = testResult.vehicleType;
+        const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
+        const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
+        const vehicleTpl = vehicleType && masterTpl[vehicleType];
+
+        return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
+      })
+    );
+  }
+
+  contingencyTestTypeSelected(testType: string) {
+    this.store.dispatch(contingencyTestTypeSelected({ testType }));
   }
 }

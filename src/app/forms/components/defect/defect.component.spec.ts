@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { DefectAdditionalInformationLocation } from '@models/defectAdditionalInformationLocation';
+import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
 import { SharedModule } from '@shared/shared.module';
 import { createMock } from 'ts-auto-mock';
 import { DefectComponent } from './defect.component';
@@ -27,7 +25,7 @@ describe('DefectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe(DefectComponent.prototype.mapLocationText.name, () => {
+  describe("mapLocationText", () => {
     it.each([
       ['', createMock<DefectAdditionalInformationLocation>()],
       ['', createMock<DefectAdditionalInformationLocation>({ axleNumber: undefined })],

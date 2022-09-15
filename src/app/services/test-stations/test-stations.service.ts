@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
-import { TestStation } from '@models/test-station.model';
+import { TestStation } from '@models/test-stations/test-station.model';
 import { Store } from '@ngrx/store';
 import { testStations, TestStationsState } from '@store/test-stations';
 import { map, Observable } from 'rxjs';
@@ -21,12 +21,14 @@ export class TestStationsService {
     return this.http.get<TestStation>(this.url + id, { responseType: 'json' });
   }
 
-  getTestStationsOptions(propertyName: string): Observable<MultiOptions> {
+  getTestStationsOptions(): Observable<MultiOptions> {
     return this.store.select(testStations).pipe(
-      map(testStations => testStations.map(testStation => {
-        const value = String(testStation[propertyName as keyof typeof testStation]);
-        return { value, label: value };
-      }))
+      map(testStations =>
+        testStations.map(testStation => {
+          const label = testStation.testStationName + ' - ' + testStation.testStationPNumber;
+          return { value: testStation.testStationPNumber, label };
+        })
+      )
     );
   }
 }

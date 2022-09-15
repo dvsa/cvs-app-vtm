@@ -133,8 +133,8 @@ describe('BaseControlComponent', () => {
       expect(component.meta).toBeUndefined();
     });
 
-    it('should return undefined for disabled', () => {
-      expect(component.disabled).toBeUndefined();
+    it('disabled should default to false', () => {
+      expect(component.disabled).toBeFalsy();
     });
   });
 });

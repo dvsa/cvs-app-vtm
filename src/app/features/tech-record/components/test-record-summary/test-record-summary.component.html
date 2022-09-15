@@ -21,9 +21,7 @@
         <td class="govuk-table__cell">{{ test.testTypeName }}</td>
         <td class="govuk-table__cell">{{ test.testResult }}</td>
         <td class="govuk-table__cell">
-          <a
-            id="view-test-{{ testRecord.testResultId }}"
-            routerLink="test-records/{{ testRecord.systemNumber }}/test-result/{{ testRecord.testResultId }}/{{ test.testNumber }}"
+          <a id="view-test-{{ testRecord.testResultId }}" routerLink="test-records/test-result/{{ testRecord.testResultId }}/{{ test.testNumber }}"
             >View</a
           >
         </td>
@@ -31,3 +29,6 @@
     </ng-container>
   </tbody>
 </table>
+<div *ngIf="vehicleTechRecord" class="govuk-button-group">
+  <a class="govuk-button" [routerLink]="'test-records/create-test/type'">Create a test for this vehicle</a>
+</div>

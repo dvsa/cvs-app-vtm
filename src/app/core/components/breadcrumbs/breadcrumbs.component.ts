@@ -8,8 +8,6 @@ import { distinctUntilChanged, map } from 'rxjs';
   styleUrls: ['./breadcrumbs.component.scss']
 })
 export class BreadcrumbsComponent {
-  breadcrumbs: Array<{ label: string; path: string }> = [];
-
   constructor(private routerService: RouterService) {}
 
   get breadcrumbs$() {
@@ -22,10 +20,10 @@ export class BreadcrumbsComponent {
         while (currentRoute?.firstChild) {
           const { routeConfig, data, url } = currentRoute.firstChild;
 
-          if (data.hasOwnProperty('title') && routeConfig?.path) {
+          if (data.hasOwnProperty('title') && routeConfig?.path && !breadcrumbs.some(b => b.label === data['title'])) {
             breadcrumbs.push({
               label: data['title'],
-              path: [...breadcrumbs.map(breadcrumb => breadcrumb.path), ...url.map(url => url.path)].join('/')
+              path: [...breadcrumbs.slice(-1).map(b => b.path), ...url.map(url => url.path)].join('/')
             });
           }
 

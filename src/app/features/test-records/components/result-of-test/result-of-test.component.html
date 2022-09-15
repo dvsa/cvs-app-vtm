@@ -1,0 +1,3 @@
+<ng-container *ngIf="resultOfTest$ | async as result">
+  <app-tag [type]="testResultType(result)">{{ result | defaultNullOrEmpty }}</app-tag>
+</ng-container>

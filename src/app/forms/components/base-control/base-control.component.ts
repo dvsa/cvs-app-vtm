@@ -39,7 +39,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   }
 
   get error(): string {
-    if (this.control && this.control.touched && this.control.invalid) {
+    if (this.control?.touched && this.control.invalid) {
       const { errors } = this.control;
       if (errors) {
         const errorList = Object.keys(errors);
@@ -60,7 +60,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   }
 
   get disabled() {
-    return this.control?.disabled;
+    return this.control?.disabled ?? false;
   }
 
   get meta() {

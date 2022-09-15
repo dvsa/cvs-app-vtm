@@ -1,0 +1,24 @@
+<div class="test_result_header">
+  <div class="test_name_and_date">
+    <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
+    <div class="date_and_result">
+      <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
+      <app-result-of-test></app-result-of-test>
+    </div>
+  </div>
+
+  <div class="tester_and_location">
+    <dl class="govuk-summary-list govuk-summary-list--no-border">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Accessor</dt>
+        <dd class="govuk-summary-list__value">{{ testResult?.testerName | defaultNullOrEmpty }}</dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Test location</dt>
+        <dd class="govuk-summary-list__value">{{ testResult?.testStationName | defaultNullOrEmpty }}</dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<ng-content></ng-content>

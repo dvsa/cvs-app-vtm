@@ -1,8 +1,8 @@
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
-import { TestResultModel } from '@models/test-result.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { createSelector } from '@ngrx/store';
-import { selectedTestResultState } from '@store/test-records';
+import { selectedTestResultState, toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -21,7 +21,7 @@ export const selectTestTypesTotal = createSelector(testTypesFeatureState, state 
 
 export const selectTestTypesLoadingState = createSelector(testTypesFeatureState, state => state.loading);
 
-export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, selectedTestResultState, (testTypes, testResult) => {
+export const selectTestTypesByVehicleType = createSelector(selectAllTestTypes, toEditOrNotToEdit, (testTypes, testResult) => {
   if (testResult) {
     return filterTestTypes(testTypes, testResult);
   }
