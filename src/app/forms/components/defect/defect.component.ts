@@ -80,9 +80,12 @@ export class DefectComponent implements OnInit, OnDestroy {
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
         } else if (defectRef) {
-          this.defectsStore.select(selectByDeficiencyRef(defectRef, this.vehicleType)).subscribe(([defect, item, deficiency]) => {
-            this.initializeDefect(defect as Defect, item as Item, deficiency as Deficiency);
-          });
+          this.defectsStore
+            .select(selectByDeficiencyRef(defectRef, this.vehicleType))
+            .pipe(take(1))
+            .subscribe(([defect, item, deficiency]) => {
+              this.initializeDefect(defect as Defect, item as Item, deficiency as Deficiency);
+            });
         }
       });
 

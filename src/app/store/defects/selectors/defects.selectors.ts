@@ -30,17 +30,17 @@ export const selectByImNumber = (imNumber: number, vehicleType: VehicleTypes) =>
 export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleTypes) =>
   createSelector(filteredDefects(vehicleType), defects => {
     const deRef = deficiencyRef.split('.');
+    let defect, item, deficiency;
     if (deRef) {
-      const defect = defects.find(d => d.imNumber === +deRef[0]);
+      defect = defects.find(d => d.imNumber === +deRef[0]);
       if (defect) {
-        const item = defect.items.find(i => i.itemNumber === +deRef[1]);
-        if (item) {
-          const deficiency = item.deficiencies.find(d => d.ref === deficiencyRef);
-          return [defect, item, deficiency];
+        item = defect.items.find(i => i.itemNumber === +deRef[1]);
+        if (item && deRef[3]) {
+          deficiency = item.deficiencies.find(d => d.ref === deficiencyRef);
         }
       }
     }
-    return deficiencyRef ?? defects.find(defect => defect.items.find(item => item.deficiencies.find(def => def.ref === deficiencyRef)));
+    return [defect, item, deficiency];
   });
 
 export const psvDefects = filteredDefects(VehicleTypes.PSV);
