@@ -34,6 +34,11 @@
       </div>
     </dl>
 
+    <app-edit-tech-record-button
+      [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [techRecord]="(currentTechRecord$ | async) || undefined"
+    ></app-edit-tech-record-button>
+
     <app-tech-record-summary [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"></app-tech-record-summary>
 
     <app-tech-record-history
