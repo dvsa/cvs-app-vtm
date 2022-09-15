@@ -3,7 +3,7 @@ import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/service
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { select, Store } from '@ngrx/store';
-import { createDefect, removeDefect, saveDefect, selectedTestResultState, TestResultsState } from '@store/test-records';
+import { createDefect, removeDefect, saveDefect, selectedTestResultState, TestResultsState, toEditOrNotToEdit } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { filter, Subject, Subscription, takeUntil, debounceTime, take, withLatestFrom } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
@@ -19,6 +19,8 @@ import { selectRouteParam } from '@store/router/selectors/router.selectors';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 
 @Component({
   selector: 'app-defect',
@@ -52,7 +54,8 @@ export class DefectComponent implements OnInit, OnDestroy {
     private pipe: DefaultNullOrEmpty,
     private router: Router,
     private testResultsStore: Store<TestResultsState>,
-    private resultService: ResultOfTestService
+    private resultService: ResultOfTestService,
+    private errorService: GlobalErrorService
   ) {
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'];
   }
@@ -62,7 +65,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     const defectRef = this.testResultsStore.pipe(select(selectRouteParam('ref')));
 
     this.testResultsStore
-      .select(selectedTestResultState)
+      .select(toEditOrNotToEdit)
       .pipe(
         withLatestFrom(defectIndex, defectRef),
         takeUntil(this.onDestroy$),
@@ -102,6 +105,17 @@ export class DefectComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
+    const errors: GlobalError[] = [];
+    DynamicFormService.updateValidity(this.form, errors);
+
+    if (errors.length > 0) {
+      this.errorService.setErrors(errors);
+    }
+
+    if (this.form.invalid) {
+      return;
+    }
+
     if (this.index) {
       this.testResultsStore.dispatch(saveDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index }));
     } else {

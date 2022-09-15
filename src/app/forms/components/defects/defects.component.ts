@@ -6,7 +6,6 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
@@ -26,13 +25,12 @@ export class DefectsComponent implements OnInit, OnDestroy {
   private _formSubscription = new Subscription();
   private _defectsForm?: CustomFormArray;
 
-  constructor(private dfs: DynamicFormService, private resultService: ResultOfTestService) {}
+  constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
       this.formChange.emit(event);
-      this.resultService.updateResultOfTest();
     });
   }
 

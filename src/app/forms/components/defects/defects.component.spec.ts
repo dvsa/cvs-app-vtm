@@ -82,23 +82,4 @@ describe('DefectsComponent', () => {
       expect(text.innerHTML).toBe(expectedText);
     }));
   });
-
-  describe('update the result of the test', () => {
-    it('should dispatch the action to update the result of the test on form change', fakeAsync(() => {
-      const dispatchSpy = jest.spyOn(store, 'dispatch');
-      const template = DefectsTpl;
-      const data = mockTestResult();
-      component.data = data;
-      component.template = template;
-      fixture.detectChanges();
-
-      expect(component.defectsForm.length).toBe(1);
-
-      component.handleRemoveDefect(0);
-      tick(500);
-      expect(dispatchSpy).toHaveBeenCalledTimes(1);
-      fixture.detectChanges();
-      expect(component.defectsForm.length).toBe(0);
-    }));
-  });
 });
