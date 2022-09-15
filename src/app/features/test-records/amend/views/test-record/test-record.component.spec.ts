@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectorRef, DebugElement } from '@angular/core';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -80,7 +80,6 @@ describe('TestRecordComponent', () => {
   it('should not display anything when there is no data', waitForAsync(() => {
     component.testResult$ = of(undefined);
 
-    // tick();
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('h1'))).toBeNull();
@@ -198,7 +197,6 @@ describe('TestRecordComponent', () => {
 
     it('should not render the banner if the test type id is supported', fakeAsync(() => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
-      // runOnPushChangeDetection(fixture);
       tick();
       fixture.detectChanges();
       const banner = el.query(By.css('div.govuk-notification-banner'));

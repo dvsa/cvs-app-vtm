@@ -12,38 +12,51 @@
   </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h2 class="govuk-heading-m">Defect Details</h2>
+      <h2 class="govuk-heading-m">Defect location</h2>
       <dl class="govuk-summary-list">
         <ng-template
+          *ngIf="defect!.additionalInformation?.location?.vertical"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Category', data: combined(defect!.imNumber, defect!.imDescription) }"
+          [ngTemplateOutletContext]="{ label: 'Vertical', data: defect!.additionalInformation?.location?.vertical }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.location?.horizontal"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Horizontal', data: defect!.additionalInformation?.location?.horizontal }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.location?.lateral"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Lateral', data: defect!.additionalInformation?.location?.lateral }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.location?.longitudinal"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Longitudinal', data: defect!.additionalInformation?.location?.longitudinal }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.location?.rowNumber"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Row Number', data: defect!.additionalInformation?.location?.rowNumber }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.location?.seatNumber"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Seat Number', data: defect!.additionalInformation?.location?.seatNumber }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.location?.axleNumber"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Axle Number', data: defect!.additionalInformation?.location?.axleNumber }"
+        ></ng-template>
+        <ng-template
+          *ngIf="defect!.additionalInformation?.notes"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Notes', data: defect!.additionalInformation?.notes }"
         ></ng-template>
       </dl>
     </div>
   </div>
-  <ng-template
-    [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Item', data: combined(defect!.itemNumber, defect!.itemDescription) }"
-  ></ng-template>
-  <ng-template
-    [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{
-      label: 'Description',
-      data: combined(defect!.deficiencyId, defect!.deficiencySubId, defect!.deficiencyText)
-    }"
-  ></ng-template>
-  <ng-template
-    [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(defect!.additionalInformation?.location)) }"
-  ></ng-template>
-  <ng-template
-    [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Prohibition issued', data: combined(defect!.prohibitionIssued) }"
-  ></ng-template>
-  <ng-template
-    [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(defect!.additionalInformation?.notes) }"
-  ></ng-template>
 </ng-template>
 
 <ng-template #viewDefectRow let-label="label" let-data="data">
@@ -72,13 +85,23 @@
   <ng-container [formGroup]="form">
     <ng-container formGroupName="additionalInformation">
       <ng-container formGroupName="location">
-        <app-radio-group
-          *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn"
-          [name]="item.key + index"
-          [label]="pascalCase(item.key)"
-          [formControlName]="item.key"
-          [options]="item.value"
-        ></app-radio-group>
+        <ng-container *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn">
+          <app-radio-group
+            *ngIf="item.value.length <= 4"
+            [name]="item.key + index"
+            [label]="pascalCase(item.key)"
+            [formControlName]="item.key"
+            [options]="item.value"
+          ></app-radio-group>
+
+          <app-select
+            *ngIf="item.value.length >= 5"
+            [name]="item.key + index"
+            [label]="pascalCase(item.key)"
+            [formControlName]="item.key"
+            [options]="item.value"
+          ></app-select>
+        </ng-container>
       </ng-container>
       <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
     </ng-container>
