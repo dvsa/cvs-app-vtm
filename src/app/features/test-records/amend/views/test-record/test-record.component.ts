@@ -12,13 +12,12 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { combineLatest, firstValueFrom, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-test-records',
-  templateUrl: './test-record.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './test-record.component.html'
 })
 export class TestRecordComponent implements OnInit, OnDestroy {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
@@ -46,7 +45,10 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.watchForUpdateSuccess();
     combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        filter(([testResult]) => !!testResult)
+      )
       .subscribe(([testResult, testType, sectionTemplates]) => {
         if (!sectionTemplates) {
           this.testRecordsService.editingTestResult(testResult!);

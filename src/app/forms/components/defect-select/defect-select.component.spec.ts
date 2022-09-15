@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Defect } from '@models/defects/defect.model';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 import { Item } from '@models/defects/item.model';
@@ -39,10 +41,10 @@ describe('DefectSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DefectSelectComponent ],
+      imports: [RouterTestingModule],
+      declarations: [DefectSelectComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -56,9 +58,13 @@ describe('DefectSelectComponent', () => {
   });
 
   it('should return all types', () => {
-    enum Types { Defect, Item, Deficiency };
-    expect(component.types).toStrictEqual(Types)
-  })
+    enum Types {
+      Defect,
+      Item,
+      Deficiency
+    }
+    expect(component.types).toStrictEqual(Types);
+  });
 
   describe('hasItems', () => {
     it('should correctly detect a defect with items', () => {

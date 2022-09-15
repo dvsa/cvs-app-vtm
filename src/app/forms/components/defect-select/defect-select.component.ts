@@ -16,8 +16,6 @@ import { takeUntil, filter, Subject } from 'rxjs';
   styleUrls: ['./defect-select.component.scss']
 })
 export class DefectSelectComponent implements OnInit, OnDestroy {
-  @Output() formChange = new EventEmitter<{ defect: Defect; item: Item; deficiency?: Deficiency }>();
-
   defects: Defect[] = [];
   isEditing = false;
   selectedDefect?: Defect;

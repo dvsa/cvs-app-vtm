@@ -15,6 +15,7 @@ import { DefectSelectComponent } from '../defect-select/defect-select.component'
 import { DefectComponent } from '../defect/defect.component';
 import { DefectsComponent } from './defects.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;
@@ -25,7 +26,7 @@ describe('DefectsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule],
-      declarations: [DefectComponent, DefectSelectComponent, DefectsComponent, ButtonComponent],
+      declarations: [DefectComponent, DefectSelectComponent, DefectsComponent, ButtonComponent, TruncatePipe],
       providers: [DynamicFormService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
