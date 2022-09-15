@@ -29,6 +29,8 @@ export class DynamicFormService {
       CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
     [ValidatorNames.MaxLength]: (args: number) => Validators.maxLength(args),
     [ValidatorNames.MinLength]: (args: number) => Validators.minLength(args),
+    [ValidatorNames.Max]: (args: number) => Validators.max(args),
+    [ValidatorNames.Min]: (args: number) => Validators.min(args),
     [ValidatorNames.Numeric]: () => CustomValidators.numeric(),
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,

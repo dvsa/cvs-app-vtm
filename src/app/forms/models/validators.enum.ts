@@ -8,6 +8,8 @@ export enum ValidatorNames {
   HideIfParentSiblingNotEqual = 'hideIfParentSiblingNotEqual',
   MaxLength = 'maxlength',
   MinLength = 'minlength',
+  Max = 'max',
+  Min = 'min',
   Numeric = 'numeric',
   Pattern = 'pattern',
   Required = 'required',
