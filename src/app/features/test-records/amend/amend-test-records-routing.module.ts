@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DefectSelectComponent } from '@forms/components/defect-select/defect-select.component';
 import { DefectComponent } from '@forms/components/defect/defect.component';
 import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
 import { RoleGuard } from '@guards/roles.guard';
@@ -64,6 +65,24 @@ const routes: Routes = [
                 component: DefectComponent,
                 data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
                 canActivate: [RoleGuard]
+              },
+              {
+                path: 'selectDefect',
+                component: TestRouterOutletComponent,
+                data: { title: 'Select Defect', roles: Roles.TestResultView },
+                canActivate: [RoleGuard],
+                children: [
+                  {
+                    path: '',
+                    component: DefectSelectComponent
+                  },
+                  {
+                    path: ':ref',
+                    component: DefectComponent,
+                    data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+                    canActivate: [RoleGuard]
+                  }
+                ]
               }
             ]
           }
@@ -72,7 +91,8 @@ const routes: Routes = [
       {
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
-        data: { title: 'Amended test result' }
+        data: { title: 'Amended test result', roles: Roles.TestResultView },
+        canActivate: [RoleGuard]
       },
       {
         path: 'defect/:defectIndex',

@@ -84,7 +84,7 @@ describe('DefectsComponent', () => {
   });
 
   describe('update the result of the test', () => {
-    it('should dispatch the action to udpate the result of the test on form change', fakeAsync(() => {
+    it('should dispatch the action to update the result of the test on form change', fakeAsync(() => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const template = DefectsTpl;
       const data = mockTestResult();

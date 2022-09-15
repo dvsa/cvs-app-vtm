@@ -8,6 +8,7 @@ import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
+  createDefect,
   createTestResult,
   createTestResultFailed,
   createTestResultSuccess,
@@ -77,14 +78,13 @@ export const testResultsReducer = createReducer(
     editingTestResult: { ...action.testResult } as TestResultModel
   })),
   on(saveDefect, (state, action) => ({ ...state, editingTestResult: saveDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
+  on(createDefect, (state, action) => ({ ...state, editingTestResult: createNewDefect(state.editingTestResult, action.defect) })),
   on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
 
 function saveDefectAtIndex(testResultState: TestResultModel | undefined, defect: TestResultDefect, index: number): TestResultModel | undefined {
-  console.log(defect);
-
   if (!testResultState) {
     return;
   }
@@ -94,6 +94,20 @@ function saveDefectAtIndex(testResultState: TestResultModel | undefined, defect:
     return;
   }
   testType.defects[index] = defect;
+
+  return { ...testResult };
+}
+
+function createNewDefect(testResultState: TestResultModel | undefined, defect: TestResultDefect): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  const testType = testResult.testTypes[0];
+  if (!testType.defects) {
+    return;
+  }
+  testType.defects.push(defect);
 
   return { ...testResult };
 }

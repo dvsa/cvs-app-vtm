@@ -7,19 +7,41 @@ const { selectAll } = defectsAdapter.getSelectors();
 
 export const defects = createSelector(defectsFeatureState, state => selectAll(state));
 
-export const filteredDefects = (type: VehicleTypes) => createSelector(defects, defects => {
-  return cloneDeep(defects)
-    .filter(defect => defect.forVehicleType.includes(type))
-    .map(defect => ({
-      ...defect,
-      items: defect.items
-        .filter(item => item.forVehicleType.includes(type))
-        .map(item => ({
-          ...item,
-          deficiencies: item.deficiencies.filter(deficiency => deficiency.forVehicleType.includes(type))
-        }))
-    }));
-});
+export const filteredDefects = (type: VehicleTypes) =>
+  createSelector(defects, defects => {
+    return cloneDeep(defects)
+      .filter(defect => defect.forVehicleType.includes(type))
+      .map(defect => ({
+        ...defect,
+        items: defect.items
+          .filter(item => item.forVehicleType.includes(type))
+          .map(item => ({
+            ...item,
+            deficiencies: item.deficiencies.filter(deficiency => deficiency.forVehicleType.includes(type))
+          }))
+      }));
+  });
+
+export const selectByImNumber = (imNumber: number, vehicleType: VehicleTypes) =>
+  createSelector(filteredDefects(vehicleType), defects => {
+    return defects.find(defect => defect.imNumber === imNumber);
+  });
+
+export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleTypes) =>
+  createSelector(filteredDefects(vehicleType), defects => {
+    const deRef = deficiencyRef.split('.');
+    if (deRef) {
+      const defect = defects.find(d => d.imNumber === +deRef[0]);
+      if (defect) {
+        const item = defect.items.find(i => i.itemNumber === +deRef[1]);
+        if (item) {
+          const deficiency = item.deficiencies.find(d => d.ref === deficiencyRef);
+          return [defect, item, deficiency];
+        }
+      }
+    }
+    return deficiencyRef ?? defects.find(defect => defect.items.find(item => item.deficiencies.find(def => def.ref === deficiencyRef)));
+  });
 
 export const psvDefects = filteredDefects(VehicleTypes.PSV);
 

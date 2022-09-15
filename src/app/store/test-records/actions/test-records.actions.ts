@@ -45,3 +45,4 @@ export const contingencyTestTypeSelected = createAction('[Test Results] continge
 
 export const saveDefect = createAction('[test-results] save defect', props<{ defect: TestResultDefect; index: number }>());
 export const removeDefect = createAction('[test-results] remove defect', props<{ index: number }>());
+export const createDefect = createAction('[test-results] create defect', props<{ defect: TestResultDefect }>());

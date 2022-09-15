@@ -40,4 +40,6 @@
     </ng-template>
   </div>
 </div>
-<app-defect-select class="section" [isParentEditing]="isEditing" [defects]="defects" (formChange)="handleDefectSelection($event)"></app-defect-select>
+
+<a *ngIf="isEditing" routerLink="selectDefect" class="govuk-button govuk-button--secondary">Add defect</a>
+<!-- <app-defect-select class="section" [isParentEditing]="isEditing" [defects]="defects" (formChange)="handleDefectSelection($event)"></app-defect-select> -->

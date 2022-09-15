@@ -1,4 +1,4 @@
-<div class="govuk-summary-list" *ngIf="isParentEditing">
+<!-- <div class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Add a defect:</dt>
     <dd id="test-defect" class="govuk-summary-list__value">
@@ -7,9 +7,10 @@
       </app-button>
     </dd>
   </div>
-</div>
+</div> -->
+<h1 class="govuk-heading-l">Select a defect</h1>
 
-<div *ngIf="isEditing" class="defects">
+<div class="defects">
   <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
     <ol class="list">
       <li *ngFor="let defect of defects" class="list__item" [ngClass]="{ 'list__item--active': defect === selectedDefect }">

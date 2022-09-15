@@ -4,10 +4,10 @@
   <h1 class="govuk-heading-l">Defect details</h1>
   <div class="govuk-grid-row govuk-!-margin-bottom-5">
     <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-m">{{ defect.imDescription }}</span>
-      <h2 class="govuk-heading-s">{{ defect.deficiencyRef }} - {{ defect.itemDescription }} {{ defect.deficiencyText }}</h2>
-      <span class="govuk-tag govuk-tag--orange">{{ defect.deficiencyCategory }}</span>
-      <span *ngIf="defect.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
+      <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
+      <h2 class="govuk-heading-s">{{ defect!.deficiencyRef }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}</h2>
+      <span class="govuk-tag govuk-tag--orange">{{ defect!.deficiencyCategory }}</span>
+      <span *ngIf="defect!.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
     </div>
   </div>
   <div class="govuk-grid-row">
@@ -16,33 +16,33 @@
       <dl class="govuk-summary-list">
         <ng-template
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Category', data: combined(defect.imNumber, defect.imDescription) }"
+          [ngTemplateOutletContext]="{ label: 'Category', data: combined(defect!.imNumber, defect!.imDescription) }"
         ></ng-template>
       </dl>
     </div>
   </div>
   <ng-template
     [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Item', data: combined(defect.itemNumber, defect.itemDescription) }"
+    [ngTemplateOutletContext]="{ label: 'Item', data: combined(defect!.itemNumber, defect!.itemDescription) }"
   ></ng-template>
   <ng-template
     [ngTemplateOutlet]="viewDefectRow"
     [ngTemplateOutletContext]="{
       label: 'Description',
-      data: combined(defect.deficiencyId, defect.deficiencySubId, defect.deficiencyText)
+      data: combined(defect!.deficiencyId, defect!.deficiencySubId, defect!.deficiencyText)
     }"
   ></ng-template>
   <ng-template
     [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(defect.additionalInformation?.location)) }"
+    [ngTemplateOutletContext]="{ label: 'Location', data: combined(mapLocationText(defect!.additionalInformation?.location)) }"
   ></ng-template>
   <ng-template
     [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Prohibition issued', data: combined(defect.prohibitionIssued) }"
+    [ngTemplateOutletContext]="{ label: 'Prohibition issued', data: combined(defect!.prohibitionIssued) }"
   ></ng-template>
   <ng-template
     [ngTemplateOutlet]="viewDefectRow"
-    [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(defect.additionalInformation?.notes) }"
+    [ngTemplateOutletContext]="{ label: 'Additional defect details', data: combined(defect!.additionalInformation?.notes) }"
   ></ng-template>
 </ng-template>
 
@@ -57,10 +57,10 @@
   <h1 class="govuk-heading-l">Defect details</h1>
   <div class="govuk-grid-row govuk-!-margin-bottom-5">
     <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-m">{{ defect.imDescription }}</span>
-      <h2 class="govuk-heading-s">{{ defect.deficiencyRef }} - {{ defect.itemDescription }} {{ defect.deficiencyText }}</h2>
-      <span class="govuk-tag govuk-tag--orange">{{ defect.deficiencyCategory }}</span>
-      <span *ngIf="defect.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
+      <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
+      <h2 class="govuk-heading-s">{{ defect!.deficiencyRef }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}</h2>
+      <span class="govuk-tag govuk-tag--orange">{{ defect!.deficiencyCategory }}</span>
+      <span *ngIf="defect!.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
     </div>
   </div>
   <div class="govuk-grid-row">
@@ -96,7 +96,7 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-button-group">
         <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
-        <a class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
+        <a *ngIf="index" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
         <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">Cancel changes</a>
       </div>
     </div>
