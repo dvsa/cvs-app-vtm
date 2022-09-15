@@ -1,41 +1,18 @@
-<div class="govuk-grid-row vehicle-overview govuk-!-margin-bottom-4">
-  <div class="govuk-grid-column-two-thirds">
-    <div class="vehicle_heading">
-      <h1 class="govuk-heading-l">
-        <span>{{ test.testTypeId | testTypeName: (selectAllTestTypes$ | async) | defaultNullOrEmpty }}</span>
-        <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
-      </h1>
-    </div>
-  </div>
-</div>
+<app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async">
+  <ng-container *appRoleRequired="roles.TestResultAmend">
+    <a
+      *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
+      [routerLink]="['amend-test']"
+      role="button"
+      draggable="false"
+      class="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      >Amend this test
+    </a>
+  </ng-container>
+</app-vehicle-header>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-one-half">
-    <h2 class="govuk-heading-m">Vehicle details</h2>
-    <dl class="govuk-summary-list">
-      <div *ngIf="!isTrailer" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">VRM</dt>
-        <dd class="govuk-summary-list__value">
-          <app-number-plate>{{ testResult.vrm }}</app-number-plate>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">VIN</dt>
-        <dd class="govuk-summary-list__value">
-          {{ testResult.vin }}
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Result</dt>
-        <dd class="govuk-summary-list__value">
-          <app-result-of-test></app-result-of-test>
-        </dd>
-      </div>
-    </dl>
-  </div>
-</div>
-
-<ng-container *ngIf="sectionTemplates.length > 0">
+<ng-container *ngIf="sectionTemplates$ | async as sectionTemplates">
   <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
     <app-defects
       *ngSwitchCase="'defects'"
@@ -47,7 +24,17 @@
       [data]="testResult"
       (formChange)="handleFormChange($event)"
     ></app-defects>
-
+    <ng-container *ngSwitchCase="'vehicleSection'">
+      <app-dynamic-form-group
+        *ngIf="isEditing"
+        class="section"
+        [id]="template.name"
+        [template]="template"
+        [data]="testResult"
+        [edit]="isEditing"
+        (formChange)="handleFormChange($event)"
+      ></app-dynamic-form-group>
+    </ng-container>
     <app-dynamic-form-group
       *ngSwitchDefault
       class="section"
@@ -59,3 +46,11 @@
     ></app-dynamic-form-group>
   </ng-container>
 </ng-container>
+
+<ng-template #notSupported>
+  <app-banner>
+    <ng-container title>Important</ng-container>
+
+    <ng-container content>Editing this record is not currently supported</ng-container>
+  </app-banner>
+</ng-template>

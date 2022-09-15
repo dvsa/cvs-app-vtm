@@ -22,6 +22,7 @@ import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
 import { TestRecordComponent } from './test-record.component';
 
@@ -39,7 +40,7 @@ describe('TestRecordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent, ResultOfTestComponent],
+      declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent, ResultOfTestComponent, VehicleHeaderComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, TestResultsApiModule, SharedModule],
       providers: [
         TestRecordsService,
