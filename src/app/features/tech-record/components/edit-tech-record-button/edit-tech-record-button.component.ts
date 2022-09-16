@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { Store } from '@ngrx/store';
+import { putUpdateTechRecords } from '@store/technical-records';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -13,7 +14,7 @@ export class EditTechRecordButtonComponent implements OnInit {
   isArchived?: boolean;
   hasProvisional?: boolean;
 
-  constructor(private techrecordService: TechnicalRecordService) {}
+  constructor(private store: Store) {}
 
   ngOnInit() {
     this.isArchived = this.techRecord?.statusCode === StatusCodes.ARCHIVED ? true : false;
@@ -25,13 +26,13 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   submitTechRecord() {
+    const systemNumber = this.vehicleTechRecord!.systemNumber
     if (this.hasProvisional) {
       console.log('ammend me');
       // Call the put endpoint here with system number, the old status code (which is the current one) and the tech record data
-      this.techrecordService.putUpdateTechRecords(this.vehicleTechRecord!.systemNumber, this.techRecord!);
+      this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber}));
     } else {
-      console.log('create me');
-      this.techrecordService.putUpdateTechRecords(this.vehicleTechRecord!.systemNumber, this.techRecord!);
+      this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber}));
       //Call the post route to add a provisional record with system number and tech record data
     }
   }

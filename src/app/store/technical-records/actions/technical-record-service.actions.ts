@@ -29,6 +29,10 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
+export const putUpdateTechRecords = createAction(`${prefix} putUpdateTechRecords`, props<{ systemNumber: string }>());
+export const putUpdateTechRecordsSuccess = createOutcomeAction('putUpdateTechRecords', true);
+export const putUpdateTechRecordsFailure = createOutcomeAction('putUpdateTechRecords');
+
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';
   const type = `${prefix} ${title} ${suffix}`;
