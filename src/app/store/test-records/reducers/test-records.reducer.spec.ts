@@ -1,7 +1,5 @@
-import { Defect } from '@api/test-results';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestStation } from '@models/test-stations/test-station.model';
 import { Action } from '@ngrx/store';
 import { mockTestResultList } from '../../../../mocks/mock-test-result';
 import {

@@ -5,14 +5,13 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { select, Store } from '@ngrx/store';
 import { createDefect, removeDefect, TestResultsState, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, Subscription, takeUntil, debounceTime, take, withLatestFrom } from 'rxjs';
+import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
-import { DefectAdditionalInformationLocation } from '@models/test-results/defectAdditionalInformationLocation';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DefectsState, filteredDefects, selectByDeficiencyRef, selectByImNumber } from '@store/defects';
+import { DefectsState, selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';

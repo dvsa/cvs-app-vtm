@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Defect } from '@models/defects/defect.model';
 import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
@@ -65,13 +65,6 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
     return item.deficiencies && item.deficiencies.length > 0;
   }
 
-  toggleEditMode(): void {
-    this.isEditing = !this.isEditing;
-    this.selectedDefect = undefined;
-    this.selectedItem = undefined;
-    this.selectedDeficiency = undefined;
-  }
-
   handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
     switch (type) {
       case Types.Defect:
@@ -86,11 +79,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
         this.router.navigate([this.selectedDeficiency!.ref], { relativeTo: this.route });
-        this.toggleEditMode();
         break;
       default:
         this.router.navigate([`${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}`], { relativeTo: this.route });
-        this.toggleEditMode();
         break;
     }
   }
