@@ -102,7 +102,16 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    return combineLatest({ day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }).subscribe({
+    let dateFields;
+
+    if(this.includeTime){
+      dateFields = { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }
+    }else{
+      dateFields = { day: this.day$, month: this.month$, year: this.year$ }
+    }
+
+    return combineLatest(dateFields).subscribe({
+      
       next: ({ day, month, year, hour, minute }) => {
         if (!day || !month || !year || (this.includeTime && (!hour || !minute))) {
           this.onChange(null);
@@ -124,6 +133,8 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
         this.onChange(date);
       }
     });
+
+  
   }
 
   addValidators() {
