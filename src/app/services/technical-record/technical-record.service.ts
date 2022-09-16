@@ -60,6 +60,13 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
+  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel) {
+    const queryStr = `${systemNumber}`;
+    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
+
+    return this.http.put<TechRecordModel>(url, techRecord, { responseType: 'json' });
+  }
+
   get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
   }
