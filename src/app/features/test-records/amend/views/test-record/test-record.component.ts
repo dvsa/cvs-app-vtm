@@ -51,6 +51,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe(testResult => {
+        testResult!.reasonForCreation = '';
         this.testRecordsService.editingTestResult(testResult!);
       });
 
