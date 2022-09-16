@@ -92,6 +92,7 @@
             [label]="pascalCase(item.key)"
             [formControlName]="item.key"
             [options]="item.value"
+            [inline]="item.value.length <= 2"
           ></app-radio-group>
 
           <app-select
@@ -107,12 +108,14 @@
     </ng-container>
 
     <app-radio-group *ngIf="!isAdvisory" [name]="'prs-' + index" label="PRS" formControlName="prs" [options]="booleanOptions"></app-radio-group>
+
     <app-radio-group
       *ngIf="isDangerous"
       [name]="'prohibitionIssued-' + index"
       label="Prohibition issued"
       formControlName="prohibitionIssued"
       [options]="booleanOptions"
+      [inline]="true"
     ></app-radio-group>
   </ng-container>
   <div class="govuk-grid-row">

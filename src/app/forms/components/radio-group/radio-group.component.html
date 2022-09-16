@@ -5,7 +5,7 @@
       <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     </legend>
     <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-    <div class="govuk-radios" data-module="govuk-radios">
+    <div class="govuk-radios {{ inline ? 'govuk-radios--inline' : '' }}" data-module="govuk-radios">
       <div *ngFor="let option of options; trackBy: trackByFn" class="govuk-radios__item">
         <input
           class="govuk-radios__input"

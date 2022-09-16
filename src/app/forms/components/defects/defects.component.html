@@ -15,10 +15,12 @@
         <tbody class="govuk-table__body">
           <tr *ngFor="let defect of testDefects; let i = index" class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a data-action="retain-data" routerLink="defect/{{ i }}" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
-                >{{ defect.deficiencyRef }}&nbsp;{{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : '' }}&nbsp;{{
-                  defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : ''
-                }}</a
+              <a
+                data-action="retain-data"
+                routerLink="defect/{{ i }}"
+                queryParamsHandling="preserve"
+                class="govuk-link govuk-link--no-visited-state"
+                >{{ defect.deficiencyRef }}</a
               >
             </td>
             <td class="govuk-table__cell">
