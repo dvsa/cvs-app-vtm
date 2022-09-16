@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export const PsvNotes: FormNode = {
   name: 'notesSection',
@@ -9,13 +9,17 @@ export const PsvNotes: FormNode = {
     {
       name: 'remarks',
       label: 'Notes',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXTAREA
     },
     {
       name: 'dispensations',
       type: FormNodeTypes.CONTROL,
       label: 'Dispensations',
-      value: ''
+      value: '',
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.TEXTAREA
     }
   ]
 };

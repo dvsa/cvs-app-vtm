@@ -30,6 +30,7 @@ import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
+import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/resonForCreation.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -37,6 +38,7 @@ import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechRecordSummaryComponent implements OnInit {
+  @Input() isEditable: boolean = false;
   @Input() vehicleTechRecord?: TechRecordModel;
   currentBrakeRecord?: Brakes;
   vehicleSummaryTemplate!: FormNode;
@@ -64,6 +66,7 @@ export class TechRecordSummaryComponent implements OnInit {
   trlAuthIntoServiceTemplate?: FormNode;
   trlManufacturerTemplate?: FormNode;
   ddaTemplate?: FormNode;
+  reasonForCreation?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
@@ -89,6 +92,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
+        this.reasonForCreation = reasonForCreationSection
         this.bodyTemplate = getBodyTemplate(true);
         this.tyresTemplate = getTyresSection(true);
         this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
