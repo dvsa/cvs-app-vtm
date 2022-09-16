@@ -63,13 +63,13 @@ const routes: Routes = [
               {
                 path: 'defect/:defectIndex',
                 component: DefectComponent,
-                data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+                data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
                 canActivate: [RoleGuard]
               },
               {
                 path: 'selectDefect',
                 component: TestRouterOutletComponent,
-                data: { title: 'Select Defect', roles: Roles.TestResultView },
+                data: { title: 'Select Defect', roles: Roles.TestResultAmend },
                 canActivate: [RoleGuard],
                 children: [
                   {
@@ -79,7 +79,7 @@ const routes: Routes = [
                   {
                     path: ':ref',
                     component: DefectComponent,
-                    data: { title: 'Defect', roles: Roles.TestResultView, isEditing: true },
+                    data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
                     canActivate: [RoleGuard]
                   }
                 ]
