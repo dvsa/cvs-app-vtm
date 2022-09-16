@@ -20,7 +20,9 @@ describe('ErrorMessageMap', () => {
     ['Name is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, 'Name']],
     ['This field is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, '']],
     ['Notes is required', ValidatorNames.ValidateDefectNotes, undefined],
-    ['foo', 'invalidTestResult', [{ message: 'foo' }]]
+    ['foo', 'invalidTestResult', [{ message: 'foo' }]],
+    ['Date must be in the past', ValidatorNames.PastDate, [true, 'Date']],
+    ['This date must be in the past', ValidatorNames.PastDate, [true, undefined]]
   ])('should return "%s" for %s with %o', (expected, key, props) => {
     props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });

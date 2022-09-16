@@ -290,3 +290,22 @@ describe('invalidOption', () => {
     expect(CustomValidators.invalidOption(new FormControl(input))).toEqual(expected);
   });
 });
+
+describe('pastDate', () => {
+  beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  it.each([
+    [null, ''],
+    [null, null],
+    [null, '2020-01-01T00:00:00.000Z'],
+    [{ pastDate: true }, '2022-01-01T00:00:01.000Z']
+  ])('should return %p when control value is %s', (expected: object | null, input: string | null) => {
+    expect(CustomValidators.pastDate(new FormControl(input))).toEqual(expected);
+  });
+});

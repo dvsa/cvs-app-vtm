@@ -1,8 +1,10 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControlDirective, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { combineLatest, filter, Observable, of, Subject, Subscription, map, takeUntil, fromEvent, withLatestFrom } from 'rxjs';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import validateDate from 'validate-govuk-date';
 
 @Component({
   selector: 'app-date',
@@ -17,6 +19,8 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() includeTime = false;
+  @ViewChild('dayEl') dayEl?: ElementRef<HTMLInputElement>;
+  @ViewChild('dayModel') dayModel?: AbstractControlDirective;
 
   private day_: Subject<number> = new Subject();
   private month_: Subject<number> = new Subject();
@@ -128,5 +132,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   addValidators() {
     this.control?.addValidators([DateValidators.validDate]);
+  }
+
+  get required() {
+    return this.meta?.validators?.map(v => v.name).includes(ValidatorNames.Required);
   }
 }

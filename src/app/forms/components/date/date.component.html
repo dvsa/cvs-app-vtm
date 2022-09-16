@@ -8,13 +8,16 @@
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="{{ name }}-day"> Day </label>
           <input
+            #dayEl="ngModel"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
+            [ngClass]="{'govuk-input--error': dayEl.invalid && (dayEl.dirty || dayEl.touched) && required && dayEl.errors?.['required']}"
             id="{{ name }}-day"
             name="{{ name }}-day"
             type="text"
             inputmode="numeric"
-            minlength="1"
+            minlength="2"
             maxlength="2"
+            required
             [(ngModel)]="day"
             [disabled]="disabled"
             (ngModelChange)="onDayChange($event)"
@@ -108,3 +111,4 @@
     </div>
   </fieldset>
 </div>
+<pre>{{ control?.errors | json }}</pre>

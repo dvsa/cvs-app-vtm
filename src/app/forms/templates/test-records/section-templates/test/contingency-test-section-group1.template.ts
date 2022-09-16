@@ -15,7 +15,7 @@ export const ContingencyTestSectionGroup1: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATETIME,
       editType: FormNodeEditTypes.DATETIME,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.PastDate }]
     },
     {
       name: 'testEndTimestamp',
@@ -98,7 +98,7 @@ export const ContingencyTestSectionGroup1: FormNode = {
               label: 'Start time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
-              validators: [{ name: ValidatorNames.Required }]
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.PastDate }]
             },
             {
               name: 'testTypeEndTimestamp',

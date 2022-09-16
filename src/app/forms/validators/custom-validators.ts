@@ -133,4 +133,13 @@ export class CustomValidators {
   static invalidOption: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     return '[INVALID_OPTION]' === control.value ? { invalidOption: true } : null;
   };
+
+  static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const now = new Date();
+    const date = control.value;
+    if (new Date(date).getTime() > now.getTime()) {
+      return { pastDate: true };
+    }
+    return null;
+  };
 }
