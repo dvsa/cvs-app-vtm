@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class VehicleTechnicalRecordComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
+  isEditable: boolean = true;
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   records$: Observable<TestResultModel[]>;
 

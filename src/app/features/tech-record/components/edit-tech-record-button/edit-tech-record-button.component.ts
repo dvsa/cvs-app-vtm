@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
@@ -8,17 +8,20 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() techRecord?: TechRecordModel;
-  editableState = false;
+  @Input() editableState = false;
   isArchived?: boolean;
   anyArchived?: boolean;
+
+  @Output() editableStateChange = new EventEmitter<boolean>()
 
   constructor() {}
 
   ngOnInit() {
-    this.isArchived = this.techRecord?.statusCode === StatusCodes.ARCHIVED ? true : false;
+    this.isArchived = this.techRecord?.statusCode === StatusCodes.ARCHIVED;
   }
 
   toggleEditMode() {
     this.editableState = !this.editableState;
+    this.editableStateChange.emit(this.editableState)
   }
 }
