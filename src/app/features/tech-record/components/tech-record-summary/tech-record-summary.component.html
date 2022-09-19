@@ -1,5 +1,19 @@
 <section>
   <app-dynamic-form-group
+    *ngIf="reasonForCreation"
+    [edit] = "isEditable"
+    [template]="reasonForCreation"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="notesTemplate"
+    [edit] = "isEditable"
+    [template]="notesTemplate"
+    [data]="vehicleTechRecord"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
     *ngIf="vehicleSummaryTemplate"
     [template]="vehicleSummaryTemplate"
     [data]="vehicleTechRecord"
@@ -39,13 +53,6 @@
   <app-dynamic-form-group
     *ngIf="documentsTemplate"
     [template]="documentsTemplate"
-    [data]="vehicleTechRecord"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="notesTemplate"
-    [edit] = "isEditable"
-    [template]="notesTemplate"
     [data]="vehicleTechRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
@@ -136,13 +143,6 @@
   <app-dynamic-form-group
     *ngIf="trlManufacturerTemplate"
     [template]="trlManufacturerTemplate"
-    [data]="vehicleTechRecord"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="reasonForCreation"
-    [edit] = "isEditable"
-    [template]="reasonForCreation"
     [data]="vehicleTechRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
