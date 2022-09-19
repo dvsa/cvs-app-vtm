@@ -27,7 +27,7 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
     if (template && template.currentValue) {
       this.form = this.dfs.createForm(template.currentValue, this.data);
     }
-    if (data.currentValue && data.currentValue !== data.previousValue) {
+    if (data && data.currentValue && data.currentValue !== data.previousValue) {
       this.form.patchValue(data.currentValue, { emitEvent: false });
     }
   }
