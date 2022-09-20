@@ -86,7 +86,7 @@ describe('DefectComponent', () => {
       expect(component.includeNotes).toEqual(true);
     });
 
-    it('should initialize notes to true', () => {
+    it('should initialize info dictionary to the longitude', () => {
       component.vehicleType = VehicleTypes.PSV;
 
       component.initializeInfoDictionary(defect);
