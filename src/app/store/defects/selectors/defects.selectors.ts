@@ -35,7 +35,7 @@ export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: Vehicl
       defect = defects.find(d => d.imNumber === +deRef[0]);
       if (defect) {
         item = defect.items.find(i => i.itemNumber === +deRef[1]);
-        if (item && deRef[3]) {
+        if (item && deRef[2]) {
           deficiency = item.deficiencies.find(d => d.ref === deficiencyRef);
         }
       }

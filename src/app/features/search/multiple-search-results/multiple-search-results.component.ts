@@ -1,6 +1,5 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';

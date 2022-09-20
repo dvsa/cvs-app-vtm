@@ -50,7 +50,6 @@ export class DefectComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private defectsStore: Store<DefectsState>,
     private dfs: DynamicFormService,
-    private pipe: DefaultNullOrEmpty,
     private router: Router,
     private testResultsStore: Store<TestResultsState>,
     private resultService: ResultOfTestService,
@@ -88,9 +87,12 @@ export class DefectComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.defectsStore.select(selectByImNumber(this.defect!.imNumber!, this.vehicleType)).subscribe(defectsTaxonomy => {
-      this.initializeInfoDictionary(defectsTaxonomy);
-    });
+    this.defectsStore
+      .select(selectByImNumber(this.defect!.imNumber!, this.vehicleType))
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(defectsTaxonomy => {
+        this.initializeInfoDictionary(defectsTaxonomy);
+      });
   }
 
   ngOnDestroy(): void {
@@ -123,18 +125,18 @@ export class DefectComponent implements OnInit, OnDestroy {
     } else {
       this.testResultsStore.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect }));
     }
-    this.resultService.updateResultOfTest();
+
     this.navigateBack();
   }
 
   handleRemove() {
     this.testResultsStore.dispatch(removeDefect({ index: this.index }));
-    this.resultService.updateResultOfTest();
     this.navigateBack();
   }
 
   navigateBack() {
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
+    this.resultService.updateResultOfTest();
+    this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
   }
 
   initializeInfoDictionary(defect: Defect | undefined) {
@@ -164,6 +166,7 @@ export class DefectComponent implements OnInit, OnDestroy {
       itemDescription: item.itemDescription,
       itemNumber: item.itemNumber,
 
+      //initializing if defect is advisory
       deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
       deficiencyRef: `${defect.imNumber}.${item.itemNumber}`
     };
