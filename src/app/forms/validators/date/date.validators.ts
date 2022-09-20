@@ -15,20 +15,20 @@ export class DateValidators {
         return { invalidDate: errors[0] };
       }
 
-      if (year.length < 4) {
-        return { invalidDate: { error: true, reason: `'${label}' year must be four digits` } };
+      if (year.length !== 4) {
+        return { invalidDate: { error: true, reason: `'${label || 'Date'}' year must be four digits` } };
       }
 
       const [hours, minutes] = t.split(':');
       if (includeTime) {
         if (!hours || !minutes) {
-          return { invalidDate: { error: true, reason: `'${label}' must include time` } };
+          return { invalidDate: { error: true, reason: `'${label || 'Date'}' must include time` } };
         }
         if (23 < Number.parseInt(hours, 10)) {
-          return { invalidDate: { error: true, reason: `'${label}' hours must be between 0 and 23` } };
+          return { invalidDate: { error: true, reason: `'${label || 'Date'}' hours must be between 0 and 23` } };
         }
         if (59 < Number.parseInt(minutes, 10)) {
-          return { invalidDate: { error: true, reason: `'${label}' minutes must be between 0 and 59` } };
+          return { invalidDate: { error: true, reason: `'${label || 'Date'}' minutes must be between 0 and 59` } };
         }
       }
 

@@ -16,5 +16,6 @@ export enum ValidatorNames {
   RequiredIfEquals = 'requiredIfEquals',
   RequiredIfNotEquals = 'requiredIfNotEquals',
   ValidateDefectNotes = 'validateDefectNotes',
-  PastDate = 'pastDate'
+  PastDate = 'pastDate',
+  CopyValueToRootControl = 'copyValueToRootControl'
 }
