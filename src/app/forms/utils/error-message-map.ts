@@ -17,7 +17,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.Min]: (err: { min: number }, label?: string) => `${label || DEFAULT_LABEL} must be more than ${err.min}`,
   [ValidatorNames.PastDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the past`,
   // Date errors
-  invalidDate: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is an invalid date`,
+  invalidDate: (err: { error: boolean; reason: string; index: number }, label?: string) => `${err.reason}`,
   dayRequired: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} day is required`
 };
 

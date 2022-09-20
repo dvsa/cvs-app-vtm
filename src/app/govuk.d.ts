@@ -8,5 +8,5 @@ declare module 'validate-govuk-date' {
     month: string | number,
     year: string | number,
     fieldName?: string
-  ): { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number } };
+  ): { error: boolean; date?: Date; errors?: [{ error: boolean; reason: string; index: number }] };
 }
