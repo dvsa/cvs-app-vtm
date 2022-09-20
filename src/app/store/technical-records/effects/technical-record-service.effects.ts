@@ -30,7 +30,7 @@ import {
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
-  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService,private userService: UserService) {}
+  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService, private userService: UserService) {}
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
@@ -74,18 +74,18 @@ export class TechnicalRecordServiceEffects {
     )
   );
 
-  updateTechnicalRecord$ = createEffect(() => 
+  updateTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(putUpdateTechRecords),
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
-      switchMap(([action, record, username, id]) => 
-        this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, {username, id}).pipe(
-          map(vehicleTechRecords => putUpdateTechRecordsSuccess({ vehicleTechRecords })),
-          catchError(error => of(putUpdateTechRecordsFailure({ error: this.getErrorMessage(error, 'the current search criteria')})))
+      switchMap(([action, record, username, id]) =>
+        this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }).pipe(
+          map(vehicleTechRecords => putUpdateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })),
+          catchError(error => of(putUpdateTechRecordsFailure({ error: this.getErrorMessage(error, 'the current search criteria') })))
         )
       )
     )
-  )
+  );
 
   getErrorMessage(error: any, search: string): string {
     if (typeof error !== 'object') {

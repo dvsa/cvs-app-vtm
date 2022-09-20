@@ -18,7 +18,10 @@ import {
   getBySystemNumberSuccess,
   getByAll,
   getByAllFailure,
-  getByAllSuccess
+  getByAllSuccess,
+  putUpdateTechRecords,
+  putUpdateTechRecordsSuccess,
+  putUpdateTechRecordsFailure
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -60,14 +63,19 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(getByAll, defaultArgs),
   on(getByAllSuccess, successArgs),
-  on(getByAllFailure, failureArgs)
+  on(getByAllFailure, failureArgs),
+
+  on(putUpdateTechRecords, defaultArgs),
+  on(putUpdateTechRecordsSuccess, successArgs),
+  on(putUpdateTechRecordsFailure, failureArgs)
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
-  return { ...state, vehicleTechRecords: [], loading: true };
+  return { ...state, loading: true };
 }
 
 function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: Array<VehicleTechRecordModel> }) {
+  console.log(data.vehicleTechRecords);
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
 }
 
