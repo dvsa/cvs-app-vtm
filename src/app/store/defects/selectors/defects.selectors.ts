@@ -23,9 +23,7 @@ export const filteredDefects = (type: VehicleTypes) =>
   });
 
 export const selectByImNumber = (imNumber: number, vehicleType: VehicleTypes) =>
-  createSelector(filteredDefects(vehicleType), defects => {
-    return defects.find(defect => defect.imNumber === imNumber);
-  });
+  createSelector(filteredDefects(vehicleType), defects => defects.find(defect => defect.imNumber === imNumber));
 
 export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleTypes) =>
   createSelector(filteredDefects(vehicleType), defects => {
