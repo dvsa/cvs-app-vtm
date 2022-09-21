@@ -23,23 +23,19 @@ export const filteredDefects = (type: VehicleTypes) =>
   });
 
 export const selectByImNumber = (imNumber: number, vehicleType: VehicleTypes) =>
-  createSelector(filteredDefects(vehicleType), defects => {
-    return defects.find(defect => defect.imNumber === imNumber);
-  });
+  createSelector(filteredDefects(vehicleType), defects => defects.find(defect => defect.imNumber === imNumber));
 
 export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleTypes) =>
   createSelector(filteredDefects(vehicleType), defects => {
     const deRef = deficiencyRef.split('.');
     let defect, item, deficiency;
+    
     if (deRef) {
       defect = defects.find(d => d.imNumber === +deRef[0]);
-      if (defect) {
-        item = defect.items.find(i => i.itemNumber === +deRef[1]);
-        if (item && deRef[2]) {
-          deficiency = item.deficiencies.find(d => d.ref === deficiencyRef);
-        }
-      }
+      item = defect?.items.find(i => i.itemNumber === +deRef[1]);
+      deficiency = item?.deficiencies.find(d => d.ref === deficiencyRef);
     }
+    
     return [defect, item, deficiency];
   });
 
