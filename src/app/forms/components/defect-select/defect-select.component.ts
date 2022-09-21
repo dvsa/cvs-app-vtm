@@ -39,9 +39,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
         filter(testResult => !!testResult)
       )
-      .subscribe(testResult => {
-        this.vehicleType = testResult!.vehicleType;
-      });
+      .subscribe(testResult => this.vehicleType = testResult!.vehicleType);
 
     this.defectsStore
       .select(filteredDefects(this.vehicleType))
