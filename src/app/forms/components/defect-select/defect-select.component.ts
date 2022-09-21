@@ -43,9 +43,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         this.vehicleType = testResult!.vehicleType;
       });
 
-    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe(defectsTaxonomy => {
-      this.defects = defectsTaxonomy;
-    });
+    this.defectsStore
+      .select(filteredDefects(this.vehicleType))
+      .subscribe(defectsTaxonomy => this.defects = defectsTaxonomy);
   }
 
   ngOnDestroy(): void {
