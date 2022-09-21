@@ -1,10 +1,10 @@
 import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AbstractControlDirective, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { combineLatest, filter, Observable, of, Subject, Subscription, map, takeUntil, fromEvent, withLatestFrom, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import validateDate from 'validate-govuk-date';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
-import validateDate from 'validate-govuk-date';
 
 @Component({
   selector: 'app-date',
@@ -126,16 +126,21 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
         minute = this.includeTime ? minute : this.originalDate ? new Date(this.originalDate).getMinutes() : '00';
         const second = this.originalDate ? new Date(this.originalDate).getSeconds() : '00';
 
-        this.onChange(`${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${second}.000Z`);
+        this.onChange(
+          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000Z`
+        );
       }
     });
   }
 
-  padded(n: number | undefined, l = 2) {
+  padded(n: number | string | undefined, l = 2) {
     const val = undefined !== n && null !== n ? String(n).padStart(l, '0') : 'NaN';
     return 'NaN' === val ? '' : val;
   }
 
+  /**
+   * Note: This function is not testable because `validDate` returns a refference that can't be comapred to in spec file with `hasValidator` function.
+   */
   addValidators() {
     this.control?.addValidators([DateValidators.validDate(this.includeTime, this.label)]);
   }
