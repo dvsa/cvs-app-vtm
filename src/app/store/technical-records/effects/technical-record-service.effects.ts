@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { UserService } from '@services/user-service/user-service';
+import { catchError, map, mergeMap, switchMap, take, withLatestFrom } from 'rxjs/operators';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -21,12 +22,15 @@ import {
   getByVrmSuccess,
   getByAll,
   getByAllFailure,
-  getByAllSuccess
+  getByAllSuccess,
+  putUpdateTechRecords,
+  putUpdateTechRecordsSuccess,
+  putUpdateTechRecordsFailure
 } from '../actions/technical-record-service.actions';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
-  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService) {}
+  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService, private userService: UserService) {}
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
@@ -67,6 +71,19 @@ export class TechnicalRecordServiceEffects {
             );
         }
       })
+    )
+  );
+
+  updateTechnicalRecord$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(putUpdateTechRecords),
+      withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
+      switchMap(([action, record, username, id]) =>
+        this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }).pipe(
+          map(vehicleTechRecords => putUpdateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })),
+          catchError(error => of(putUpdateTechRecordsFailure({ error: this.getErrorMessage(error, 'the current search criteria') })))
+        )
+      )
     )
   );
 

@@ -60,6 +60,27 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
+  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
+    const queryStr = `${systemNumber}`;
+    const { username, id } = user;
+    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
+    const body = {
+      msUserDetails: { msOid: id, msUser: username },
+      techRecord: [techRecord]
+    };
+
+    console.log(body);
+    console.log(techRecord, 'techRecord');
+
+    const res = this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+
+    res.pipe().subscribe(data => {
+      console.log(data, 'reply');
+    });
+
+    return res;
+  }
+
   get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
   }
