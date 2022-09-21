@@ -101,4 +101,27 @@ describe('DateComponent', () => {
       expect(component.dateComponent?.minute).toEqual(date.getUTCMinutes());
     }));
   });
+
+  describe('error handling', () => {
+    it('should return empty if the day, month and year are not defined', () => {
+      component.dateComponent!.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      expect(component.dateComponent?.elementHasErrors(1)).toEqual(false);
+    });
+
+    it('should return true if there are some errors with the same index', () => {
+      component.dateComponent!.day = 2;
+      component.dateComponent!.year = 2021;
+      component.dateComponent!.month = 2;
+      component.dateComponent!.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      expect(component.dateComponent?.elementHasErrors(1)).toEqual(true);
+    });
+
+    it('should return false if there are no errors with the same index', () => {
+      component.dateComponent!.day = 2;
+      component.dateComponent!.year = 2021;
+      component.dateComponent!.month = 2;
+      component.dateComponent!.errors = { error: true, date: new Date(), errors: [{ error: false, reason: 'foo', index: 1 }] };
+      expect(component.dateComponent?.elementHasErrors(2)).toEqual(false);
+    });
+  });
 });
