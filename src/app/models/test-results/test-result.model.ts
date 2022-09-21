@@ -44,23 +44,11 @@ export interface TestResultModel {
    * Applicable only when updating/creating a test from VTM
    */
   createdByName?: string;
-  /**
-   * Applicable only when updating/creating a test from VTM
-   */
   createdById?: string;
-  /**
-   * Applicable only when updating/creating a test from VTM
-   */
   lastUpdatedByName?: string;
-  /**
-   * Applicable only when updating/creating a test from VTM
-   */
   typeOfTest?: TypeOfTest;
   contingencyTestNumber?: string;
   source?: string;
-  /**
-   * Applicable only when updating/creating a test from VTM
-   */
   lastUpdatedById?: string;
   testVersion?: string | null;
   testCode?: TestCodes;
