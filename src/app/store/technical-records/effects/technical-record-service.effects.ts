@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { of } from 'rxjs';
 import { UserService } from '@services/user-service/user-service';
-import { catchError, map, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -31,10 +31,19 @@ import {
   postProvisionalTechRecordFailure
 } from '../actions/technical-record-service.actions';
 import { Router } from '@angular/router';
+import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
   constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService, private userService: UserService, private router: Router) {}
+
+  private getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
+    const sortByDate = function (a: Date, b: Date): number {
+      return new Date(b).getTime() - new Date(a).getTime();
+    };
+
+    return new Date(record.techRecord.sort((a, b) => sortByDate(a.createdAt, b.createdAt))[0].createdAt).getTime()
+  }
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
@@ -71,7 +80,7 @@ export class TechnicalRecordServiceEffects {
           case getByAll.type:
             return this.technicalRecordService.getByAll(action.all).pipe(
               map(vehicleTechRecords => getByAllSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByAllFailure({ error: this.getTechRecordErrorMessage(error, 'the current search criteria'), anchorLink })))
+              catchError(error => of(getByAllFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'the current search criteria'), anchorLink })))
             );
         }
       })
@@ -84,9 +93,11 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.oldStatusCode).pipe(
-          map(vehicleTechRecords => putUpdateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })),
+          map(vehicleTechRecords => {
+            putUpdateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })
+            this.router.navigateByUrl(`/tech-records/${action.systemNumber}/${this.getLatestRecordTimestamp(vehicleTechRecords)}`)
+          }),
           catchError(error => of(putUpdateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))),
-          tap(() => this.router.navigateByUrl(`/tech-records/${action.systemNumber}`))
         )
       )
     )
@@ -98,9 +109,11 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
-          map(vehicleTechRecords => postProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords]})),
+          map(vehicleTechRecords => {
+            postProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords]})
+            this.router.navigateByUrl(`/tech-records/${action.systemNumber}/${this.getLatestRecordTimestamp(vehicleTechRecords)}`)
+          }),
           catchError(error => of(postProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error,'postProvisionalTechRecord')}))),
-          tap(() => this.router.navigateByUrl(`/tech-records/${action.systemNumber}`))
         )
       )
     )
