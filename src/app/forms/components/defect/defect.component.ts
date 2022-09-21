@@ -3,7 +3,7 @@ import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/service
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { select, Store } from '@ngrx/store';
-import { createDefect, removeDefect, TestResultsState, toEditOrNotToEdit, updateDefect } from '@store/test-records';
+import { createDefect, removeDefect, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
 import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
@@ -11,7 +11,7 @@ import { AdditionalInfoSection } from '@models/defects/additional-information.mo
 import { KeyValue } from '@angular/common';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DefectsState, selectByDeficiencyRef, selectByImNumber } from '@store/defects';
+import { selectByDeficiencyRef, selectByImNumber } from '@store/defects';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { DefectsTpl } from '@forms/templates/general/defect.template';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
@@ -20,6 +20,7 @@ import { Deficiency } from '@models/defects/deficiency.model';
 import { Item } from '@models/defects/item.model';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { State } from '@store/index';
 
 @Component({
   selector: 'app-defect',
@@ -32,10 +33,10 @@ export class DefectComponent implements OnInit, OnDestroy {
   index!: number;
   isEditing: boolean;
   includeNotes = false;
-  vehicleType!: VehicleTypes;
+  private vehicleType!: VehicleTypes;
 
   private _defectsForm?: CustomFormArray;
-  defects?: TestResultDefects;
+  private defects?: TestResultDefects;
   defect?: TestResultDefect;
 
   infoDictionary: Record<string, Array<FormNodeOption<any>>> = {};
@@ -48,10 +49,9 @@ export class DefectComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private defectsStore: Store<DefectsState>,
     private dfs: DynamicFormService,
     private router: Router,
-    private testResultsStore: Store<TestResultsState>,
+    private store: Store<State>,
     private resultService: ResultOfTestService,
     private errorService: GlobalErrorService
   ) {
@@ -59,10 +59,10 @@ export class DefectComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const defectIndex = this.testResultsStore.pipe(select(selectRouteParam('defectIndex')));
-    const defectRef = this.testResultsStore.pipe(select(selectRouteParam('ref')));
+    const defectIndex = this.store.pipe(select(selectRouteParam('defectIndex')));
+    const defectRef = this.store.pipe(select(selectRouteParam('ref')));
 
-    this.testResultsStore
+    this.store
       .select(toEditOrNotToEdit)
       .pipe(
         withLatestFrom(defectIndex, defectRef),
@@ -78,7 +78,8 @@ export class DefectComponent implements OnInit, OnDestroy {
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
         } else if (defectRef) {
-          this.defectsStore
+          console.log(defectRef);
+          this.store
             .select(selectByDeficiencyRef(defectRef, this.vehicleType))
             .pipe(take(1))
             .subscribe(([defect, item, deficiency]) => {
@@ -87,9 +88,12 @@ export class DefectComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.defectsStore
-      .select(selectByImNumber(this.defect!.imNumber!, this.vehicleType))
-      .pipe(takeUntil(this.onDestroy$))
+    this.store
+      .select(selectByImNumber(this.defect?.imNumber || NaN, this.vehicleType))
+      .pipe(
+        takeUntil(this.onDestroy$),
+        filter(d => !!d)
+      )
       .subscribe(defectsTaxonomy => {
         this.initializeInfoDictionary(defectsTaxonomy);
       });
@@ -121,16 +125,16 @@ export class DefectComponent implements OnInit, OnDestroy {
     }
 
     if (this.index || this.index === 0) {
-      this.testResultsStore.dispatch(updateDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index }));
+      this.store.dispatch(updateDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect, index: this.index }));
     } else {
-      this.testResultsStore.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect }));
+      this.store.dispatch(createDefect({ defect: this.form.getCleanValue(this.form) as TestResultDefect }));
     }
 
     this.navigateBack();
   }
 
   handleRemove() {
-    this.testResultsStore.dispatch(removeDefect({ index: this.index }));
+    this.store.dispatch(removeDefect({ index: this.index }));
     this.navigateBack();
   }
 
@@ -178,6 +182,8 @@ export class DefectComponent implements OnInit, OnDestroy {
       testResultDefect.deficiencyText = deficiency.deficiencyText;
       testResultDefect.deficiencyRef = deficiency.ref;
       testResultDefect.stdForProhibition = deficiency.stdForProhibition;
+    } else if (item.itemDescription.endsWith(':')) {
+      testResultDefect.itemDescription = item.itemDescription.slice(0, -1);
     }
 
     this._defectsForm!.addControl(testResultDefect);
