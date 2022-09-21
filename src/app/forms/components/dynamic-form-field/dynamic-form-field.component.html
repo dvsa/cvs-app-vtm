@@ -58,6 +58,14 @@
   ></app-checkbox-group>
 
   <app-text-input
+    *ngSwitchCase="formNodeEditTypes.NUMERICSTRING"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+    [numeric]="true"
+  ></app-text-input>
+
+  <app-text-input
     *ngSwitchDefault
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
