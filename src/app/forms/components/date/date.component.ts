@@ -134,8 +134,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   padded(n: number | string | undefined, l = 2) {
-    const val = undefined !== n && null !== n ? String(n).padStart(l, '0') : 'NaN';
-    return 'NaN' === val ? '' : val;
+    return n != null && !isNaN(+n) ? String(n).padStart(l, '0') || '' : '';
   }
 
   /**
@@ -145,19 +144,11 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
     this.control?.addValidators([DateValidators.validDate(this.includeTime, this.label)]);
   }
 
-  get required() {
-    return this.meta?.validators?.map(v => v.name).includes(ValidatorNames.Required);
-  }
-
   validate() {
     this.errors = validateDate(this.day || '', this.month || '', this.year || '', this.label);
   }
 
   elementHasErrors(i: number) {
-    return this.errors?.errors
-      ?.filter(e => {
-        return this.day || this.month || this.year;
-      })
-      .some(e => e.index === i);
+    return this.day || this.month || this.year ? this.errors?.errors?.some(e => e.index === i) : false;
   }
 }

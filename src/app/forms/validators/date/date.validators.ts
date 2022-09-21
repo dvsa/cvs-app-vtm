@@ -8,10 +8,10 @@ export class DateValidators {
       }
 
       const [d, t] = (control.value as string).split('T');
-
       const [year, month, day] = d.split('-');
-      const { error, errors, date } = validateDate(day || '', month || '', year || '', label);
-      if (error && errors && errors.length > 0) {
+      const { error, errors } = validateDate(day || '', month || '', year || '', label);
+
+      if (error && errors?.length) {
         return { invalidDate: errors[0] };
       }
 
@@ -19,8 +19,9 @@ export class DateValidators {
         return { invalidDate: { error: true, reason: `'${label || 'Date'}' year must be four digits` } };
       }
 
-      const [hours, minutes] = t.split(':');
       if (includeTime) {
+        const [hours, minutes] = t.split(':');
+
         if (!hours || !minutes) {
           return { invalidDate: { error: true, reason: `'${label || 'Date'}' must include time` } };
         }
