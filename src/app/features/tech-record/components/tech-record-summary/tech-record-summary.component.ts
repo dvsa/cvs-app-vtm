@@ -78,10 +78,6 @@ export class TechRecordSummaryComponent implements OnInit {
 
   constructor() {}
 
-  onFormChange() {
-    this.formChange.emit('formChanged')
-  }
-
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {
       case 'psv': {

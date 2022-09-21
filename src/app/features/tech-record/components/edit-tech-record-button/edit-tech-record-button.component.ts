@@ -31,14 +31,11 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   submitTechRecord() {
-    const systemNumber = this.vehicleTechRecord!.systemNumber
-    if (this.hasProvisional) {
-      console.log('ammend me');
-      // Call the put endpoint here with system number, the old status code (which is the current one) and the tech record data
-      this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber}));
-    } else {
-      this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber}));
-      //Call the post route to add a provisional record with system number and tech record data
-    }
+      const systemNumber = this.vehicleTechRecord!.systemNumber
+      this.hasProvisional ?
+        //Amend Endpoint -> `archives old and sets new provisional
+        this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber })) :
+        //Create Endpoint -> creates new provisional
+        this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber }));
   }
 }
