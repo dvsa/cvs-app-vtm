@@ -1,14 +1,16 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormGroup, ValidationErrors } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { testResultInEdit } from '@store/test-records';
+import { sectionTemplates, testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAsyncValidators } from './custom-async-validators';
+import { masterTpl } from '@forms/templates/test-records/master.template';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 describe('resultDependantOnCustomDefects', () => {
   let form: FormGroup;
@@ -113,3 +115,45 @@ describe('updateTestStationDetails', () => {
     expect(form.controls['testStationName'].value).toBe('foo')
   });
 });
+
+describe('testAndSwitchToHiddenFieldWithDefectTaxonomy', () => {
+  let form: FormGroup;
+  let store: MockStore<State>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
+
+    store = TestBed.inject(MockStore);
+
+    form = new FormGroup({
+      testResult: new CustomFormControl({ name: 'testResult', type: FormNodeTypes.CONTROL, editType: FormNodeEditTypes.RADIO, children: [] }, null,null)
+    });
+  });
+
+  it('should show testResult chooser when defects section is not present', async () => {
+    store.overrideSelector(testResultInEdit, mockTestResult());
+    store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup15And16']));
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.testAndSwitchToHiddenFieldWithDefectTaxonomy(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
+    );
+    
+    expect((form.controls['testResult'] as CustomFormControl).meta.editType).toBe(FormNodeEditTypes.RADIO)
+  });
+
+  it('should hide testResult chooser when defects section is present', async () => {
+
+    store.overrideSelector(testResultInEdit, mockTestResult());
+    store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']));
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.testAndSwitchToHiddenFieldWithDefectTaxonomy(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
+    );
+
+    expect((form.controls['testResult'] as CustomFormControl).meta.editType).toBe(FormNodeEditTypes.HIDDEN)
+  });
+
+});
+

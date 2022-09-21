@@ -1,11 +1,11 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { CustomFormControl } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
-import { sectionTemplates, testResultInEdit } from '@store/test-records';
+import { sectionTemplates, testResultInEdit, updateResultOfTest } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { catchError, map, Observable, of, take, tap } from 'rxjs';
 
@@ -81,5 +81,32 @@ export class CustomAsyncValidators {
         catchError(() => of(null))
       );
     };
+  }
+
+  static testAndSwitchToHiddenFieldWithDefectTaxonomy(store: Store<State>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<null> => {
+      return store.pipe(
+        select(sectionTemplates),
+        take(1),
+        tap(sections => {
+          if(sections && sections.some(section => section.name === 'defects')){
+            (control as CustomFormControl).meta.editType = FormNodeEditTypes.HIDDEN;
+          }
+        }),
+        map(() => null),
+        catchError(() => of(null))
+      );
+    };
+  }
+
+  static checkAndUpdateTestResult(store: Store<State>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        map(() => {
+          store.dispatch(updateResultOfTest());
+          return null;
+        })
+      );
   }
 }
