@@ -37,14 +37,15 @@
     <app-edit-tech-record-button
       [vehicleTechRecord]="vehicleTechRecord || undefined"
       [techRecord]="(currentTechRecord$ | async) || undefined"
-      [(editableState)] = "isEditable"
+      [isDirty]="isDirty"
+      [isInvalid]="isInvalid"
+      [(editableState)]="isEditable"
     ></app-edit-tech-record-button>
-
     <app-tech-record-summary
-      [isEditable] =  "isEditable"
-      [vehicleTechRecord]="(currentTechRecord$ | async) || undefined">
-    </app-tech-record-summary>
-
+      [isEditable]="isEditable"
+      [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"
+      (formChange)="handleFormState()"
+    ></app-tech-record-summary>
     <app-tech-record-history
       [currentRecord]="(currentTechRecord$ | async) || undefined"
       [vehicleTechRecord]="vehicleTechRecord || undefined"

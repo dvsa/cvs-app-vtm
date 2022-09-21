@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
@@ -30,7 +30,8 @@ import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
-import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/resonForCreation.template';
+import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
+import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -38,8 +39,10 @@ import { reasonForCreationSection } from '@forms/templates/test-records/section-
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechRecordSummaryComponent implements OnInit {
+  @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @Input() isEditable: boolean = false;
   @Input() vehicleTechRecord?: TechRecordModel;
+  @Output() formChange = new EventEmitter();
   currentBrakeRecord?: Brakes;
   vehicleSummaryTemplate!: FormNode;
   psvBrakeTemplate!: FormNode;
@@ -74,6 +77,10 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   constructor() {}
+
+  onFormChange() {
+    this.formChange.emit('formChanged')
+  }
 
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {

@@ -4,6 +4,7 @@
     [edit] = "isEditable"
     [template]="reasonForCreation"
     [data]="vehicleTechRecord"
+    (formChange)='onFormChange()'
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
@@ -11,6 +12,7 @@
     [edit] = "isEditable"
     [template]="notesTemplate"
     [data]="vehicleTechRecord"
+    (formChange)='onFormChange()'
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group

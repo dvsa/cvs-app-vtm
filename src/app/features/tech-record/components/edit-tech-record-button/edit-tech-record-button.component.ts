@@ -11,6 +11,8 @@ export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() techRecord?: TechRecordModel;
   @Input() editableState = false;
+  @Input() isDirty: boolean = false;
+  @Input() isInvalid: boolean = false;
   isArchived?: boolean;
   hasProvisional?: boolean;
 
