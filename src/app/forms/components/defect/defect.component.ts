@@ -78,7 +78,6 @@ export class DefectComponent implements OnInit, OnDestroy {
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
         } else if (defectRef) {
-          console.log(defectRef);
           this.store
             .select(selectByDeficiencyRef(defectRef, this.vehicleType))
             .pipe(take(1))

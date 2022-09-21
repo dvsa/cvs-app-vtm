@@ -54,6 +54,11 @@
           [ngTemplateOutlet]="viewDefectRow"
           [ngTemplateOutletContext]="{ label: 'Notes', data: defect!.additionalInformation?.notes }"
         ></ng-template>
+        <ng-template
+          *ngIf="isDangerous"
+          [ngTemplateOutlet]="viewDefectRow"
+          [ngTemplateOutletContext]="{ label: 'Prohibition Issued', data: defect!.prohibitionIssued }"
+        ></ng-template>
       </dl>
     </div>
   </div>

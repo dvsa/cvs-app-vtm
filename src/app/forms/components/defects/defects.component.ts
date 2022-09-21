@@ -49,14 +49,10 @@ export class DefectsComponent implements OnInit, OnDestroy {
   }
 
   get testDefects(): TestResultDefect[] {
-    let defectArray: TestResultDefect[] = [];
-
-    for (let i = 0; i < this.defectCount; i++) {
-      const data = this.defectsForm.controls[i] as CustomFormGroup;
-      const defect = data.getCleanValue(data) as TestResultDefect;
-      defectArray = [...defectArray, defect];
-    }
-    return defectArray;
+    return this.defectsForm.controls.map(control => {
+      const formGroup = control as CustomFormGroup;
+      return formGroup.getCleanValue(formGroup) as TestResultDefect;
+    });
   }
 
   categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {

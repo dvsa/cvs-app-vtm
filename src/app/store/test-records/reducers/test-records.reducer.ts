@@ -89,11 +89,11 @@ function createNewDefect(testResultState: TestResultModel | undefined, defect: T
     return;
   }
   const testResult = cloneDeep(testResultState);
-  const testType = testResult.testTypes[0];
-  if (!testType.defects) {
+
+  if (!testResult.testTypes[0].defects) {
     return;
   }
-  testType.defects.push(defect);
+  testResult.testTypes[0].defects.push(defect);
 
   return { ...testResult };
 }
@@ -103,11 +103,10 @@ function updateDefectAtIndex(testResultState: TestResultModel | undefined, defec
     return;
   }
   const testResult = cloneDeep(testResultState);
-  const testType = testResult.testTypes[0];
-  if (!testType.defects) {
+  if (!testResult.testTypes[0].defects) {
     return;
   }
-  testType.defects[index] = defect;
+  testResult.testTypes[0].defects[index] = defect;
 
   return { ...testResult };
 }
@@ -117,11 +116,10 @@ function removeDefectAtIndex(testResultState: TestResultModel | undefined, index
     return;
   }
   const testResult = cloneDeep(testResultState);
-  const testType = testResult.testTypes[0];
-  if (!testType.defects) {
+  if (!testResult.testTypes[0].defects) {
     return;
   }
-  testType.defects.splice(index, 1);
+  testResult.testTypes[0].defects.splice(index, 1);
 
   return { ...testResult };
 }
