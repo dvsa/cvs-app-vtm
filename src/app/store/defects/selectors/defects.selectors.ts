@@ -29,15 +29,13 @@ export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: Vehicl
   createSelector(filteredDefects(vehicleType), defects => {
     const deRef = deficiencyRef.split('.');
     let defect, item, deficiency;
+    
     if (deRef) {
       defect = defects.find(d => d.imNumber === +deRef[0]);
-      if (defect) {
-        item = defect.items.find(i => i.itemNumber === +deRef[1]);
-        if (item && deRef[2]) {
-          deficiency = item.deficiencies.find(d => d.ref === deficiencyRef);
-        }
-      }
+      item = defect?.items.find(i => i.itemNumber === +deRef[1]);
+      deficiency = item?.deficiencies.find(d => d.ref === deficiencyRef);
     }
+    
     return [defect, item, deficiency];
   });
 
