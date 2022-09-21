@@ -100,7 +100,7 @@ describe('DefectComponent', () => {
       expect(component.includeNotes).toEqual(true);
     }));
 
-    it('should initialize notes to true', fakeAsync(() => {
+    it('should initialize info dictionary to the longitude', fakeAsync(() => {
       store.overrideSelector(selectRouteParams, { defectIndex: '0' });
       store.overrideSelector(toEditOrNotToEdit, {
         vehicleType: VehicleTypes.PSV,
