@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { putUpdateTechRecords } from '@store/technical-records';
+import { postProvisionalTechRecord, putUpdateTechRecords } from '@store/technical-records';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -9,15 +9,17 @@ import { putUpdateTechRecords } from '@store/technical-records';
 })
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  @Input() techRecord?: TechRecordModel;
+  @Input() viewableTechRecord?: TechRecordModel;
   editableState = false;
   isArchived?: boolean;
+  isCurrent?: boolean;
   hasProvisional?: boolean;
 
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.isArchived = this.techRecord?.statusCode === StatusCodes.ARCHIVED ? true : false;
+    this.isArchived = this.viewableTechRecord?.statusCode === StatusCodes.ARCHIVED ? true : false;
+    this.isCurrent = this.viewableTechRecord?.statusCode === StatusCodes.CURRENT ? true : false;
     this.hasProvisional = this.vehicleTechRecord?.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
   }
 
@@ -25,15 +27,22 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.editableState = !this.editableState;
   }
 
+  get systemNumber() {
+    return this.vehicleTechRecord!.systemNumber;
+  }
+
   submitTechRecord() {
-    const systemNumber = this.vehicleTechRecord!.systemNumber
     if (this.hasProvisional) {
-      console.log('ammend me');
-      // Call the put endpoint here with system number, the old status code (which is the current one) and the tech record data
-      this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber}));
-    } else {
-      this.store.dispatch(putUpdateTechRecords({ systemNumber: systemNumber}));
-      //Call the post route to add a provisional record with system number and tech record data
+      if (this.isCurrent) {
+        this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL}));
+        this.toggleEditMode()
+        return;
+      }
+      this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber}));
+      this.toggleEditMode()
+      return;
     }
+    this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }))
+    this.toggleEditMode()
   }
 }

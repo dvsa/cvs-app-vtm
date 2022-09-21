@@ -21,7 +21,10 @@ import {
   getByAllSuccess,
   putUpdateTechRecords,
   putUpdateTechRecordsSuccess,
-  putUpdateTechRecordsFailure
+  putUpdateTechRecordsFailure,
+  postProvisionalTechRecord,
+  postProvisionalTechRecordSuccess,
+  postProvisionalTechRecordFailure
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -67,7 +70,11 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(putUpdateTechRecords, defaultArgs),
   on(putUpdateTechRecordsSuccess, successArgs),
-  on(putUpdateTechRecordsFailure, failureArgs)
+  on(putUpdateTechRecordsFailure, updateFailureArgs),
+
+  on(postProvisionalTechRecord, defaultArgs),
+  on(postProvisionalTechRecordSuccess, successArgs),
+  on(postProvisionalTechRecordFailure, updateFailureArgs)
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
@@ -77,6 +84,10 @@ function defaultArgs(state: TechnicalRecordServiceState) {
 function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: Array<VehicleTechRecordModel> }) {
   console.log(data.vehicleTechRecords);
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
+}
+
+function updateFailureArgs(state: TechnicalRecordServiceState, data: {error: any}) {
+  return { ...state, error: data.error, loading: false}
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
