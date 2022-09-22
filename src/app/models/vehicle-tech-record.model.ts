@@ -280,6 +280,7 @@ export interface TechRecordModel {
   couplingCenterToRearTrlMax?: number;
   plates?: Plates[];
   dda?: DDA;
+  updateType?: string;
 }
 
 export interface DDA {

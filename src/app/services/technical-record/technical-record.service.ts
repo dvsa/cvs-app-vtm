@@ -13,6 +13,7 @@ import {
   selectVehicleTechnicalRecordsBySystemNumber,
   vehicleTechRecords
 } from '@store/technical-records';
+import { clone, cloneDeep } from 'lodash';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -60,25 +61,40 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
-    const queryStr = `${systemNumber}`;
+  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${queryStr}`;
+    const url = oldStatusCode ? `${environment.VTM_API_URI}/vehicles/${systemNumber}?oldStatusCode=${oldStatusCode}`: `${environment.VTM_API_URI}/vehicles/${systemNumber}`;
     const body = {
       msUserDetails: { msOid: id, msUser: username },
-      techRecord: [techRecord]
+      techRecord: [cloneDeep(techRecord)]
+    };
+    
+    // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
+    if (techRecord.statusCode === StatusCodes.CURRENT) {
+      //body.techRecord = [cloneDeep(techRecord)]
+      body.techRecord[0].statusCode = StatusCodes.PROVISIONAL
+    }
+
+    if (techRecord.updateType) {
+      delete body.techRecord[0].updateType
+    }
+    
+    return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
+  }
+
+  postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string, id?: string }) {
+    // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
+    const recordCopy = cloneDeep(techRecord);
+    recordCopy.statusCode = StatusCodes.PROVISIONAL
+
+    const { username, id } = user;
+    const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
+    const body = {
+      msUserDetails: { msOid: id, msUser: username },
+      techRecord: [recordCopy]
     };
 
-    console.log(body);
-    console.log(techRecord, 'techRecord');
-
-    const res = this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
-
-    res.pipe().subscribe(data => {
-      console.log(data, 'reply');
-    });
-
-    return res;
+    return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
   get vehicleTechRecords$() {
@@ -136,8 +152,8 @@ export class TechnicalRecordService {
    */
   private filterTechRecordByStatusCode(record: VehicleTechRecordModel): TechRecordModel | undefined {
     return (
-      record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.CURRENT) ??
+      record.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL) ??
       record.techRecord.find(record => record.statusCode === StatusCodes.ARCHIVED)
     );
   }

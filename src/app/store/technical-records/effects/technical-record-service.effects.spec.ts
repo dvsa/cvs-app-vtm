@@ -1,11 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
@@ -36,15 +41,21 @@ describe('TechnicalRecordServiceEffects', () => {
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   let technicalRecordService: TechnicalRecordService;
+  let router: Router;
+
+  const MockUserService = {
+    getUserName$: jest.fn().mockReturnValue(new Observable())
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         TechnicalRecordServiceEffects,
         provideMockActions(() => actions$),
         TechnicalRecordService,
-        provideMockStore({ initialState: initialAppState })
+        provideMockStore({ initialState: initialAppState }),
+        { provide: UserService, useValue: MockUserService },
       ]
     });
 
