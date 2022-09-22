@@ -1,10 +1,11 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
+import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService, DefaultService } from '@api/test-results';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { fetchTestResults, fetchTestResultsBySystemNumber, updateTestResult } from '@store/test-records';
+import { createTestResult, fetchTestResults, fetchTestResultsBySystemNumber, toEditOrNotToEdit, updateTestResult } from '@store/test-records';
+import { of } from 'rxjs';
 import { mockTestResult } from '../../../mocks/mock-test-result';
 import { TestRecordsService } from './test-records.service';
 
@@ -16,7 +17,13 @@ describe('TestRecordsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestRecordsService, provideMockStore({ initialState: initialAppState }), GetTestResultsService, UpdateTestResultsService]
+      providers: [
+        TestRecordsService,
+        provideMockStore({ initialState: initialAppState }),
+        GetTestResultsService,
+        UpdateTestResultsService,
+        CreateTestResultsService
+      ]
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);
@@ -108,13 +115,66 @@ describe('TestRecordsService', () => {
     });
   });
 
-  describe('get the testType group information', () => {
+  describe(TestRecordsService.prototype.createTestResult.name, () => {
+    it('should dispatch createTestResult action', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+      service.createTestResult({});
+      expect(dispatchSpy).toHaveBeenCalledWith(createTestResult({ value: {} as TestResultModel }));
+    });
+  });
+
+  describe('getTestTypeGroup', () => {
     it('should get the correct testTypeGroup', () => {
       expect(TestRecordsService.getTestTypeGroup('1')).toEqual('testTypesGroup1');
     });
 
     it('should return undefined if the testTypeGroup is not supported', () => {
       expect(TestRecordsService.getTestTypeGroup('foo')).toBeUndefined();
+    });
+  });
+
+  describe('isTestTypeGroupEditable$', () => {
+    beforeEach(() => {
+      store.resetSelectors();
+    });
+
+    it('should return true if the test type id is in a valid test type group and the test type group is in the master template', done => {
+      store.overrideSelector(toEditOrNotToEdit, { vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel);
+      service.isTestTypeGroupEditable$.subscribe(isValid => {
+        expect(isValid).toBe(true);
+        done();
+      });
+    });
+
+    it('should return false if the test type id is not in a test type gorup', done => {
+      store.overrideSelector(toEditOrNotToEdit, { vehicleType: 'psv', testTypes: [{ testTypeId: 'foo' }] } as TestResultModel);
+      service.isTestTypeGroupEditable$.subscribe(isValid => {
+        expect(isValid).toBe(false);
+        done();
+      });
+    });
+
+    it('should return false if the test type group is not in the master template', done => {
+      store.overrideSelector(toEditOrNotToEdit, { vehicleType: 'psv', testTypes: [{ testTypeId: '185' }] } as TestResultModel);
+      service.isTestTypeGroupEditable$.subscribe(isValid => {
+        expect(isValid).toBe(false);
+        done();
+      });
+    });
+
+    it('should return false if the testResult is undefined', done => {
+      store.overrideSelector(toEditOrNotToEdit, undefined);
+      service.isTestTypeGroupEditable$.subscribe(isValid => {
+        expect(isValid).toBe(false);
+        done();
+      });
+    });
+  });
+
+  describe('postTestResult', () => {
+    it('should call the service', () => {
+      service['createTestResultsService'].testResultsPost = jest.fn().mockReturnValue('foo');
+      expect(service.postTestResult({} as TestResultModel)).toBe('foo');
     });
   });
 });

@@ -5,7 +5,6 @@ import { RouterService } from '@services/router/router.service';
 import { initialAppState, State } from '@store/.';
 import { routerState } from '@store/router/selectors/router.selectors';
 import { firstValueFrom } from 'rxjs';
-
 import { BreadcrumbsComponent } from './breadcrumbs.component';
 
 describe('BreadcrumbsComponent', () => {

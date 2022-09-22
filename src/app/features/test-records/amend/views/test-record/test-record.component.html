@@ -1,0 +1,17 @@
+<app-banner *ngIf="(isTestTypeGroupEditable$ | async) === false">
+  <ng-container title>Important</ng-container>
+
+  <ng-container content>Editing this record is not currently supported</ng-container>
+</app-banner>
+
+<ng-container *ngIf="testResult$ | async as testResult">
+  <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)"></app-base-test-record>
+
+  <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+
+  <ng-container *appRoleRequired="Roles.TestResultAmend">
+    <app-button-group *ngIf="isTestTypeGroupEditable$ | async">
+      <app-button id="save-test-result" (clicked)="handleSave()">Review and submit</app-button>
+    </app-button-group>
+  </ng-container>
+</ng-container>

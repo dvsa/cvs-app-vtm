@@ -55,7 +55,8 @@ const currentTechRecord = {
   fuelPropulsionSystem: FuelTypes.HYBRID,
   drawbarCouplingFitted: true,
   vehicleClass: {
-    description: 'Description'
+    description: 'Description',
+    code: '1'
   },
   vehicleConfiguration: VehicleConfigurations.ARTICULATED,
   offRoad: true,

@@ -9,6 +9,14 @@ import { ResultOfTestComponent } from '../result-of-test/result-of-test.componen
 import { BaseTestRecordComponent } from './base-test-record.component';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { TestTypesService } from '@services/test-types/test-types.service';
+import { SharedModule } from '@shared/shared.module';
+import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
+import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.component';
+import { UserService } from '@services/user-service/user-service';
+import { of } from 'rxjs';
+import { Roles } from '@models/roles.enum';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;
@@ -16,9 +24,23 @@ describe('BaseTestRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseTestRecordComponent, ResultOfTestComponent, DefaultNullOrEmpty],
-      imports: [DynamicFormsModule, HttpClientTestingModule],
-      providers: [RouterService, provideMockStore({ initialState: initialAppState })]
+      declarations: [BaseTestRecordComponent, ResultOfTestComponent, DefaultNullOrEmpty, VehicleHeaderComponent],
+      imports: [DynamicFormsModule, HttpClientTestingModule, SharedModule],
+      providers: [
+        RouterService,
+        provideMockStore({ initialState: initialAppState }),
+        TestTypesService,
+        TechnicalRecordService,
+        UpdateTestResultsService,
+        GetTestResultsService,
+        CreateTestResultsService,
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of([Roles.TestResultAmend])
+          }
+        }
+      ]
     }).compileComponents();
   });
 

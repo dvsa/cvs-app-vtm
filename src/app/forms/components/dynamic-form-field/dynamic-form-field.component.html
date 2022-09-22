@@ -18,6 +18,14 @@
     [formControlName]="control.key"
   ></app-date>
 
+  <app-date
+    *ngSwitchCase="formNodeEditTypes.DATETIME"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+    [includeTime]="true"
+  ></app-date>
+
   <app-number-input
     *ngSwitchCase="formNodeEditTypes.NUMBER"
     [label]="control.value.meta.label"
@@ -48,6 +56,14 @@
     [formControlName]="control.key"
     [delimited]="control.value.meta.delimited"
   ></app-checkbox-group>
+
+  <app-text-input
+    *ngSwitchCase="formNodeEditTypes.NUMERICSTRING"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+    [numeric]="true"
+  ></app-text-input>
 
   <app-text-input
     *ngSwitchDefault

@@ -51,7 +51,8 @@ const currentTechRecord = {
   roadFriendly: true,
   drawbarCouplingFitted: true,
   vehicleClass: {
-    description: 'Description'
+    description: 'Description',
+    code: '1'
   },
   vehicleConfiguration: VehicleConfigurations.ARTICULATED,
   couplingType: '1',

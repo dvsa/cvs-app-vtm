@@ -29,17 +29,23 @@ export class DynamicFormService {
       CustomValidators.hideIfParentSiblingNotEqual(args.sibling, args.value),
     [ValidatorNames.MaxLength]: (args: number) => Validators.maxLength(args),
     [ValidatorNames.MinLength]: (args: number) => Validators.minLength(args),
+    [ValidatorNames.Max]: (args: number) => Validators.max(args),
+    [ValidatorNames.Min]: (args: number) => Validators.min(args),
     [ValidatorNames.Numeric]: () => CustomValidators.numeric(),
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
-    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
+    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
+    [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
+    [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg)
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
-    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store)
+    [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
+    [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
+    [AsyncValidatorNames.TestWithDefectTaxonomy]: () => CustomAsyncValidators.testWithDefectTaxonomy(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

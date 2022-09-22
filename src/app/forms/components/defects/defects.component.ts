@@ -42,7 +42,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
 
   get defectsForm(): CustomFormArray {
     if (!this._defectsForm) {
-      this._defectsForm = this.form?.get(['testTypes', '0', 'defects']) as CustomFormArray
+      this._defectsForm = this.form?.get(['testTypes', '0', 'defects']) as CustomFormArray;
     }
     return this._defectsForm;
   }

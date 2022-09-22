@@ -11,15 +11,18 @@ describe('ErrorMessageMap', () => {
     ['Name must match a pattern', ValidatorNames.Pattern, [true, 'Name']],
     ['This field must match pattern xxx', ValidatorNames.CustomPattern, [{ message: 'must match pattern xxx' }, '']],
     ['Name must match pattern xxx', ValidatorNames.CustomPattern, [{ message: 'must match pattern xxx' }, 'Name']],
-    ['This field is an invalid date', 'invalidDate', [true, '']],
-    ['Name is an invalid date', 'invalidDate', [true, 'Name']],
+    [`'Date' is not valid`, 'invalidDate', [{ error: true, reason: `'Date' is not valid` }]],
     ['Name must be less than 14 characters', ValidatorNames.MaxLength, [{ requiredLength: 14 }, 'Name']],
     ['This field must be less than 14 characters', ValidatorNames.MaxLength, [{ requiredLength: 14 }, '']],
     ['Name must be greater than 14 characters', ValidatorNames.MinLength, [{ requiredLength: 14 }, 'Name']],
     ['This field must be greater than 14 characters', ValidatorNames.MinLength, [{ requiredLength: 14 }, '']],
     ['Name is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, 'Name']],
-    ['This field is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, '']]
+    ['This field is required with Surname', ValidatorNames.RequiredIfEquals, [{ sibling: 'Surname' }, '']],
+    ['Notes is required', ValidatorNames.ValidateDefectNotes, undefined],
+    ['foo', 'invalidTestResult', [{ message: 'foo' }]],
+    ['Date must be in the past', ValidatorNames.PastDate, [true, 'Date']],
+    ['This date must be in the past', ValidatorNames.PastDate, [true, undefined]]
   ])('should return "%s" for %s with %o', (expected, key, props) => {
-    expect(ErrorMessageMap[key](...props)).toBe(expected);
+    props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });
 });

@@ -33,3 +33,11 @@ export const updateEditingTestResult = createAction('[test-results] Update editi
 export const testTypeIdChanged = createAction('[test-results] test type id changed', props<{ testTypeId: string }>());
 
 export const updateResultOfTest = createAction('[test-results] update the result of the test');
+
+export const initialContingencyTest = createAction('[Contingency test] Create', props<{ testResult: Partial<TestResultModel> }>());
+
+export const createTestResult = createAction('[test-results] Create test result', props<{ value: TestResultModel }>());
+export const createTestResultSuccess = createAction('[API/test-results] Create test result Success', props<{ payload: Update<TestResultModel> }>());
+export const createTestResultFailed = createAction('[API/test-results] Create test result Failed', props<{ errors: GlobalError[] }>());
+
+export const contingencyTestTypeSelected = createAction('[Test Results] contingency test type selected', props<{ testType: string }>());

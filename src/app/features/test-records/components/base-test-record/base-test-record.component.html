@@ -1,18 +1,40 @@
-<ng-container *ngIf="sectionTemplates.length > 0">
-  <app-result-of-test></app-result-of-test>
-  <app-test-type-select class="section" [isEditing]="isEditing" [data]="testResult"></app-test-type-select>
+<app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async">
+  <ng-container *appRoleRequired="roles.TestResultAmend">
+    <a
+      *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
+      [routerLink]="['amend-test']"
+      role="button"
+      draggable="false"
+      class="govuk-button govuk-button--secondary"
+      data-module="govuk-button"
+      >Amend this test
+    </a>
+  </ng-container>
+</app-vehicle-header>
+
+<ng-container *ngIf="sectionTemplates$ | async as sectionTemplates">
   <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
     <app-defects
       *ngSwitchCase="'defects'"
       class="section"
       [id]="template.name"
       [isEditing]="isEditing"
-      [defects]="defectsData"
+      [defects]="getDefects$(testResult.vehicleType) | async"
       [template]="template"
       [data]="testResult"
       (formChange)="handleFormChange($event)"
     ></app-defects>
-
+    <ng-container *ngSwitchCase="'vehicleSection'">
+      <app-dynamic-form-group
+        *ngIf="isEditing"
+        class="section"
+        [id]="template.name"
+        [template]="template"
+        [data]="testResult"
+        [edit]="isEditing"
+        (formChange)="handleFormChange($event)"
+      ></app-dynamic-form-group>
+    </ng-container>
     <app-dynamic-form-group
       *ngSwitchDefault
       class="section"
@@ -24,3 +46,11 @@
     ></app-dynamic-form-group>
   </ng-container>
 </ng-container>
+
+<ng-template #notSupported>
+  <app-banner>
+    <ng-container title>Important</ng-container>
+
+    <ng-container content>Editing this record is not currently supported</ng-container>
+  </app-banner>
+</ng-template>

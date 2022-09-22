@@ -7,6 +7,7 @@ import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TestCodes } from './testCodes.enum';
+import { TypeOfTest } from './typeOfTest.enum';
 
 export interface TestResultModel {
   testResultId: string;
@@ -39,7 +40,16 @@ export interface TestResultModel {
   testHistory?: TestResultModel[];
   testStatus?: string;
 
+  /**
+   * Applicable only when updating/creating a test from VTM
+   */
   createdByName?: string;
+  createdById?: string;
+  lastUpdatedByName?: string;
+  typeOfTest?: TypeOfTest;
+  contingencyTestNumber?: string;
+  source?: string;
+  lastUpdatedById?: string;
   testVersion?: string | null;
   testCode?: TestCodes;
 
@@ -49,4 +59,8 @@ export interface TestResultModel {
   vehicleClass?: VehicleClass;
   vehicleSubclass?: Array<string>;
   numberOfWheelsDriven?: number;
+  /**
+   * Used only for TRL
+   */
+  firstUseDate?: string;
 }

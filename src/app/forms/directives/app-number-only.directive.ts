@@ -1,3 +1,4 @@
+import { keyframes } from '@angular/animations';
 import { Directive, ElementRef, HostListener, OnChanges, SimpleChanges } from '@angular/core';
 
 @Directive({
@@ -6,15 +7,42 @@ import { Directive, ElementRef, HostListener, OnChanges, SimpleChanges } from '@
 export class NumberOnlyDirective {
   inputElement: HTMLInputElement;
 
-  constructor(public el: ElementRef) {
+  private navigationKeys = [
+    'Backspace',
+    'Delete',
+    'Tab',
+    'Escape',
+    'Enter',
+    'Home',
+    'End',
+    'ArrowLeft',
+    'ArrowRight',
+    'Clear',
+    'Copy',
+    'Paste',
+  ];
+
+  constructor(private el: ElementRef) {
     this.inputElement = el.nativeElement;
   }
 
-  @HostListener('keydown', ['$event'])
-  onKeyDown(e: KeyboardEvent): void {
-    const exclude = ['+', '-', 'e', '.'];
-    if (exclude.includes(e.key)) {
-      e.preventDefault();
-    }
+ @HostListener('keydown', ['$event'])
+onKeyDown(e: KeyboardEvent) {
+  if (
+    this.navigationKeys.indexOf(e.key) > -1 || 
+    (e.key === 'a' && e.ctrlKey === true) || 
+    (e.key === 'c' && e.ctrlKey === true) || 
+    (e.key === 'v' && e.ctrlKey === true) || 
+    (e.key === 'x' && e.ctrlKey === true) || 
+    (e.key === 'a' && e.metaKey === true) || 
+    (e.key === 'c' && e.metaKey === true) || 
+    (e.key === 'v' && e.metaKey === true) || 
+    (e.key === 'x' && e.metaKey === true) 
+  ) {
+    return;  
   }
+  if (e.key === ' ' || isNaN(Number(e.key))) {
+    e.preventDefault();
+  }
+} 
 }

@@ -5,8 +5,11 @@ import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { TestType } from '@models/test-types/test-type.model';
+import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
+import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -22,6 +25,10 @@ import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
 import {
+  contingencyTestTypeSelected,
+  createTestResult,
+  createTestResultFailed,
+  createTestResultSuccess,
   editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
@@ -35,7 +42,7 @@ import {
   updateTestResultFailed,
   updateTestResultSuccess
 } from '../actions/test-records.actions';
-import { selectedTestResultState } from '../selectors/test-records.selectors';
+import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 import { TestResultsEffects } from './test-records.effects';
 
 jest.mock('../../../forms/templates/test-records/master.template', () => ({
@@ -288,7 +295,6 @@ describe('TestResultsEffects', () => {
     });
 
     it('should dispatch templateSectionsChanged with new sections and test result', () => {
-      // const { masterTpl } = require('../../../forms/templates/test-records/master.template');
       const testResult = createMock<TestResultModel>({
         vehicleType: VehicleTypes.PSV,
         testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '1' }))
@@ -429,6 +435,181 @@ describe('TestResultsEffects', () => {
             sectionTemplates: Object.values(masterTpl.psv['default']),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
           })
+        });
+      });
+    });
+  });
+
+  describe('generateContingencyTestTemplatesAndtestResultToUpdate$', () => {
+    beforeEach(() => {
+      store.resetSelectors();
+      jest.resetModules();
+    });
+
+    it('should dispatch templateSectionsChanged with new sections and test result', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: VehicleTypes.PSV,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '1' }))
+      });
+
+      store.overrideSelector(testResultInEdit, testResult);
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        actions$ = hot('-a', {
+          a: contingencyTestTypeSelected({
+            testType: '1'
+          })
+        });
+
+        expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']),
+            sectionsValue: {
+              countryOfRegistration: '',
+              createdById: undefined,
+              createdByName: undefined,
+              euVehicleCategory: EuVehicleCategory.M1,
+              firstUseDate: null,
+              lastUpdatedAt: undefined,
+              lastUpdatedById: undefined,
+              lastUpdatedByName: undefined,
+              noOfAxles: undefined,
+              numberOfSeats: undefined,
+              numberOfWheelsDriven: undefined,
+              odometerReading: 0,
+              odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
+              preparerId: '',
+              preparerName: '',
+              reasonForCancellation: undefined,
+              reasonForCreation: undefined,
+              regnDate: undefined,
+              shouldEmailCertificate: undefined,
+              systemNumber: '',
+              testEndTimestamp: '',
+              testResultId: '',
+              testStartTimestamp: '',
+              testStationName: '',
+              testStationPNumber: '',
+              testStationType: 'atf',
+              testStatus: undefined,
+              testTypes: [
+                {
+                  additionalCommentsForAbandon: null,
+                  additionalNotesRecorded: '',
+                  certificateLink: undefined,
+                  certificateNumber: '',
+                  customDefects: [],
+                  defects: [],
+                  deletionFlag: undefined,
+                  lastSeatbeltInstallationCheckDate: '',
+                  name: '',
+                  numberOfSeatbeltsFitted: 0,
+                  prohibitionIssued: false,
+                  reasonForAbandoning: null,
+                  seatbeltInstallationCheckDate: false,
+                  secondaryCertificateNumber: null,
+                  testExpiryDate: '',
+                  testResult: resultOfTestEnum.fail,
+                  testTypeEndTimestamp: '',
+                  testTypeId: '1',
+                  testTypeName: '',
+                  testTypeStartTimestamp: ''
+                }
+              ],
+              testerEmailAddress: '',
+              testerName: '',
+              testerStaffId: undefined,
+              vehicleClass: null,
+              vehicleConfiguration: undefined,
+              vehicleSize: undefined,
+              vehicleType: 'psv',
+              vin: '',
+              vrm: ''
+            } as unknown as TestResultModel
+          })
+        });
+      });
+    });
+
+    it('should return empty section templates if action testResult.vehicleType === undefined', () => {
+      const testResult = createMock<TestResultModel>({
+        vehicleType: undefined,
+        testTypes: createMockList<TestType>(1, i => createMock<TestType>({ testTypeId: '1' }))
+      });
+
+      testScheduler.run(({ hot, expectObservable }) => {
+        store.overrideSelector(testResultInEdit, testResult);
+        actions$ = hot('-a', {
+          a: contingencyTestTypeSelected({
+            testType: '1'
+          })
+        });
+
+        expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
+          b: templateSectionsChanged({
+            sectionTemplates: [],
+            sectionsValue: undefined
+          })
+        });
+      });
+    });
+  });
+
+  describe('createTestResult$$', () => {
+    it('should return createTestResultSuccess action on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResult: TestResultModel = mockTestResult();
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
+        // mock service call
+        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---b|', { b: testResult }) as Observable<any>);
+        // effects['testRecordsService'].postTestResult = jest.fn().mockReturnValue(cold('---a|', { a: testResult }) as Observable<any>);
+
+        // expect effect to return success action
+        expectObservable(effects.createTestResult$).toBe('----b', {
+          b: createTestResultSuccess({ payload: { id: testResult.testResultId, changes: testResult } })
+        });
+      });
+    });
+
+    it('should return createTestResultFailed', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResult: TestResultModel = mockTestResult();
+        actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
+
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+
+        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+
+        expectObservable(effects.createTestResult$).toBe('----b', {
+          b: createTestResultFailed({ errors: [] })
+        });
+      });
+    });
+
+    it('should return createTestResultFailed and add validation errors', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResult: TestResultModel = mockTestResult();
+        actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
+
+        const expectedError = new HttpErrorResponse({
+          status: 400,
+          error: { errors: ['"name" is missing', '"age" is missing', 'random error'] }
+        });
+
+        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+
+        const expectedErrors: GlobalError[] = [
+          { error: '"name" is missing', anchorLink: 'name' },
+          { error: '"age" is missing', anchorLink: 'age' },
+          { error: 'random error', anchorLink: '' }
+        ];
+
+        expectObservable(effects.createTestResult$).toBe('----b', {
+          b: createTestResultFailed({ errors: expectedErrors })
         });
       });
     });

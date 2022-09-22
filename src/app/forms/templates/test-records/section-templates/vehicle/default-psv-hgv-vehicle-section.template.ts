@@ -6,23 +6,24 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
   name: 'vehicleSection',
   label: 'Vehicle Details',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
       disabled: true,
-
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'vrm',
       label: 'VRM',
       value: '',
       disabled: true,
-
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'countryOfRegistration',
@@ -57,9 +58,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
-      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }, { name: ValidatorNames.Max, args: 9999999 }],
       editType: FormNodeEditTypes.NUMBER,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN
     },
