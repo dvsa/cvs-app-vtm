@@ -40,7 +40,8 @@ import {
   testTypeIdChanged,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess
+  updateTestResultSuccess,
+  updateResultOfTest
 } from '../actions/test-records.actions';
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 import { TestResultsEffects } from './test-records.effects';
@@ -309,11 +310,12 @@ describe('TestResultsEffects', () => {
           })
         });
 
-        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']),
             sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel
-          })
+          }),
+          c: updateResultOfTest()
         });
       });
     });
@@ -430,11 +432,12 @@ describe('TestResultsEffects', () => {
           })
         });
 
-        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(masterTpl.psv['default']),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
-          })
+          }),
+          c: updateResultOfTest()
         });
       });
     });

@@ -14,6 +14,7 @@ import { selectQueryParam, selectRouteNestedParams } from '@store/router/selecto
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
+import { updateResultOfTest } from '@store/test-records';
 
 import {
   contingencyTestTypeSelected,
@@ -151,8 +152,8 @@ export class TestResultsEffects {
         if (testTypeId) {
           (mergedForms as TestResultModel).testTypes[0].testTypeId = testTypeId;
         }
-
-        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }));
+    
+        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }), updateResultOfTest());
       })
     )
   );
