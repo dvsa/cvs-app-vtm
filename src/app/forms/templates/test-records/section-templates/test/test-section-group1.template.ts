@@ -1,5 +1,4 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
