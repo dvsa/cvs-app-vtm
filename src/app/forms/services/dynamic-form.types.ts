@@ -47,7 +47,8 @@ export enum FormNodeEditTypes {
   NUMBER = 'number',
   RADIO = 'radio',
   TEXT = 'text',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  NUMERICSTRING = 'numericstring'
 }
 
 export interface FormNodeOption<T> {

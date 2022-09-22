@@ -36,7 +36,9 @@ export class DynamicFormService {
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
-    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes
+    [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
+    [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
+    [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg)
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

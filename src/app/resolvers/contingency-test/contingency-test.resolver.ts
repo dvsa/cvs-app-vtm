@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
 import { Actions } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
-import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { initialContingencyTest } from '@store/test-records';
 import { catchError, map, Observable, of, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,7 +23,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
     private userService: UserService
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  resolve(): Observable<boolean> {
     return this.techRecordService.selectedVehicleTechRecord$.pipe(
       switchMap(techRecord => {
         const { vin, vrms, systemNumber } = techRecord!;
@@ -55,6 +55,8 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               createdById: user.oid,
               lastUpdatedByName: user.name,
               lastUpdatedById: user.oid,
+              typeOfTest: TypeOfTest.CONTINGENCY,
+              source: 'vtm',
               testTypes: [
                 {
                   testResult: 'pass',

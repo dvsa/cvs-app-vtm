@@ -15,6 +15,18 @@ import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 
+const groups1and2Template: Record<string, FormNode> = {
+  required: CreateRequiredSection,
+  vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+  test: ContingencyTestSectionGroup1,
+  seatbelts: SeatbeltSection,
+  visit: ContingencyVisitSection,
+  notes: NotesSection,
+  defects: DefectsTpl,
+  customDefects: CustomDefectsSection,
+  reasonForCreation: reasonForCreationSection
+}
+
 export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
   psv: {
     default: {
@@ -28,17 +40,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       customDefects: CustomDefectsSection,
       required: RequiredSection
     },
-    testTypesGroup1: {
-      required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
-      test: ContingencyTestSectionGroup1,
-      seatbelts: SeatbeltSection,
-      visit: ContingencyVisitSection,
-      notes: NotesSection,
-      defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
-      reasonForCreation: reasonForCreationSection
-    }
+    testTypesGroup1: groups1and2Template,
+    testTypesGroup2: groups1and2Template
   },
   hgv: {
     default: {}

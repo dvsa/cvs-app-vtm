@@ -23,18 +23,20 @@
 
   <div *ngIf="selectedItem" class="list_container">
     <ol class="list">
-      <li
-        *ngFor="let deficiency of selectedItem?.deficiencies"
-        class="list__item"
-        [ngClass]="{ 'list__item--active': deficiency === selectedDeficiency }"
-      >
-        <button (click)="handleSelect(deficiency, types.Deficiency)">
-          {{ deficiency.deficiencyText }}
-        </button>
+      <li *ngFor="let deficiency of selectedItem?.deficiencies">
+        <a class="ref govuk-link--no-visited-state" (click)="handleSelect(deficiency, types.Deficiency)">{{ deficiency.ref }}</a>
+        <span>
+          <app-tag class="category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
+        </span>
+        <span class="description">{{ deficiency.deficiencyText }}</span>
       </li>
 
-      <li class="list__item">
-        <button (click)="handleSelect()">advisory (add an advisory note).</button>
+      <li>
+        <a class="ref govuk-link--no-visited-state" (click)="handleSelect()">{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a>
+        <span>
+          <app-tag class="category" [type]="categoryColor('advisory')">advisory</app-tag>
+        </span>
+        <span class="description">Advisory defect.</span>
       </li>
     </ol>
   </div>

@@ -25,6 +25,7 @@ import { State } from '@store/index';
 @Component({
   selector: 'app-defect',
   templateUrl: './defect.component.html',
+  styleUrls: ['./defect.component.scss'],
   providers: [DefaultNullOrEmpty],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -142,6 +143,16 @@ export class DefectComponent implements OnInit, OnDestroy {
     this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
   }
 
+  togglePRS() {
+    this.defect = { ...this.defect, prs: !this.defect?.prs } as TestResultDefect;
+    this._defectsForm?.controls[this.index ?? this._defectsForm.length - 1].patchValue(this.defect);
+  }
+
+  toggleProhibition() {
+    this.defect = { ...this.defect, prohibitionIssued: !this.defect?.prohibitionIssued } as TestResultDefect;
+    this._defectsForm?.controls[this.index ?? this._defectsForm.length - 1].patchValue(this.defect);
+  }
+
   initializeInfoDictionary(defect: Defect | undefined) {
     const infoShorthand = defect?.additionalInfo;
 
@@ -188,6 +199,12 @@ export class DefectComponent implements OnInit, OnDestroy {
     this._defectsForm!.addControl(testResultDefect);
     this.form = this._defectsForm!.controls[this._defectsForm!.length - 1] as CustomFormGroup;
     this.defect = testResultDefect;
+  }
+
+  categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+      category
+    ];
   }
 
   trackByFn = (_index: number, keyValuePair: KeyValue<string, Array<any>>): string => keyValuePair.key;

@@ -6,7 +6,7 @@
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
       <h2 class="govuk-heading-s">{{ defect!.deficiencyRef }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}</h2>
-      <span class="govuk-tag govuk-tag--orange">{{ defect!.deficiencyCategory }}</span>
+      <app-tag [type]="categoryColor(defect!.deficiencyCategory)">{{ defect!.deficiencyCategory }}</app-tag>
       <span *ngIf="defect!.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
     </div>
   </div>
@@ -77,7 +77,7 @@
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
       <h2 class="govuk-heading-s">{{ defect!.deficiencyRef }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}</h2>
-      <span class="govuk-tag govuk-tag--orange">{{ defect!.deficiencyCategory }}</span>
+      <app-tag [type]="categoryColor(defect!.deficiencyCategory)">{{ defect!.deficiencyCategory }}</app-tag>
       <span *ngIf="defect!.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
     </div>
   </div>
@@ -112,16 +112,39 @@
       <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
     </ng-container>
 
-    <app-radio-group *ngIf="!isAdvisory" [name]="'prs-' + index" label="PRS" formControlName="prs" [options]="booleanOptions"></app-radio-group>
+    <div class="govuk-form-group" *ngIf="isDangerous">
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        <div class="govuk-checkboxes__item">
+          <input
+            class="govuk-checkboxes__input"
+            id="prohibition"
+            name="prohibition"
+            type="checkbox"
+            [checked]="defect?.prohibitionIssued"
+            (change)="toggleProhibition()"
+          />
+          <label class="govuk-label govuk-checkboxes__label" for="prohibition"> Prohibition issued in mobile compliance </label>
+        </div>
+      </div>
+    </div>
 
-    <app-radio-group
+    <div class="govuk-form-group" *ngIf="!isAdvisory">
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        <div class="govuk-checkboxes__item">
+          <input class="govuk-checkboxes__input" id="prs" [name]="'prs-' + index" type="checkbox" [checked]="defect?.prs" (change)="togglePRS()" />
+          <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- <app-radio-group
       *ngIf="isDangerous"
       [name]="'prohibitionIssued-' + index"
       label="Prohibition issued"
       formControlName="prohibitionIssued"
       [options]="booleanOptions"
       [inline]="true"
-    ></app-radio-group>
+    ></app-radio-group> -->
   </ng-container>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

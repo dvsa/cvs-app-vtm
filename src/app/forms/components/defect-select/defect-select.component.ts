@@ -39,11 +39,9 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy$),
         filter(testResult => !!testResult)
       )
-      .subscribe(testResult => this.vehicleType = testResult!.vehicleType);
+      .subscribe(testResult => (this.vehicleType = testResult!.vehicleType));
 
-    this.defectsStore
-      .select(filteredDefects(this.vehicleType))
-      .subscribe(defectsTaxonomy => this.defects = defectsTaxonomy);
+    this.defectsStore.select(filteredDefects(this.vehicleType)).subscribe(defectsTaxonomy => (this.defects = defectsTaxonomy));
   }
 
   ngOnDestroy(): void {
@@ -61,6 +59,12 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   hasDeficiencies(item: Item): boolean {
     return item.deficiencies && item.deficiencies.length > 0;
+  }
+
+  categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
+      category
+    ];
   }
 
   handleSelect(selected?: Defect | Item | Deficiency, type?: Types): void {
