@@ -27,9 +27,15 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.hasProvisional = this.vehicleTechRecord?.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
   }
 
+  cancelAmend() {
+    if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
+      this.toggleEditMode();
+    }
+  }
+
   toggleEditMode() {
     this.editableState = !this.editableState;
-    this.editableStateChange.emit(this.editableState)
+    this.editableStateChange.emit(this.editableState);
   }
 
   get systemNumber() {
