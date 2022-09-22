@@ -88,7 +88,6 @@ function defaultArgs(state: TechnicalRecordServiceState) {
 }
 
 function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: Array<VehicleTechRecordModel> }) {
-  console.log(data.vehicleTechRecords);
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
 }
 

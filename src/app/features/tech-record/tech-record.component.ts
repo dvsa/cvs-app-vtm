@@ -20,6 +20,10 @@ export class TechRecordComponent {
     this.vehicleTechRecord$ = this.techrecordService.selectedVehicleTechRecord$;
   }
 
+  ngOnChanges() {
+    this.vehicleTechRecord$ = this.techrecordService.selectedVehicleTechRecord$;
+  }
+
   public get Roles() {
     return Roles;
   }
