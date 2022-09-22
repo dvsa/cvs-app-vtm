@@ -37,35 +37,36 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   watchForEditSuccess() {
-    this.actions$.pipe(
-      ofType(putUpdateTechRecordsSuccess),
-      take(1),
-    ).subscribe((action) => 
-      this.router.navigateByUrl(`/tech-records/${action.vehicleTechRecords[0].systemNumber}/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`)
-    )
+    this.actions$
+      .pipe(ofType(putUpdateTechRecordsSuccess), take(1))
+      .subscribe(action =>
+        this.router.navigateByUrl(
+          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
+        )
+      );
   }
 
   getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
-    let recordClone = cloneDeep(record)
+    let recordClone = cloneDeep(record);
     const sortByDate = function (a: Date, b: Date): number {
       return new Date(b).getTime() - new Date(a).getTime();
     };
 
-    return new Date(recordClone.techRecord.sort((a, b) => sortByDate(a.createdAt, b.createdAt))[0].createdAt).getTime()
+    return new Date(recordClone.techRecord.sort((a, b) => sortByDate(a.createdAt, b.createdAt))[0].createdAt).getTime();
   }
 
   submitTechRecord() {
     if (this.hasProvisional) {
       if (this.isCurrent) {
-        this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL}));
-        this.toggleEditMode()
+        this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
+        this.toggleEditMode();
         return;
       }
-      this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber}));
-      this.toggleEditMode()
+      this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber }));
+      this.toggleEditMode();
       return;
     }
-    this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }))
-    this.toggleEditMode()
+    this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }));
+    this.toggleEditMode();
   }
 }
