@@ -37,7 +37,7 @@
     "@angular/platform-browser": "^13.3.11",
     "@angular/platform-browser-dynamic": "^13.3.11",
     "@angular/router": "^13.3.11",
-    "@azure/msal-angular": "^2.4.0",
+    "@azure/msal-angular": "^2.4.1",
     "@azure/msal-browser": "^2.28.1",
     "@ngrx/effects": "^13.2.0",
     "@ngrx/entity": "^13.2.0",
