@@ -2,6 +2,6 @@
   <button *ngIf="!editableState" class="govuk-button" data-module="govuk-button" (click)="toggleEditMode()">Edit</button>
   <ng-container *ngIf="editableState">
   <button  class="govuk-button" data-module="govuk-button" (click)="toggleEditMode()">Cancel</button>
-  <button  [disabled]="isInvalid && !isDirty" class="govuk-button" data-module="govuk-button" (click)="submitTechRecord()">Submit</button>
+  <button  [disabled]="isInvalid || !isDirty" class="govuk-button" data-module="govuk-button" (click)="submitTechRecord()">Submit</button>
   </ng-container>
 </ng-container>
