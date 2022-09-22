@@ -18,7 +18,8 @@ import {
   getByVinSuccess,
   getByVrm,
   getByVrmFailure,
-  getByVrmSuccess
+  getByVrmSuccess,
+  putUpdateTechRecords
 } from '../actions/technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
@@ -257,6 +258,45 @@ describe('Vehicle Technical Record Reducer', () => {
   });
 
   describe('getByAllFailure', () => {
+    it('should set error state', () => {
+      const error = 'fetching vehicle tech records failed';
+      const newState = { ...initialState, error };
+      const action = getByAllFailure({ error });
+      const state = vehicleTechRecordReducer(initialState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('putUpdateTechRecords', () => {
+    it('should set the new vehicle tech records state after update', () => {
+      const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
+      const action = putUpdateTechRecords({ systemNumber: '001' });
+      const state = vehicleTechRecordReducer(initialState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+      expect(state.vehicleTechRecords.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('putUpdateTechRecordsSuccess', () => {
+    it('should set all vehicle technical records', () => {
+      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
+      const newState: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecords: records
+      };
+      const action = getByAllSuccess({ vehicleTechRecords: [...records] });
+      const state = vehicleTechRecordReducer(initialState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('putUpdateTechRecordsFailure', () => {
     it('should set error state', () => {
       const error = 'fetching vehicle tech records failed';
       const newState = { ...initialState, error };
