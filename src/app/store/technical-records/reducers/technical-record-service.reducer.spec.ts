@@ -19,9 +19,14 @@ import {
   getByVrm,
   getByVrmFailure,
   getByVrmSuccess,
-  putUpdateTechRecords
+  postProvisionalTechRecord,
+  postProvisionalTechRecordFailure,
+  postProvisionalTechRecordSuccess,
+  putUpdateTechRecords,
+  putUpdateTechRecordsFailure,
+  putUpdateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
-import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
+import { initialState, initialState2, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
 describe('Vehicle Technical Record Reducer', () => {
   describe('unknown action', () => {
@@ -271,9 +276,9 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('putUpdateTechRecords', () => {
     it('should set the new vehicle tech records state after update', () => {
-      const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
+      const newState: TechnicalRecordServiceState = { ...initialState2, loading: true };
       const action = putUpdateTechRecords({ systemNumber: '001' });
-      const state = vehicleTechRecordReducer(initialState, action);
+      const state = vehicleTechRecordReducer(initialState2, action);
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);
@@ -282,14 +287,14 @@ describe('Vehicle Technical Record Reducer', () => {
   });
 
   describe('putUpdateTechRecordsSuccess', () => {
-    it('should set all vehicle technical records', () => {
+    it('should set the new vehicle tech records state after update success', () => {
       const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
       const newState: TechnicalRecordServiceState = {
-        ...initialState,
+        ...initialState2,
         vehicleTechRecords: records
       };
-      const action = getByAllSuccess({ vehicleTechRecords: [...records] });
-      const state = vehicleTechRecordReducer(initialState, action);
+      const action = putUpdateTechRecordsSuccess({ vehicleTechRecords: [...records] });
+      const state = vehicleTechRecordReducer(initialState2, action);
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);
@@ -299,9 +304,48 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('putUpdateTechRecordsFailure', () => {
     it('should set error state', () => {
       const error = 'fetching vehicle tech records failed';
-      const newState = { ...initialState, error };
-      const action = getByAllFailure({ error });
-      const state = vehicleTechRecordReducer(initialState, action);
+      const newState = { ...initialState2, error };
+      const action = putUpdateTechRecordsFailure({ error });
+      const state = vehicleTechRecordReducer(initialState2, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('postProvisionalTechRecord', () => {
+    it('should set the new vehicle tech records state after update', () => {
+      const newState: TechnicalRecordServiceState = { ...initialState2, loading: true };
+      const action = postProvisionalTechRecord({ systemNumber: '001' });
+      const state = vehicleTechRecordReducer(initialState2, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+      expect(state.vehicleTechRecords.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('postProvisionalTechRecordSuccess', () => {
+    it('should set the new vehicle tech records state after update success', () => {
+      const records = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
+      const newState: TechnicalRecordServiceState = {
+        ...initialState2,
+        vehicleTechRecords: records
+      };
+      const action = postProvisionalTechRecordSuccess({ vehicleTechRecords: [...records] });
+      const state = vehicleTechRecordReducer(initialState2, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+  });
+
+  describe('postProvisionalTechRecordFailure', () => {
+    it('should set error state', () => {
+      const error = 'fetching vehicle tech records failed';
+      const newState = { ...initialState2, error };
+      const action = postProvisionalTechRecordFailure({ error });
+      const state = vehicleTechRecordReducer(initialState2, action);
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);

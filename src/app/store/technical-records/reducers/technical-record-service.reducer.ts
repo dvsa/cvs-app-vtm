@@ -1,5 +1,6 @@
+import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -36,6 +37,11 @@ export interface TechnicalRecordServiceState {
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecords: [],
+  loading: false
+};
+
+export const initialState2: TechnicalRecordServiceState = {
+  vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
   loading: false
 };
 
@@ -86,8 +92,8 @@ function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechReco
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
 }
 
-function updateFailureArgs(state: TechnicalRecordServiceState, data: {error: any}) {
-  return { ...state, error: data.error, loading: false}
+function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
+  return { ...state, error: data.error, loading: false };
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
