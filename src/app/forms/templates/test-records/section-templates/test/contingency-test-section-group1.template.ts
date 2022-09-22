@@ -114,12 +114,7 @@ export const ContingencyTestSectionGroup1: FormNode = {
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              asyncValidators: [{ name: AsyncValidatorNames.TestWithDefectTaxonomy }],
+              editType: FormNodeEditTypes.HIDDEN,
               required: true
             }
           ]

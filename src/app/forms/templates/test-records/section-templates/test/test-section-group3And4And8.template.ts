@@ -61,7 +61,6 @@ export const TestSectionGroup3And4And8: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
-              asyncValidators: [ { name: AsyncValidatorNames.TestAndSwitchToHiddenFieldWithDefectTaxonomy }],
               type: FormNodeTypes.CONTROL
             },
             {

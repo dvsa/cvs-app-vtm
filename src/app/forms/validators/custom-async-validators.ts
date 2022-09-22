@@ -68,45 +68,5 @@ export class CustomAsyncValidators {
       );
     };
   }
-
-  static testWithDefectTaxonomy(store: Store<State>): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<null> => {
-      return store.pipe(
-        select(sectionTemplates),
-        take(1),
-        tap(sections => {
-          (control as CustomFormControl).meta.hide = sections && sections.some(section => section.name === 'defects');
-        }),
-        map(() => null),
-        catchError(() => of(null))
-      );
-    };
-  }
-
-  static testAndSwitchToHiddenFieldWithDefectTaxonomy(store: Store<State>): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<null> => {
-      return store.pipe(
-        select(sectionTemplates),
-        take(1),
-        tap(sections => {
-          if(sections && sections.some(section => section.name === 'defects')){
-            (control as CustomFormControl).meta.editType = FormNodeEditTypes.HIDDEN;
-          }
-        }),
-        map(() => null),
-        catchError(() => of(null))
-      );
-    };
-  }
-
-  static checkAndUpdateTestResult(store: Store<State>): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> =>
-      store.pipe(
-        take(1),
-        map(() => {
-          store.dispatch(updateResultOfTest());
-          return null;
-        })
-      );
-  }
+  
 }
