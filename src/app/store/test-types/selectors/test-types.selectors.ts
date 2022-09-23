@@ -58,13 +58,27 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, test
 });
 
 export const selectTestType = (id: string) => createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
-  function usingIdMatch(testType: TestType | TestTypeCategory) {
-    return testType.id === id
-      || (testType.hasOwnProperty('nextTestTypesOrCategories')
-      && (testType as TestTypeCategory).nextTestTypesOrCategories?.some(usingIdMatch));
+  function findUsingId(id: string, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
+    if (!testTypes) {
+      return undefined;
+    }
+
+    for (const testType of testTypes) {
+      if (testType.id === id) {
+        return testType;
+      }
+
+      const found = findUsingId(id, (testType as TestTypeCategory).nextTestTypesOrCategories)
+
+      if (found) {
+        return found;
+      }
+    }
+
+    return undefined;
   }
 
-  return testTypes.find(usingIdMatch);
+  return findUsingId(id, testTypes);
 });
 
 function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {

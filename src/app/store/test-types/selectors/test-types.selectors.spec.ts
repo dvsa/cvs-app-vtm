@@ -1,6 +1,6 @@
-import { TestTypesTaxonomy } from '@api/test-types';
+import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
+import { selectTestType, selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
 
 describe('selectors', () => {
   describe('selectTestTypesByVehicleType', () => {
@@ -286,5 +286,26 @@ describe('selectors', () => {
       const sorted = sortedTestTypes.projector(unsortedData);
       expect(sorted).toEqual(expectedTestTypes);
     });
+  });
+
+  describe('selectTestType', () => {
+    it('return the right test type', () => {
+      const exampleTestTypes: TestTypesTaxonomy = [
+        { id: '8' },
+        { id: '7', sortId: '1' },
+        {
+          id: '5',
+          sortId: '3',
+          nextTestTypesOrCategories: [
+            { id: '40', sortId: '1' },
+            { id: '39', sortId: '2' }
+          ]
+        },
+        { id: '1', sortId: '4' }
+      ] as TestTypesTaxonomy;
+
+      const selector = selectTestType('39').projector(exampleTestTypes);
+      expect(selector).toEqual((exampleTestTypes[2] as TestTypeCategory).nextTestTypesOrCategories?.pop());
+    })
   });
 });
