@@ -1,14 +1,16 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormGroup, ValidationErrors } from '@angular/forms';
-import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { testResultInEdit } from '@store/test-records';
+import { sectionTemplates, testResultInEdit } from '@store/test-records';
 import { initialTestStationsState } from '@store/test-stations';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAsyncValidators } from './custom-async-validators';
+import { masterTpl } from '@forms/templates/test-records/master.template';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 describe('resultDependantOnCustomDefects', () => {
   let form: FormGroup;
@@ -113,3 +115,4 @@ describe('updateTestStationDetails', () => {
     expect(form.controls['testStationName'].value).toBe('foo')
   });
 });
+
