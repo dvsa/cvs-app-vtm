@@ -31,19 +31,10 @@ import {
   postProvisionalTechRecordFailure
 } from '../actions/technical-record-service.actions';
 import { Router } from '@angular/router';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
   constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService, private userService: UserService, private router: Router) {}
-
-  private getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
-    const sortByDate = function (a: Date, b: Date): number {
-      return new Date(b).getTime() - new Date(a).getTime();
-    };
-
-    return new Date(record.techRecord.sort((a, b) => sortByDate(a.createdAt, b.createdAt))[0].createdAt).getTime()
-  }
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
@@ -93,10 +84,9 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.oldStatusCode).pipe(
-          map(vehicleTechRecords => {
+          map(vehicleTechRecords => 
             putUpdateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })
-            this.router.navigateByUrl(`/tech-records/${action.systemNumber}/${this.getLatestRecordTimestamp(vehicleTechRecords)}`)
-          }),
+          ),
           catchError(error => of(putUpdateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))),
         )
       )
@@ -109,10 +99,9 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
-          map(vehicleTechRecords => {
+          map(vehicleTechRecords =>
             postProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords]})
-            this.router.navigateByUrl(`/tech-records/${action.systemNumber}/${this.getLatestRecordTimestamp(vehicleTechRecords)}`)
-          }),
+          ),
           catchError(error => of(postProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error,'postProvisionalTechRecord')}))),
         )
       )

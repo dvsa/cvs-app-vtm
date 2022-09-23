@@ -32,7 +32,9 @@ import {
   getByVinSuccess,
   getByVrm,
   getByVrmFailure,
-  getByVrmSuccess
+  getByVrmSuccess,
+  putUpdateTechRecords,
+  putUpdateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 
@@ -55,7 +57,7 @@ describe('TechnicalRecordServiceEffects', () => {
         provideMockActions(() => actions$),
         TechnicalRecordService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: MockUserService },
+        { provide: UserService, useValue: MockUserService }
       ]
     });
 
@@ -512,4 +514,6 @@ describe('TechnicalRecordServiceEffects', () => {
       });
     });
   });
+
+  // TODO: Unit tests for putUpdate and postProvisional methods
 });
