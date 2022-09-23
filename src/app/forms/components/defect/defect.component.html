@@ -6,11 +6,11 @@
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
       <h2 class="govuk-heading-s">
-        {{ defect!.imNumber }}.{{ defect!.itemNumber }} ({{ defect!.deficiencyId }})
+        {{ defect!.imNumber }}.{{ defect!.itemNumber }} {{ defect!.deficiencyId ? '(' + defect!.deficiencyId + ')' : '' }}
         {{ defect!.deficiencySubId ? '(' + defect!.deficiencySubId + ')' : '' }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}
       </h2>
       <app-tag [type]="categoryColor(defect!.deficiencyCategory)">{{ defect!.deficiencyCategory }}</app-tag>
-      <span *ngIf="defect!.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
+      <app-tag *ngIf="defect!.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
     </div>
   </div>
   <div class="govuk-grid-row">
@@ -18,49 +18,42 @@
       <h2 class="govuk-heading-m">Defect location</h2>
       <dl class="govuk-summary-list">
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.vertical"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Vertical', data: defect!.additionalInformation?.location?.vertical }"
+          [ngTemplateOutletContext]="{ label: 'Vertical', data: defect!.additionalInformation?.location?.vertical ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.horizontal"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Horizontal', data: defect!.additionalInformation?.location?.horizontal }"
+          [ngTemplateOutletContext]="{ label: 'Horizontal', data: defect!.additionalInformation?.location?.horizontal ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.lateral"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Lateral', data: defect!.additionalInformation?.location?.lateral }"
+          [ngTemplateOutletContext]="{ label: 'Lateral', data: defect!.additionalInformation?.location?.lateral ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.longitudinal"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Longitudinal', data: defect!.additionalInformation?.location?.longitudinal }"
+          [ngTemplateOutletContext]="{ label: 'Longitudinal', data: defect!.additionalInformation?.location?.longitudinal ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.rowNumber"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Row Number', data: defect!.additionalInformation?.location?.rowNumber }"
+          [ngTemplateOutletContext]="{ label: 'Row Number', data: defect!.additionalInformation?.location?.rowNumber ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.seatNumber"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Seat Number', data: defect!.additionalInformation?.location?.seatNumber }"
+          [ngTemplateOutletContext]="{ label: 'Seat Number', data: defect!.additionalInformation?.location?.seatNumber ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.location?.axleNumber"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Axle Number', data: defect!.additionalInformation?.location?.axleNumber }"
+          [ngTemplateOutletContext]="{ label: 'Axle Number', data: defect!.additionalInformation?.location?.axleNumber ?? '-' }"
         ></ng-template>
         <ng-template
-          *ngIf="defect!.additionalInformation?.notes"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Notes', data: defect!.additionalInformation?.notes }"
+          [ngTemplateOutletContext]="{ label: 'Notes', data: defect!.additionalInformation?.notes ?? '-' }"
         ></ng-template>
+        <ng-template [ngTemplateOutlet]="viewDefectRow" [ngTemplateOutletContext]="{ label: 'PRS?', data: defect!.prs ? 'Yes' : 'No' }"></ng-template>
         <ng-template
           *ngIf="isDangerous"
           [ngTemplateOutlet]="viewDefectRow"
-          [ngTemplateOutletContext]="{ label: 'Prohibition Issued', data: defect!.prohibitionIssued }"
+          [ngTemplateOutletContext]="{ label: 'Prohibition Issued?', data: defect!.prohibitionIssued ? 'Yes' : 'No' }"
         ></ng-template>
       </dl>
     </div>
@@ -80,11 +73,11 @@
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
       <h2 class="govuk-heading-s">
-        {{ defect!.imNumber }}.{{ defect!.itemNumber }} ({{ defect!.deficiencyId }})
+        {{ defect!.imNumber }}.{{ defect!.itemNumber }} {{ defect!.deficiencyId ? '(' + defect!.deficiencyId + ')' : '' }}
         {{ defect!.deficiencySubId ? '(' + defect!.deficiencySubId + ')' : '' }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}
       </h2>
       <app-tag [type]="categoryColor(defect!.deficiencyCategory)">{{ defect!.deficiencyCategory }}</app-tag>
-      <span *ngIf="defect!.prs" id="prs-display" class="govuk-tag hidden">PRS</span>
+      <app-tag *ngIf="defect!.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
     </div>
   </div>
   <div class="govuk-grid-row">
@@ -95,7 +88,7 @@
   </div>
   <ng-container [formGroup]="form">
     <ng-container formGroupName="additionalInformation">
-      <ng-container formGroupName="location">
+      <ng-container *ngIf="!isAdvisory" formGroupName="location">
         <ng-container *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn">
           <app-radio-group
             *ngIf="item.value.length <= 4"
@@ -142,15 +135,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <app-radio-group
-      *ngIf="isDangerous"
-      [name]="'prohibitionIssued-' + index"
-      label="Prohibition issued"
-      formControlName="prohibitionIssued"
-      [options]="booleanOptions"
-      [inline]="true"
-    ></app-radio-group> -->
   </ng-container>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

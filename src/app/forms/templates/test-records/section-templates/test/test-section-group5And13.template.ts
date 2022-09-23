@@ -130,6 +130,7 @@ export const TestSectionGroup5And13: FormNode = {
               name: 'prohibitionIssued',
               type: FormNodeTypes.CONTROL,
               label: 'Prohibition issued',
+              value: false,
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: true, label: 'Yes' },

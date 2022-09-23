@@ -9,7 +9,7 @@
             <th scope="col" class="govuk-table__header">Reference</th>
             <th scope="col" class="govuk-table__header">Description</th>
             <th scope="col" class="govuk-table__header">Category</th>
-            <th scope="col" class="govuk-table__header">Status</th>
+            <th scope="col" class="govuk-table__header">PRS?</th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
@@ -30,7 +30,7 @@
               <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
             </td>
             <td class="govuk-table__cell">
-              <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'repaired' : 'not repaired' }}</app-tag>
+              <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
             </td>
           </tr>
         </tbody>

@@ -25,7 +25,7 @@
     <ol class="list">
       <li *ngFor="let deficiency of selectedItem?.deficiencies">
         <a class="ref govuk-link--no-visited-state" (click)="handleSelect(deficiency, types.Deficiency)"
-          >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} ({{ deficiency.deficiencyId }})
+          >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : '' }}
           {{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}</a
         >
         <span>
