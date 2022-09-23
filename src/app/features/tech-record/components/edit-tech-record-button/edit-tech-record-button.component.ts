@@ -47,26 +47,19 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
-    let recordClone = cloneDeep(record);
-    const sortByDate = function (a: Date, b: Date): number {
-      return new Date(b).getTime() - new Date(a).getTime();
-    };
-
-    return new Date(recordClone.techRecord.sort((a, b) => sortByDate(a.createdAt, b.createdAt))[0].createdAt).getTime();
+    return Math.max(...record.techRecord.map(record => new Date(record.createdAt).getTime()));
   }
 
   submitTechRecord() {
-    if (this.hasProvisional) {
-      if (this.isCurrent) {
-        this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
-        this.toggleEditMode();
-        return;
-      }
+    if (this.hasProvisional && this.isCurrent) {
+      this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
+      this.toggleEditMode();
+    } else if (this.hasProvisional) {
       this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber }));
       this.toggleEditMode();
-      return;
+    } else {
+      this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }));
+      this.toggleEditMode();
     }
-    this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }));
-    this.toggleEditMode();
   }
 }
