@@ -17,6 +17,5 @@ module.exports = {
   },
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
-  }),
-  coverageProvider: 'v8'
+  })
 };
