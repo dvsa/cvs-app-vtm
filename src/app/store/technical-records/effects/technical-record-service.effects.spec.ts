@@ -33,8 +33,8 @@ import {
   getByVrm,
   getByVrmFailure,
   getByVrmSuccess,
-  putUpdateTechRecords,
-  putUpdateTechRecordsSuccess
+  updateTechRecords,
+  updateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 

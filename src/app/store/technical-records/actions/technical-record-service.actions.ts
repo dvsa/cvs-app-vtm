@@ -29,13 +29,13 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
-export const putUpdateTechRecords = createAction(`${prefix} putUpdateTechRecords`, props<{ systemNumber: string, oldStatusCode?: StatusCodes  }>());
-export const putUpdateTechRecordsSuccess = createOutcomeAction('putUpdateTechRecords', true);
-export const putUpdateTechRecordsFailure = createOutcomeAction('putUpdateTechRecords');
+export const updateTechRecords = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string, oldStatusCode?: StatusCodes  }>());
+export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
+export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
-export const postProvisionalTechRecord = createAction(`${prefix} postProvisionalTechRecord`, props<{ systemNumber: string}>());
-export const postProvisionalTechRecordSuccess = createOutcomeAction('postProvisionalTechRecord', true);
-export const postProvisionalTechRecordFailure = createOutcomeAction('postProvisionalTechRecord');
+export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string}>());
+export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
+export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';

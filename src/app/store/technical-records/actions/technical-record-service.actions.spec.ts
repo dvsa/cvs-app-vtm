@@ -11,12 +11,12 @@ import {
   getByTrailerId,
   getByTrailerIdSuccess,
   getByTrailerIdFailure,
-  postProvisionalTechRecord,
-  postProvisionalTechRecordFailure,
-  postProvisionalTechRecordSuccess,
-  putUpdateTechRecords,
-  putUpdateTechRecordsFailure,
-  putUpdateTechRecordsSuccess
+  createProvisionalTechRecord,
+  createProvisionalTechRecordFailure,
+  createProvisionalTechRecordSuccess,
+  updateTechRecords,
+  updateTechRecordsFailure,
+  updateTechRecordsSuccess
 } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';
@@ -40,13 +40,13 @@ describe('Technical record actions', () => {
     expect(getByTrailerIdSuccess.type).toBe(getMessage('getByTrailerId', SUCCESS));
     expect(getByTrailerIdFailure.type).toBe(getMessage('getByTrailerId', FAILURE));
 
-    expect(putUpdateTechRecords.type).toBe(getMessage('putUpdateTechRecords'));
-    expect(putUpdateTechRecordsSuccess.type).toBe(getMessage('putUpdateTechRecords', SUCCESS));
-    expect(putUpdateTechRecordsFailure.type).toBe(getMessage('putUpdateTechRecords', FAILURE));
+    expect(updateTechRecords.type).toBe(getMessage('updateTechRecords'));
+    expect(updateTechRecordsSuccess.type).toBe(getMessage('updateTechRecords', SUCCESS));
+    expect(updateTechRecordsFailure.type).toBe(getMessage('updateTechRecords', FAILURE));
 
-    expect(postProvisionalTechRecord.type).toBe(getMessage('postProvisionalTechRecord'));
-    expect(postProvisionalTechRecordSuccess.type).toBe(getMessage('postProvisionalTechRecord', SUCCESS));
-    expect(postProvisionalTechRecordFailure.type).toBe(getMessage('postProvisionalTechRecord', FAILURE));
+    expect(createProvisionalTechRecord.type).toBe(getMessage('createProvisionalTechRecord'));
+    expect(createProvisionalTechRecordSuccess.type).toBe(getMessage('createProvisionalTechRecord', SUCCESS));
+    expect(createProvisionalTechRecordFailure.type).toBe(getMessage('createProvisionalTechRecord', FAILURE));
   });
 });
 

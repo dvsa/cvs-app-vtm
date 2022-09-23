@@ -23,12 +23,12 @@ import {
   getByAll,
   getByAllFailure,
   getByAllSuccess,
-  putUpdateTechRecords,
-  putUpdateTechRecordsSuccess,
-  putUpdateTechRecordsFailure,
-  postProvisionalTechRecord,
-  postProvisionalTechRecordSuccess,
-  postProvisionalTechRecordFailure
+  updateTechRecords,
+  updateTechRecordsSuccess,
+  updateTechRecordsFailure,
+  createProvisionalTechRecord,
+  createProvisionalTechRecordSuccess,
+  createProvisionalTechRecordFailure
 } from '../actions/technical-record-service.actions';
 import { Router } from '@angular/router';
 
@@ -80,14 +80,14 @@ export class TechnicalRecordServiceEffects {
 
   updateTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(putUpdateTechRecords),
+      ofType(updateTechRecords),
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.oldStatusCode).pipe(
           map(vehicleTechRecords => 
-            putUpdateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })
+            updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })
           ),
-          catchError(error => of(putUpdateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))),
+          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))),
         )
       )
     )
@@ -95,14 +95,14 @@ export class TechnicalRecordServiceEffects {
 
   postProvisionalTechRecord = createEffect(() => 
     this.actions$.pipe(
-      ofType(postProvisionalTechRecord),
+      ofType(createProvisionalTechRecord),
       withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
           map(vehicleTechRecords =>
-            postProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords]})
+            createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords]})
           ),
-          catchError(error => of(postProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error,'postProvisionalTechRecord')}))),
+          catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error,'postProvisionalTechRecord')}))),
         )
       )
     )
@@ -110,7 +110,7 @@ export class TechnicalRecordServiceEffects {
 
   private apiErrors: { [key: string]: string } = {
     updateTechnicalRecord_400: "Unable to update technical record",
-    postProvisionalTechRecord_400: "Unable to create a new provisional record",
+    createProvisionalTechRecord_400: "Unable to create a new provisional record",
     getTechnicalRecords_400: "There was a problem getting the Tech Record by",
     getTechnicalRecords_404: "Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number"
   }

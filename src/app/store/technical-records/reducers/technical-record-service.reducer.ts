@@ -20,12 +20,12 @@ import {
   getByAll,
   getByAllFailure,
   getByAllSuccess,
-  putUpdateTechRecords,
-  putUpdateTechRecordsSuccess,
-  putUpdateTechRecordsFailure,
-  postProvisionalTechRecord,
-  postProvisionalTechRecordSuccess,
-  postProvisionalTechRecordFailure
+  updateTechRecords,
+  updateTechRecordsSuccess,
+  updateTechRecordsFailure,
+  createProvisionalTechRecord,
+  createProvisionalTechRecordSuccess,
+  createProvisionalTechRecordFailure
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -70,13 +70,13 @@ export const vehicleTechRecordReducer = createReducer(
   on(getByAllSuccess, successArgs),
   on(getByAllFailure, failureArgs),
 
-  on(putUpdateTechRecords, defaultArgs),
-  on(putUpdateTechRecordsSuccess, successArgs),
-  on(putUpdateTechRecordsFailure, updateFailureArgs),
+  on(updateTechRecords, defaultArgs),
+  on(updateTechRecordsSuccess, successArgs),
+  on(updateTechRecordsFailure, updateFailureArgs),
 
-  on(postProvisionalTechRecord, defaultArgs),
-  on(postProvisionalTechRecordSuccess, successArgs),
-  on(postProvisionalTechRecordFailure, updateFailureArgs)
+  on(createProvisionalTechRecord, defaultArgs),
+  on(createProvisionalTechRecordSuccess, successArgs),
+  on(createProvisionalTechRecordFailure, updateFailureArgs)
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
