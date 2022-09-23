@@ -20,7 +20,6 @@ export class TechRecordComponent {
   constructor(public spinnerService: SpinnerService, private techrecordService: TechnicalRecordService,  private router: Router, public errorService: GlobalErrorService) {
     this.vehicleTechRecord$ = this.techrecordService.selectedVehicleTechRecord$;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
   }
 
   public get Roles() {
