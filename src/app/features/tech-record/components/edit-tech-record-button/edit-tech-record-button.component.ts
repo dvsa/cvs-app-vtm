@@ -53,13 +53,11 @@ export class EditTechRecordButtonComponent implements OnInit {
   submitTechRecord() {
     if (this.hasProvisional && this.isCurrent) {
       this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
-      this.toggleEditMode();
     } else if (this.hasProvisional) {
       this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber }));
-      this.toggleEditMode();
     } else {
       this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }));
-      this.toggleEditMode();
     }
+    this.toggleEditMode();
   }
 }
