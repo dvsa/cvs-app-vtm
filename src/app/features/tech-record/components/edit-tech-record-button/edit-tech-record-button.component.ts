@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { postProvisionalTechRecord, putUpdateTechRecords, putUpdateTechRecordsSuccess } from '@store/technical-records';
+import { postProvisionalTechRecord, postProvisionalTechRecordSuccess, putUpdateTechRecords, putUpdateTechRecordsSuccess } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
@@ -38,7 +38,7 @@ export class EditTechRecordButtonComponent implements OnInit {
 
   watchForEditSuccess() {
     this.actions$
-      .pipe(ofType(putUpdateTechRecordsSuccess), take(1))
+      .pipe(ofType(putUpdateTechRecordsSuccess, postProvisionalTechRecordSuccess), take(1))
       .subscribe(action =>
         this.router.navigateByUrl(
           `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`

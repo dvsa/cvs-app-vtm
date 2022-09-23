@@ -71,7 +71,6 @@ export class TechnicalRecordService {
     
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
     if (techRecord.statusCode === StatusCodes.CURRENT) {
-      //body.techRecord = [cloneDeep(techRecord)]
       body.techRecord[0].statusCode = StatusCodes.PROVISIONAL
     }
 

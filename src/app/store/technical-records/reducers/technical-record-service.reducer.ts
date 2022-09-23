@@ -40,11 +40,6 @@ export const initialState: TechnicalRecordServiceState = {
   loading: false
 };
 
-export const initialState2: TechnicalRecordServiceState = {
-  vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
-  loading: false
-};
-
 export const getVehicleTechRecordState = createFeatureSelector<TechnicalRecordServiceState>(STORE_FEATURE_TECHNICAL_RECORDS_KEY);
 
 export const vehicleTechRecordReducer = createReducer(
