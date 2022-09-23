@@ -63,7 +63,7 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `oldStatusCode=${oldStatusCode}` : ''}` 
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}` 
     const body = {
       msUserDetails: { msOid: id, msUser: username },
       techRecord: [cloneDeep(techRecord)]
