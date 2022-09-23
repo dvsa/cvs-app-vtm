@@ -127,7 +127,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
         const second = this.originalDate ? new Date(this.originalDate).getSeconds() : '00';
 
         this.onChange(
-          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000Z`
+          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`
         );
       }
     });
