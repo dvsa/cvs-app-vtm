@@ -7,27 +7,32 @@ import { Roles } from '@models/roles.enum'
 import { Observable } from 'rxjs';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record',
   templateUrl: './tech-record.component.html',
   styleUrls: ['./tech-record.component.scss']
 })
-export class TechRecordComponent implements OnChanges {
+export class TechRecordComponent {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
 
-  constructor(public spinnerService: SpinnerService, private techrecordService: TechnicalRecordService, public errorService: GlobalErrorService) {
+  constructor(public spinnerService: SpinnerService, private techrecordService: TechnicalRecordService,  private router: Router, public errorService: GlobalErrorService) {
     this.vehicleTechRecord$ = this.techrecordService.selectedVehicleTechRecord$;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
   }
 
-  ngOnChanges() {
-    this.vehicleTechRecord$ = this.techrecordService.selectedVehicleTechRecord$;
-  }
+//   reloadCurrentRoute() {
+//     const currentUrl = this.router.url;
+//     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+//         this.router.navigate([currentUrl]);
+//     });
+// }
 
   public get Roles() {
     return Roles;
   }
-
   
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
     return errors.find(error => error.anchorLink === name);
