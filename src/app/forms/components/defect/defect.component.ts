@@ -143,14 +143,12 @@ export class DefectComponent implements OnInit, OnDestroy {
     this.router.navigate(['../..'], { relativeTo: this.activatedRoute, queryParamsHandling: 'preserve' });
   }
 
-  togglePRS() {
-    this.defect = { ...this.defect, prs: !this.defect?.prs } as TestResultDefect;
-    this._defectsForm?.controls[this.index ?? this._defectsForm.length - 1].patchValue(this.defect);
-  }
-
-  toggleProhibition() {
-    this.defect = { ...this.defect, prohibitionIssued: !this.defect?.prohibitionIssued } as TestResultDefect;
-    this._defectsForm?.controls[this.index ?? this._defectsForm.length - 1].patchValue(this.defect);
+  toggleDefectField(field: keyof TestResultDefect) {
+    if (!this.defect) {
+      return;
+    }
+    this.defect = { ...this.defect, [field]: !this.defect[field] } as TestResultDefect;
+    this._defectsForm?.controls[this.index ?? this._defectsForm.length - 1].get(field)?.patchValue(this.defect[field]);
   }
 
   initializeInfoDictionary(defect: Defect | undefined) {
@@ -182,7 +180,8 @@ export class DefectComponent implements OnInit, OnDestroy {
 
       //initializing if defect is advisory
       deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
-      deficiencyRef: `${defect.imNumber}.${item.itemNumber}`
+      deficiencyRef: `${defect.imNumber}.${item.itemNumber}`,
+      prohibitionIssued: false
     };
 
     if (deficiency) {

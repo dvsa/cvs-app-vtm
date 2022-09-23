@@ -72,7 +72,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   backToTestRecord(): void {
-    this.router.navigate(['..'], { relativeTo: this.route.parent });
+    this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   /**

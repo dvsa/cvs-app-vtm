@@ -3,20 +3,28 @@
 <div class="defects">
   <div class="list_container" [ngClass]="{ 'list_container--shrink': selectedItem }">
     <ol class="list">
-      <li *ngFor="let defect of defects" class="list__item" [ngClass]="{ 'list__item--active': defect === selectedDefect }">
-        <button (click)="handleSelect(defect, types.Defect)">
-          {{ defect.imNumber }}: {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
-        </button>
+      <li *ngFor="let defect of defects">
+        <a
+          class="browse__link browse__link--inactive"
+          [ngClass]="{ 'browse__link--active': defect === selectedDefect }"
+          (click)="handleSelect(defect, types.Defect)"
+        >
+          {{ defect.imDescription }} <span [ngClass]="{ 'list__item--more': hasItems(defect) }"></span>
+        </a>
       </li>
     </ol>
   </div>
 
   <div *ngIf="selectedDefect" class="list_container">
     <ol class="list">
-      <li *ngFor="let item of selectedDefect?.items" class="list__item" [ngClass]="{ 'list__item--active': item === selectedItem }">
-        <button (click)="handleSelect(item, types.Item)">
+      <li *ngFor="let item of selectedDefect?.items">
+        <a
+          class="browse__link browse__link--inactive"
+          [ngClass]="{ 'browse__link--active': item === selectedItem }"
+          (click)="handleSelect(item, types.Item)"
+        >
           {{ item.itemDescription }} <span [ngClass]="{ 'list__item--more': hasDeficiencies(item) }"></span>
-        </button>
+        </a>
       </li>
     </ol>
   </div>
@@ -24,22 +32,24 @@
   <div *ngIf="selectedItem" class="list_container">
     <ol class="list">
       <li *ngFor="let deficiency of selectedItem?.deficiencies">
-        <a class="ref govuk-link--no-visited-state" (click)="handleSelect(deficiency, types.Deficiency)"
+        <a class="browse__normal-link govuk-link--no-visited-state" (click)="handleSelect(deficiency, types.Deficiency)"
           >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : '' }}
           {{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}</a
         >
         <span>
-          <app-tag class="category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
+          <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
         </span>
-        <span class="description">{{ deficiency.deficiencyText }}</span>
+        <span class="browse__description">{{ deficiency.deficiencyText }}</span>
       </li>
 
       <li>
-        <a class="ref govuk-link--no-visited-state" (click)="handleSelect()">{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a>
+        <a class="browse__normal-link govuk-link--no-visited-state" (click)="handleSelect()"
+          >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }}</a
+        >
         <span>
-          <app-tag class="category" [type]="categoryColor('advisory')">advisory</app-tag>
+          <app-tag class="browse__category" [type]="categoryColor('advisory')">advisory</app-tag>
         </span>
-        <span class="description">Advisory defect.</span>
+        <span class="browse__description">Advisory defect.</span>
       </li>
     </ol>
   </div>

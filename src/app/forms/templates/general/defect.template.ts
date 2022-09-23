@@ -158,7 +158,7 @@ export const DefectsTpl: FormNode = {
                     {
                       name: 'prohibitionIssued',
                       label: 'Prohibition issued',
-                      value: false,
+                      value: null,
                       type: FormNodeTypes.CONTROL,
                       editType: FormNodeEditTypes.RADIO,
                       options: [

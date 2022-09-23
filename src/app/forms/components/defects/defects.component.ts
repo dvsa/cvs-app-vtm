@@ -23,6 +23,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
   private _defectsForm?: CustomFormArray;
+  defaultNullOrEmpty: any;
 
   constructor(private dfs: DynamicFormService) {}
 
