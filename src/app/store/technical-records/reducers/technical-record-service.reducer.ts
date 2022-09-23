@@ -33,6 +33,7 @@ export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 export interface TechnicalRecordServiceState {
   vehicleTechRecords: Array<VehicleTechRecordModel>;
   loading: boolean;
+  error?: unknown
 }
 
 export const initialState: TechnicalRecordServiceState = {
