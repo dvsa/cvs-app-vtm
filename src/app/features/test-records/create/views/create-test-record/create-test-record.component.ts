@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
