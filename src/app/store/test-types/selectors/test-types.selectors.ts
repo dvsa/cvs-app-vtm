@@ -1,8 +1,9 @@
+import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { createSelector } from '@ngrx/store';
-import { selectedTestResultState, toEditOrNotToEdit } from '@store/test-records';
+import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
 
 const { selectIds, selectEntities, selectAll, selectTotal } = testTypesAdapter.getSelectors();
@@ -54,6 +55,30 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, test
   };
 
   return sortTestTypes(testTypes);
+});
+
+export const selectTestType = (id: string) => createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
+  function findUsingId(id: string, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
+    if (!testTypes) {
+      return undefined;
+    }
+
+    for (const testType of testTypes) {
+      if (testType.id === id) {
+        return testType;
+      }
+
+      const found = findUsingId(id, (testType as TestTypeCategory).nextTestTypesOrCategories)
+
+      if (found) {
+        return found;
+      }
+    }
+
+    return undefined;
+  }
+
+  return findUsingId(id, testTypes);
 });
 
 function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
