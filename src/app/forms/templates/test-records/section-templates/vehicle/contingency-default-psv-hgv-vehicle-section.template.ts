@@ -46,7 +46,7 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
       name: 'odometerReading',
       label: 'Odometer Reading',
       value: '',
-      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }, { name: ValidatorNames.Max, args: 9999999 }],
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN

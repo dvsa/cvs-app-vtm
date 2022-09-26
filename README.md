@@ -1,3 +1,4 @@
+[![CI](https://github.com/dvsa/cvs-app-vtm/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/dvsa/cvs-app-vtm/actions/workflows/pr-checks.yml)
 # cvs-vtm-app
 
 This is the angular code for the VTM frontend application.

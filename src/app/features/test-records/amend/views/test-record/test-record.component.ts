@@ -25,7 +25,6 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  isEditing = true;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
@@ -52,6 +51,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe(testResult => {
+        testResult!.reasonForCreation = '';
         this.testRecordsService.editingTestResult(testResult!);
       });
 

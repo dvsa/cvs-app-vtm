@@ -18,6 +18,24 @@ export const RequiredSectionHGVTRL: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
+      name: 'contingencyTestNumber',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'typeOfTest',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'source',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
       name: 'testStatus',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,

@@ -5,6 +5,7 @@
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
   <input
+    *ngIf="!numeric"
     class="govuk-input"
     id="{{ name }}"
     name="{{ name }}"
@@ -14,5 +15,18 @@
     (ngModelChange)="onChange($event)"
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"
+  />
+  <input
+    *ngIf="numeric"
+    class="govuk-input"
+    id="{{ name }}"
+    name="{{ name }}"
+    type="text"
+    [(ngModel)]="value"
+    [disabled]="disabled"
+    (ngModelChange)="onChange($event)"
+    (blur)="onTouched(); handleEvent($event)"
+    (focus)="handleEvent($event)"
+    appNumberOnly
   />
 </div>

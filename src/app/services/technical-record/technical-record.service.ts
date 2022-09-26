@@ -64,7 +64,7 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
     const { username, id } = user;
-    const url = oldStatusCode ? `${environment.VTM_API_URI}/vehicles/${systemNumber}?oldStatusCode=${oldStatusCode}`: `${environment.VTM_API_URI}/vehicles/${systemNumber}`;
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}`
     const body = {
       msUserDetails: { msOid: id, msUser: username },
       techRecord: [cloneDeep(techRecord)]
@@ -72,7 +72,6 @@ export class TechnicalRecordService {
 
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
     if (techRecord.statusCode === StatusCodes.CURRENT) {
-      //body.techRecord = [cloneDeep(techRecord)]
       body.techRecord[0].statusCode = StatusCodes.PROVISIONAL
     }
 

@@ -148,6 +148,18 @@ export const CreateRequiredSection: FormNode = {
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
+      name: 'typeOfTest',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'source',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
       name: 'vehicleSize',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,

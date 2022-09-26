@@ -48,8 +48,14 @@ export const TestSectionGroup3And4And8: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' },
+                { value: 'prs', label: 'PRS' },
+                { value: 'abandoned', label: 'Abandoned' }
+              ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
@@ -99,7 +105,7 @@ export const TestSectionGroup3And4And8: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'abandoned' }
                 },
-                { name: ValidatorNames.MaxLength, args: { length: 500 } }
+                { name: ValidatorNames.MaxLength, args: 500 }
               ]
             },
             {

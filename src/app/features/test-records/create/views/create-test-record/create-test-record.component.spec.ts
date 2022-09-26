@@ -7,7 +7,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { initialAppState, State } from '@store/.';
-import { ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { CreateTestRecordComponent } from './create-test-record.component';
 import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -25,6 +25,10 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { NumberPlateComponent } from '@shared/components/number-plate/number-plate.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
+import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { UserService } from '@services/user-service/user-service';
+import { Roles } from '@models/roles.enum';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -33,6 +37,11 @@ describe('CreateTestRecordComponent', () => {
   let router: Router;
   let testRecordsService: TestRecordsService;
   let store: MockStore<State>;
+
+  const MockUserService = {
+    getUserName$: jest.fn().mockReturnValue(new Observable()),
+    roles$: of([Roles.TestResultAmend, Roles.TestResultView])
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,7 +54,9 @@ describe('CreateTestRecordComponent', () => {
         ButtonComponent,
         ButtonGroupComponent,
         IconComponent,
-        NumberPlateComponent
+        NumberPlateComponent,
+        VehicleHeaderComponent,
+        RoleRequiredDirective
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, DynamicFormsModule],
       providers: [
@@ -55,6 +66,7 @@ describe('CreateTestRecordComponent', () => {
         GetTestResultsService,
         UpdateTestResultsService,
         CreateTestResultsService,
+        { provide: UserService, useValue: MockUserService },
         provideMockStore({ initialState: initialAppState }),
         provideMockActions(() => actions$)
       ]

@@ -1,6 +1,8 @@
-import { AfterContentInit, ChangeDetectorRef, Component, Injector, Input, OnDestroy, OnInit } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import validateDate from 'validate-govuk-date';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -17,19 +19,22 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() includeTime = false;
+  @ViewChild('dayEl') dayEl?: ElementRef<HTMLInputElement>;
+  @ViewChild('dayModel') dayModel?: AbstractControlDirective;
 
-  private day_: Subject<number> = new Subject();
-  private month_: Subject<number> = new Subject();
-  private year_: Subject<number> = new Subject();
-  private hour_: Subject<number> = new Subject();
-  private minute_: Subject<number> = new Subject();
-  private day$: Observable<number>;
-  private month$: Observable<number>;
-  private year$: Observable<number>;
-  private hour$: Observable<number>;
-  private minute$: Observable<number>;
+  private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  private month_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  private year_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  private hour_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  private minute_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
+  private day$: Observable<number | undefined>;
+  private month$: Observable<number | undefined>;
+  private year$: Observable<number | undefined>;
+  private hour$: Observable<number | undefined>;
+  private minute$: Observable<number | undefined>;
   private subscriptions: Array<Subscription | undefined> = [];
   public originalDate: string = '';
+  public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
 
   public day?: number;
   public month?: number;
@@ -102,31 +107,48 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    return combineLatest({ day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }).subscribe({
+    let dateFields;
+
+    if (this.includeTime) {
+      dateFields = { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ };
+    } else {
+      dateFields = { day: this.day$, month: this.month$, year: this.year$ };
+    }
+
+    return combineLatest(dateFields).subscribe({
       next: ({ day, month, year, hour, minute }) => {
-        if (!day || !month || !year || (this.includeTime && (!hour || !minute))) {
+        if (!day && !month && !year && !hour && !minute) {
           this.onChange(null);
           return;
         }
 
-        const date = new Date(Date.UTC(year, month - 1, day));
+        hour = this.includeTime ? hour : this.originalDate ? new Date(this.originalDate).getHours() : '00';
+        minute = this.includeTime ? minute : this.originalDate ? new Date(this.originalDate).getMinutes() : '00';
+        const second = this.originalDate ? new Date(this.originalDate).getSeconds() : '00';
 
-        hour = hour ?? new Date(this.originalDate).getHours();
-        minute = minute ?? new Date(this.originalDate).getMinutes();
-        const second = new Date(this.originalDate).getSeconds();
-
-        if ('Invalid Date' !== date.toString()) {
-          date.setHours(hour || 0);
-          date.setMinutes(minute || 0);
-          date.setSeconds(second || 0);
-        }
-
-        this.onChange(date);
+        this.onChange(
+          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`
+        );
       }
     });
   }
 
+  padded(n: number | string | undefined, l = 2) {
+    return n != null && !isNaN(+n) ? String(n).padStart(l, '0') || '' : '';
+  }
+
+  /**
+   * Note: This function is not testable because `validDate` returns a refference that can't be comapred to in spec file with `hasValidator` function.
+   */
   addValidators() {
-    this.control?.addValidators([DateValidators.validDate]);
+    this.control?.addValidators([DateValidators.validDate(this.includeTime, this.label)]);
+  }
+
+  validate() {
+    this.errors = validateDate(this.day || '', this.month || '', this.year || '', this.label);
+  }
+
+  elementHasErrors(i: number) {
+    return this.day || this.month || this.year ? this.errors?.errors?.some(e => e.index === i) : false;
   }
 }

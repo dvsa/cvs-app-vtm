@@ -2,7 +2,6 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { createAction, props } from '@ngrx/store';
 import { ActionCreator, ActionCreatorProps } from '@ngrx/store/src/models';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '../../../models/vehicle-tech-record.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
 
 const prefix = '[Technical Record Service]';
 
@@ -30,13 +29,13 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
-export const putUpdateTechRecords = createAction(`${prefix} putUpdateTechRecords`, props<{ systemNumber: string, oldStatusCode?: StatusCodes  }>());
-export const putUpdateTechRecordsSuccess = createOutcomeAction('putUpdateTechRecords', true);
-export const putUpdateTechRecordsFailure = createOutcomeAction('putUpdateTechRecords');
+export const updateTechRecords = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string, oldStatusCode?: StatusCodes  }>());
+export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
+export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
-export const postProvisionalTechRecord = createAction(`${prefix} postProvisionalTechRecord`, props<{ systemNumber: string}>());
-export const postProvisionalTechRecordSuccess = createOutcomeAction('postProvisionalTechRecord', true);
-export const postProvisionalTechRecordFailure = createOutcomeAction('postProvisionalTechRecord');
+export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string}>());
+export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
+export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
 export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ techRecord: TechRecordModel }>());
 export const updateEditingTechRecordCancel = createAction('[tech-record] Update editing cancelled');

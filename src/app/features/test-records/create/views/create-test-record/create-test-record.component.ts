@@ -24,7 +24,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
-  sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
 
   constructor(
     private actions$: Actions,
@@ -39,8 +38,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.testResult$ = this.testRecordsService.editingTestResult$.pipe(tap(editingTestResult => !editingTestResult && this.backToTechRecord()));
-
-    this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
 
     this.routerService
       .getQueryParam$('testType')
@@ -78,7 +75,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
     if (this.baseTestRecordComponent?.sections) {
       this.baseTestRecordComponent.sections.forEach(section => forms.push(section.form));
     }
-    
+
     if (this.baseTestRecordComponent?.defects) {
       forms.push(this.baseTestRecordComponent.defects.form);
     }

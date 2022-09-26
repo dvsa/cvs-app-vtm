@@ -1,4 +1,3 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
@@ -10,19 +9,26 @@ export const ContingencyTestSectionGroup1: FormNode = {
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
+      name: 'contingencyTestNumber',
+      label: 'Contingency Test Number',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMERICSTRING,
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }]
+    },
+    {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATETIME,
-      editType: FormNodeEditTypes.DATETIME,
-      validators: [{ name: ValidatorNames.Required }]
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.PastDate }]
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
-      viewType: FormNodeViewTypes.DATETIME,
-      editType: FormNodeEditTypes.DATETIME,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.Required }]
     },
     {
@@ -72,7 +78,7 @@ export const ContingencyTestSectionGroup1: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'abandoned' }
                 },
-                { name: ValidatorNames.MaxLength, args: { length: 500 } }
+                { name: ValidatorNames.MaxLength, args: 500 }
               ]
             },
             {
@@ -95,31 +101,30 @@ export const ContingencyTestSectionGroup1: FormNode = {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'Start time',
+              label: 'Test start date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
-              validators: [{ name: ValidatorNames.Required }]
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
+              ]
             },
             {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'End time',
+              label: 'Test end date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
-              validators: [{ name: ValidatorNames.Required }]
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
             },
             {
               name: 'prohibitionIssued',
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              asyncValidators: [{ name: AsyncValidatorNames.TestWithDefectTaxonomy }],
+              editType: FormNodeEditTypes.HIDDEN,
               required: true
             }
           ]
