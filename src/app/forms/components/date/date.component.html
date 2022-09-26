@@ -10,9 +10,11 @@
           <input
             #dayEl="ngModel"
             appNumberOnly
+            appFocusNext
+            [includeTime]="includeTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
-            id="{{ name }}-day"
+            attr.id="{{ name }}-day"
             name="{{ name }}-day"
             type="number"
             inputmode="numeric"
@@ -31,6 +33,8 @@
           <input
             #monthEl="ngModel"
             appNumberOnly
+            appFocusNext
+            [includeTime]="includeTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
             id="{{ name }}-month"
@@ -52,6 +56,8 @@
           <input
             #yearEl="ngModel"
             appNumberOnly
+            appFocusNext
+            [includeTime]="includeTime"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
             id="{{ name }}-year"
@@ -75,8 +81,12 @@
             <input
               #hourEl="ngModel"
               appNumberOnly
+              appFocusNext
+              [includeTime]="includeTime"
               class="govuk-input govuk-date-input__input govuk-input--width-2"
-              [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (undefined === hour || null === hour || hourEl.invalid) }"
+              [ngClass]="{
+                'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
+              }"
               id="{{ name }}-hour"
               name="{{ name }}-hour"
               type="number"
@@ -100,7 +110,7 @@
               appNumberOnly
               class="govuk-input govuk-date-input__input govuk-input--width-2"
               [ngClass]="{
-                'govuk-input--error': (yearEl.dirty || yearEl.touched) && (undefined === minute || null === minute || minuteEl.invalid)
+                'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === minute || null === minute || minuteEl.invalid)
               }"
               id="{{ name }}-minute"
               name="{{ name }}-minute"

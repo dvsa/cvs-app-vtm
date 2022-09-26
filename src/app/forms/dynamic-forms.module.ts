@@ -21,6 +21,7 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
+import { FocusNextDirective } from './components/date/focus-next.directive';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    DefectSelectComponent
+    DefectSelectComponent,
+    FocusNextDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
