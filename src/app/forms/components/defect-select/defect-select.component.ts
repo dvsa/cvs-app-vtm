@@ -6,7 +6,7 @@ import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
-import { selectedTestResultState } from '@store/test-records';
+import { selectedTestResultState, toEditOrNotToEdit } from '@store/test-records';
 import { TestResultsState } from '@store/test-records/reducers/test-records.reducer';
 import { takeUntil, filter, Subject } from 'rxjs';
 
@@ -34,7 +34,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.testResultsStore
-      .select(selectedTestResultState)
+      .select(toEditOrNotToEdit)
       .pipe(
         takeUntil(this.onDestroy$),
         filter(testResult => !!testResult)
@@ -80,10 +80,13 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
-        this.router.navigate([this.selectedDeficiency!.ref], { relativeTo: this.route });
+        this.router.navigate([this.selectedDeficiency!.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
-        this.router.navigate([`${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}`], { relativeTo: this.route });
+        this.router.navigate([`${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}`], {
+          relativeTo: this.route,
+          queryParamsHandling: 'merge'
+        });
         break;
     }
   }

@@ -53,7 +53,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.testRecordsService.cancelEditingTestResult();
+    // this.testRecordsService.cancelEditingTestResult();
     this.errorService.clearErrors();
 
     this.destroy$.next();
