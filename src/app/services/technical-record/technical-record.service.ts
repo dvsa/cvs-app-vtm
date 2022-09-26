@@ -4,6 +4,7 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
+  editableTechRecord,
   getByAll,
   getByPartialVin,
   getBySystemNumber,
@@ -63,12 +64,12 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}` 
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}`
     const body = {
       msUserDetails: { msOid: id, msUser: username },
       techRecord: [cloneDeep(techRecord)]
     };
-    
+
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
     if (techRecord.statusCode === StatusCodes.CURRENT) {
       body.techRecord[0].statusCode = StatusCodes.PROVISIONAL
@@ -77,7 +78,7 @@ export class TechnicalRecordService {
     if (techRecord.updateType) {
       delete body.techRecord[0].updateType
     }
-    
+
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
@@ -98,6 +99,10 @@ export class TechnicalRecordService {
 
   get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
+  }
+
+  get editableTechRecord$() {
+    return this.store.pipe(select(editableTechRecord));
   }
 
   get selectedVehicleTechRecord$() {

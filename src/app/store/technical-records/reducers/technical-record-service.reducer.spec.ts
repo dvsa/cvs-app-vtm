@@ -276,10 +276,10 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('putUpdateTechRecords', () => {
     it('should set the new vehicle tech records state after update', () => {
-      const state: TechnicalRecordServiceState = { 
-        ...initialState, 
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
         vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
-        loading: true 
+        loading: true
       };
       const action = updateTechRecords({ systemNumber: '001' });
       const newState = vehicleTechRecordReducer(state, action);
@@ -321,10 +321,10 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('postProvisionalTechRecord', () => {
     it('should set the new vehicle tech records state after update', () => {
-      const state: TechnicalRecordServiceState = { 
-        ...initialState, 
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
         vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
-        loading: true 
+        loading: true
       };
       const action = createProvisionalTechRecord({ systemNumber: '001' });
       const newState = vehicleTechRecordReducer(state, action);

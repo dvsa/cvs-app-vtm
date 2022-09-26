@@ -73,6 +73,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional' }] };
     component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
     component.editableState = true;
+    component.isDirty = true;
     fixture.detectChanges();
 
     jest.spyOn(component, 'submitTechRecord');
@@ -87,6 +88,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
     component.isCurrent = true;
     component.editableState = true;
+    component.isDirty = true;
     fixture.detectChanges();
 
     jest.spyOn(component, 'submitTechRecord');
@@ -95,4 +97,78 @@ describe('EditTechRecordButtonComponent', () => {
 
     expect(component.submitTechRecord).toHaveBeenCalled();
   }));
+
+  it('should promt user if cancelling an amend with a dirty form.', fakeAsync(() => {
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = true;
+    fixture.detectChanges();
+
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toBeCalledTimes(0);
+    expect(component.editableState).toBeTruthy();
+  }))
+
+  it('should promt user if cancelling an amend with a dirty form and toggle edit on OK confirmation.', fakeAsync(() => {
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = true;
+    fixture.detectChanges();
+
+    window.confirm = jest.fn(() => true)
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toHaveBeenCalled();
+    expect(component.editableState).toBeFalsy();
+  }))
+
+  it('should promt user if cancelling an amend with a dirty form and NOT toggle edit on Cancel confirmation.', fakeAsync(() => {
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = true;
+    fixture.detectChanges();
+
+    window.confirm = jest.fn(() => false)
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toHaveBeenCalledTimes(0);
+    expect(component.editableState).toBeTruthy();
+  }))
+
+  it('should NOT promt user if cancelling an amend with a clean form.', fakeAsync(() => {
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]}
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = false;
+    fixture.detectChanges();
+
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toHaveBeenCalled();
+    expect(component.editableState).toBeFalsy();
+  }))
 });
