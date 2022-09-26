@@ -1,6 +1,6 @@
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -25,7 +25,7 @@ import {
   putUpdateTechRecordsFailure,
   postProvisionalTechRecord,
   postProvisionalTechRecordSuccess,
-  postProvisionalTechRecordFailure
+  postProvisionalTechRecordFailure, updateEditingTechRecord, updateEditingTechRecordCancel
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -33,11 +33,12 @@ export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 export interface TechnicalRecordServiceState {
   vehicleTechRecords: Array<VehicleTechRecordModel>;
   loading: boolean;
+  editingTechRecord?: TechRecordModel
 }
 
 export const initialState: TechnicalRecordServiceState = {
   vehicleTechRecords: [],
-  loading: false
+  loading: false,
 };
 
 export const initialState2: TechnicalRecordServiceState = {
@@ -80,7 +81,10 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(postProvisionalTechRecord, defaultArgs),
   on(postProvisionalTechRecordSuccess, successArgs),
-  on(postProvisionalTechRecordFailure, updateFailureArgs)
+  on(postProvisionalTechRecordFailure, updateFailureArgs),
+
+  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: {techRecord: TechRecordModel}) => ({...state, editingTechRecord: data.techRecord})),
+  on(updateEditingTechRecordCancel,  (state: TechnicalRecordServiceState) => ({...state , editingTechRecord: undefined}))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

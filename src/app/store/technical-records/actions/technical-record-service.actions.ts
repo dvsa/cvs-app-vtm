@@ -1,7 +1,8 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { createAction, props } from '@ngrx/store';
 import { ActionCreator, ActionCreatorProps } from '@ngrx/store/src/models';
-import { StatusCodes, VehicleTechRecordModel } from '../../../models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '../../../models/vehicle-tech-record.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 
 const prefix = '[Technical Record Service]';
 
@@ -36,6 +37,9 @@ export const putUpdateTechRecordsFailure = createOutcomeAction('putUpdateTechRec
 export const postProvisionalTechRecord = createAction(`${prefix} postProvisionalTechRecord`, props<{ systemNumber: string}>());
 export const postProvisionalTechRecordSuccess = createOutcomeAction('postProvisionalTechRecord', true);
 export const postProvisionalTechRecordFailure = createOutcomeAction('postProvisionalTechRecord');
+
+export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ techRecord: TechRecordModel }>());
+export const updateEditingTechRecordCancel = createAction('[tech-record] Update editing cancelled');
 
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';

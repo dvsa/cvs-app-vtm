@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { postProvisionalTechRecord, putUpdateTechRecords, putUpdateTechRecordsSuccess } from '@store/technical-records';
+import { postProvisionalTechRecord, putUpdateTechRecords, putUpdateTechRecordsSuccess, updateEditingTechRecordCancel } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
 import { cloneDeep } from 'lodash';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -16,14 +17,15 @@ export class EditTechRecordButtonComponent implements OnInit {
   @Input() viewableTechRecord?: TechRecordModel;
   @Input() editableState = false;
   @Input() isDirty: boolean = false;
-  @Input() isInvalid: boolean = false;
+  @Input() isInvalid: boolean = true;
   isArchived?: boolean;
   isCurrent?: boolean;
   hasProvisional?: boolean;
 
   @Output() editableStateChange = new EventEmitter<boolean>()
+  @Output() submitCheckFormValidity = new EventEmitter()
 
-  constructor(private store: Store, private actions$: Actions, private router: Router) {}
+  constructor(private store: Store, private actions$: Actions, private router: Router, private errorService: GlobalErrorService) {}
 
   ngOnInit() {
     this.isArchived = this.viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
@@ -36,6 +38,8 @@ export class EditTechRecordButtonComponent implements OnInit {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
     }
+    this.errorService.clearErrors()
+    this.store.dispatch(updateEditingTechRecordCancel())
   }
 
   toggleEditMode() {
@@ -67,17 +71,28 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   submitTechRecord() {
-    if (this.hasProvisional) {
+    this.submitCheckFormValidity.emit((formValid: boolean) => {
+
+      if (!formValid) {
+        return;
+      }
+
+      if(!this.hasProvisional) {
+        this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }));
+        this.toggleEditMode();
+        return
+      }
+
       if (this.isCurrent) {
         this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
         this.toggleEditMode();
         return;
       }
+
       this.store.dispatch(putUpdateTechRecords({ systemNumber: this.systemNumber }));
       this.toggleEditMode();
       return;
-    }
-    this.store.dispatch(postProvisionalTechRecord({ systemNumber: this.systemNumber }));
-    this.toggleEditMode();
+
+    })
   }
 }

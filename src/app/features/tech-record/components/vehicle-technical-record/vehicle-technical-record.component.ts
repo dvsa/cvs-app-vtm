@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
@@ -15,7 +15,7 @@ import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.t
   selector: 'app-vehicle-technical-record',
   templateUrl: './vehicle-technical-record.component.html'
 })
-export class VehicleTechnicalRecordComponent implements OnInit {
+export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   @ViewChild(TechRecordSummaryComponent) dynamicForm!: TechRecordSummaryComponent;
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
 
@@ -29,6 +29,10 @@ export class VehicleTechnicalRecordComponent implements OnInit {
   constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService, private errorService: GlobalErrorService) {
     this.records$ = testRecordService.testRecords$;
   }
+
+  ngAfterViewInit(): void {
+        this.handleFormState()
+    }
 
   ngOnInit(): void {
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
@@ -50,14 +54,15 @@ export class VehicleTechnicalRecordComponent implements OnInit {
     return VehicleTypes;
   }
 
+  handleSubmit(updateTechRecord: Function) {
+    this.handleFormState();
+    this.isInvalid ? updateTechRecord(false) : updateTechRecord(true)
+  }
+
   handleFormState() {
     const form = this.dynamicForm.sections.map(section => section.form)
-    if(this.isAnyFormDirty(form)){
-      this.isDirty = true;
-    }
-    if(this.isAnyFormInvalid(form)){
-      this.isInvalid = true;
-    }
+    this.isAnyFormDirty(form) ? this.isDirty = true : this.isDirty = false;
+    this.isAnyFormInvalid(form) ? this.isInvalid = true : this.isInvalid = false;
   }
 
   isAnyFormDirty(forms: Array<CustomFormGroup | CustomFormArray>) {

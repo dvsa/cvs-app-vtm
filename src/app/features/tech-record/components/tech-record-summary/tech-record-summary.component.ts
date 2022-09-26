@@ -32,6 +32,10 @@ import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.t
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
+import cloneDeep from 'lodash.clonedeep';
+import { Store } from '@ngrx/store';
+import { updateEditingTechRecord } from '@store/technical-records';
+import merge from 'lodash.merge';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -43,6 +47,7 @@ export class TechRecordSummaryComponent implements OnInit {
   @Input() isEditable: boolean = false;
   @Input() vehicleTechRecord?: TechRecordModel;
   @Output() formChange = new EventEmitter();
+  vehicleTechRecordCalculated!: TechRecordModel;
   currentBrakeRecord?: Brakes;
   vehicleSummaryTemplate!: FormNode;
   psvBrakeTemplate!: FormNode;
@@ -74,9 +79,35 @@ export class TechRecordSummaryComponent implements OnInit {
   ngOnInit(): void {
     this.vehicleTemplate();
     this.currentBrakeRecord = this.vehicleTechRecord?.brakes;
+    this.calculateVehicleModel()
   }
 
-  constructor() {}
+  constructor(private store:Store) {}
+
+  @Input()
+  set editable(isEditable: boolean){
+    this.isEditable = isEditable;
+    this.calculateVehicleModel()
+  }
+
+  calculateVehicleModel() {
+    if(this.isEditable) {
+      this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecord!);
+      this.vehicleTechRecordCalculated.reasonForCreation = '';
+    }
+    else {
+      this.vehicleTechRecordCalculated = this.vehicleTechRecord!;
+    }
+    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated}));
+  }
+
+  // @ts-ignore
+  handleFormState(event) {
+    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event)
+    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated!}));
+    this.formChange.emit();
+  }
+
 
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {

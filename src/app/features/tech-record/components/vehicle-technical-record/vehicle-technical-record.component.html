@@ -48,9 +48,10 @@
       [isDirty]="isDirty"
       [isInvalid]="isInvalid"
       [(editableState)]="isEditable"
+      (submitCheckFormValidity)="handleSubmit($event)"
     ></app-edit-tech-record-button>
     <app-tech-record-summary
-      [isEditable]="isEditable"
+      [editable]="isEditable"
       [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>

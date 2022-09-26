@@ -4,6 +4,7 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
+  editableTechRecord,
   getByAll,
   getByPartialVin,
   getBySystemNumber,
@@ -68,7 +69,7 @@ export class TechnicalRecordService {
       msUserDetails: { msOid: id, msUser: username },
       techRecord: [cloneDeep(techRecord)]
     };
-    
+
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
     if (techRecord.statusCode === StatusCodes.CURRENT) {
       //body.techRecord = [cloneDeep(techRecord)]
@@ -78,7 +79,7 @@ export class TechnicalRecordService {
     if (techRecord.updateType) {
       delete body.techRecord[0].updateType
     }
-    
+
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
@@ -99,6 +100,10 @@ export class TechnicalRecordService {
 
   get vehicleTechRecords$() {
     return this.store.pipe(select(vehicleTechRecords));
+  }
+
+  get editableTechRecord$() {
+    return this.store.pipe(select(editableTechRecord));
   }
 
   get selectedVehicleTechRecord$() {
