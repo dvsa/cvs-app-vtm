@@ -126,7 +126,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
-        this.reasonForCreation = reasonForCreationSection
+        this.reasonForCreation = reasonForCreationSection;
         this.bodyTemplate = getBodyTemplate(true);
         this.tyresTemplate = getTyresSection(true);
         this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
@@ -157,6 +157,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
+        this.reasonForCreation = reasonForCreationSection;
         break;
       }
       case 'trl': {
@@ -188,6 +189,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.platesTemplate = PlatesTemplate;
         this.trlAuthIntoServiceTemplate = TrlAuthIntoServiceTemplate;
         this.trlManufacturerTemplate = TrlManufacturerTemplate;
+        this.reasonForCreation = reasonForCreationSection;
         break;
       }
     }

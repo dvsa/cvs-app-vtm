@@ -71,8 +71,8 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   submitTechRecord() {
-    this.submitCheckFormValidity.emit((formValid: boolean) => {
-      if (!formValid) {
+    this.submitCheckFormValidity.emit((formInValid: boolean) => {
+      if (formInValid) {
         return;
       }
       if (this.hasProvisional && this.isCurrent) {
