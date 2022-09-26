@@ -115,4 +115,16 @@ describe('VehicleTechnicalRecordComponent', () => {
 
     component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
   });
+
+  it('should evaluate form validity', () => {
+
+    const handleFormStateSpy = jest.spyOn(component, 'handleFormState').mockImplementation(() => {
+      component.isInvalid = true;
+    })
+
+    const testFunction = () => {};
+    component.handleSubmit(testFunction)
+
+    expect(handleFormStateSpy).toHaveBeenCalled();
+  });
 });

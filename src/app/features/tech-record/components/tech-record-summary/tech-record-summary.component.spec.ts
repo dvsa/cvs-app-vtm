@@ -7,6 +7,7 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -15,7 +16,7 @@ describe('TechRecordSummaryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordSummaryComponent],
-      imports: [DynamicFormsModule, RouterTestingModule],
+      imports: [DynamicFormsModule, RouterTestingModule, HttpClientTestingModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -29,27 +30,6 @@ describe('TechRecordSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show PSV record found', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
-    fixture.detectChanges();
-
-    checkHeadingAndForm();
-  });
-
-  it('should show HGV record found', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
-    fixture.detectChanges();
-
-    checkHeadingAndForm();
-  });
-
-  it('should show TRL record found', () => {
-    component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
-    fixture.detectChanges();
-
-    checkHeadingAndForm();
-  });
-
   function checkHeadingAndForm(): void {
     const heading = fixture.debugElement.query(By.css('.govuk-heading-s'));
     expect(heading).toBeFalsy();
@@ -57,5 +37,42 @@ describe('TechRecordSummaryComponent', () => {
     const form = fixture.nativeElement.querySelector('app-dynamic-form-group');
     expect(form).toBeTruthy();
   }
+
+  describe( 'TechRecordSummaryComponent View', () => {
+
+    it('should show PSV record found', () => {
+      component.isEditable = false
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+
+    it('should show HGV record found', () => {
+      component.isEditable = false
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+
+    it('should show TRL record found', () => {
+      component.isEditable = false
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+  });
+
+  describe( 'TechRecordSummaryComponent Amend', () => {
+    it('should make reason for change null in editMode', () => {
+      component.isEditable = true;
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+  });
 });
 
