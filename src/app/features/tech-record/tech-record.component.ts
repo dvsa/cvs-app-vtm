@@ -1,4 +1,4 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { SpinnerService } from '@core/components/spinner/spinner.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   templateUrl: './tech-record.component.html',
   styleUrls: ['./tech-record.component.scss']
 })
-export class TechRecordComponent implements OnChanges {
+export class TechRecordComponent {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
 
   constructor(public spinnerService: SpinnerService, private techrecordService: TechnicalRecordService,  private router: Router, public errorService: GlobalErrorService) {

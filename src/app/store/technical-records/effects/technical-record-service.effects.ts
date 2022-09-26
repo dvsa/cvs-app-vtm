@@ -29,7 +29,7 @@ import {
   createProvisionalTechRecord,
   createProvisionalTechRecordSuccess,
   createProvisionalTechRecordFailure
-} from '../actions/technical-record-service.actions';
+} from '@store/technical-records';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -81,7 +81,7 @@ export class TechnicalRecordServiceEffects {
   updateTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecords),
-      withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.oldStatusCode).pipe(
           map(vehicleTechRecords =>
@@ -96,7 +96,7 @@ export class TechnicalRecordServiceEffects {
   postProvisionalTechRecord = createEffect(() =>
     this.actions$.pipe(
       ofType(createProvisionalTechRecord),
-      withLatestFrom(this.technicalRecordService.techRecord$, this.userService.userName$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
           map(vehicleTechRecords =>

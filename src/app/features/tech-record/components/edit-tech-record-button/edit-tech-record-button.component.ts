@@ -1,10 +1,17 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { createProvisionalTechRecord, createProvisionalTechRecordSuccess, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
+import {
+  createProvisionalTechRecord,
+  createProvisionalTechRecordSuccess,
+  updateEditingTechRecordCancel,
+  updateTechRecords,
+  updateTechRecordsSuccess
+} from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 
 @Component({
   selector: 'app-edit-tech-record-button',

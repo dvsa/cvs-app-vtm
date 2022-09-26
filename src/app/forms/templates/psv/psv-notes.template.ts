@@ -19,8 +19,7 @@ export const PsvNotes: FormNode = {
       name: 'dispensations',
       type: FormNodeTypes.CONTROL,
       label: 'Dispensations',
-      value: '',
-      viewType: FormNodeViewTypes.HIDDEN,
+      viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [{ name: ValidatorNames.MaxLength, args: 160 }]
     }

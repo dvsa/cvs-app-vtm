@@ -1,4 +1,3 @@
-import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import {
@@ -28,7 +27,7 @@ import {
   createProvisionalTechRecordFailure,
   updateEditingTechRecord,
   updateEditingTechRecordCancel
-} from '../actions/technical-record-service.actions';
+} from '@store/technical-records';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
