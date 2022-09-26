@@ -27,12 +27,12 @@ const routes: Routes = [
         path: 'test-details',
         component: TestRouterOutletComponent,
         resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
+        data: { title: 'Test details', roles: Roles.TestResultAmend },
+        canActivate: [RoleGuard],
         children: [
           {
             path: '',
-            component: CreateTestRecordComponent,
-            data: { title: 'Test details', roles: Roles.TestResultAmend },
-            canActivate: [RoleGuard]
+            component: CreateTestRecordComponent
           },
           {
             path: 'defect/:defectIndex',
