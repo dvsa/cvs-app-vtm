@@ -29,7 +29,7 @@ import {
   createProvisionalTechRecord,
   createProvisionalTechRecordSuccess,
   createProvisionalTechRecordFailure
-} from '@store/technical-records';
+} from '../actions/technical-record-service.actions';
 import { Router } from '@angular/router';
 
 @Injectable()

@@ -27,7 +27,7 @@ import {
   createProvisionalTechRecordFailure,
   updateEditingTechRecord,
   updateEditingTechRecordCancel
-} from '@store/technical-records';
+} from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 
