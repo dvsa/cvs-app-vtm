@@ -87,7 +87,7 @@ describe('EditTechRecordButtonComponent', () => {
   }));
 
   it('should dispatch action to create provisional if viewable tech record is current and no provisional exists', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current' }] };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
     component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
     component.isCurrent = true;
     component.editableState = true;
@@ -102,7 +102,7 @@ describe('EditTechRecordButtonComponent', () => {
   }));
 
   it('should promt user if cancelling an amend with a dirty form.', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]};
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
     component.isCurrent = true;
     component.editableState = true;
@@ -120,7 +120,7 @@ describe('EditTechRecordButtonComponent', () => {
   }))
 
   it('should promt user if cancelling an amend with a dirty form and toggle edit on OK confirmation.', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]};
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
     component.isCurrent = true;
     component.editableState = true;
@@ -139,7 +139,7 @@ describe('EditTechRecordButtonComponent', () => {
   }))
 
   it('should promt user if cancelling an amend with a dirty form and NOT toggle edit on Cancel confirmation.', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]};
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
     component.isCurrent = true;
     component.editableState = true;
@@ -158,7 +158,7 @@ describe('EditTechRecordButtonComponent', () => {
   }))
 
   it('should NOT promt user if cancelling an amend with a clean form.', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current'}]}
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]}
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
     component.isCurrent = true;
     component.editableState = true;
