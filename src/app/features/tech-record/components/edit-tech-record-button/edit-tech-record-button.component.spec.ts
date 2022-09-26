@@ -40,8 +40,8 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   it('should NOT have edit button viewable if viewable tech record is archived', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'archived' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'archived' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'archived', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'archived', vehicleType: 'psv' };
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#edit'));
@@ -52,7 +52,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should have edit button viewable if viewable tech record is provisional', () => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#edit'));
@@ -62,8 +62,8 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   it('should have edit button viewable if viewable tech record is current AND provisional DOES NOT exist', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
     fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#edit'));
@@ -73,8 +73,8 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   it('should dispatch action to update and archive existing provisional record if viewable tech record is provisional', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
     component.editableState = true;
     component.isDirty = true;
     fixture.detectChanges();
@@ -88,7 +88,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should dispatch action to create provisional if viewable tech record is current and no provisional exists', fakeAsync(() => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
@@ -103,7 +103,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should promt user if cancelling an amend with a dirty form.', fakeAsync(() => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
@@ -121,7 +121,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should promt user if cancelling an amend with a dirty form and toggle edit on OK confirmation.', fakeAsync(() => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
@@ -140,7 +140,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should promt user if cancelling an amend with a dirty form and NOT toggle edit on Cancel confirmation.', fakeAsync(() => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
@@ -159,7 +159,7 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should NOT promt user if cancelling an amend with a clean form.', fakeAsync(() => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]}
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current'};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = false;
