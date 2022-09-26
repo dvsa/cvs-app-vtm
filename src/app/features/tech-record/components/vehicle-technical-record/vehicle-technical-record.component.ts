@@ -61,8 +61,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   handleFormState() {
     const form = this.dynamicForm.sections.map(section => section.form)
-    this.isAnyFormDirty(form) ? this.isDirty = true : this.isDirty = false;
-    this.isAnyFormInvalid(form) ? this.isInvalid = true : this.isInvalid = false;
+    this.isDirty = this.isAnyFormDirty(form);
+    this.isInvalid = this.isAnyFormInvalid(form);
   }
 
   isAnyFormDirty(forms: Array<CustomFormGroup | CustomFormArray>) {
