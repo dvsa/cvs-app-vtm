@@ -1,4 +1,4 @@
-<ng-container *ngIf="!isArchived">
+<ng-container *ngIf="(!isArchived && viewableTechRecord?.vehicleType === 'psv' )">
   <button *ngIf="!editableState; else editing" id="edit" class="govuk-button" data-module="govuk-button" (click)="toggleEditMode()">Edit</button>
 
   <ng-template #editing>

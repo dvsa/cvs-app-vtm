@@ -56,7 +56,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   handleSubmit(updateTechRecord: Function) {
     this.handleFormState();
-    this.isInvalid ? updateTechRecord(false) : updateTechRecord(true)
+    updateTechRecord(this.isInvalid);
   }
 
   handleFormState() {
