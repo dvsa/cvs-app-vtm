@@ -43,7 +43,10 @@ export const SeatbeltSection: FormNode = {
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
               value: null,
-              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
+              validators: [
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } },
+                { name: ValidatorNames.PastDate }
+              ]
             }
           ]
         }

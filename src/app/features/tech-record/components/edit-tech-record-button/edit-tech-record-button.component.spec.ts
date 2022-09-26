@@ -102,8 +102,10 @@ describe('EditTechRecordButtonComponent', () => {
   }));
 
   it('should promt user if cancelling an amend with a dirty form.', fakeAsync(() => {
+
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
@@ -120,8 +122,10 @@ describe('EditTechRecordButtonComponent', () => {
   }))
 
   it('should promt user if cancelling an amend with a dirty form and toggle edit on OK confirmation.', fakeAsync(() => {
+
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
@@ -139,6 +143,7 @@ describe('EditTechRecordButtonComponent', () => {
   }))
 
   it('should promt user if cancelling an amend with a dirty form and NOT toggle edit on Cancel confirmation.', fakeAsync(() => {
+
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
     component.isCurrent = true;
@@ -158,8 +163,10 @@ describe('EditTechRecordButtonComponent', () => {
   }))
 
   it('should NOT promt user if cancelling an amend with a clean form.', fakeAsync(() => {
+
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]}
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+
     component.isCurrent = true;
     component.editableState = true;
     component.isDirty = false;
