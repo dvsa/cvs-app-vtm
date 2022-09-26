@@ -49,6 +49,7 @@
       [isInvalid]="isInvalid"
       [(editableState)]="isEditable"
       (submitCheckFormValidity)="handleSubmit($event)"
+      *appRoleRequired="Roles.TechRecordAmend"
     ></app-edit-tech-record-button>
     <app-tech-record-summary
       [editable]="isEditable"
@@ -60,7 +61,7 @@
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     ></app-tech-record-history>
     <app-test-record-summary
-      *appRoleRequired="roles.TestResultView"
+      *appRoleRequired="Roles.TestResultView"
       [testRecords]="(records$ | async) || []"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     >

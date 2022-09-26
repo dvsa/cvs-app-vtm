@@ -26,13 +26,17 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   isDirty: boolean = false;
   isInvalid: boolean = false;
 
-  constructor(testRecordService: TestRecordsService, private technicalRecordService: TechnicalRecordService, private errorService: GlobalErrorService) {
+  constructor(
+    testRecordService: TestRecordsService,
+    private technicalRecordService: TechnicalRecordService,
+    private errorService: GlobalErrorService
+  ) {
     this.records$ = testRecordService.testRecords$;
   }
 
   ngAfterViewInit(): void {
-        this.handleFormState()
-    }
+    this.handleFormState();
+  }
 
   ngOnInit(): void {
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
@@ -46,7 +50,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  public get roles() {
+  public get Roles() {
     return Roles;
   }
 
@@ -60,7 +64,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   handleFormState() {
-    const form = this.dynamicForm.sections.map(section => section.form)
+    const form = this.dynamicForm.sections.map(section => section.form);
     this.isDirty = this.isAnyFormDirty(form);
     this.isInvalid = this.isAnyFormInvalid(form);
   }
