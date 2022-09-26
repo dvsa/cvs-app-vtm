@@ -8,3 +8,12 @@
 <h1 *ngIf="(spinnerService.showSpinner$ | async) === false && (vehicleTechRecord$ | async) === undefined">
   This vehicle is not real, like the no vehicle page we need to create
 </h1>
+
+<ng-template #error let-name>
+  <ng-container *ngIf="errorService.errors$ | async as errorMessages">
+    <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
+      <span class="govuk-visually-hidden">Error:</span>
+      <p class="white-space--normal">{{ errorMessage.error }}</p>
+    </span>
+  </ng-container>
+</ng-template>

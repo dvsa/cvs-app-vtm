@@ -1,7 +1,7 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { createAction, props } from '@ngrx/store';
 import { ActionCreator, ActionCreatorProps } from '@ngrx/store/src/models';
-import { VehicleTechRecordModel } from '../../../models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel } from '../../../models/vehicle-tech-record.model';
 
 const prefix = '[Technical Record Service]';
 
@@ -28,6 +28,14 @@ export const getBySystemNumberFailure = createOutcomeAction('getBySystemNumber')
 export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }>());
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
+
+export const updateTechRecords = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string, oldStatusCode?: StatusCodes  }>());
+export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
+export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
+
+export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string}>());
+export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
+export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
 function createOutcomeAction(title: string, isSuccess: boolean = false): ActionCreator<string, (props: any) => any> {
   const suffix = isSuccess ? 'Success' : 'Failure';

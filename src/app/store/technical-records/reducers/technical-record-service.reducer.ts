@@ -1,5 +1,6 @@
+import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
-import { VehicleTechRecordModel } from 'src/app/models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import {
   getByPartialVin,
   getByPartialVinFailure,
@@ -18,7 +19,13 @@ import {
   getBySystemNumberSuccess,
   getByAll,
   getByAllFailure,
-  getByAllSuccess
+  getByAllSuccess,
+  updateTechRecords,
+  updateTechRecordsSuccess,
+  updateTechRecordsFailure,
+  createProvisionalTechRecord,
+  createProvisionalTechRecordSuccess,
+  createProvisionalTechRecordFailure
 } from '../actions/technical-record-service.actions';
 
 export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
@@ -26,6 +33,7 @@ export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 export interface TechnicalRecordServiceState {
   vehicleTechRecords: Array<VehicleTechRecordModel>;
   loading: boolean;
+  error?: unknown
 }
 
 export const initialState: TechnicalRecordServiceState = {
@@ -60,15 +68,27 @@ export const vehicleTechRecordReducer = createReducer(
 
   on(getByAll, defaultArgs),
   on(getByAllSuccess, successArgs),
-  on(getByAllFailure, failureArgs)
+  on(getByAllFailure, failureArgs),
+
+  on(updateTechRecords, defaultArgs),
+  on(updateTechRecordsSuccess, successArgs),
+  on(updateTechRecordsFailure, updateFailureArgs),
+
+  on(createProvisionalTechRecord, defaultArgs),
+  on(createProvisionalTechRecordSuccess, successArgs),
+  on(createProvisionalTechRecordFailure, updateFailureArgs)
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {
-  return { ...state, vehicleTechRecords: [], loading: true };
+  return { ...state, loading: true };
 }
 
 function successArgs(state: TechnicalRecordServiceState, data: { vehicleTechRecords: Array<VehicleTechRecordModel> }) {
   return { ...state, vehicleTechRecords: data.vehicleTechRecords, loading: false };
+}
+
+function updateFailureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
+  return { ...state, error: data.error, loading: false };
 }
 
 function failureArgs(state: TechnicalRecordServiceState, data: { error: any }) {
