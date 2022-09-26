@@ -27,8 +27,8 @@ export class EditTechRecordButtonComponent implements OnInit {
   isCurrent?: boolean;
   hasProvisional?: boolean;
 
-  @Output() editableStateChange = new EventEmitter<boolean>()
-  @Output() submitCheckFormValidity = new EventEmitter()
+  @Output() editableStateChange = new EventEmitter<boolean>();
+  @Output() submitCheckFormValidity = new EventEmitter();
 
   constructor(private store: Store, private actions$: Actions, private router: Router, private errorService: GlobalErrorService) {}
 
@@ -43,8 +43,8 @@ export class EditTechRecordButtonComponent implements OnInit {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
     }
-    this.errorService.clearErrors()
-    this.store.dispatch(updateEditingTechRecordCancel())
+    this.errorService.clearErrors();
+    this.store.dispatch(updateEditingTechRecordCancel());
   }
 
   toggleEditMode() {
@@ -83,6 +83,6 @@ export class EditTechRecordButtonComponent implements OnInit {
         this.store.dispatch(createProvisionalTechRecord({ systemNumber: this.systemNumber }));
       }
       this.toggleEditMode();
-    })
+    });
   }
 }
