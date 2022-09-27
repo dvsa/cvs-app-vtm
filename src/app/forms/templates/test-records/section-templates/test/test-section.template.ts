@@ -147,7 +147,7 @@ export const TestSection: FormNode = {
             {
               name: 'prohibitionIssued',
               type: FormNodeTypes.CONTROL,
-              value: '',
+              value: null,
               label: 'Prohibition issued',
               options: [
                 { value: true, label: 'Yes' },

@@ -10,7 +10,7 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { firstValueFrom, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
+import { filter, firstValueFrom, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -42,7 +42,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
       .getQueryParam$('testType')
       .pipe(
         take(1),
-        tap(testType => !testType && this.backToTechRecord())
+        tap(testType => !testType && this.backToTechRecord()),
+        filter(tt => !!tt)
       )
       .subscribe(testTypeId => {
         this.testRecordsService.contingencyTestTypeSelected(testTypeId!);
@@ -52,7 +53,6 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.testRecordsService.cancelEditingTestResult();
     this.errorService.clearErrors();
 
     this.destroy$.next();
@@ -60,7 +60,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
   }
 
   backToTechRecord(): void {
-    this.router.navigate(['../..'], { relativeTo: this.route.parent });
+    this.router.navigate(['../../..'], { relativeTo: this.route.parent });
   }
 
   /**

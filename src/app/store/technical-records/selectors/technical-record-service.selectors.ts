@@ -5,6 +5,8 @@ import { getVehicleTechRecordState } from '../reducers/technical-record-service.
 
 export const vehicleTechRecords = createSelector(getVehicleTechRecordState, state => state.vehicleTechRecords);
 
+export const editableTechRecord = createSelector(getVehicleTechRecordState, state => state.editingTechRecord);
+
 export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordState, state => state.loading);
 
 export const selectVehicleTechnicalRecordsBySystemNumber = createSelector(

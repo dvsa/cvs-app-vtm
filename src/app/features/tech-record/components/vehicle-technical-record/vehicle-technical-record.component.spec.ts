@@ -15,6 +15,11 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { TechRecordHistoryComponent } from '../tech-record-history/tech-record-history.component';
 import { UserService } from '@services/user-service/user-service';
 import { of } from 'rxjs';
+import { EditTechRecordButtonComponent } from '../edit-tech-record-button/edit-tech-record-button.component';
+import { RouterModule } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { APP_BASE_HREF } from '@angular/common';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -23,10 +28,26 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule, RouterTestingModule, TestResultsApiModule, DynamicFormsModule],
-      declarations: [VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordSummaryComponent, TechRecordHistoryComponent],
+      imports: [
+        DynamicFormsModule,
+        EffectsModule.forRoot(),
+        HttpClientTestingModule,
+        RouterModule.forRoot([]),
+        RouterTestingModule,
+        SharedModule,
+        StoreModule.forRoot({}),
+        TestResultsApiModule,
+      ],
+      declarations: [
+        EditTechRecordButtonComponent,
+        TechRecordHistoryComponent,
+        TechRecordSummaryComponent,
+        TestRecordSummaryComponent,
+        VehicleTechnicalRecordComponent
+      ],
       providers: [
         provideMockStore({ initialState: initialAppState }),
+        { provide: APP_BASE_HREF, useValue: '/' },
         {
           provide: UserService,
           useValue: {
@@ -93,5 +114,17 @@ describe('VehicleTechnicalRecordComponent', () => {
     fixture.detectChanges();
 
     component.currentTechRecord$?.subscribe(record => expect(record).toBeTruthy());
+  });
+
+  it('should evaluate form validity', () => {
+
+    const handleFormStateSpy = jest.spyOn(component, 'handleFormState').mockImplementation(() => {
+      component.isInvalid = true;
+    })
+
+    const testFunction = () => {};
+    component.handleSubmit(testFunction)
+
+    expect(handleFormStateSpy).toHaveBeenCalled();
   });
 });

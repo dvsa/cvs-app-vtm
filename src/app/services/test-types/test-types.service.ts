@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { BASE_PATH, Configuration, TestType, TestTypeCategory, TestTypesService as TestTypesApiService, TestTypesTaxonomy } from '@api/test-types';
-import { select, Store } from '@ngrx/store';
+import { BASE_PATH, Configuration, TestTypesService as TestTypesApiService, TestTypesTaxonomy } from '@api/test-types';
+import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { testTypeIdChanged } from '@store/test-records';
 import { fetchTestTypes } from '@store/test-types/actions/test-types.actions';
@@ -21,25 +21,15 @@ export class TestTypesService extends TestTypesApiService {
     super(httpClient, basePath, configuration);
   }
 
+  get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
+    return this.store.select(selectTestTypesByVehicleType);
+  }
+
   fetchTestTypes(): void {
     this.store.dispatch(fetchTestTypes());
   }
 
-  get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
-    return this.store.pipe(select(selectTestTypesByVehicleType));
-  }
-
   testTypeIdChanged(testTypeId: string): void {
     this.store.dispatch(testTypeIdChanged({ testTypeId }));
-  }
-
-  findTestTypeNameById(id: string, testTypes: Array<TestType | TestTypeCategory>): TestType | undefined {
-    function usingIdMatch(testType: TestType | TestTypeCategory) {
-      return testType.id === id
-        || testType.hasOwnProperty('nextTestTypesOrCategories')
-        && (testType as TestTypeCategory).nextTestTypesOrCategories?.some(usingIdMatch);
-    }
-
-    return testTypes.find(usingIdMatch);
   }
 }

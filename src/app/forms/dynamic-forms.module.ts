@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
@@ -41,7 +42,8 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    DefectSelectComponent
+    DefectSelectComponent,
+    TruncatePipe
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

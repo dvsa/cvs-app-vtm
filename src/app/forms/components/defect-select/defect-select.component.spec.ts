@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Defect } from '@models/defects/defect.model';
 import { deficiencyCategory } from '@models/defects/deficiency-category.enum';
 import { Item } from '@models/defects/item.model';
@@ -39,10 +40,10 @@ describe('DefectSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DefectSelectComponent ],
+      imports: [RouterTestingModule],
+      declarations: [DefectSelectComponent],
       providers: [provideMockStore({ initialState: initialAppState })]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -56,9 +57,13 @@ describe('DefectSelectComponent', () => {
   });
 
   it('should return all types', () => {
-    enum Types { Defect, Item, Deficiency };
-    expect(component.types).toStrictEqual(Types)
-  })
+    enum Types {
+      Defect,
+      Item,
+      Deficiency
+    }
+    expect(component.types).toStrictEqual(Types);
+  });
 
   describe('hasItems', () => {
     it('should correctly detect a defect with items', () => {
@@ -83,42 +88,6 @@ describe('DefectSelectComponent', () => {
       };
 
       expect(component.hasDeficiencies(itemWithNoDeficiencies)).toBeFalsy();
-    });
-  });
-
-  describe('toggleEditMode', () => {
-    it('should toggle isEditing on and reset selection', () => {
-      component.toggleEditMode();
-
-      expect(component.isEditing).toBeTruthy();
-      expect(component.selectedDefect).toBeUndefined();
-      expect(component.selectedItem).toBeUndefined();
-      expect(component.selectedDeficiency).toBeUndefined();
-    });
-  });
-
-  describe('handleSelect', () => {
-    it('should set selected defect and reset selected item and deficiency', () => {
-      component.handleSelect(defect, component.types.Defect);
-
-      expect(component.selectedDefect).toBe(defect);
-      expect(component.selectedItem).toBeUndefined();
-      expect(component.selectedDeficiency).toBeUndefined();
-    });
-
-    it('should set selected item and reset selected deficiency', () => {
-      component.handleSelect(defect.items[0], component.types.Item);
-
-      expect(component.selectedItem).toBe(defect.items[0]);
-      expect(component.selectedDeficiency).toBeUndefined();
-    });
-
-    it('should set selected deficiency and toggle isEditing', () => {
-      jest.spyOn(component, 'toggleEditMode');
-
-      component.handleSelect(defect.items[0].deficiencies[0], component.types.Deficiency);
-
-      expect(component.toggleEditMode).toHaveBeenCalledTimes(1);
     });
   });
 });
