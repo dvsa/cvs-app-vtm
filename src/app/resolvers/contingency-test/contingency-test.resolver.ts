@@ -26,7 +26,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
   resolve(): Observable<boolean> {
     return this.techRecordService.selectedVehicleTechRecord$.pipe(
       switchMap(techRecord => {
-        const { vin, vrms, systemNumber } = techRecord!;
+        const { vin, vrms, systemNumber, trailerId } = techRecord!;
         const vrm = vrms.find(vrm => vrm.isPrimary);
         return this.techRecordService.viewableTechRecord$(techRecord!).pipe(
           withLatestFrom(this.userService.user$),
@@ -35,6 +35,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
             return {
               vin,
               vrm: vrm?.vrm,
+              trailerId,
               systemNumber,
               vehicleType: viewableTechRecord?.vehicleType,
               testResultId: uuidv4(),
