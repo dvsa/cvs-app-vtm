@@ -8,9 +8,9 @@ import {
   getByPartialVin,
   getByPartialVinFailure,
   getByPartialVinSuccess,
-  getBySystemNumber,
-  getBySystemNumberSuccess,
-  getBySystemNumberFailure,
+  getBySystemNumberAndVin,
+  getBySystemNumberAndVinSuccess,
+  getBySystemNumberAndVinFailure,
   getByTrailerId,
   getByTrailerIdFailure,
   getByTrailerIdSuccess,
@@ -38,7 +38,7 @@ export class TechnicalRecordServiceEffects {
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getByVin, getByPartialVin, getByVrm, getByTrailerId, getBySystemNumber, getByAll),
+      ofType(getByVin, getByPartialVin, getByVrm, getByTrailerId, getBySystemNumberAndVin, getByAll),
       mergeMap(action => {
         const anchorLink = 'search-term';
 
@@ -63,10 +63,13 @@ export class TechnicalRecordServiceEffects {
               map(vehicleTechRecords => getByTrailerIdSuccess({ vehicleTechRecords })),
               catchError(error => of(getByTrailerIdFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'trailerId'), anchorLink })))
             );
-          case getBySystemNumber.type:
+          case getBySystemNumberAndVin.type:
             return this.technicalRecordService.getBySystemNumber(action.systemNumber).pipe(
-              map(vehicleTechRecords => getBySystemNumberSuccess({ vehicleTechRecords })),
-              catchError(error => of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink })))
+              map(vehicleTechRecords => {
+                const filteredByVinRecords = vehicleTechRecords.filter((record) => record.vin === action.vin)
+                return getBySystemNumberAndVinSuccess({ vehicleTechRecords: filteredByVinRecords })
+              }),
+              catchError(error => of(getBySystemNumberAndVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink })))
             );
           case getByAll.type:
             return this.technicalRecordService.getByAll(action.all).pipe(

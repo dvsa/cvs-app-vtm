@@ -27,6 +27,7 @@ describe('Tech Record Selectors', () => {
       const vehicleTechRecords = createMockList<VehicleTechRecordModel>(1, i =>
         createMock<VehicleTechRecordModel>({
           systemNumber,
+          vin: '123',
           techRecord: [
             createMock<TechRecordModel>({
               createdAt: new Date('2022-01-01').toISOString()
@@ -41,7 +42,7 @@ describe('Tech Record Selectors', () => {
         })
       );
 
-      const selectedState = selectVehicleTechnicalRecordsBySystemNumber.projector(vehicleTechRecords, { systemNumber });
+      const selectedState = selectVehicleTechnicalRecordsBySystemNumber.projector(vehicleTechRecords, { systemNumber, vin: '123' });
 
       const expectedTechRecord = vehicleTechRecords[0].techRecord;
       expect(selectedState?.techRecord[0].createdAt).toStrictEqual(expectedTechRecord[1].createdAt);
