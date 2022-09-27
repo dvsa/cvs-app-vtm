@@ -73,7 +73,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
     forms.forEach(form => DynamicFormService.updateValidity(form, errors));
 
-    errors.length > 0
+    errors.length
       ? this.errorService.setErrors(errors)
       : this.errorService.clearErrors();
 
