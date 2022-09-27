@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionGroup10: FormNode = {
+export const ContingencyTestSectionGroup9And10: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -118,6 +118,15 @@ export const ContingencyTestSectionGroup10: FormNode = {
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
+            },
+            {
+              name: 'testAnniversaryDate',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              disabled: true,
+              label: 'Anniversary date',
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'prohibitionIssued',

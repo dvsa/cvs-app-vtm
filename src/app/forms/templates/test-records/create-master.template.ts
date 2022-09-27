@@ -16,8 +16,9 @@ import { ContingencyVisitSection } from './section-templates/visit/contingency-v
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
-import { ContingencyTestSectionGroup10 } from './section-templates/test/contingency-test-section-group10.template';
+import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency-test-section-group9And10.template';
 import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
+import { ContingencyTestSectionGroup12And14 } from './section-templates/test/contingency-test-section-group12And14.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -31,10 +32,21 @@ const groups1and2Template: Record<string, FormNode> = {
   reasonForCreation: reasonForCreationSection
 }
 
-const group10Template: Record<string, FormNode> = {
+const group9and10Template: Record<string, FormNode> = {
   required: CreateRequiredSectionHgvTrl,
   vehicle: ContingencyVehicleSectionDefaultTrl,
-  test: ContingencyTestSectionGroup10,
+  test: ContingencyTestSectionGroup9And10,
+  visit: ContingencyVisitSection,
+  notes: NotesSection,
+  defects: DefectsTpl,
+  customDefects: CustomDefectsSection,
+  reasonForCreation: reasonForCreationSection
+}
+
+const group12and14Template: Record<string, FormNode> = {
+  required: CreateRequiredSectionHgvTrl,
+  vehicle: ContingencyVehicleSectionDefaultTrl,
+  test: ContingencyTestSectionGroup12And14,
   visit: ContingencyVisitSection,
   notes: NotesSection,
   defects: DefectsTpl,
@@ -71,6 +83,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       customDefects: CustomDefectsSection,
       required: CreateRequiredSectionHgvTrl
     },
-    testTypesGroup9And10: group10Template
+    testTypesGroup9And10: group9and10Template,
+    testTypesGroup12And14: group12and14Template
   }
 };
