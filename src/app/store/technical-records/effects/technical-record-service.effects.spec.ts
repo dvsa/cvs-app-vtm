@@ -579,8 +579,8 @@ describe('TechnicalRecordServiceEffects', () => {
 
         // mock service call
         const expectedError = new HttpErrorResponse({
-          status: 400,
-          statusText: 'Error'
+          status: 500,
+          statusText: 'Internal server error'
         });
         jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
 
