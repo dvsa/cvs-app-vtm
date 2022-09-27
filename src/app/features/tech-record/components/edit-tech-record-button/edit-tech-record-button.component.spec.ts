@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
@@ -40,8 +40,9 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   it('should NOT have edit button viewable if viewable tech record is archived', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'archived' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'archived' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'archived', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'archived', vehicleType: 'psv' };
+    fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#edit'));
 
@@ -51,7 +52,8 @@ describe('EditTechRecordButtonComponent', () => {
 
   it('should have edit button viewable if viewable tech record is provisional', () => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
+    fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#edit'));
 
@@ -60,8 +62,9 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   it('should have edit button viewable if viewable tech record is current AND provisional DOES NOT exist', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
+    fixture.detectChanges();
 
     const button = fixture.debugElement.query(By.css('#edit'));
 
@@ -70,9 +73,10 @@ describe('EditTechRecordButtonComponent', () => {
   });
 
   it('should dispatch action to update and archive existing provisional record if viewable tech record is provisional', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
     component.editableState = true;
+    component.isDirty = true;
     fixture.detectChanges();
 
     jest.spyOn(component, 'submitTechRecord');
@@ -83,10 +87,11 @@ describe('EditTechRecordButtonComponent', () => {
   }));
 
   it('should dispatch action to create provisional if viewable tech record is current and no provisional exists', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current' };
+    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
     component.isCurrent = true;
     component.editableState = true;
+    component.isDirty = true;
     fixture.detectChanges();
 
     jest.spyOn(component, 'submitTechRecord');
@@ -95,4 +100,85 @@ describe('EditTechRecordButtonComponent', () => {
 
     expect(component.submitTechRecord).toHaveBeenCalled();
   }));
+
+  it('should promt user if cancelling an amend with a dirty form.', fakeAsync(() => {
+
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = true;
+    fixture.detectChanges();
+
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toBeCalledTimes(0);
+    expect(component.editableState).toBeTruthy();
+  }))
+
+  it('should promt user if cancelling an amend with a dirty form and toggle edit on OK confirmation.', fakeAsync(() => {
+
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = true;
+    fixture.detectChanges();
+
+    window.confirm = jest.fn(() => true)
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toHaveBeenCalled();
+    expect(component.editableState).toBeFalsy();
+  }))
+
+  it('should promt user if cancelling an amend with a dirty form and NOT toggle edit on Cancel confirmation.', fakeAsync(() => {
+
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = true;
+    fixture.detectChanges();
+
+    window.confirm = jest.fn(() => false)
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toHaveBeenCalledTimes(0);
+    expect(component.editableState).toBeTruthy();
+  }))
+
+  it('should NOT promt user if cancelling an amend with a clean form.', fakeAsync(() => {
+
+    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]}
+    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+
+    component.isCurrent = true;
+    component.editableState = true;
+    component.isDirty = false;
+    fixture.detectChanges();
+
+    jest.spyOn(component, 'cancelAmend');
+    jest.spyOn(component, 'toggleEditMode');
+
+    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+
+    expect(component.cancelAmend).toHaveBeenCalled();
+    expect(component.toggleEditMode).toHaveBeenCalled();
+    expect(component.editableState).toBeFalsy();
+  }))
 });

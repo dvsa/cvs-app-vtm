@@ -1,5 +1,5 @@
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { mockVehicleTechnicalRecordList } from '../../../../mocks/mock-vehicle-technical-record.mock';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { mockVehicleTechnicalRecordList, mockVehicleTechnicalRecord } from '../../../../mocks/mock-vehicle-technical-record.mock';
 import {
   getByAll,
   getByAllFailure,
@@ -24,7 +24,9 @@ import {
   createProvisionalTechRecordSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  updateEditingTechRecord,
+  updateEditingTechRecordCancel
 } from '../actions/technical-record-service.actions';
 import { initialState, TechnicalRecordServiceState, vehicleTechRecordReducer } from './technical-record-service.reducer';
 
@@ -276,10 +278,10 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('putUpdateTechRecords', () => {
     it('should set the new vehicle tech records state after update', () => {
-      const state: TechnicalRecordServiceState = { 
-        ...initialState, 
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
         vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
-        loading: true 
+        loading: true
       };
       const action = updateTechRecords({ systemNumber: '001' });
       const newState = vehicleTechRecordReducer(state, action);
@@ -321,10 +323,10 @@ describe('Vehicle Technical Record Reducer', () => {
 
   describe('postProvisionalTechRecord', () => {
     it('should set the new vehicle tech records state after update', () => {
-      const state: TechnicalRecordServiceState = { 
-        ...initialState, 
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
         vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
-        loading: true 
+        loading: true
       };
       const action = createProvisionalTechRecord({ systemNumber: '001' });
       const newState = vehicleTechRecordReducer(state, action);
@@ -363,4 +365,27 @@ describe('Vehicle Technical Record Reducer', () => {
       expect(initialState).not.toBe(newState);
     });
   });
+
+  describe('updateEditingTechRecord', () => {
+    it('should set the editingTechRecord', () => {
+      const techRecord: TechRecordModel = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      const action = updateEditingTechRecord({ techRecord: techRecord});
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).not.toEqual(newState);
+      expect(newState.editingTechRecord).toEqual(techRecord)
+      expect(initialState).not.toBe(newState);
+    });
+  })
+  describe('updateEditingTechRecordCancel', () => {
+    it('should clear the state', () => {
+      initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      const action = updateEditingTechRecordCancel();
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).not.toEqual(newState);
+      expect(newState.editingTechRecord).toBeUndefined()
+      expect(initialState).not.toBe(newState);
+    });
+  })
 });

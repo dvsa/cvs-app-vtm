@@ -24,10 +24,6 @@ export class VehicleHeaderComponent {
     return this.testResult?.testTypes?.find(t => this.testNumber === t.testNumber);
   }
 
-  get testResultType(): 'red' | 'green' {
-    return (<Record<string, 'red' | 'green'>>{ pass: 'green', prs: 'green', fail: 'red' })[this.test?.testResult ?? 'pass'];
-  }
-
   get selectAllTestTypes$(): Observable<TestTypesTaxonomy> {
     return this.testTypesService.selectAllTestTypes$;
   }

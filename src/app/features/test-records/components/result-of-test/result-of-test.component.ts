@@ -17,7 +17,7 @@ export class ResultOfTestComponent {
     );
   }
 
-  testResultType(result: string): 'red' | 'green' {
-    return (<Record<string, 'red' | 'green'>>{ pass: 'green', prs: 'green', fail: 'red' })[result ?? 'pass'];
+  testResultType(result: string): 'red' | 'green' | 'blue' {
+    return (<Record<string, 'red' | 'green' | 'blue'>>{ pass: 'green', prs: 'blue', fail: 'red' })[result ?? 'pass'];
   }
 }

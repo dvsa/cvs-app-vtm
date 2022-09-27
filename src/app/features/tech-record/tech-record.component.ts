@@ -1,4 +1,4 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { SpinnerService } from '@core/components/spinner/spinner.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -25,7 +25,7 @@ export class TechRecordComponent {
   public get Roles() {
     return Roles;
   }
-  
+
   getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
     return errors.find(error => error.anchorLink === name);
   }

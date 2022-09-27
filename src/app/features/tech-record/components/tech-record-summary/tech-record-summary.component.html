@@ -1,14 +1,30 @@
 <section>
   <app-dynamic-form-group
+    *ngIf="reasonForCreation"
+    [edit]="isEditable"
+    [template]="reasonForCreation"
+    [data]="vehicleTechRecordCalculated"
+    (formChange)="handleFormState($event)"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="notesTemplate"
+    [edit]="isEditable"
+    [template]="notesTemplate"
+    [data]="vehicleTechRecordCalculated"
+    (formChange)="handleFormState($event)"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
+  <app-dynamic-form-group
     *ngIf="vehicleSummaryTemplate"
     [template]="vehicleSummaryTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="approvalTypeTemplate"
     [template]="approvalTypeTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
@@ -29,113 +45,112 @@
     [data]="currentBrakeRecord"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
-  <app-dynamic-form-group *ngIf="ddaTemplate" [template]="ddaTemplate" [data]="vehicleTechRecord" class="govuk-summary-list"></app-dynamic-form-group>
+  <app-dynamic-form-group
+    *ngIf="ddaTemplate"
+    [template]="ddaTemplate"
+    [data]="vehicleTechRecordCalculated"
+    class="govuk-summary-list"
+  ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="applicantDetailsTemplate"
     [template]="applicantDetailsTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="documentsTemplate"
     [template]="documentsTemplate"
-    [data]="vehicleTechRecord"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="notesTemplate"
-    [template]="notesTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="bodyTemplate"
     [template]="bodyTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="grossVehicleWeightTemplate"
     [template]="grossVehicleWeightTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="trainWeightTemplate"
     [template]="trainWeightTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="grossTrainWeightTemplate"
     [template]="grossTrainWeightTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="maxTrainWeightTemplate"
     [template]="maxTrainWeightTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="axleWeightsTemplate"
     [template]="axleWeightsTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="tyresTemplate"
     [template]="tyresTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="brakesTemplate"
     [template]="brakesTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="purchasersTemplate"
     [template]="purchasersTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="dimensionsTemplate"
     [template]="dimensionsTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="firstMinMaxTemplate"
     [template]="firstMinMaxTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="secondMinMaxTemplate"
     [template]="secondMinMaxTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="platesTemplate"
     [template]="platesTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="trlAuthIntoServiceTemplate"
     [template]="trlAuthIntoServiceTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="trlManufacturerTemplate"
     [template]="trlManufacturerTemplate"
-    [data]="vehicleTechRecord"
+    [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
 </section>

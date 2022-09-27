@@ -27,7 +27,7 @@
 
       <div *ngIf="(currentTechRecord$ | async)?.vehicleType === vehicleTypes.TRL" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Trailer ID</dt>
-        <dd id="current-vrm" class="govuk-summary-list__value">
+        <dd id="trailer-id" class="govuk-summary-list__value">
           {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
         </dd>
         <dd class="govuk-summary-list__value"></dd>
@@ -45,16 +45,23 @@
     <app-edit-tech-record-button
       [vehicleTechRecord]="vehicleTechRecord || undefined"
       [viewableTechRecord]="(currentTechRecord$ | async) || undefined"
+      [isDirty]="isDirty"
+      [isInvalid]="isInvalid"
+      [(editableState)]="isEditable"
+      (submitCheckFormValidity)="handleSubmit($event)"
+      *appRoleRequired="Roles.TechRecordAmend"
     ></app-edit-tech-record-button>
-
-    <app-tech-record-summary [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"></app-tech-record-summary>
-
+    <app-tech-record-summary
+      [editable]="isEditable"
+      [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"
+      (formChange)="handleFormState()"
+    ></app-tech-record-summary>
     <app-tech-record-history
       [currentRecord]="(currentTechRecord$ | async) || undefined"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     ></app-tech-record-history>
     <app-test-record-summary
-      *appRoleRequired="roles.TestResultView"
+      *appRoleRequired="Roles.TestResultView"
       [testRecords]="(records$ | async) || []"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
     >

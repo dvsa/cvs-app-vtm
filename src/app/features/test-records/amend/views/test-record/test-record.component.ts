@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -12,13 +12,12 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { filter, firstValueFrom, Observable, of, skipWhile, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
   selector: 'app-test-records',
-  templateUrl: './test-record.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './test-record.component.html'
 })
 export class TestRecordComponent implements OnInit, OnDestroy {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
@@ -45,29 +44,23 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     );
     this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.watchForUpdateSuccess();
-    this.testResult$
-      .pipe(
-        skipWhile(testResult => !testResult),
-        take(1)
-      )
-      .subscribe(testResult => {
-        testResult!.reasonForCreation = '';
-        this.testRecordsService.editingTestResult(testResult!);
-      });
-
-    this.routerService
-      .getQueryParam$('testType')
+    combineLatest([this.testResult$, this.routerService.getQueryParam$('testType'), this.testRecordsService.sectionTemplates$])
       .pipe(
         take(1),
-        filter(testType => !!testType)
+        filter(([testResult]) => !!testResult)
       )
-      .subscribe(testTypeId => {
-        this.testRecordsService.testTypeChange(testTypeId!);
+      .subscribe(([testResult, testType, sectionTemplates]) => {
+        if (!sectionTemplates) {
+          testResult!.reasonForCreation = '';
+          this.testRecordsService.editingTestResult(testResult!);
+        }
+        if (testType && testType !== testResult?.testTypes[0].testTypeId) {
+          this.testRecordsService.testTypeChange(testType!);
+        }
       });
   }
 
   ngOnDestroy(): void {
-    this.testRecordsService.cancelEditingTestResult();
     this.errorService.clearErrors();
 
     this.destroy$.next();
@@ -79,7 +72,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   backToTestRecord(): void {
-    this.router.navigate(['..'], { relativeTo: this.route.parent });
+    this.router.navigate(['../..'], { relativeTo: this.route.parent });
   }
 
   /**
@@ -103,7 +96,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
       }
     }
 
-    // if all forms are not marcked as dirty, return
+    // if all forms are not marked as dirty, return
     if (!this.isAnyFormDirty(forms) && (await firstValueFrom(this.testRecordsService.isSameTestTypeId$))) {
       return;
     }
