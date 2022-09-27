@@ -12,9 +12,12 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
+  createProvisionalTechRecord,
+  createProvisionalTechRecordFailure,
+  createProvisionalTechRecordSuccess,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
@@ -34,6 +37,7 @@ import {
   getByVrmFailure,
   getByVrmSuccess,
   updateTechRecords,
+  updateTechRecordsFailure,
   updateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
@@ -45,10 +49,6 @@ describe('TechnicalRecordServiceEffects', () => {
   let technicalRecordService: TechnicalRecordService;
   let router: Router;
 
-  const MockUserService = {
-    getUserName$: jest.fn().mockReturnValue(new Observable())
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
@@ -57,7 +57,7 @@ describe('TechnicalRecordServiceEffects', () => {
         provideMockActions(() => actions$),
         TechnicalRecordService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: MockUserService }
+        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } }
       ]
     });
 
@@ -515,5 +515,81 @@ describe('TechnicalRecordServiceEffects', () => {
     });
   });
 
-  // TODO: Unit tests for putUpdate and postProvisional methods
+  describe('updateTechnicalRecord$', () => {
+    it('should return a technical record on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: updateTechRecords });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+
+        // expect effect to return success action
+        expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
+          b: updateTechRecordsSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it('should return an error message if not not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: updateTechRecords });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+        jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
+          b: updateTechRecordsFailure({
+            error: 'Unable to update technical record null'
+          })
+        });
+      });
+    });
+  });
+
+  describe('postProvisionalTechRecord$', () => {
+    it('should return a technical record on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+
+        // expect effect to return success action
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it('should return an error message if not not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 400,
+          statusText: 'Error'
+        });
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordFailure({
+            error: 'Unable to create a new provisional record null'
+          })
+        });
+      });
+    });
+  });
 });
