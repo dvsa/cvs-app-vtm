@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DefectSelectComponent } from '@forms/components/defect-select/defect-select.component';
+import { DefectComponent } from '@forms/components/defect/defect.component';
+import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { ContingencyTestResolver } from 'src/app/resolvers/contingency-test/contingency-test.resolver';
 import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
@@ -22,9 +25,40 @@ const routes: Routes = [
       },
       {
         path: 'test-details',
-        component: CreateTestRecordComponent,
+        component: TestRouterOutletComponent,
+        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
         data: { title: 'Test details', roles: Roles.TestResultAmend },
-        resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver }
+        canActivate: [RoleGuard],
+        children: [
+          {
+            path: '',
+            component: CreateTestRecordComponent
+          },
+          {
+            path: 'defect/:defectIndex',
+            component: DefectComponent,
+            data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+            canActivate: [RoleGuard]
+          },
+          {
+            path: 'selectDefect',
+            component: TestRouterOutletComponent,
+            children: [
+              {
+                path: '',
+                component: DefectSelectComponent,
+                data: { title: 'Select Defect', roles: Roles.TestResultAmend },
+                canActivate: [RoleGuard]
+              },
+              {
+                path: ':ref',
+                component: DefectComponent,
+                data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+                canActivate: [RoleGuard]
+              }
+            ]
+          }
+        ]
       }
     ]
   }
