@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpinnerComponent {
-  @Input() loading = false;
+  @Input() loading: boolean | null = false;
 }

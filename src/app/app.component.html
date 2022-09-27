@@ -4,7 +4,7 @@
   <main class="govuk-main-wrapper">
     <app-breadcrumbs></app-breadcrumbs>
     <app-global-error></app-global-error>
-    <app-spinner [loading]="(loading | async) || false"></app-spinner>
+    <app-spinner [loading]="loading | async"></app-spinner>
     <router-outlet></router-outlet>
   </main>
 </div>
