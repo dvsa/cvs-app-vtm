@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { SpinnerService } from '@core/components/spinner/spinner.service';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Roles } from '@models/roles.enum'
+import { Roles } from '@models/roles.enum';
 
 import { Observable } from 'rxjs';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -17,7 +16,7 @@ import { Router } from '@angular/router';
 export class TechRecordComponent {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
 
-  constructor(public spinnerService: SpinnerService, private techrecordService: TechnicalRecordService,  private router: Router, public errorService: GlobalErrorService) {
+  constructor(private techrecordService: TechnicalRecordService, private router: Router, public errorService: GlobalErrorService) {
     this.vehicleTechRecord$ = this.techrecordService.selectedVehicleTechRecord$;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }

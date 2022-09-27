@@ -1,10 +1,10 @@
 <app-header [username]="userService.name$ | async" (logOutEvent)="userService.logOut()"></app-header>
 
-<div class="govuk-width-container">
+<div class="govuk-width-container" [ngClass]="{ 'no-scroll': loading | async }">
   <main class="govuk-main-wrapper">
     <app-breadcrumbs></app-breadcrumbs>
     <app-global-error></app-global-error>
-    <app-spinner></app-spinner>
+    <app-spinner [loading]="loading | async"></app-spinner>
     <router-outlet></router-outlet>
   </main>
 </div>
