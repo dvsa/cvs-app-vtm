@@ -18,35 +18,12 @@ import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-tr
 import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
 import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency-test-section-group9And10.template';
 import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
-import { ContingencyTestSectionGroup12And14 } from './section-templates/test/contingency-test-section-group12And14.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
   vehicle: ContingencyVehicleSectionDefaultPsvHgv,
   test: ContingencyTestSectionGroup1,
   seatbelts: SeatbeltSection,
-  visit: ContingencyVisitSection,
-  notes: NotesSection,
-  defects: DefectsTpl,
-  customDefects: CustomDefectsSection,
-  reasonForCreation: reasonForCreationSection
-}
-
-const group9and10Template: Record<string, FormNode> = {
-  required: CreateRequiredSectionHgvTrl,
-  vehicle: ContingencyVehicleSectionDefaultTrl,
-  test: ContingencyTestSectionGroup9And10,
-  visit: ContingencyVisitSection,
-  notes: NotesSection,
-  defects: DefectsTpl,
-  customDefects: CustomDefectsSection,
-  reasonForCreation: reasonForCreationSection
-}
-
-const group12and14Template: Record<string, FormNode> = {
-  required: CreateRequiredSectionHgvTrl,
-  vehicle: ContingencyVehicleSectionDefaultTrl,
-  test: ContingencyTestSectionGroup12And14,
   visit: ContingencyVisitSection,
   notes: NotesSection,
   defects: DefectsTpl,
@@ -83,7 +60,15 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       customDefects: CustomDefectsSection,
       required: CreateRequiredSectionHgvTrl
     },
-    testTypesGroup9And10: group9and10Template,
-    testTypesGroup12And14: group12and14Template
+    testTypesGroup9And10: {
+      required: CreateRequiredSectionHgvTrl,
+      vehicle: ContingencyVehicleSectionDefaultTrl,
+      test: ContingencyTestSectionGroup9And10,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection
+    }
   }
 };
