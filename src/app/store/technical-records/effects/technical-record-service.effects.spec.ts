@@ -12,7 +12,7 @@ import { RouterService } from '@services/router/router.service';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
   getByAll,
@@ -34,6 +34,7 @@ import {
   getByVrmFailure,
   getByVrmSuccess,
   putUpdateTechRecords,
+  putUpdateTechRecordsFailure,
   putUpdateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
@@ -45,10 +46,6 @@ describe('TechnicalRecordServiceEffects', () => {
   let technicalRecordService: TechnicalRecordService;
   let router: Router;
 
-  const MockUserService = {
-    getUserName$: jest.fn().mockReturnValue(new Observable())
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
@@ -57,7 +54,7 @@ describe('TechnicalRecordServiceEffects', () => {
         provideMockActions(() => actions$),
         TechnicalRecordService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: MockUserService }
+        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } }
       ]
     });
 
@@ -515,77 +512,42 @@ describe('TechnicalRecordServiceEffects', () => {
     });
   });
 
-  // describe('updateTechnicalRecord$', () => {
-  //   it('should return a technical record on successfull API call', () => {
-  //     testScheduler.run(({ hot, cold, expectObservable }) => {
-  //       const technicalRecord = mockVehicleTechnicalRecordList();
+  describe('updateTechnicalRecord$', () => {
+    it('should return a technical record on successfull API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
 
-  //       // mock action to trigger effect
-  //       actions$ = hot('-a--', { a: putUpdateTechRecords });
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: putUpdateTechRecords });
 
-  //       // mock service call
-  //       jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+        // mock service call
+        jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
 
-  //       // expect effect to return success action
-  //       expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
-  //         b: putUpdateTechRecordsSuccess({ vehicleTechRecords: technicalRecord })
-  //       });
-  //     });
-  //   });
+        // expect effect to return success action
+        expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
+          b: putUpdateTechRecordsSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
 
-  // it('should return generic error message if not not found', () => {
-  //   testScheduler.run(({ hot, cold, expectObservable }) => {
-  //     const all = { all: 'all' };
-  //     // mock action to trigger effect
-  //     actions$ = hot('-a--', { a: putUpdateTechRecords(all) });
+    it('should return an error message if not not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: putUpdateTechRecords });
 
-  //     // mock service call
-  //     const expectedError = new HttpErrorResponse({
-  //       status: 500,
-  //       statusText: 'Internal server error'
-  //     });
-  //     jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
+        // mock service call
+        const expectedError = new HttpErrorResponse({
+          status: 500,
+          statusText: 'Internal server error'
+        });
+        jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
 
-  //     expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-  //       b: getByAllFailure({ error: 'There was a problem getting the Tech Record by the current search criteria', anchorLink: 'search-term' })
-  //     });
-  //   });
-  // });
-
-  // it('should return not found error message if not found', () => {
-  //   testScheduler.run(({ hot, cold, expectObservable }) => {
-  //     const all = { all: 'all' };
-  //     // mock action to trigger effect
-  //     actions$ = hot('-a--', { a: getByAll(all) });
-
-  //     // mock service call
-  //     const expectedError = new HttpErrorResponse({
-  //       status: 404,
-  //       statusText: 'Vehicle not found'
-  //     });
-  //     jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
-
-  //     expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-  //       b: getByAllFailure({
-  //         error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
-  //         anchorLink: 'search-term'
-  //       })
-  //     });
-  //   });
-  // });
-
-  // it('should return error message if error is a string', () => {
-  //   testScheduler.run(({ hot, cold, expectObservable }) => {
-  //     const all = { all: 'all' };
-  //     // mock action to trigger effect
-  //     actions$ = hot('-a--', { a: getByAll(all) });
-
-  //     // mock service call
-  //     const expectedError = 'string';
-  //     jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
-
-  //     expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByAllFailure({ error: 'string', anchorLink: 'search-term' }) });
-  //   });
-  // });
-  //});
+        expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
+          b: putUpdateTechRecordsFailure({
+            error: 'Unable to update technical record null'
+          })
+        });
+      });
+    });
+  });
 });
