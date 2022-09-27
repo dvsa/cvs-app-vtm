@@ -9,32 +9,38 @@ export class FocusNextDirective {
   constructor(private el: ElementRef) {}
 
   @HostListener('input', ['$event'])
-  onInput(e: InputEvent) {
+  onInput() {
     const {
       nativeElement: { id, value }
     } = this.el;
     const segments = id.split('-');
-    const currentSegment = segments.splice(-1)[0];
-    const name = segments.join('-');
+    const next = this.getNextElement(segments.splice(-1)[0], value);
 
-    if (value.length === 2) {
-      if ('day' === currentSegment) {
-        this.focus(`${name}-month`);
-        return;
-      } else if ('month' === currentSegment) {
-        this.focus(`${name}-year`);
-        return;
-      } else if ('hour' === currentSegment) {
-        this.focus(`${name}-minute`);
-        return;
-      }
-    } else if (value.length === 4 && this.includeTime && 'year' === currentSegment) {
-      this.focus(`${name}-hour`);
-      return;
+    if (next) {
+      document.getElementById(segments.join('-') + next)?.focus();
     }
   }
 
-  focus(el: string) {
-    document.getElementById(el)?.focus();
+  private getNextElement(currentSegment: string, value: string): string | undefined {
+    let nextEl = undefined;
+
+    if (value.length === 2) {
+      switch (currentSegment) {
+        case 'day':
+          nextEl = '-month';
+          break;
+        case 'month':
+          nextEl = '-year';
+          break;
+        case 'hour':
+          nextEl = '-minute';
+          break;
+        default:
+      }
+    } else if (value.length === 4 && this.includeTime && currentSegment === 'year') {
+      nextEl = '-hour';
+    }
+
+    return nextEl;
   }
 }
