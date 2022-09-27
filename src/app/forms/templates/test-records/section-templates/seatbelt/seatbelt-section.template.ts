@@ -5,7 +5,6 @@ export const SeatbeltSection: FormNode = {
   name: 'seatbeltSection',
   label: 'Seatbelt',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testTypes',

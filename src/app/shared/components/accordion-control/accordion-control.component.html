@@ -1,0 +1,10 @@
+<div class="govuk-accordion__controls">
+  <button type="button" class="govuk-accordion__show-all" [attr.aria-expanded]="expanded" (click)="expanded ? close() : open()">
+    <span
+      class="govuk-accordion-nav__chevron govuk-accordion-nav__chevron--down"
+      [ngClass]="expanded ? 'govuk-accordion-nav__chevron--down' : 'govuk-accordion-nav__chevron'"
+    ></span
+    ><span class="govuk-accordion__show-all-text">{{ expanded ? 'Hide' : 'Show' }} all sections</span>
+  </button>
+</div>
+<ng-content></ng-content>

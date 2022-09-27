@@ -40,7 +40,7 @@ describe('DynamicFormService', () => {
         children: [
           {
             name: 'vin',
-            label: 'Vechile Identification Number',
+            label: 'Vehicle Identification Number',
             type: FormNodeTypes.CONTROL,
             viewType: FormNodeViewTypes.STRING
           }
@@ -69,7 +69,7 @@ describe('DynamicFormService', () => {
             children: [
               {
                 name: 'vin',
-                label: 'Vechile Identification Number',
+                label: 'Vehicle Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
               }
@@ -99,7 +99,7 @@ describe('DynamicFormService', () => {
             children: [
               <FormNode>{
                 name: '0',
-                label: 'Vechile Identification Number',
+                label: 'Vehicle Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
               }
@@ -133,7 +133,7 @@ describe('DynamicFormService', () => {
                 children: [
                   {
                     name: 'vin',
-                    label: 'Vechile Identification Number',
+                    label: 'Vehicle Identification Number',
                     type: FormNodeTypes.CONTROL,
                     viewType: FormNodeViewTypes.STRING
                   }
@@ -173,7 +173,7 @@ describe('DynamicFormService', () => {
             children: [
               {
                 name: 'vin',
-                label: 'Vechile Identification Number',
+                label: 'Vehicle Identification Number',
                 type: FormNodeTypes.CONTROL,
                 viewType: FormNodeViewTypes.STRING
               }
@@ -222,7 +222,7 @@ describe('DynamicFormService', () => {
   });
 
   describe('static validate functions', () => {
-    it('should return a list of global erros for invalid controls', () => {
+    it('should return a list of global errors for invalid controls', () => {
       const errors: GlobalError[] = [];
       const form = new CustomFormGroup(
         { name: 'group', type: FormNodeTypes.GROUP },

@@ -7,17 +7,19 @@ import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-ty
 import { testStationsLoadingState } from '@store/test-stations';
 import { defectsLoadingState } from '@store/defects';
 import { combineLatest, map, Observable } from 'rxjs';
+import { referenceDataLoadingState } from '@store/reference-data';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SpinnerService {
+export class LoadingService {
   globalLoadingState$: Observable<boolean> = this.store.pipe(select(getSpinner));
   testResultLoadingState$: Observable<boolean> = this.store.pipe(select(testResultLoadingState));
   techRecordsLoadingState$: Observable<boolean> = this.store.pipe(select(technicalRecordsLoadingState));
   testTypesLoadingState$: Observable<boolean> = this.store.pipe(select(selectTestTypesLoadingState));
   testStationsLoadingState$: Observable<boolean> = this.store.pipe(select(testStationsLoadingState));
   defectsLoadingState$: Observable<boolean> = this.store.pipe(select(defectsLoadingState));
+  referenceDataLoadingState$: Observable<boolean> = this.store.pipe(select(referenceDataLoadingState));
 
   constructor(private store: Store) {}
 
@@ -28,7 +30,8 @@ export class SpinnerService {
       this.techRecordsLoadingState$,
       this.testTypesLoadingState$,
       this.testStationsLoadingState$,
-      this.defectsLoadingState$
+      this.defectsLoadingState$,
+      this.referenceDataLoadingState$
     ]).pipe(map(states => states.some(b => b)));
   }
 
