@@ -1,37 +1,49 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { initialAppState, State } from '@store/.';
-import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { RouterModule } from '@angular/router';
+import { Action } from '@ngrx/store';
+import { Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
+import { ReplaySubject } from 'rxjs';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { updateTechRecordsSuccess } from '@store/technical-records';
+import { RouterTestingModule } from '@angular/router/testing';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 
 describe('EditTechRecordButtonComponent', () => {
   let component: EditTechRecordButtonComponent;
   let fixture: ComponentFixture<EditTechRecordButtonComponent>;
-  let store: MockStore<State>;
-  let techRecordsService: TechnicalRecordService;
+  let router: Router;
+  let actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditTechRecordButtonComponent],
-      providers: [provideMockStore({ initialState: initialAppState }), { provide: APP_BASE_HREF, useValue: '/' }],
-      imports: [HttpClientTestingModule, DynamicFormsModule, EffectsModule.forRoot(), StoreModule.forRoot({}), RouterModule.forRoot([])]
+      providers: [
+        GlobalErrorService,
+        provideMockActions(() => actions$),
+        provideMockStore({ initialState: initialAppState }),
+        { provide: APP_BASE_HREF, useValue: '/' }
+      ],
+      imports: [
+        DynamicFormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditTechRecordButtonComponent);
-    store = TestBed.inject(MockStore);
-    techRecordsService = TestBed.inject(TechnicalRecordService);
+    router = TestBed.inject(Router);
 
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
@@ -69,7 +81,6 @@ describe('EditTechRecordButtonComponent', () => {
     const button = fixture.debugElement.query(By.css('#edit'));
 
     expect(button).toBeTruthy;
-    expect(component.hasProvisional).toBeFalsy;
   });
 
   it('should dispatch action to update and archive existing provisional record if viewable tech record is provisional', fakeAsync(() => {
@@ -89,7 +100,6 @@ describe('EditTechRecordButtonComponent', () => {
   it('should dispatch action to create provisional if viewable tech record is current and no provisional exists', fakeAsync(() => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
     component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
-    component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
     fixture.detectChanges();
@@ -106,11 +116,11 @@ describe('EditTechRecordButtonComponent', () => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
 
-    component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
     fixture.detectChanges();
 
+    window.confirm = jest.fn(() => false)
     jest.spyOn(component, 'cancelAmend');
     jest.spyOn(component, 'toggleEditMode');
 
@@ -126,7 +136,6 @@ describe('EditTechRecordButtonComponent', () => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
 
-    component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
     fixture.detectChanges();
@@ -146,7 +155,6 @@ describe('EditTechRecordButtonComponent', () => {
 
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
-    component.isCurrent = true;
     component.editableState = true;
     component.isDirty = true;
     fixture.detectChanges();
@@ -167,11 +175,11 @@ describe('EditTechRecordButtonComponent', () => {
     component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]}
     component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
 
-    component.isCurrent = true;
     component.editableState = true;
     component.isDirty = false;
     fixture.detectChanges();
 
+    window.confirm = jest.fn(() => true)
     jest.spyOn(component, 'cancelAmend');
     jest.spyOn(component, 'toggleEditMode');
 
@@ -181,4 +189,23 @@ describe('EditTechRecordButtonComponent', () => {
     expect(component.toggleEditMode).toHaveBeenCalled();
     expect(component.editableState).toBeFalsy();
   }))
+
+  const expectedDate = new Date();
+  const expectedResult = {
+    vehicleTechRecords: [{
+      systemNumber: '1',
+      techRecord: [{ createdAt: expectedDate } as TechRecordModel]
+    } as VehicleTechRecordModel]
+  };
+
+  it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
+    const navigateByUrlSpy = jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+
+    actions$.next(updateTechRecordsSuccess(expectedResult));
+
+    tick();
+
+    expect(navigateByUrlSpy).toHaveBeenCalledTimes(1);
+    expect(navigateByUrlSpy).toHaveBeenCalledWith('/tech-records/1/' + expectedDate.getTime());
+  }));
 });

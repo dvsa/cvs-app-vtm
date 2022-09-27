@@ -84,8 +84,8 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.oldStatusCode).pipe(
-          map(vehicleTechRecords =>
-            updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })
+          map(vehicleTechRecord =>
+            updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })
           ),
           catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))),
         )
