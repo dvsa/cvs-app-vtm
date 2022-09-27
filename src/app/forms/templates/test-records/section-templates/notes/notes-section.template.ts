@@ -5,7 +5,6 @@ export const NotesSection: FormNode = {
   name: 'notesSection',
   label: 'Notes',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testTypes',

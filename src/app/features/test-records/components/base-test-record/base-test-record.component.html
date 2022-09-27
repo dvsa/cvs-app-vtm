@@ -13,20 +13,36 @@
 </app-vehicle-header>
 
 <ng-container *ngIf="sectionTemplates$ | async as sectionTemplates">
-  <ng-container *ngFor="let template of sectionTemplates" [ngSwitch]="template.name">
-    <app-defects
-      *ngSwitchCase="'defects'"
-      class="section"
-      [id]="template.name"
-      [isEditing]="isEditing"
-      [defects]="getDefects$(testResult.vehicleType) | async"
-      [template]="template"
-      [data]="testResult"
-      (formChange)="handleFormChange($event)"
-    ></app-defects>
-    <ng-container *ngSwitchCase="'vehicleSection'">
+  <app-accordion-control>
+    <ng-container *ngFor="let template of sectionTemplates; let i = index" [ngSwitch]="template.name">
+      <app-accordion *ngSwitchCase="'defects'" [id]="template.name" [title]="template.label" [expanded]="expandSections">
+        <app-defects
+          class="section"
+          [id]="template.name"
+          [isEditing]="isEditing"
+          [defects]="getDefects$(testResult.vehicleType) | async"
+          [template]="template"
+          [data]="testResult"
+          (formChange)="handleFormChange($event)"
+        ></app-defects>
+      </app-accordion>
+
+      <ng-container *ngSwitchCase="'vehicleSection'">
+        <app-accordion *ngIf="isEditing" [id]="template.name" [title]="template.label" [expanded]="expandSections">
+          <app-dynamic-form-group
+            class="section"
+            [id]="template.name"
+            [template]="template"
+            [data]="testResult"
+            [edit]="isEditing"
+            (formChange)="handleFormChange($event)"
+          ></app-dynamic-form-group>
+        </app-accordion>
+      </ng-container>
+
+      <!-- this section is not visible so omiting from accordion -->
       <app-dynamic-form-group
-        *ngIf="isEditing"
+        *ngSwitchCase="'requiredSection'"
         class="section"
         [id]="template.name"
         [template]="template"
@@ -34,17 +50,39 @@
         [edit]="isEditing"
         (formChange)="handleFormChange($event)"
       ></app-dynamic-form-group>
+
+      <ng-container *ngSwitchDefault>
+        <!-- skip `reasonForCreationSection` because its handled further down -->
+        <app-accordion *ngIf="'reasonForCreationSection' !== template.name" [id]="template.name" [title]="template.label" [expanded]="expandSections">
+          <app-dynamic-form-group
+            class="section"
+            [id]="template.name"
+            [template]="template"
+            [data]="testResult"
+            [edit]="isEditing"
+            (formChange)="handleFormChange($event)"
+          ></app-dynamic-form-group>
+        </app-accordion>
+
+        <!-- We only show this section if in editing state -->
+        <app-accordion
+          *ngIf="'reasonForCreationSection' === template.name && isEditing"
+          [id]="template.name"
+          [title]="template.label"
+          [expanded]="expandSections"
+        >
+          <app-dynamic-form-group
+            class="section"
+            [id]="template.name"
+            [template]="template"
+            [data]="testResult"
+            [edit]="isEditing"
+            (formChange)="handleFormChange($event)"
+          ></app-dynamic-form-group>
+        </app-accordion>
+      </ng-container>
     </ng-container>
-    <app-dynamic-form-group
-      *ngSwitchDefault
-      class="section"
-      [id]="template.name"
-      [template]="template"
-      [data]="testResult"
-      [edit]="isEditing"
-      (formChange)="handleFormChange($event)"
-    ></app-dynamic-form-group>
-  </ng-container>
+  </app-accordion-control>
 </ng-container>
 
 <ng-template #notSupported>

@@ -7,7 +7,6 @@ export const VisitSection: FormNode = {
   name: 'visitSection',
   label: 'Visit',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testFacilityCombination',
