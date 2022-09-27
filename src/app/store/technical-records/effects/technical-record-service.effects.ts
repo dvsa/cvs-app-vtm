@@ -34,7 +34,12 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class TechnicalRecordServiceEffects {
-  constructor(private actions$: Actions, private technicalRecordService: TechnicalRecordService, private userService: UserService, private router: Router) {}
+  constructor(
+    private actions$: Actions,
+    private technicalRecordService: TechnicalRecordService,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
@@ -51,7 +56,9 @@ export class TechnicalRecordServiceEffects {
           case getByPartialVin.type:
             return this.technicalRecordService.getByPartialVin(action.partialVin).pipe(
               map(vehicleTechRecords => getByPartialVinSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByPartialVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'partialVin'), anchorLink })))
+              catchError(error =>
+                of(getByPartialVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'partialVin'), anchorLink }))
+              )
             );
           case getByVrm.type:
             return this.technicalRecordService.getByVrm(action.vrm).pipe(
@@ -61,17 +68,25 @@ export class TechnicalRecordServiceEffects {
           case getByTrailerId.type:
             return this.technicalRecordService.getByTrailerId(action.trailerId).pipe(
               map(vehicleTechRecords => getByTrailerIdSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByTrailerIdFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'trailerId'), anchorLink })))
+              catchError(error =>
+                of(getByTrailerIdFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'trailerId'), anchorLink }))
+              )
             );
           case getBySystemNumber.type:
             return this.technicalRecordService.getBySystemNumber(action.systemNumber).pipe(
               map(vehicleTechRecords => getBySystemNumberSuccess({ vehicleTechRecords })),
-              catchError(error => of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink })))
+              catchError(error =>
+                of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
+              )
             );
           case getByAll.type:
             return this.technicalRecordService.getByAll(action.all).pipe(
               map(vehicleTechRecords => getByAllSuccess({ vehicleTechRecords })),
-              catchError(error => of(getByAllFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'the current search criteria'), anchorLink })))
+              catchError(error =>
+                of(
+                  getByAllFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'the current search criteria'), anchorLink })
+                )
+              )
             );
         }
       })
@@ -84,10 +99,8 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.oldStatusCode).pipe(
-          map(vehicleTechRecords =>
-            updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })
-          ),
-          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') }))),
+          map(vehicleTechRecords => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecords] })),
+          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
         )
       )
     )
@@ -99,21 +112,19 @@ export class TechnicalRecordServiceEffects {
       withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
-          map(vehicleTechRecords =>
-            createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords]})
-          ),
-          catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error,'postProvisionalTechRecord')}))),
+          map(vehicleTechRecords => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecords] })),
+          catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
         )
       )
     )
-  )
+  );
 
   private apiErrors: { [key: string]: string } = {
-    updateTechnicalRecord_400: "Unable to update technical record",
-    createProvisionalTechRecord_400: "Unable to create a new provisional record",
-    getTechnicalRecords_400: "There was a problem getting the Tech Record by",
-    getTechnicalRecords_404: "Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number"
-  }
+    updateTechnicalRecord_400: 'Unable to update technical record',
+    createProvisionalTechRecord_400: 'Unable to create a new provisional record',
+    getTechnicalRecords_400: 'There was a problem getting the Tech Record by',
+    getTechnicalRecords_404: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number'
+  };
 
   getTechRecordErrorMessage(error: any, type: string, search?: string): string {
     if (typeof error !== 'object') {
@@ -122,9 +133,9 @@ export class TechnicalRecordServiceEffects {
 
     switch (error.status) {
       case 404:
-        return this.apiErrors[`${type}_404`]
+        return this.apiErrors[`${type}_404`];
       default:
-        return `${this.apiErrors[`${type}_400`]} ${search ? search : JSON.stringify(error.error)}`
+        return `${this.apiErrors[`${type}_400`]} ${search ? search : JSON.stringify(error.error)}`;
     }
   }
 }
