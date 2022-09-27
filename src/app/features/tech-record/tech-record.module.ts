@@ -11,7 +11,15 @@ import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-
 import { EditTechRecordButtonComponent } from './components/edit-tech-record-button/edit-tech-record-button.component';
 
 @NgModule({
-  declarations: [TechRecordComponent, TechRecordSummaryComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordHistoryComponent, EditTechRecordButtonComponent],
-  imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule]
+  declarations: [
+    TechRecordComponent,
+    TechRecordSummaryComponent,
+    VehicleTechnicalRecordComponent,
+    TestRecordSummaryComponent,
+    TechRecordHistoryComponent,
+    EditTechRecordButtonComponent
+  ],
+  imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule],
+  exports: [EditTechRecordButtonComponent]
 })
 export class TechRecordsModule {}

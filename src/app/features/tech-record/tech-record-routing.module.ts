@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
-import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
-import { TechRecordComponent } from './tech-record.component';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: ':techCreatedAt',
+    path: 'historic/:techCreatedAt',
     component: TechRecordComponent,
     data: { title: 'Historic tech record' },
     canActivate: [MsalGuard],
