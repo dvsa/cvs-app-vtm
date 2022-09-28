@@ -18,6 +18,10 @@ const routes: Routes = [
     resolve: { contingencyTest: ContingencyTestResolver },
     children: [
       {
+        path: '',
+        redirectTo: 'type'
+      },
+      {
         path: 'type',
         component: CreateTestTypeComponent,
         data: { title: 'Create contingency test' },
