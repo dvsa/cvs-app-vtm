@@ -5,7 +5,6 @@ export const DefectsTpl: FormNode = {
   name: 'defects',
   label: 'Defects',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testTypes',

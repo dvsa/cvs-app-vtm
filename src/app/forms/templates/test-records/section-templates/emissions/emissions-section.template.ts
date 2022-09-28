@@ -5,7 +5,6 @@ export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testTypes',

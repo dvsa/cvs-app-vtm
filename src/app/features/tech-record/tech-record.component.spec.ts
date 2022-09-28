@@ -4,7 +4,6 @@ import { initialAppState, State } from '@store/.';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordComponent } from './tech-record.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SpinnerService } from '@core/components/spinner/spinner.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { Roles } from '@models/roles.enum';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -19,7 +18,7 @@ describe('TechRecordComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [TechRecordComponent],
-      providers: [SpinnerService, provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 

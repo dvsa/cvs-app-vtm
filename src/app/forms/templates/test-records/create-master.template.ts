@@ -14,6 +14,10 @@ import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehi
 import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
+import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
+import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
+import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency-test-section-group9And10.template';
+import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -47,6 +51,24 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     default: {}
   },
   trl: {
-    default: {}
+    default: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: TestSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
+      required: CreateRequiredSectionHgvTrl
+    },
+    testTypesGroup9And10: {
+      required: CreateRequiredSectionHgvTrl,
+      vehicle: ContingencyVehicleSectionDefaultTrl,
+      test: ContingencyTestSectionGroup9And10,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection
+    }
   }
 };

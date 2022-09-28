@@ -1,5 +1,10 @@
 <ng-container *ngIf="testResult$ | async as testResult">
-  <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)"></app-base-test-record>
+  <app-base-test-record
+    [isEditing]="true"
+    [testResult]="testResult"
+    [expandSections]="true"
+    (newTestResult)="handleNewTestResult($event)"
+  ></app-base-test-record>
 
   <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
 
