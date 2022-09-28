@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
-import { addError, clearError } from '@store/global-error/actions/global-error.actions';
+import { addError, clearError, patchErrors } from '@store/global-error/actions/global-error.actions';
 import { GlobalError } from './global-error.interface';
 import { GlobalErrorService } from './global-error.service';
 
@@ -19,11 +19,19 @@ describe('GlobalErrorService', () => {
   });
 
   it('should dispatch action addError', () => {
-    const extraError: GlobalError = { error: 'erro 2', anchorLink: '' };
+    const expectedError: GlobalError = { error: 'erro 2', anchorLink: '' };
     const dispatchSpy = jest.spyOn(store, 'dispatch');
-    service.addError(extraError);
+    service.addError(expectedError);
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchSpy).toHaveBeenCalledWith(addError(extraError));
+    expect(dispatchSpy).toHaveBeenCalledWith(addError(expectedError));
+  });
+
+  it('should dispatch action patchErrors', () => {
+    const expectedErrors: GlobalError[] = [{ error: 'erro 2', anchorLink: '' }];
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    service.patchErrors(expectedErrors);
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    expect(dispatchSpy).toHaveBeenCalledWith(patchErrors({ errors: expectedErrors }));
   });
 
   it('should dispatch action clearError', () => {

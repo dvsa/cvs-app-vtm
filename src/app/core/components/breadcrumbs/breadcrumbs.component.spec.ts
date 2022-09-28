@@ -33,6 +33,14 @@ describe('BreadcrumbsComponent', () => {
 
   it.each([
     [
+      [],
+      { state: { root: { firstChild: { data: { title: 'Path1' }, url: [{ path: 'path1' }] } } } }
+    ],
+    [
+      [{ label: 'Path1', path: '' }],
+      { state: { root: { firstChild: { data: { title: 'Path1' }, routeConfig: { path: 'path1' }, url: [] } } } }
+    ],
+    [
       [{ label: 'Path1', path: 'path1' }],
       { state: { root: { firstChild: { data: { title: 'Path1' }, routeConfig: { path: 'path1' }, url: [{ path: 'path1' }] } } } }
     ],

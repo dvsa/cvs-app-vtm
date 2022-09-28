@@ -21,7 +21,7 @@ export class TechRecordComponent {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
-  public get Roles() {
+  public get roles() {
     return Roles;
   }
 

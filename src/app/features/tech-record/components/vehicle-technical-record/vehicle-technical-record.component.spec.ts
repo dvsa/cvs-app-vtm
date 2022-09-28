@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { StatusCodes } from '@models/vehicle-tech-record.model';
@@ -20,6 +20,8 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { APP_BASE_HREF } from '@angular/common';
+import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -52,6 +54,12 @@ describe('VehicleTechnicalRecordComponent', () => {
           provide: UserService,
           useValue: {
             roles$: of(['TestResult.View'])
+          }
+        },
+        {
+          provide: TechnicalRecordService,
+          useValue: {
+            viewableTechRecord$: () => of(mockVehicleTechnicalRecord().techRecord[2])
           }
         }
       ]
@@ -117,14 +125,52 @@ describe('VehicleTechnicalRecordComponent', () => {
   });
 
   it('should evaluate form validity', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    const handleFormStateSpy = jest.spyOn(component, 'handleFormState').mockImplementation(() => component.isInvalid = false)
 
-    const handleFormStateSpy = jest.spyOn(component, 'handleFormState').mockImplementation(() => {
-      component.isInvalid = true;
-    })
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
 
-    const testFunction = () => {};
-    component.handleSubmit(testFunction)
+    component.handleSubmit()
 
     expect(handleFormStateSpy).toHaveBeenCalled();
+    expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicleTechRecord.systemNumber }));
+  });
+
+  it('should dispatch updateTechRecords with a provisional code', fakeAsync(() => {
+    fixture.detectChanges();
+
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    tick();
+
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.handleFormState = jest.fn(() => component.isInvalid = false);
+
+    component.handleSubmit()
+
+    expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicleTechRecord.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
+  }));
+
+  it('should dispatch updateTechRecords', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.handleFormState = jest.fn(() => component.isInvalid = false);
+
+    component.handleSubmit()
+
+    expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicleTechRecord.systemNumber }));
+  });
+
+  it('should dispatch createProvisionalTechRecord', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    component.vehicleTechRecord = mockVehicleTechnicalRecord();
+    component.vehicleTechRecord.techRecord.shift();
+    component.handleFormState = jest.fn(() => component.isInvalid = false);
+
+    component.handleSubmit()
+
+    expect(dispatchSpy).toHaveBeenCalledWith(createProvisionalTechRecord({ systemNumber: component.vehicleTechRecord.systemNumber }));
   });
 });

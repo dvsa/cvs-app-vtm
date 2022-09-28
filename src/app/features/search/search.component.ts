@@ -37,7 +37,7 @@ export class SearchComponent {
     return errors.find(error => error.anchorLink === name);
   }
 
-  public get Roles() {
+  public get roles() {
     return Roles;
   }
 }
