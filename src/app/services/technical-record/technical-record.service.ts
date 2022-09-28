@@ -7,7 +7,6 @@ import {
   editableTechRecord,
   getByAll,
   getByPartialVin,
-  getBySystemNumberAndVin,
   getByTrailerId,
   getByVin,
   getByVrm,
