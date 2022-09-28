@@ -5,6 +5,7 @@ import { RoleGuard } from '@guards/roles.guard';
 import { TitleResolver } from './resolvers/title/title.resolver';
 import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
+import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,11 @@ const routes: Routes = [
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
       }
     ]
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: PageNotFoundComponent
   }
 ];
 

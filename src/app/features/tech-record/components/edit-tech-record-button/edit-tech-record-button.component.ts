@@ -61,7 +61,7 @@ export class EditTechRecordButtonComponent implements OnInit {
       .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
       .subscribe(action =>
         this.router.navigateByUrl(
-          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
+          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/historic/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
         )
       );
   }
