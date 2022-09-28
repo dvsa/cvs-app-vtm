@@ -5,6 +5,7 @@ import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.t
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { DateComponent } from './date.component';
+import { FocusNextDirective } from './focus-next.directive';
 
 @Component({
   selector: 'app-host-component',
@@ -26,7 +27,13 @@ describe('DateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateComponent, BaseControlComponent, HostComponent, FieldErrorMessageComponent],
+      declarations: [
+        BaseControlComponent,
+        DateComponent,
+        FieldErrorMessageComponent,
+        FocusNextDirective,
+        HostComponent
+      ],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });

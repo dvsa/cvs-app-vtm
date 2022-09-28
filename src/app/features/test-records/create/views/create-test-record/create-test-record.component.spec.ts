@@ -29,6 +29,7 @@ import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehic
 import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { UserService } from '@services/user-service/user-service';
 import { Roles } from '@models/roles.enum';
+import { SharedModule } from '@shared/shared.module';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -58,7 +59,12 @@ describe('CreateTestRecordComponent', () => {
         VehicleHeaderComponent,
         RoleRequiredDirective
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, DynamicFormsModule],
+      imports: [
+        DynamicFormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+        SharedModule
+      ],
       providers: [
         GlobalErrorService,
         RouterService,

@@ -206,6 +206,6 @@ describe('EditTechRecordButtonComponent', () => {
     tick();
 
     expect(navigateByUrlSpy).toHaveBeenCalledTimes(1);
-    expect(navigateByUrlSpy).toHaveBeenCalledWith('/tech-records/1/' + expectedDate.getTime());
+    expect(navigateByUrlSpy).toHaveBeenCalledWith('/tech-records/1/historic/' + expectedDate.getTime());
   }));
 });
