@@ -70,32 +70,8 @@
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
-    *ngIf="grossVehicleWeightTemplate"
-    [template]="grossVehicleWeightTemplate"
-    [data]="vehicleTechRecordCalculated"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="trainWeightTemplate"
-    [template]="trainWeightTemplate"
-    [data]="vehicleTechRecordCalculated"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="grossTrainWeightTemplate"
-    [template]="grossTrainWeightTemplate"
-    [data]="vehicleTechRecordCalculated"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="maxTrainWeightTemplate"
-    [template]="maxTrainWeightTemplate"
-    [data]="vehicleTechRecordCalculated"
-    class="govuk-summary-list"
-  ></app-dynamic-form-group>
-  <app-dynamic-form-group
-    *ngIf="axleWeightsTemplate"
-    [template]="axleWeightsTemplate"
+    *ngIf="weightsTemplate"
+    [template]="weightsTemplate"
     [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>

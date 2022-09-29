@@ -2,16 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
-import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
-import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
-import { getAxleWeights as getAxleWeightsSection } from '@forms/templates/general/axle-weights.template';
-import { getGrossVehicleWeightsTemplate as getGrossVehicleWeightsSection } from '@forms/templates/general/gross-vehicle-weights.template'
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
-import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
 import { Brakes, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
@@ -31,6 +26,9 @@ import cloneDeep from 'lodash.clonedeep';
 import { Store } from '@ngrx/store';
 import { updateEditingTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
+import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -54,11 +52,6 @@ export class TechRecordSummaryComponent implements OnInit {
   notesTemplate?: FormNode;
   documentsTemplate?: FormNode;
   bodyTemplate?: FormNode;
-  grossVehicleWeightTemplate?: FormNode;
-  grossTrainWeightTemplate?: FormNode;
-  maxTrainWeightTemplate?: FormNode;
-  trainWeightTemplate?: FormNode;
-  axleWeightsTemplate?: FormNode;
   tyresTemplate?: FormNode;
   brakesTemplate?: FormNode;
   purchasersTemplate?: FormNode;
@@ -70,39 +63,38 @@ export class TechRecordSummaryComponent implements OnInit {
   trlManufacturerTemplate?: FormNode;
   ddaTemplate?: FormNode;
   reasonForCreation?: FormNode;
+  weightsTemplate?: FormNode;
 
   ngOnInit(): void {
     this.vehicleTemplate();
     this.currentBrakeRecord = this.vehicleTechRecord?.brakes;
-    this.calculateVehicleModel()
+    this.calculateVehicleModel();
   }
 
-  constructor(private store:Store) {}
+  constructor(private store: Store) {}
 
   @Input()
-  set editable(isEditable: boolean){
+  set editable(isEditable: boolean) {
     this.isEditable = isEditable;
-    this.calculateVehicleModel()
+    this.calculateVehicleModel();
   }
 
   calculateVehicleModel() {
-    if(this.isEditable) {
+    if (this.isEditable) {
       this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecord!);
       this.vehicleTechRecordCalculated.reasonForCreation = '';
-    }
-    else {
+    } else {
       this.vehicleTechRecordCalculated = this.vehicleTechRecord!;
     }
-    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated}));
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
   // @ts-ignore
   handleFormState(event) {
-    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event)
-    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated!}));
+    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated! }));
     this.formChange.emit();
   }
-
 
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {
@@ -121,22 +113,17 @@ export class TechRecordSummaryComponent implements OnInit {
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = getNotesSection(VehicleTypes.PSV);
-        this.reasonForCreation = reasonForCreationSection
+        this.reasonForCreation = reasonForCreationSection;
         this.bodyTemplate = getBodySection(VehicleTypes.PSV);
         this.tyresTemplate = getTyresSection(VehicleTypes.PSV);
-        this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.PSV);
-        this.trainWeightTemplate = PsvTrainWeight;
-        this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.PSV);
+        this.weightsTemplate = PsvWeight;
         break;
       }
       case 'hgv': {
         this.vehicleSummaryTemplate = HgvTechRecord;
         this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.HGV);
         this.bodyTemplate = getBodySection(VehicleTypes.HGV);
-        this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.HGV);
-        this.trainWeightTemplate = HgvGrossTrainWeight;
-        this.maxTrainWeightTemplate = HgvMaxTrainWeight;
-        this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.HGV);
+        this.weightsTemplate = HgvWeight;
         this.tyresTemplate = getTyresSection(VehicleTypes.HGV);
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.HGV,
@@ -158,8 +145,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.vehicleSummaryTemplate = TrlTechRecordTemplate;
         this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.TRL);
         this.bodyTemplate = getBodySection(VehicleTypes.TRL);
-        this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.TRL);
-        this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.TRL);
+        this.weightsTemplate = TrlWeight;
         this.tyresTemplate = getTyresSection(VehicleTypes.TRL);
         this.brakesTemplate = BrakesTemplate;
         this.purchasersTemplate = TrlPurchasers;
