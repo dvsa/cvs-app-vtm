@@ -120,15 +120,6 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
             },
             {
-              name: 'testAnniversaryDate',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              disabled: true,
-              label: 'Anniversary date',
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.HIDDEN
-            },
-            {
               name: 'prohibitionIssued',
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
