@@ -1,0 +1,47 @@
+<table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Axle weights (kg)
+    </caption>
+    
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header">Kerb</th>
+        <th scope="col" class="govuk-table__header">Laden</th>
+        <th scope="col" class="govuk-table__header">GB maxt</th>
+        <th scope="col" class="govuk-table__header">Design</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row" *ngFor="let techRecord of vehicleTechRecord.techRecord">
+        <th scope="row" class="govuk-table__header">AXLE NUMBER</th>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">GROSS</th>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">TRAIN</th>
+        <td class="govuk-table__cell">BLANK</td>
+        <td class="govuk-table__cell">BLANK</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+      </tr>
+      <tr class="govuk-table__row" *ngFor="let techRecord of vehicleTechRecord.techRecord">
+        <th scope="row" class="govuk-table__header">AXLE NUMBER</th>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+        <td class="govuk-table__cell">WEIGHT</td>
+      </tr>
+    </tbody>
+
+  </table>
+  
