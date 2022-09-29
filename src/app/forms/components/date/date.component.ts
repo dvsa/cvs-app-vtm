@@ -1,6 +1,5 @@
 import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, Injector, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControlDirective, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import validateDate from 'validate-govuk-date';
 import { DateValidators } from '../../validators/date/date.validators';
@@ -127,7 +126,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
         const second = this.originalDate ? new Date(this.originalDate).getSeconds() : '00';
 
         this.onChange(
-          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000Z`
+          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`
         );
       }
     });

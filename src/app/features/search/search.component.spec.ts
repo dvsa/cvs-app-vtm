@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { Roles } from '@models/roles.enum';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { SEARCH_TYPES, TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState, State } from '@store/.';
@@ -115,6 +116,12 @@ describe('SearchComponent', () => {
 
         expect(error).toEqual(expectedError);
       });
+
+      it('should return roles', () => {
+        const roles = component.roles;
+
+        expect(roles).toBe(Roles);
+      })
     });
   });
 });

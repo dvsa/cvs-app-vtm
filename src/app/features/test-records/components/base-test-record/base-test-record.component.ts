@@ -24,11 +24,11 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
+  @Input() expandSections = false;
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 
   techRecord$: Observable<TechRecordModel | undefined>;
-
   constructor(
     private defectsStore: Store<DefectsState>,
     private techRecordService: TechnicalRecordService,

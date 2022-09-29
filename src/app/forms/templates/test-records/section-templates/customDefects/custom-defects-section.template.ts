@@ -4,7 +4,6 @@ export const CustomDefectsSection: FormNode = {
   name: 'customDefectsSection',
   label: 'Custom Defects',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testTypes',

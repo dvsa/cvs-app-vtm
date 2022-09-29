@@ -8,9 +8,18 @@ import { TechRecordComponent } from './tech-record.component';
 import { TechRecordHistoryComponent } from './components/tech-record-history/tech-record-history.component';
 import { TechRecordSummaryComponent } from './components/tech-record-summary/tech-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
+import { EditTechRecordButtonComponent } from './components/edit-tech-record-button/edit-tech-record-button.component';
 
 @NgModule({
-  declarations: [TechRecordComponent, TechRecordSummaryComponent, VehicleTechnicalRecordComponent, TestRecordSummaryComponent, TechRecordHistoryComponent],
-  imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule]
+  declarations: [
+    EditTechRecordButtonComponent,
+    TechRecordComponent,
+    TechRecordHistoryComponent,
+    TechRecordSummaryComponent,
+    TestRecordSummaryComponent,
+    VehicleTechnicalRecordComponent,
+  ],
+  imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule],
+  exports: [EditTechRecordButtonComponent]
 })
 export class TechRecordsModule {}

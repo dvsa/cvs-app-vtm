@@ -8,21 +8,21 @@ import { testResultLoadingState } from '@store/test-records';
 import { testStationsLoadingState } from '@store/test-stations';
 import { selectTestTypesLoadingState } from '@store/test-types/selectors/test-types.selectors';
 import { firstValueFrom, take } from 'rxjs';
-import { SpinnerComponent } from './spinner.component';
-import { SpinnerService } from './spinner.service';
+import { SpinnerComponent } from '../../core/components/spinner/spinner.component';
+import { LoadingService } from './loading.service';
 
 describe('Spinner-Service', () => {
-  let service: SpinnerService;
+  let service: LoadingService;
   let mockStore: MockStore<State>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [SpinnerComponent],
       imports: [RouterTestingModule],
-      providers: [SpinnerService, provideMockStore({ initialState: initialAppState })]
+      providers: [LoadingService, provideMockStore({ initialState: initialAppState })]
     });
 
-    service = TestBed.inject(SpinnerService);
+    service = TestBed.inject(LoadingService);
     mockStore = TestBed.inject(MockStore);
   });
 

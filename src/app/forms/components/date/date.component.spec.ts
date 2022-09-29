@@ -5,6 +5,7 @@ import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.t
 import { BaseControlComponent } from '../base-control/base-control.component';
 import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { DateComponent } from './date.component';
+import { FocusNextDirective } from './focus-next.directive';
 
 @Component({
   selector: 'app-host-component',
@@ -26,7 +27,13 @@ describe('DateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DateComponent, BaseControlComponent, HostComponent, FieldErrorMessageComponent],
+      declarations: [
+        BaseControlComponent,
+        DateComponent,
+        FieldErrorMessageComponent,
+        FocusNextDirective,
+        HostComponent
+      ],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });
@@ -49,12 +56,12 @@ describe('DateComponent', () => {
 
   describe('control values', () => {
     it.each([
-      ['2342346-6213-234T00:00:00.000Z', 2342346, 6213, 234, 1, 6],
-      ['2022-01-12T00:00:00.000Z', 2022, 0o1, 12, 1, 6],
-      ['2022--01T00:00:00.000Z', 2022, NaN, 0o1, 0o1, 0o1],
-      ['2022-01-T00:00:00.000Z', 2022, 0o1, NaN, 0o1, 0o1],
-      [`2022-02-01T13:45:00.000Z`, 2022, 2, 0o1, 13, 45, true],
-      ['-01-01T01:01:00.000Z', NaN, 0o1, 0o1, 0o1, 0o1, true],
+      ['2342346-6213-234T00:00:00.000', 2342346, 6213, 234, 1, 6],
+      ['2022-01-12T00:00:00.000', 2022, 0o1, 12, 1, 6],
+      ['2022--01T00:00:00.000', 2022, NaN, 0o1, 0o1, 0o1],
+      ['2022-01-T00:00:00.000', 2022, 0o1, NaN, 0o1, 0o1],
+      [`2022-02-01T13:45:00.000`, 2022, 2, 0o1, 13, 45, true],
+      ['-01-01T01:01:00.000', NaN, 0o1, 0o1, 0o1, 0o1, true],
       [null, null, null, null, null, null, true]
     ])(
       'should be %s for %d, %d, %d, %d, %d',

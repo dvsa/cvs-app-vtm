@@ -65,19 +65,19 @@ describe('Test Results Selectors', () => {
       expect(defectState).toEqual(state.testTypes[0].defects);
     });
 
-    it('should return an ampty array if there are no defects', () => {
+    it('should return an empty array if there are no defects', () => {
       const noDefectState = { ...state, testTypes: [{ ...state.testTypes[0], defects: undefined }] };
       const defectState = selectDefectData.projector(noDefectState);
       expect(defectState?.length).toBe(0);
     });
 
-    it('should return an ampty array if there are no test types', () => {
+    it('should return an empty array if there are no test types', () => {
       const noTestTypeState = { ...state, testTypes: undefined };
       const testTypeState = selectDefectData.projector(noTestTypeState);
       expect(testTypeState?.length).toBe(0);
     });
 
-    it('should return an ampty array if there are no test results', () => {
+    it('should return an empty array if there are no test results', () => {
       const noTestResultState = undefined;
       const testResultState = selectDefectData.projector(noTestResultState);
       expect(testResultState?.length).toBe(0);
@@ -139,11 +139,11 @@ describe('Test Results Selectors', () => {
       expect(testResult.testHistory![1].testTypes.length).toEqual(1);
     });
 
-    it('should return return undefined when "createdAt" route param value doesnt not match any amended records', () => {
+    it('should return return undefined when "createdAt" route param value does not match any amended records', () => {
       expect(selectedAmendedTestResultState.projector(testResult, { testTypeId: '00', createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
     });
 
-    it('should return return undefined when "testTypeId" route param value doesnt not match any in amended test record', () => {
+    it('should return return undefined when "testTypeId" route param value does not match any in amended test record', () => {
       expect(selectedAmendedTestResultState.projector(testResult, { testTypeId: '01', createdAt: '2020-01-01T00:02:00.000Z' })).toBeUndefined();
     });
 

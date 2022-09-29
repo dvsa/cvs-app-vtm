@@ -16,6 +16,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class RadioGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<string | number | boolean>[] = [];
+  @Input() inline: boolean = false;
 
   trackByFn = (index: number): number => index;
 }
