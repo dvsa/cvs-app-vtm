@@ -1,7 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function getNotesTemplate(isPsv: boolean = false): FormNode {
+export function getNotesTemplate(vehicleType: VehicleTypes): FormNode {
   let form: FormNode = {
     name: 'notesSection',
     label: 'Notes',
@@ -10,7 +11,7 @@ export function getNotesTemplate(isPsv: boolean = false): FormNode {
     children: []
   }
 
-  if(isPsv) {
+  if(vehicleType === VehicleTypes.PSV) {
     form.children?.push({
       name: 'remarks',
       label: 'Notes',

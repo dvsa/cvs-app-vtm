@@ -108,7 +108,7 @@ export class TechRecordSummaryComponent implements OnInit {
     switch (this.vehicleTechRecord?.vehicleType) {
       case 'psv': {
         this.vehicleSummaryTemplate = PsvTechRecord;
-        this.approvalTypeTemplate = getTypeApprovalSection(true);
+        this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.PSV);
         this.psvBrakeTemplate = PsvBrakeSection;
         this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
         this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
@@ -120,10 +120,10 @@ export class TechRecordSummaryComponent implements OnInit {
         );
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
-        this.notesTemplate = getNotesSection(true);
+        this.notesTemplate = getNotesSection(VehicleTypes.PSV);
         this.reasonForCreation = reasonForCreationSection
-        this.bodyTemplate = getBodySection(true);
-        this.tyresTemplate = getTyresSection(true);
+        this.bodyTemplate = getBodySection(VehicleTypes.PSV);
+        this.tyresTemplate = getTyresSection(VehicleTypes.PSV);
         this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.PSV);
         this.trainWeightTemplate = PsvTrainWeight;
         this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.PSV);
@@ -131,13 +131,13 @@ export class TechRecordSummaryComponent implements OnInit {
       }
       case 'hgv': {
         this.vehicleSummaryTemplate = HgvTechRecord;
-        this.approvalTypeTemplate = getTypeApprovalSection();
-        this.bodyTemplate = getBodySection();
+        this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.HGV);
+        this.bodyTemplate = getBodySection(VehicleTypes.HGV);
         this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.HGV);
         this.trainWeightTemplate = HgvGrossTrainWeight;
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
         this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.HGV);
-        this.tyresTemplate = getTyresSection();
+        this.tyresTemplate = getTyresSection(VehicleTypes.HGV);
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.HGV,
           this.vehicleTechRecord?.noOfAxles,
@@ -149,18 +149,18 @@ export class TechRecordSummaryComponent implements OnInit {
           'frontAxleTo5thWheelCouplingMax'
         );
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
-        this.notesTemplate = getNotesSection();
+        this.notesTemplate = getNotesSection(VehicleTypes.HGV);
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
         break;
       }
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecordTemplate;
-        this.approvalTypeTemplate = getTypeApprovalSection();
-        this.bodyTemplate = getBodySection();
+        this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.TRL);
+        this.bodyTemplate = getBodySection(VehicleTypes.TRL);
         this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.TRL);
         this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.TRL);
-        this.tyresTemplate = getTyresSection();
+        this.tyresTemplate = getTyresSection(VehicleTypes.TRL);
         this.brakesTemplate = BrakesTemplate;
         this.purchasersTemplate = TrlPurchasers;
         this.dimensionsTemplate = getDimensionsSection(
@@ -178,7 +178,7 @@ export class TechRecordSummaryComponent implements OnInit {
           'couplingCenterToRearTrlMin',
           'couplingCenterToRearTrlMax'
         );
-        this.notesTemplate = getNotesSection();
+        this.notesTemplate = getNotesSection(VehicleTypes.TRL);
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
         this.trlAuthIntoServiceTemplate = TrlAuthIntoServiceTemplate;
