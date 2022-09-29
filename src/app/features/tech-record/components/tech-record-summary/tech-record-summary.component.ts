@@ -2,29 +2,24 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
-import { HgvAxleWeights } from '@forms/templates/hgv/hgv-axle-weights.template';
 import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
-import { HgvGrossVehicleWeight } from '@forms/templates/hgv/hgv-gross-vehicle-weights.template';
 import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
-import { PsvAxleWeights } from '@forms/templates/psv/psv-axle-weights.template';
+import { getAxleWeights as getAxleWeightsSection } from '@forms/templates/general/axle-weights.template';
+import { getGrossVehicleWeightsTemplate as getGrossVehicleWeightsSection } from '@forms/templates/general/gross-vehicle-weights.template'
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
-import { PsvGrossVehicleWeight } from '@forms/templates/psv/psv-gross-vehicle-weights.template';
-import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
-import { TrlAxleWeightsTemplate } from '@forms/templates/trl/trl-axle-weights.template';
-import { TrlGrossVehicleWeightTemplate } from '@forms/templates/trl/trl-gross-vehicle-weights.template';
 import { Brakes, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
-import { getBodyTemplate } from '@forms/templates/general/body.template';
+import { getBodyTemplate as getBodySection } from '@forms/templates/general/body.template';
 import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
-import { NotesTemplate } from '@forms/templates/general/notes.template';
+import { getNotesTemplate as getNotesSection } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
@@ -125,23 +120,23 @@ export class TechRecordSummaryComponent implements OnInit {
         );
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
-        this.notesTemplate = PsvNotes;
+        this.notesTemplate = getNotesSection(true);
         this.reasonForCreation = reasonForCreationSection
-        this.bodyTemplate = getBodyTemplate(true);
+        this.bodyTemplate = getBodySection(true);
         this.tyresTemplate = getTyresSection(true);
-        this.grossVehicleWeightTemplate = PsvGrossVehicleWeight;
+        this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.PSV);
         this.trainWeightTemplate = PsvTrainWeight;
-        this.axleWeightsTemplate = PsvAxleWeights;
+        this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.PSV);
         break;
       }
       case 'hgv': {
         this.vehicleSummaryTemplate = HgvTechRecord;
         this.approvalTypeTemplate = getTypeApprovalSection();
-        this.bodyTemplate = getBodyTemplate();
-        this.grossVehicleWeightTemplate = HgvGrossVehicleWeight;
+        this.bodyTemplate = getBodySection();
+        this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.HGV);
         this.trainWeightTemplate = HgvGrossTrainWeight;
         this.maxTrainWeightTemplate = HgvMaxTrainWeight;
-        this.axleWeightsTemplate = HgvAxleWeights;
+        this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.HGV);
         this.tyresTemplate = getTyresSection();
         this.dimensionsTemplate = getDimensionsSection(
           VehicleTypes.HGV,
@@ -154,7 +149,7 @@ export class TechRecordSummaryComponent implements OnInit {
           'frontAxleTo5thWheelCouplingMax'
         );
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
-        this.notesTemplate = NotesTemplate;
+        this.notesTemplate = getNotesSection();
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
         break;
@@ -162,9 +157,9 @@ export class TechRecordSummaryComponent implements OnInit {
       case 'trl': {
         this.vehicleSummaryTemplate = TrlTechRecordTemplate;
         this.approvalTypeTemplate = getTypeApprovalSection();
-        this.bodyTemplate = getBodyTemplate();
-        this.axleWeightsTemplate = TrlAxleWeightsTemplate;
-        this.grossVehicleWeightTemplate = TrlGrossVehicleWeightTemplate;
+        this.bodyTemplate = getBodySection();
+        this.axleWeightsTemplate = getAxleWeightsSection(VehicleTypes.TRL);
+        this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.TRL);
         this.tyresTemplate = getTyresSection();
         this.brakesTemplate = BrakesTemplate;
         this.purchasersTemplate = TrlPurchasers;
@@ -183,7 +178,7 @@ export class TechRecordSummaryComponent implements OnInit {
           'couplingCenterToRearTrlMin',
           'couplingCenterToRearTrlMax'
         );
-        this.notesTemplate = NotesTemplate;
+        this.notesTemplate = getNotesSection();
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
         this.trlAuthIntoServiceTemplate = TrlAuthIntoServiceTemplate;
