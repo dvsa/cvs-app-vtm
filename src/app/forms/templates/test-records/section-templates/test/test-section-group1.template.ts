@@ -121,7 +121,7 @@ export const TestSectionGroup1: FormNode = {
               disabled: true,
               label: 'Anniversary date',
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',
