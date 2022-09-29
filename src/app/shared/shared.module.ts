@@ -9,6 +9,8 @@ import { TagComponent } from './components/tag/tag.component';
 import { NumberPlateComponent } from './components/number-plate/number-plate.component';
 import { IconComponent } from './components/icon/icon.component';
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
+import { AccordionComponent } from './components/accordion/accordion.component';
+import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     TagComponent,
     NumberPlateComponent,
     IconComponent,
-    TestTypeNamePipe
+    TestTypeNamePipe,
+    AccordionComponent,
+    AccordionControlComponent
   ],
   imports: [CommonModule],
   exports: [
@@ -32,7 +36,9 @@ import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
     TagComponent,
     NumberPlateComponent,
     IconComponent,
-    TestTypeNamePipe
+    TestTypeNamePipe,
+    AccordionComponent,
+    AccordionControlComponent
   ]
 })
 export class SharedModule {}

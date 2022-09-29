@@ -1,5 +1,6 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { FormNode } from '@forms/services/dynamic-form.types';
+import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
@@ -41,3 +42,7 @@ export const createTestResultSuccess = createAction('[API/test-results] Create t
 export const createTestResultFailed = createAction('[API/test-results] Create test result Failed', props<{ errors: GlobalError[] }>());
 
 export const contingencyTestTypeSelected = createAction('[Test Results] contingency test type selected', props<{ testType: string }>());
+
+export const createDefect = createAction('[test-results] create defect', props<{ defect: TestResultDefect }>());
+export const updateDefect = createAction('[test-results] save defect', props<{ defect: TestResultDefect; index: number }>());
+export const removeDefect = createAction('[test-results] remove defect', props<{ index: number }>());

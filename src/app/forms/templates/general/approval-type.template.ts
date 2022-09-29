@@ -1,6 +1,7 @@
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
-export function getTypeApprovalSection(includeCoifSection: boolean = false): FormNode {
+export function getTypeApprovalSection(vehicleType: VehicleTypes): FormNode {
   const approvalTypeSection: FormNode = {
     name: 'approvalSection',
     label: 'Type approval',
@@ -35,7 +36,7 @@ export function getTypeApprovalSection(includeCoifSection: boolean = false): For
     ]
   };
 
-  if (includeCoifSection) {
+  if (vehicleType === VehicleTypes.PSV) {
     const COIFSection = [
       {
         name: 'coifSerialNumber',

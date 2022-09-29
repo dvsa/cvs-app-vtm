@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NoEditGuard } from '@guards/no-edit/no-edit.guard';
+import { DefectSelectComponent } from '@forms/components/defect-select/defect-select.component';
+import { DefectComponent } from '@forms/components/defect/defect.component';
+import { CancelEditTestGuard } from '@guards/cancel-edit-test/cancel-edit-test.guard';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { DefectsTaxonomyResolver } from 'src/app/resolvers/defects-taxonomy/defects-taxonomy.resolver';
@@ -48,18 +50,56 @@ const routes: Routes = [
           },
           {
             path: 'amend-test-details',
-            component: TestRecordComponent,
+            component: TestRouterOutletComponent,
             data: { title: 'Test details', roles: Roles.TestResultAmend },
             resolve: { load: TestResultResolver, testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
-            canActivate: [RoleGuard]
+            canActivate: [RoleGuard],
+            canDeactivate: [CancelEditTestGuard],
+            children: [
+              {
+                path: '',
+                component: TestRecordComponent
+              },
+              {
+                path: 'defect/:defectIndex',
+                component: DefectComponent,
+                data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+                canActivate: [RoleGuard]
+              },
+              {
+                path: 'selectDefect',
+                component: TestRouterOutletComponent,
+                data: { title: 'Select Defect', roles: Roles.TestResultAmend },
+                canActivate: [RoleGuard],
+                children: [
+                  {
+                    path: '',
+                    component: DefectSelectComponent
+                  },
+                  {
+                    path: ':ref',
+                    component: DefectComponent,
+                    data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+                    canActivate: [RoleGuard]
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
         path: 'amended/:createdAt',
         component: AmendedTestRecordComponent,
-        data: { title: 'Amended test result' },
-        canActivate: [NoEditGuard]
+        data: { title: 'Amended test result', roles: Roles.TestResultView },
+        canActivate: [RoleGuard]
+      },
+      {
+        path: 'defect/:defectIndex',
+        component: DefectComponent,
+        data: { title: 'Defect', roles: Roles.TestResultView, isEditing: false },
+        resolve: { load: TestResultResolver },
+        canActivate: [RoleGuard]
       }
     ]
   }

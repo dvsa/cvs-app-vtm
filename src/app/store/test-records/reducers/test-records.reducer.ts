@@ -8,6 +8,7 @@ import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import {
   cancelEditingTestResult,
+  createDefect,
   createTestResult,
   createTestResultFailed,
   createTestResultSuccess,
@@ -20,6 +21,8 @@ import {
   fetchTestResultsBySystemNumberSuccess,
   fetchTestResultsSuccess,
   initialContingencyTest,
+  removeDefect,
+  updateDefect,
   templateSectionsChanged,
   updateEditingTestResult,
   updateResultOfTest,
@@ -73,10 +76,53 @@ export const testResultsReducer = createReducer(
   on(initialContingencyTest, (state, action) => ({
     ...state,
     editingTestResult: { ...action.testResult } as TestResultModel
-  }))
+  })),
+  on(createDefect, (state, action) => ({ ...state, editingTestResult: createNewDefect(state.editingTestResult, action.defect) })),
+  on(updateDefect, (state, action) => ({ ...state, editingTestResult: updateDefectAtIndex(state.editingTestResult, action.defect, action.index) })),
+  on(removeDefect, (state, action) => ({ ...state, editingTestResult: removeDefectAtIndex(state.editingTestResult, action.index) }))
 );
 
 export const testResultsFeatureState = createFeatureSelector<TestResultsState>(STORE_FEATURE_TEST_RESULTS_KEY);
+
+function createNewDefect(testResultState: TestResultModel | undefined, defect: TestResultDefect): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+
+  if (!testResult.testTypes[0].defects) {
+    return;
+  }
+  testResult.testTypes[0].defects.push(defect);
+
+  return { ...testResult };
+}
+
+function updateDefectAtIndex(testResultState: TestResultModel | undefined, defect: TestResultDefect, index: number): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  if (!testResult.testTypes[0].defects) {
+    return;
+  }
+  testResult.testTypes[0].defects[index] = defect;
+
+  return { ...testResult };
+}
+
+function removeDefectAtIndex(testResultState: TestResultModel | undefined, index: number): TestResultModel | undefined {
+  if (!testResultState) {
+    return;
+  }
+  const testResult = cloneDeep(testResultState);
+  if (!testResult.testTypes[0].defects) {
+    return;
+  }
+  testResult.testTypes[0].defects.splice(index, 1);
+
+  return { ...testResult };
+}
 
 function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
   if (!testResultState) {

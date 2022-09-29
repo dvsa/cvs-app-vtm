@@ -27,15 +27,34 @@
 
       <div *ngIf="(currentTechRecord$ | async)?.vehicleType === vehicleTypes.TRL" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Trailer ID</dt>
-        <dd id="current-vrm" class="govuk-summary-list__value">
+        <dd id="trailer-id" class="govuk-summary-list__value">
           {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
+        </dd>
+        <dd class="govuk-summary-list__value"></dd>
+      </div>
+
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Record status</dt>
+        <dd id="status-code" class="govuk-summary-list__value">
+          <strong class="govuk-tag govuk-phase-banner__content__tag">{{ (currentTechRecord$ | async)?.statusCode | defaultNullOrEmpty }}</strong>
         </dd>
         <dd class="govuk-summary-list__value"></dd>
       </div>
     </dl>
 
-    <app-tech-record-summary [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"></app-tech-record-summary>
-
+    <app-edit-tech-record-button
+      [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [viewableTechRecord]="(currentTechRecord$ | async) || undefined"
+      [isDirty]="isDirty"
+      [(editableState)]="isEditable"
+      (submitCheckFormValidity)="handleSubmit()"
+      *appRoleRequired="roles.TechRecordAmend"
+    ></app-edit-tech-record-button>
+    <app-tech-record-summary
+      [editable]="isEditable"
+      [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"
+      (formChange)="handleFormState()"
+    ></app-tech-record-summary>
     <app-tech-record-history
       [currentRecord]="(currentTechRecord$ | async) || undefined"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
