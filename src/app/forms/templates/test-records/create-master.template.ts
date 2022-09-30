@@ -18,6 +18,7 @@ import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-tr
 import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
 import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency-test-section-group9And10.template';
 import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
+import { ContingencyTestSectionGroup3And4And8 } from './section-templates/test/contingency-test-section-group3And4And8.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -29,23 +30,34 @@ const groups1and2Template: Record<string, FormNode> = {
   defects: DefectsTpl,
   customDefects: CustomDefectsSection,
   reasonForCreation: reasonForCreationSection
-}
+};
 
 export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
   psv: {
     default: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: TestSection,
       seatbelts: SeatbeltSection,
       emissions: EmissionsSection,
-      visit: VisitSection,
+      visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
-      required: RequiredSection
+      required: CreateRequiredSection
     },
     testTypesGroup1: groups1and2Template,
-    testTypesGroup2: groups1and2Template
+    testTypesGroup2: groups1and2Template,
+    testTypesGroup3And4And8: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionGroup3And4And8,
+      seatbelts: SeatbeltSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSection
+    }
   },
   hgv: {
     default: {}
