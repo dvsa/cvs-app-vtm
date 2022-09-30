@@ -18,12 +18,10 @@ export class PaginationComponent {
     return { [`${this.tableName}-page`]: page };
   }
   nextPage() {
-    const next = this.currentPage + 1;
-    return this.pageQuery(next >= this.pages.length ? this.pages.length : next);
+    return this.pageQuery(this.currentPage + 1);
   }
   prevPage() {
-    const prev = this.currentPage - 1;
-    return this.pageQuery(prev <= 1 ? 1 : prev);
+    return this.pageQuery(this.currentPage - 1);
   }
 
   trackByFn(index: number, page: number) {

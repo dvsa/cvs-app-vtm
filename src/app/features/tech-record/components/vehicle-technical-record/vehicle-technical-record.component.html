@@ -64,6 +64,7 @@
       *appRoleRequired="roles.TestResultView"
       [testRecords]="(records$ | async) || []"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [currentPage]="(testTablePageQuery$ | async) || 1"
     >
     </app-test-record-summary>
   </div>

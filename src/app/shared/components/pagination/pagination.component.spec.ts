@@ -1,7 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router, UrlTree } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { map, Observable } from 'rxjs';
 import { PaginationComponent } from './pagination.component';
@@ -21,7 +21,7 @@ class HostComponent {
   numberOfItems: number = 0;
 
   pageQuery$: Observable<number>;
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
     this.pageQuery$ = route.queryParams.pipe(map(params => Number.parseInt(params[`${this.tableName}-page`] ?? '1', 10)));
   }
 }
@@ -32,7 +32,6 @@ describe('PaginationComponent', () => {
   let hostComponent: HostComponent;
   let el: DebugElement;
   let router: Router;
-  let route: ActivatedRoute;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -48,7 +47,6 @@ describe('PaginationComponent', () => {
     el = fixture.debugElement;
 
     router = TestBed.inject(Router);
-    route = TestBed.inject(ActivatedRoute);
 
     fixture.detectChanges();
   });
@@ -107,7 +105,7 @@ describe('PaginationComponent', () => {
       expect(router.url).toBe(`/?${component.tableName}-page=2`);
     }));
 
-    it('should stay on the same page when already on last', fakeAsync(() => {
+    it('should not render "next" link when already on last page', fakeAsync(() => {
       hostComponent.numberOfItems = 50;
       fixture.detectChanges();
 
@@ -118,13 +116,9 @@ describe('PaginationComponent', () => {
         fixture.detectChanges();
       });
 
-      const next: HTMLLinkElement = el.query(By.css(`#${component.tableName}-next-page`)).nativeElement;
-      next.click();
+      const next = el.query(By.css(`#${component.tableName}-next-page`));
 
-      tick();
-      fixture.detectChanges();
-
-      expect(router.url).toBe(`/?${component.tableName}-page=10`);
+      expect(next).toBeNull();
     }));
   });
 
@@ -149,7 +143,7 @@ describe('PaginationComponent', () => {
       expect(router.url).toBe(`/?${component.tableName}-page=3`);
     }));
 
-    it('should stay on the same page when already on first', fakeAsync(() => {
+    it('should not render "prev" link when already on first page', fakeAsync(() => {
       hostComponent.numberOfItems = 50;
       fixture.detectChanges();
 
@@ -157,13 +151,9 @@ describe('PaginationComponent', () => {
         router.initialNavigation();
       });
 
-      const prev: HTMLLinkElement = el.query(By.css(`#${component.tableName}-prev-page`)).nativeElement;
-      prev.click();
+      const prev = el.query(By.css(`#${component.tableName}-prev-page`));
 
-      tick();
-      fixture.detectChanges();
-
-      expect(router.url).toBe(`/?${component.tableName}-page=1`);
+      expect(prev).toBeNull();
     }));
   });
 });

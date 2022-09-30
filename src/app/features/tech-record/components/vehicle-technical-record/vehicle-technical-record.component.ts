@@ -26,6 +26,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   records$: Observable<TestResultModel[]>;
   historyTablePageQuery$: Observable<number>;
+  testTablePageQuery$: Observable<number>;
 
   isCurrent = false;
   isEditable = false;
@@ -40,6 +41,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   ) {
     this.records$ = testRecordService.testRecords$;
     this.historyTablePageQuery$ = store.select(selectQueryParam('tech-history-page')).pipe(map(paramValue => Number.parseInt(paramValue ?? '1', 10)));
+    this.testTablePageQuery$ = store.select(selectQueryParam('test-history-page')).pipe(map(paramValue => Number.parseInt(paramValue ?? '1', 10)));
   }
 
   ngOnInit(): void {

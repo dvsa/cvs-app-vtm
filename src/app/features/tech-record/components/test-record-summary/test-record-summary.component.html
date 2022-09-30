@@ -2,33 +2,41 @@
   <h2 class="govuk-heading-m">Test Records</h2>
   <h3 class="govuk-heading-s">No test records found.</h3>
 </div>
-<table class="govuk-table" *ngIf="testRecords && testRecords.length > 0">
-  <caption class="govuk-table__caption govuk-table__caption--m">
-    Test Records
-  </caption>
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Date</th>
-      <th scope="col" class="govuk-table__header">Test Type</th>
-      <th scope="col" class="govuk-table__header">Result</th>
-      <th scope="col" class="govuk-table__header"></th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <ng-container *ngFor="let testRecord of testRecords">
-      <tr class="govuk-table__row" *ngFor="let test of testRecord.testTypes">
-        <th scope="row" class="govuk-table__header">{{ test.testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}</th>
-        <td class="govuk-table__cell">{{ test.testTypeName }}</td>
-        <td class="govuk-table__cell">{{ test.testResult }}</td>
-        <td class="govuk-table__cell">
-          <a id="view-test-{{ testRecord.testResultId }}" routerLink="test-records/test-result/{{ testRecord.testResultId }}/{{ test.testNumber }}"
-            >View</a
-          >
-        </td>
+<ng-container *ngIf="testRecords && testRecords.length > 0">
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Test Records
+    </caption>
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Date</th>
+        <th scope="col" class="govuk-table__header">Test Type</th>
+        <th scope="col" class="govuk-table__header">Result</th>
+        <th scope="col" class="govuk-table__header"></th>
       </tr>
-    </ng-container>
-  </tbody>
-</table>
+    </thead>
+    <tbody class="govuk-table__body">
+      <ng-container *ngFor="let testRecord of paginatedTestRecords; trackBy: trackByFn">
+        <tr class="govuk-table__row" *ngFor="let test of testRecord.testTypes">
+          <th scope="row" class="govuk-table__header">{{ test.testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}</th>
+          <td class="govuk-table__cell">{{ test.testTypeName }}</td>
+          <td class="govuk-table__cell">{{ test.testResult }}</td>
+          <td class="govuk-table__cell">
+            <a id="view-test-{{ testRecord.testResultId }}" routerLink="test-records/test-result/{{ testRecord.testResultId }}/{{ test.testNumber }}"
+              >View</a
+            >
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <app-pagination
+    tableName="test-history"
+    [numberOfItems]="numberOfRecords"
+    [currentPage]="currentPage"
+    [itemsPerPage]="itemsPerPage"
+  ></app-pagination>
+</ng-container>
 <div *ngIf="vehicleTechRecord" class="govuk-button-group">
   <a class="govuk-button" [routerLink]="'test-records/create-test/type'">Create a test for this vehicle</a>
 </div>

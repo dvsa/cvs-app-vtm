@@ -23,7 +23,7 @@ export class TechRecordHistoryComponent {
   }
 
   get techRecords() {
-    return this.vehicleTechRecord?.techRecord.slice((this.currentPage - 1) * this.itemsPerPage + 1, this.currentPage * this.itemsPerPage) ?? [];
+    return this.vehicleTechRecord?.techRecord.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage) ?? [];
   }
 
   trackByFn(i: number, tr: TechRecordModel) {

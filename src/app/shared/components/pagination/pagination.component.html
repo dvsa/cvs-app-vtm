@@ -1,5 +1,5 @@
 <nav class="govuk-pagination" role="navigation" aria-label="results">
-  <div class="govuk-pagination__prev">
+  <div *ngIf="currentPage > 1" class="govuk-pagination__prev">
     <a
       [id]="tableName + '-prev-page'"
       class="govuk-link govuk-pagination__link"
@@ -43,7 +43,7 @@
     </ng-container>
   </ul>
 
-  <div class="govuk-pagination__next">
+  <div *ngIf="currentPage !== pages.length" class="govuk-pagination__next">
     <a
       [id]="tableName + '-next-page'"
       class="govuk-link govuk-pagination__link"
