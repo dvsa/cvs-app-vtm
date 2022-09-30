@@ -6,7 +6,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { State } from '@store/.';
 import { selectRouteParam } from '@store/router/selectors/router.selectors';
-import { getBySystemNumber, getBySystemNumberFailure, getBySystemNumberSuccess } from '@store/technical-records';
+import { getBySystemNumberAndVin, getBySystemNumberAndVinFailure, getBySystemNumberAndVinSuccess } from '@store/technical-records';
 import { fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsBySystemNumberSuccess } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
@@ -48,7 +48,7 @@ describe('TechRecordViewResolver', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-', { a: getBySystemNumberSuccess, b: fetchTestResultsBySystemNumberSuccess });
+        actions$ = hot('-a-b-', { a: getBySystemNumberAndVinSuccess, b: fetchTestResultsBySystemNumberSuccess });
         expectObservable(resolver.resolve()).toBe('---(c|)', {
           c: true
         });
@@ -61,7 +61,7 @@ describe('TechRecordViewResolver', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-', { a: getBySystemNumberFailure, b: fetchTestResultsBySystemNumberSuccess });
+        actions$ = hot('-a-b-', { a: getBySystemNumberAndVinFailure, b: fetchTestResultsBySystemNumberSuccess });
         expectObservable(resolver.resolve()).toBe('---(c|)', {
           c: false
         });
@@ -74,7 +74,7 @@ describe('TechRecordViewResolver', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-', { a: getBySystemNumberSuccess, b: fetchTestResultsBySystemNumberFailed });
+        actions$ = hot('-a-b-', { a: getBySystemNumberAndVinSuccess, b: fetchTestResultsBySystemNumberFailed });
         expectObservable(resolver.resolve()).toBe('---(c|)', {
           c: false
         });
@@ -87,7 +87,7 @@ describe('TechRecordViewResolver', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       store.overrideSelector(selectRouteParam('systemNumber'), undefined);
       testScheduler.run(({ hot, expectObservable }) => {
-        actions$ = hot('-a-b-', { a: getBySystemNumberFailure, b: fetchTestResultsBySystemNumberFailed });
+        actions$ = hot('-a-b-', { a: getBySystemNumberAndVinFailure, b: fetchTestResultsBySystemNumberFailed });
         expectObservable(resolver.resolve()).toBe('---(c|)', {
           c: false
         });
