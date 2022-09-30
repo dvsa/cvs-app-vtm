@@ -6,7 +6,7 @@ import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weight
 import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
 import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
 import { getAxleWeights as getAxleWeightsSection } from '@forms/templates/general/axle-weights.template';
-import { getGrossVehicleWeightsTemplate as getGrossVehicleWeightsSection } from '@forms/templates/general/gross-vehicle-weights.template'
+import { getGrossVehicleWeightsTemplate as getGrossVehicleWeightsSection } from '@forms/templates/general/gross-vehicle-weights.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
@@ -75,35 +75,33 @@ export class TechRecordSummaryComponent implements OnInit {
   ngOnInit(): void {
     this.vehicleTemplate();
     this.currentBrakeRecord = this.vehicleTechRecord?.brakes;
-    this.calculateVehicleModel()
+    this.calculateVehicleModel();
   }
 
-  constructor(private store:Store) {}
+  constructor(private store: Store) {}
 
   @Input()
-  set editable(isEditable: boolean){
+  set editable(isEditable: boolean) {
     this.isEditable = isEditable;
-    this.calculateVehicleModel()
+    this.calculateVehicleModel();
   }
 
   calculateVehicleModel() {
-    if(this.isEditable) {
+    if (this.isEditable) {
       this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecord!);
       this.vehicleTechRecordCalculated.reasonForCreation = '';
-    }
-    else {
+    } else {
       this.vehicleTechRecordCalculated = this.vehicleTechRecord!;
     }
-    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated}));
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
   // @ts-ignore
   handleFormState(event) {
-    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event)
-    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated!}));
+    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated! }));
     this.formChange.emit();
   }
-
 
   vehicleTemplate(): void {
     switch (this.vehicleTechRecord?.vehicleType) {
@@ -122,7 +120,7 @@ export class TechRecordSummaryComponent implements OnInit {
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
-        this.reasonForCreation = reasonForCreationSection
+        this.reasonForCreation = reasonForCreationSection;
         this.bodyTemplate = getBodySection(VehicleTypes.PSV);
         this.tyresTemplate = getTyresSection(VehicleTypes.PSV);
         this.grossVehicleWeightTemplate = getGrossVehicleWeightsSection(VehicleTypes.PSV);

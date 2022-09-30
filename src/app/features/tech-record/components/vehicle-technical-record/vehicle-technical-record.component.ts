@@ -4,7 +4,7 @@ import { TestResultModel } from '@models/test-results/test-result.model';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -13,6 +13,7 @@ import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.t
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { selectQueryParam } from '@store/router/selectors/router.selectors';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -24,6 +25,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   records$: Observable<TestResultModel[]>;
+  historyTablePageQuery$: Observable<number>;
 
   isCurrent = false;
   isEditable = false;
@@ -37,11 +39,13 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     private technicalRecordService: TechnicalRecordService
   ) {
     this.records$ = testRecordService.testRecords$;
+    this.historyTablePageQuery$ = store.select(selectQueryParam('tech-history-page')).pipe(map(paramValue => Number.parseInt(paramValue ?? '1', 10)));
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!)
-      .pipe(tap(viewableTechRecord => this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT));
+    this.currentTechRecord$ = this.technicalRecordService
+      .viewableTechRecord$(this.vehicleTechRecord!)
+      .pipe(tap(viewableTechRecord => (this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT)));
   }
 
   ngAfterViewInit(): void {
@@ -73,9 +77,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
     forms.forEach(form => DynamicFormService.updateValidity(form, errors));
 
-    errors.length
-      ? this.errorService.setErrors(errors)
-      : this.errorService.clearErrors();
+    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
 
     return forms.some(form => form.invalid);
   }

@@ -58,6 +58,7 @@
     <app-tech-record-history
       [currentRecord]="(currentTechRecord$ | async) || undefined"
       [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [currentPage]="(historyTablePageQuery$ | async) || 1"
     ></app-tech-record-history>
     <app-test-record-summary
       *appRoleRequired="roles.TestResultView"
