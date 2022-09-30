@@ -1,18 +1,27 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
-export const NotesTemplate: FormNode = {
+export const PsvNotes: FormNode = {
   name: 'notesSection',
   label: 'Notes',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
-      name: 'notes',
+      name: 'remarks',
+      label: 'Notes',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.FULLWIDTH,
+      viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [{ name: ValidatorNames.MaxLength, args: 800 }]
+    },
+    {
+      name: 'dispensations',
+      type: FormNodeTypes.CONTROL,
+      label: 'Dispensations',
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXTAREA,
+      validators: [{ name: ValidatorNames.MaxLength, args: 160 }]
     }
   ]
 };
