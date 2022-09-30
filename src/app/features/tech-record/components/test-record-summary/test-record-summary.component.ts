@@ -1,4 +1,3 @@
-import { conditionallyCreateMapObjectLiteral } from '@angular/compiler/src/render3/view/util';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
