@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
@@ -10,7 +11,8 @@ import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-defects[defects][template]',
-  templateUrl: './defects.component.html'
+  templateUrl: './defects.component.html',
+  styleUrls: ['./defects.component.scss']
 })
 export class DefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
@@ -25,7 +27,7 @@ export class DefectsComponent implements OnInit, OnDestroy {
   private _defectsForm?: CustomFormArray;
   defaultNullOrEmpty: any;
 
-  constructor(private dfs: DynamicFormService) {}
+  constructor(private dfs: DynamicFormService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
@@ -53,6 +55,13 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return this.defectsForm.controls.map(control => {
       const formGroup = control as CustomFormGroup;
       return formGroup.getCleanValue(formGroup) as TestResultDefect;
+    });
+  }
+
+  handleClick(index: number): void {
+    this.router.navigate([`defect/${index}`], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve'
     });
   }
 
