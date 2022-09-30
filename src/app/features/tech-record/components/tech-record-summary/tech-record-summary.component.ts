@@ -19,7 +19,7 @@ import { getTypeApprovalSection } from '@forms/templates/general/approval-type.t
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
 import { getBodyTemplate as getBodySection } from '@forms/templates/general/body.template';
 import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
-import { getNotesTemplate as getNotesSection } from '@forms/templates/general/notes.template';
+import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
@@ -31,6 +31,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Store } from '@ngrx/store';
 import { updateEditingTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
+import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -120,7 +121,7 @@ export class TechRecordSummaryComponent implements OnInit {
         );
         this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
-        this.notesTemplate = getNotesSection(VehicleTypes.PSV);
+        this.notesTemplate = PsvNotes;
         this.reasonForCreation = reasonForCreationSection
         this.bodyTemplate = getBodySection(VehicleTypes.PSV);
         this.tyresTemplate = getTyresSection(VehicleTypes.PSV);
@@ -149,9 +150,10 @@ export class TechRecordSummaryComponent implements OnInit {
           'frontAxleTo5thWheelCouplingMax'
         );
         this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
-        this.notesTemplate = getNotesSection(VehicleTypes.HGV);
+        this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
+        this.reasonForCreation = reasonForCreationSection;
         break;
       }
       case 'trl': {
@@ -178,11 +180,12 @@ export class TechRecordSummaryComponent implements OnInit {
           'couplingCenterToRearTrlMin',
           'couplingCenterToRearTrlMax'
         );
-        this.notesTemplate = getNotesSection(VehicleTypes.TRL);
+        this.notesTemplate = NotesTemplate;
         this.documentsTemplate = DocumentsTemplate;
         this.platesTemplate = PlatesTemplate;
         this.trlAuthIntoServiceTemplate = TrlAuthIntoServiceTemplate;
         this.trlManufacturerTemplate = TrlManufacturerTemplate;
+        this.reasonForCreation = reasonForCreationSection;
         break;
       }
     }
