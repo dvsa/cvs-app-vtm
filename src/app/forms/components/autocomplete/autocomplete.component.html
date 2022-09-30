@@ -1,5 +1,5 @@
-<div>
-  <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m">{{ label }}</label>
+<div class='autocomplete__wrapper'>
+  <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m">{{ label }}
   <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
@@ -7,4 +7,5 @@
     <option value=""></option>
     <option *ngFor="let option of options" [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
   </select>
+  </label>
 </div>
