@@ -21,33 +21,39 @@
               <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
               <ng-container formGroupName="weights">
                 <td class="govuk-table__cell">
-                  <app-text-input name="foo" formControlName="kerbWeight"></app-text-input>
+                  <app-number-input [name]="'kerbWeight' + axle.value.axleNumber" formControlName="kerbWeight"></app-number-input>
                 </td>
-                <td class="govuk-table__cell"><app-text-input name="foo" formControlName="ladenWeight"></app-text-input></td>
-                <td class="govuk-table__cell"><app-text-input name="foo" formControlName="gbWeight"></app-text-input></td>
-                <td class="govuk-table__cell"><app-text-input name="foo" formControlName="designWeight"></app-text-input></td>
+                <td class="govuk-table__cell">
+                  <app-number-input [name]="'ladenWeight' + axle.value.axleNumber" formControlName="ladenWeight"></app-number-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <app-number-input [name]="'gbWeight' + axle.value.axleNumber" formControlName="gbWeight"></app-number-input>
+                </td>
+                <td class="govuk-table__cell">
+                  <app-number-input [name]="'designWeight' + axle.value.axleNumber" formControlName="designWeight"></app-number-input>
+                </td>
               </ng-container>
             </ng-container>
           </tr>
         </ng-container>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">GROSS</th>
-          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossKerbWeight"></app-text-input></td>
-          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossLadenWeight"></app-text-input></td>
-          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossGbWeight"></app-text-input></td>
-          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossDesignWeight"></app-text-input></td>
+          <td class="govuk-table__cell"><app-number-input name="grossKerbWeight" formControlName="grossKerbWeight"></app-number-input></td>
+          <td class="govuk-table__cell"><app-number-input name="grossLadenWeight" formControlName="grossLadenWeight"></app-number-input></td>
+          <td class="govuk-table__cell"><app-number-input name="grossGbWeight" formControlName="grossGbWeight"></app-number-input></td>
+          <td class="govuk-table__cell"><app-number-input name="grossDesignWeight" formControlName="grossDesignWeight"></app-number-input></td>
         </tr>
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">TRAIN</th>
           <td class="govuk-table__cell"></td>
           <td class="govuk-table__cell"></td>
-          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="maxTrainGbWeight"></app-text-input></td>
-          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="trainDesignWeight"></app-text-input></td>
+          <td class="govuk-table__cell"><app-number-input name="maxTrainGbWeight" formControlName="maxTrainGbWeight"></app-number-input></td>
+          <td class="govuk-table__cell"><app-number-input name="trainDesignWeight" formControlName="trainDesignWeight"></app-number-input></td>
         </tr>
       </tbody>
     </table>
 
-    <app-text-input name="foo" formControlName="unladenWeight"></app-text-input>
+    <app-text-input name="unladenWeight" formControlName="unladenWeight"></app-text-input>
   </form>
 </ng-container>
 
