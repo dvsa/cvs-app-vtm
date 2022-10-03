@@ -4,7 +4,6 @@ export const TrlManufacturerTemplate: FormNode = {
   name: 'manufacturerSection',
   label: 'Manufacturer',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'manufacturerDetails',

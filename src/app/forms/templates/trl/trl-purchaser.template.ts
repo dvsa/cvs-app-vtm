@@ -4,7 +4,6 @@ export const TrlPurchasers: FormNode = {
   name: 'purchaserSection',
   type: FormNodeTypes.GROUP,
   label: 'Purchasers',
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'purchaserDetails',

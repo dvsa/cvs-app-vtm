@@ -4,7 +4,6 @@ export const PsvTrainWeight: FormNode = {
   name: 'trainWeight',
   label: 'Train Weight',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'maxTrainGbWeight',

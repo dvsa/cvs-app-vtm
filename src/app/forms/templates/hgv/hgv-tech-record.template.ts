@@ -4,7 +4,6 @@ export const HgvTechRecord: FormNode = {
   name: 'techRecordSummary',
   type: FormNodeTypes.GROUP,
   label: 'Vehicle Summary',
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'vehicleType',

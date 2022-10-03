@@ -7,6 +7,5 @@ export const HgvGrossTrainWeight: FormNode = {
   label: 'Gross Train Weight',
   value: '',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: generateWeights(VehicleTypes.HGV, 'train')
 };

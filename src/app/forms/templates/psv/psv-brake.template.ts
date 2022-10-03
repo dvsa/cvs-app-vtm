@@ -4,7 +4,6 @@ export const PsvBrakeSection: FormNode = {
   name: 'brakes',
   type: FormNodeTypes.GROUP,
   label: 'Brakes',
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
         {
             name: 'brakeCode',

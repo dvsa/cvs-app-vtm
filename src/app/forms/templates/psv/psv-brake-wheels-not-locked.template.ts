@@ -5,7 +5,6 @@ export const PsvBrakeSectionWheelsNotLocked: FormNode = {
     name: 'brakes',
     type: FormNodeTypes.GROUP,
     label: 'Brake force wheels not locked',
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
         {
             name: 'brakeForceWheelsNotLocked',

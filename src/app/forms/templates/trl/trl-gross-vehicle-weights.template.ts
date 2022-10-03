@@ -7,6 +7,5 @@ export const TrlGrossVehicleWeightTemplate: FormNode = {
   label: 'Gross Vehicle Weight',
   value: '',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: generateWeights(VehicleTypes.TRL, 'gross')
 };

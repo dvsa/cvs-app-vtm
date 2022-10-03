@@ -6,7 +6,6 @@ export const TrlAxleWeightsTemplate: FormNode = {
   name: 'axleWeightsSection',
   label: 'Axle Weights',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'axles',

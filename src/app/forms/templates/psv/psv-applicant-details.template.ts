@@ -5,7 +5,6 @@ export const PsvApplicantDetails: FormNode = {
     name: 'techRecord',
     type: FormNodeTypes.GROUP,
     label: 'Last Applicant',
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
         {
             name: 'applicantDetails',

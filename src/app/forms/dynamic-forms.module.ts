@@ -23,6 +23,8 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { FocusNextDirective } from './components/date/focus-next.directive';
+import { DimensionsComponent } from './components/dimensions/dimensions.component';
+import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { FocusNextDirective } from './components/date/focus-next.directive';
     FieldErrorMessageComponent,
     DefectSelectComponent,
     FocusNextDirective,
-    TruncatePipe
+    TruncatePipe,
+    DimensionsComponent,
+    NumberInputWithSuffixComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -64,7 +68,8 @@ import { FocusNextDirective } from './components/date/focus-next.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    DefectSelectComponent
+    DefectSelectComponent,
+    DimensionsComponent
   ]
 })
 export class DynamicFormsModule {}

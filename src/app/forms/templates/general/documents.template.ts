@@ -4,7 +4,6 @@ export const DocumentsTemplate: FormNode = {
   name: 'documentsSection',
   label: 'Documents',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'microfilm',

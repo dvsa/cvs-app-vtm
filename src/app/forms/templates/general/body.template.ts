@@ -5,7 +5,6 @@ export function getBodyTemplate(isPsv: boolean = false): FormNode {
     name: 'body',
     label: 'Body',
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: []
   };
   if(isPsv) {

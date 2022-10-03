@@ -1,0 +1,9 @@
+:host, .dimensions {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0 1rem;
+}
+
+.dimension {
+  min-width: 245px;
+}

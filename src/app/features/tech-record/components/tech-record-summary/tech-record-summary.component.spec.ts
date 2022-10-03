@@ -44,7 +44,7 @@ describe('TechRecordSummaryComponent', () => {
   describe( 'TechRecordSummaryComponent View', () => {
     it('should show PSV record found', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -52,7 +52,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show PSV record found without dimensions', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
@@ -61,7 +61,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -69,7 +69,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found without dimensions', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
@@ -78,7 +78,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -86,7 +86,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found without dimensions', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
@@ -97,7 +97,7 @@ describe('TechRecordSummaryComponent', () => {
   describe( 'TechRecordSummaryComponent Amend', () => {
     it('should make reason for change null in editMode', () => {
       component.isEditable = true;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();

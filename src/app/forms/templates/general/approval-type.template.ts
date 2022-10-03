@@ -5,7 +5,6 @@ export function getTypeApprovalSection(includeCoifSection: boolean = false): For
     name: 'approvalSection',
     label: 'Type approval',
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: 'approvalType',

@@ -42,7 +42,6 @@ export function getTyresSection(includeSpeeds: boolean = false): FormNode {
     name: 'tyreSection',
     type: FormNodeTypes.GROUP,
     label: 'Tyres',
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: 'axles',

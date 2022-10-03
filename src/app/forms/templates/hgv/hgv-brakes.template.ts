@@ -4,7 +4,6 @@ export const Brakes: FormNode = {
   name: '',
   label: 'Brakes',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'brakes',
