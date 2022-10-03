@@ -21,7 +21,7 @@
         <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
           <a
             id="view-test-{{ vehicleTechRecord.vin }}"
-            href="/tech-records/{{ vehicleTechRecord.systemNumber }}/historic/{{ convertToUnix(techRecord.createdAt) }}"
+            href="/tech-records/{{ vehicleTechRecord.systemNumber }}/{{ vehicleTechRecord.vin }}/historic/{{ convertToUnix(techRecord.createdAt) }}"
           >
             View
           </a>
