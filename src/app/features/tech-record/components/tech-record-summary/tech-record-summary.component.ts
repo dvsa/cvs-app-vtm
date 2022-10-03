@@ -4,7 +4,7 @@ import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.templa
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
 import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
-import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
+import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { getAxleWeights as getAxleWeightsSection } from '@forms/templates/general/axle-weights.template';
 import { getGrossVehicleWeightsTemplate as getGrossVehicleWeightsSection } from '@forms/templates/general/gross-vehicle-weights.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
@@ -117,7 +117,6 @@ export class TechRecordSummaryComponent implements OnInit {
           this.vehicleTechRecord.noOfAxles,
           this.vehicleTechRecord.dimensions?.axleSpacing
         );
-        this.applicantDetailsTemplate = PsvApplicantDetails;
         this.documentsTemplate = DocumentsTemplate;
         this.notesTemplate = PsvNotes;
         this.reasonForCreation = reasonForCreationSection;
@@ -142,6 +141,7 @@ export class TechRecordSummaryComponent implements OnInit {
           this.vehicleTechRecord.noOfAxles,
           this.vehicleTechRecord.dimensions?.axleSpacing
         );
+        this.applicantDetailsTemplate = ApplicantDetails;
         this.firstMinMaxTemplate = getDimensionsMinMaxSection(
           'Front of vehicle to 5th wheel coupling',
           'frontAxleTo5thWheelCouplingMin',
@@ -168,6 +168,7 @@ export class TechRecordSummaryComponent implements OnInit {
           this.vehicleTechRecord.noOfAxles,
           this.vehicleTechRecord.dimensions?.axleSpacing
         );
+        this.applicantDetailsTemplate = ApplicantDetails;
         this.firstMinMaxTemplate = getDimensionsMinMaxSection(
           'Coupling center to rear axle',
           'couplingCenterToRearAxleMin',
