@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
@@ -9,7 +9,7 @@ import { debounceTime, Subscription } from 'rxjs';
   selector: 'app-weights',
   templateUrl: './weights.component.html'
 })
-export class WeightsComponent implements OnInit, OnDestroy {
+export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isEditable = false;
   @Input() template: FormNode | undefined;
   @Input() data: Partial<TechRecordModel> = {};
@@ -26,6 +26,10 @@ export class WeightsComponent implements OnInit, OnDestroy {
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
       this.formChange.emit(event);
     });
+  }
+
+  ngOnChanges() {
+    this.form.patchValue(this.data, { emitEvent: false });
   }
 
   ngOnDestroy(): void {

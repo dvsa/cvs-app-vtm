@@ -40,8 +40,9 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!)
-      .pipe(tap(viewableTechRecord => this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT));
+    this.currentTechRecord$ = this.technicalRecordService
+      .viewableTechRecord$(this.vehicleTechRecord!)
+      .pipe(tap(viewableTechRecord => (this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT)));
   }
 
   ngAfterViewInit(): void {
@@ -73,15 +74,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
     forms.forEach(form => DynamicFormService.updateValidity(form, errors));
 
-    errors.length
-      ? this.errorService.setErrors(errors)
-      : this.errorService.clearErrors();
+    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
 
     return forms.some(form => form.invalid);
   }
 
   handleFormState() {
-    const form = this.dynamicForm.sections.map(section => section.form);
+    let form = this.dynamicForm.sections.map(section => section.form);
+    form.push(this.dynamicForm.weights?.form!);
     this.isDirty = this.isAnyFormDirty(form);
     this.isInvalid = this.isAnyFormInvalid(form);
   }
