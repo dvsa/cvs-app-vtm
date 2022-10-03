@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
@@ -10,11 +10,21 @@ import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 export class TestRecordSummaryComponent {
   @Input() testRecords: TestResultModel[] = [];
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  @Input() currentPage: number = 1;
 
+  currentPage: number = 1;
   itemsPerPage = 5;
+  pageStart = 0;
+  pageEnd = 5;
 
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  handlePaginationChange({ currentPage, itemsPerPage, start, end }: { currentPage: number; itemsPerPage: number; start: number; end: number }) {
+    this.currentPage = currentPage;
+    this.itemsPerPage = itemsPerPage;
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.markForCheck();
+  }
 
   getTestTypeName(testResult: TestResultModel) {
     return testResult.testTypes.map(t => t.testTypeName).join(',');
@@ -29,7 +39,7 @@ export class TestRecordSummaryComponent {
   }
 
   get paginatedTestRecords() {
-    return this.testRecords.slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage) ?? [];
+    return this.testRecords.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
   trackByFn(i: number, t: TestResultModel) {

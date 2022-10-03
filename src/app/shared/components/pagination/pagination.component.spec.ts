@@ -60,7 +60,7 @@ describe('PaginationComponent', () => {
     [5, 10]
   ])('should return an array length of %d when items per page is %d', (arrayLenth: number, itemsPerPage: number) => {
     hostComponent.numberOfItems = 50;
-    hostComponent.itemsPerPage = itemsPerPage;
+    component.itemsPerPage = itemsPerPage;
     fixture.detectChanges();
     expect(component.pages.length).toBe(arrayLenth);
   });
@@ -85,6 +85,25 @@ describe('PaginationComponent', () => {
 
       expect(component.visiblePages).toEqual(visiblePages);
     })
+  );
+
+  it.each([
+    { currentPage: 1, itemsPerPage: 5, start: 0, end: 5 },
+    { currentPage: 2, itemsPerPage: 5, start: 5, end: 10 },
+    { currentPage: 3, itemsPerPage: 15, start: 30, end: 45 }
+  ])(
+    'should emit %p',
+    ({ currentPage, itemsPerPage, start, end }: { currentPage: number; itemsPerPage: number; start: number; end: number }, done: any) => {
+      component.paginationOptions.subscribe(opts => {
+        expect(opts.currentPage).toBe(currentPage);
+        expect(opts.start).toBe(start);
+        expect(opts.end).toBe(end);
+        done();
+      });
+
+      component.itemsPerPage = itemsPerPage;
+      component.currentPageSubject.next(currentPage);
+    }
   );
 
   describe('nextPage', () => {

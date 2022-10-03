@@ -1,19 +1,18 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { map, Observable, tap } from 'rxjs';
-import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { Store } from '@ngrx/store';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
-import { selectQueryParam } from '@store/router/selectors/router.selectors';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { Observable, tap } from 'rxjs';
+import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -25,8 +24,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   records$: Observable<TestResultModel[]>;
-  historyTablePageQuery$: Observable<number>;
-  testTablePageQuery$: Observable<number>;
 
   isCurrent = false;
   isEditable = false;
@@ -40,8 +37,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     private technicalRecordService: TechnicalRecordService
   ) {
     this.records$ = testRecordService.testRecords$;
-    this.historyTablePageQuery$ = store.select(selectQueryParam('tech-history-page')).pipe(map(paramValue => Number.parseInt(paramValue ?? '1', 10)));
-    this.testTablePageQuery$ = store.select(selectQueryParam('test-history-page')).pipe(map(paramValue => Number.parseInt(paramValue ?? '1', 10)));
   }
 
   ngOnInit(): void {

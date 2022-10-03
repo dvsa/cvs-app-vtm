@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pagination[tableName]',
@@ -6,13 +8,44 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   styleUrls: ['./pagination.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaginationComponent {
+export class PaginationComponent implements OnInit, OnDestroy {
   @Input() tableName!: string;
-  @Input() itemsPerPage: number = 5;
   @Input() numberOfItems: number = 0;
-  @Input() currentPage: number = 1;
+  @Output() paginationOptions = new EventEmitter<{ currentPage: number; itemsPerPage: number; start: number; end: number }>();
 
-  constructor() {}
+  itemsPerPage: number = 5; // this can be extended later to be set via a dom control
+  currentPageSubject = new BehaviorSubject<number>(1);
+
+  private destroy$ = new Subject<void>();
+
+  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    this.route.queryParams
+      .pipe(
+        takeUntil(this.destroy$),
+        map(params => Number.parseInt(params[`${this.tableName}-page`] ?? '1', 10))
+      )
+      .subscribe({
+        next: page => {
+          this.currentPageSubject.next(page);
+          this.cdr.markForCheck();
+        }
+      });
+
+    this.currentPageSubject.pipe(takeUntil(this.destroy$)).subscribe({
+      next: page => {
+        const [start, end] = [(page - 1) * this.itemsPerPage, page * this.itemsPerPage];
+        this.paginationOptions.emit({ currentPage: page, itemsPerPage: this.itemsPerPage, start, end });
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   pageQuery(page: number) {
     return { [`${this.tableName}-page`]: page };
@@ -26,6 +59,10 @@ export class PaginationComponent {
 
   trackByFn(index: number, page: number) {
     return page || index;
+  }
+
+  get currentPage() {
+    return this.currentPageSubject.value;
   }
 
   get pages() {

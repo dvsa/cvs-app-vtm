@@ -31,10 +31,5 @@
       </tr>
     </tbody>
   </table>
-  <app-pagination
-    tableName="tech-history"
-    [numberOfItems]="numberOfRecords"
-    [currentPage]="currentPage"
-    [itemsPerPage]="itemsPerPage"
-  ></app-pagination>
+  <app-pagination tableName="tech-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
 </ng-container>

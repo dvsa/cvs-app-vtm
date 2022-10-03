@@ -30,12 +30,7 @@
       </ng-container>
     </tbody>
   </table>
-  <app-pagination
-    tableName="test-history"
-    [numberOfItems]="numberOfRecords"
-    [currentPage]="currentPage"
-    [itemsPerPage]="itemsPerPage"
-  ></app-pagination>
+  <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
 </ng-container>
 <div *ngIf="vehicleTechRecord" class="govuk-button-group">
   <a class="govuk-button" [routerLink]="'test-records/create-test/type'">Create a test for this vehicle</a>

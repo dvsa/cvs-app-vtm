@@ -25,7 +25,7 @@
 
   <ul class="govuk-pagination__list">
     <ng-container *ngFor="let page of visiblePages; let i = index; trackBy: trackByFn">
-      <li class="govuk-pagination__item" [ngClass]="{ 'govuk-pagination__item--current': rla.isActive }">
+      <li class="govuk-pagination__item" [ngClass]="{ 'govuk-pagination__item--current': currentPage === page }">
         <a
           [id]="tableName + '-page-' + page"
           class="govuk-link govuk-pagination__link"
