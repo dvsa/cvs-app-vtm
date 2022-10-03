@@ -78,6 +78,7 @@ export class DefectComponent implements OnInit, OnDestroy {
           this.index = Number(defectIndex!);
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
+          !this.defect && this.navigateBack();
         } else if (defectRef) {
           this.store
             .select(selectByDeficiencyRef(defectRef, this.vehicleType))
@@ -88,15 +89,16 @@ export class DefectComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.store
-      .select(selectByImNumber(this.defect?.imNumber || NaN, this.vehicleType))
-      .pipe(
-        takeUntil(this.onDestroy$),
-        filter(d => !!d)
-      )
-      .subscribe(defectsTaxonomy => {
-        this.initializeInfoDictionary(defectsTaxonomy);
-      });
+    this.defect &&
+      this.store
+        .select(selectByImNumber(this.defect?.imNumber || NaN, this.vehicleType))
+        .pipe(
+          takeUntil(this.onDestroy$),
+          filter(d => !!d)
+        )
+        .subscribe(defectsTaxonomy => {
+          this.initializeInfoDictionary(defectsTaxonomy);
+        });
   }
 
   ngOnDestroy(): void {

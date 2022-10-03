@@ -12,8 +12,8 @@ export const technicalRecordsLoadingState = createSelector(getVehicleTechRecordS
 export const selectVehicleTechnicalRecordsBySystemNumber = createSelector(
   vehicleTechRecords,
   selectRouteNestedParams,
-  (techRecords, { systemNumber }) => {
-    const foundRecord = techRecords.find(record => record.systemNumber === systemNumber);
+  (techRecords, { systemNumber, vin }) => {
+    const foundRecord = techRecords.find(record => record.systemNumber === systemNumber && record.vin === vin);
 
     const sortByDate = function (a: Date, b: Date): number {
       return new Date(b).getTime() - new Date(a).getTime();

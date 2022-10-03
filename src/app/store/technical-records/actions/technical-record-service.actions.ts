@@ -21,9 +21,9 @@ export const getByTrailerId = createAction(`${prefix} getByTrailerId`, props<{ t
 export const getByTrailerIdSuccess = createOutcomeAction('getByTrailerId', true);
 export const getByTrailerIdFailure = createOutcomeAction('getByTrailerId');
 
-export const getBySystemNumber = createAction(`${prefix} getBySystemNumber`, props<{ systemNumber: string }>());
-export const getBySystemNumberSuccess = createOutcomeAction('getBySystemNumber', true);
-export const getBySystemNumberFailure = createOutcomeAction('getBySystemNumber');
+export const getBySystemNumberAndVin = createAction(`${prefix} getBySystemNumberAndVin`, props<{ systemNumber: string, vin: string }>());
+export const getBySystemNumberAndVinSuccess = createOutcomeAction('getBySystemNumberAndVin', true);
+export const getBySystemNumberAndVinFailure = createOutcomeAction('getBySystemNumberAndVin');
 
 export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }>());
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
