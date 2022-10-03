@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
+import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
 import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
@@ -158,7 +158,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  8 */ getGrossVehicleWeightsSection(VehicleTypes.TRL),
       /*  9 */ getAxleWeightsSection(VehicleTypes.TRL),
       /* 10 */ getTyresSection(VehicleTypes.TRL),
-      /* 11 */ BrakesTemplate,
+      /* 11 */ TrlBrakes,
       /* 12 */ TrlPurchasers,
       /* 13 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
       /* 14 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),

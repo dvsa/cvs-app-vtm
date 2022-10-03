@@ -10,15 +10,6 @@
         ></app-dimensions>
 
         <app-dynamic-form-group
-          *ngSwitchCase="'brakes'"
-          [edit]="isEditable"
-          [template]="section"
-          [data]="vehicleTechRecordCalculated.brakes"
-          (formChange)="handleFormState($event)"
-          class="govuk-summary-list"
-        ></app-dynamic-form-group>
-
-        <app-dynamic-form-group
           *ngSwitchDefault
           [edit]="isEditable"
           [template]="section"
