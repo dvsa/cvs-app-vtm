@@ -4,14 +4,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialAppState, State } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { updateEditingTechRecord } from '@store/technical-records';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
   let fixture: ComponentFixture<TechRecordSummaryComponent>;
+  let store: MockStore<State>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,6 +25,7 @@ describe('TechRecordSummaryComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TechRecordSummaryComponent);
+    store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
   });
 
@@ -39,10 +42,18 @@ describe('TechRecordSummaryComponent', () => {
   }
 
   describe( 'TechRecordSummaryComponent View', () => {
-
     it('should show PSV record found', () => {
       component.isEditable = false
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+
+    it('should show PSV record found without dimensions', () => {
+      component.isEditable = false
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -56,9 +67,27 @@ describe('TechRecordSummaryComponent', () => {
       checkHeadingAndForm();
     });
 
+    it('should show HGV record found without dimensions', () => {
+      component.isEditable = false
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+      component.vehicleTechRecord!.dimensions = undefined;
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+
     it('should show TRL record found', () => {
       component.isEditable = false
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      fixture.detectChanges();
+
+      checkHeadingAndForm();
+    });
+
+    it('should show TRL record found without dimensions', () => {
+      component.isEditable = false
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -74,5 +103,14 @@ describe('TechRecordSummaryComponent', () => {
       checkHeadingAndForm();
     });
   });
-});
 
+  describe('handleFormState', () => {
+    it('should dispatch updateEditingTechRecord', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      component.handleFormState({});
+
+      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({techRecord: component.vehicleTechRecordCalculated!}));
+    });
+  });
+});

@@ -1,13 +1,7 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import {
-  createProvisionalTechRecord,
-  createProvisionalTechRecordSuccess,
-  updateEditingTechRecordCancel,
-  updateTechRecords,
-  updateTechRecordsSuccess
-} from '@store/technical-records';
+import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
@@ -22,41 +16,13 @@ export class EditTechRecordButtonComponent implements OnInit {
   @Input() viewableTechRecord?: TechRecordModel;
   @Input() editableState = false;
   @Input() isDirty: boolean = false;
-  @Input() isInvalid: boolean = true;
-  isArchived?: boolean;
-  isCurrent?: boolean;
-  hasProvisional?: boolean;
 
   @Output() editableStateChange = new EventEmitter<boolean>();
   @Output() submitCheckFormValidity = new EventEmitter();
 
-  constructor(private store: Store, private actions$: Actions, private router: Router, private errorService: GlobalErrorService) {}
+  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store) {}
 
   ngOnInit() {
-    this.isArchived = this.viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
-    this.isCurrent = this.viewableTechRecord?.statusCode === StatusCodes.CURRENT;
-    this.hasProvisional = this.vehicleTechRecord?.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
-    this.watchForEditSuccess();
-  }
-
-  cancelAmend() {
-    if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
-      this.toggleEditMode();
-    }
-    this.errorService.clearErrors();
-    this.store.dispatch(updateEditingTechRecordCancel());
-  }
-
-  toggleEditMode() {
-    this.editableState = !this.editableState;
-    this.editableStateChange.emit(this.editableState);
-  }
-
-  get systemNumber() {
-    return this.vehicleTechRecord!.systemNumber;
-  }
-
-  watchForEditSuccess() {
     this.actions$
       .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
       .subscribe(action =>
@@ -66,23 +32,31 @@ export class EditTechRecordButtonComponent implements OnInit {
       );
   }
 
+  get isArchived(): boolean {
+    return this.viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+  }
+
   getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
     return Math.max(...record.techRecord.map(record => new Date(record.createdAt).getTime()));
   }
 
-  submitTechRecord() {
-    this.submitCheckFormValidity.emit((formValid: boolean) => {
-      if (!formValid) {
-        return;
-      }
-      if (this.hasProvisional && this.isCurrent) {
-        this.store.dispatch(updateTechRecords({ systemNumber: this.systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
-      } else if (this.hasProvisional) {
-        this.store.dispatch(updateTechRecords({ systemNumber: this.systemNumber }));
-      } else {
-        this.store.dispatch(createProvisionalTechRecord({ systemNumber: this.systemNumber }));
-      }
+  toggleEditMode() {
+    this.editableState = !this.editableState;
+    this.editableStateChange.emit(this.editableState);
+  }
+
+  cancelAmend() {
+    if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
-    });
+    }
+
+    this.errorService.clearErrors();
+    this.store.dispatch(updateEditingTechRecordCancel());
+  }
+
+  submitTechRecord() {
+    this.submitCheckFormValidity.emit();
+
+    this.toggleEditMode();
   }
 }

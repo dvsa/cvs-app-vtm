@@ -12,12 +12,12 @@ import { EditTechRecordButtonComponent } from './components/edit-tech-record-but
 
 @NgModule({
   declarations: [
+    EditTechRecordButtonComponent,
     TechRecordComponent,
-    TechRecordSummaryComponent,
-    VehicleTechnicalRecordComponent,
-    TestRecordSummaryComponent,
     TechRecordHistoryComponent,
-    EditTechRecordButtonComponent
+    TechRecordSummaryComponent,
+    TestRecordSummaryComponent,
+    VehicleTechnicalRecordComponent,
   ],
   imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule],
   exports: [EditTechRecordButtonComponent]

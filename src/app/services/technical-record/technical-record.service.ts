@@ -7,7 +7,6 @@ import {
   editableTechRecord,
   getByAll,
   getByPartialVin,
-  getBySystemNumber,
   getByTrailerId,
   getByVin,
   getByVrm,
@@ -122,9 +121,6 @@ export class TechnicalRecordService {
         break;
       case SEARCH_TYPES.TRAILER_ID:
         this.store.dispatch(getByTrailerId({ [type]: term }));
-        break;
-      case SEARCH_TYPES.SYSTEM_NUMBER:
-        this.store.dispatch(getBySystemNumber({ [type]: term }));
         break;
       case SEARCH_TYPES.ALL:
         this.store.dispatch(getByAll({ [type]: term }));
