@@ -53,8 +53,10 @@
   ></app-dynamic-form-group>
   <app-dynamic-form-group
     *ngIf="applicantDetailsTemplate"
+    [edit]="isEditable"
     [template]="applicantDetailsTemplate"
     [data]="vehicleTechRecordCalculated"
+    (formChange)="handleFormState($event)"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
   <app-dynamic-form-group
