@@ -51,10 +51,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesGroup3And4And8: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: ContingencyTestSectionGroup3And4And8,
-      seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
