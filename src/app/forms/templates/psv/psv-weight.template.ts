@@ -24,8 +24,7 @@ export const PsvWeight: FormNode = {
       name: 'grossSection',
       label: 'Gross vehicle weight',
       value: '',
-      type: FormNodeTypes.SECTION,
-      validators: requiredValidation
+      type: FormNodeTypes.SECTION
     },
     {
       name: 'grossKerbWeight',
