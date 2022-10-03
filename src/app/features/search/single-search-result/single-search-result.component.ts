@@ -36,7 +36,7 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
           })
       );
 
-    this.template = createSingleSearchResult(this.vehicleTechRecord.systemNumber);
+    this.template = createSingleSearchResult(this.vehicleTechRecord.systemNumber, this.vehicleTechRecord.vin);
   }
 
   ngOnDestroy(): void {

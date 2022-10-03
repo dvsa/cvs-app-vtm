@@ -71,87 +71,89 @@
 </ng-template>
 
 <ng-template #editDefect>
-  <h1 class="govuk-heading-l">Defect details</h1>
-  <div class="govuk-grid-row govuk-!-margin-bottom-5">
-    <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
-      <h2 class="govuk-heading-s">
-        {{ defect!.imNumber }}.{{ defect!.itemNumber }} {{ defect!.deficiencyId ? '(' + defect!.deficiencyId + ')' : '' }}
-        {{ defect!.deficiencySubId ? '(' + defect!.deficiencySubId + ')' : '' }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}
-      </h2>
-      <app-tag [type]="categoryColor(defect!.deficiencyCategory)">{{ defect!.deficiencyCategory }}</app-tag>
-      <app-tag *ngIf="defect!.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
+  <div *ngIf="defect || !index">
+    <h1 class="govuk-heading-l">Defect details</h1>
+    <div class="govuk-grid-row govuk-!-margin-bottom-5">
+      <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-m">{{ defect!.imDescription }}</span>
+        <h2 class="govuk-heading-s">
+          {{ defect!.imNumber }}.{{ defect!.itemNumber }} {{ defect!.deficiencyId ? '(' + defect!.deficiencyId + ')' : '' }}
+          {{ defect!.deficiencySubId ? '(' + defect!.deficiencySubId + ')' : '' }} - {{ defect!.itemDescription }} {{ defect!.deficiencyText }}
+        </h2>
+        <app-tag [type]="categoryColor(defect!.deficiencyCategory)">{{ defect!.deficiencyCategory }}</app-tag>
+        <app-tag *ngIf="defect!.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
+      </div>
     </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h3 class="govuk-heading-m">Defect details</h3>
-      <p class="govuk-hint">Fill any defect details that apply</p>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h3 class="govuk-heading-m">Defect details</h3>
+        <p class="govuk-hint">Fill any defect details that apply</p>
+      </div>
     </div>
-  </div>
-  <ng-container [formGroup]="form">
-    <ng-container formGroupName="additionalInformation">
-      <ng-container *ngIf="!isAdvisory" formGroupName="location">
-        <ng-container *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn">
-          <app-radio-group
-            *ngIf="item.value.length <= 4"
-            [name]="item.key + index"
-            [label]="pascalCase(item.key)"
-            [formControlName]="item.key"
-            [options]="item.value"
-            [inline]="item.value.length <= 2"
-          ></app-radio-group>
+    <ng-container [formGroup]="form">
+      <ng-container formGroupName="additionalInformation">
+        <ng-container *ngIf="!isAdvisory" formGroupName="location">
+          <ng-container *ngFor="let item of infoDictionary | keyvalue; trackBy: trackByFn">
+            <app-radio-group
+              *ngIf="item.value.length <= 4"
+              [name]="item.key + index"
+              [label]="pascalCase(item.key)"
+              [formControlName]="item.key"
+              [options]="item.value"
+              [inline]="item.value.length <= 2"
+            ></app-radio-group>
 
-          <app-select
-            *ngIf="item.value.length >= 5"
-            [name]="item.key + index"
-            [label]="pascalCase(item.key)"
-            [formControlName]="item.key"
-            [options]="item.value"
-          ></app-select>
+            <app-select
+              *ngIf="item.value.length >= 5"
+              [name]="item.key + index"
+              [label]="pascalCase(item.key)"
+              [formControlName]="item.key"
+              [options]="item.value"
+            ></app-select>
+          </ng-container>
         </ng-container>
+        <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
       </ng-container>
-      <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
+
+      <div class="govuk-form-group" *ngIf="isDangerous">
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input
+              class="govuk-checkboxes__input"
+              id="prohibition"
+              name="prohibition"
+              type="checkbox"
+              [checked]="defect!.prohibitionIssued"
+              (change)="toggleDefectField('prohibitionIssued')"
+            />
+            <label class="govuk-label govuk-checkboxes__label" for="prohibition"> Prohibition issued in mobile compliance </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="govuk-form-group" *ngIf="!isAdvisory">
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <input
+              class="govuk-checkboxes__input"
+              id="prs"
+              [name]="'prs-' + index"
+              type="checkbox"
+              [checked]="defect?.prs"
+              (change)="toggleDefectField('prs')"
+            />
+            <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test </label>
+          </div>
+        </div>
+      </div>
     </ng-container>
-
-    <div class="govuk-form-group" *ngIf="isDangerous">
-      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-        <div class="govuk-checkboxes__item">
-          <input
-            class="govuk-checkboxes__input"
-            id="prohibition"
-            name="prohibition"
-            type="checkbox"
-            [checked]="defect?.prohibitionIssued"
-            (change)="toggleDefectField('prohibitionIssued')"
-          />
-          <label class="govuk-label govuk-checkboxes__label" for="prohibition"> Prohibition issued in mobile compliance </label>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-button-group">
+          <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
+          <a *ngIf="index || index === 0" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
+          <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">{{ index || index === 0 ? 'Cancel changes' : 'Cancel' }}</a>
         </div>
-      </div>
-    </div>
-
-    <div class="govuk-form-group" *ngIf="!isAdvisory">
-      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-        <div class="govuk-checkboxes__item">
-          <input
-            class="govuk-checkboxes__input"
-            id="prs"
-            [name]="'prs-' + index"
-            type="checkbox"
-            [checked]="defect?.prs"
-            (change)="toggleDefectField('prs')"
-          />
-          <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test </label>
-        </div>
-      </div>
-    </div>
-  </ng-container>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="govuk-button-group">
-        <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
-        <a *ngIf="index || index === 0" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
-        <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">{{ index || index === 0 ? 'Cancel changes' : 'Cancel' }}</a>
       </div>
     </div>
   </div>

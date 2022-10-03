@@ -49,6 +49,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       disabled: true
     },
     {
@@ -58,6 +59,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
 
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       disabled: true
     }
   ]
