@@ -1,4 +1,18 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+
+const requiredValidation = [
+  { name: ValidatorNames.Numeric, args: 99999 },
+  { name: ValidatorNames.Max, args: 99999 },
+  { name: ValidatorNames.Min, args: 0 },
+  { name: ValidatorNames.Required }
+];
+
+const optionalValidation = [
+  { name: ValidatorNames.Numeric, args: 99999 },
+  { name: ValidatorNames.Max, args: 99999 },
+  { name: ValidatorNames.Min, args: 0 }
+];
 
 export const PsvWeight: FormNode = {
   name: 'weightsSection',
@@ -10,37 +24,43 @@ export const PsvWeight: FormNode = {
       name: 'grossSection',
       label: 'Gross vehicle weight',
       value: '',
-      type: FormNodeTypes.SECTION
+      type: FormNodeTypes.SECTION,
+      validators: requiredValidation
     },
     {
       name: 'grossKerbWeight',
       label: 'Kerb',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: requiredValidation
     },
     {
       name: 'grossLadenWeight',
       label: 'Laden',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: requiredValidation
     },
     {
       name: 'grossGbWeight',
       label: 'GB',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: requiredValidation
     },
     {
       name: 'grossDesignWeight',
       label: 'Design',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: requiredValidation
     },
     {
       name: 'unladenWeight',
       label: 'Unladen (optional)',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: optionalValidation
     },
     {
       name: 'trainSection',
@@ -52,13 +72,15 @@ export const PsvWeight: FormNode = {
       name: 'maxTrainGbWeight',
       label: 'Max train GB',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: optionalValidation
     },
     {
       name: 'trainDesignWeight',
       label: 'Train design',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: optionalValidation
     },
     {
       name: 'axleSection',
@@ -92,25 +114,29 @@ export const PsvWeight: FormNode = {
                   name: 'kerbWeight',
                   label: 'Kerb weight',
                   value: '',
-                  type: FormNodeTypes.CONTROL
+                  type: FormNodeTypes.CONTROL,
+                  validators: requiredValidation
                 },
                 {
                   name: 'ladenWeight',
                   label: 'Laden weight',
                   value: '',
-                  type: FormNodeTypes.CONTROL
+                  type: FormNodeTypes.CONTROL,
+                  validators: requiredValidation
                 },
                 {
                   name: 'gbWeight',
                   label: 'GB weight',
                   value: '',
-                  type: FormNodeTypes.CONTROL
+                  type: FormNodeTypes.CONTROL,
+                  validators: requiredValidation
                 },
                 {
                   name: 'designWeight',
                   label: 'Design weight',
                   value: '',
-                  type: FormNodeTypes.CONTROL
+                  type: FormNodeTypes.CONTROL,
+                  validators: requiredValidation
                 }
               ]
             }

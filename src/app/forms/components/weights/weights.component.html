@@ -1,0 +1,95 @@
+<ng-container *ngIf="isEditable">
+  <form [formGroup]="form">
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">
+        Axle weights (kg)
+      </caption>
+
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header"></th>
+          <th scope="col" class="govuk-table__header">Kerb</th>
+          <th scope="col" class="govuk-table__header">Laden</th>
+          <th scope="col" class="govuk-table__header">GB max</th>
+          <th scope="col" class="govuk-table__header">Design</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <ng-container formArrayName="axles">
+          <tr class="govuk-table__row" *ngFor="let axle of axlesFormArray.controls; let i = index">
+            <ng-container [formGroupName]="i">
+              <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+              <ng-container formGroupName="weights">
+                <td class="govuk-table__cell">
+                  <app-text-input name="foo" formControlName="kerbWeight"></app-text-input>
+                </td>
+                <td class="govuk-table__cell"><app-text-input name="foo" formControlName="ladenWeight"></app-text-input></td>
+                <td class="govuk-table__cell"><app-text-input name="foo" formControlName="gbWeight"></app-text-input></td>
+                <td class="govuk-table__cell"><app-text-input name="foo" formControlName="designWeight"></app-text-input></td>
+              </ng-container>
+            </ng-container>
+          </tr>
+        </ng-container>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">GROSS</th>
+          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossKerbWeight"></app-text-input></td>
+          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossLadenWeight"></app-text-input></td>
+          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossGbWeight"></app-text-input></td>
+          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="grossDesignWeight"></app-text-input></td>
+        </tr>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">TRAIN</th>
+          <td class="govuk-table__cell"></td>
+          <td class="govuk-table__cell"></td>
+          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="maxTrainGbWeight"></app-text-input></td>
+          <td class="govuk-table__cell"><app-text-input name="foo" formControlName="trainDesignWeight"></app-text-input></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-text-input name="foo" formControlName="unladenWeight"></app-text-input>
+  </form>
+</ng-container>
+
+<ng-container *ngIf="!isEditable">
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Axle weights (kg)
+    </caption>
+
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header">Kerb</th>
+        <th scope="col" class="govuk-table__header">Laden</th>
+        <th scope="col" class="govuk-table__header">GB max</th>
+        <th scope="col" class="govuk-table__header">Design</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row" *ngFor="let axle of data.axles; let i = index">
+        <th scope="row" class="govuk-table__header">Axle {{ axle.axleNumber }}</th>
+        <td class="govuk-table__cell">{{ axle.weights?.kerbWeight }}</td>
+        <td class="govuk-table__cell">{{ axle.weights?.ladenWeight }}</td>
+        <td class="govuk-table__cell">{{ axle.weights?.gbWeight }}</td>
+        <td class="govuk-table__cell">{{ axle.weights?.designWeight }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Gross</th>
+        <td class="govuk-table__cell">{{ data.grossKerbWeight }}</td>
+        <td class="govuk-table__cell">{{ data.grossLadenWeight }}</td>
+        <td class="govuk-table__cell">{{ data.grossGbWeight }}</td>
+        <td class="govuk-table__cell">{{ data.grossDesignWeight }}</td>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">Train</th>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell">{{ data.maxTrainGbWeight }}</td>
+        <td class="govuk-table__cell">{{ data.trainDesignWeight }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- TODO: come here and sort this-->
+  {{ data.unladenWeight }}
+</ng-container>

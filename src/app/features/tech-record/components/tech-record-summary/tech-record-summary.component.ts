@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
@@ -29,6 +29,7 @@ import merge from 'lodash.merge';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
+import { WeightsComponent } from '@forms/components/weights/weights.component';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -37,6 +38,7 @@ import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 })
 export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
+  @ViewChild(WeightsComponent) weights?: WeightsComponent;
   @Input() isEditable: boolean = false;
   @Input() vehicleTechRecord?: TechRecordModel;
   @Output() formChange = new EventEmitter();
@@ -91,7 +93,8 @@ export class TechRecordSummaryComponent implements OnInit {
 
   // @ts-ignore
   handleFormState(event) {
-    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    const weightsValue = this.weights?.form.getCleanValue(this.weights?.form);
+    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), weightsValue, event);
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated! }));
     this.formChange.emit();
   }

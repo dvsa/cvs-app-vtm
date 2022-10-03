@@ -75,6 +75,12 @@
     [data]="vehicleTechRecordCalculated"
     class="govuk-summary-list"
   ></app-dynamic-form-group>
+  <app-weights
+    [isEditable]="isEditable"
+    [template]="weightsTemplate"
+    [data]="vehicleTechRecordCalculated"
+    (formChange)="handleFormState($event)"
+  ></app-weights>
   <app-dynamic-form-group
     *ngIf="tyresTemplate"
     [template]="tyresTemplate"
