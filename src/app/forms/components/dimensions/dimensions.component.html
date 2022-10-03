@@ -1,7 +1,6 @@
 <ng-container [formGroup]="form">
   <ng-container *ngIf="getDimension('height')" formGroupName="dimensions">
     <app-number-input-with-suffix
-      class="dimension"
       label="Height"
       name="height"
       formControlName="height"
@@ -12,7 +11,6 @@
 
   <ng-container *ngIf="getDimension('length')" formGroupName="dimensions">
     <app-number-input-with-suffix
-      class="dimension"
       label="Length"
       name="length"
       formControlName="length"
@@ -23,7 +21,6 @@
 
   <ng-container *ngIf="getDimension('width')" formGroupName="dimensions">
     <app-number-input-with-suffix
-      class="dimension"
       label="Width"
       name="width"
       formControlName="width"
@@ -34,7 +31,6 @@
 
   <app-number-input-with-suffix
     *ngIf="frontAxleToRearAxle"
-    class="dimension"
     label="Front axle to rear axle"
     name="frontAxleToRearAxle"
     formControlName="frontAxleToRearAxle"
@@ -44,7 +40,6 @@
 
   <app-number-input-with-suffix
     *ngIf="rearAxleToRearTrl"
-    class="dimension"
     label="Rear axle to rear trailer"
     name="rearAxleToRearTrl"
     formControlName="rearAxleToRearTrl"
@@ -52,7 +47,7 @@
     suffix="mm"
   ></app-number-input-with-suffix>
 
-  <div *ngFor="let axle of axles" class="dimension" formGroupName="dimensionsBottomSection">
+  <div *ngFor="let axle of axles" formGroupName="dimensionsBottomSection">
     <div formGroupName="dimensions">
       <app-number-input-with-suffix
         [label]="axle.label"
