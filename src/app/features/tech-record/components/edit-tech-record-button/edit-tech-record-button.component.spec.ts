@@ -194,6 +194,7 @@ describe('EditTechRecordButtonComponent', () => {
   const expectedResult = {
     vehicleTechRecords: [{
       systemNumber: '1',
+      vin: '1',
       techRecord: [{ createdAt: expectedDate } as TechRecordModel]
     } as VehicleTechRecordModel]
   };
@@ -206,6 +207,6 @@ describe('EditTechRecordButtonComponent', () => {
     tick();
 
     expect(navigateByUrlSpy).toHaveBeenCalledTimes(1);
-    expect(navigateByUrlSpy).toHaveBeenCalledWith('/tech-records/1/historic/' + expectedDate.getTime());
+    expect(navigateByUrlSpy).toHaveBeenCalledWith('/tech-records/1/1/historic/' + expectedDate.getTime());
   }));
 });
