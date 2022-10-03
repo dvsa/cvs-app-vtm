@@ -29,7 +29,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    this.form.patchValue(this.data, { emitEvent: false });
+    this.form?.patchValue(this.data, { emitEvent: false });
   }
 
   ngOnDestroy(): void {
