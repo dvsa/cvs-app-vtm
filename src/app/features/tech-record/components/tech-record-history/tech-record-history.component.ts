@@ -11,10 +11,8 @@ export class TechRecordHistoryComponent {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() currentRecord?: TechRecordModel;
 
-  currentPage = 1;
-  itemsPerPage = 5;
-  pageStart = 0;
-  pageEnd = 5;
+  pageStart?: number;
+  pageEnd?: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -22,12 +20,10 @@ export class TechRecordHistoryComponent {
     return new Date(date).getTime();
   }
 
-  handlePaginationChange({ currentPage, itemsPerPage, start, end }: { currentPage: number; itemsPerPage: number; start: number; end: number }) {
-    this.currentPage = currentPage;
-    this.itemsPerPage = itemsPerPage;
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
     this.pageStart = start;
     this.pageEnd = end;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   get numberOfRecords(): number {

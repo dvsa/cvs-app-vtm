@@ -11,19 +11,15 @@ export class TestRecordSummaryComponent {
   @Input() testRecords: TestResultModel[] = [];
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
 
-  currentPage: number = 1;
-  itemsPerPage = 5;
-  pageStart = 0;
-  pageEnd = 5;
+  pageStart?: number;
+  pageEnd?: number;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  handlePaginationChange({ currentPage, itemsPerPage, start, end }: { currentPage: number; itemsPerPage: number; start: number; end: number }) {
-    this.currentPage = currentPage;
-    this.itemsPerPage = itemsPerPage;
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
     this.pageStart = start;
     this.pageEnd = end;
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   getTestTypeName(testResult: TestResultModel) {

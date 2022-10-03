@@ -13,8 +13,9 @@ export class PaginationComponent implements OnInit, OnDestroy {
   @Input() numberOfItems: number = 0;
   @Output() paginationOptions = new EventEmitter<{ currentPage: number; itemsPerPage: number; start: number; end: number }>();
 
+  currentPage = 1;
+  currentPageSubject = new ReplaySubject<number>(this.currentPage);
   itemsPerPage: number = 5; // this can be extended later to be set via a dom control
-  currentPageSubject = new BehaviorSubject<number>(1);
 
   private destroy$ = new Subject<void>();
 
@@ -36,6 +37,8 @@ export class PaginationComponent implements OnInit, OnDestroy {
     this.currentPageSubject.pipe(takeUntil(this.destroy$)).subscribe({
       next: page => {
         const [start, end] = [(page - 1) * this.itemsPerPage, page * this.itemsPerPage];
+
+        this.currentPage = page;
         this.paginationOptions.emit({ currentPage: page, itemsPerPage: this.itemsPerPage, start, end });
         this.cdr.markForCheck();
       }
@@ -59,10 +62,6 @@ export class PaginationComponent implements OnInit, OnDestroy {
 
   trackByFn(index: number, page: number) {
     return page || index;
-  }
-
-  get currentPage() {
-    return this.currentPageSubject.value;
   }
 
   get pages() {
