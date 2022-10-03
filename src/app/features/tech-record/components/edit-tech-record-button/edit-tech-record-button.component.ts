@@ -52,6 +52,7 @@ export class EditTechRecordButtonComponent implements OnInit {
 
     this.errorService.clearErrors();
     this.store.dispatch(updateEditingTechRecordCancel());
+    this.router.navigate([]);
   }
 
   submitTechRecord() {
