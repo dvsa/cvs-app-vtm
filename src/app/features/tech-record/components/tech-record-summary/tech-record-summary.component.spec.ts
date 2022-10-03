@@ -9,6 +9,7 @@ import { initialAppState, State } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { updateEditingTechRecord } from '@store/technical-records';
+import { SharedModule } from '@shared/shared.module';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -18,7 +19,7 @@ describe('TechRecordSummaryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordSummaryComponent],
-      imports: [DynamicFormsModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
