@@ -4,16 +4,21 @@
   </h1>
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-  <input
-    class="govuk-input"
-    id="{{ name }}"
-    name="{{ name }}"
-    type="number"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    (ngModelChange)="onChange($event)"
-    (blur)="onTouched(); handleEvent($event)"
-    (focus)="handleEvent($event)"
-    appNumberOnly
-  />
+  <div class="govuk-input__wrapper">
+    <input
+      class="govuk-input"
+      id="{{ name }}"
+      name="{{ name }}"
+      type="number"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
+      appNumberOnly
+    />
+    <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
+      <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
+    </div>
+  </div>
 </div>

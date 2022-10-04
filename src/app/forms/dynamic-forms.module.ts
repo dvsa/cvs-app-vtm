@@ -23,6 +23,7 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { FocusNextDirective } from './components/date/focus-next.directive';
+import { SuffixDirective } from './directives/suffix/suffix.directive';
 import { DimensionsComponent } from './components/dimensions/dimensions.component';
 import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
 
@@ -48,6 +49,7 @@ import { NumberInputWithSuffixComponent } from './components/number-input-with-s
     DefectSelectComponent,
     FocusNextDirective,
     TruncatePipe,
+    SuffixDirective,
     DimensionsComponent,
     NumberInputWithSuffixComponent
   ],
