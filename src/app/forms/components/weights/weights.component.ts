@@ -36,10 +36,6 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription.unsubscribe();
   }
 
-  get axles(): Axle[] | undefined {
-    return this.data.axles;
-  }
-
   get axlesFormArray() {
     return this.form.get(['axles']) as FormArray;
   }
