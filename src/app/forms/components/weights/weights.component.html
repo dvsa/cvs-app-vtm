@@ -94,8 +94,11 @@
         <td class="govuk-table__cell">{{ data.maxTrainGbWeight }}</td>
         <td class="govuk-table__cell">{{ data.trainDesignWeight }}</td>
       </tr>
+      <br />
+      <tr>
+        <th scope="row" class="govuk-table__header">Unladen Weight</th>
+      </tr>
+      <app-text-input name="unladenWeight" formControlName="unladenWeight"></app-text-input>
     </tbody>
   </table>
-  <!-- TODO: come here and sort this-->
-  {{ data.unladenWeight }}
 </ng-container>
