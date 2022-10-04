@@ -49,8 +49,7 @@ export enum FormNodeEditTypes {
   NUMERICSTRING = 'numericstring',
   RADIO = 'radio',
   TEXT = 'text',
-  CUSTOM_TEXT = 'custom-text',
-  TEXTAREA = 'textarea',
+  TEXTAREA = 'textarea'
 }
 
 export interface FormNodeOption<T> {
@@ -74,7 +73,7 @@ export interface FormNode {
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
-  width?: Width;
+  width?: number;
   label?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;

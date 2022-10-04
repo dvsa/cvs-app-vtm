@@ -14,63 +14,63 @@ export const TrlManufacturerTemplate: FormNode = {
           name: 'name',
           label: 'Name',
           type: FormNodeTypes.CONTROL,
-          width: Width.THREE_QUARTER,
+          width: 30,
           validators: [{ name: ValidatorNames.MaxLength, args: 150 }]
         },
         {
           name: 'address1',
-          label: 'Building and street',
+          label: 'Address line 1',
           type: FormNodeTypes.CONTROL,
-          width: Width.THREE_QUARTER,
+          width: 30,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
         {
           name: 'address2',
-          label: 'Building and street',
+          label: 'Address line 2',
           type: FormNodeTypes.CONTROL,
-          width: Width.THREE_QUARTER,
+          width: 30,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
         {
           name: 'postTown',
-          label: 'Town or city',
+          label: 'Town or City',
           type: FormNodeTypes.CONTROL,
-          width: Width.ONE_HALF,
+          width: 20,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
         {
           name: 'address3',
           label: 'County',
           type: FormNodeTypes.CONTROL,
-          width: Width.ONE_HALF,
+          width: 20,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
         {
           name: 'postCode',
           label: 'Postcode',
           type: FormNodeTypes.CONTROL,
-          width: Width.ONE_THIRD,
+          width: 10,
           validators: [{ name: ValidatorNames.MaxLength, args: 12 }]
         },
         {
           name: 'telephonenumber',
           label: 'Telephone number',
           type: FormNodeTypes.CONTROL,
-          width: Width.ONE_HALF,
+          width: 20,
           validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
         },
         {
           name: 'emailAddress',
           label: 'Email address',
           type: FormNodeTypes.CONTROL,
-          width: Width.ONE_HALF,
+          width: 20,
           validators: [{ name: ValidatorNames.MaxLength, args: 255 }]
         },
         {
           name: 'faxNumber',
           label: 'Fax Number',
           type: FormNodeTypes.CONTROL,
-          width: Width.ONE_HALF,
+          width: 20,
           validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
         },
         {
