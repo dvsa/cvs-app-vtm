@@ -14,6 +14,7 @@
           [isEditing]="isEditable"
           [template]="section"
           [data]="vehicleTechRecordCalculated"
+          [vehicleType]="vehicleTechRecordCalculated.vehicleType"
           (formChange)="handleFormState($event)"
         ></app-weights>
 

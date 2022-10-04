@@ -6,11 +6,12 @@ import { Axle, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-weights[data][template]',
+  selector: 'app-weights[data][template][vehicleType]',
   templateUrl: './weights.component.html'
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isEditing = false;
+  @Input() vehicleType!: string;
   @Input() template!: FormNode
   @Input() data!: Partial<TechRecordModel>;
 

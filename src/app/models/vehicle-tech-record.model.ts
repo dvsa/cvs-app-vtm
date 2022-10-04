@@ -255,8 +255,14 @@ export interface TechRecordModel {
   unladenWeight?: number;
 
   // Train weights
-  maxTrainGbWeight?: number;
   trainDesignWeight?: number;
+  trainEecWeight?: number;
+  trainGbWeight?: number;
+
+  //Max Train Weights
+  maxTrainGbWeight?: number;
+  maxTrainDesignWeight?: number;
+  maxTrainEecWeight?: number;
 
   // Dimensions
   dimensions?: Dimensions;
