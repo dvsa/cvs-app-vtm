@@ -1,4 +1,4 @@
-<ng-container *ngIf="isEditable">
+<ng-container *ngIf="isEditing; else viewOnly">
   <form [formGroup]="form">
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m">
@@ -55,7 +55,7 @@
           label="Unladen Weight"
           name="unladenWeight"
           formControlName="unladenWeight"
-          [isEditing]="isEditable"
+          [isEditing]="isEditing"
           suffix="kg"
         ></app-number-input-with-suffix>
       </tbody>
@@ -63,7 +63,7 @@
   </form>
 </ng-container>
 
-<ng-container *ngIf="!isEditable">
+<ng-template #viewOnly>
   <table class="govuk-table">
     <caption class="govuk-table__caption govuk-table__caption--m">
       Axle weights (kg)
@@ -104,4 +104,4 @@
       <p>{{ data.unladenWeight }} kg</p>
     </tbody>
   </table>
-</ng-container>
+</ng-template>

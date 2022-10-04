@@ -4,7 +4,6 @@ export const HgvWeight: FormNode = {
   name: 'weightsSection',
   label: 'Weights',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'grossSection',

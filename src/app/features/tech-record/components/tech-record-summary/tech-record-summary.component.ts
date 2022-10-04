@@ -84,14 +84,15 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditable ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
+    this.vehicleTechRecordCalculated = this.isEditable ? 
+    { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } 
+    : this.vehicleTechRecord;
 
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
   handleFormState(event: any): void {
-    const weightsValue = this.weights?.form.getCleanValue(this.weights?.form);
-    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), weightsValue, event);
+    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
@@ -111,8 +112,8 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  7 */ PsvBrakeSectionWheelsHalfLocked,
       /*  8 */ PsvDdaTemplate,
       /*  9 */ DocumentsTemplate,
-      /* 10 */ PsvWeight,
-      /* 11 */ getBodySection(VehicleTypes.PSV),
+      /* 10 */ getBodySection(VehicleTypes.PSV),
+      /* 11 */ PsvWeight,
       /* 12 */ getTyresSection(VehicleTypes.PSV),
       /* 13 */ getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing)
     ];
@@ -126,8 +127,8 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  4 */ getTypeApprovalSection(VehicleTypes.HGV),
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
-      /*  7 */ HgvWeight,
-      /*  8 */ getBodySection(VehicleTypes.HGV),
+      /*  7 */ getBodySection(VehicleTypes.HGV),
+      /*  8 */ HgvWeight,
       /*  9 */ getTyresSection(VehicleTypes.HGV),
       /* 10 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
       /* 11 */ getDimensionsMinMaxSection(
@@ -149,10 +150,10 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
       /*  7 */ getBodySection(VehicleTypes.TRL),
-      /*  8 */ getTyresSection(VehicleTypes.TRL),
-      /*  9 */ TrlBrakes,
-      /* 10 */ TrlPurchasers,
-      /* 11 */ TrlWeight,
+      /*  8 */ TrlWeight,
+      /*  9 */ getTyresSection(VehicleTypes.TRL),
+      /* 10 */ TrlBrakes,
+      /* 11 */ TrlPurchasers,
       /* 12 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
       /* 13 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),
       /* 14 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),

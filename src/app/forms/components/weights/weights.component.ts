@@ -6,13 +6,13 @@ import { Axle, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-weights',
+  selector: 'app-weights[data][template]',
   templateUrl: './weights.component.html'
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() isEditable = false;
-  @Input() template: FormNode | undefined;
-  @Input() data: Partial<TechRecordModel> = {};
+  @Input() isEditing = false;
+  @Input() template!: FormNode
+  @Input() data!: Partial<TechRecordModel>;
 
   @Output() formChange = new EventEmitter();
 
@@ -22,7 +22,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template!, this.data) as CustomFormGroup;
+    this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
       this.formChange.emit(event);
     });
