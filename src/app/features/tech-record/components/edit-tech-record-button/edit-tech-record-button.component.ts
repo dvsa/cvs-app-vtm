@@ -9,7 +9,8 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 
 @Component({
   selector: 'app-edit-tech-record-button',
-  templateUrl: './edit-tech-record-button.component.html'
+  templateUrl: './edit-tech-record-button.component.html',
+  styleUrls: ['./edit-tech-record-button.component.scss']
 })
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
@@ -54,6 +55,7 @@ export class EditTechRecordButtonComponent implements OnInit {
 
     this.errorService.clearErrors();
     this.store.dispatch(updateEditingTechRecordCancel());
+    this.router.navigate([]);
   }
 
   submitTechRecord() {

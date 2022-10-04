@@ -1,12 +1,11 @@
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export function getBodyTemplate(vehicleType: VehicleTypes): FormNode {
   let bodyFormControl: FormNode = {
     name: 'body',
     label: 'Body',
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: []
   };
   if(vehicleType === VehicleTypes.PSV) {

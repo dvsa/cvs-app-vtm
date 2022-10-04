@@ -1,10 +1,9 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const PsvDdaTemplate: FormNode = {
   name: 'dda',
   type: FormNodeTypes.GROUP,
   label: 'Disability Discrimination Act',
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'dda',

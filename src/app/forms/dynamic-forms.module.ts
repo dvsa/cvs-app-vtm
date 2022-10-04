@@ -24,6 +24,8 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { WeightsComponent } from './components/weights/weights.component';
+import { DimensionsComponent } from './components/dimensions/dimensions.component';
+import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { WeightsComponent } from './components/weights/weights.component';
     DefectSelectComponent,
     FocusNextDirective,
     TruncatePipe,
-    WeightsComponent
+    WeightsComponent,
+    DimensionsComponent,
+    NumberInputWithSuffixComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -67,7 +71,8 @@ import { WeightsComponent } from './components/weights/weights.component';
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
     DefectSelectComponent,
-    WeightsComponent
+    WeightsComponent,
+    DimensionsComponent
   ]
 })
 export class DynamicFormsModule {}

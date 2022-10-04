@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { Brakes as BrakesTemplate } from '@forms/templates/hgv/hgv-brakes.template';
+import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
-import { PsvApplicantDetails } from '@forms/templates/psv/psv-applicant-details.template';
+import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
-import { Brakes, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
@@ -26,157 +26,139 @@ import cloneDeep from 'lodash.clonedeep';
 import { Store } from '@ngrx/store';
 import { updateEditingTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
+import { WeightsComponent } from '@forms/components/weights/weights.component';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { DimensionsComponent } from '@forms/components/dimensions/dimensions.component';
+import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { WeightsComponent } from '@forms/components/weights/weights.component';
-import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 
 @Component({
-  selector: 'app-tech-record-summary',
+  selector: 'app-tech-record-summary[vehicleTechRecord]',
   templateUrl: './tech-record-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
-  @ViewChild(WeightsComponent) weights?: WeightsComponent;
-  @Input() isEditable: boolean = false;
-  @Input() vehicleTechRecord?: TechRecordModel;
+  @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
+  @ViewChild(WeightsComponent) weights!: WeightsComponent;
+
+  @Input() vehicleTechRecord!: TechRecordModel;
+
+  private _isEditable: boolean = false;
+  get isEditable(): boolean {
+    return this._isEditable;
+  }
+  @Input()
+  set isEditable(value: boolean) {
+    this._isEditable = value;
+    this.calculateVehicleModel();
+  }
+
   @Output() formChange = new EventEmitter();
+
   vehicleTechRecordCalculated!: TechRecordModel;
-  currentBrakeRecord?: Brakes;
-  vehicleSummaryTemplate!: FormNode;
-  psvBrakeTemplate!: FormNode;
-  brakeTemplateWheelsNotLocked!: FormNode;
-  brakeTemplateWheelsHalfLocked!: FormNode;
-  approvalTypeTemplate!: FormNode;
-  applicantDetailsTemplate!: FormNode;
-  dimensionsTemplate?: FormNode;
-  notesTemplate?: FormNode;
-  documentsTemplate?: FormNode;
-  bodyTemplate?: FormNode;
-  tyresTemplate?: FormNode;
-  brakesTemplate?: FormNode;
-  purchasersTemplate?: FormNode;
-  hgvAndTrlDimensionsTemplate?: FormNode;
-  firstMinMaxTemplate?: FormNode;
-  secondMinMaxTemplate?: FormNode;
-  platesTemplate?: FormNode;
-  trlAuthIntoServiceTemplate?: FormNode;
-  trlManufacturerTemplate?: FormNode;
-  ddaTemplate?: FormNode;
-  reasonForCreation?: FormNode;
-  weightsTemplate?: FormNode;
+
+  sectionTemplates: Array<FormNode> = [];
+
+  constructor(private store: Store<TechnicalRecordServiceState>) {}
 
   ngOnInit(): void {
-    this.vehicleTemplate();
-    this.currentBrakeRecord = this.vehicleTechRecord?.brakes;
+    this.initializeVehicleTemplates();
     this.calculateVehicleModel();
   }
 
-  constructor(private store: Store) {}
-
-  @Input()
-  set editable(isEditable: boolean) {
-    this.isEditable = isEditable;
-    this.calculateVehicleModel();
-  }
-
-  calculateVehicleModel() {
-    if (this.isEditable) {
-      this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecord!);
-      this.vehicleTechRecordCalculated.reasonForCreation = '';
-    } else {
-      this.vehicleTechRecordCalculated = this.vehicleTechRecord!;
+  initializeVehicleTemplates(): void {
+    switch (this.vehicleTechRecord.vehicleType) {
+      case 'psv':
+        this.sectionTemplates = this.getPsvTemplates();
+        break;
+      case 'hgv':
+        this.sectionTemplates = this.getHgvTemplates();
+        break;
+      case 'trl':
+        this.sectionTemplates = this.getTrlTemplates();
+        break;
     }
+  }
+
+  calculateVehicleModel(): void {
+    this.vehicleTechRecordCalculated = this.isEditable ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
+
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
-  // @ts-ignore
-  handleFormState(event) {
+  handleFormState(event: any): void {
     const weightsValue = this.weights?.form.getCleanValue(this.weights?.form);
     this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), weightsValue, event);
-    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated! }));
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
 
-  vehicleTemplate(): void {
-    switch (this.vehicleTechRecord?.vehicleType) {
-      case 'psv': {
-        this.vehicleSummaryTemplate = PsvTechRecord;
-        this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.PSV);
-        this.psvBrakeTemplate = PsvBrakeSection;
-        this.brakeTemplateWheelsNotLocked = PsvBrakeSectionWheelsNotLocked;
-        this.brakeTemplateWheelsHalfLocked = PsvBrakeSectionWheelsHalfLocked;
-        this.ddaTemplate = PsvDdaTemplate;
-        this.dimensionsTemplate = getDimensionsSection(
-          VehicleTypes.PSV,
-          this.vehicleTechRecord.noOfAxles,
-          this.vehicleTechRecord.dimensions?.axleSpacing
-        );
-        this.applicantDetailsTemplate = PsvApplicantDetails;
-        this.documentsTemplate = DocumentsTemplate;
-        this.notesTemplate = PsvNotes;
-        this.reasonForCreation = reasonForCreationSection;
-        this.bodyTemplate = getBodySection(VehicleTypes.PSV);
-        this.tyresTemplate = getTyresSection(VehicleTypes.PSV);
-        this.weightsTemplate = PsvWeight;
-        break;
-      }
-      case 'hgv': {
-        this.vehicleSummaryTemplate = HgvTechRecord;
-        this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.HGV);
-        this.bodyTemplate = getBodySection(VehicleTypes.HGV);
-        this.weightsTemplate = HgvWeight;
-        this.tyresTemplate = getTyresSection(VehicleTypes.HGV);
-        this.dimensionsTemplate = getDimensionsSection(
-          VehicleTypes.HGV,
-          this.vehicleTechRecord.noOfAxles,
-          this.vehicleTechRecord.dimensions?.axleSpacing
-        );
-        this.firstMinMaxTemplate = getDimensionsMinMaxSection(
-          'Front of vehicle to 5th wheel coupling',
-          'frontAxleTo5thWheelCouplingMin',
-          'frontAxleTo5thWheelCouplingMax'
-        );
-        this.secondMinMaxTemplate = getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax');
-        this.notesTemplate = NotesTemplate;
-        this.documentsTemplate = DocumentsTemplate;
-        this.platesTemplate = PlatesTemplate;
-        this.reasonForCreation = reasonForCreationSection;
-        break;
-      }
-      case 'trl': {
-        this.vehicleSummaryTemplate = TrlTechRecordTemplate;
-        this.approvalTypeTemplate = getTypeApprovalSection(VehicleTypes.TRL);
-        this.bodyTemplate = getBodySection(VehicleTypes.TRL);
-        this.weightsTemplate = TrlWeight;
-        this.tyresTemplate = getTyresSection(VehicleTypes.TRL);
-        this.brakesTemplate = BrakesTemplate;
-        this.purchasersTemplate = TrlPurchasers;
-        this.dimensionsTemplate = getDimensionsSection(
-          VehicleTypes.TRL,
-          this.vehicleTechRecord.noOfAxles,
-          this.vehicleTechRecord.dimensions?.axleSpacing
-        );
-        this.firstMinMaxTemplate = getDimensionsMinMaxSection(
-          'Coupling center to rear axle',
-          'couplingCenterToRearAxleMin',
-          'couplingCenterToRearAxleMax'
-        );
-        this.secondMinMaxTemplate = getDimensionsMinMaxSection(
-          'Coupling center to rear trailer',
-          'couplingCenterToRearTrlMin',
-          'couplingCenterToRearTrlMax'
-        );
-        this.notesTemplate = NotesTemplate;
-        this.documentsTemplate = DocumentsTemplate;
-        this.platesTemplate = PlatesTemplate;
-        this.trlAuthIntoServiceTemplate = TrlAuthIntoServiceTemplate;
-        this.trlManufacturerTemplate = TrlManufacturerTemplate;
-        this.reasonForCreation = reasonForCreationSection;
-        break;
-      }
-    }
+  // The 3 methods below initialize the array of sections that the *ngFor in the component's template will iterate over.
+  // The order in which each section is introduced in the array will determine its order on the page when rendered.
+  // Sections which use custom components need an empty FormNode object with 'name' and 'label' properties.
+
+  getPsvTemplates(): Array<FormNode> {
+    return [
+      /*  1 */ reasonForCreationSection,
+      /*  2 */ PsvNotes,
+      /*  3 */ PsvTechRecord,
+      /*  4 */ getTypeApprovalSection(VehicleTypes.PSV),
+      /*  5 */ PsvBrakeSection,
+      /*  6 */ PsvBrakeSectionWheelsNotLocked,
+      /*  7 */ PsvBrakeSectionWheelsHalfLocked,
+      /*  8 */ PsvDdaTemplate,
+      /*  9 */ DocumentsTemplate,
+      /* 10 */ PsvWeight,
+      /* 11 */ getBodySection(VehicleTypes.PSV),
+      /* 12 */ getTyresSection(VehicleTypes.PSV),
+      /* 13 */ getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing)
+    ];
+  }
+
+  getHgvTemplates(): Array<FormNode> {
+    return [
+      /*  1 */ reasonForCreationSection,
+      /*  2 */ NotesTemplate,
+      /*  3 */ HgvTechRecord,
+      /*  4 */ getTypeApprovalSection(VehicleTypes.HGV),
+      /*  5 */ ApplicantDetails,
+      /*  6 */ DocumentsTemplate,
+      /*  7 */ HgvWeight,
+      /*  8 */ getBodySection(VehicleTypes.HGV),
+      /*  9 */ getTyresSection(VehicleTypes.HGV),
+      /* 10 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
+      /* 11 */ getDimensionsMinMaxSection(
+        'Front of vehicle to 5th wheel coupling',
+        'frontAxleTo5thWheelCouplingMin',
+        'frontAxleTo5thWheelCouplingMax'
+      ),
+      /* 12 */ getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax'),
+      /* 13 */ PlatesTemplate
+    ];
+  }
+
+  getTrlTemplates(): Array<FormNode> {
+    return [
+      /*  1 */ reasonForCreationSection,
+      /*  2 */ NotesTemplate,
+      /*  3 */ TrlTechRecordTemplate,
+      /*  4 */ getTypeApprovalSection(VehicleTypes.TRL),
+      /*  5 */ ApplicantDetails,
+      /*  6 */ DocumentsTemplate,
+      /*  7 */ getBodySection(VehicleTypes.TRL),
+      /*  8 */ getTyresSection(VehicleTypes.TRL),
+      /*  9 */ TrlBrakes,
+      /* 10 */ TrlPurchasers,
+      /* 11 */ TrlWeight,
+      /* 12 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
+      /* 13 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),
+      /* 14 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),
+      /* 15 */ PlatesTemplate,
+      /* 16 */ TrlAuthIntoServiceTemplate,
+      /* 17 */ TrlManufacturerTemplate
+    ];
   }
 }

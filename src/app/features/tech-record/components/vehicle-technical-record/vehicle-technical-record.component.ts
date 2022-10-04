@@ -19,7 +19,7 @@ import { createProvisionalTechRecord, updateTechRecords } from '@store/technical
   templateUrl: './vehicle-technical-record.component.html'
 })
 export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
-  @ViewChild(TechRecordSummaryComponent) dynamicForm!: TechRecordSummaryComponent;
+  @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
@@ -80,8 +80,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   handleFormState() {
-    let form = this.dynamicForm.sections.map(section => section.form);
-    form.push(this.dynamicForm.weights?.form!);
+    const form = this.summary.sections
+      .map(section => section.form)
+      .concat(this.summary.dimensions.form)
+      .concat(this.summary.weights.form);
+
     this.isDirty = this.isAnyFormDirty(form);
     this.isInvalid = this.isAnyFormInvalid(form);
   }
