@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const SpecialistTestSectionGroup1: FormNode = {
+export const SpecialistTestSectionGroup2: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -95,6 +95,13 @@ export const SpecialistTestSectionGroup1: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'secondaryCertificateNumber',
+              label: 'Secondary certificate number',
+              value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
               validators: [{ name: ValidatorNames.Alphanumeric }]
@@ -105,6 +112,23 @@ export const SpecialistTestSectionGroup1: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
+            },
+            {
+              name: 'testAnniversaryDate',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              disabled: true,
+              label: 'Anniversary date',
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',
