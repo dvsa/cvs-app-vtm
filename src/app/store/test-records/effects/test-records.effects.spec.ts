@@ -468,6 +468,7 @@ describe('TestResultsEffects', () => {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']),
             sectionsValue: {
+              contingencyTestNumber: undefined,
               countryOfRegistration: '',
               createdById: undefined,
               createdByName: undefined,
@@ -481,11 +482,10 @@ describe('TestResultsEffects', () => {
               numberOfWheelsDriven: undefined,
               odometerReading: 0,
               odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
-              preparerId: '',
-              preparerName: '',
               reasonForCancellation: undefined,
               reasonForCreation: undefined,
               regnDate: undefined,
+              source: undefined,
               shouldEmailCertificate: undefined,
               systemNumber: '',
               testEndTimestamp: '',
@@ -522,6 +522,7 @@ describe('TestResultsEffects', () => {
               testerEmailAddress: '',
               testerName: '',
               testerStaffId: undefined,
+              typeOfTest: undefined,
               vehicleClass: null,
               vehicleConfiguration: undefined,
               vehicleSize: undefined,
