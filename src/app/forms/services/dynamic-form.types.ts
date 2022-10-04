@@ -58,15 +58,6 @@ export interface FormNodeOption<T> {
   hint?: string;
 }
 
-export enum Width {
-  FULL = 'govuk-!-width-full',
-  THREE_QUARTER = 'govuk-!-width-three-quarters',
-  TWO_THIRDS = 'govuk-!-width-two-thirds',
-  ONE_HALF = 'govuk-!-width-one-half',
-  ONE_THIRD = 'govuk-!-width-one-third',
-  ONE_QUARTER = 'govuk-!-width-one-quarter'
-}
-
 export interface FormNode {
   name: string;
   children?: FormNode[];
