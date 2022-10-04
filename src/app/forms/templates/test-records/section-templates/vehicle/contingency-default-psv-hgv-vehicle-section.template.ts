@@ -63,6 +63,24 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
       validators: [{ name: ValidatorNames.Required }],
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO
+    },
+    {
+      name: 'preparerName',
+      label: 'Preparer Name',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      disabled: true
+    },
+    {
+      name: 'preparerId',
+      label: 'Preparer ID',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      disabled: true
     }
   ]
 };
