@@ -1,5 +1,5 @@
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 import { generateWeights } from '../general/weights.template';
 
 export function getGrossVehicleWeightsTemplate(vehicleType: VehicleTypes): FormNode {
@@ -8,9 +8,8 @@ export function getGrossVehicleWeightsTemplate(vehicleType: VehicleTypes): FormN
         label: 'Gross Vehicle Weight',
         value: '',
         type: FormNodeTypes.GROUP,
-        viewType: FormNodeViewTypes.SUBHEADING,
-        children: vehicleType !== VehicleTypes.PSV ? 
-            generateWeights(vehicleType, 'gross') : 
+        children: vehicleType !== VehicleTypes.PSV ?
+            generateWeights(vehicleType, 'gross') :
             generateWeights(VehicleTypes.PSV, 'gross').concat([
                 {
                 name: 'unladenWeight',

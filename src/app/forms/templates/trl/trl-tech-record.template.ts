@@ -4,7 +4,6 @@ export const TrlTechRecordTemplate: FormNode = {
   name: 'techRecordSummary',
   type: FormNodeTypes.GROUP,
   label: 'Vehicle Summary',
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'vehicleType',

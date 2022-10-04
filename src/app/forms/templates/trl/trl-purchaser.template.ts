@@ -1,10 +1,9 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const TrlPurchasers: FormNode = {
   name: 'purchaserSection',
   type: FormNodeTypes.GROUP,
   label: 'Purchasers',
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'purchaserDetails',
