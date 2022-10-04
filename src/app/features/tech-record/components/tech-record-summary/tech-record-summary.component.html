@@ -10,9 +10,9 @@
         ></app-dimensions>
 
         <app-weights
-          *ngSwitchCase="'PsvWeight'"
+          *ngSwitchCase="'weightsSection'"
           [isEditable]="isEditable"
-          [template]="weightsTemplate"
+          [template]="section"
           [data]="vehicleTechRecordCalculated"
           (formChange)="handleFormState($event)"
         ></app-weights>

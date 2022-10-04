@@ -50,10 +50,16 @@
           <td class="govuk-table__cell"><app-number-input name="maxTrainGbWeight" formControlName="maxTrainGbWeight"></app-number-input></td>
           <td class="govuk-table__cell"><app-number-input name="trainDesignWeight" formControlName="trainDesignWeight"></app-number-input></td>
         </tr>
+        <br />
+        <app-number-input-with-suffix
+          label="Unladen Weight"
+          name="unladenWeight"
+          formControlName="unladenWeight"
+          [isEditing]="isEditable"
+          suffix="kg"
+        ></app-number-input-with-suffix>
       </tbody>
     </table>
-
-    <app-text-input name="unladenWeight" formControlName="unladenWeight"></app-text-input>
   </form>
 </ng-container>
 
@@ -94,11 +100,8 @@
         <td class="govuk-table__cell">{{ data.maxTrainGbWeight }}</td>
         <td class="govuk-table__cell">{{ data.trainDesignWeight }}</td>
       </tr>
-      <br />
-      <tr>
-        <th scope="row" class="govuk-table__header">Unladen Weight</th>
-      </tr>
-      <app-text-input name="unladenWeight" formControlName="unladenWeight"></app-text-input>
+      <h3>Unladen Weight</h3>
+      <p>{{ data.unladenWeight }} kg</p>
     </tbody>
   </table>
 </ng-container>
