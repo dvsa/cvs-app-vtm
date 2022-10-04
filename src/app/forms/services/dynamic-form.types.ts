@@ -49,7 +49,8 @@ export enum FormNodeEditTypes {
   NUMERICSTRING = 'numericstring',
   RADIO = 'radio',
   TEXT = 'text',
-  TEXTAREA = 'textarea'
+  CUSTOM_TEXT = 'custom-text',
+  TEXTAREA = 'textarea',
 }
 
 export interface FormNodeOption<T> {
@@ -58,12 +59,22 @@ export interface FormNodeOption<T> {
   hint?: string;
 }
 
+export enum Width {
+  FULL = 'govuk-!-width-full',
+  THREE_QUARTER = 'govuk-!-width-three-quarters',
+  TWO_THIRDS = 'govuk-!-width-two-thirds',
+  ONE_HALF = 'govuk-!-width-one-half',
+  ONE_THIRD = 'govuk-!-width-one-third',
+  ONE_QUARTER = 'govuk-!-width-one-quarter'
+}
+
 export interface FormNode {
   name: string;
   children?: FormNode[];
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
+  width?: Width;
   label?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;

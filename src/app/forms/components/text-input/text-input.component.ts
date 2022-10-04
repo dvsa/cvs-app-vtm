@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { Width } from '@forms/services/dynamic-form.types';
 
 @Component({
   selector: 'app-text-input',
@@ -15,4 +16,5 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class TextInputComponent extends BaseControlComponent {
   @Input() numeric: boolean = false;
+  @Input() width?: Width;
 }
