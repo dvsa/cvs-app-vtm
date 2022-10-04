@@ -482,8 +482,6 @@ describe('TestResultsEffects', () => {
               numberOfWheelsDriven: undefined,
               odometerReading: 0,
               odometerReadingUnits: OdometerReadingUnits.KILOMETRES,
-              preparerId: '',
-              preparerName: '',
               reasonForCancellation: undefined,
               reasonForCreation: undefined,
               regnDate: undefined,
