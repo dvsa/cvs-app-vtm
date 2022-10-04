@@ -2,16 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
-import { HgvGrossTrainWeight } from '@forms/templates/hgv/hgv-gross-train-weights.template';
-import { HgvMaxTrainWeight } from '@forms/templates/hgv/hgv-max-train-weights.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
-import { getAxleWeights as getAxleWeightsSection } from '@forms/templates/general/axle-weights.template';
-import { getGrossVehicleWeightsTemplate as getGrossVehicleWeightsSection } from '@forms/templates/general/gross-vehicle-weights.template'
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
-import { PsvTrainWeight } from '@forms/templates/psv/psv-train-weight.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
@@ -31,9 +26,13 @@ import cloneDeep from 'lodash.clonedeep';
 import { Store } from '@ngrx/store';
 import { updateEditingTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
+import { WeightsComponent } from '@forms/components/weights/weights.component';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { DimensionsComponent } from '@forms/components/dimensions/dimensions.component';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
+import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 
 @Component({
   selector: 'app-tech-record-summary[vehicleTechRecord]',
@@ -43,6 +42,7 @@ import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
+  @ViewChild(WeightsComponent) weights!: WeightsComponent;
 
   @Input() vehicleTechRecord!: TechRecordModel;
 
@@ -53,7 +53,7 @@ export class TechRecordSummaryComponent implements OnInit {
   @Input()
   set isEditable(value: boolean) {
     this._isEditable = value;
-    this.calculateVehicleModel()
+    this.calculateVehicleModel();
   }
 
   @Output() formChange = new EventEmitter();
@@ -66,7 +66,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeVehicleTemplates();
-    this.calculateVehicleModel()
+    this.calculateVehicleModel();
   }
 
   initializeVehicleTemplates(): void {
@@ -84,16 +84,16 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditable
-      ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' }
-      : this.vehicleTechRecord;
+    this.vehicleTechRecordCalculated = this.isEditable ? 
+    { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } 
+    : this.vehicleTechRecord;
 
-    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated}));
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
   handleFormState(event: any): void {
-    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event)
-    this.store.dispatch(updateEditingTechRecord({techRecord: this.vehicleTechRecordCalculated}));
+    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
 
@@ -113,11 +113,9 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  8 */ PsvDdaTemplate,
       /*  9 */ DocumentsTemplate,
       /* 10 */ getBodySection(VehicleTypes.PSV),
-      /* 11 */ getGrossVehicleWeightsSection(VehicleTypes.PSV),
-      /* 12 */ PsvTrainWeight,
-      /* 13 */ getAxleWeightsSection(VehicleTypes.PSV),
-      /* 14 */ getTyresSection(VehicleTypes.PSV),
-      /* 15 */ getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
+      /* 11 */ PsvWeight,
+      /* 12 */ getTyresSection(VehicleTypes.PSV),
+      /* 13 */ getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing)
     ];
   }
 
@@ -130,19 +128,16 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
       /*  7 */ getBodySection(VehicleTypes.HGV),
-      /*  8 */ getGrossVehicleWeightsSection(VehicleTypes.HGV),
-      /*  9 */ HgvGrossTrainWeight,
-      /* 10 */ HgvMaxTrainWeight,
-      /* 11 */ getAxleWeightsSection(VehicleTypes.HGV),
-      /* 12 */ getTyresSection(VehicleTypes.HGV),
-      /* 13 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
-      /* 14 */ getDimensionsMinMaxSection(
+      /*  8 */ HgvWeight,
+      /*  9 */ getTyresSection(VehicleTypes.HGV),
+      /* 10 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
+      /* 11 */ getDimensionsMinMaxSection(
         'Front of vehicle to 5th wheel coupling',
         'frontAxleTo5thWheelCouplingMin',
         'frontAxleTo5thWheelCouplingMax'
       ),
-      /* 15 */ getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax'),
-      /* 16 */ PlatesTemplate,
+      /* 12 */ getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax'),
+      /* 13 */ PlatesTemplate
     ];
   }
 
@@ -155,17 +150,16 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
       /*  7 */ getBodySection(VehicleTypes.TRL),
-      /*  8 */ getGrossVehicleWeightsSection(VehicleTypes.TRL),
-      /*  9 */ getAxleWeightsSection(VehicleTypes.TRL),
-      /* 10 */ getTyresSection(VehicleTypes.TRL),
-      /* 11 */ TrlBrakes,
-      /* 12 */ TrlPurchasers,
-      /* 13 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
-      /* 14 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),
-      /* 15 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),
-      /* 16 */ PlatesTemplate,
-      /* 17 */ TrlAuthIntoServiceTemplate,
-      /* 18 */ TrlManufacturerTemplate
+      /*  8 */ TrlWeight,
+      /*  9 */ getTyresSection(VehicleTypes.TRL),
+      /* 10 */ TrlBrakes,
+      /* 11 */ TrlPurchasers,
+      /* 12 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
+      /* 13 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),
+      /* 14 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),
+      /* 15 */ PlatesTemplate,
+      /* 16 */ TrlAuthIntoServiceTemplate,
+      /* 17 */ TrlManufacturerTemplate
     ];
   }
 }

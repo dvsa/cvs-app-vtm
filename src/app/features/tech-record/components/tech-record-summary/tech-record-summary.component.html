@@ -9,6 +9,14 @@
           (formChange)="handleFormState($event)"
         ></app-dimensions>
 
+        <app-weights
+          *ngSwitchCase="'weightsSection'"
+          [isEditing]="isEditable"
+          [template]="section"
+          [data]="vehicleTechRecordCalculated"
+          (formChange)="handleFormState($event)"
+        ></app-weights>
+
         <app-dynamic-form-group
           *ngSwitchDefault
           [edit]="isEditable"
