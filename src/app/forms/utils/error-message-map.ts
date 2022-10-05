@@ -6,9 +6,9 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   invalidTestResult: (err: { message: string }) => err.message,
   [ValidatorNames.CustomPattern]: (err: { message: string }, label?: string) => `${label || DEFAULT_LABEL} ${err.message}`,
   [ValidatorNames.MaxLength]: (err: { requiredLength: number }, label?: string) =>
-    `${label || DEFAULT_LABEL} must be less than ${err.requiredLength} characters`,
+    `${label || DEFAULT_LABEL} must be less than or equal to ${err.requiredLength} characters`,
   [ValidatorNames.MinLength]: (err: { requiredLength: number }, label?: string) =>
-    `${label || DEFAULT_LABEL} must be greater than ${err.requiredLength} characters`,
+    `${label || DEFAULT_LABEL} must be greater than or equal to ${err.requiredLength} characters`,
   [ValidatorNames.Pattern]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} must match a pattern`,
   [ValidatorNames.Required]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [ValidatorNames.RequiredIfEquals]: (err: { sibling: string }, label?: string) => `${label || DEFAULT_LABEL} is required with ${err.sibling}`,
