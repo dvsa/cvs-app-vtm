@@ -1,7 +1,7 @@
 import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CustomControl, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
 
 @Component({
@@ -12,9 +12,11 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
   @Input() name = '';
-  @Input() label?: string;
-  @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
   @Input() hint?: string;
+  @Input() label?: string;
+  @Input() width?: FormNodeWidth;
+  @Input() viewType: FormNodeViewTypes = FormNodeViewTypes.STRING;
+  @Input() noBottomMargin = false;
 
   public onChange = (event: any) => {};
   public onTouched = () => {};
@@ -31,6 +33,9 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   ngAfterContentInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
+      if (!ngControl.control) {
+        console.log(ngControl);
+      }
       this.control = ngControl.control as CustomControl;
       this.control.meta.changeDetection = this.ref;
     } else {

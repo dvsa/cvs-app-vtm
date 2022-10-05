@@ -1,7 +1,7 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export const TrlBrakes: FormNode = {
-  name: 'brakesSection',
+  name: 'trlBrakesSection',
   label: 'Brakes',
   type: FormNodeTypes.GROUP,
   children: [

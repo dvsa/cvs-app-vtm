@@ -1,7 +1,9 @@
 <div class="autocomplete__wrapper">
-  <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m"
-    >{{ label }}
-    <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+  <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m">
+    {{ label }}
+
+    <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+
     <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
     <select [id]="name">
