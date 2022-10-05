@@ -71,6 +71,7 @@ export interface FormNode {
   path?: string;
   options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
   validators?: { name: ValidatorNames; args?: any }[];
+  customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
   disabled?: boolean;
   readonly?: boolean;

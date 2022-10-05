@@ -14,7 +14,6 @@ const optionalValidation = [
   { name: ValidatorNames.Min, args: 0 }
 ];
 
-
 export const TrlWeight: FormNode = {
   name: 'weightsSection',
   label: 'Weights',
@@ -29,6 +28,7 @@ export const TrlWeight: FormNode = {
     {
       name: 'grossGbWeight',
       label: 'GB',
+      customValidatorErrorName: 'Gross GB Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
@@ -36,6 +36,7 @@ export const TrlWeight: FormNode = {
     {
       name: 'grossEecWeight',
       label: 'EEC (optional)',
+      customValidatorErrorName: 'Gross EEC Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
@@ -43,6 +44,7 @@ export const TrlWeight: FormNode = {
     {
       name: 'grossDesignWeight',
       label: 'Design',
+      customValidatorErrorName: 'Gross Design Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
@@ -78,6 +80,7 @@ export const TrlWeight: FormNode = {
                 {
                   name: 'gbWeight',
                   label: 'GB weight',
+                  customValidatorErrorName: 'Axle GB Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: requiredValidation
@@ -85,6 +88,7 @@ export const TrlWeight: FormNode = {
                 {
                   name: 'eecWeight',
                   label: 'EEC (optional)',
+                  customValidatorErrorName: 'Axle EEC Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: optionalValidation
@@ -92,6 +96,7 @@ export const TrlWeight: FormNode = {
                 {
                   name: 'designWeight',
                   label: 'Design weight',
+                  customValidatorErrorName: 'Axle Design Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: requiredValidation
