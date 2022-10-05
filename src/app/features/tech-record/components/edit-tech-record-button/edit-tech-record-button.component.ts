@@ -6,7 +6,6 @@ import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { ViewportScroller } from '@angular/common';
 
 @Component({
@@ -23,11 +22,8 @@ export class EditTechRecordButtonComponent implements OnInit {
   @Output() editableStateChange = new EventEmitter<boolean>();
   @Output() submitCheckFormValidity = new EventEmitter();
 
-  errors: GlobalError[];
 
-  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store, private viewportScroller: ViewportScroller) {
-    this.errors = []
-  }
+  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store, private viewportScroller: ViewportScroller) {}
 
   ngOnInit() {
     this.actions$
@@ -37,7 +33,6 @@ export class EditTechRecordButtonComponent implements OnInit {
           `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
         )
       );
-    this.errorService.errors$.subscribe((error) => this.errors = error)
   }
 
   get isArchived(): boolean {
@@ -70,9 +65,5 @@ export class EditTechRecordButtonComponent implements OnInit {
   submitTechRecord() {
     this.submitCheckFormValidity.emit();
     this.clickScrollToTop()
-
-    if (!this.errors) {
-      this.toggleEditMode();
-    }
   }
 }
