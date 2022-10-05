@@ -84,9 +84,7 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditable ? 
-    { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } 
-    : this.vehicleTechRecord;
+    this.vehicleTechRecordCalculated = this.isEditable ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
 
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
