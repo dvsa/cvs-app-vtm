@@ -15,7 +15,7 @@ const optionalValidation = [
 ];
 
 export const PsvWeight: FormNode = {
-  name: 'weightsSection',
+  name: 'weightsSectionPsv',
   label: 'Weights',
   type: FormNodeTypes.GROUP,
   children: [

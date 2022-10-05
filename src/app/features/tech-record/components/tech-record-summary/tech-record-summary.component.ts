@@ -33,6 +33,7 @@ import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
+import { WeightsTrlHgvComponent } from '@forms/components/weights-trl-hgv/weights-trl-hgv.component';
 
 @Component({
   selector: 'app-tech-record-summary[vehicleTechRecord]',
@@ -43,6 +44,7 @@ export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
+  @ViewChild(WeightsTrlHgvComponent) weightsTrlHgv!: WeightsTrlHgvComponent;
 
   @Input() vehicleTechRecord!: TechRecordModel;
 
@@ -84,9 +86,7 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditable ? 
-    { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } 
-    : this.vehicleTechRecord;
+    this.vehicleTechRecordCalculated = this.isEditable ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
 
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }

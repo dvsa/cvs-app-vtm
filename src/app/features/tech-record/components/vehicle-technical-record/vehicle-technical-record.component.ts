@@ -74,17 +74,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
     forms.forEach(form => DynamicFormService.updateValidity(form, errors));
 
-    errors.length ? 
-    this.errorService.setErrors(errors) 
-    : this.errorService.clearErrors();
+    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
 
     return forms.some(form => form.invalid);
   }
 
   handleFormState() {
-    const form = this.summary.sections
-    .map(section => section.form)
-    .concat(this.summary.dimensions.form, this.summary.weights.form);
+    const weightForm = this.summary.weightsTrlHgv?.form ? this.summary.weightsTrlHgv.form : this.summary.weights.form;
+    const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, weightForm);
 
     this.isDirty = this.isAnyFormDirty(form);
     this.isInvalid = this.isAnyFormInvalid(form);
