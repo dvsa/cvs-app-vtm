@@ -71,12 +71,12 @@ export class PaginationComponent implements OnInit, OnDestroy {
   }
 
   get numberOfPages() {
-    return Math.ceil((this.numberOfItems ?? 0) / this.itemsPerPage);
+    return Math.ceil(this.numberOfItems / this.itemsPerPage);
   }
 
   get visiblePages() {
-    const start = this.currentPage - 2 <= 1 ? 0 : this.currentPage - 3;
-    const end = this.currentPage + 2 >= this.pages.length ? this.pages.length : this.currentPage + 2;
-    return this.pages.slice(end >= this.pages.length ? this.pages.length - 5 : start, start === 0 ? 5 : end);
+    const start = this.currentPage - 3 < 1 ? 0 : this.currentPage - 3;
+    const end = this.currentPage + 3 > this.pages.length ? this.pages.length : this.currentPage + 2;
+    return this.pages.slice(end < this.pages.length ? start : this.pages.length - 5, start ? end : 5);
   }
 }
