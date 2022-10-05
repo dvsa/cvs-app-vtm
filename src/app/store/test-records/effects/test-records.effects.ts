@@ -3,7 +3,6 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';

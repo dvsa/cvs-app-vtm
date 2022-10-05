@@ -63,11 +63,11 @@ export class DynamicFormService {
       const control =
         FormNodeTypes.CONTROL === type ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
 
-      if (validators && validators.length > 0) {
+      if (validators?.length) {
         this.addValidators(control, validators);
       }
 
-      if (asyncValidators && asyncValidators.length > 0) {
+      if (asyncValidators?.length) {
         this.addAsyncValidators(control, asyncValidators);
       }
 

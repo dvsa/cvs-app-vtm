@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { AutocompleteComponent } from './autocomplete.component';
 
@@ -15,7 +15,7 @@ export default {
 } as Meta;
 
 const Template: Story = args => {
-  const { id, label, options, name, hint, defaultValue = 'red', disabled = false, validators = [] } = args;
+  const { id, label, options, name, hint, defaultValue = 'red' } = args;
   return {
     component: AutocompleteComponent,
     template: `<form [formGroup]="form"><app-autocomplete [defaultValue]="defaultValue" [label]="label" [id]="id" [name]="name" [options]="options" [formControlName]="name">  </app-autocomplete></form>`,
