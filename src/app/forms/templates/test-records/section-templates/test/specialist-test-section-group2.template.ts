@@ -116,17 +116,17 @@ export const SpecialistTestSectionGroup2: FormNode = {
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
-              disabled: true,
+              value: '',
+
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testAnniversaryDate',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              disabled: true,
               label: 'Anniversary date',
+              value: '',
+              type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
             },
