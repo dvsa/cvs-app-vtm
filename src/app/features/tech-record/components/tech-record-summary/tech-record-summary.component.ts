@@ -18,7 +18,7 @@ import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
-import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
+import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
@@ -159,7 +159,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /* 14 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),
       /* 15 */ PlatesTemplate,
       /* 16 */ TrlAuthIntoServiceTemplate,
-      /* 17 */ TrlManufacturerTemplate
+      /* 17 */ ManufacturerTemplate
     ];
   }
 }
