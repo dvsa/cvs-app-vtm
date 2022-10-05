@@ -51,12 +51,12 @@ export class EditTechRecordButtonComponent implements OnInit {
   cancelAmend() {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
+      this.router.navigate([]);
+      this.errorService.clearErrors();
+      this.store.dispatch(updateEditingTechRecordCancel());
     }
-
-    this.errorService.clearErrors();
-    this.store.dispatch(updateEditingTechRecordCancel());
-    this.router.navigate([]);
   }
+
 
   clickScrollToTop(): void {
     this.viewportScroller.scrollToPosition([0, 0]);
