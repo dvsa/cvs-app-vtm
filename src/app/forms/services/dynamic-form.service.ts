@@ -31,6 +31,7 @@ export class DynamicFormService {
     [ValidatorNames.MinLength]: (args: number) => Validators.minLength(args),
     [ValidatorNames.Max]: (args: number) => Validators.max(args),
     [ValidatorNames.Min]: (args: number) => Validators.min(args),
+    [ValidatorNames.Alphanumeric]: () => CustomValidators.alphanumeric(),
     [ValidatorNames.Numeric]: () => CustomValidators.numeric(),
     [ValidatorNames.Pattern]: (args: string) => Validators.pattern(args),
     [ValidatorNames.Required]: () => Validators.required,
