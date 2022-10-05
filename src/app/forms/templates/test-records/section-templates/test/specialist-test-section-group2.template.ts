@@ -104,7 +104,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric }]
+              validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }]
             },
             {
               name: 'testNumber',
@@ -117,7 +117,6 @@ export const SpecialistTestSectionGroup2: FormNode = {
               name: 'testExpiryDate',
               label: 'Expiry Date',
               value: '',
-
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
