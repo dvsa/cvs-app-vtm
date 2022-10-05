@@ -155,7 +155,7 @@ describe('TestRecordsService', () => {
     });
 
     it('should return false if the test type group is not in the master template', done => {
-      store.overrideSelector(toEditOrNotToEdit, { vehicleType: 'psv', testTypes: [{ testTypeId: '185' }] } as TestResultModel);
+      store.overrideSelector(toEditOrNotToEdit, { vehicleType: 'psv', testTypes: [{ testTypeId: 'foo' }] } as TestResultModel);
       service.isTestTypeGroupEditable$.subscribe(isValid => {
         expect(isValid).toBe(false);
         done();

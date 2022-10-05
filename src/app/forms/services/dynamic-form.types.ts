@@ -64,6 +64,7 @@ export interface FormNode {
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
+  width?: number;
   label?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;

@@ -4,6 +4,7 @@ import { AccordionComponent } from '../accordion/accordion.component';
 @Component({
   selector: 'app-accordion-control',
   templateUrl: './accordion-control.component.html',
+  styleUrls: ['accordion-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccordionControlComponent implements AfterContentInit {
