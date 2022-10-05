@@ -115,7 +115,7 @@ export class CustomValidators {
   };
 
   static alphanumeric(): ValidatorFn {
-    return this.customPattern(['^[a-zA-Z0-9]+$', 'must be alphanumeric']);
+    return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
   }
 
   static numeric(): ValidatorFn {
