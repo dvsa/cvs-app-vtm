@@ -38,7 +38,7 @@
           <td class="govuk-table__cell"><app-number-input name="grossKerbWeight" formControlName="grossEecWeight"></app-number-input></td>
           <td class="govuk-table__cell"><app-number-input name="grossDesignWeight" formControlName="grossDesignWeight"></app-number-input></td>
         </tr>
-        <ng-container *ngIf="vehicleType === 'hgv'">
+        <ng-container *ngIf="data.vehicleType === 'hgv'">
           <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">Train</th>
             <td class="govuk-table__cell"><app-number-input name="trainGbWeight" formControlName="trainGbWeight"></app-number-input></td>
@@ -84,7 +84,7 @@
         <td class="govuk-table__cell">{{ data.grossEecWeight }}</td>
         <td class="govuk-table__cell">{{ data.grossDesignWeight }}</td>
       </tr>
-      <ng-container *ngIf="vehicleType === 'hgv'">
+      <ng-container *ngIf="data.vehicleType === 'hgv'">
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">Train</th>
           <td class="govuk-table__cell">{{ data.trainGbWeight }}</td>
