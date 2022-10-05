@@ -4,7 +4,6 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
   name: 'authorizationIntoServiceSection',
   label: 'Authorisation into service',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'authIntoService',

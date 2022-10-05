@@ -1,12 +1,11 @@
 import { AxleSpacing, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: number, axleSpacings?: AxleSpacing[]): FormNode {
   const section: FormNode = {
     name: 'dimensionsSection',
     label: 'Dimensions',
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: 'dimensions',
@@ -18,21 +17,24 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
             label: 'Height (mm)',
             value: '',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING
+            viewType: FormNodeViewTypes.HIDDEN,
+            editType: FormNodeEditTypes.HIDDEN
           }]: []),
           {
             name: 'length',
             label: 'Length (mm)',
             value: '',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING
+            viewType: FormNodeViewTypes.HIDDEN,
+            editType: FormNodeEditTypes.HIDDEN
           },
           {
             name: 'width',
             label: 'Width (mm)',
             value: '',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.STRING
+            viewType: FormNodeViewTypes.HIDDEN,
+            editType: FormNodeEditTypes.HIDDEN
           }
         ]
       },
@@ -41,7 +43,8 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
         label: 'Front axle to rear axle (mm)',
         value: '',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.STRING
+        viewType: FormNodeViewTypes.HIDDEN,
+        editType: FormNodeEditTypes.HIDDEN
       }
     ]
   };
@@ -52,7 +55,8 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
       label: 'Rear axle to rear trailer',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     });
   }
 
@@ -80,7 +84,6 @@ export function getDimensionsMinMaxSection(heading: string, minField: string, ma
     name: 'thirdDimensionsSection',
     label: heading,
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: minField,

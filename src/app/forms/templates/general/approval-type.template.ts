@@ -6,7 +6,6 @@ export function getTypeApprovalSection(vehicleType: VehicleTypes): FormNode {
     name: 'approvalSection',
     label: 'Type approval',
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: 'approvalType',

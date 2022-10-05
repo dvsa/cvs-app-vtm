@@ -51,8 +51,9 @@
       *appRoleRequired="roles.TechRecordAmend"
     ></app-edit-tech-record-button>
     <app-tech-record-summary
-      [editable]="isEditable"
-      [vehicleTechRecord]="(currentTechRecord$ | async) || undefined"
+      *ngIf="currentTechRecord$ | async as currentTechRecord"
+      [isEditable]="isEditable"
+      [vehicleTechRecord]="currentTechRecord"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>
     <app-tech-record-history

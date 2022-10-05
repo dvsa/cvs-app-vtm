@@ -3,6 +3,7 @@ import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@
 
 export const reasonForCreationSection: FormNode = {
   name: 'reasonForCreationSection',
+  label: 'Reason for creation',
   type: FormNodeTypes.GROUP,
   children: [
     {

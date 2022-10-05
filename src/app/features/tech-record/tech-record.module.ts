@@ -17,7 +17,7 @@ import { EditTechRecordButtonComponent } from './components/edit-tech-record-but
     TechRecordHistoryComponent,
     TechRecordSummaryComponent,
     TestRecordSummaryComponent,
-    VehicleTechnicalRecordComponent,
+    VehicleTechnicalRecordComponent
   ],
   imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule],
   exports: [EditTechRecordButtonComponent]

@@ -9,6 +9,7 @@ import { initialAppState, State } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { updateEditingTechRecord } from '@store/technical-records';
+import { SharedModule } from '@shared/shared.module';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -18,7 +19,7 @@ describe('TechRecordSummaryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordSummaryComponent],
-      imports: [DynamicFormsModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
       providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
@@ -44,7 +45,7 @@ describe('TechRecordSummaryComponent', () => {
   describe( 'TechRecordSummaryComponent View', () => {
     it('should show PSV record found', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -52,7 +53,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show PSV record found without dimensions', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
@@ -61,7 +62,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -69,7 +70,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show HGV record found without dimensions', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
@@ -78,7 +79,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();
@@ -86,7 +87,7 @@ describe('TechRecordSummaryComponent', () => {
 
     it('should show TRL record found without dimensions', () => {
       component.isEditable = false
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
 
@@ -97,7 +98,7 @@ describe('TechRecordSummaryComponent', () => {
   describe( 'TechRecordSummaryComponent Amend', () => {
     it('should make reason for change null in editMode', () => {
       component.isEditable = true;
-      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop();
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
       checkHeadingAndForm();

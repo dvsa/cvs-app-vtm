@@ -3,7 +3,6 @@ import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynam
 export const PlatesTemplate: FormNode = {
   name: 'platesSection',
   label: 'Plates',
-  viewType: FormNodeViewTypes.SUBHEADING,
   type: FormNodeTypes.GROUP,
   children: [
     {

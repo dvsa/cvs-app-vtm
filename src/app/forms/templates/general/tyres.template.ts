@@ -1,5 +1,5 @@
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export function getTyresSection(vehicleType: VehicleTypes): FormNode {
   const subSections: FormNode[] = [
@@ -43,7 +43,6 @@ export function getTyresSection(vehicleType: VehicleTypes): FormNode {
     name: 'tyreSection',
     type: FormNodeTypes.GROUP,
     label: 'Tyres',
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: 'axles',

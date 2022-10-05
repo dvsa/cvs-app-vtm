@@ -9,7 +9,8 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 
 @Component({
   selector: 'app-edit-tech-record-button',
-  templateUrl: './edit-tech-record-button.component.html'
+  templateUrl: './edit-tech-record-button.component.html',
+  styleUrls: ['./edit-tech-record-button.component.scss']
 })
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
@@ -27,7 +28,9 @@ export class EditTechRecordButtonComponent implements OnInit {
       .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
       .subscribe(action =>
         this.router.navigateByUrl(
-          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
+          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(
+            action.vehicleTechRecords[0]
+          )}`
         )
       );
   }
@@ -52,6 +55,7 @@ export class EditTechRecordButtonComponent implements OnInit {
 
     this.errorService.clearErrors();
     this.store.dispatch(updateEditingTechRecordCancel());
+    this.router.navigate([]);
   }
 
   submitTechRecord() {

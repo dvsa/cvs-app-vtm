@@ -11,10 +11,8 @@ import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.t
 import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency-test-section-group1.template';
 import { TestSection } from './section-templates/test/test-section.template';
 import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
-import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { ContingencyVehicleSectionDefaultTrl } from './section-templates/vehicle/contingency-default-trl-vehicle-section.template';
 import { ContingencyTestSectionGroup9And10 } from './section-templates/test/contingency-test-section-group9And10.template';
 import { ContingencyTestSectionGroup12and14 } from './section-templates/test/contingency-test-section-group12and14.template';
@@ -35,7 +33,7 @@ const groups1and2Template: Record<string, FormNode> = {
 export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
   psv: {
     default: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: TestSection,
       seatbelts: SeatbeltSection,
       emissions: EmissionsSection,
@@ -50,13 +48,23 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
   },
   hgv: {
     default: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: TestSection,
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       required: CreateRequiredSectionHgvTrl
+    },
+    testTypesGroup9And10: {
+      required: CreateRequiredSectionHgvTrl,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionGroup9And10,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection
     },
     testTypesGroup12And14: {
       required: CreateRequiredSectionHgvTrl,
@@ -71,7 +79,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
   },
   trl: {
     default: {
-      vehicle: VehicleSectionDefaultTrl,
+      vehicle: ContingencyVehicleSectionDefaultTrl,
       test: TestSection,
       visit: VisitSection,
       notes: NotesSection,
