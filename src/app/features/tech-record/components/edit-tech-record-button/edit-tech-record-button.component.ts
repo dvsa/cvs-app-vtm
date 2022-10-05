@@ -6,6 +6,8 @@ import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
 import { Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -21,18 +23,21 @@ export class EditTechRecordButtonComponent implements OnInit {
   @Output() editableStateChange = new EventEmitter<boolean>();
   @Output() submitCheckFormValidity = new EventEmitter();
 
-  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store) {}
+  errors: GlobalError[];
+
+  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store, private viewportScroller: ViewportScroller) {
+    this.errors = []
+  }
 
   ngOnInit() {
     this.actions$
       .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
       .subscribe(action =>
         this.router.navigateByUrl(
-          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(
-            action.vehicleTechRecords[0]
-          )}`
+          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
         )
       );
+    this.errorService.errors$.subscribe((error) => this.errors = error)
   }
 
   get isArchived(): boolean {
@@ -58,9 +63,16 @@ export class EditTechRecordButtonComponent implements OnInit {
     this.router.navigate([]);
   }
 
+  clickScrollToTop(): void {
+    this.viewportScroller.scrollToPosition([0, 0]);
+  }
+
   submitTechRecord() {
     this.submitCheckFormValidity.emit();
+    this.clickScrollToTop()
 
-    this.toggleEditMode();
+    if (!this.errors) {
+      this.toggleEditMode();
+    }
   }
 }
