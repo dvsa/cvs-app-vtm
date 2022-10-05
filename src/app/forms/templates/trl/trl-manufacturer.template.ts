@@ -15,28 +15,28 @@ export const TrlManufacturerTemplate: FormNode = {
           label: 'Name',
           type: FormNodeTypes.CONTROL,
           width: 30,
-          validators: [{ name: ValidatorNames.MaxLength, args: 150 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 150 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'address1',
           label: 'Address line 1',
           type: FormNodeTypes.CONTROL,
           width: 30,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'address2',
           label: 'Address line 2',
           type: FormNodeTypes.CONTROL,
           width: 30,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'postTown',
           label: 'Town or City',
           type: FormNodeTypes.CONTROL,
           width: 20,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'address3',
