@@ -17,20 +17,24 @@ export class TestStationsEffects {
   fetchTestStations$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTestStations),
-      mergeMap(() => this.testStationsService.fetchTestStations().pipe(
-        map(testStations => fetchTestStationsSuccess({ payload: testStations as TestStation[] })),
-        catchError(e => of(fetchTestStationsFailed({ error: e.message })))
-      ))
+      mergeMap(() =>
+        this.testStationsService.fetchTestStations().pipe(
+          map(testStations => fetchTestStationsSuccess({ payload: testStations })),
+          catchError(e => of(fetchTestStationsFailed({ error: e.message })))
+        )
+      )
     )
   );
 
   fetchTestStation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchTestStation),
-      mergeMap(({ id }) => this.testStationsService.fetchTestStation(id).pipe(
-        map(testStation => fetchTestStationSuccess({ id, payload: testStation as TestStation })),
-        catchError(e => of(fetchTestStationFailed({ error: e.message })))
-      ))
+      mergeMap(({ id }) =>
+        this.testStationsService.fetchTestStation(id).pipe(
+          map(testStation => fetchTestStationSuccess({ id, payload: testStation })),
+          catchError(e => of(fetchTestStationFailed({ error: e.message })))
+        )
+      )
     )
   );
 

@@ -16,7 +16,6 @@ export default {
 
 const Template: Story = args => {
   const { id, label, options, name, hint, defaultValue = 'red', disabled = false, validators = [] } = args;
-  const form = new FormGroup({ [name]: new FormControl({ defaultValue, disabled }, validators) });
   return {
     component: AutocompleteComponent,
     template: `<form [formGroup]="form"><app-autocomplete [defaultValue]="defaultValue" [label]="label" [id]="id" [name]="name" [options]="options" [formControlName]="name">  </app-autocomplete></form>`,

@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 export const CustomDefectsSection: FormNode = {
   name: 'customDefectsSection',

@@ -92,7 +92,7 @@ export class TestResultsEffects {
         )
       ),
       mergeMap(([testResult, username, id, { systemNumber }]) => {
-        return this.testRecordsService.saveTestResult(systemNumber!, { username, id }, testResult).pipe(
+        return this.testRecordsService.saveTestResult(systemNumber, { username, id }, testResult).pipe(
           take(1),
           map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
           catchError(e => {
@@ -127,7 +127,7 @@ export class TestResultsEffects {
           return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
         }
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
-        const vehicleTpl = masterTpl[vehicleType as VehicleTypes];
+        const vehicleTpl = masterTpl[vehicleType];
 
         let tpl;
         if (testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)) {
@@ -153,8 +153,11 @@ export class TestResultsEffects {
         if (testTypeId) {
           (mergedForms as TestResultModel).testTypes[0].testTypeId = testTypeId;
         }
-    
-        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }), updateResultOfTest());
+
+        return of(
+          templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }),
+          updateResultOfTest()
+        );
       })
     )
   );
@@ -163,13 +166,7 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(contingencyTestTypeSelected),
       mergeMap(action =>
-        of(action).pipe(
-          withLatestFrom(
-            this.store.select(testResultInEdit),
-            this.store.select(selectTestType(action.testType))
-          ),
-          take(1)
-        )
+        of(action).pipe(withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType))), take(1))
       ),
       concatMap(([action, editingTestResult, testTypeTaxonomy]) => {
         const id = action.testType;
@@ -180,7 +177,7 @@ export class TestResultsEffects {
         }
 
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
-        const vehicleTpl = contingencyTestTemplates[vehicleType as VehicleTypes];
+        const vehicleTpl = contingencyTestTemplates[vehicleType];
 
         const tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup] : vehicleTpl['default'];
 
@@ -194,7 +191,7 @@ export class TestResultsEffects {
         mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
         mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
 
-        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms as TestResultModel }));
+        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms }));
       })
     )
   );

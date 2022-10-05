@@ -75,7 +75,7 @@ export class DefectComponent implements OnInit, OnDestroy {
         this.vehicleType = testResult!.vehicleType;
         this._defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
         if (defectIndex) {
-          this.index = Number(defectIndex!);
+          this.index = Number(defectIndex);
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
           !this.defect && this.navigateBack();
@@ -110,7 +110,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     return this.defect!.deficiencyCategory === 'dangerous';
   }
 
-  get isAdvisory(): Boolean {
+  get isAdvisory(): boolean {
     return this.defect!.deficiencyCategory === 'advisory';
   }
 

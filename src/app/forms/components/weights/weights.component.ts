@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { FormArray } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
-import { Axle, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
@@ -11,7 +11,7 @@ import { debounceTime, Subscription } from 'rxjs';
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isEditing = false;
-  @Input() template!: FormNode
+  @Input() template!: FormNode;
   @Input() data!: Partial<TechRecordModel>;
 
   @Output() formChange = new EventEmitter();

@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },

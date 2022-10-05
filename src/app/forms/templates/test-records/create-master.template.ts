@@ -6,7 +6,6 @@ import { EmissionsSection } from './section-templates/emissions/emissions-sectio
 import { NotesSection } from './section-templates/notes/notes-section.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/resonForCreation.template';
 import { CreateRequiredSection } from './section-templates/required/contingency-required-hidden-section.template';
-import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency-test-section-group1.template';
 import { TestSection } from './section-templates/test/test-section.template';

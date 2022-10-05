@@ -65,7 +65,7 @@ describe('TestAmendmentHistoryComponent', () => {
       component.testRecord = mockTestResult();
       fixture.detectChanges();
 
-      const heading = fixture.debugElement.query(By.css('.govuk-heading-m'));
+      const heading = fixture.debugElement.query(By.css('.govuk-table__caption'));
       expect(heading).toBeTruthy();
       expect(heading.nativeElement.innerHTML).toBe('Test Record Amendment History');
 
