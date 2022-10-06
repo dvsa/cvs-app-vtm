@@ -26,7 +26,6 @@ import { FocusNextDirective } from './components/date/focus-next.directive';
 import { WeightsComponent } from './components/weights/weights.component';
 import { DimensionsComponent } from './components/dimensions/dimensions.component';
 import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
-import { WeightsTrlHgvComponent } from './components/weights-trl-hgv/weights-trl-hgv.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +50,6 @@ import { WeightsTrlHgvComponent } from './components/weights-trl-hgv/weights-trl
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
-    WeightsTrlHgvComponent,
     DimensionsComponent,
     NumberInputWithSuffixComponent
   ],
@@ -74,7 +72,6 @@ import { WeightsTrlHgvComponent } from './components/weights-trl-hgv/weights-trl
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
-    WeightsTrlHgvComponent,
     DimensionsComponent
   ]
 })
