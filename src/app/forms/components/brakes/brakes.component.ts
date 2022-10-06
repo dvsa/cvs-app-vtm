@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeOption, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
@@ -11,7 +11,7 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
   templateUrl: './brakes.component.html',
   styleUrls: ['./brakes.component.scss']
 })
-export class BrakesComponent implements OnInit, OnDestroy {
+export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
@@ -33,6 +33,14 @@ export class BrakesComponent implements OnInit, OnDestroy {
     this.form.cleanValueChanges
       .pipe(debounceTime(400), takeUntil(this.destroy$))
       .subscribe(e => this.formChange.emit(e));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { data } =  changes;
+
+    if (data?.currentValue && data.currentValue !== data.previousValue) {
+      this.form.patchValue(data.currentValue, { emitEvent: false });
+    }
   }
 
   ngOnDestroy(): void {
