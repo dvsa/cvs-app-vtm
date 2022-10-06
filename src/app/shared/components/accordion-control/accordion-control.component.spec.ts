@@ -35,11 +35,11 @@ describe('AccordionControlComponent', () => {
   it('should open and close child accordions', () => {
     fixture.whenRenderingDone().then(() => {
       expect(component.accordions?.length).toBe(1);
-      expect(component.accordions[0].expanded).toBeFalsy();
-      component.open();
-      expect(component.accordions[0].expanded).toBeTruthy();
-      component.close();
-      expect(component.accordions[0].expanded).toBeFalsy();
+      expect(component.accordions?.get(0)!.isExpanded).toBeFalsy();
+      component.toggle();
+      expect(component.accordions?.get(0)!.isExpanded).toBeTruthy();
+      component.toggle();
+      expect(component.accordions?.get(0)!.isExpanded).toBeFalsy();
     });
   });
 });

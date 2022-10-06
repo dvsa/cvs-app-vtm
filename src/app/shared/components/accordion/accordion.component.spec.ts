@@ -38,24 +38,24 @@ describe('AccordionComponent', () => {
     const button: HTMLButtonElement = fixture.debugElement.query(By.css('#accordion-control-test')).nativeElement;
 
     button.click();
-    expect(component.expanded).toBeTruthy();
+    expect(component.isExpanded).toBeTruthy();
 
     button.click();
-    expect(component.expanded).toBeFalsy();
+    expect(component.isExpanded).toBeFalsy();
   });
 
   it('should set expanded value to true', () => {
     const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
     component.open();
-    expect(component.expanded).toBeTruthy();
+    expect(component.isExpanded).toBeTruthy();
     expect(markForCheckSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should set expanded value to false', () => {
     const markForCheckSpy = jest.spyOn(component['cdr'], 'markForCheck');
-    component.expanded = true;
+    component.isExpanded = true;
     component.close();
-    expect(component.expanded).toBeFalsy();
+    expect(component.isExpanded).toBeFalsy();
     expect(markForCheckSpy).toHaveBeenCalledTimes(1);
   });
 });
