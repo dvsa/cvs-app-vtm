@@ -1,17 +1,17 @@
 <section>
   <app-accordion-control>
     <ng-container *ngFor="let section of sectionTemplates" [ngSwitch]="section.name">
-      <app-accordion *ngIf="section.name !== 'reasonForCreationSection' || isEditable" [id]="section.name" [title]="section.label">
+      <app-accordion [id]="section.name" [title]="section.label">
         <app-dimensions
           *ngSwitchCase="'dimensionsSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
-          [isEditing]="isEditable"
+          [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
         ></app-dimensions>
 
         <app-weights
           *ngSwitchCase="'weightsSection'"
-          [isEditing]="isEditable"
+          [isEditing]="isEditing"
           [template]="section"
           [data]="vehicleTechRecordCalculated"
           (formChange)="handleFormState($event)"
@@ -19,7 +19,7 @@
 
         <app-dynamic-form-group
           *ngSwitchDefault
-          [edit]="isEditable"
+          [edit]="isEditing"
           [template]="section"
           [data]="vehicleTechRecordCalculated"
           (formChange)="handleFormState($event)"
