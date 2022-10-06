@@ -80,8 +80,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   handleFormState() {
-    const weightForm = this.summary.weightsTrlHgv?.form ? this.summary.weightsTrlHgv.form : this.summary.weights.form;
-    const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, weightForm);
+    const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, this.summary.weights.form);
 
     this.isDirty = this.isAnyFormDirty(form);
     this.isInvalid = this.isAnyFormInvalid(form);

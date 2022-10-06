@@ -10,20 +10,11 @@
         ></app-dimensions>
 
         <app-weights
-          *ngSwitchCase="'weightsSectionPsv'"
+          *ngSwitchCase="'weightsSection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
           [isEditing]="isEditable"
-          [template]="section"
-          [data]="vehicleTechRecordCalculated"
           (formChange)="handleFormState($event)"
         ></app-weights>
-
-        <app-weights-trl-hgv
-          *ngSwitchCase="'weightsSection'"
-          [isEditing]="isEditable"
-          [template]="section"
-          [data]="vehicleTechRecordCalculated"
-          (formChange)="handleFormState($event)"
-        ></app-weights-trl-hgv>
 
         <app-dynamic-form-group
           *ngSwitchDefault
