@@ -2,7 +2,7 @@
   <app-base-test-record
     [isEditing]="true"
     [testResult]="testResult"
-    [sectionTemplates]="(sectionTemplates$ | async) || []"
+    [expandSections]="true"
     (newTestResult)="handleNewTestResult($event)"
   ></app-base-test-record>
 

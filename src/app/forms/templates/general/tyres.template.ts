@@ -1,6 +1,7 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export function getTyresSection(includeSpeeds: boolean = false): FormNode {
+export function getTyresSection(vehicleType: VehicleTypes): FormNode {
   const subSections: FormNode[] = [
     {
       name: 'tyreCode',
@@ -34,7 +35,7 @@ export function getTyresSection(includeSpeeds: boolean = false): FormNode {
     }
   ];
 
-  if (includeSpeeds) {
+  if (vehicleType === VehicleTypes.PSV) {
     subSections.splice(3, 0, { name: 'speedCategorySymbol', label: 'Speed category symbol', value: '', type: FormNodeTypes.CONTROL });
   }
 
@@ -42,7 +43,6 @@ export function getTyresSection(includeSpeeds: boolean = false): FormNode {
     name: 'tyreSection',
     type: FormNodeTypes.GROUP,
     label: 'Tyres',
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: [
       {
         name: 'axles',
@@ -74,7 +74,7 @@ export function getTyresSection(includeSpeeds: boolean = false): FormNode {
     ]
   };
 
-  if (includeSpeeds) {
+  if (vehicleType === VehicleTypes.PSV) {
     section.children = [{ name: 'axleNumber', label: 'Axle Number', type: FormNodeTypes.CONTROL }, ...section.children as FormNode[]];
   }
 

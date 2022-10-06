@@ -6,7 +6,6 @@ export const TestSection: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'createdAt',
@@ -91,7 +90,7 @@ export const TestSection: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'abandoned' }
                 },
-                { name: ValidatorNames.MaxLength, args: { length: 500 } }
+                { name: ValidatorNames.MaxLength, args: 500 }
               ]
             },
             {
@@ -148,7 +147,7 @@ export const TestSection: FormNode = {
             {
               name: 'prohibitionIssued',
               type: FormNodeTypes.CONTROL,
-              value: '',
+              value: null,
               label: 'Prohibition issued',
               options: [
                 { value: true, label: 'Yes' },

@@ -30,12 +30,13 @@ export enum FormNodeViewTypes {
 }
 
 export enum FormNodeTypes {
-  ROOT = 'root',
-  GROUP = 'group',
-  CONTROL = 'control',
   ARRAY = 'array',
-  SECTION = 'section',
-  COMBINATION = 'combination'
+  COMBINATION = 'combination',
+  CONTROL = 'control',
+  DIMENSIONS = 'dimensions',
+  GROUP = 'group',
+  ROOT = 'root',
+  SECTION = 'section'
 }
 
 export enum FormNodeEditTypes {
@@ -45,6 +46,7 @@ export enum FormNodeEditTypes {
   DATETIME = 'datetime',
   HIDDEN = 'hidden',
   NUMBER = 'number',
+  NUMERICSTRING = 'numericstring',
   RADIO = 'radio',
   TEXT = 'text',
   TEXTAREA = 'textarea'
@@ -62,6 +64,7 @@ export interface FormNode {
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
+  width?: number;
   label?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;

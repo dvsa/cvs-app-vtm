@@ -4,8 +4,10 @@ import { initialAppState, State } from '@store/.';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TechRecordComponent } from './tech-record.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SpinnerService } from '@core/components/spinner/spinner.service';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { Roles } from '@models/roles.enum';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 describe('TechRecordComponent', () => {
   let component: TechRecordComponent;
@@ -16,7 +18,7 @@ describe('TechRecordComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [TechRecordComponent],
-      providers: [SpinnerService, provideMockStore({ initialState: initialAppState })]
+      providers: [provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
@@ -32,4 +34,26 @@ describe('TechRecordComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return roles', () => {
+    const roles = component.roles;
+
+    expect(roles).toBe(Roles);
+  })
+
+  it('should return error', () => {
+    const expectedError: GlobalError = { error: 'some error', anchorLink: 'expected' };
+
+    const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
+
+    expect(expectedResult).toBe(expectedError);
+  })
+
+  it('reuse strategy should be set to false', () => {
+    const snapshot = {} as ActivatedRouteSnapshot;
+
+    const expectedResult = (component['router'] as Router).routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
+
+    expect(expectedResult).toBeFalsy();
+  })
 });

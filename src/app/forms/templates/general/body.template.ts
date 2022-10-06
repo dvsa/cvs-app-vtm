@@ -1,14 +1,14 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export function getBodyTemplate(isPsv: boolean = false): FormNode {
+export function getBodyTemplate(vehicleType: VehicleTypes): FormNode {
   let bodyFormControl: FormNode = {
     name: 'body',
     label: 'Body',
     type: FormNodeTypes.GROUP,
-    viewType: FormNodeViewTypes.SUBHEADING,
     children: []
   };
-  if(isPsv) {
+  if(vehicleType === VehicleTypes.PSV) {
     bodyFormControl.children!.push(
       {
         name: 'modelLiteral',

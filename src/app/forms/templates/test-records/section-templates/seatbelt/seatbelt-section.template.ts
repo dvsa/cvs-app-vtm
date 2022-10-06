@@ -5,7 +5,6 @@ export const SeatbeltSection: FormNode = {
   name: 'seatbeltSection',
   label: 'Seatbelt',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testTypes',
@@ -41,9 +40,12 @@ export const SeatbeltSection: FormNode = {
               label: 'Most recent installation check',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATETIME,
+              editType: FormNodeEditTypes.DATE,
               value: null,
-              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
+              validators: [
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } },
+                { name: ValidatorNames.PastDate }
+              ]
             }
           ]
         }

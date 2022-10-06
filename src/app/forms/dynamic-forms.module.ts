@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
@@ -21,6 +22,10 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
+import { FocusNextDirective } from './components/date/focus-next.directive';
+import { WeightsComponent } from './components/weights/weights.component';
+import { DimensionsComponent } from './components/dimensions/dimensions.component';
+import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +46,12 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    DefectSelectComponent
+    DefectSelectComponent,
+    FocusNextDirective,
+    TruncatePipe,
+    WeightsComponent,
+    DimensionsComponent,
+    NumberInputWithSuffixComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -60,7 +70,9 @@ import { NumberOnlyDirective } from './directives/app-number-only.directive';
     SelectComponent,
     DynamicFormFieldComponent,
     FieldErrorMessageComponent,
-    DefectSelectComponent
+    DefectSelectComponent,
+    WeightsComponent,
+    DimensionsComponent
   ]
 })
 export class DynamicFormsModule {}

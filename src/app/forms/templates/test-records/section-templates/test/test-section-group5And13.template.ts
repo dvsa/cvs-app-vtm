@@ -6,7 +6,6 @@ export const TestSectionGroup5And13: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'createdAt',
@@ -48,8 +47,14 @@ export const TestSectionGroup5And13: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' },
+                { value: 'prs', label: 'PRS' },
+                { value: 'abandoned', label: 'Abandoned' }
+              ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
@@ -107,7 +112,7 @@ export const TestSectionGroup5And13: FormNode = {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'abandoned' }
                 },
-                { name: ValidatorNames.MaxLength, args: { length: 500 } }
+                { name: ValidatorNames.MaxLength, args: 500 }
               ]
             },
             {
@@ -125,6 +130,18 @@ export const TestSectionGroup5And13: FormNode = {
               disabled: true,
               label: 'End time',
               viewType: FormNodeViewTypes.TIME
+            },
+            {
+              name: 'prohibitionIssued',
+              type: FormNodeTypes.CONTROL,
+              label: 'Prohibition issued',
+              value: null,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             }
           ]
         }

@@ -19,7 +19,6 @@ export class AmendedTestRecordComponent implements OnInit {
   async ngOnInit() {
     this.testResult$ = this.testRecordsService.amendedTestResult$;
     this.defects$ = this.testRecordsService.amendedDefectData$;
-    this.sectionTemplates$ = this.testRecordsService.sectionTemplates$;
     this.testRecordsService.editingTestResult((await firstValueFrom(this.testResult$)) as TestResultModel);
   }
 }

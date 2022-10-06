@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { SharedModule } from '@shared/shared.module';
 import { BaseTestRecordComponent } from './components/base-test-record/base-test-record.component';
@@ -9,7 +10,7 @@ import { VehicleHeaderComponent } from './components/vehicle-header/vehicle-head
 
 @NgModule({
   declarations: [BaseTestRecordComponent, ResultOfTestComponent, TestTypeSelectComponent, VehicleHeaderComponent],
-  imports: [CommonModule, SharedModule, DynamicFormsModule],
+  imports: [CommonModule, SharedModule, DynamicFormsModule, RouterModule],
   exports: [BaseTestRecordComponent, ResultOfTestComponent, TestTypeSelectComponent, VehicleHeaderComponent]
 })
 export class TestRecordsModule {}

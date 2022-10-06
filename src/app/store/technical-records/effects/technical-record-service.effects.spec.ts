@@ -1,24 +1,30 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { mockVehicleTechnicalRecordList } from '@mocks/mock-vehicle-technical-record.mock';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { UserService } from '@services/user-service/user-service';
 import { initialAppState } from '@store/.';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import {
+  createProvisionalTechRecord,
+  createProvisionalTechRecordFailure,
+  createProvisionalTechRecordSuccess,
   getByAll,
   getByAllFailure,
   getByAllSuccess,
   getByPartialVin,
   getByPartialVinFailure,
   getByPartialVinSuccess,
-  getBySystemNumber,
-  getBySystemNumberFailure,
-  getBySystemNumberSuccess,
+  getBySystemNumberAndVin,
+  getBySystemNumberAndVinFailure,
+  getBySystemNumberAndVinSuccess,
   getByTrailerId,
   getByTrailerIdFailure,
   getByTrailerIdSuccess,
@@ -27,7 +33,10 @@ import {
   getByVinSuccess,
   getByVrm,
   getByVrmFailure,
-  getByVrmSuccess
+  getByVrmSuccess,
+  updateTechRecords,
+  updateTechRecordsFailure,
+  updateTechRecordsSuccess
 } from '../actions/technical-record-service.actions';
 import { TechnicalRecordServiceEffects } from './technical-record-service.effects';
 
@@ -36,15 +45,17 @@ describe('TechnicalRecordServiceEffects', () => {
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   let technicalRecordService: TechnicalRecordService;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
         TechnicalRecordServiceEffects,
         provideMockActions(() => actions$),
         TechnicalRecordService,
-        provideMockStore({ initialState: initialAppState })
+        provideMockStore({ initialState: initialAppState }),
+        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } }
       ]
     });
 
@@ -360,23 +371,22 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({systemNumber: 'PSV', vin: 'XMGDE02FS0H012345'}) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberSuccess({ vehicleTechRecords: technicalRecord })
+          b: getBySystemNumberAndVinSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });
 
     it('should return generic error message if not not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const systemNumber = { systemNumber: 'systemNumber' };
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber(systemNumber) });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'systemNumber', vin: 'vin' }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -386,16 +396,15 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
+          b: getBySystemNumberAndVinFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
         });
       });
     });
 
     it('should return not found error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const systemNumber = { systemNumber: 'systemNumber' };
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber(systemNumber) });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'systemNumber', vin: 'vin' }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -405,7 +414,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberFailure({
+          b: getBySystemNumberAndVinFailure({
             error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
             anchorLink: 'search-term'
           })
@@ -415,15 +424,14 @@ describe('TechnicalRecordServiceEffects', () => {
 
     it('should return error message if error is a string', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        const systemNumber = { systemNumber: 'systemNumber' };
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber(systemNumber) });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'systemNumber', vin: 'vin' }) });
 
         // mock service call
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getBySystemNumberFailure({ error: 'string', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' }) });
       });
     });
   });
@@ -498,6 +506,78 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getByAll').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getByAllFailure({ error: 'string', anchorLink: 'search-term' }) });
+      });
+    });
+  });
+
+  describe('updateTechnicalRecord$', () => {
+    it('should return a technical record on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: updateTechRecords });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+
+        // expect effect to return success action
+        expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
+          b: updateTechRecordsSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it('should return an error message if not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: updateTechRecords });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
+        jest.spyOn(technicalRecordService, 'putUpdateTechRecords').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.updateTechnicalRecord$).toBe('---b', {
+          b: updateTechRecordsFailure({
+            error: 'Unable to update technical record null'
+          })
+        });
+      });
+    });
+  });
+
+  describe('postProvisionalTechRecord$', () => {
+    it('should return a technical record on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+
+        // expect effect to return success action
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it('should return an error message if not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordFailure({
+            error: 'Unable to create a new provisional record null'
+          })
+        });
       });
     });
   });

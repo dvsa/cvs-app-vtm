@@ -22,6 +22,7 @@ import { of, ReplaySubject } from 'rxjs';
 import { DynamicFormsModule } from '../../../../../forms/dynamic-forms.module';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
 import { TestAmendmentHistoryComponent } from '../../components/test-amendment-history/test-amendment-history.component';
 import { TestRecordComponent } from './test-record.component';
 
@@ -37,9 +38,9 @@ describe('TestRecordComponent', () => {
   let techRecordService: TechnicalRecordService;
   let actions$ = new ReplaySubject<Action>();
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent, ResultOfTestComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [BaseTestRecordComponent, TestAmendmentHistoryComponent, TestRecordComponent, ResultOfTestComponent, VehicleHeaderComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, TestResultsApiModule, SharedModule],
       providers: [
         TestRecordsService,
@@ -55,7 +56,7 @@ describe('TestRecordComponent', () => {
         TechnicalRecordService
       ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestRecordComponent);
@@ -76,10 +77,9 @@ describe('TestRecordComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not display anything when there is no data', fakeAsync(() => {
+  it('should not display anything when there is no data', waitForAsync(() => {
     component.testResult$ = of(undefined);
 
-    tick();
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('h1'))).toBeNull();
@@ -91,15 +91,15 @@ describe('TestRecordComponent', () => {
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
     });
-    it('should display save button when edit query param is true', () => {
+    it('should display save button when edit query param is true', waitForAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
       fixture.detectChanges();
       expect(el.query(By.css('button#save-test-result'))).toBeTruthy();
-    });
+    }));
 
-    it('should run handleSave when save button is clicked', () => {
+    it('should run handleSave when save button is clicked', waitForAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
 
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
@@ -109,7 +109,7 @@ describe('TestRecordComponent', () => {
       jest.spyOn(component, 'handleSave');
       el.query(By.css('button#save-test-result')).triggerEventHandler('click', {});
       expect(component.handleSave).toHaveBeenCalledTimes(1);
-    });
+    }));
   });
 
   describe(TestRecordComponent.prototype.handleSave.name, () => {
@@ -188,18 +188,19 @@ describe('TestRecordComponent', () => {
       jest.spyOn(techRecordService, 'selectedVehicleTechRecord$', 'get').mockReturnValue(of(undefined));
     });
 
-    it('should render the banner if the test type id is not supported', () => {
+    it('should render the banner if the test type id is not supported', waitForAsync(() => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(false));
       fixture.detectChanges();
       const banner = el.query(By.css('div.govuk-notification-banner'));
       expect(banner).toBeTruthy();
-    });
+    }));
 
-    it('should not render the banner if the test type id is supported', () => {
+    it('should not render the banner if the test type id is supported', fakeAsync(() => {
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
+      tick();
       fixture.detectChanges();
       const banner = el.query(By.css('div.govuk-notification-banner'));
       expect(banner).toBeNull();
-    });
+    }));
   });
 });

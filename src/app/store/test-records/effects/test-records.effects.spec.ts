@@ -5,7 +5,10 @@ import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
+import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -21,12 +24,11 @@ import { TestScheduler } from 'rxjs/testing';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { mockTestResult, mockTestResultList } from '../../../../mocks/mock-test-result';
 import { masterTpl } from '../../../forms/templates/test-records/master.template';
-import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import {
   contingencyTestTypeSelected,
   createTestResult,
-  createTestResultSuccess,
   createTestResultFailed,
+  createTestResultSuccess,
   editingTestResult,
   fetchSelectedTestResult,
   fetchSelectedTestResultFailed,
@@ -38,13 +40,11 @@ import {
   testTypeIdChanged,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess
+  updateTestResultSuccess,
+  updateResultOfTest
 } from '../actions/test-records.actions';
-import { initialTestResultsState } from '../reducers/test-records.reducer';
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 import { TestResultsEffects } from './test-records.effects';
-import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
-import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 
 jest.mock('../../../forms/templates/test-records/master.template', () => ({
   __esModule: true,
@@ -310,11 +310,12 @@ describe('TestResultsEffects', () => {
           })
         });
 
-        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']),
             sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel
-          })
+          }),
+          c: updateResultOfTest()
         });
       });
     });
@@ -431,11 +432,12 @@ describe('TestResultsEffects', () => {
           })
         });
 
-        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-b', {
+        expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(masterTpl.psv['default']),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
-          })
+          }),
+          c: updateResultOfTest()
         });
       });
     });
@@ -466,6 +468,7 @@ describe('TestResultsEffects', () => {
           b: templateSectionsChanged({
             sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']),
             sectionsValue: {
+              contingencyTestNumber: undefined,
               countryOfRegistration: '',
               createdById: undefined,
               createdByName: undefined,
@@ -484,9 +487,10 @@ describe('TestResultsEffects', () => {
               reasonForCancellation: undefined,
               reasonForCreation: undefined,
               regnDate: undefined,
+              source: undefined,
               shouldEmailCertificate: undefined,
               systemNumber: '',
-              testEndTimestamp: undefined,
+              testEndTimestamp: '',
               testResultId: '',
               testStartTimestamp: '',
               testStationName: '',
@@ -520,6 +524,7 @@ describe('TestResultsEffects', () => {
               testerEmailAddress: '',
               testerName: '',
               testerStaffId: undefined,
+              typeOfTest: undefined,
               vehicleClass: null,
               vehicleConfiguration: undefined,
               vehicleSize: undefined,

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -13,4 +13,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class TextInputComponent extends BaseControlComponent {}
+export class TextInputComponent extends BaseControlComponent {
+  @Input() numeric: boolean = false;
+  @Input() width?: number;
+}

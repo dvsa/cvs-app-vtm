@@ -47,6 +47,11 @@ const currentTechRecord = {
       parkingBrakeMrk: true
     }
   ],
+  dimensions: {
+    height: 30000,
+    length: 25000,
+    width: 10000
+  },
   suspensionType: '1',
   roadFriendly: true,
   drawbarCouplingFitted: true,
