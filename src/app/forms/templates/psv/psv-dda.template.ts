@@ -20,6 +20,9 @@ export const PsvDdaTemplate: FormNode = {
             { value: false, label: 'No' },
             { value: null, label: 'I do not know' }
           ],
+          validators: [
+            { name: ValidatorNames.Defined }
+          ],
         },
         {
           name: 'wheelchairCapacity',
@@ -49,6 +52,9 @@ export const PsvDdaTemplate: FormNode = {
             { value: false, label: 'No' },
             { value: null, label: 'I do not know' }
           ],
+          validators: [
+            { name: ValidatorNames.Defined }
+          ],
         },
         {
           name: 'wheelchairLiftInformation',
@@ -68,6 +74,9 @@ export const PsvDdaTemplate: FormNode = {
             { value: true, label: 'Yes' },
             { value: false, label: 'No' },
             { value: null, label: 'I do not know' }
+          ],
+          validators: [
+            { name: ValidatorNames.Defined }
           ],
         },
         {

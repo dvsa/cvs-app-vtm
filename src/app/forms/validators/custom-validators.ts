@@ -114,6 +114,16 @@ export class CustomValidators {
     };
   };
 
+  static defined = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value === undefined) {
+        return { defined: false };
+      }
+
+      return null;
+    };
+  };
+
   static numeric(): ValidatorFn {
     return this.customPattern(['^\\d*$', 'must be a whole number']);
   }
