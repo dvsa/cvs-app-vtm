@@ -14,6 +14,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class NumberInputWithSuffixComponent extends BaseControlComponent {
-  @Input() isEditing = false;
+  @Input() isEditing = true;
   @Input() suffix!: string;
 }
