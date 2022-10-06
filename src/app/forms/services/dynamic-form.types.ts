@@ -69,7 +69,7 @@ export interface FormNode {
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
+  options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
   validators?: { name: ValidatorNames; args?: any }[];
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
   disabled?: boolean;
