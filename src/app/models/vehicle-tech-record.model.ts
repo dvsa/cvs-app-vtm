@@ -143,6 +143,7 @@ export enum SpeedCategorySymbol {
 
 export interface Axle {
   axleNumber?: number;
+  brakes?: AxleBrakeProperties;
   parkingBrakeMrk?: boolean;
   tyres?: Tyres;
   weights?: AxleWeights;

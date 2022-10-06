@@ -52,6 +52,16 @@ export enum FormNodeEditTypes {
   TEXTAREA = 'textarea'
 }
 
+export enum FormNodeWidth {
+  XXL = 30,
+  XL = 20,
+  L = 10,
+  M = 5,
+  S = 4,
+  XS = 3,
+  XXS = 2
+}
+
 export interface FormNodeOption<T> {
   value: T;
   label: string;
@@ -64,7 +74,7 @@ export interface FormNode {
   type: FormNodeTypes; // maybe updateType?
   viewType?: FormNodeViewTypes;
   editType?: FormNodeEditTypes;
-  width?: number;
+  width?: FormNodeWidth;
   label?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;

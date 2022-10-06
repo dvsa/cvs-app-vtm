@@ -1,0 +1,60 @@
+<ng-container [formGroup]="form">
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+
+        <th scope="col" class="govuk-table__header">Brake actuator</th>
+
+        <th scope="col" class="govuk-table__header">Level length</th>
+
+        <th scope="col" class="govuk-table__header">Spring brake parking</th>
+      </tr>
+    </thead>
+
+    <tbody class="govuk-table__body" formArrayName="axles">
+      <tr class="govuk-table__row" *ngFor="let axle of axles.controls; let i = index" [formGroupName]="i">
+        <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+
+        <ng-container formGroupName="brakes">
+          <td class="govuk-table__cell">
+            <app-number-input
+              formControlName="brakeActuator"
+              [name]="'brakeActuator' + i"
+              [isEditing]="isEditing"
+              [noBottomMargin]="true"
+            ></app-number-input>
+          </td>
+
+          <td class="govuk-table__cell">
+            <app-number-input
+              formControlName="leverLength"
+              [name]="'leverLength' + i"
+              [isEditing]="isEditing"
+              [noBottomMargin]="true"
+            ></app-number-input>
+          </td>
+
+          <td class="govuk-table__cell">
+            <app-text-input
+              formControlName="springBrakeParking"
+              [name]="'springBrakeParking' + i"
+              [isEditing]="isEditing"
+              [noBottomMargin]="true"
+            ></app-text-input>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="radio-buttons" formGroupName="brakes">
+    <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'loadSensingValve' }"></ng-template>
+
+    <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'antilockBrakingSystem' }"></ng-template>
+
+    <ng-template #radio let-name="name">
+      <app-radio-group [formControlName]="name" [name]="name" [label]="name" [options]="booleanOptions" [isEditing]="isEditing"></app-radio-group>
+    </ng-template>
+  </div>
+</ng-container>
