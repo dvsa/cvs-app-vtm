@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
@@ -56,7 +57,8 @@ export const SpecialistTestSectionGroup3: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass', 'abandoned'] } }
               ],
               type: FormNodeTypes.CONTROL
             },
@@ -103,7 +105,13 @@ export const SpecialistTestSectionGroup3: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 20 }, { name: ValidatorNames.Alphanumeric }]
+              validators: [
+                { name: ValidatorNames.MaxLength, args: 20 },
+                { name: ValidatorNames.Alphanumeric },
+                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'testResult', value: 'pass' } }
+              ],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              required: true
             },
             {
               name: 'testNumber',
