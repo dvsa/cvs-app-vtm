@@ -1,11 +1,11 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { CustomFormControl, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
-import { sectionTemplates, testResultInEdit, updateResultOfTest } from '@store/test-records';
+import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { catchError, map, Observable, of, take, tap } from 'rxjs';
 
@@ -68,5 +68,4 @@ export class CustomAsyncValidators {
       );
     };
   }
-  
 }
