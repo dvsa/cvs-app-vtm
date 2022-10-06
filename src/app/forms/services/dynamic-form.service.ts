@@ -132,7 +132,7 @@ export class DynamicFormService {
 
       errorList.forEach(error => {
         validationErrorList.push({
-          error: ErrorMessageMap[error](errors[error], customValidatorErrorName ? customValidatorErrorName : label),
+          error: ErrorMessageMap[error](errors[error], customValidatorErrorName ?? label),
           anchorLink: name
         } as GlobalError);
       });
