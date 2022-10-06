@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const SpecialistTestSectionGroup1: FormNode = {
+export const SpecialistTestSectionGroup3: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -98,12 +98,12 @@ export const SpecialistTestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
-              name: 'certificateNumber',
-              label: 'Certificate number',
+              name: 'secondaryCertificateNumber',
+              label: 'Secondary certificate number',
               value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric }]
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 20 }, { name: ValidatorNames.Alphanumeric }]
             },
             {
               name: 'testNumber',
