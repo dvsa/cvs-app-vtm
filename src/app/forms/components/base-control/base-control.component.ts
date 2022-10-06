@@ -33,9 +33,6 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
   ngAfterContentInit(): void {
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
-      if (!ngControl.control) {
-        console.log(ngControl);
-      }
       this.control = ngControl.control as CustomControl;
       this.control.meta.changeDetection = this.ref;
     } else {
