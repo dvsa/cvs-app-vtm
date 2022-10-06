@@ -18,8 +18,7 @@
 
         <app-weights
           *ngSwitchCase="'weightsSection'"
-          [data]="vehicleTechRecordCalculated"
-          [template]="section"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
           [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
         ></app-weights>
