@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
@@ -13,4 +13,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class NumberInputComponent extends BaseControlComponent {}
+export class NumberInputComponent extends BaseControlComponent {
+  @Input() isEditing = true;
+  style = 'govuk-input' + (this.width ? (` govuk-input--width-` + this.width) : '');
+}

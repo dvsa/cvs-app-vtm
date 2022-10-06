@@ -2,6 +2,13 @@
   <app-accordion-control>
     <ng-container *ngFor="let section of sectionTemplates" [ngSwitch]="section.name">
       <app-accordion [id]="section.name" [title]="section.label">
+        <app-brakes
+          *ngSwitchCase="'trlBrakesSection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
+          [isEditing]="isEditing"
+          (formChange)="handleFormState($event)"
+        ></app-brakes>
+
         <app-dimensions
           *ngSwitchCase="'dimensionsSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
@@ -11,19 +18,19 @@
 
         <app-weights
           *ngSwitchCase="'weightsSection'"
-          [isEditing]="isEditing"
-          [template]="section"
           [data]="vehicleTechRecordCalculated"
+          [template]="section"
+          [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
         ></app-weights>
 
         <app-dynamic-form-group
           *ngSwitchDefault
-          [edit]="isEditing"
-          [template]="section"
-          [data]="vehicleTechRecordCalculated"
-          (formChange)="handleFormState($event)"
           class="govuk-summary-list"
+          [data]="vehicleTechRecordCalculated"
+          [template]="section"
+          [edit]="isEditing"
+          (formChange)="handleFormState($event)"
         ></app-dynamic-form-group>
       </app-accordion>
     </ng-container>
