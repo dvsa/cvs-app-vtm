@@ -17,7 +17,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 export class RadioGroupComponent extends BaseControlComponent {
   @Input() options: FormNodeOption<string | number | boolean>[] = [];
   @Input() inline: boolean = false;
-  @Input() isEditing = false;
+  @Input() isEditing = true;
 
   getLabel(value: any): string | undefined {
     return this.options.find(option => option.value === value)?.label;

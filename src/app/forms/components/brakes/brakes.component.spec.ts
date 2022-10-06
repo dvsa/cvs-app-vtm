@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/index';
 
 import { BrakesComponent } from './brakes.component';
 
@@ -8,7 +12,9 @@ describe('BrakesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BrakesComponent ]
+      declarations: [ BrakesComponent ],
+      imports: [ DynamicFormsModule ],
+      providers: [provideMockStore({ initialState: initialAppState })]
     })
     .compileComponents();
   });
@@ -16,6 +22,7 @@ describe('BrakesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BrakesComponent);
     component = fixture.componentInstance;
+    component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
     fixture.detectChanges();
   });
 

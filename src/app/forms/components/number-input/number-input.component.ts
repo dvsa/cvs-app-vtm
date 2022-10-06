@@ -14,6 +14,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class NumberInputComponent extends BaseControlComponent {
-  @Input() isEditing = false;
+  @Input() isEditing = true;
   style = 'govuk-input' + (this.width ? (` govuk-input--width-` + this.width) : '');
 }
