@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const RequiredSpecialistSectionGroup1And5: FormNode = {
+export const RequiredSpecialistSection: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [

@@ -10,6 +10,7 @@ export enum ValidatorNames {
   MinLength = 'minlength',
   Max = 'max',
   Min = 'min',
+  Alphanumeric = 'alphanumeric',
   Numeric = 'numeric',
   Pattern = 'pattern',
   Required = 'required',
