@@ -5,3 +5,82 @@ a {
 #sign-out {
   margin-left: 1rem;
 }
+
+.easter {
+  height: 100%;
+  left: calc(45%);
+  top: 0;
+  position: absolute;
+  right: 0;
+  width: 10%;
+  .egg {
+    background: transparent;
+    border: none;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.party_time {
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  &--text:hover {
+    animation-name: party-time-text;
+  }
+  &--img:hover {
+    animation-name: party-time-img;
+  }
+}
+
+@keyframes party-time-img {
+  0% {
+    filter: hue-rotate(311deg) brightness(1);
+  }
+  16.6667% {
+    filter: hue-rotate(11deg) brightness(2);
+  }
+  33.3333% {
+    filter: hue-rotate(64deg) brightness(1);
+  }
+  50% {
+    filter: hue-rotate(103deg) brightness(2);
+  }
+  66.6667% {
+    filter: hue-rotate(160deg) brightness(1);
+  }
+  83.3333% {
+    filter: hue-rotate(258deg) brightness(2);
+  }
+  100% {
+    filter: hue-rotate(311deg) brightness(1);
+  }
+}
+@keyframes party-time-text {
+  0% {
+    color: red;
+  }
+  16.6667% {
+    color: #ff0;
+  }
+  33.3333% {
+    color: lime;
+  }
+  50% {
+    color: cyan;
+  }
+  66.6667% {
+    color: blue;
+  }
+  83.3333% {
+    color: #f0f;
+  }
+  100% {
+    color: red;
+  }
+}

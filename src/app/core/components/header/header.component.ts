@@ -9,6 +9,7 @@ export class HeaderComponent {
   @Output() logOutEvent = new EventEmitter<void>();
   @Input() username: string | null = '';
 
+  partyTime = false;
   logout() {
     this.logOutEvent.emit();
   }
