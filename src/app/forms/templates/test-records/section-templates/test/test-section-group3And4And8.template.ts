@@ -52,7 +52,6 @@ export const TestSectionGroup3And4And8: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
-                { value: 'prs', label: 'PRS' },
                 { value: 'abandoned', label: 'Abandoned' }
               ],
               validators: [
