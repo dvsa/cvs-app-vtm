@@ -13,7 +13,7 @@
 </app-vehicle-header>
 
 <ng-container *ngIf="sectionTemplates$ | async as sectionTemplates">
-  <app-accordion-control>
+  <app-accordion-control [isExpanded]="expandSections">
     <ng-container *ngFor="let template of sectionTemplates; let i = index" [ngSwitch]="template.name">
       <app-accordion *ngSwitchCase="'defects'" [id]="template.name" [title]="template.label">
         <app-defects
