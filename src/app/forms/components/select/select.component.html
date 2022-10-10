@@ -1,18 +1,26 @@
-<div class="govuk-form-group">
-  <label class="govuk-label" for="{{ name }}"> {{ label }} </label>
-  <div id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+<div *ngIf="isEditing; else view" [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
+  <h1 *ngIf="label" class="govuk-label-wrapper">
+    <label class="govuk-label" for="{{ name }}">{{ label }}</label>
+  </h1>
+
+  <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+
+  <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
+
   <select
     class="govuk-select"
     id="{{ name }}"
     name="{{ name }}"
     [(ngModel)]="value"
-    (ngModelChange)="onChange($event)"
+    [disabled]="disabled"
     attr.aria-describedby="{{ name }}-hint"
+    (ngModelChange)="onChange($event)"
     (blur)="onTouched(); handleEvent($event)"
     (focus)="handleEvent($event)"
-    [disabled]="disabled || false"
   >
-    <option value="choose" selected></option>
+    <option value="" selected disabled hidden></option>
     <option *ngFor="let option of options" [value]="option.value" [selected]="value === option.value">{{ option.label }}</option>
   </select>
 </div>
+
+<ng-template #view>{{ value | defaultNullOrEmpty }}</ng-template>
