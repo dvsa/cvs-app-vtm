@@ -276,6 +276,22 @@ describe('defined', () => {
   })
 })
 
+describe('alphanumeric', () => {
+  it.each([
+    [null, '12dc9a'],
+    [null, 0],
+    [null, 'asas'],
+    [{ customPattern: { message: 'must be alphanumeric' } }, 'foobar+'],
+    [{ customPattern: { message: 'must be alphanumeric' } }, '123456bar-'],
+    [{ customPattern: { message: 'must be alphanumeric' } }, 'foo123456^@'],
+    [null, '123546789abcdefghijklmnopqrstuvwxyz'],
+    [null, null]
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
+    const numberValidator = CustomValidators.alphanumeric();
+    expect(numberValidator(new FormControl(input))).toEqual(expected);
+  });
+});
+
 describe('customPattern', () => {
   it.each([
     [null, 123456789, '.*', 'this should always pass'],

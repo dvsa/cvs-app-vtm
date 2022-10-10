@@ -3,7 +3,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const SpecialistTestSectionGroup5: FormNode = {
+export const SpecialistTestSectionGroup4: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -56,7 +56,8 @@ export const SpecialistTestSectionGroup5: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass', 'abandoned'] } }
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
@@ -97,6 +98,22 @@ export const SpecialistTestSectionGroup5: FormNode = {
               value: '',
               disabled: true,
               type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'secondaryCertificateNumber',
+              label: 'Secondary certificate number',
+              value: '',
+              required: true,
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                },
+                { name: ValidatorNames.MaxLength, args: 20 }
+              ]
             },
             {
               name: 'testNumber',

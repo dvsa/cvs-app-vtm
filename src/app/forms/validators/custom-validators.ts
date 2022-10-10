@@ -122,6 +122,10 @@ export class CustomValidators {
       return null;
     };
   };
+  
+  static alphanumeric(): ValidatorFn {
+    return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
+  }
 
   static numeric(): ValidatorFn {
     return this.customPattern(['^\\d*$', 'must be a whole number']);

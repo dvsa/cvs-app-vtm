@@ -1,18 +1,18 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { GlobalErrorService } from '@core/components/global-error/global-error.service';
-import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
-import { Store } from '@ngrx/store';
-import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -74,17 +74,13 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
     forms.forEach(form => DynamicFormService.updateValidity(form, errors));
 
-    errors.length ? 
-    this.errorService.setErrors(errors) 
-    : this.errorService.clearErrors();
+    errors.length ? this.errorService.setErrors(errors) : this.errorService.clearErrors();
 
     return forms.some(form => form.invalid);
   }
 
   handleFormState() {
-    const form = this.summary.sections
-    .map(section => section.form)
-    .concat(this.summary.dimensions.form, this.summary.weights.form);
+    const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, this.summary.weights.form);
 
     this.isDirty = this.isAnyFormDirty(form);
     this.isInvalid = this.isAnyFormInvalid(form);

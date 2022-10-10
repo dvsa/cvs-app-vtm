@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const RequiredSpecialistSectionGroup1And5: FormNode = {
+export const RequiredSpecialistSection: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
@@ -129,14 +129,12 @@ export const RequiredSpecialistSectionGroup1And5: FormNode = {
     },
     {
       name: 'lastUpdatedByName',
-
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedById',
-
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
@@ -207,7 +205,6 @@ export const RequiredSpecialistSectionGroup1And5: FormNode = {
             },
             {
               name: 'certificateLink',
-
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
