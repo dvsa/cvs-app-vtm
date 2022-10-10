@@ -27,6 +27,7 @@ import { WeightsComponent } from './components/weights/weights.component';
 import { DimensionsComponent } from './components/dimensions/dimensions.component';
 import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
 import { BrakesComponent } from './components/brakes/brakes.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { BrakesComponent } from './components/brakes/brakes.component';
     WeightsComponent,
     DimensionsComponent,
     NumberInputWithSuffixComponent,
-    BrakesComponent
+    BrakesComponent,
+    DropdownComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
