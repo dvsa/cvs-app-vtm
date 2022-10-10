@@ -41,6 +41,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   private subscriptions: Array<Subscription | undefined> = [];
   public originalDate: string = '';
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
+  private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
 
   public day?: number;
   public month?: number;
@@ -64,6 +65,11 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
     this.originalDate = this.value;
+    this.dateFieldOrDefault = {
+      hours: this.originalDate ? new Date(this.originalDate).getHours() : '00',
+      minutes: this.originalDate ? new Date(this.originalDate).getMinutes() : '00',
+      seconds: this.originalDate ? new Date(this.originalDate).getSeconds() : '00'
+    };
     this.addValidators();
     this.valueWriteBack(this.value);
   }
@@ -124,9 +130,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
           return;
         }
 
-        hour = this.includeTime ? hour : this.getFieldOrDefault().getHours();
-        minute = this.includeTime ? minute : this.getFieldOrDefault().getMinutes();
-        const second = this.getFieldOrDefault().getSeconds();
+        hour = this.includeTime ? hour : this.dateFieldOrDefault?.hours;
+        minute = this.includeTime ? minute : this.dateFieldOrDefault?.minutes;
+        const second = this.dateFieldOrDefault?.seconds;
 
         this.onChange(
           `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`
@@ -137,14 +143,6 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
 
   padded(n: number | string | undefined, l = 2) {
     return n != null && !isNaN(+n) ? String(n).padStart(l, '0') || '' : '';
-  }
-
-  getFieldOrDefault() {
-    return {
-      getHours: () => (this.originalDate ? new Date(this.originalDate).getHours() : '00'),
-      getMinutes: () => (this.originalDate ? new Date(this.originalDate).getMinutes() : '00'),
-      getSeconds: () => (this.originalDate ? new Date(this.originalDate).getSeconds() : '00')
-    };
   }
 
   /**
