@@ -116,10 +116,9 @@ export class CustomValidators {
 
   static defined = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control.value === undefined) {
+      if (typeof control.value === 'undefined') {
         return { defined: false };
       }
-
       return null;
     };
   };
