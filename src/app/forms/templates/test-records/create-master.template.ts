@@ -27,7 +27,6 @@ const groups1and2Template: Record<string, FormNode> = {
   visit: ContingencyVisitSection,
   notes: NotesSection,
   defects: DefectsTpl,
-  customDefects: CustomDefectsSection,
   reasonForCreation: reasonForCreationSection
 };
 
@@ -73,7 +72,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup12And14: {
@@ -83,7 +81,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     }
   },
@@ -104,7 +101,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup12And14: {
@@ -114,7 +110,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     }
   }
