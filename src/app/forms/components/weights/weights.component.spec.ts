@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { createMockPsv } from '@mocks/psv-record.mock';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
@@ -20,8 +22,7 @@ describe('WeightsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WeightsComponent);
     component = fixture.componentInstance;
-    component.template = PsvWeight;
-    component.data = {};
+    component.vehicleTechRecord = createMockPsv(12345).techRecord[0];
     fixture.detectChanges();
   });
 

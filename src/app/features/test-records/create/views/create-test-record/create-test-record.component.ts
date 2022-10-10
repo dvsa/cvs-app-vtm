@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -17,7 +17,7 @@ import { BaseTestRecordComponent } from '../../../components/base-test-record/ba
   selector: 'app-create-test-record',
   templateUrl: './create-test-record.component.html'
 })
-export class CreateTestRecordComponent implements OnInit, OnDestroy {
+export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
 
   private destroy$ = new Subject<void>();
@@ -30,7 +30,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private routerService: RouterService,
-    private testRecordsService: TestRecordsService
+    private testRecordsService: TestRecordsService,
+    private cdr: ChangeDetectorRef
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -57,6 +58,10 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy {
 
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
   backToTechRecord(): void {

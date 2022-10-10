@@ -28,6 +28,7 @@ export const PsvWeight: FormNode = {
     {
       name: 'grossKerbWeight',
       label: 'Kerb',
+      customValidatorErrorName: 'Gross Kerb Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
@@ -35,6 +36,7 @@ export const PsvWeight: FormNode = {
     {
       name: 'grossLadenWeight',
       label: 'Laden',
+      customValidatorErrorName: 'Gross Laden Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
@@ -42,6 +44,7 @@ export const PsvWeight: FormNode = {
     {
       name: 'grossGbWeight',
       label: 'GB',
+      customValidatorErrorName: 'Gross GB Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
@@ -49,13 +52,14 @@ export const PsvWeight: FormNode = {
     {
       name: 'grossDesignWeight',
       label: 'Design',
+      customValidatorErrorName: 'Gross Design Weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: requiredValidation
     },
     {
       name: 'unladenWeight',
-      label: 'Unladen (optional)',
+      label: 'Unladen weight',
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
@@ -111,6 +115,7 @@ export const PsvWeight: FormNode = {
                 {
                   name: 'kerbWeight',
                   label: 'Kerb weight',
+                  customValidatorErrorName: 'Axle Kerb Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: requiredValidation
@@ -118,6 +123,7 @@ export const PsvWeight: FormNode = {
                 {
                   name: 'ladenWeight',
                   label: 'Laden weight',
+                  customValidatorErrorName: 'Axle Laden Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: requiredValidation
@@ -125,6 +131,7 @@ export const PsvWeight: FormNode = {
                 {
                   name: 'gbWeight',
                   label: 'GB weight',
+                  customValidatorErrorName: 'Axle GB Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: requiredValidation
@@ -132,6 +139,7 @@ export const PsvWeight: FormNode = {
                 {
                   name: 'designWeight',
                   label: 'Design weight',
+                  customValidatorErrorName: 'Axle Design Weight',
                   value: '',
                   type: FormNodeTypes.CONTROL,
                   validators: requiredValidation

@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 export const ApplicantDetails: FormNode = {
@@ -14,7 +14,7 @@ export const ApplicantDetails: FormNode = {
           name: 'name',
           label: 'Name or company',
           value: '',
-          width: 30,
+          width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 150 }]
         },
@@ -22,7 +22,7 @@ export const ApplicantDetails: FormNode = {
           name: 'address1',
           label: 'Address line 1',
           value: '',
-          width: 30,
+          width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
@@ -30,7 +30,7 @@ export const ApplicantDetails: FormNode = {
           name: 'address2',
           label: 'Address line 2',
           value: '',
-          width: 30,
+          width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
@@ -38,7 +38,7 @@ export const ApplicantDetails: FormNode = {
           name: 'postTown',
           label: 'Town or City',
           value: '',
-          width: 20,
+          width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
@@ -46,7 +46,7 @@ export const ApplicantDetails: FormNode = {
           name: 'address3',
           label: 'County',
           value: '',
-          width: 20,
+          width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
         },
@@ -54,7 +54,7 @@ export const ApplicantDetails: FormNode = {
           name: 'postCode',
           label: 'Postcode',
           value: '',
-          width: 10,
+          width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 12 }]
         },
@@ -62,7 +62,7 @@ export const ApplicantDetails: FormNode = {
           name: 'telephoneNumber',
           label: 'Telephone number',
           value: '',
-          width: 20,
+          width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
         },
@@ -70,7 +70,7 @@ export const ApplicantDetails: FormNode = {
           name: 'emailAddress',
           label: 'Email address',
           value: '',
-          width: 20,
+          width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 255 }]
         }

@@ -10,28 +10,21 @@ export class AccordionComponent {
   @Input() title: string | undefined = '';
   @Input() id: string | number = '';
 
-  @Input() set expanded(expanded: boolean) {
-    this.expanded_ = expanded;
-  }
-
-  private expanded_ = false;
+  @Input() isExpanded = false;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  get expanded(): boolean {
-    return this.expanded_;
-  }
-
-  toggle() {
-    this.expanded = !this.expanded;
+  get iconStyle(): string {
+    return 'govuk-accordion-nav__chevron' +(this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down');
   }
 
   open(): void {
-    this.expanded = true;
+    this.isExpanded = true;
     this.cdr.markForCheck();
   }
+
   close(): void {
-    this.expanded = false;
+    this.isExpanded = false;
     this.cdr.markForCheck();
   }
 }

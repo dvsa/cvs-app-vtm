@@ -83,7 +83,11 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
-        this.router.navigate([`${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}`], {
+        let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;
+        if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
+          advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
+        }
+        this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
           queryParamsHandling: 'merge'
         });

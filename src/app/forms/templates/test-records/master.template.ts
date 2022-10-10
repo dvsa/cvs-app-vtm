@@ -25,6 +25,7 @@ import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist
 import { RequiredSpecialistSection } from './section-templates/required/specialist-required-hidden-section.template';
 import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist-test-section-group5.template';
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
+import { SpecialistTestSectionGroup4 } from './section-templates/test/specialist-test-section-group4.template';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
@@ -95,6 +96,16 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesSpecialistGroup2: {
       vehicle: VehicleSectionDefaultPsvHgv,
       test: SpecialistTestSectionGroup2,
+      seatbelts: SeatbeltSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSpecialistSection
+    },
+    testTypesSpecialistGroup4: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup4,
       seatbelts: SeatbeltSection,
       visit: VisitSection,
       notes: NotesSection,

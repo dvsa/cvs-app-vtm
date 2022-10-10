@@ -129,14 +129,12 @@ export const RequiredSpecialistSection: FormNode = {
     },
     {
       name: 'lastUpdatedByName',
-
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
     },
     {
       name: 'lastUpdatedById',
-
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
@@ -207,7 +205,6 @@ export const RequiredSpecialistSection: FormNode = {
             },
             {
               name: 'certificateLink',
-
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
