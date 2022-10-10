@@ -115,21 +115,13 @@
         <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
       </ng-container>
 
-      <div class="govuk-form-group" *ngIf="isDangerous">
-        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-          <div class="govuk-checkboxes__item">
-            <input
-              class="govuk-checkboxes__input"
-              id="prohibition"
-              name="prohibition"
-              type="checkbox"
-              [checked]="defect!.prohibitionIssued"
-              (change)="toggleDefectField('prohibitionIssued')"
-            />
-            <label class="govuk-label govuk-checkboxes__label" for="prohibition"> Prohibition issued in mobile compliance </label>
-          </div>
-        </div>
-      </div>
+      <app-radio-group
+        *ngIf="isDangerous"
+        [name]="'prohibitionIssued-' + index"
+        label="Prohibition issued in mobile compliance"
+        formControlName="prohibitionIssued"
+        [options]="booleanOptions"
+      ></app-radio-group>
 
       <div class="govuk-form-group" *ngIf="!isAdvisory">
         <div class="govuk-checkboxes" data-module="govuk-checkboxes">
