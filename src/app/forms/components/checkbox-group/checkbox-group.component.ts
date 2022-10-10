@@ -32,7 +32,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
     if (!this.value) {
       this.value = this.delimited ? option.value : [option.value];
     } else {
-      this.delimited ? (this.value += this.delimited.separator + option.value) : this.value.push(option.value);
+      this.value = this.value.concat(this.delimited ? this.delimited.separator + option.value : option.value);
     }
     this.onChange(this.value);
   }

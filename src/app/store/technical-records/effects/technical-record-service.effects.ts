@@ -138,9 +138,9 @@ export class TechnicalRecordServiceEffects {
 
     switch (error.status) {
       case 404:
-        return this.apiErrors[`${type}_404`];
+        return this.apiErrors[type + '_404'];
       default:
-        return `${this.apiErrors[`${type}_400`]} ${search ? search : JSON.stringify(error.error)}`;
+        return `${this.apiErrors[type + '_400']} ${search ? search : JSON.stringify(error.error)}`;
     }
   }
 }

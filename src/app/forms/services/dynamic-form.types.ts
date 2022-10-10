@@ -182,17 +182,17 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
 }
 
 const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: any } | Array<[]> => {
-  const cleanValue = form instanceof CustomFormArray ? [] : ({} as { [key: string]: any });
+  const cleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
   Object.keys(form.controls).forEach(key => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
       cleanValue[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
-    } else if (control instanceof CustomFormControl) {
-      if (control.meta.type === FormNodeTypes.CONTROL && control.meta.required && control.meta.hide) {
+    } else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
+      if (control.meta.required && control.meta.hide) {
         Array.isArray(cleanValue) ? cleanValue.push(control.meta.value || null) : (cleanValue[key] = control.meta.value || null);
-      } else if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
+      } else if (!control.meta.hide) {
         Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
       }
     }
