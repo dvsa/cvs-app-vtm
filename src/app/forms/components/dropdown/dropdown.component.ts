@@ -6,6 +6,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 @Component({
   selector: 'app-dropdown[options]',
   templateUrl: './dropdown.component.html',
+  styleUrls: ['./dropdown.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
