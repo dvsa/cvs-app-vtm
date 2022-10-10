@@ -13,57 +13,65 @@ export const ApplicantDetails: FormNode = {
             children: [
                 {
                     name: 'name',
-                    label: 'Name (optional)',
+                    label: 'Name or company',
                     value: '',
+                    width: 30,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 150 }]
                 },
                 {
                     name: 'address1',
-                    label: 'Building and street (optional) (box 1 of 2)',
+                    label: 'Address line 1',
                     value: '',
+                    width: 30,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'address2',
-                    label: 'Building and street (optional) (box 2 of 2)',
+                    label: 'Address line 2',
                     value: '',
+                    width: 30,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'postTown',
-                    label: 'Town or city (optional)',
+                    label: 'Town or City',
                     value: '',
+                    width: 20,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'address3',
-                    label: 'County (optional)',
+                    label: 'County',
                     value: '',
+                    width: 20,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'postCode',
-                    label: 'Postcode (optional)',
+                    label: 'Postcode',
                     value: '',
+                    width: 10,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 12 }]
                 },
                 {
                     name: 'telephoneNumber',
-                    label: 'Telephone number (optional)',
+                    label: 'Telephone number',
                     value: '',
+                    width: 20,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
                 },
                 {
                     name: 'emailAddress',
-                    label: 'Email address (optional)',
+                    label: 'Email address',
                     value: '',
+                    width: 20,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 255 }]
                 },

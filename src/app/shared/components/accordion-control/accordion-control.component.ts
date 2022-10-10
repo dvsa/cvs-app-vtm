@@ -1,45 +1,39 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, Input, QueryList } from '@angular/core';
 import { AccordionComponent } from '../accordion/accordion.component';
 
 @Component({
   selector: 'app-accordion-control',
   templateUrl: './accordion-control.component.html',
+  styleUrls: ['accordion-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccordionControlComponent implements AfterContentInit {
-  @ContentChildren(AccordionComponent) _accordions?: QueryList<AccordionComponent>;
-
-  @Input() set expanded(expanded: boolean) {
-    this.expanded_ = expanded;
+export class AccordionControlComponent  {
+  private _accordions?: QueryList<AccordionComponent>;
+  get accordions(): QueryList<AccordionComponent> | undefined {
+    return this._accordions;
+  }
+  @ContentChildren(AccordionComponent) set accordions(value: QueryList<AccordionComponent> | undefined) {
+    this._accordions = value;
+    this.toggleAccordions();
   }
 
-  private accordions_: Array<AccordionComponent> = [];
-  private expanded_ = false;
+  @Input() isExpanded = false;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ngAfterContentInit(): void {
-    this._accordions?.forEach(a => this.accordions_.push(a));
+  get iconStyle(): string {
+    return 'govuk-accordion-nav__chevron' +(this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down');
   }
 
-  get accordions() {
-    return this.accordions_;
-  }
-
-  get expanded(): boolean {
-    return this.expanded_;
-  }
-
-  open(): void {
-    this.expanded = true;
-    this.accordions_.forEach(a => {
-      a.open();
-    });
+  toggle(): void {
+    this.isExpanded = !this.isExpanded;
+    this.toggleAccordions();
     this.cdr.markForCheck();
   }
-  close(): void {
-    this.expanded = false;
-    this.accordions_.forEach(a => a.close());
-    this.cdr.markForCheck();
+
+  toggleAccordions(): void {
+    if (this.accordions) {
+      this.accordions.forEach(a => this.isExpanded ? a.open() : a.close());
+    }
   }
 }

@@ -3,9 +3,9 @@ import { CustomFormArray, CustomFormGroup, FormNodeOption } from '@forms/service
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { select, Store } from '@ngrx/store';
-import { createDefect, removeDefect, toEditOrNotToEdit, updateDefect } from '@store/test-records';
+import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
+import { filter, Subject, takeUntil, take, withLatestFrom, tap, throwError, map } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
@@ -34,7 +34,7 @@ export class DefectComponent implements OnInit, OnDestroy {
   index!: number;
   isEditing: boolean;
   includeNotes = false;
-  private vehicleType!: VehicleTypes;
+  private vehicleType?: VehicleTypes;
 
   private _defectsForm?: CustomFormArray;
   private defects?: TestResultDefects;
@@ -64,22 +64,22 @@ export class DefectComponent implements OnInit, OnDestroy {
     const defectRef = this.store.pipe(select(selectRouteParam('ref')));
 
     this.store
-      .select(toEditOrNotToEdit)
+      .select(this.isEditing ? testResultInEdit : toEditOrNotToEdit)
       .pipe(
         withLatestFrom(defectIndex, defectRef),
         takeUntil(this.onDestroy$),
         filter(([testResult]) => !!testResult)
       )
       .subscribe(([testResult, defectIndex, defectRef]) => {
-        this.defects = testResult!.testTypes[0].defects;
-        this.vehicleType = testResult!.vehicleType;
+        !testResult && this.navigateBack();
+        this.defects = testResult?.testTypes[0].defects;
+        this.vehicleType = testResult?.vehicleType;
         this._defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
         if (defectIndex) {
           this.index = Number(defectIndex!);
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
-          !this.defect && this.navigateBack();
-        } else if (defectRef) {
+        } else if (defectRef && this.vehicleType) {
           this.store
             .select(selectByDeficiencyRef(defectRef, this.vehicleType))
             .pipe(take(1))
@@ -89,7 +89,9 @@ export class DefectComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.defect &&
+    !this.defect && this.navigateBack();
+
+    this.vehicleType &&
       this.store
         .select(selectByImNumber(this.defect?.imNumber || NaN, this.vehicleType))
         .pipe(
@@ -202,7 +204,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     this.defect = testResultDefect;
   }
 
-  categoryColor(category: string): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
+  categoryColor(category: string = 'major'): 'red' | 'orange' | 'yellow' | 'green' | 'blue' {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
       category
     ];

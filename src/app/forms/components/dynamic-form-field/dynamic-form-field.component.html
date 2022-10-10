@@ -69,7 +69,13 @@
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-text-input>
 
-  <app-text-input *ngSwitchDefault [label]="control.value.meta.label" [name]="control.value.meta.name" [formControlName]="control.key">
-    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
-  </app-text-input>
+  <app-text-input
+    *ngSwitchDefault
+    [label]="control.value.meta.label"
+    [width]="control.value.meta.width"
+    [name]="control.value.meta.name"
+    [formControlName]="control.key"
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template></app-text-input
+  >
 </ng-container>

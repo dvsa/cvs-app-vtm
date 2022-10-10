@@ -68,7 +68,8 @@ export const TEST_TYPES_GROUP9_10: string[] = [
   '113',
   '116',
   '119',
-  '120'
+  '120',
+  '199'
 ];
 
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)

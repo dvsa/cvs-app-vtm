@@ -1,16 +1,18 @@
-<div class="govuk-form-group">
+<div *ngIf="isEditing; else view" [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
   <h1 *ngIf="label" class="govuk-label-wrapper">
     <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
   </h1>
+
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
   <div class="govuk-input__wrapper">
     <input
       *ngIf="!numeric"
-      class="govuk-input"
       id="{{ name }}"
       name="{{ name }}"
       type="text"
+      [class]="style"
       [(ngModel)]="value"
       [disabled]="disabled"
       (ngModelChange)="onChange($event)"
@@ -19,10 +21,10 @@
     />
     <input
       *ngIf="numeric"
-      class="govuk-input"
       id="{{ name }}"
       name="{{ name }}"
       type="text"
+      [class]="style"
       [(ngModel)]="value"
       [disabled]="disabled"
       (ngModelChange)="onChange($event)"
@@ -35,3 +37,5 @@
     </div>
   </div>
 </div>
+
+<ng-template #view>{{ value | defaultNullOrEmpty }}</ng-template>
