@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 export const ApplicantDetails: FormNode = {

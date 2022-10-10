@@ -5,7 +5,7 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { select, Store } from '@ngrx/store';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, takeUntil, take, withLatestFrom, tap, throwError, map } from 'rxjs';
+import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
