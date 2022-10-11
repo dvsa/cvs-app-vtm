@@ -32,10 +32,6 @@ export class TestRecordSummaryComponent {
     this.cdr.detectChanges();
   }
 
-  getTestTypes(testResult: TestResultModel) {
-    return testResult.testTypes;
-  }
-
   getTestTypeName(testResult: TestResultModel) {
     return testResult.testTypes.map(t => t.testTypeName).join(',');
   }
