@@ -2,10 +2,13 @@
   <fieldset class="govuk-fieldset" [disabled]="disabled">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <h1 class="govuk-fieldset__heading">{{ label }}</h1>
+
       <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
     </legend>
+
     <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
-    <div class="govuk-radios" [ngClass]="{ 'govuk-radios--inline': inline }" data-module="govuk-radios">
+
+    <div *ngIf="isEditing; else view" class="govuk-radios" [ngClass]="{ 'govuk-radios--inline': inline }" data-module="govuk-radios">
       <div *ngFor="let option of options; trackBy: trackByFn" class="govuk-radios__item">
         <input
           class="govuk-radios__input"
@@ -17,9 +20,15 @@
           [(ngModel)]="value"
           (ngModelChange)="onChange($event)"
         />
+
         <label class="govuk-label govuk-radios__label" [for]="option.value + '-radio'"> {{ option.label }} </label>
+
         <div *ngIf="option.hint" id="{{ name }}-hint-{{ option.value }}" class="govuk-hint govuk-radios__hint">{{ option.hint }}</div>
       </div>
     </div>
+
+    <ng-template #view>
+      <p class="govuk-body govuk-body-m" id="{{ name }}">{{ getLabel(value) }}</p>
+    </ng-template>
   </fieldset>
 </div>

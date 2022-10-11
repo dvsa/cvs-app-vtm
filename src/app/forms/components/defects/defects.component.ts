@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
-import { Deficiency } from '@models/defects/deficiency.model';
-import { Item } from '@models/defects/item.model';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { debounceTime, Subscription } from 'rxjs';
@@ -23,7 +21,6 @@ export class DefectsComponent implements OnInit, OnDestroy {
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
   private _defectsForm?: CustomFormArray;
-  defaultNullOrEmpty: any;
 
   constructor(private dfs: DynamicFormService) {}
 
@@ -60,29 +57,5 @@ export class DefectsComponent implements OnInit, OnDestroy {
     return (<Record<string, 'red' | 'orange' | 'green' | 'yellow' | 'blue'>>{ major: 'orange', minor: 'yellow', dangerous: 'red', advisory: 'blue' })[
       category
     ];
-  }
-
-  handleDefectSelection(selection: { defect: Defect; item: Item; deficiency?: Deficiency }): void {
-    const testResultDefect: TestResultDefect = {
-      imDescription: selection.defect.imDescription,
-      imNumber: selection.defect.imNumber,
-
-      itemDescription: selection.item.itemDescription,
-      itemNumber: selection.item.itemNumber,
-
-      deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
-      deficiencyRef: `${selection.defect.imNumber}.${selection.item.itemNumber}`
-    };
-
-    if (selection.deficiency) {
-      testResultDefect.deficiencyCategory = selection.deficiency.deficiencyCategory;
-      testResultDefect.deficiencyId = selection.deficiency.deficiencyId;
-      testResultDefect.deficiencySubId = selection.deficiency.deficiencySubId;
-      testResultDefect.deficiencyText = selection.deficiency.deficiencyText;
-      testResultDefect.deficiencyRef = selection.deficiency.ref;
-      testResultDefect.stdForProhibition = selection.deficiency.stdForProhibition;
-    }
-
-    this.defectsForm.addControl(testResultDefect);
   }
 }

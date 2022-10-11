@@ -90,6 +90,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.isDirty = true;
     fixture.detectChanges();
 
+    window.scrollTo = jest.fn(() => { })
     jest.spyOn(component, 'submitTechRecord');
 
     fixture.debugElement.query(By.css('#submit')).nativeElement.click();
@@ -104,6 +105,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.isDirty = true;
     fixture.detectChanges();
 
+    window.scrollTo = jest.fn(() => { })
     jest.spyOn(component, 'submitTechRecord');
 
     fixture.debugElement.query(By.css('#submit')).nativeElement.click();
@@ -120,7 +122,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.isDirty = true;
     fixture.detectChanges();
 
-    window.confirm = jest.fn(() => false)
+    window.confirm = jest.fn(() => false);
     jest.spyOn(component, 'cancelAmend');
     jest.spyOn(component, 'toggleEditMode');
 
@@ -140,7 +142,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.isDirty = true;
     fixture.detectChanges();
 
-    window.confirm = jest.fn(() => true)
+    window.confirm = jest.fn(() => true);
     jest.spyOn(component, 'cancelAmend');
     jest.spyOn(component, 'toggleEditMode');
 
@@ -159,7 +161,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.isDirty = true;
     fixture.detectChanges();
 
-    window.confirm = jest.fn(() => false)
+    window.confirm = jest.fn(() => false);
     jest.spyOn(component, 'cancelAmend');
     jest.spyOn(component, 'toggleEditMode');
 
@@ -179,7 +181,7 @@ describe('EditTechRecordButtonComponent', () => {
     component.isDirty = false;
     fixture.detectChanges();
 
-    window.confirm = jest.fn(() => true)
+    window.confirm = jest.fn(() => true);
     jest.spyOn(component, 'cancelAmend');
     jest.spyOn(component, 'toggleEditMode');
 

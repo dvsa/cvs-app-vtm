@@ -1,16 +1,18 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormArray } from '@angular/forms';
+import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
-import { getDimensionsSection } from '@forms/templates/general/dimensions.template';
+import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-dimensions',
-  templateUrl: './dimensions.component.html',
-  styleUrls: ['./dimensions.component.scss']
+  selector: 'app-brakes[vehicleTechRecord]',
+  templateUrl: './brakes.component.html',
+  styleUrls: ['./brakes.component.scss']
 })
-export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
+export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
@@ -18,16 +20,14 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   form!: CustomFormGroup;
   template!: FormNode;
 
+  booleanOptions: MultiOptions = [{ value: true, label: 'Yes' }, { value: false, label: 'No' }];
+
   private destroy$ = new Subject<void>();
 
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.template = getDimensionsSection(
-      this.vehicleTechRecord.vehicleType,
-      this.vehicleTechRecord.noOfAxles,
-      this.vehicleTechRecord.dimensions?.axleSpacing
-    );
+    this.template = TrlBrakes;
 
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
@@ -49,23 +49,9 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  get frontAxleToRearAxle(): CustomFormControl {
-    return this.form.get(['frontAxleToRearAxle']) as CustomFormControl;
+  get axles(): FormArray {
+    return this.form.get(['axles']) as FormArray;
   }
 
-  get rearAxleToRearTrl(): CustomFormControl {
-    return this.form.get(['rearAxleToRearTrl']) as CustomFormControl;
-  }
-
-  get axles(): FormNode[] | undefined {
-    return (this.form.get(['dimensionsBottomSection', 'dimensions']) as CustomFormGroup)?.meta.children;
-  }
-
-  get dimensions(): CustomFormGroup {
-    return this.form.get(['dimensions']) as CustomFormGroup;
-  }
-
-  getDimension(name: string): CustomFormControl {
-    return this.dimensions.get(name) as CustomFormControl;
-  }
+  pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
 }

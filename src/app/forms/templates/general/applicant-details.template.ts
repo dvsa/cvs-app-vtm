@@ -1,4 +1,4 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 
 
@@ -13,57 +13,65 @@ export const ApplicantDetails: FormNode = {
             children: [
                 {
                     name: 'name',
-                    label: 'Name (optional)',
+                    label: 'Name or company',
                     value: '',
+                    width: FormNodeWidth.XXL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 150 }]
                 },
                 {
                     name: 'address1',
-                    label: 'Building and street (optional) (box 1 of 2)',
+                    label: 'Address line 1',
                     value: '',
+                    width: FormNodeWidth.XXL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'address2',
-                    label: 'Building and street (optional) (box 2 of 2)',
+                    label: 'Address line 2',
                     value: '',
+                    width: FormNodeWidth.XXL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'postTown',
-                    label: 'Town or city (optional)',
+                    label: 'Town or City',
                     value: '',
+                    width: FormNodeWidth.XL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'address3',
-                    label: 'County (optional)',
+                    label: 'County',
                     value: '',
+                    width: FormNodeWidth.XL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
                 },
                 {
                     name: 'postCode',
-                    label: 'Postcode (optional)',
+                    label: 'Postcode',
                     value: '',
+                    width: FormNodeWidth.L,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 12 }]
                 },
                 {
                     name: 'telephoneNumber',
-                    label: 'Telephone number (optional)',
+                    label: 'Telephone number',
                     value: '',
+                    width: FormNodeWidth.XL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
                 },
                 {
                     name: 'emailAddress',
-                    label: 'Email address (optional)',
+                    label: 'Email address',
                     value: '',
+                    width: FormNodeWidth.XL,
                     type: FormNodeTypes.CONTROL,
                     validators: [{ name: ValidatorNames.MaxLength, args: 255 }]
                 },

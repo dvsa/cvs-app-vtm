@@ -258,6 +258,40 @@ describe('numeric', () => {
   });
 });
 
+describe('defined', () => {
+  it.each([
+    [{ defined: false }, undefined],
+    [null, ''],
+    [null, null],
+    [null, 'hello world!'],
+    [null, 1234],
+  ])('should return %o for %r', (expected: null | {[index: string]: boolean}, input: any) => {
+    const definedValidator = CustomValidators.defined();
+    let form = new FormControl(input)
+    if (typeof input === 'undefined') {
+      // Unable to instantiate form with a value that is not defined...
+      form.patchValue(undefined)
+    }
+    expect(definedValidator(form)).toEqual(expected);
+  })
+})
+
+describe('alphanumeric', () => {
+  it.each([
+    [null, '12dc9a'],
+    [null, 0],
+    [null, 'asas'],
+    [{ customPattern: { message: 'must be alphanumeric' } }, 'foobar+'],
+    [{ customPattern: { message: 'must be alphanumeric' } }, '123456bar-'],
+    [{ customPattern: { message: 'must be alphanumeric' } }, 'foo123456^@'],
+    [null, '123546789abcdefghijklmnopqrstuvwxyz'],
+    [null, null]
+  ])('should return %o for %r', (expected: null | CustomPatternMessage, input: any) => {
+    const numberValidator = CustomValidators.alphanumeric();
+    expect(numberValidator(new FormControl(input))).toEqual(expected);
+  });
+});
+
 describe('customPattern', () => {
   it.each([
     [null, 123456789, '.*', 'this should always pass'],

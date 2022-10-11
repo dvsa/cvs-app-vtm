@@ -1,32 +1,37 @@
-<table class="govuk-table" *ngIf="vehicleTechRecord && vehicleTechRecord.techRecord.length > 0">
-  <caption class="govuk-table__caption govuk-table__caption--m">
-    Technical Records History
-  </caption>
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Status</th>
-      <th scope="col" class="govuk-table__header">Reason for creation</th>
-      <th scope="col" class="govuk-table__header">Created By</th>
-      <th scope="col" class="govuk-table__header">Created At</th>
-      <th scope="col" class="govuk-table__header"></th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <tr class="govuk-table__row" *ngFor="let techRecord of vehicleTechRecord.techRecord">
-      <th scope="row" class="govuk-table__header">{{ techRecord.statusCode }}</th>
-      <td class="govuk-table__cell">{{ techRecord.reasonForCreation }}</td>
-      <td class="govuk-table__cell">{{ techRecord.createdByName }}</td>
-      <td class="govuk-table__cell">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
-      <td class="govuk-table__cell">
-        <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
-          <a
-            id="view-test-{{ vehicleTechRecord.vin }}"
-            href="/tech-records/{{ vehicleTechRecord.systemNumber }}/{{ vehicleTechRecord.vin }}/historic/{{ convertToUnix(techRecord.createdAt) }}"
-          >
-            View
-          </a>
-        </ng-container>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<ng-container *ngIf="techRecords.length">
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Technical Records History
+    </caption>
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Status</th>
+        <th scope="col" class="govuk-table__header">Reason for creation</th>
+        <th scope="col" class="govuk-table__header">Created By</th>
+        <th scope="col" class="govuk-table__header">Created At</th>
+        <th scope="col" class="govuk-table__header"></th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row" *ngFor="let techRecord of techRecords; trackBy: trackByFn">
+        <th scope="row" class="govuk-table__header">{{ techRecord.statusCode }}</th>
+        <td class="govuk-table__cell">{{ techRecord.reasonForCreation }}</td>
+        <td class="govuk-table__cell">{{ techRecord.createdByName }}</td>
+        <td class="govuk-table__cell">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td class="govuk-table__cell">
+          <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
+            <a
+              id="view-test-{{ vehicleTechRecord!.vin }}"
+              href="/tech-records/{{ vehicleTechRecord!.systemNumber }}/{{ vehicleTechRecord!.vin }}/historic/{{
+                convertToUnix(techRecord.createdAt)
+              }}"
+            >
+              View
+            </a>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <app-pagination tableName="tech-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
+</ng-container>
