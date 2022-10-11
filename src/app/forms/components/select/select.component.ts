@@ -4,8 +4,9 @@ import { FormNodeOption } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  selector: 'app-select',
+  selector: 'app-select[options]',
   templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -15,5 +16,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class SelectComponent extends BaseControlComponent {
-  @Input() options: FormNodeOption<string | number | boolean>[] = [];
+  @Input() options!: Array<FormNodeOption<string | number | boolean>>;
+  @Input() isEditing = true;
 }

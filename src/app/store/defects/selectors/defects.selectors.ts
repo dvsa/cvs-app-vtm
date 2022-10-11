@@ -1,3 +1,6 @@
+import { Defect } from '@models/defects/defect.model';
+import { Deficiency } from '@models/defects/deficiency.model';
+import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import cloneDeep from 'lodash.clonedeep';
@@ -28,14 +31,29 @@ export const selectByImNumber = (imNumber: number, vehicleType: VehicleTypes) =>
 export const selectByDeficiencyRef = (deficiencyRef: string, vehicleType: VehicleTypes) =>
   createSelector(filteredDefects(vehicleType), defects => {
     const deRef = deficiencyRef.split('.');
-    let defect, item, deficiency;
-    
+    const isAdvisory: boolean = deRef[2] === 'advisory';
+    let defect: Defect | undefined, item: Item | undefined, deficiency: Deficiency | undefined;
+
     if (deRef) {
       defect = defects.find(d => d.imNumber === +deRef[0]);
-      item = defect?.items.find(i => i.itemNumber === +deRef[1]);
-      deficiency = item?.deficiencies.find(d => d.ref === deficiencyRef);
+      const items = defect?.items.filter(i => i.itemNumber === +deRef[1]);
+
+      !isAdvisory &&
+        items?.forEach(itm => {
+          const defRef: Deficiency | undefined = itm.deficiencies.find(d => d.ref === deficiencyRef);
+          if (defRef) {
+            item = itm;
+            deficiency = defRef;
+          }
+        });
+
+      if (!deficiency && isAdvisory && deRef[3]) {
+        item = items![+deRef[3]];
+      } else {
+        item = defect?.items.find(i => i.itemNumber === +deRef[1]);
+      }
     }
-    
+
     return [defect, item, deficiency];
   });
 
