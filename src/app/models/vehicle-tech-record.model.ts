@@ -383,7 +383,7 @@ export enum RetarderBrake {
 export interface AxleBrakeProperties {
   brakeActuator: string;
   leverLength: string;
-  springBrakeParking: string;
+  springBrakeParking: boolean;
 }
 
 export interface Microfilm {
