@@ -1,7 +1,5 @@
 <div *ngIf="isEditing; else view" [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <h1 *ngIf="label" class="govuk-label-wrapper">
-    <label class="govuk-label" for="{{ name }}">{{ label }}</label>
-  </h1>
+  <label *ngIf="label" class="govuk-label" for="{{ name }}"> {{ label }} </label>
 
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
