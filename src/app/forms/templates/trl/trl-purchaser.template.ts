@@ -76,7 +76,6 @@ export const TrlPurchasers: FormNode = {
           name: 'purchaserNotes',
           label: 'Purchaser Notes',
           value: '',
-          viewType: FormNodeViewTypes.FULLWIDTH,
           editType: FormNodeEditTypes.TEXTAREA,
           type: FormNodeTypes.CONTROL
         },
