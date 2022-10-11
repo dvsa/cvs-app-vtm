@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const PsvDdaTemplate: FormNode = {
   name: 'dda',
@@ -20,27 +20,21 @@ export const PsvDdaTemplate: FormNode = {
             { value: false, label: 'No' },
             { value: null, label: 'I do not know' }
           ],
-          validators: [
-            { name: ValidatorNames.Defined }
-          ],
+          validators: [{ name: ValidatorNames.Defined }]
         },
         {
           name: 'wheelchairCapacity',
           label: 'Wheelchair capacity',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.NUMBER,
-          validators: [
-            { name: ValidatorNames.Max, args: 99 }
-          ],
+          validators: [{ name: ValidatorNames.Max, args: 99 }]
         },
         {
           name: 'wheelchairFittings',
           label: 'Wheelchair fittings',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 250 }
-          ],
+          validators: [{ name: ValidatorNames.MaxLength, args: 250 }]
         },
         {
           name: 'wheelchairLiftPresent',
@@ -52,18 +46,14 @@ export const PsvDdaTemplate: FormNode = {
             { value: false, label: 'No' },
             { value: null, label: 'I do not know' }
           ],
-          validators: [
-            { name: ValidatorNames.Defined }
-          ],
+          validators: [{ name: ValidatorNames.Defined }]
         },
         {
           name: 'wheelchairLiftInformation',
           label: 'Wheelchair lift information',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 250 }
-          ],
+          validators: [{ name: ValidatorNames.MaxLength, args: 250 }]
         },
         {
           name: 'wheelchairRampPresent',
@@ -75,63 +65,49 @@ export const PsvDdaTemplate: FormNode = {
             { value: false, label: 'No' },
             { value: null, label: 'I do not know' }
           ],
-          validators: [
-            { name: ValidatorNames.Defined }
-          ],
+          validators: [{ name: ValidatorNames.Defined }]
         },
         {
           name: 'wheelchairRampInformation',
           label: 'Wheelchair ramp information',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 250 }
-          ],
+          validators: [{ name: ValidatorNames.MaxLength, args: 250 }]
         },
         {
           name: 'minEmergencyExits',
           label: 'Minimum emergency exits needed',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.NUMBER,
-          validators: [
-            { name: ValidatorNames.Max, args: 99 }
-          ],
+          validators: [{ name: ValidatorNames.Max, args: 99 }]
         },
         {
           name: 'outswing',
           label: 'Outswing',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 250 }
-          ],
+          validators: [{ name: ValidatorNames.MaxLength, args: 250 }]
         },
         {
           name: 'ddaSchedules',
           label: 'DDA schedules',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 250 }
-          ],
+          validators: [{ name: ValidatorNames.MaxLength, args: 250 }]
         },
         {
           name: 'seatbeltsFitted',
           label: 'Seatbelts fitted',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.NUMBER,
-          validators: [
-            { name: ValidatorNames.Max, args: 999 }
-          ],
+          validators: [{ name: ValidatorNames.Max, args: 999 }]
         },
         {
           name: 'ddaNotes',
           label: 'DDA notes',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 1024 }
-          ],
+          validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
         }
       ]
     }
