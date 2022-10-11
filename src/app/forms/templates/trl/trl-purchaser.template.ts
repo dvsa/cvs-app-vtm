@@ -1,5 +1,4 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const TrlPurchasers: FormNode = {
   name: 'purchaserSection',
@@ -14,71 +13,72 @@ export const TrlPurchasers: FormNode = {
           name: 'name',
           label: 'Name',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 150 }, { name: ValidatorNames.Required }]
+          width: FormNodeWidth.XXL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'address1',
           label: 'Building and street (box 1 of 2)',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
+          width: FormNodeWidth.XXL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'address2',
           label: 'Building and street (box 2 of 2)',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
+          width: FormNodeWidth.XXL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'postTown',
           label: 'Town or city',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
+          width: FormNodeWidth.XL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'address3',
           label: 'County',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          width: FormNodeWidth.XL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'postCode',
           label: 'Postcode',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 12 }]
+          width: FormNodeWidth.L,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'telephoneNumber',
           label: 'Telephone number',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
+          width: FormNodeWidth.XL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'emailAddress',
           label: 'Email address',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 225 }]
+          width: FormNodeWidth.XL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'faxNumber',
           label: 'Fax Number',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 25 }]
+          width: FormNodeWidth.XL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'purchaserNotes',
           label: 'Purchaser Notes',
           value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
+          viewType: FormNodeViewTypes.FULLWIDTH,
+          editType: FormNodeEditTypes.TEXTAREA,
+          type: FormNodeTypes.CONTROL
         },
       ]
     }
