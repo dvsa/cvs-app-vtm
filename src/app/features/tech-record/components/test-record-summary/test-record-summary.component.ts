@@ -44,7 +44,7 @@ export class TestRecordSummaryComponent {
     const byDate = (a: TestField, b: TestField) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime();
 
     return this.testRecords
-      .map(record =>
+      .flatMap(record =>
         record.testTypes.map(testType => ({
           testTypeStartTimestamp: testType.testTypeStartTimestamp,
           testTypeName: testType.testTypeName,
@@ -53,7 +53,6 @@ export class TestRecordSummaryComponent {
           testResultId: record.testResultId
         }))
       )
-      .flat()
       .sort(byDate);
   }
 
