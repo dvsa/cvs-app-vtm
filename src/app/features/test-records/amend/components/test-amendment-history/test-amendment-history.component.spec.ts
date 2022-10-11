@@ -67,7 +67,7 @@ describe('TestAmendmentHistoryComponent', () => {
 
       const heading = fixture.debugElement.query(By.css('.govuk-table__caption'));
       expect(heading).toBeTruthy();
-      expect(heading.nativeElement.innerHTML).toContain('Test Record Amendment History');
+      expect(heading.nativeElement.innerHTML).toContain('Test record amendment history');
 
       const table = fixture.debugElement.query(By.css('.govuk-table__body'));
       expect(table).toBeTruthy();
