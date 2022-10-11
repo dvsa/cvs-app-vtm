@@ -1,6 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { testTypeIdChanged } from '@store/test-records';
+
+interface TestField {
+  testTypeStartTimestamp: string | Date;
+  testTypeName: string;
+  testNumber: string;
+  testResult: resultOfTestEnum;
+  testResultId: string;
+}
 
 @Component({
   selector: 'app-test-record-summary',
@@ -22,6 +32,10 @@ export class TestRecordSummaryComponent {
     this.cdr.detectChanges();
   }
 
+  getTestTypes(testResult: TestResultModel) {
+    return testResult.testTypes;
+  }
+
   getTestTypeName(testResult: TestResultModel) {
     return testResult.testTypes.map(t => t.testTypeName).join(',');
   }
@@ -30,15 +44,38 @@ export class TestRecordSummaryComponent {
     return testResult.testTypes.map(t => t.testResult).join(',');
   }
 
+  get sortedTestTypeFields(): TestField[] {
+    const arr: TestField[] = [];
+
+    this.testRecords.forEach(record =>
+      record.testTypes.forEach(t => {
+        const field: TestField = {
+          testTypeStartTimestamp: t.testTypeStartTimestamp,
+          testTypeName: t.testTypeName,
+          testNumber: t.testNumber,
+          testResult: t.testResult,
+          testResultId: record.testResultId
+        };
+        arr.push(field);
+      })
+    );
+
+    return arr.sort((a, b) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime());
+  }
+
   get numberOfRecords(): number {
     return this.testRecords.length;
+  }
+
+  get paginatedTestFields() {
+    return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
   get paginatedTestRecords() {
     return this.testRecords.slice(this.pageStart, this.pageEnd) ?? [];
   }
 
-  trackByFn(i: number, t: TestResultModel) {
-    return t.createdAt;
+  trackByFn(i: number, t: TestField) {
+    return t.testNumber;
   }
 }

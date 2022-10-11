@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <ng-container *ngFor="let testRecord of paginatedTestRecords; trackBy: trackByFn">
+      <!-- <ng-container *ngFor="let testRecord of paginatedTestRecords; trackBy: trackByFn">
         <tr class="govuk-table__row" *ngFor="let test of testRecord.testTypes">
           <th scope="row" class="govuk-table__header">{{ test.testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}</th>
           <td class="govuk-table__cell">{{ test.testTypeName }}</td>
@@ -27,7 +27,15 @@
             >
           </td>
         </tr>
-      </ng-container>
+      </ng-container> -->
+      <tr *ngFor="let test of paginatedTestFields; trackBy: trackByFn">
+        <th scope="row" class="govuk-table__header">{{ test.testTypeStartTimestamp | date: 'dd/MM/yyyy HH:mm' }}</th>
+        <td class="govuk-table__cell">{{ test.testTypeName }}</td>
+        <td class="govuk-table__cell">{{ test.testResult }}</td>
+        <td class="govuk-table__cell">
+          <a id="view-test-{{ test.testResultId }}" routerLink="test-records/test-result/{{ test.testResultId }}/{{ test.testNumber }}">View</a>
+        </td>
+      </tr>
     </tbody>
   </table>
   <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
