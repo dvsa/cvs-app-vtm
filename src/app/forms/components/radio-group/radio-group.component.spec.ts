@@ -22,7 +22,7 @@ class HostComponent {
   form = new FormGroup({
     foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
   });
-  options: FormNodeOption<string | number | boolean>[] = [
+  options: FormNodeOption<string | number | boolean | null>[] = [
     { label: 'Value 1', value: '1' },
     { label: 'Value 2', value: '2' },
     { label: 'Value 3', value: '3' }
