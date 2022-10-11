@@ -1,4 +1,4 @@
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const TrlPurchasers: FormNode = {
   name: 'purchaserSection',
@@ -78,7 +78,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           editType: FormNodeEditTypes.TEXTAREA,
           type: FormNodeTypes.CONTROL
-        },
+        }
       ]
     }
   ]
