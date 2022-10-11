@@ -41,22 +41,20 @@ export class TestRecordSummaryComponent {
   }
 
   get sortedTestTypeFields(): TestField[] {
-    const arr: TestField[] = [];
+    const byDate = (a: TestField, b: TestField) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime();
 
-    this.testRecords.forEach(record =>
-      record.testTypes.forEach(t => {
-        const field: TestField = {
-          testTypeStartTimestamp: t.testTypeStartTimestamp,
-          testTypeName: t.testTypeName,
-          testNumber: t.testNumber,
-          testResult: t.testResult,
+    return this.testRecords
+      .map(record =>
+        record.testTypes.map(testType => ({
+          testTypeStartTimestamp: testType.testTypeStartTimestamp,
+          testTypeName: testType.testTypeName,
+          testNumber: testType.testNumber,
+          testResult: testType.testResult,
           testResultId: record.testResultId
-        };
-        arr.push(field);
-      })
-    );
-
-    return arr.sort((a, b) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime());
+        }))
+      )
+      .flat()
+      .sort(byDate);
   }
 
   get numberOfRecords(): number {
@@ -64,11 +62,7 @@ export class TestRecordSummaryComponent {
   }
 
   get paginatedTestFields() {
-    return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd) ?? [];
-  }
-
-  get paginatedTestRecords() {
-    return this.testRecords.slice(this.pageStart, this.pageEnd) ?? [];
+    return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd);
   }
 
   trackByFn(i: number, t: TestField) {
