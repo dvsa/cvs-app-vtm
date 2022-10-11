@@ -75,4 +75,45 @@ describe('TestRecordSummaryComponent', () => {
     );
     expect(testTypeResults).toEqual('pass,pass');
   });
+
+  it('should retrieve all testTypes and creates sorted TestField[]', () => {
+    const mockRecords = [
+      {
+        testResultId: "1",
+        testTypes: [
+          {
+            testTypeStartTimestamp: new Date("12/12/2022").toISOString(),
+            testNumber: "1",
+            testResult: resultOfTestEnum.pass,
+            testTypeName: "annual"
+          }, 
+          {
+            testTypeStartTimestamp: new Date("12/12/2023").toISOString(),
+            testNumber: "2",
+            testResult: resultOfTestEnum.pass,
+            testTypeName: "annual"
+          }
+        ]
+      },
+      {
+        testResultId: "1",
+        testTypes: [
+          {
+            testTypeStartTimestamp: new Date("12/12/2021").toISOString(),
+            testNumber: "1",
+            testResult: resultOfTestEnum.pass,
+            testTypeName: "annual"
+          }
+        ]
+      }
+    ] as TestResultModel[];
+    component.testRecords = mockRecords;
+    const testFieldResults = component.sortedTestTypeFields;
+
+    expect(testFieldResults).toHaveLength(3);
+
+    expect(testFieldResults[0].testTypeStartTimestamp).toBe(mockRecords[0].testTypes[1].testTypeStartTimestamp);
+    expect(testFieldResults[1].testTypeStartTimestamp).toBe(mockRecords[0].testTypes[0].testTypeStartTimestamp);
+    expect(testFieldResults[2].testTypeStartTimestamp).toBe(mockRecords[1].testTypes[0].testTypeStartTimestamp);
+  });
 });
