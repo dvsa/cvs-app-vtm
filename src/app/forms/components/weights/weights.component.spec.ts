@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
@@ -13,7 +12,7 @@ describe('WeightsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({})],
+      imports: [StoreModule.forRoot({}), DynamicFormsModule],
       declarations: [WeightsComponent],
       providers: [provideMockStore<State>({ initialState: initialAppState })]
     }).compileComponents();
