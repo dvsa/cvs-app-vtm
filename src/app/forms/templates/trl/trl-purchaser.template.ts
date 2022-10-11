@@ -18,14 +18,14 @@ export const TrlPurchasers: FormNode = {
         },
         {
           name: 'address1',
-          label: 'Building and street (box 1 of 2)',
+          label: 'Address line 1',
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL
         },
         {
           name: 'address2',
-          label: 'Building and street (box 2 of 2)',
+          label: 'Address line 2',
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL
