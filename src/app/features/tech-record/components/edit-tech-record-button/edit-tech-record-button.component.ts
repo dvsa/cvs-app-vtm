@@ -23,16 +23,24 @@ export class EditTechRecordButtonComponent implements OnInit {
   @Output() submitCheckFormValidity = new EventEmitter();
 
 
-  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store, private viewportScroller: ViewportScroller) {}
+  constructor(
+    private actions$: Actions,
+    private errorService: GlobalErrorService,
+    private router: Router,
+    private store: Store,
+    private viewportScroller: ViewportScroller
+  ) {}
 
   ngOnInit() {
     this.actions$
       .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
-      .subscribe(action =>
+      .subscribe(action => {
+        const techRecord = action.vehicleTechRecords[0];
+
         this.router.navigateByUrl(
-          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(action.vehicleTechRecords[0])}`
-        )
-      );
+          `/tech-records/${techRecord.systemNumber}/${techRecord.vin}/historic/${this.getLatestRecordTimestamp(techRecord)}`
+        );
+      });
   }
 
   get isArchived(): boolean {
@@ -57,13 +65,8 @@ export class EditTechRecordButtonComponent implements OnInit {
     }
   }
 
-
-  clickScrollToTop(): void {
-    this.viewportScroller.scrollToPosition([0, 0]);
-  }
-
   submitTechRecord() {
     this.submitCheckFormValidity.emit();
-    this.clickScrollToTop()
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 }

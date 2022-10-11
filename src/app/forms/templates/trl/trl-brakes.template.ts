@@ -1,77 +1,73 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const TrlBrakes: FormNode = {
   name: 'trlBrakesSection',
   label: 'Brakes',
   type: FormNodeTypes.GROUP,
   children: [
+    {
+      name: 'brakes',
+      value: '',
+      type: FormNodeTypes.GROUP,
+      children: [
         {
-          name: 'brakes',
+          name: 'loadSensingValve',
+          label: 'Load sensing valve',
+          value: '',
+          type: FormNodeTypes.CONTROL
+        },
+        {
+          name: 'antilockBrakingSystem',
+          label: 'Antilock braking system',
+          value: '',
+          type: FormNodeTypes.CONTROL
+        }
+      ]
+    },
+    {
+      name: 'axles',
+      value: '',
+      type: FormNodeTypes.ARRAY,
+      children: [
+        {
+          name: '0',
+          label: 'Axle',
           value: '',
           type: FormNodeTypes.GROUP,
           children: [
             {
-              name: 'loadSensingValve',
-              label: 'Load sensing valve',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.STRING
+              name: 'axleNumber',
+              label: 'Axle number',
+              type: FormNodeTypes.CONTROL
             },
             {
-              name: 'antilockBrakingSystem',
-              label: 'Antilock braking system',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.STRING
-            }
-          ]
-        },
-        {
-          name: 'axles',
-          value: '',
-          type: FormNodeTypes.ARRAY,
-          children: [
-            {
-              name: '0',
-              label: 'Axle',
+              name: 'brakes',
               value: '',
               type: FormNodeTypes.GROUP,
               children: [
                 {
-                  name: 'axleNumber',
-                  label: 'Axle number',
+                  name: 'brakeActuator',
+                  label: 'Brake actuator',
                   type: FormNodeTypes.CONTROL,
-                  viewType: FormNodeViewTypes.STRING
+                  validators: [{ name: ValidatorNames.Max, args: 999 }]
                 },
                 {
-                  name: 'brakes',
-                  value: '',
-                  type: FormNodeTypes.GROUP,
-                  children: [
-                    {
-                      name: 'brakeActuator',
-                      label: 'Brake actuator',
-                      type: FormNodeTypes.CONTROL,
-                      viewType: FormNodeViewTypes.STRING
-                    },
-                    {
-                      name: 'leverLength',
-                      label: 'Lever length',
-                      type: FormNodeTypes.CONTROL,
-                      viewType: FormNodeViewTypes.STRING
-                    },
-                    {
-                      name: 'springBrakeParking',
-                      label: 'Spring brake parking',
-                      type: FormNodeTypes.CONTROL,
-                      viewType: FormNodeViewTypes.STRING
-                    }
-                  ]
+                  name: 'leverLength',
+                  label: 'Lever length',
+                  type: FormNodeTypes.CONTROL,
+                  validators: [{ name: ValidatorNames.Max, args: 999 }]
+                },
+                {
+                  name: 'springBrakeParking',
+                  label: 'Spring brake parking',
+                  type: FormNodeTypes.CONTROL
                 }
               ]
             }
           ]
         }
       ]
+    }
+  ]
 };
-
