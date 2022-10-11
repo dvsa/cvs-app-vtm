@@ -94,6 +94,12 @@ export class TechnicalRecordService {
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
 
+    if (recordCopy.authIntoService) {
+      Object.entries(recordCopy.authIntoService).forEach(([key, value]: [keyof AuthIntoService, string | undefined | null]) => {
+        recordCopy.authIntoService![key] = value?.split('T')[0] ?? null;
+      });
+    }
+
     const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
     const body = {
