@@ -9,7 +9,7 @@
 
         <th scope="col" class="govuk-table__header">Brake actuator</th>
 
-        <th scope="col" class="govuk-table__header">Level length</th>
+        <th scope="col" class="govuk-table__header">Lever length</th>
 
         <th scope="col" class="govuk-table__header">Spring brake parking</th>
       </tr>
@@ -39,12 +39,13 @@
           </td>
 
           <td class="govuk-table__cell">
-            <app-text-input
+            <app-select
               formControlName="springBrakeParking"
               [name]="'springBrakeParking' + i"
+              [options]="booleanOptions"
               [isEditing]="isEditing"
               [noBottomMargin]="true"
-            ></app-text-input>
+            ></app-select>
           </td>
         </ng-container>
       </tr>
@@ -57,7 +58,13 @@
     <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'antilockBrakingSystem' }"></ng-template>
 
     <ng-template #radio let-name="name">
-      <app-radio-group [formControlName]="name" [name]="name" [label]="name" [options]="booleanOptions" [isEditing]="isEditing"></app-radio-group>
+      <app-radio-group
+        [formControlName]="name"
+        [name]="name"
+        [label]="pascalCase(name)"
+        [options]="booleanOptions"
+        [isEditing]="isEditing"
+      ></app-radio-group>
     </ng-template>
   </div>
 </ng-container>

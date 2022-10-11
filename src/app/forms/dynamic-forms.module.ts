@@ -53,7 +53,7 @@ import { BrakesComponent } from './components/brakes/brakes.component';
     WeightsComponent,
     DimensionsComponent,
     NumberInputWithSuffixComponent,
-    BrakesComponent
+    BrakesComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

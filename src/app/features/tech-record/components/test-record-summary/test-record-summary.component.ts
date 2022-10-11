@@ -1,6 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
+import { testTypeIdChanged } from '@store/test-records';
+
+interface TestField {
+  testTypeStartTimestamp: string | Date;
+  testTypeName: string;
+  testNumber: string;
+  testResult: resultOfTestEnum;
+  testResultId: string;
+}
 
 @Component({
   selector: 'app-test-record-summary',
@@ -30,15 +40,31 @@ export class TestRecordSummaryComponent {
     return testResult.testTypes.map(t => t.testResult).join(',');
   }
 
+  get sortedTestTypeFields(): TestField[] {
+    const byDate = (a: TestField, b: TestField) => new Date(b.testTypeStartTimestamp).getTime() - new Date(a.testTypeStartTimestamp).getTime();
+
+    return this.testRecords
+      .flatMap(record =>
+        record.testTypes.map(testType => ({
+          testTypeStartTimestamp: testType.testTypeStartTimestamp,
+          testTypeName: testType.testTypeName,
+          testNumber: testType.testNumber,
+          testResult: testType.testResult,
+          testResultId: record.testResultId
+        }))
+      )
+      .sort(byDate);
+  }
+
   get numberOfRecords(): number {
     return this.testRecords.length;
   }
 
-  get paginatedTestRecords() {
-    return this.testRecords.slice(this.pageStart, this.pageEnd) ?? [];
+  get paginatedTestFields() {
+    return this.sortedTestTypeFields.slice(this.pageStart, this.pageEnd);
   }
 
-  trackByFn(i: number, t: TestResultModel) {
-    return t.createdAt;
+  trackByFn(i: number, t: TestField) {
+    return t.testNumber;
   }
 }
