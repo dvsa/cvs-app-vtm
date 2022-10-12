@@ -39,4 +39,26 @@ export class VehicleHeaderComponent {
   get vehicleTypes() {
     return VehicleTypes;
   }
+
+  createHeader(techRecord: TechRecordModel, vehicleType: VehicleTypes) {
+    let string = '';
+
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        string = `${techRecord.vehicleConfiguration ? techRecord.vehicleConfiguration : 'Configuration N/A'}`;
+        break;
+      case VehicleTypes.PSV:
+        string = `${techRecord.bodyMake ? techRecord.bodyMake : 'Body Make N/A'}-${techRecord.bodyModel ? techRecord.bodyModel : 'Body Model N/A'}`;
+        break;
+      case VehicleTypes.HGV:
+        string = `${techRecord.chassisMake ? techRecord.chassisMake : 'Chassis Make N/A'}-${
+          techRecord.chassisModel ? techRecord.chassisModel : 'Chassis Model N/A'
+        }`;
+        break;
+      default:
+        string = 'Could not retrieve vehicle type';
+        break;
+    }
+    return string;
+  }
 }

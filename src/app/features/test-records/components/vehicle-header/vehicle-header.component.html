@@ -66,12 +66,12 @@
 
     <div class="vehicle_heading govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-l">
-        <span *ngIf="testResult?.vehicleType === vehicleTypes.TRL; else bodyMakeModel">
-          {{ (techRecord$ | async)?.vehicleConfiguration | defaultNullOrEmpty | titlecase }}
-        </span>
-        <ng-template #bodyMakeModel>
-          <span>{{ (techRecord$ | async)?.bodyMake + '-' + (techRecord$ | async)?.bodyModel | defaultNullOrEmpty }}</span>
-        </ng-template>
+        <ng-container *ngIf="techRecord$ | async as techRecord" [ngSwitch]="testResult?.vehicleType">
+          <span *ngSwitchCase="vehicleTypes.TRL"> {{ createHeader(techRecord, vehicleTypes.TRL) }} </span>
+          <span *ngSwitchCase="vehicleTypes.PSV"> {{ createHeader(techRecord, vehicleTypes.PSV) }} </span>
+          <span *ngSwitchCase="vehicleTypes.HGV"> {{ createHeader(techRecord, vehicleTypes.HGV) }}</span>
+          <span *ngSwitchDefault> Idunno </span>
+        </ng-container>
 
         <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
       </h2>
