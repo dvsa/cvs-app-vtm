@@ -66,10 +66,10 @@ describe('DateComponent', () => {
         day: number | null,
         hour: number | null,
         minute: number | null,
-        showTime = false
+        displayTime = false
       ) => {
         component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
-        component.dateComponent!.showTime = showTime;
+        component.dateComponent!.displayTime = displayTime;
 
         fixture.detectChanges();
 
@@ -103,10 +103,10 @@ describe('DateComponent', () => {
         day: number | null,
         hour: number | null,
         minute: number | null,
-        showTime = false
+        displayTime = false
       ) => {
         component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
-        component.dateComponent!.showTime = showTime;
+        component.dateComponent!.displayTime = displayTime;
         component.dateComponent!.isoDate = false;
 
         fixture.detectChanges();

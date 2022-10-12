@@ -68,9 +68,9 @@ describe(DateValidators.validDate.name, () => {
     [{ invalidDate: { error: true, reason: "'Date' minutes must be between 0 and 59" } }, '2022-01-01T00:60:00:000Z', true],
     [null, ''],
     [null, '2022-01-01T00:00:00.000Z']
-  ])('should validate date and return %s for %p', (expected, date: string, showTime = false) => {
+  ])('should validate date and return %s for %p', (expected, date: string, displayTime = false) => {
     const control = new FormControl(date);
 
-    expect(DateValidators.validDate(showTime)(control)).toEqual(expected);
+    expect(DateValidators.validDate(displayTime)(control)).toEqual(expected);
   });
 });
