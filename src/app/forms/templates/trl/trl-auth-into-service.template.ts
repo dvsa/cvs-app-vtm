@@ -15,7 +15,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
           editType: FormNodeEditTypes.DATE,
-          returnTime: false
+          isoDate: false
         },
         {
           name: 'dateReceived',
@@ -23,7 +23,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
           editType: FormNodeEditTypes.DATE,
-          returnTime: false
+          isoDate: false
         },
         {
           name: 'datePending',
@@ -31,7 +31,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
           editType: FormNodeEditTypes.DATE,
-          returnTime: false
+          isoDate: false
         },
         {
           name: 'dateAuthorised',
@@ -39,7 +39,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
           editType: FormNodeEditTypes.DATE,
-          returnTime: false
+          isoDate: false
         },
         {
           name: 'dateRejected',
@@ -47,7 +47,7 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
           editType: FormNodeEditTypes.DATE,
-          returnTime: false
+          isoDate: false
         }
       ]
     }

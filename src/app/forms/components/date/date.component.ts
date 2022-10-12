@@ -18,7 +18,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() showTime = false;
-  @Input() returnTime = true;
+  @Input() isoDate = true;
   @ViewChild('dayEl')
   dayEl?: ElementRef<HTMLInputElement>;
   @ViewChild('dayModel') dayModel?: AbstractControlDirective;
@@ -133,7 +133,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
-    if (this.returnTime)
+    if (this.isoDate)
       return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
     return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }

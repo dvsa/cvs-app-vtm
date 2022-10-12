@@ -107,7 +107,7 @@ describe('DateComponent', () => {
       ) => {
         component.dateComponent!.originalDate = '2022-01-01T01:06:00.000';
         component.dateComponent!.showTime = showTime;
-        component.dateComponent!.returnTime = false;
+        component.dateComponent!.isoDate = false;
 
         fixture.detectChanges();
 
