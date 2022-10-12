@@ -90,6 +90,7 @@ export interface FormNode {
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
+  returnTime?: boolean;
 }
 
 export interface FormNodeCombinationOptions {

@@ -292,7 +292,6 @@ export interface TechRecordModel {
 }
 
 export interface AuthIntoService {
-  [key: string]: string | undefined | null;
   cocIssueDate?: string | null;
   dateReceived?: string | null;
   datePending?: string | null;

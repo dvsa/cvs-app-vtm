@@ -14,35 +14,40 @@ export const TrlAuthIntoServiceTemplate: FormNode = {
           label: 'COC issue date',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE
+          editType: FormNodeEditTypes.DATE,
+          returnTime: false
         },
         {
           name: 'dateReceived',
           label: 'Date received',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE
+          editType: FormNodeEditTypes.DATE,
+          returnTime: false
         },
         {
           name: 'datePending',
           label: 'Date pending',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE
+          editType: FormNodeEditTypes.DATE,
+          returnTime: false
         },
         {
           name: 'dateAuthorised',
           label: 'Date authorised',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE
+          editType: FormNodeEditTypes.DATE,
+          returnTime: false
         },
         {
           name: 'dateRejected',
           label: 'Date rejected',
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.DATE,
-          editType: FormNodeEditTypes.DATE
+          editType: FormNodeEditTypes.DATE,
+          returnTime: false
         }
       ]
     }

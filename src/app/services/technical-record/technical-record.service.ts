@@ -66,12 +66,6 @@ export class TechnicalRecordService {
     const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}`;
     const newTechRecord = cloneDeep(techRecord);
 
-    if (newTechRecord.authIntoService) {
-      Object.entries(newTechRecord.authIntoService).forEach(([key, value]: [keyof AuthIntoService, string | undefined | null]) => {
-        newTechRecord.authIntoService![key] = value?.split('T')[0] ?? null;
-      });
-    }
-
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
     if (techRecord.statusCode === StatusCodes.CURRENT) {
       newTechRecord.statusCode = StatusCodes.PROVISIONAL;
@@ -93,12 +87,6 @@ export class TechnicalRecordService {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
-
-    if (recordCopy.authIntoService) {
-      Object.entries(recordCopy.authIntoService).forEach(([key, value]: [keyof AuthIntoService, string | undefined | null]) => {
-        recordCopy.authIntoService![key] = value?.split('T')[0] ?? null;
-      });
-    }
 
     const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
