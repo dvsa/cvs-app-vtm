@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { AuthIntoService, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
@@ -63,28 +63,30 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}`
-    const body = {
-      msUserDetails: { msOid: id, msUser: username },
-      techRecord: [cloneDeep(techRecord)]
-    };
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}`;
+    const newTechRecord = cloneDeep(techRecord);
 
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
     if (techRecord.statusCode === StatusCodes.CURRENT) {
-      body.techRecord[0].statusCode = StatusCodes.PROVISIONAL
+      newTechRecord.statusCode = StatusCodes.PROVISIONAL;
     }
 
     if (techRecord.updateType) {
-      delete body.techRecord[0].updateType
+      delete newTechRecord.updateType;
     }
+
+    const body = {
+      msUserDetails: { msOid: id, msUser: username },
+      techRecord: [newTechRecord]
+    };
 
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string, id?: string }) {
+  postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
-    recordCopy.statusCode = StatusCodes.PROVISIONAL
+    recordCopy.statusCode = StatusCodes.PROVISIONAL;
 
     const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;

@@ -91,6 +91,7 @@ export interface FormNode {
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
   suffix?: string;
+  isoDate?: boolean;
 }
 
 export interface FormNodeCombinationOptions {
