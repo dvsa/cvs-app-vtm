@@ -52,7 +52,6 @@ export const SpecialistTestSectionGroup3: FormNode = {
               options: [
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' },
-                { value: 'prs', label: 'PRS' },
                 { value: 'abandoned', label: 'Abandoned' }
               ],
               validators: [
@@ -126,7 +125,8 @@ export const SpecialistTestSectionGroup3: FormNode = {
               value: '',
               disabled: true,
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME
             },
             {
               name: 'testTypeEndTimestamp',
@@ -134,19 +134,8 @@ export const SpecialistTestSectionGroup3: FormNode = {
               value: '',
               disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME
-            },
-            {
-              name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
-              label: 'Prohibition issued',
-              value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              validators: [{ name: ValidatorNames.Required }]
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME
             }
           ]
         }
