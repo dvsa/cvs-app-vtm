@@ -8,7 +8,6 @@ export const TrlBrakes: FormNode = {
   children: [
     {
       name: 'brakes',
-      value: '',
       type: FormNodeTypes.GROUP,
       children: [
         {
@@ -33,7 +32,6 @@ export const TrlBrakes: FormNode = {
         {
           name: '0',
           label: 'Axle',
-          value: '',
           type: FormNodeTypes.GROUP,
           children: [
             {
