@@ -52,7 +52,7 @@
     ></app-edit-tech-record-button>
     <app-tech-record-summary
       *ngIf="currentTechRecord$ | async as currentTechRecord"
-      [isEditable]="isEditable"
+      [isEditing]="isEditable"
       [vehicleTechRecord]="currentTechRecord"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>

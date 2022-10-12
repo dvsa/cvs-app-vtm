@@ -37,6 +37,7 @@ export class DynamicFormService {
     [ValidatorNames.Required]: () => Validators.required,
     [ValidatorNames.RequiredIfEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfEquals(args.sibling, args.value),
     [ValidatorNames.RequiredIfNotEquals]: (args: { sibling: string; value: any }) => CustomValidators.requiredIfNotEqual(args.sibling, args.value),
+    [ValidatorNames.Defined]: () => CustomValidators.defined(),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg)
@@ -125,14 +126,17 @@ export class DynamicFormService {
   private static getControlErrors(control: CustomFormControl, validationErrorList: GlobalError[]) {
     const {
       errors,
-      meta: { name, label }
+      meta: { name, label, customValidatorErrorName }
     } = control;
 
     if (errors) {
       const errorList = Object.keys(errors);
 
       errorList.forEach(error => {
-        validationErrorList.push({ error: ErrorMessageMap[error](errors[error], label), anchorLink: name } as GlobalError);
+        validationErrorList.push({
+          error: ErrorMessageMap[error](errors[error], customValidatorErrorName ?? label),
+          anchorLink: name
+        } as GlobalError);
       });
     }
   }

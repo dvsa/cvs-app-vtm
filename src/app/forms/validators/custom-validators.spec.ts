@@ -258,6 +258,24 @@ describe('numeric', () => {
   });
 });
 
+describe('defined', () => {
+  it.each([
+    [{ defined: false }, undefined],
+    [null, ''],
+    [null, null],
+    [null, 'hello world!'],
+    [null, 1234],
+  ])('should return %o for %r', (expected: null | {[index: string]: boolean}, input: any) => {
+    const definedValidator = CustomValidators.defined();
+    let form = new FormControl(input)
+    if (typeof input === 'undefined') {
+      // Unable to instantiate form with a value that is not defined...
+      form.patchValue(undefined)
+    }
+    expect(definedValidator(form)).toEqual(expected);
+  })
+})
+
 describe('alphanumeric', () => {
   it.each([
     [null, '12dc9a'],

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { map, ReplaySubject, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pagination[tableName]',
@@ -16,6 +16,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
   currentPage = 1;
   currentPageSubject = new ReplaySubject<number>(this.currentPage);
   itemsPerPage: number = 5; // this can be extended later to be set via a dom control
+  numberOfVisiblePages = 5;
 
   private destroy$ = new Subject<void>();
 
@@ -74,9 +75,15 @@ export class PaginationComponent implements OnInit, OnDestroy {
     return Math.ceil(this.numberOfItems / this.itemsPerPage);
   }
 
+  /**
+   * Returns array of visible page buttons.
+   * Allways returns an odd number of pages while keeping current page in the middle.
+   */
   get visiblePages() {
-    const start = this.currentPage - 3 < 1 ? 0 : this.currentPage - 3;
-    const end = this.currentPage + 3 > this.pages.length ? this.pages.length : this.currentPage + 2;
-    return this.pages.slice(end < this.pages.length ? start : this.pages.length - 5, start ? end : 5);
+    const range = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+    const middle = Math.ceil(this.numberOfVisiblePages / 2);
+    const clampedPage = range(this.currentPage, middle, this.pages.length - (middle - 1));
+
+    return this.pages.slice(clampedPage - middle, clampedPage + middle - 1);
   }
 }

@@ -14,6 +14,10 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class TextInputComponent extends BaseControlComponent {
-  @Input() numeric: boolean = false;
-  @Input() width?: number;
+  @Input() isEditing = true;
+  @Input() numeric = false;
+
+  get style(): string {
+    return ('govuk-input ' + (this.width ? ('govuk-input--width-' + this.width.toString()) : ''));
+  }
 }
