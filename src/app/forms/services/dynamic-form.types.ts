@@ -93,6 +93,7 @@ export interface FormNode {
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
+  suffix?: string;
   isoDate?: boolean;
 }
 

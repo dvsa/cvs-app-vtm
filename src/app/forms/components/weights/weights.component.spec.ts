@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
-import { NumberInputWithSuffixComponent } from '../number-input-with-suffix/number-input-with-suffix.component';
-import { NumberInputComponent } from '../number-input/number-input.component';
 import { WeightsComponent } from './weights.component';
 
 describe('WeightsComponent', () => {
@@ -14,8 +13,8 @@ describe('WeightsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule, StoreModule.forRoot({})],
-      declarations: [NumberInputComponent, NumberInputWithSuffixComponent, WeightsComponent],
+      imports: [StoreModule.forRoot({}), DynamicFormsModule, ReactiveFormsModule, FormsModule],
+      declarations: [WeightsComponent],
       providers: [provideMockStore<State>({ initialState: initialAppState })]
     }).compileComponents();
   });
