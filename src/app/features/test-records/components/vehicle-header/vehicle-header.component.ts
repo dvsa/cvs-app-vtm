@@ -45,7 +45,7 @@ export class VehicleHeaderComponent {
 
     switch (vehicleType) {
       case VehicleTypes.TRL:
-        string = techRecord.vehicleConfiguration ?? '';
+        return techRecord.vehicleConfiguration ?? '';
         break;
       case VehicleTypes.PSV:
         return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
