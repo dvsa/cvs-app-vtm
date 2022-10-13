@@ -1,7 +1,5 @@
-import { FormNodeOption } from '@forms/services/dynamic-form.types';
+import { MultiOptions } from '@forms/models/options.model';
 
-export default function getOptionsFromObject(object: object): FormNodeOption<string | number | boolean>[] {
-  return Object.values(object).map(value => {
-    return { value: value, label: value };
-  });
+export default function getOptionsFromEnum(object: object): MultiOptions {
+  return Object.values(object).map(value => ({ value, label: value }))
 }
