@@ -69,6 +69,10 @@ export interface FormNodeOption<T> {
   hint?: string;
 }
 
+export interface FormNodeSelectMap {
+  [key: string]: any;
+}
+
 export interface FormNode {
   name: string;
   children?: FormNode[];
@@ -80,7 +84,7 @@ export interface FormNode {
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
-  options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions | object[];
+  options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions | FormNodeSelectMap;
   validators?: { name: ValidatorNames; args?: any }[];
   customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
