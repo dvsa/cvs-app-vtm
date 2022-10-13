@@ -24,8 +24,10 @@ type Segments = {
   ]
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
-  @Input() includeTime = false;
-  @ViewChild('dayEl') dayEl?: ElementRef<HTMLInputElement>;
+  @Input() displayTime = false;
+  @Input() isoDate = true;
+  @ViewChild('dayEl')
+  dayEl?: ElementRef<HTMLInputElement>;
   @ViewChild('dayModel') dayModel?: AbstractControlDirective;
 
   private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
@@ -119,7 +121,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    const dateFields: Segments = this.includeTime
+    const dateFields: Segments = this.displayTime
       ? { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }
       : { day: this.day$, month: this.month$, year: this.year$ };
 
@@ -130,15 +132,19 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
           return;
         }
 
-        hour = this.includeTime ? hour : this.dateFieldOrDefault?.hours;
-        minute = this.includeTime ? minute : this.dateFieldOrDefault?.minutes;
+        hour = this.displayTime ? hour : this.dateFieldOrDefault?.hours;
+        minute = this.displayTime ? minute : this.dateFieldOrDefault?.minutes;
         const second = this.dateFieldOrDefault?.seconds;
 
-        this.onChange(
-          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`
-        );
+        this.onChange(this.processDate(year, month, day, hour, minute, second));
       }
     });
+  }
+
+  processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
+    if (this.isoDate)
+      return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
+    return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }
 
   padded(n: number | string | undefined, l = 2) {
@@ -149,7 +155,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * Note: This function is not testable because `validDate` returns a reference that can't be compared to in spec file with `hasValidator` function.
    */
   addValidators() {
-    this.control?.addValidators([DateValidators.validDate(this.includeTime, this.label)]);
+    this.control?.addValidators([DateValidators.validDate(this.displayTime, this.label)]);
   }
 
   validate() {

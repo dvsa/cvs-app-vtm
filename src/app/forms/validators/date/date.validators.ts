@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import validateDate from 'validate-govuk-date';
 export class DateValidators {
-  static validDate(includeTime = false, label?: string): ValidatorFn {
+  static validDate(displayTime = false, label?: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) {
         return null;
@@ -19,7 +19,7 @@ export class DateValidators {
         return { invalidDate: { error: true, reason: `'${label || 'Date'}' year must be four digits` } };
       }
 
-      if (includeTime) {
+      if (displayTime) {
         return this.validateTime(t, label);
       }
 

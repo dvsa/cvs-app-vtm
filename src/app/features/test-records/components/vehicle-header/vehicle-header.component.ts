@@ -39,4 +39,17 @@ export class VehicleHeaderComponent {
   get vehicleTypes() {
     return VehicleTypes;
   }
+
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        return techRecord.vehicleConfiguration ?? '';
+      case VehicleTypes.PSV:
+        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+      case VehicleTypes.HGV:
+        return techRecord.chassisMake && techRecord.chassisModel ? `${techRecord.chassisMake}-${techRecord.chassisModel}` : '';
+      default:
+        return 'Unknown Vehicle Type';
+    }
+  }
 }

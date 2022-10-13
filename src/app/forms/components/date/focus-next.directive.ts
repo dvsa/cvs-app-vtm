@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
   selector: '[appFocusNext]'
 })
 export class FocusNextDirective {
-  @Input() includeTime = false;
+  @Input() displayTime = false;
 
   constructor(private el: ElementRef) {}
 
@@ -37,7 +37,7 @@ export class FocusNextDirective {
           break;
         default:
       }
-    } else if (value.length === 4 && this.includeTime && currentSegment === 'year') {
+    } else if (value.length === 4 && this.displayTime && currentSegment === 'year') {
       nextEl = '-hour';
     }
 
