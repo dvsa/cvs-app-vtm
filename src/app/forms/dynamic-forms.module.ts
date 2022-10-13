@@ -9,8 +9,8 @@ import { BaseControlComponent } from './components/base-control/base-control.com
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { DateComponent } from './components/date/date.component';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
-import { DefectComponent } from './components/defect/defect.component';
-import { DefectsComponent } from './components/defects/defects.component';
+import { DefectComponent } from './custom-sections/defect/defect.component';
+import { DefectsComponent } from './custom-sections/defects/defects.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
 import { FieldErrorMessageComponent } from './components/field-error-message/field-error-message.component';
@@ -23,9 +23,9 @@ import { ViewCombinationComponent } from './components/view-combination/view-com
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { FocusNextDirective } from './components/date/focus-next.directive';
-import { WeightsComponent } from './components/weights/weights.component';
-import { DimensionsComponent } from './components/dimensions/dimensions.component';
-import { BrakesComponent } from './components/brakes/brakes.component';
+import { WeightsComponent } from './custom-sections/weights/weights.component';
+import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
+import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { ReadOnlyComponent } from './components/read-only/read-only.component';
 import { SuffixDirective } from './directives/suffix.directive';

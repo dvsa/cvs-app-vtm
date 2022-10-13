@@ -4,7 +4,7 @@ import { createMockPsv } from '@mocks/psv-record.mock';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/index';
-import { NumberInputComponent } from '../number-input/number-input.component';
+import { NumberInputComponent } from '../../components/number-input/number-input.component';
 import { WeightsComponent } from './weights.component';
 
 describe('WeightsComponent', () => {
