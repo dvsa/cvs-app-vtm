@@ -48,6 +48,7 @@ export enum FormNodeEditTypes {
   NUMBER = 'number',
   NUMERICSTRING = 'numericstring',
   RADIO = 'radio',
+  SELECT = 'select',
   TEXT = 'text',
   TEXTAREA = 'textarea'
 }

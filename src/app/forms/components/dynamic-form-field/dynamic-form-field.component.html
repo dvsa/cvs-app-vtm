@@ -42,6 +42,14 @@
     [formControlName]="control.key"
   ></app-radio-group>
 
+  <app-select
+    *ngSwitchCase="formNodeEditTypes.SELECT"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+  ></app-select>
+
   <app-text-area
     *ngSwitchCase="formNodeEditTypes.TEXTAREA"
     [label]="control.value.meta.label"
