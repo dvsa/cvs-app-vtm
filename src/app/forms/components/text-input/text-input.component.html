@@ -1,4 +1,4 @@
-<div class="govuk-form-group">
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
   <h1 *ngIf="label" class="govuk-label-wrapper">
     <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
   </h1>
