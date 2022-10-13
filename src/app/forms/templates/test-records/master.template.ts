@@ -24,6 +24,7 @@ import { VisitSection } from './section-templates/visit/visit-section.template';
 import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist-test-section-group1.template';
 import { RequiredSpecialistSection } from './section-templates/required/specialist-required-hidden-section.template';
 import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist-test-section-group5.template';
+import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist-test-section-group3.template';
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
 import { SpecialistTestSectionGroup4 } from './section-templates/test/specialist-test-section-group4.template';
 //Keys of root object must a a valid vehicle type.
@@ -97,6 +98,15 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       vehicle: VehicleSectionDefaultPsvHgv,
       test: SpecialistTestSectionGroup2,
       seatbelts: SeatbeltSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSpecialistSection
+    },
+    testTypesSpecialistGroup3: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup3,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -257,7 +267,6 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       required: RequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
     },
-
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup12And14,
