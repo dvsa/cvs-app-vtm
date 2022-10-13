@@ -45,18 +45,16 @@ export class VehicleHeaderComponent {
 
     switch (vehicleType) {
       case VehicleTypes.TRL:
-        string = `${techRecord.vehicleConfiguration ? techRecord.vehicleConfiguration : 'Configuration N/A'}`;
+        string = `${techRecord.vehicleConfiguration ? techRecord.vehicleConfiguration : ''}`;
         break;
       case VehicleTypes.PSV:
-        string = `${techRecord.bodyMake ? techRecord.bodyMake : 'Body Make N/A'}-${techRecord.bodyModel ? techRecord.bodyModel : 'Body Model N/A'}`;
+        string = techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
         break;
       case VehicleTypes.HGV:
-        string = `${techRecord.chassisMake ? techRecord.chassisMake : 'Chassis Make N/A'}-${
-          techRecord.chassisModel ? techRecord.chassisModel : 'Chassis Model N/A'
-        }`;
+        string = techRecord.chassisMake && techRecord.chassisModel ? `${techRecord.chassisMake}-${techRecord.chassisModel}` : '';
         break;
       default:
-        string = 'Could not retrieve vehicle type';
+        string = '';
         break;
     }
     return string;

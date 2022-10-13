@@ -57,4 +57,17 @@ describe('VehicleHeaderComponent', () => {
     expect(component.createHeader(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
     expect(component.createHeader(mockRecord, VehicleTypes.HGV)).toEqual('testChassis-testChassisModel');
   });
+
+  it('should display an empty string if all required data cannot be retrieved', () =>{
+    const mockRecord = {
+      bodyMake: '',
+      bodyModel: 'testBodyModel',
+      chassisMake: '',
+      chassisModel: 'testChassisModel'
+    } as TechRecordModel;
+
+    expect(component.createHeader(mockRecord, VehicleTypes.TRL)).toBeFalsy();
+    expect(component.createHeader(mockRecord, VehicleTypes.PSV)).toBeFalsy();
+    expect(component.createHeader(mockRecord, VehicleTypes.HGV)).toBeFalsy();
+  });
 });
