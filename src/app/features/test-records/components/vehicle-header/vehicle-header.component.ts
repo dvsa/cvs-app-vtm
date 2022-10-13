@@ -51,7 +51,7 @@ export class VehicleHeaderComponent {
         string = techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
         break;
       case VehicleTypes.HGV:
-        string = techRecord.chassisMake && techRecord.chassisModel ? `${techRecord.chassisMake}-${techRecord.chassisModel}` : '';
+        return techRecord.chassisMake && techRecord.chassisModel ? `${techRecord.chassisMake}-${techRecord.chassisModel}` : '';
         break;
       default:
         return ''
