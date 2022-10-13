@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { TestType, TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { Observable } from 'rxjs';

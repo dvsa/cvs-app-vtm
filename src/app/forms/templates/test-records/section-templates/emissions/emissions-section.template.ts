@@ -1,6 +1,5 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CodeChallengeMethodValues } from '@azure/msal-common/dist/utils/Constants';
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',

@@ -80,7 +80,7 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
-        this.router.navigate([this.selectedDeficiency!.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
+        this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
         let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;

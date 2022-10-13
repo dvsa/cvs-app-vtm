@@ -31,7 +31,7 @@ export interface TestType {
   particulateTrapFitted: string;
   particulateTrapSerialNumber: string;
   defects?: TestResultDefects;
-  customDefects: customDefects[];
+  customDefects: CustomDefects[];
 
   additionalNotesRecorded: string;
   certificateLink?: string | null;
@@ -39,7 +39,7 @@ export interface TestType {
   secondaryCertificateNumber?: string | null;
 }
 
-export interface customDefects {
+export interface CustomDefects {
   referenceNumber: string;
   defectName: string;
   defectNotes: string;

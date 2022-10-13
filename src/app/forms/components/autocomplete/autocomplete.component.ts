@@ -3,8 +3,7 @@ import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, Inject, 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomValidators } from '@forms/validators/custom-validators';
 import { enhanceSelectElement } from 'accessible-autocomplete/dist/accessible-autocomplete.min';
-import { takeWhile } from 'rxjs';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom, Observable, takeWhile } from 'rxjs';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
