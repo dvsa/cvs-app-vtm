@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormNodeEditTypes, FormNodeOption, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { MultiOptions } from '@forms/models/options.model';
+import { FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-switchable-input[form][type][name][isEditing]',
-  templateUrl: './switchable-input.component.html',
-  styleUrls: ['./switchable-input.component.scss']
+  templateUrl: './switchable-input.component.html'
 })
 export class SwitchableInputComponent implements OnInit {
   @Input() type!: FormNodeEditTypes;
@@ -18,9 +18,9 @@ export class SwitchableInputComponent implements OnInit {
   @Input() label?: string;
   @Input() suffix?: string;
   @Input() width?: FormNodeWidth;
-  @Input() options?: Array<FormNodeOption<string | number | boolean>>;
+  @Input() options?: MultiOptions;
 
-  demilimitor = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
+  delimitor = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
 
   ngOnInit(): void {
     if (this.requiresOptions && !this.options) {
@@ -35,7 +35,7 @@ export class SwitchableInputComponent implements OnInit {
       || this.type === this.types.RADIO;
   }
 
-  get options$(): Observable<Array<FormNodeOption<string | number | boolean>>> {
+  get options$(): Observable<MultiOptions> {
     return of(this.options ?? []);
   }
 
