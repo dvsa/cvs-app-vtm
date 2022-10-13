@@ -54,7 +54,7 @@ export class VehicleHeaderComponent {
         string = techRecord.chassisMake && techRecord.chassisModel ? `${techRecord.chassisMake}-${techRecord.chassisModel}` : '';
         break;
       default:
-        string = '';
+        return ''
         break;
     }
     return string;
