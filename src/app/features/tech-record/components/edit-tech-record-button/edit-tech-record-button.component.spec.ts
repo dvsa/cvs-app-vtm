@@ -1,6 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
 import { EditTechRecordButtonComponent } from './edit-tech-record-button.component';
 import { By } from '@angular/platform-browser';
@@ -11,17 +11,23 @@ import { Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { updateTechRecordsSuccess } from '@store/technical-records';
+import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecords, updateTechRecordsSuccess } from '@store/technical-records';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { clearError } from '@store/global-error/actions/global-error.actions';
+
+let component: EditTechRecordButtonComponent;
+let fixture: ComponentFixture<EditTechRecordButtonComponent>;
+let router: Router;
+let store: MockStore;
+let actions$: ReplaySubject<Action>;
 
 describe('EditTechRecordButtonComponent', () => {
-  let component: EditTechRecordButtonComponent;
-  let fixture: ComponentFixture<EditTechRecordButtonComponent>;
-  let router: Router;
-  let actions$ = new ReplaySubject<Action>();
-
   beforeEach(async () => {
+    actions$ = new ReplaySubject<Action>();
+
+    jest.clearAllMocks();
+
     await TestBed.configureTestingModule({
       declarations: [EditTechRecordButtonComponent],
       providers: [
@@ -41,174 +47,189 @@ describe('EditTechRecordButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditTechRecordButtonComponent);
     router = TestBed.inject(Router);
-
+    store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
-  });
+  })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('component', () => {
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+  })
 
-  it('should NOT have edit button viewable if viewable tech record is archived', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'archived', vehicleType: 'psv' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'archived', vehicleType: 'psv' };
-    fixture.detectChanges();
+  describe('when viewing a tech record', () => {
+    it.each([
+      ['should be viewable', 'provisional', true],
+      ['should be viewable','current', true],
+      ['should not be viewable','archived', false]
+    ],)('edit button %s for %s record', (isViewable: string, statusCode: string, expected: boolean) => {
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: statusCode, vehicleType: 'psv' };
 
-    const button = fixture.debugElement.query(By.css('#edit'));
+      fixture.detectChanges();
+  
+      const button = fixture.debugElement.query(By.css('#edit'));
+      
+      if (expected) {
+        expect(button).toBeTruthy;
+      }
+      else {
+        expect(button).toBeFalsy;
+      }
+    });
+  })
 
-    expect(button).toBeFalsy;
-    expect(component.isArchived).toBeTruthy;
-  });
+  describe('when user clicks edit button', () => {
+    it('component should emit event', () => {
+      jest.spyOn(component.editableStateChange, 'emit')
 
-  it('should have edit button viewable if viewable tech record is provisional', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
-    fixture.detectChanges();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('#edit')).nativeElement.click();
 
-    const button = fixture.debugElement.query(By.css('#edit'));
+      expect(component.editableStateChange.emit).toHaveBeenCalledTimes(1)
+    })
+  })
 
-    expect(button).toBeTruthy;
-    expect(component.isArchived).toBeFalsy;
-  });
+  describe('when amending a current tech record', () => {
+    beforeEach(() => {
+      component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
+      component.editableState = true;
+    })
 
-  it('should have edit button viewable if viewable tech record is current AND provisional DOES NOT exist', () => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
-    fixture.detectChanges();
+    describe('and the user submits their changes', () => {
+      const expectedDate = new Date();
+      const expectedResult = {
+        vehicleTechRecords: [{
+          systemNumber: '1',
+          vin: '1',
+          techRecord: [<TechRecordModel>{ createdAt: expectedDate }]
+        } as VehicleTechRecordModel]
+      };
 
-    const button = fixture.debugElement.query(By.css('#edit'));
+      it('component should emit event', fakeAsync(() => {
+        jest.spyOn(component.submitCheckFormValidity, 'emit')
+        
+        fixture.detectChanges();
+        fixture.debugElement.query(By.css('#submit')).nativeElement.click();
 
-    expect(button).toBeTruthy;
-  });
+        expect(component.submitCheckFormValidity.emit).toHaveBeenCalledTimes(1)
+      }))
 
-  it('should dispatch action to update and archive existing provisional record if viewable tech record is provisional', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'provisional', vehicleType: 'psv' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional', vehicleType: 'psv' };
-    component.editableState = true;
-    component.isDirty = true;
-    fixture.detectChanges();
+      it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
+        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+    
+        actions$.next(updateTechRecordsSuccess(expectedResult));
+    
+        
+        tick();
+    
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/historic/' + expectedDate.getTime());
+      }));
 
-    window.scrollTo = jest.fn(() => { })
-    jest.spyOn(component, 'submitTechRecord');
+      it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
+        jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
+    
+        actions$.next(createProvisionalTechRecordSuccess(expectedResult));
+    
+        tick();
+    
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/historic/' + expectedDate.getTime());
+      }));
+    })
 
-    fixture.debugElement.query(By.css('#submit')).nativeElement.click();
+    describe('and the user cancels their changes', () => {
+      describe('and the form is dirty', () => {
+        beforeEach(() => {
+          component.isDirty = true;
+          jest.resetAllMocks();
+          jest.spyOn(component,'cancelAmend')
+          jest.spyOn(component,'toggleEditMode')
+          jest.spyOn(router,'navigate')
+        })
 
-    expect(component.submitTechRecord).toHaveBeenCalled();
-  }));
+        it('should prompt user if they wish to cancel', () => {
+          jest.spyOn(window,'confirm')
 
-  it('should dispatch action to create provisional if viewable tech record is current and no provisional exists', fakeAsync(() => {
-    component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
-    component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
-    component.editableState = true;
-    component.isDirty = true;
-    fixture.detectChanges();
+          fixture.detectChanges();
+      
+          fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
 
-    window.scrollTo = jest.fn(() => { })
-    jest.spyOn(component, 'submitTechRecord');
+          expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?')
+        })
 
-    fixture.debugElement.query(By.css('#submit')).nativeElement.click();
+        describe('and the user cancels cancelling an amendment', () => {
+          it('should keep user in edit view', fakeAsync(() => {
+            jest.spyOn(window,'confirm').mockImplementation(() => false);
+            jest.spyOn(store,'dispatch')
 
-    expect(component.submitTechRecord).toHaveBeenCalled();
-  }));
+            fixture.detectChanges();
+            fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
 
-  it('should promt user if cancelling an amend with a dirty form.', fakeAsync(() => {
+            expect(component.cancelAmend).toHaveBeenCalled();
+            expect(component.toggleEditMode).not.toHaveBeenCalled();
+            expect(component.editableState).toBeTruthy();
+            expect(window.confirm).toHaveBeenCalledTimes(1);
+            expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
+            expect(router.navigate).not.toHaveBeenCalled();
+            expect(store.dispatch).not.toHaveBeenCalled()
+            expect(router.navigate).not.toHaveBeenCalled();
+          }))
+        })
 
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+        describe('and the user confirms cancelling the amendment', () => {
+          it('should return user back to non-edit view', fakeAsync(() => {
+            jest.spyOn(window,'confirm').mockImplementation(() => true);
+            jest.spyOn(store,'dispatch')
 
-    component.editableState = true;
-    component.isDirty = true;
-    fixture.detectChanges();
+            fixture.detectChanges();
+            fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
 
-    window.confirm = jest.fn(() => false);
-    jest.spyOn(component, 'cancelAmend');
-    jest.spyOn(component, 'toggleEditMode');
+            expect(router.navigate).toHaveBeenCalledWith([]);
+            expect(component.cancelAmend).toHaveBeenCalled();
+            expect(component.toggleEditMode).toHaveBeenCalled();
+            expect(component.editableState).toBeFalsy();
+            expect(window.confirm).toHaveBeenCalledTimes(1);
+            expect(window.confirm).toHaveBeenCalledWith('Your changes will not be saved. Are you sure?');
+            expect(store.dispatch).toHaveBeenNthCalledWith(1,clearError())
+            expect(store.dispatch).toHaveBeenNthCalledWith(2,updateEditingTechRecordCancel())
+          }))
+        })
+      })
 
-    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+      describe('and the form is not dirty', () => {
+        beforeEach(() => {
+          component.isDirty = false;
+        })
 
-    expect(component.cancelAmend).toHaveBeenCalled();
-    expect(component.toggleEditMode).toBeCalledTimes(0);
-    expect(component.editableState).toBeTruthy();
-  }))
+        it('should not prompt user if they wish to cancel', fakeAsync(() => {
+          jest.spyOn(window,'confirm')
+          fixture.detectChanges();
+  
+          fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
+      
+          expect(window.confirm).not.toHaveBeenCalled();
+        }))
 
-  it('should promt user if cancelling an amend with a dirty form and toggle edit on OK confirmation.', fakeAsync(() => {
+        it('should return user to non-edit view', fakeAsync(() => {
+          jest.spyOn(component,'cancelAmend')
+          jest.spyOn(component,'toggleEditMode')
+          jest.spyOn(store,'dispatch')
 
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
+          fixture.detectChanges();
+  
+          fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
 
-    component.editableState = true;
-    component.isDirty = true;
-    fixture.detectChanges();
-
-    window.confirm = jest.fn(() => true);
-    jest.spyOn(component, 'cancelAmend');
-    jest.spyOn(component, 'toggleEditMode');
-
-    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
-
-    expect(component.cancelAmend).toHaveBeenCalled();
-    expect(component.toggleEditMode).toHaveBeenCalled();
-    expect(component.editableState).toBeFalsy();
-  }))
-
-  it('should promt user if cancelling an amend with a dirty form and NOT toggle edit on Cancel confirmation.', fakeAsync(() => {
-
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]};
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
-    component.editableState = true;
-    component.isDirty = true;
-    fixture.detectChanges();
-
-    window.confirm = jest.fn(() => false);
-    jest.spyOn(component, 'cancelAmend');
-    jest.spyOn(component, 'toggleEditMode');
-
-    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
-
-    expect(component.cancelAmend).toHaveBeenCalled();
-    expect(component.toggleEditMode).toHaveBeenCalledTimes(0);
-    expect(component.editableState).toBeTruthy();
-  }))
-
-  it('should NOT promt user if cancelling an amend with a clean form.', fakeAsync(() => {
-
-    component.vehicleTechRecord = <VehicleTechRecordModel>{techRecord: [{statusCode: 'current', vehicleType: 'psv' }]}
-    component.viewableTechRecord = <TechRecordModel>{statusCode: 'current', vehicleType: 'psv'};
-
-    component.editableState = true;
-    component.isDirty = false;
-    fixture.detectChanges();
-
-    window.confirm = jest.fn(() => true);
-    jest.spyOn(component, 'cancelAmend');
-    jest.spyOn(component, 'toggleEditMode');
-
-    fixture.debugElement.query(By.css('#cancel')).nativeElement.click();
-
-    expect(component.cancelAmend).toHaveBeenCalled();
-    expect(component.toggleEditMode).toHaveBeenCalled();
-    expect(component.editableState).toBeFalsy();
-  }))
-
-  const expectedDate = new Date();
-  const expectedResult = {
-    vehicleTechRecords: [{
-      systemNumber: '1',
-      vin: '1',
-      techRecord: [{ createdAt: expectedDate } as TechRecordModel]
-    } as VehicleTechRecordModel]
-  };
-
-  it('router should be called on updateTechRecordsSuccess', fakeAsync(() => {
-    const navigateByUrlSpy = jest.spyOn(router, 'navigateByUrl').mockImplementation(() => Promise.resolve(true));
-
-    actions$.next(updateTechRecordsSuccess(expectedResult));
-
-    tick();
-
-    expect(navigateByUrlSpy).toHaveBeenCalledTimes(1);
-    expect(navigateByUrlSpy).toHaveBeenCalledWith('/tech-records/1/1/historic/' + expectedDate.getTime());
-  }));
+          expect(component.cancelAmend).toHaveBeenCalled();
+          expect(component.toggleEditMode).toHaveBeenCalled();
+          expect(component.editableState).toBeFalsy();
+          expect(store.dispatch).toHaveBeenNthCalledWith(1,clearError())
+          expect(store.dispatch).toHaveBeenNthCalledWith(2,updateEditingTechRecordCancel())
+        }))
+      })
+    })
+  })
 });
