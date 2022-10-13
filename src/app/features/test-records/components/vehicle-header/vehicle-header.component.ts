@@ -40,7 +40,7 @@ export class VehicleHeaderComponent {
     return VehicleTypes;
   }
 
-  createHeader(techRecord: TechRecordModel, vehicleType: VehicleTypes) {
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes) {
 
     switch (vehicleType) {
       case VehicleTypes.TRL:

@@ -67,9 +67,9 @@
     <div class="vehicle_heading govuk-!-margin-bottom-6">
       <h2 class="govuk-heading-l">
         <ng-container *ngIf="techRecord$ | async as techRecord" [ngSwitch]="testResult?.vehicleType">
-          <span *ngSwitchCase="vehicleTypes.TRL"> {{ createHeader(techRecord, vehicleTypes.TRL) }} </span>
-          <span *ngSwitchCase="vehicleTypes.PSV"> {{ createHeader(techRecord, vehicleTypes.PSV) }} </span>
-          <span *ngSwitchCase="vehicleTypes.HGV"> {{ createHeader(techRecord, vehicleTypes.HGV) }}</span>
+          <span *ngSwitchCase="vehicleTypes.TRL"> {{ getVehicleDescription(techRecord, vehicleTypes.TRL) }} </span>
+          <span *ngSwitchCase="vehicleTypes.PSV"> {{ getVehicleDescription(techRecord, vehicleTypes.PSV) }} </span>
+          <span *ngSwitchCase="vehicleTypes.HGV"> {{ getVehicleDescription(techRecord, vehicleTypes.HGV) }}</span>
           <span *ngSwitchDefault>Vehicle type not found</span>
         </ng-container>
 

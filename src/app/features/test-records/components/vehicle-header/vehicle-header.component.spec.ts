@@ -53,9 +53,9 @@ describe('VehicleHeaderComponent', () => {
       chassisModel: 'testChassisModel'
     } as TechRecordModel;
 
-    expect(component.createHeader(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
-    expect(component.createHeader(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
-    expect(component.createHeader(mockRecord, VehicleTypes.HGV)).toEqual('testChassis-testChassisModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testChassis-testChassisModel');
   });
 
   it('should display an empty string if all required data cannot be retrieved', () =>{
@@ -66,8 +66,8 @@ describe('VehicleHeaderComponent', () => {
       chassisModel: 'testChassisModel'
     } as TechRecordModel;
 
-    expect(component.createHeader(mockRecord, VehicleTypes.TRL)).toBeFalsy();
-    expect(component.createHeader(mockRecord, VehicleTypes.PSV)).toBeFalsy();
-    expect(component.createHeader(mockRecord, VehicleTypes.HGV)).toBeFalsy();
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toBeFalsy();
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toBeFalsy();
   });
 });
