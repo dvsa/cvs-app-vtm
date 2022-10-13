@@ -32,7 +32,7 @@ export class DelayedRetryInterceptor implements HttpInterceptor {
     }
 
     if (retryCount >= count) {
-      throw 'Request timed out. Check connectivity and try again.';
+      throw new Error('Request timed out. Check connectivity and try again.');
     }
 
     return timer(backoff ? delay * retryCount : delay);

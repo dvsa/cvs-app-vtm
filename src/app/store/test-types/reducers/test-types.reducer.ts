@@ -1,4 +1,3 @@
-import { state } from '@angular/animations';
 import { TestType, TestTypeCategory } from '@api/test-types';
 import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';

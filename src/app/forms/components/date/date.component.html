@@ -11,7 +11,7 @@
             #dayEl="ngModel"
             appNumberOnly
             appFocusNext
-            [includeTime]="includeTime"
+            [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': elementHasErrors(0) && (dayEl.dirty || dayEl.touched) }"
             id="{{ name }}-day"
@@ -34,7 +34,7 @@
             #monthEl="ngModel"
             appNumberOnly
             appFocusNext
-            [includeTime]="includeTime"
+            [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-2"
             [ngClass]="{ 'govuk-input--error': (monthEl.dirty || monthEl.touched) && elementHasErrors(1) }"
             id="{{ name }}-month"
@@ -57,7 +57,7 @@
             #yearEl="ngModel"
             appNumberOnly
             appFocusNext
-            [includeTime]="includeTime"
+            [displayTime]="displayTime"
             class="govuk-input govuk-date-input__input govuk-input--width-4"
             [ngClass]="{ 'govuk-input--error': (yearEl.dirty || yearEl.touched) && (elementHasErrors(2) || yearEl.invalid) }"
             id="{{ name }}-year"
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <ng-container *ngIf="includeTime">
+      <ng-container *ngIf="displayTime">
         <div class="govuk-date-input__item">
           <div class="govuk-form-group">
             <label class="govuk-label govuk-date-input__label" for="{{ name }}-hour"> Hour </label>
@@ -82,7 +82,7 @@
               #hourEl="ngModel"
               appNumberOnly
               appFocusNext
-              [includeTime]="includeTime"
+              [displayTime]="displayTime"
               class="govuk-input govuk-date-input__input govuk-input--width-2"
               [ngClass]="{
                 'govuk-input--error': (yearEl.dirty || yearEl.touched) && value && (undefined === hour || null === hour || hourEl.invalid)
