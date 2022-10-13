@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionGroup3And4And8: FormNode = {
+export const ContingencyTestSectionGroup5And13: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,

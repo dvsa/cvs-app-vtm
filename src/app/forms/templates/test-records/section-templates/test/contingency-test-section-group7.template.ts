@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionGroup3And4And8: FormNode = {
+export const ContingencyTestSectionGroup7: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -98,6 +98,14 @@ export const ContingencyTestSectionGroup3And4And8: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              disabled: true,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN

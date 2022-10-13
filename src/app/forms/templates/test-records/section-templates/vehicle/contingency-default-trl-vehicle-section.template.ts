@@ -13,7 +13,6 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       label: 'VIN/chassis number',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL
     },
     {
@@ -21,7 +20,6 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       label: 'Trailer ID',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL
     },
     {
@@ -39,14 +37,12 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL
     },
     {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
@@ -56,7 +52,6 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
