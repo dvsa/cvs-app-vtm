@@ -11,6 +11,8 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 import { State } from '@store/.';
 
+type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -64,11 +66,11 @@ export class DynamicFormService {
       const control =
         FormNodeTypes.CONTROL === type ? new CustomFormControl({ ...child }, { value, disabled: !!disabled }) : this.createForm(child, data[name]);
 
-      if (validators && validators.length > 0) {
+      if (validators?.length) {
         this.addValidators(control, validators);
       }
 
-      if (asyncValidators && asyncValidators.length > 0) {
+      if (asyncValidators?.length) {
         this.addAsyncValidators(control, asyncValidators);
       }
 
@@ -86,7 +88,7 @@ export class DynamicFormService {
     return form;
   }
 
-  createControls(child: FormNode, data: any): (CustomFormGroup | CustomFormArray | CustomFormControl)[] {
+  createControls(child: FormNode, data: any): CustomFormFields[] {
     // Note: There's a quirk here when dealing with arrays where if
     // `data` is an array then `child.name` should be a correct index so
     // make sure the template has the correct name to the node.
@@ -99,14 +101,11 @@ export class DynamicFormService {
       : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 
-  addValidators(control: CustomFormGroup | CustomFormArray | CustomFormControl, validators: Array<{ name: ValidatorNames; args?: any }> = []) {
+  addValidators(control: CustomFormFields, validators: Array<{ name: ValidatorNames; args?: any }> = []) {
     validators.forEach(v => control.addValidators(this.validatorMap[v.name](v.args)));
   }
 
-  addAsyncValidators(
-    control: CustomFormGroup | CustomFormArray | CustomFormControl,
-    validators: Array<{ name: AsyncValidatorNames; args?: any }> = []
-  ) {
+  addAsyncValidators(control: CustomFormFields, validators: Array<{ name: AsyncValidatorNames; args?: any }> = []) {
     validators.forEach(v => control.addAsyncValidators(this.asyncValidatorMap[v.name](v.args)));
   }
 

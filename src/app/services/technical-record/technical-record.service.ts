@@ -13,7 +13,7 @@ import {
   selectVehicleTechnicalRecordsBySystemNumber,
   vehicleTechRecords
 } from '@store/technical-records';
-import { clone, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -63,7 +63,7 @@ export class TechnicalRecordService {
 
   putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? `?oldStatusCode=${oldStatusCode}` : ''}`;
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? '?oldStatusCode=' + oldStatusCode : ''}`;
     const newTechRecord = cloneDeep(techRecord);
 
     // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT

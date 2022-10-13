@@ -1,5 +1,4 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ValidatorNames } from '@forms/models/validators.enum';
 
 export const RequiredSectionHGVTRL: FormNode = {
   name: 'requiredSection',

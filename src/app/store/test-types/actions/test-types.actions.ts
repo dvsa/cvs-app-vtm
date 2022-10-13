@@ -1,4 +1,4 @@
-import { TestType, TestTypesTaxonomy } from '@api/test-types';
+import { TestTypesTaxonomy } from '@api/test-types';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { createAction, props } from '@ngrx/store';
 

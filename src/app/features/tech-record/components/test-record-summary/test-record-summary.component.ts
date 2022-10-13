@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { TestType, resultOfTestEnum } from '@models/test-types/test-type.model';
-import { testTypeIdChanged } from '@store/test-records';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 
 interface TestField {
   testTypeStartTimestamp: string | Date;
