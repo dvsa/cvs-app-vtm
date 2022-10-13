@@ -4,9 +4,7 @@ import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
-import { reasonForCreationSection } from './section-templates/reasonForCreation/resonForCreation.template';
 import { CreateRequiredSection } from './section-templates/required/contingency-required-hidden-section.template';
-import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency-test-section-group1.template';
 import { TestSection } from './section-templates/test/test-section.template';
@@ -22,6 +20,9 @@ import { ContingencyTestSectionGroup5And13 } from './section-templates/test/cont
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionGroup7 } from './section-templates/test/contingency-test-section-group7.template';
 import { SeatbeltHiddenSection } from './section-templates/seatbelt/seatbelt-hidden-section.template';
+import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency-test-section-specialist-group1.template';
+import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency-test-section-specialist-group5.template';
+import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -55,6 +56,24 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       test: ContingencyTestSectionGroup3And4And8,
       visit: ContingencyVisitSection,
       seatbelts: SeatbeltHiddenSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSection
+    },
+    testTypesSpecialistGroup1: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionSpecialistGroup1,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSection
+    },
+    testTypesSpecialistGroup5: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionSpecialistGroup5,
+      visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,

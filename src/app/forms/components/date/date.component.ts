@@ -5,6 +5,13 @@ import validateDate from 'validate-govuk-date';
 import { DateValidators } from '../../validators/date/date.validators';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
+type Segments = {
+  day: Observable<number | undefined>;
+  month: Observable<number | undefined>;
+  year: Observable<number | undefined>;
+  hour?: Observable<number | undefined | string>;
+  minute?: Observable<number | undefined | string>;
+};
 @Component({
   selector: 'app-date',
   templateUrl: './date.component.html',
@@ -17,8 +24,10 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class DateComponent extends BaseControlComponent implements OnInit, OnDestroy, AfterContentInit {
-  @Input() includeTime = false;
-  @ViewChild('dayEl') dayEl?: ElementRef<HTMLInputElement>;
+  @Input() displayTime = false;
+  @Input() isoDate = true;
+  @ViewChild('dayEl')
+  dayEl?: ElementRef<HTMLInputElement>;
   @ViewChild('dayModel') dayModel?: AbstractControlDirective;
 
   private day_: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
@@ -34,6 +43,7 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   private subscriptions: Array<Subscription | undefined> = [];
   public originalDate: string = '';
   public errors?: { error: boolean; date?: Date; errors?: { error: boolean; reason: string; index: number }[] };
+  private dateFieldOrDefault?: Record<'hours' | 'minutes' | 'seconds', string | number>;
 
   public day?: number;
   public month?: number;
@@ -57,6 +67,11 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   override ngAfterContentInit(): void {
     super.ngAfterContentInit();
     this.originalDate = this.value;
+    this.dateFieldOrDefault = {
+      hours: this.originalDate ? new Date(this.originalDate).getHours() : '00',
+      minutes: this.originalDate ? new Date(this.originalDate).getMinutes() : '00',
+      seconds: this.originalDate ? new Date(this.originalDate).getSeconds() : '00'
+    };
     this.addValidators();
     this.valueWriteBack(this.value);
   }
@@ -106,13 +121,9 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
    * @returns Subscription
    */
   subscribeAndPropagateChanges() {
-    let dateFields;
-
-    if (this.includeTime) {
-      dateFields = { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ };
-    } else {
-      dateFields = { day: this.day$, month: this.month$, year: this.year$ };
-    }
+    const dateFields: Segments = this.displayTime
+      ? { day: this.day$, month: this.month$, year: this.year$, hour: this.hour$, minute: this.minute$ }
+      : { day: this.day$, month: this.month$, year: this.year$ };
 
     return combineLatest(dateFields).subscribe({
       next: ({ day, month, year, hour, minute }) => {
@@ -121,15 +132,19 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
           return;
         }
 
-        hour = this.includeTime ? hour : this.originalDate ? new Date(this.originalDate).getHours() : '00';
-        minute = this.includeTime ? minute : this.originalDate ? new Date(this.originalDate).getMinutes() : '00';
-        const second = this.originalDate ? new Date(this.originalDate).getSeconds() : '00';
+        hour = this.displayTime ? hour : this.dateFieldOrDefault?.hours;
+        minute = this.displayTime ? minute : this.dateFieldOrDefault?.minutes;
+        const second = this.dateFieldOrDefault?.seconds;
 
-        this.onChange(
-          `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`
-        );
+        this.onChange(this.processDate(year, month, day, hour, minute, second));
       }
     });
+  }
+
+  processDate(year: any, month: any, day: any, hour: any, minute: any, second: any) {
+    if (this.isoDate)
+      return `${year || ''}-${this.padded(month)}-${this.padded(day)}T${this.padded(hour)}:${this.padded(minute)}:${this.padded(second)}.000`;
+    return `${year || ''}-${this.padded(month)}-${this.padded(day)}`;
   }
 
   padded(n: number | string | undefined, l = 2) {
@@ -137,10 +152,10 @@ export class DateComponent extends BaseControlComponent implements OnInit, OnDes
   }
 
   /**
-   * Note: This function is not testable because `validDate` returns a refference that can't be comapred to in spec file with `hasValidator` function.
+   * Note: This function is not testable because `validDate` returns a reference that can't be compared to in spec file with `hasValidator` function.
    */
   addValidators() {
-    this.control?.addValidators([DateValidators.validDate(this.includeTime, this.label)]);
+    this.control?.addValidators([DateValidators.validDate(this.displayTime, this.label)]);
   }
 
   validate() {

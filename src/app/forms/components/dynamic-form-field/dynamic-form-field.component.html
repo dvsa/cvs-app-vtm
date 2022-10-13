@@ -16,6 +16,7 @@
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
+    [isoDate]="control.value.meta.isoDate ?? true"
   ></app-date>
 
   <app-date
@@ -23,7 +24,7 @@
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
-    [includeTime]="true"
+    [displayTime]="true"
   ></app-date>
 
   <app-number-input
@@ -40,6 +41,14 @@
     [options]="(options | async) || []"
     [formControlName]="control.key"
   ></app-radio-group>
+
+  <app-select
+    *ngSwitchCase="formNodeEditTypes.SELECT"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+  ></app-select>
 
   <app-text-area
     *ngSwitchCase="formNodeEditTypes.TEXTAREA"

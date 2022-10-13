@@ -36,27 +36,18 @@ server.get('/vehicles/:systemNumber/*', (req, res) => {
       res.jsonp({ errors: ['No resources match the search criteria.'] });
       console.log('No vehicle found');
       break;
+    case 'XMGDE02FS0H012345':
     case 'PSV':
       res.jsonp(mockVehicleTechnicalRecordList());
       console.log('PSV technical record');
       break;
-    case 'XMGDE02FS0H012345':
-      res.jsonp(mockVehicleTechnicalRecordList());
-      console.log('PSV technical record');
-      break;
+    case 'XMGDE03FS0H012345':
     case 'HGV':
       res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
       console.log('HGV technical record');
       break;
-    case 'XMGDE03FS0H012345':
-      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.HGV));
-      console.log('HGV technical record');
-      break;
-    case 'TRL':
-      res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
-      console.log('TRL technical record');
-      break;
     case 'XMGDE04FS0H012345':
+    case 'TRL':
       res.jsonp(mockVehicleTechnicalRecordList(VehicleTypes.TRL));
       console.log('TRL technical record');
       break;
