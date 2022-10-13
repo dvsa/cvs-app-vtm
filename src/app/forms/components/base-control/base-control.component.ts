@@ -1,5 +1,6 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { SuffixDirective } from '@forms/directives/suffix.directive';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
@@ -11,6 +12,8 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
+  @ContentChild(SuffixDirective) suffix?: SuffixDirective;
+
   @Input() name = '';
   @Input() hint?: string;
   @Input() label?: string;

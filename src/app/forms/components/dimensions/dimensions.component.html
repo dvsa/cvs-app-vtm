@@ -1,61 +1,52 @@
-<ng-container [formGroup]="form">
-  <ng-container *ngIf="getDimension('height')" formGroupName="dimensions">
-    <app-number-input-with-suffix
-      label="Height"
-      name="height"
-      formControlName="height"
+<app-switchable-input
+  *ngIf="isPsv"
+  [form]="dimensions"
+  [type]="types.NUMBER"
+  name="height"
+  label="Height"
+  [isEditing]="isEditing"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="dimensions"
+  [type]="types.NUMBER"
+  name="length"
+  label="Length"
+  [isEditing]="isEditing"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input [form]="dimensions" [type]="types.NUMBER" name="width" label="Width" [isEditing]="isEditing" suffix="mm"></app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="types.NUMBER"
+  name="frontAxleToRearAxle"
+  label="Front axle to rear axle"
+  [isEditing]="isEditing"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input
+  *ngIf="isTrl"
+  [form]="form"
+  [type]="types.NUMBER"
+  name="rearAxleToRearTrl"
+  label="Rear axle to rear trailer"
+  [isEditing]="isEditing"
+  suffix="mm"
+></app-switchable-input>
+
+<ng-container *ngIf="!isPsv">
+  <div *ngFor="let axle of bottomSection?.meta?.children">
+    <app-switchable-input
+      [form]="bottomSection"
+      [type]="types.NUMBER"
+      [name]="axle.name"
+      [label]="axle.label"
       [isEditing]="isEditing"
       suffix="mm"
-    ></app-number-input-with-suffix>
-  </ng-container>
-
-  <ng-container *ngIf="getDimension('length')" formGroupName="dimensions">
-    <app-number-input-with-suffix
-      label="Length"
-      name="length"
-      formControlName="length"
-      [isEditing]="isEditing"
-      suffix="mm"
-    ></app-number-input-with-suffix>
-  </ng-container>
-
-  <ng-container *ngIf="getDimension('width')" formGroupName="dimensions">
-    <app-number-input-with-suffix
-      label="Width"
-      name="width"
-      formControlName="width"
-      [isEditing]="isEditing"
-      suffix="mm"
-    ></app-number-input-with-suffix>
-  </ng-container>
-
-  <app-number-input-with-suffix
-    *ngIf="frontAxleToRearAxle"
-    label="Front axle to rear axle"
-    name="frontAxleToRearAxle"
-    formControlName="frontAxleToRearAxle"
-    [isEditing]="isEditing"
-    suffix="mm"
-  ></app-number-input-with-suffix>
-
-  <app-number-input-with-suffix
-    *ngIf="rearAxleToRearTrl"
-    label="Rear axle to rear trailer"
-    name="rearAxleToRearTrl"
-    formControlName="rearAxleToRearTrl"
-    [isEditing]="isEditing"
-    suffix="mm"
-  ></app-number-input-with-suffix>
-
-  <div *ngFor="let axle of axles" formGroupName="dimensionsBottomSection">
-    <div formGroupName="dimensions">
-      <app-number-input-with-suffix
-        [label]="axle.label"
-        [name]="axle.name"
-        [formControlName]="axle.name"
-        [isEditing]="isEditing"
-        suffix="mm"
-      ></app-number-input-with-suffix>
-    </div>
+    ></app-switchable-input>
   </div>
 </ng-container>

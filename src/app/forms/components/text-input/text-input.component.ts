@@ -14,7 +14,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class TextInputComponent extends BaseControlComponent {
-  @Input() isEditing = true;
   @Input() numeric = false;
 
   get style(): string {

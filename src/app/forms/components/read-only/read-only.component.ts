@@ -3,16 +3,14 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  selector: 'app-number-input',
-  templateUrl: './number-input.component.html',
+  selector: 'app-read-only',
+  templateUrl: './read-only.component.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: NumberInputComponent,
+      useExisting: ReadOnlyComponent,
       multi: true
     }
   ]
 })
-export class NumberInputComponent extends BaseControlComponent {
-  style = 'govuk-input' + (this.width ? ` govuk-input--width-` + this.width : '');
-}
+export class ReadOnlyComponent extends BaseControlComponent {}

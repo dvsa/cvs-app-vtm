@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormControl, CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { getDimensionsSection } from '@forms/templates/general/dimensions.template';
-import { TechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
@@ -49,23 +50,23 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  get frontAxleToRearAxle(): CustomFormControl {
-    return this.form.get(['frontAxleToRearAxle']) as CustomFormControl;
+  get isPsv(): boolean {
+    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
   }
 
-  get rearAxleToRearTrl(): CustomFormControl {
-    return this.form.get(['rearAxleToRearTrl']) as CustomFormControl;
+  get isTrl(): boolean {
+    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
   }
 
-  get axles(): FormNode[] | undefined {
-    return (this.form.get(['dimensionsBottomSection', 'dimensions']) as CustomFormGroup)?.meta.children;
+  get types(): typeof FormNodeEditTypes {
+    return FormNodeEditTypes;
   }
 
-  get dimensions(): CustomFormGroup {
-    return this.form.get(['dimensions']) as CustomFormGroup;
+  get dimensions(): FormGroup {
+    return this.form.get(['dimensions']) as FormGroup;
   }
 
-  getDimension(name: string): CustomFormControl {
-    return this.dimensions.get(name) as CustomFormControl;
+  get bottomSection(): CustomFormGroup {
+    return this.form.get(['dimensionsBottomSection', 'dimensions']) as CustomFormGroup;
   }
 }

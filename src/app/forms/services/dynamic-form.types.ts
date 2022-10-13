@@ -44,6 +44,7 @@ export enum FormNodeEditTypes {
   CHECKBOX = 'checkbox',
   DATE = 'date',
   DATETIME = 'datetime',
+  DROPDOWN = 'dropdown',
   HIDDEN = 'hidden',
   NUMBER = 'number',
   NUMERICSTRING = 'numericstring',
@@ -90,6 +91,7 @@ export interface FormNode {
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
+  suffix?: string;
 }
 
 export interface FormNodeCombinationOptions {

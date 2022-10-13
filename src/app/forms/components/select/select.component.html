@@ -1,4 +1,4 @@
-<div *ngIf="isEditing; else view" [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
   <label *ngIf="label" class="govuk-label" for="{{ name }}"> {{ label }} </label>
 
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
@@ -20,5 +20,3 @@
     <option *ngFor="let option of options" [value]="option.value" [selected]="value === option.value">{{ option.label }}</option>
   </select>
 </div>
-
-<ng-template #view>{{ value | defaultNullOrEmpty }}</ng-template>

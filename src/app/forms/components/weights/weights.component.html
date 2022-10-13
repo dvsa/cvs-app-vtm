@@ -24,7 +24,7 @@
     </thead>
 
     <tbody class="govuk-table__body">
-      <tr *ngFor="let axle of axlesFormArray.controls; let i = index" class="govuk-table__row" formArrayName="axles">
+      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="axles">
         <ng-container [formGroupName]="i">
           <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
 
@@ -43,7 +43,7 @@
 
             <ng-template #axleTdNumberInput let-name="name">
               <td class="govuk-table__cell">
-                <app-number-input [formControlName]="name" [name]="name + i" [isEditing]="isEditing"></app-number-input>
+                <app-switchable-input [form]="getAxleWeights(i)" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
               </td>
             </ng-template>
           </ng-container>
@@ -69,13 +69,14 @@
 
         <br />
 
-        <app-number-input-with-suffix
-          label="Unladen Weight"
+        <app-switchable-input
+          [form]="form"
+          [type]="types.NUMBER"
           name="unladenWeight"
-          formControlName="unladenWeight"
+          label="Unladen Weight"
           [isEditing]="isEditing"
           suffix="kg"
-        ></app-number-input-with-suffix>
+        ></app-switchable-input>
       </ng-container>
 
       <ng-template #hgvAndTrlWeights>
@@ -105,7 +106,7 @@
 
       <ng-template #tdNumberInput let-name="name">
         <td class="govuk-table__cell">
-          <app-number-input [formControlName]="name" [name]="name" [isEditing]="isEditing"></app-number-input>
+          <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
         </td>
       </ng-template>
     </tbody>

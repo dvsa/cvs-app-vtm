@@ -3,14 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
-import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
-import { NumberInputWithSuffixComponent } from './number-input-with-suffix.component';
+import { ReadOnlyComponent } from './read-only.component';
 
 @Component({
   selector: 'app-host-component',
   template: `<form [formGroup]="form">
-    <app-number-input-with-suffix name="foo" label="Foo" formControlName="foo" suffix="mm"></app-number-input-with-suffix>
+    <app-read-only name="foo" label="Foo" formControlName="foo"></app-read-only>
   </form> `,
   styles: []
 })
@@ -20,13 +19,13 @@ class HostComponent {
   });
 }
 
-describe('DimensionComponent', () => {
+describe('ReadOnlyComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BaseControlComponent, FieldErrorMessageComponent, HostComponent, NumberInputWithSuffixComponent ],
+      declarations: [BaseControlComponent, HostComponent, ReadOnlyComponent],
       imports: [FormsModule, ReactiveFormsModule]
     })
     .compileComponents();
