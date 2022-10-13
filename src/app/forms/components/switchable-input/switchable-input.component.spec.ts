@@ -4,6 +4,7 @@ import { SuffixDirective } from '@forms/directives/suffix.directive';
 import { CustomFormControl, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { AutocompleteComponent } from '../autocomplete/autocomplete.component';
 import { DateComponent } from '../date/date.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 import { NumberInputComponent } from '../number-input/number-input.component';
 import { RadioGroupComponent } from '../radio-group/radio-group.component';
 import { ReadOnlyComponent } from '../read-only/read-only.component';
@@ -21,6 +22,7 @@ describe('SwitchableInputComponent', () => {
       declarations: [
         AutocompleteComponent,
         DateComponent,
+        FieldErrorMessageComponent,
         NumberInputComponent,
         RadioGroupComponent,
         ReadOnlyComponent,
