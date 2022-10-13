@@ -58,7 +58,7 @@ describe('VehicleHeaderComponent', () => {
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testChassis-testChassisModel');
   });
 
-  it('should display an empty string if all required data cannot be retrieved', () =>{
+  it('should display an empty string if all required data cannot be retrieved', () => {
     const mockRecord = {
       bodyMake: '',
       bodyModel: 'testBodyModel',
@@ -69,5 +69,15 @@ describe('VehicleHeaderComponent', () => {
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toBeFalsy();
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toBeFalsy();
+  });
+
+  it('should display "Unknown Vehicle Type" if vehicle type is unknown/undefined', () => {
+    const mockRecord = {
+      bodyMake: 'testBodyMake',
+      bodyModel: 'testBodyModel',
+      chassisMake: 'testChassisMake',
+      chassisModel: 'testChassisModel'
+    } as TechRecordModel;
+    expect(component.getVehicleDescription(mockRecord, undefined)).toEqual('Unknown Vehicle Type');
   });
 });
