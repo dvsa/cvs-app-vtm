@@ -70,7 +70,7 @@
           <span *ngSwitchCase="vehicleTypes.TRL"> {{ getVehicleDescription(techRecord, vehicleTypes.TRL) }} </span>
           <span *ngSwitchCase="vehicleTypes.PSV"> {{ getVehicleDescription(techRecord, vehicleTypes.PSV) }} </span>
           <span *ngSwitchCase="vehicleTypes.HGV"> {{ getVehicleDescription(techRecord, vehicleTypes.HGV) }}</span>
-          <span *ngSwitchDefault>Vehicle type not found</span>
+          <span *ngSwitchDefault>{{ (techRecord$ | async)?.bodyMake + '-' + (techRecord$ | async)?.bodyModel | defaultNullOrEmpty }}</span>
         </ng-container>
 
         <app-icon [icon]="(techRecord$ | async)?.vehicleType || ''"></app-icon>
