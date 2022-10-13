@@ -45,16 +45,12 @@ export class VehicleHeaderComponent {
     switch (vehicleType) {
       case VehicleTypes.TRL:
         return techRecord.vehicleConfiguration ?? '';
-        break;
       case VehicleTypes.PSV:
         return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
-        break;
       case VehicleTypes.HGV:
         return techRecord.chassisMake && techRecord.chassisModel ? `${techRecord.chassisMake}-${techRecord.chassisModel}` : '';
-        break;
       default:
         return ''
-        break;
     }
   }
 }
