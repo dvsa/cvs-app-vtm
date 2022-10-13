@@ -6,7 +6,6 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 @Component({
   selector: 'app-select[options]',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

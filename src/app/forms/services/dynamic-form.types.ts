@@ -48,6 +48,7 @@ export enum FormNodeEditTypes {
   NUMBER = 'number',
   NUMERICSTRING = 'numericstring',
   RADIO = 'radio',
+  SELECT = 'select',
   TEXT = 'text',
   TEXTAREA = 'textarea'
 }
@@ -79,7 +80,7 @@ export interface FormNode {
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
-  options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
+  options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions | object[];
   validators?: { name: ValidatorNames; args?: any }[];
   customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
