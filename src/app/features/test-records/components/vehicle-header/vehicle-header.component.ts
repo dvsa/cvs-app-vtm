@@ -41,7 +41,6 @@ export class VehicleHeaderComponent {
   }
 
   createHeader(techRecord: TechRecordModel, vehicleType: VehicleTypes) {
-    let string = '';
 
     switch (vehicleType) {
       case VehicleTypes.TRL:
