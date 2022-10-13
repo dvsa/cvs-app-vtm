@@ -13,7 +13,6 @@ export function getTypeApprovalSection(vehicleType: VehicleTypes): FormNode {
         name: 'approvalType',
         label: 'Approval type',
         type: FormNodeTypes.CONTROL,
-        width: FormNodeWidth.XS,
         editType: FormNodeEditTypes.SELECT,
         options: getOptionsFromObject(approvalType),
       validators: [
