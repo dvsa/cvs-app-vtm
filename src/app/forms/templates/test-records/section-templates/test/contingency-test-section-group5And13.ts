@@ -66,6 +66,36 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              label: 'Reason for abandoning',
+              editType: FormNodeEditTypes.CHECKBOX,
+              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
+              required: true,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                }
+              ],
+              options: TestAbandonmentReasonsPsvData
+            },
+            {
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              value: '',
+              required: true,
+              label: 'Additional details for abandoning',
+              editType: FormNodeEditTypes.TEXTAREA,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                },
+                { name: ValidatorNames.MaxLength, args: 500 }
+              ]
+            },
+            {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
@@ -104,30 +134,6 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
                 { value: false, label: 'No' }
               ],
               validators: [{ name: ValidatorNames.Required }]
-            },
-            {
-              name: 'seatbeltInstallationCheckDate',
-              label: 'Carried out during test',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
-              value: null
-            },
-            {
-              name: 'numberOfSeatbeltsFitted',
-              label: 'Number of seatbelts fitted',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
-              value: null
-            },
-            {
-              name: 'lastSeatbeltInstallationCheckDate',
-              label: 'Most recent installation check',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null
             },
             {
               name: 'defects',

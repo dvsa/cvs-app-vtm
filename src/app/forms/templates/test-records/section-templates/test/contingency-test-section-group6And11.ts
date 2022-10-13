@@ -118,14 +118,6 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
-            },
-            {
-              name: 'prohibitionIssued',
-              label: 'Prohibition issued',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
             }
           ]
         }
