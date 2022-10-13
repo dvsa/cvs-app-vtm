@@ -7,16 +7,16 @@ import { FocusNextDirective } from './focus-next.directive';
   selector: 'app-test',
   template: `
     <div>
-      <input appFocusNext [includeTime]="includeTime" type="number" id="test-day" />
-      <input appFocusNext [includeTime]="includeTime" type="number" id="test-month" />
-      <input appFocusNext [includeTime]="includeTime" type="number" id="test-year" />
-      <input appFocusNext [includeTime]="includeTime" type="number" id="test-hour" />
-      <input appFocusNext [includeTime]="includeTime" type="number" id="test-minute" />
+      <input appFocusNext [displayTime]="displayTime" type="number" id="test-day" />
+      <input appFocusNext [displayTime]="displayTime" type="number" id="test-month" />
+      <input appFocusNext [displayTime]="displayTime" type="number" id="test-year" />
+      <input appFocusNext [displayTime]="displayTime" type="number" id="test-hour" />
+      <input appFocusNext [displayTime]="displayTime" type="number" id="test-minute" />
     </div>
   `
 })
 class TestComponent {
-  includeTime = false;
+  displayTime = false;
 }
 
 describe('FocusNextDirective', () => {
@@ -70,7 +70,7 @@ describe('FocusNextDirective', () => {
     expect(minute).toBe(focusedElement);
   });
 
-  it('should tab from year to hour after four numbers if includeTime is true', () => {
+  it('should tab from year to hour after four numbers if displayTime is true', () => {
     const year: HTMLInputElement = fixture.debugElement.query(By.css('#test-year')).nativeElement;
     const hour: HTMLInputElement = fixture.debugElement.query(By.css('#test-hour')).nativeElement;
 
@@ -81,7 +81,7 @@ describe('FocusNextDirective', () => {
     let focusedElement = de.query(By.css(':focus')).nativeElement;
     expect(year).toBe(focusedElement);
 
-    component.includeTime = true;
+    component.displayTime = true;
     fixture.detectChanges();
     year.dispatchEvent(new Event('input'));
     fixture.detectChanges();
