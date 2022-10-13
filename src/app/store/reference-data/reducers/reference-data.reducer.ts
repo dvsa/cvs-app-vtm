@@ -46,7 +46,7 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload } = action;
     return {
       ...state,
-      [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).setAll(payload, state[resourceType]),
+      [resourceType]: resourceTypeAdapters[resourceType].setAll(payload, state[resourceType]),
       loading: false
     };
   }),
@@ -57,7 +57,7 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload } = action;
     return {
       ...state,
-      [resourceType]: (resourceTypeAdapters[resourceType] as EntityAdapter<ReferenceDataModelBase>).upsertOne(payload, state[resourceType]),
+      [resourceType]: resourceTypeAdapters[resourceType].upsertOne(payload, state[resourceType]),
       loading: false
     };
   }),

@@ -3,30 +3,34 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const SpecialistTestSectionGroup2: FormNode = {
+export const ContingencyTestSectionSpecialistGroup1: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
+  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
-      name: 'createdAt',
-      label: 'Created',
-      disabled: true,
-
+      name: 'contingencyTestNumber',
+      label: 'Contingency Test Number',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.NUMERICSTRING,
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }]
     },
-
     {
       name: 'testStartTimestamp',
-      label: 'Test Date',
-      value: '',
-      disabled: true,
-
+      label: 'Test start date',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.PastDate }]
+    },
+    {
+      name: 'testEndTimestamp',
+      type: FormNodeTypes.CONTROL,
+      label: 'Test end date',
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'testTypes',
@@ -37,13 +41,6 @@ export const SpecialistTestSectionGroup2: FormNode = {
           name: '0', // it is important here that the name of the node for an ARRAY type should be an index value
           type: FormNodeTypes.GROUP,
           children: [
-            {
-              name: 'testCode',
-              label: 'Test Code',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL
-            },
             {
               name: 'testResult',
               label: 'Result',
@@ -56,10 +53,17 @@ export const SpecialistTestSectionGroup2: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass', 'abandoned'] } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testTypeName',
+              label: 'Description',
+              value: '',
+              disabled: true,
+
               type: FormNodeTypes.CONTROL
             },
             {
@@ -93,63 +97,18 @@ export const SpecialistTestSectionGroup2: FormNode = {
               ]
             },
             {
-              name: 'testTypeName',
-              label: 'Description',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL
-            },
-            {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'secondaryCertificateNumber',
-              label: 'Secondary certificate number',
-              value: '',
-              required: true,
               type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.TEXT,
-              validators: [
-                { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
-                },
-                { name: ValidatorNames.MaxLength, args: 20 }
-              ]
-            },
-            {
-              name: 'testNumber',
-              label: 'Test Number',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
-            },
-            {
-              name: 'testAnniversaryDate',
-              label: 'Anniversary date',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'Start time',
+              label: 'Test start date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
@@ -162,7 +121,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'End time',
+              label: 'Test end date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
@@ -178,6 +137,36 @@ export const SpecialistTestSectionGroup2: FormNode = {
                 { value: false, label: 'No' }
               ],
               validators: [{ name: ValidatorNames.Required }]
+            },
+            {
+              name: 'seatbeltInstallationCheckDate',
+              label: 'Carried out during test',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN,
+              value: null
+            },
+            {
+              name: 'numberOfSeatbeltsFitted',
+              label: 'Number of seatbelts fitted',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN,
+              value: null
+            },
+            {
+              name: 'lastSeatbeltInstallationCheckDate',
+              label: 'Most recent installation check',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null
+            },
+            {
+              name: 'defects',
+              type: FormNodeTypes.ARRAY,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }

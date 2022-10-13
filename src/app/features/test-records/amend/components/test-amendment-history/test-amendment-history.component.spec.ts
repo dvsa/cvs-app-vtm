@@ -65,9 +65,9 @@ describe('TestAmendmentHistoryComponent', () => {
       component.testRecord = mockTestResult();
       fixture.detectChanges();
 
-      const heading = fixture.debugElement.query(By.css('.govuk-heading-m'));
+      const heading = fixture.debugElement.query(By.css('.govuk-table__caption'));
       expect(heading).toBeTruthy();
-      expect(heading.nativeElement.innerHTML).toBe('Test Record Amendment History');
+      expect(heading.nativeElement.innerHTML).toContain('Test record amendment history');
 
       const table = fixture.debugElement.query(By.css('.govuk-table__body'));
       expect(table).toBeTruthy();
@@ -78,7 +78,7 @@ describe('TestAmendmentHistoryComponent', () => {
         component.testRecord = createMock<TestResultModel>({
           createdAt: '2020-01-01T00:00:00.000Z',
           reasonForCreation: 'reasonForCreation',
-          createdByName: 'Testter Man',
+          createdByName: 'Tester Man',
           testHistory: createMockList<TestResultModel>(1, i =>
             createMock<TestResultModel>({
               createdAt: new Date(`2020-01-0${i + 1}`).toISOString()

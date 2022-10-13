@@ -5,7 +5,7 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { select, Store } from '@ngrx/store';
 import { createDefect, removeDefect, testResultInEdit, toEditOrNotToEdit, updateDefect } from '@store/test-records';
 import { TestResultDefects } from '@models/test-results/test-result-defects.model';
-import { filter, Subject, takeUntil, take, withLatestFrom, tap, throwError, map } from 'rxjs';
+import { filter, Subject, takeUntil, take, withLatestFrom } from 'rxjs';
 import { Defect } from '@models/defects/defect.model';
 import { AdditionalInfoSection } from '@models/defects/additional-information.model';
 import { KeyValue } from '@angular/common';
@@ -76,7 +76,7 @@ export class DefectComponent implements OnInit, OnDestroy {
         this.vehicleType = testResult?.vehicleType;
         this._defectsForm = (this.dfs.createForm(DefectsTpl, testResult) as CustomFormGroup).get(['testTypes', '0', 'defects']) as CustomFormArray;
         if (defectIndex) {
-          this.index = Number(defectIndex!);
+          this.index = Number(defectIndex);
           this.form = this._defectsForm.controls[this.index] as CustomFormGroup;
           this.defect = this.defects![this.index];
         } else if (defectRef && this.vehicleType) {
@@ -112,7 +112,7 @@ export class DefectComponent implements OnInit, OnDestroy {
     return this.defect!.deficiencyCategory === 'dangerous';
   }
 
-  get isAdvisory(): Boolean {
+  get isAdvisory(): boolean {
     return this.defect!.deficiencyCategory === 'advisory';
   }
 

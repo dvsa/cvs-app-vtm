@@ -1,9 +1,11 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    <h2 class="govuk-heading-m">Defects</h2>
     <ng-container *ngIf="form && defectCount; else noDefects" [formGroup]="form">
       <p class="govuk-hint">Any unresolved major or dangerous defects will result in failed test.</p>
       <table class="govuk-table">
+        <caption class="govuk-table__caption govuk-table__caption--m">
+          Defects
+        </caption>
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Reference</th>
@@ -38,6 +40,7 @@
     </ng-container>
 
     <ng-template #noDefects>
+      <h2 class="govuk-heading-m">Defects</h2>
       <p class="govuk-body">No defects</p>
     </ng-template>
   </div>
