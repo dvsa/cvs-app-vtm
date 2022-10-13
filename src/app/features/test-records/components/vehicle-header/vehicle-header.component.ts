@@ -56,6 +56,5 @@ export class VehicleHeaderComponent {
         return ''
         break;
     }
-    return string;
   }
 }
