@@ -8,12 +8,7 @@ import { PaginationComponent } from './pagination.component';
 
 @Component({
   selector: 'app-host',
-  template: `<app-pagination
-    [tableName]="tableName"
-    [numberOfItems]="numberOfItems"
-    [currentPage]="pageQuery$ | async"
-    [itemsPerPage]="itemsPerPage"
-  ></app-pagination>`
+  template: `<app-pagination [tableName]="tableName" [numberOfItems]="numberOfItems"></app-pagination>`
 })
 class HostComponent {
   tableName = 'test-pagination';

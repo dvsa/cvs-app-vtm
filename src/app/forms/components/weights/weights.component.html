@@ -42,8 +42,9 @@
             <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'designWeight' }"></ng-template>
 
             <ng-template #axleTdNumberInput let-name="name">
-              <td class="govuk-table__cell">
-                <app-number-input [formControlName]="name" [name]="name + i" [isEditing]="isEditing"></app-number-input>
+              <td class="govuk-table__cell" [ngSwitch]="isEditing">
+                <app-number-input *ngSwitchCase="true" [formControlName]="name" [name]="name + i" [isEditing]="isEditing"></app-number-input>
+                <app-read-only *ngSwitchDefault [formControlName]="name"></app-read-only>
               </td>
             </ng-template>
           </ng-container>
@@ -67,15 +68,18 @@
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainDesignWeight' }"></ng-template>
         </tr>
 
-        <br />
-
-        <app-number-input-with-suffix
-          label="Unladen Weight"
-          name="unladenWeight"
-          formControlName="unladenWeight"
-          [isEditing]="isEditing"
-          suffix="kg"
-        ></app-number-input-with-suffix>
+        <ng-container [ngSwitch]="isEditing">
+          <ng-container *ngSwitchCase="true">
+            <br />
+            <app-number-input label="Unladen weight" name="unladenWeight" formControlName="unladenWeight" [isEditing]="isEditing">
+              <ng-template appSuffix>kg</ng-template>
+            </app-number-input>
+          </ng-container>
+          <tr *ngSwitchDefault class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Unladen weight (kg)</th>
+            <td class="govuk-table__cell" colspan="4"><app-read-only *ngSwitchDefault formControlName="unladenWeight"></app-read-only></td>
+          </tr>
+        </ng-container>
       </ng-container>
 
       <ng-template #hgvAndTrlWeights>
@@ -104,8 +108,9 @@
       </ng-template>
 
       <ng-template #tdNumberInput let-name="name">
-        <td class="govuk-table__cell">
-          <app-number-input [formControlName]="name" [name]="name" [isEditing]="isEditing"></app-number-input>
+        <td class="govuk-table__cell" [ngSwitch]="isEditing">
+          <app-number-input *ngSwitchCase="true" [formControlName]="name" [name]="name" [isEditing]="isEditing"></app-number-input>
+          <app-read-only *ngSwitchDefault [formControlName]="name"></app-read-only>
         </td>
       </ng-template>
     </tbody>

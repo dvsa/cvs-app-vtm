@@ -16,10 +16,10 @@ import { ContingencyTestSectionGroup9And10 } from './section-templates/test/cont
 import { ContingencyTestSectionGroup12and14 } from './section-templates/test/contingency-test-section-group12and14.template';
 import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
 import { ContingencyTestSectionGroup3And4And8 } from './section-templates/test/contingency-test-section-group3And4And8.template';
-import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13.template';
-import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionGroup7 } from './section-templates/test/contingency-test-section-group7.template';
 import { SeatbeltHiddenSection } from './section-templates/seatbelt/seatbelt-hidden-section.template';
+import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13';
+import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11';
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency-test-section-specialist-group1.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency-test-section-specialist-group5.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
