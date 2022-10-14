@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomFormControl, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
-
 import { ReadOnlyComponent } from './read-only.component';
 
 @Component({

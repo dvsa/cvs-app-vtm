@@ -35,7 +35,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
 
     lastValueFrom(this.options$.pipe(takeWhile(options => !options || options.length === 0, true))).then(options => {
       this.options = options;
-      this.ref.detectChanges();
+      this.cdr.detectChanges();
 
       enhanceSelectElement({
         selectElement: this.document.querySelector('#' + this.name),
@@ -72,7 +72,7 @@ export class AutocompleteComponent extends BaseControlComponent implements After
     this.control?.patchValue(optionValue ?? '[INVALID_OPTION]');
     this.control?.markAsTouched();
     this.control?.updateValueAndValidity();
-    this.ref.detectChanges();
+    this.cdr.detectChanges();
   }
 
   /**

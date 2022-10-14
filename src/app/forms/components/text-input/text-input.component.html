@@ -7,16 +7,23 @@
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
-  <input
-    [class]="style"
-    id="{{ name }}"
-    name="{{ name }}"
-    type="text"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    (ngModelChange)="onChange($event)"
-    (blur)="onTouched(); handleEvent($event)"
-    (focus)="handleEvent($event)"
-    [attr.appNumberOnly]="numeric ? '' : null"
-  />
+  <div class="govuk-input__wrapper">
+    <input
+      *ngIf="!numeric"
+      id="{{ name }}"
+      name="{{ name }}"
+      type="text"
+      [class]="style"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
+      [attr.appNumberOnly]="numeric ? '' : null"
+    />
+
+    <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
+      <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
+    </div>
+  </div>
 </div>

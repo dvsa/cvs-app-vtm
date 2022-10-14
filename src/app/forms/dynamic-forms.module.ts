@@ -8,6 +8,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
 import { DateComponent } from './components/date/date.component';
+import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
 import { DefectComponent } from './custom-sections/defect/defect.component';
 import { DefectsComponent } from './custom-sections/defects/defects.component';
@@ -16,18 +17,17 @@ import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynam
 import { FieldErrorMessageComponent } from './components/field-error-message/field-error-message.component';
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
+import { ReadOnlyComponent } from './components/read-only/read-only.component';
 import { SelectComponent } from './components/select/select.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
-import { FocusNextDirective } from './components/date/focus-next.directive';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
 import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
-import { ReadOnlyComponent } from './components/read-only/read-only.component';
 import { SuffixDirective } from './directives/suffix.directive';
 
 @NgModule({
@@ -81,7 +81,8 @@ import { SuffixDirective } from './directives/suffix.directive';
     DimensionsComponent,
     BrakesComponent,
     SwitchableInputComponent,
-    SuffixDirective
+    SuffixDirective,
+    ReadOnlyComponent
   ]
 })
 export class DynamicFormsModule {}
