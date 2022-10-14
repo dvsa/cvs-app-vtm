@@ -1,7 +1,5 @@
 <div>
-  <h1 *ngIf="label" class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
-  </h1>
+  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
 
-  <span class="govuk-body govuk-body-m" id="{{ name }}">{{ value }}</span>
+  <span class="govuk-body" id="{{ name }}">{{ value }}</span>
 </div>
