@@ -8,6 +8,7 @@ import { AutocompleteComponent } from './components/autocomplete/autocomplete.co
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { BrakesComponent } from './components/brakes/brakes.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
+import { CustomDefectsComponent } from './components/custom-defects/custom-defects.component';
 import { DateComponent } from './components/date/date.component';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
@@ -55,7 +56,8 @@ import { SuffixDirective } from './directives/suffix/suffix.directive';
     SuffixDirective,
     DimensionsComponent,
     BrakesComponent,
-    ReadOnlyComponent
+    ReadOnlyComponent,
+    CustomDefectsComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -79,7 +81,8 @@ import { SuffixDirective } from './directives/suffix/suffix.directive';
     SuffixDirective,
     DimensionsComponent,
     BrakesComponent,
-    ReadOnlyComponent
+    ReadOnlyComponent,
+    CustomDefectsComponent
   ]
 })
 export class DynamicFormsModule {}

@@ -27,6 +27,17 @@
         ></app-defects>
       </app-accordion>
 
+      <app-accordion *ngSwitchCase="'customDefectsSection'" [id]="template.name" [title]="template.label">
+        <app-custom-defects
+          class="section"
+          [id]="template.name"
+          [isEditing]="isEditing"
+          [template]="template"
+          [data]="testResult"
+          (formChange)="handleFormChange($event)"
+        ></app-custom-defects>
+      </app-accordion>
+
       <ng-container *ngSwitchCase="'vehicleSection'">
         <app-accordion *ngIf="isEditing" [id]="template.name" [title]="template.label">
           <app-dynamic-form-group
@@ -40,7 +51,7 @@
         </app-accordion>
       </ng-container>
 
-      <!-- this section is not visible so omiting from accordion -->
+      <!-- this section is not visible so omitting from accordion -->
       <app-dynamic-form-group
         *ngSwitchCase="'requiredSection'"
         class="section"

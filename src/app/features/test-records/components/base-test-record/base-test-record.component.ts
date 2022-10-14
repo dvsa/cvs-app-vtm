@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { CustomDefectsComponent } from '@forms/components/custom-defects/custom-defects.component';
 import { DefectsComponent } from '@forms/components/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
@@ -21,6 +22,7 @@ import { Observable, map } from 'rxjs';
 export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
+  @ViewChild(CustomDefectsComponent) customDefects?: CustomDefectsComponent;
 
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
@@ -49,7 +51,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
       latestTest = merge(latestTest, form.getCleanValue(form));
     });
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
-    latestTest = merge(latestTest, defectsValue, event);
+    const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
+
+    latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
