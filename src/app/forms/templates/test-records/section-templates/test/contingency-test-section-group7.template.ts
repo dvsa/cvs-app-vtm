@@ -52,7 +52,8 @@ export const ContingencyTestSectionGroup7: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } }
               ],
               type: FormNodeTypes.CONTROL
             },
@@ -97,10 +98,14 @@ export const ContingencyTestSectionGroup7: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              required: true,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                }
+              ]
             },
             {
               name: 'testExpiryDate',

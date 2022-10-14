@@ -105,7 +105,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       test: ContingencyTestSectionGroup5And13,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     },
@@ -174,7 +173,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       test: ContingencyTestSectionGroup5And13,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     },
@@ -194,7 +192,6 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       test: ContingencyTestSectionGroup7,
       visit: ContingencyVisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
     },
