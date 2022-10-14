@@ -12,11 +12,11 @@ export const TrlPurchasers: FormNode = {
       children: [
         {
           name: 'name',
-          label: 'Name',
+          label: 'Name or company',
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 150 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 150 }, {name:ValidatorNames.Required}]
         },
         {
           name: 'address1',
@@ -24,7 +24,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, {name:ValidatorNames.Required}]
         },
         {
           name: 'address2',
@@ -32,7 +32,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, {name:ValidatorNames.Required}]
         },
         {
           name: 'postTown',
@@ -40,7 +40,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, {name:ValidatorNames.Required}]
         },
         {
           name: 'address3',
