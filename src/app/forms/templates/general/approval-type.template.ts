@@ -15,9 +15,7 @@ export function getTypeApprovalSection(vehicleType: VehicleTypes): FormNode {
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.SELECT,
         options: getOptionsFromEnum(approvalType),
-        validators: [
-          { name: ValidatorNames.Required }
-        ],
+        validators: vehicleType === VehicleTypes.PSV ? [] :[{ name: ValidatorNames.Required }],
       },
       {
         name: 'approvalTypeNumber',
