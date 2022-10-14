@@ -14,5 +14,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class NumberInputComponent extends BaseControlComponent {
-  style = 'govuk-input' + (this.width ? ` govuk-input--width-` + this.width : '');
+  get style(): string {
+    return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
+  }
 }

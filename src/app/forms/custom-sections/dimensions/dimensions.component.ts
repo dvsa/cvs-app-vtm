@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getDimensionsSection } from '@forms/templates/general/dimensions.template';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
@@ -56,6 +56,10 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
 
   get isTrl(): boolean {
     return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
+  }
+
+  get widths(): typeof FormNodeWidth {
+    return FormNodeWidth;
   }
 
   get types(): typeof FormNodeEditTypes {
