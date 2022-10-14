@@ -68,7 +68,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
     return this.testRecordsService.sectionTemplates$;
   }
 
-  get editingTestResult$(): Observable<string | undefined> {
+  get resultOfTest$(): Observable<string | undefined> {
     return this.testRecordsService.editingTestResult$.pipe(map(testResult => testResult?.testTypes[0].testResult));
   }
 
