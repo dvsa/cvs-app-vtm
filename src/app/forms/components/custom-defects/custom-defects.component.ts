@@ -1,49 +1,50 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { CustomDefect, CustomDefects } from '@api/test-results';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { CustomDefects, CustomDefect } from '@api/test-results';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNode, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestResultDefect } from '@models/test-results/test-result-defect.model';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { throws } from 'assert';
-import { Subject, debounceTime, takeUntil, Subscription } from 'rxjs';
+import { FormNode, CustomFormGroup, CustomFormArray } from '@forms/services/dynamic-form.types';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-custom-defects',
-  templateUrl: './custom-defects.component.html'
+  selector: 'app-custom-defects[template]',
+  templateUrl: './custom-defects.component.html',
+  styleUrls: []
 })
 export class CustomDefectsComponent implements OnInit, OnDestroy {
   @Input() isEditing = false;
   @Input() template!: FormNode;
-  @Input() data: Partial<TestResultModel> = {};
+  @Input() data: any = {};
 
   @Output() formChange = new EventEmitter();
+  form!: CustomFormGroup;
 
-  public form!: CustomFormGroup;
-  private _formSubscription = new Subscription();
-  private _defectsForm?: CustomFormArray;
+  private formSubscription = new Subscription();
 
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.data) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
+    this.formSubscription = this.form.cleanValueChanges.subscribe(event => {
       this.formChange.emit(event);
     });
   }
 
   ngOnDestroy(): void {
-    this._formSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 
-  get customDefectsForm(): CustomFormArray {
-    if (!this._defectsForm) {
-      this._defectsForm = this.form?.get(['testTypes', '0', 'customDefects']) as CustomFormArray;
-    }
-    return this._defectsForm;
+  get customDefectsForm() {
+    return this.form?.get(['testTypes', '0', 'customDefects']) as CustomFormArray;
   }
 
-  get defectCount(): number {
+  getCustomDefectForm(i: number) {
+    return this.customDefectsForm?.controls[i] as CustomFormGroup;
+  }
+
+  trackByFn(index: number): number {
+    return index;
+  }
+
+  get defectCount() {
     return this.customDefectsForm?.controls.length;
   }
 
@@ -54,7 +55,11 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleAddDefect(): void {
+  handleRemoveDefect(index: number): void {
+    this.customDefectsForm.removeAt(index);
+  }
+
+  handleAddCustomDefect() {
     this.customDefectsForm.addControl();
   }
 }
