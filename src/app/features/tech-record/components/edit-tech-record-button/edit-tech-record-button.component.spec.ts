@@ -71,12 +71,7 @@ describe('EditTechRecordButtonComponent', () => {
   
       const button = fixture.debugElement.query(By.css('#edit'));
       
-      if (expected) {
-        expect(button).toBeTruthy;
-      }
-      else {
-        expect(button).toBeFalsy;
-      }
+      expected ? expect(button).toBeTruthy() : expect(button).toBeFalsy();
     });
   })
 
