@@ -40,6 +40,24 @@
         </app-accordion>
       </ng-container>
 
+      <ng-container *ngSwitchCase="'emissionsSection'">
+        <app-accordion
+          *ngIf="isEditing"
+          [ngStyle]="{ display: (resultOfTest$ | async) === 'fail' ? 'none' : 'block' }"
+          [id]="template.name"
+          [title]="template.label"
+        >
+          <app-dynamic-form-group
+            class="section"
+            [id]="template.name"
+            [template]="template"
+            [data]="testResult"
+            [edit]="isEditing"
+            (formChange)="handleFormChange($event)"
+          ></app-dynamic-form-group>
+        </app-accordion>
+      </ng-container>
+
       <!-- this section is not visible so omiting from accordion -->
       <app-dynamic-form-group
         *ngSwitchCase="'requiredSection'"

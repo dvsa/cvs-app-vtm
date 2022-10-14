@@ -68,6 +68,10 @@ export class BaseTestRecordComponent implements AfterViewInit {
     return this.testRecordsService.sectionTemplates$;
   }
 
+  get resultOfTest$(): Observable<string | undefined> {
+    return this.testRecordsService.editingTestResult$.pipe(map(testResult => testResult?.testTypes[0].testResult));
+  }
+
   get testNumber$(): Observable<string | undefined> {
     return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
   }
