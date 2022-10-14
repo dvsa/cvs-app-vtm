@@ -1,5 +1,7 @@
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { VehicleTypes, approvalType } from '@models/vehicle-tech-record.model';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import getOptionsFromEnum from '@forms/utils/enum-map';
 
 export function getTypeApprovalSection(vehicleType: VehicleTypes): FormNode {
   const approvalTypeSection: FormNode = {
@@ -10,27 +12,47 @@ export function getTypeApprovalSection(vehicleType: VehicleTypes): FormNode {
       {
         name: 'approvalType',
         label: 'Approval type',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
+        editType: FormNodeEditTypes.SELECT,
+        options: getOptionsFromEnum(approvalType),
+        validators: [
+          { name: ValidatorNames.Required }
+        ],
       },
       {
         name: 'approvalTypeNumber',
         label: 'Approval type number',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
+        width: FormNodeWidth.XL,
+        validators: [
+          { name: ValidatorNames.MaxLength, args: 25 }]
       },
       {
         name: 'ntaNumber',
         label: 'National type number',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
+        width: FormNodeWidth.XXL,
+        validators: [
+          { name: ValidatorNames.MaxLength, args: 40 }
+        ],
       },
       {
         name: 'variantNumber',
         label: 'Variant number',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
+        width: FormNodeWidth.XL,
+        validators: [
+          { name: ValidatorNames.MaxLength, args: 25 }
+        ],
       },
       {
         name: 'variantVersionNumber',
         label: 'Variant version number',
-        type: FormNodeTypes.CONTROL
+        type: FormNodeTypes.CONTROL,
+        width: FormNodeWidth.XXL,
+        validators: [
+          { name: ValidatorNames.MaxLength, args: 35 }
+        ],
       }
     ]
   };

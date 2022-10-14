@@ -13,6 +13,7 @@ import { ButtonComponent } from '@shared/components/button/button.component';
 import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { TagComponent } from '@shared/components/tag/tag.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CustomFormGroup } from '@forms/services/dynamic-form.types';
 
 describe('DefectsComponent', () => {
   let component: DefectsComponent;

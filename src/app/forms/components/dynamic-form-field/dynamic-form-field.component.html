@@ -32,7 +32,9 @@
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
-  ></app-number-input>
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
+  </app-number-input>
 
   <app-radio-group
     *ngSwitchCase="formNodeEditTypes.RADIO"
@@ -41,6 +43,14 @@
     [options]="(options | async) || []"
     [formControlName]="control.key"
   ></app-radio-group>
+
+  <app-select
+    *ngSwitchCase="formNodeEditTypes.SELECT"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+  ></app-select>
 
   <app-text-area
     *ngSwitchCase="formNodeEditTypes.TEXTAREA"
@@ -64,7 +74,9 @@
     [name]="control.value.meta.name"
     [formControlName]="control.key"
     [numeric]="true"
-  ></app-text-input>
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
+  </app-text-input>
 
   <app-text-input
     *ngSwitchDefault
@@ -72,5 +84,7 @@
     [width]="control.value.meta.width"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
-  ></app-text-input>
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template></app-text-input
+  >
 </ng-container>

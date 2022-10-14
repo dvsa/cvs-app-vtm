@@ -1,4 +1,4 @@
-<div *ngIf="viewType !== formNodeViewTypes.HIDDEN" class="govuk-summary-list__row">
+<ng-container *ngIf="viewType !== formNodeViewTypes.HIDDEN">
   <dt *ngIf="viewType !== formNodeViewTypes.FULLWIDTH" class="govuk-summary-list__key">{{ label }}:</dt>
   <ng-container [ngSwitch]="viewType">
     <ng-container *ngSwitchCase="formNodeViewTypes.DATE">
@@ -17,4 +17,4 @@
       <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
     </ng-container>
   </ng-container>
-</div>
+</ng-container>

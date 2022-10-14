@@ -48,8 +48,8 @@ describe('DelayedRetryInterceptor', () => {
 
     it('should throw error "Request timed out. Check connectivity and try again." after final retry', fakeAsync(() => {
       client.get(DUMMY_ENDPOINT).subscribe({
-        error: (e) => {
-          expect(e).toEqual('Request timed out. Check connectivity and try again.');
+        error: e => {
+          expect(e).toEqual(new Error('Request timed out. Check connectivity and try again.'));
         }
       });
       const retryCount = 3;
@@ -61,9 +61,9 @@ describe('DelayedRetryInterceptor', () => {
       flush();
     }));
 
-    it('should cascade errors not in the retry list', (done) => {
+    it('should cascade errors not in the retry list', done => {
       client.get(DUMMY_ENDPOINT).subscribe({
-        error: (e) => {
+        error: e => {
           const { error, status, statusText } = e;
           expect(error).toEqual('Deliberate 401 error');
           expect(status).toEqual(401);
@@ -90,8 +90,8 @@ describe('DelayedRetryInterceptor', () => {
 
     it('should stagger retry requests', fakeAsync(() => {
       client.get(DUMMY_ENDPOINT).subscribe({
-        error: (e) => {
-          expect(e).toEqual('Request timed out. Check connectivity and try again.');
+        error: e => {
+          expect(e).toEqual(new Error('Request timed out. Check connectivity and try again.'));
         }
       });
 
