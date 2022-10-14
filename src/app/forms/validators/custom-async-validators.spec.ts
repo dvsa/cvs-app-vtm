@@ -11,6 +11,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { CustomAsyncValidators } from './custom-async-validators';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 
 describe('resultDependantOnCustomDefects', () => {
   let form: FormGroup;
@@ -114,5 +115,103 @@ describe('updateTestStationDetails', () => {
     expect(form.controls['testStationType'].value).toBe('bar')
     expect(form.controls['testStationName'].value).toBe('foo')
   });
-});
+}
 
+);
+
+describe('requiredIfNotFail', () => {
+  let form: FormGroup;
+  let store: MockStore<State>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
+
+    store = TestBed.inject(MockStore);
+
+    form = new FormGroup({
+      foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+  });
+
+  it('should be required when value is "pass"', async () => {
+    form.controls['foo'].patchValue('');
+
+    const testResult = mockTestResult();
+    testResult.testTypes[0].testResult = resultOfTestEnum.pass;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotFail(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toEqual({ requiredIfNotFail: true });
+  });
+
+  it('should pass validation if field is not empty when value is "pass"', async () => {
+    form.controls['foo'].patchValue('test');
+
+    const testResult = mockTestResult();
+    testResult.testTypes[0].testResult = resultOfTestEnum.pass;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    store.overrideSelector(testResultInEdit, mockTestResult());
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotFail(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toEqual(null);
+  });
+
+  it('should not be required when value is "fail"', async () => {
+    form.controls['foo'].patchValue('');
+
+    const testResult = mockTestResult();
+    testResult.testTypes[0].testResult = resultOfTestEnum.fail;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotFail(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toEqual(null);
+  });
+
+  it('should be required when value is "prs"', async () => {
+    form.controls['foo'].patchValue('');
+
+    const testResult = mockTestResult();
+    testResult.testTypes[0].testResult = resultOfTestEnum.prs;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotFail(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toEqual({ requiredIfNotFail: true });
+  });
+
+  it('should be required when value is "abandoned"', async () => {
+    form.controls['foo'].patchValue('');
+
+    const testResult = mockTestResult();
+    testResult.testTypes[0].testResult = resultOfTestEnum.abandoned;
+
+    store.overrideSelector(testResultInEdit, mockTestResult());
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotFail(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toEqual({ requiredIfNotFail: true });
+  });
+
+
+
+});
