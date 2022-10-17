@@ -49,10 +49,9 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
   }
 
   get customDefects(): CustomDefects {
-    return this.customDefectsForm.controls.map(control => {
-      const formGroup = control as CustomFormGroup;
-      return formGroup.getCleanValue(formGroup) as CustomDefect;
-    });
+    return this.customDefectsForm.controls.map(control => 
+     (formGroup as CustomFormGroup).getCleanValue(formGroup as CustomFormGroup) as CustomDefect;
+    );
   }
 
   handleRemoveDefect(index: number): void {
