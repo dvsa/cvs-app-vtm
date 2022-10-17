@@ -13,6 +13,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
 import { Observable, map } from 'rxjs';
+import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -21,6 +22,7 @@ import { Observable, map } from 'rxjs';
 export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
+  @ViewChild(CustomDefectsComponent) customDefects?: CustomDefectsComponent;
 
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
@@ -49,7 +51,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
       latestTest = merge(latestTest, form.getCleanValue(form));
     });
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
-    latestTest = merge(latestTest, defectsValue, event);
+    const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
+
+    latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
