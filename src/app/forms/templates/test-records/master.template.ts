@@ -209,6 +209,16 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
+    },
+    testTypesSpecialistGroup5: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup5,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
     }
   },
   trl: {
@@ -270,6 +280,16 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup12And14,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: DefectsTpl,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
+    },
+    testTypesSpecialistGroup5: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
