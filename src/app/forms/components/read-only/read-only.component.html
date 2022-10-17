@@ -1,5 +1,5 @@
 <div>
   <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
 
-  <span class="govuk-body" id="{{ name }}">{{ value }}</span>
+  <span class="govuk-body" id="{{ name }}">{{ value | defaultNullOrEmpty }}</span>
 </div>
