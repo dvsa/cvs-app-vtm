@@ -176,6 +176,24 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       defects: DefectsTpl,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      vehicle: ContingencyVehicleSectionDefaultTrl,
+      test: ContingencyTestSectionSpecialistGroup1HgvTrl,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSectionHgvTrl
+    },
+    testTypesSpecialistGroup5: {
+      vehicle: ContingencyVehicleSectionDefaultTrl,
+      test: ContingencyTestSectionSpecialistGroup5HgvTrl,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSectionHgvTrl
     }
   }
 };
