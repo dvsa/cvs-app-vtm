@@ -63,6 +63,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesSpecialistGroup1: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: ContingencyTestSectionSpecialistGroup1,
+      seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
@@ -72,6 +73,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesSpecialistGroup5: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: ContingencyTestSectionSpecialistGroup5,
+      seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
