@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionGroup5And13: FormNode = {
+export const ContingencyTestSectionGroup6And11: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -97,15 +97,10 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              type: FormNodeTypes.CONTROL,
               value: '',
-              validators: [
-                { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
-                }
-              ]
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeStartTimestamp',
@@ -131,21 +126,11 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
             },
             {
               name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
               label: 'Prohibition issued',
+              type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              validators: [{ name: ValidatorNames.Required }]
-            },
-            {
-              name: 'defects',
-              type: FormNodeTypes.ARRAY,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
+              required: true
             }
           ]
         }

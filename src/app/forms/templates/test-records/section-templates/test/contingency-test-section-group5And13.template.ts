@@ -98,12 +98,9 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
-              value: '',
               validators: [
-                { name: ValidatorNames.Alphanumeric },
                 {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
+                  name: ValidatorNames.Required
                 }
               ]
             },

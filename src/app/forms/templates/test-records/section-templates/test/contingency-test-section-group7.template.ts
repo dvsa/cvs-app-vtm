@@ -2,7 +2,7 @@ import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionGroup5And13: FormNode = {
+export const ContingencyTestSectionGroup7: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -52,7 +52,9 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }
               ],
               type: FormNodeTypes.CONTROL
             },
@@ -98,9 +100,23 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
-              value: '',
+              required: true,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                }
+              ]
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              value: '',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME,
+              validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'pass' }
