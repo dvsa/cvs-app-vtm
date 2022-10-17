@@ -1,24 +1,40 @@
-<div *ngIf="isEditing; else view" [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
-  <h1 *ngIf="label" class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
-  </h1>
+<div [ngClass]="{ 'govuk-form-group': !noBottomMargin }">
+  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
 
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
-  <input
-    [class]="style"
-    id="{{ name }}"
-    name="{{ name }}"
-    type="text"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    (ngModelChange)="onChange($event)"
-    (blur)="onTouched(); handleEvent($event)"
-    (focus)="handleEvent($event)"
-    [attr.appNumberOnly]="numeric ? '' : null"
-  />
-</div>
+  <div class="govuk-input__wrapper">
+    <input
+      *ngIf="!numeric"
+      id="{{ name }}"
+      name="{{ name }}"
+      type="text"
+      [class]="style"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
+    />
 
-<ng-template #view>{{ value | defaultNullOrEmpty }}</ng-template>
+    <input
+      *ngIf="numeric"
+      id="{{ name }}"
+      name="{{ name }}"
+      type="text"
+      [class]="style"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
+      appNumberOnly
+    />
+
+    <div *ngIf="suffix" class="govuk-input__suffix" aria-hidden="true">
+      <ng-container [ngTemplateOutlet]="suffix.templateRef"></ng-container>
+    </div>
+  </div>
+</div>

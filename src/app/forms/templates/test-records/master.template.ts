@@ -4,7 +4,7 @@ import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
-import { reasonForCreationSection } from './section-templates/reasonForCreation/resonForCreation.template';
+import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
@@ -24,6 +24,7 @@ import { VisitSection } from './section-templates/visit/visit-section.template';
 import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist-test-section-group1.template';
 import { RequiredSpecialistSection } from './section-templates/required/specialist-required-hidden-section.template';
 import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist-test-section-group5.template';
+import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist-test-section-group3.template';
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
 import { SpecialistTestSectionGroup4 } from './section-templates/test/specialist-test-section-group4.template';
 //Keys of root object must a a valid vehicle type.
@@ -95,6 +96,15 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       vehicle: VehicleSectionDefaultPsvHgv,
       test: SpecialistTestSectionGroup2,
       seatbelts: SeatbeltSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSpecialistSection
+    },
+    testTypesSpecialistGroup3: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup3,
       visit: VisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,

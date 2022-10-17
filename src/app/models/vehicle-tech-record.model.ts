@@ -246,6 +246,7 @@ export interface TechRecordModel {
   functionCode?: string;
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;
+  authIntoService?: AuthIntoService;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
@@ -288,6 +289,14 @@ export interface TechRecordModel {
   plates?: Plates[];
   dda?: DDA;
   updateType?: string;
+}
+
+export interface AuthIntoService {
+  cocIssueDate?: string | null;
+  dateReceived?: string | null;
+  datePending?: string | null;
+  dateAuthorised?: string | null;
+  dateRejected?: string | null;
 }
 
 export interface DDA {
@@ -383,7 +392,7 @@ export enum RetarderBrake {
 export interface AxleBrakeProperties {
   brakeActuator: string;
   leverLength: string;
-  springBrakeParking: string;
+  springBrakeParking: boolean;
 }
 
 export interface Microfilm {

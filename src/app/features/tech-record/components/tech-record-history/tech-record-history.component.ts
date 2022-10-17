@@ -4,7 +4,6 @@ import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-re
 @Component({
   selector: 'app-tech-record-history',
   templateUrl: './tech-record-history.component.html',
-  styleUrls: ['./tech-record-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechRecordHistoryComponent {

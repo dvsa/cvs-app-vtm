@@ -10,8 +10,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tech-record',
-  templateUrl: './tech-record.component.html',
-  styleUrls: ['./tech-record.component.scss']
+  templateUrl: './tech-record.component.html'
 })
 export class TechRecordComponent {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;

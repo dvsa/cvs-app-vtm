@@ -1,5 +1,6 @@
-import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild, Injector, Input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { SuffixDirective } from '@forms/directives/suffix.directive';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { CustomControl, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ErrorMessageMap } from '../../utils/error-message-map';
@@ -11,6 +12,8 @@ import { ErrorMessageMap } from '../../utils/error-message-map';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BaseControlComponent implements ControlValueAccessor, AfterContentInit {
+  @ContentChild(SuffixDirective) suffix?: SuffixDirective;
+
   @Input() name = '';
   @Input() hint?: string;
   @Input() label?: string;
@@ -26,7 +29,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
 
   private value_: any;
 
-  constructor(private injector: Injector, protected ref: ChangeDetectorRef) {
+  constructor(private injector: Injector, protected cdr: ChangeDetectorRef) {
     this.name = '';
   }
 
@@ -34,7 +37,7 @@ export class BaseControlComponent implements ControlValueAccessor, AfterContentI
     const ngControl: NgControl | null = this.injector.get(NgControl, null);
     if (ngControl) {
       this.control = ngControl.control as CustomControl;
-      this.control.meta.changeDetection = this.ref;
+      this.control.meta.changeDetection = this.cdr;
     } else {
       throw new Error(`No control binding for ${this.name}`);
     }

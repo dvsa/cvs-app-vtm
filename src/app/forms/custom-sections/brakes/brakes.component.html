@@ -1,0 +1,51 @@
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header"></th>
+      <th scope="col" class="govuk-table__header">Brake actuator</th>
+      <th scope="col" class="govuk-table__header">Lever length</th>
+      <th scope="col" class="govuk-table__header">Spring brake parking</th>
+    </tr>
+  </thead>
+
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row" *ngFor="let axle of axles.controls; let i = index">
+      <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+
+      <td class="govuk-table__cell">
+        <app-switchable-input [form]="getAxleBrakes(i)" [type]="types.NUMBER" name="brakeActuator" [isEditing]="isEditing"></app-switchable-input>
+      </td>
+
+      <td class="govuk-table__cell">
+        <app-switchable-input [form]="getAxleBrakes(i)" [type]="types.NUMBER" name="leverLength" [isEditing]="isEditing"></app-switchable-input>
+      </td>
+
+      <td class="govuk-table__cell">
+        <app-switchable-input
+          [form]="getAxleBrakes(i)"
+          [type]="types.DROPDOWN"
+          name="springBrakeParking"
+          [isEditing]="isEditing"
+          [options]="booleanOptions"
+        ></app-switchable-input>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="radio-buttons">
+  <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'loadSensingValve' }"></ng-template>
+
+  <ng-template [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{ name: 'antilockBrakingSystem' }"></ng-template>
+
+  <ng-template #radio let-name="name">
+    <app-switchable-input
+      [form]="brakes"
+      [type]="types.RADIO"
+      [name]="name"
+      [label]="pascalCase(name)"
+      [isEditing]="isEditing"
+      [options]="booleanOptions"
+    ></app-switchable-input>
+  </ng-template>
+</div>

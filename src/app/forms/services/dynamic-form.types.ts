@@ -44,10 +44,12 @@ export enum FormNodeEditTypes {
   CHECKBOX = 'checkbox',
   DATE = 'date',
   DATETIME = 'datetime',
+  DROPDOWN = 'dropdown',
   HIDDEN = 'hidden',
   NUMBER = 'number',
   NUMERICSTRING = 'numericstring',
   RADIO = 'radio',
+  SELECT = 'select',
   TEXT = 'text',
   TEXTAREA = 'textarea'
 }
@@ -68,6 +70,8 @@ export interface FormNodeOption<T> {
   hint?: string;
 }
 
+type AsyncValidatorOptions = AsyncValidatorFn | AsyncValidatorFn[] | null;
+
 export interface FormNode {
   name: string;
   children?: FormNode[];
@@ -79,7 +83,7 @@ export interface FormNode {
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
-  options?: FormNodeOption<string | number | boolean>[] | FormNodeCombinationOptions;
+  options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
   validators?: { name: ValidatorNames; args?: any }[];
   customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
@@ -90,6 +94,8 @@ export interface FormNode {
   changeDetection?: ChangeDetectorRef;
   subHeadingLink?: SubHeadingLink;
   referenceData?: ReferenceDataResourceType | SpecialRefData;
+  suffix?: string;
+  isoDate?: boolean;
 }
 
 export interface FormNodeCombinationOptions {
@@ -114,7 +120,7 @@ export class CustomFormControl extends FormControl implements CustomControl {
     meta: FormNode,
     formState?: any,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+    asyncValidator?: AsyncValidatorOptions
   ) {
     super(formState, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -146,7 +152,7 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
       [key: string]: AbstractControl;
     },
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+    asyncValidator?: AsyncValidatorOptions
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -172,7 +178,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     controls: AbstractControl[],
     store: Store<State>,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+    asyncValidator?: AsyncValidatorOptions
   ) {
     super(controls, validatorOrOpts, asyncValidator);
     this.meta = meta;
@@ -192,19 +198,19 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   }
 }
 
-const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: any } | Array<[]> => {
-  const cleanValue = form instanceof CustomFormArray ? [] : ({} as { [key: string]: any });
+const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
+  const cleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
   Object.keys(form.controls).forEach(key => {
     const control = (form.controls as any)[key];
     if (control instanceof CustomFormGroup && control.meta.type === FormNodeTypes.GROUP) {
       cleanValue[key] = objectOrNull(control.getCleanValue(control));
     } else if (control instanceof CustomFormArray) {
       cleanValue[key] = control.getCleanValue(control);
-    } else if (control instanceof CustomFormControl) {
-      if (control.meta.type === FormNodeTypes.CONTROL && control.meta.required && control.meta.hide) {
-        Array.isArray(cleanValue) ? cleanValue.push(control.meta.value || null) : (cleanValue[key] = control.meta.value || null);
-      } else if (control.meta.type === FormNodeTypes.CONTROL && !control.meta.hide) {
-        Array.isArray(cleanValue) ? cleanValue.push(control.value) : (cleanValue[key] = control.value);
+    } else if (control instanceof CustomFormControl && control.meta.type === FormNodeTypes.CONTROL) {
+      if (control.meta.required && control.meta.hide) {
+        pushOrAssignAt(control.meta.value || null, cleanValue, key);
+      } else if (!control.meta.hide) {
+        pushOrAssignAt(control.value, cleanValue, key);
       }
     }
   });
@@ -214,4 +220,10 @@ const cleanValue = (form: CustomFormGroup | CustomFormArray): { [key: string]: a
 
 function objectOrNull(obj: Object) {
   return Object.values(obj).some(value => undefined !== value) ? obj : null;
+}
+
+function pushOrAssignAt(value: any, cleanValue: Array<[]> | Record<string, any>, key: string) {
+  if (Array.isArray(cleanValue)) {
+    cleanValue.push(value);
+  } else cleanValue[key] = value;
 }

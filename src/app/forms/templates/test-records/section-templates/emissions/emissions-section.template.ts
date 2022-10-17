@@ -1,6 +1,6 @@
 import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { CodeChallengeMethodValues } from '@azure/msal-common/dist/utils/Constants';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',
@@ -29,13 +29,14 @@ export const EmissionsSection: FormNode = {
                 { value: 'Euro VI', label: 'Euro VI' },
                 { value: 'Full Electric', label: 'Full Electric' }
               ],
-              validators: [{ name: ValidatorNames.Required }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
             },
             {
               name: 'smokeTestKLimitApplied',
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
-              validators: [{ name: ValidatorNames.MaxLength, args: 100 }, { name: ValidatorNames.Required }]
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
             },
             {
               name: 'fuelType',
@@ -51,7 +52,7 @@ export const EmissionsSection: FormNode = {
                 { value: 'petrol', label: 'Petrol' },
                 { value: 'full electric', label: 'Full electric' }
               ],
-              validators: [{ name: ValidatorNames.Required }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
             },
             {
               name: 'modType',

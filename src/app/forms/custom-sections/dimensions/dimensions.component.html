@@ -1,0 +1,65 @@
+<app-switchable-input
+  *ngIf="isPsv"
+  [form]="dimensions"
+  [type]="types.NUMBER"
+  name="height"
+  label="Height"
+  [isEditing]="isEditing"
+  [width]="widths.M"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="dimensions"
+  [type]="types.NUMBER"
+  name="length"
+  label="Length"
+  [isEditing]="isEditing"
+  [width]="widths.M"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="dimensions"
+  [type]="types.NUMBER"
+  name="width"
+  label="Width"
+  [isEditing]="isEditing"
+  [width]="widths.M"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="types.NUMBER"
+  name="frontAxleToRearAxle"
+  label="Front axle to rear axle"
+  [isEditing]="isEditing"
+  [width]="widths.M"
+  suffix="mm"
+></app-switchable-input>
+
+<app-switchable-input
+  *ngIf="isTrl"
+  [form]="form"
+  [type]="types.NUMBER"
+  name="rearAxleToRearTrl"
+  label="Rear axle to rear trailer"
+  [isEditing]="isEditing"
+  [width]="widths.M"
+  suffix="mm"
+></app-switchable-input>
+
+<ng-container *ngIf="!isPsv">
+  <div *ngFor="let axle of bottomSection?.meta?.children">
+    <app-switchable-input
+      [form]="bottomSection"
+      [type]="types.NUMBER"
+      [name]="axle.name"
+      [label]="axle.label"
+      [isEditing]="isEditing"
+      [width]="widths.M"
+      suffix="mm"
+    ></app-switchable-input>
+  </div>
+</ng-container>

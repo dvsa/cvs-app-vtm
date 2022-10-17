@@ -18,7 +18,7 @@ export interface TechRecordBodyType {
     description?: TechRecordBodyType.DescriptionEnum;
 }
 export namespace TechRecordBodyType {
-    export type CodeEnum = 'a' | 's' | 'd' | 'o' | 'm' | 'x' | 'p' | 'k' | 't' | 'b' | 'f' | 'r' | 'c' | 'e' | 'y' | 'm' | 'i' | 'a' | 'u' | 'l';
+    export type CodeEnum = 'a' | 's' | 'd' | 'o' | 'x' | 'p' | 'k' | 't' | 'b' | 'f' | 'r' | 'c' | 'e' | 'y' | 'm' | 'i' | 'u' | 'l';
     export const CodeEnum = {
         A: 'a' as CodeEnum,
         S: 's' as CodeEnum,

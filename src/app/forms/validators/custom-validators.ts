@@ -114,6 +114,15 @@ export class CustomValidators {
     };
   };
 
+  static defined = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (typeof control.value === 'undefined') {
+        return { defined: false };
+      }
+      return null;
+    };
+  };
+  
   static alphanumeric(): ValidatorFn {
     return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
   }

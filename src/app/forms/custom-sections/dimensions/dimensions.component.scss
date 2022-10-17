@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem 1rem;
+
+  > * {
+    min-width: 245px;
+  }
+}

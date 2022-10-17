@@ -30,7 +30,6 @@ class HostComponent {
 describe('CheckboxGroupComponent', () => {
   let component: HostComponent;
   let fixture: ComponentFixture<HostComponent>;
-  let checkboxGroupComponent: CheckboxGroupComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -42,7 +41,6 @@ describe('CheckboxGroupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     component = fixture.componentInstance;
-    checkboxGroupComponent = fixture.debugElement.query(By.directive(CheckboxGroupComponent)).nativeElement;
     fixture.detectChanges();
   });
 
@@ -84,12 +82,6 @@ describe('CheckboxGroupComponent', () => {
       component.form.patchValue({ foo: ['1', '2'] });
       fixture.detectChanges();
       const checkedBoxes = fixture.debugElement.queryAll(By.css('input[type="checkbox"][checked=true]'));
-
-      checkedBoxes.forEach(box => {
-        const {
-          nativeElement: { value, checked, name }
-        } = box;
-      });
       expect(checkedBoxes.length).toBe(2);
     });
   });
