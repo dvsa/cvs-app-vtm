@@ -50,7 +50,7 @@ export class CustomDefectsComponent implements OnInit, OnDestroy {
 
   get customDefects(): CustomDefects {
     return this.customDefectsForm.controls.map(control => 
-     (formGroup as CustomFormGroup).getCleanValue(formGroup as CustomFormGroup) as CustomDefect;
+     (control as CustomFormGroup).getCleanValue(control as CustomFormGroup) as CustomDefect;
     );
   }
 
