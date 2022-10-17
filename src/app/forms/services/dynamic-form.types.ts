@@ -44,6 +44,7 @@ export enum FormNodeEditTypes {
   CHECKBOX = 'checkbox',
   DATE = 'date',
   DATETIME = 'datetime',
+  DROPDOWN = 'dropdown',
   HIDDEN = 'hidden',
   NUMBER = 'number',
   NUMERICSTRING = 'numericstring',
