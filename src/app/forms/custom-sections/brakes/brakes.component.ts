@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode } from '@forms/services/dynamic-form.types';
+import { CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
@@ -49,9 +49,21 @@ export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
+  get types(): typeof FormNodeEditTypes {
+    return FormNodeEditTypes;
+  }
+
+  get brakes(): FormGroup {
+    return this.form.get(['brakes']) as FormGroup;
+  }
+
   get axles(): FormArray {
     return this.form.get(['axles']) as FormArray;
   }
 
-  pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1');
+  getAxleBrakes(i: number): FormGroup {
+    return this.form.get(['axles', i, 'brakes']) as FormGroup;
+  }
+
+  pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1').toLowerCase();
 }

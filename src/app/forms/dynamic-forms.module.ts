@@ -6,14 +6,14 @@ import { TruncatePipe } from '@shared/pipes/truncate/truncate.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
-import { BrakesComponent } from './components/brakes/brakes.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
+import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
+import { CustomDefectsComponent } from './custom-sections/custom-defects/custom-defects.component';
 import { DateComponent } from './components/date/date.component';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
-import { DefectComponent } from './components/defect/defect.component';
-import { DefectsComponent } from './components/defects/defects.component';
-import { DimensionsComponent } from './components/dimensions/dimensions.component';
+import { DefectComponent } from './custom-sections/defect/defect.component';
+import { DefectsComponent } from './custom-sections/defects/defects.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
 import { FieldErrorMessageComponent } from './components/field-error-message/field-error-message.component';
@@ -25,9 +25,12 @@ import { TextAreaComponent } from './components/text-area/text-area.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
-import { WeightsComponent } from './components/weights/weights.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
-import { SuffixDirective } from './directives/suffix/suffix.directive';
+import { WeightsComponent } from './custom-sections/weights/weights.component';
+import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
+import { BrakesComponent } from './custom-sections/brakes/brakes.component';
+import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
+import { SuffixDirective } from './directives/suffix.directive';
 
 @NgModule({
   declarations: [
@@ -52,10 +55,14 @@ import { SuffixDirective } from './directives/suffix/suffix.directive';
     FocusNextDirective,
     TruncatePipe,
     WeightsComponent,
-    SuffixDirective,
     DimensionsComponent,
     BrakesComponent,
-    ReadOnlyComponent
+    ReadOnlyComponent,
+    CustomDefectsComponent,
+    CustomDefectComponent,
+    SwitchableInputComponent,
+    ReadOnlyComponent,
+    SuffixDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -76,9 +83,13 @@ import { SuffixDirective } from './directives/suffix/suffix.directive';
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
-    SuffixDirective,
     DimensionsComponent,
     BrakesComponent,
+    ReadOnlyComponent,
+    CustomDefectsComponent,
+    CustomDefectComponent,
+    SwitchableInputComponent,
+    SuffixDirective,
     ReadOnlyComponent
   ]
 })

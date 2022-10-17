@@ -68,4 +68,21 @@ export class CustomAsyncValidators {
       );
     };
   }
+
+  static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+          const result = testResult?.testTypes[0].testResult;
+
+          if (result !== 'fail' && (control.value === null || control.value === undefined || control.value === '')) {
+            return { requiredIfNotFail: true };
+          } else {
+            return null;
+          }
+        })
+      );
+  }
 }
