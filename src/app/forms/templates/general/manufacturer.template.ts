@@ -53,7 +53,7 @@ export const ManufacturerTemplate: FormNode = {
           validators: [{ name: ValidatorNames.MaxLength, args: 12 }]
         },
         {
-          name: 'telephonenumber',
+          name: 'telephoneNumber',
           label: 'Telephone number',
           type: FormNodeTypes.CONTROL,
           width: FormNodeWidth.XL,
