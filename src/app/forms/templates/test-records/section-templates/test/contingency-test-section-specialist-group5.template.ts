@@ -161,12 +161,6 @@ export const ContingencyTestSectionSpecialistGroup5: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
               value: null
-            },
-            {
-              name: 'defects',
-              type: FormNodeTypes.ARRAY,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }

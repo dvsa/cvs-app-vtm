@@ -181,12 +181,6 @@ export const DefectsTpl: FormNode = {
                   ]
                 }
               ]
-            },
-            {
-              name: 'customDefects',
-              type: FormNodeTypes.ARRAY,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }

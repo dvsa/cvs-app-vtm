@@ -135,12 +135,6 @@ export const ContingencyTestSectionGroup3And4And8: FormNode = {
                 { value: false, label: 'No' }
               ],
               validators: [{ name: ValidatorNames.Required }]
-            },
-            {
-              name: 'defects',
-              type: FormNodeTypes.ARRAY,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }

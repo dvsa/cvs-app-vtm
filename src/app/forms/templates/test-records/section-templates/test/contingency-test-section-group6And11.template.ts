@@ -61,7 +61,6 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {

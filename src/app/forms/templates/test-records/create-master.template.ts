@@ -17,12 +17,14 @@ import { ContingencyTestSectionGroup12and14 } from './section-templates/test/con
 import { CreateRequiredSectionHgvTrl } from './section-templates/required/contingency-required-hidden-section-hgv-trl.template';
 import { ContingencyTestSectionGroup3And4And8 } from './section-templates/test/contingency-test-section-group3And4And8.template';
 import { ContingencyTestSectionGroup7 } from './section-templates/test/contingency-test-section-group7.template';
-import { SeatbeltHiddenSection } from './section-templates/seatbelt/seatbelt-hidden-section.template';
-import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13';
-import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11';
+import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency-test-section-specialist-group1.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency-test-section-specialist-group5.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
+import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
+import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
+import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13.template';
+import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -32,6 +34,7 @@ const groups1and2Template: Record<string, FormNode> = {
   visit: ContingencyVisitSection,
   notes: NotesSection,
   defects: DefectsTpl,
+  customDefects: CustomDefectsHiddenSection,
   reasonForCreation: reasonForCreationSection
 };
 
@@ -57,6 +60,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       seatbelts: SeatbeltHiddenSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
     },
@@ -66,6 +70,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
     },
@@ -75,6 +80,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
     }
@@ -95,6 +101,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl
     },
@@ -105,6 +112,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup6And11: {
@@ -114,7 +122,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup7: {
@@ -124,6 +132,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup9And10: {
@@ -133,6 +142,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup12And14: {
@@ -142,6 +152,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   },
@@ -161,6 +172,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl
     },
@@ -171,6 +183,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup6And11: {
@@ -180,7 +193,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup7: {
@@ -190,6 +203,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup9And10: {
@@ -199,6 +213,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     },
     testTypesGroup12And14: {
@@ -208,6 +223,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
   }

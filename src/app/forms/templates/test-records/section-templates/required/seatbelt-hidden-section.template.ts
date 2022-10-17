@@ -1,8 +1,7 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const SeatbeltHiddenSection: FormNode = {
-  name: 'seatbeltSection',
-  label: 'Seatbelt',
+  name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
     {
@@ -16,7 +15,6 @@ export const SeatbeltHiddenSection: FormNode = {
           children: [
             {
               name: 'seatbeltInstallationCheckDate',
-              label: 'Carried out during test',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
@@ -24,7 +22,6 @@ export const SeatbeltHiddenSection: FormNode = {
             },
             {
               name: 'numberOfSeatbeltsFitted',
-              label: 'Number of seatbelts fitted',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
@@ -32,7 +29,6 @@ export const SeatbeltHiddenSection: FormNode = {
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
-              label: 'Most recent installation check',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,

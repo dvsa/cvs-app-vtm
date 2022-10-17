@@ -166,8 +166,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -185,8 +184,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -195,8 +193,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup15And16: {
       vehicle: VehicleSectionDefaultPsvHgv,
