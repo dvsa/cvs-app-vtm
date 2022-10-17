@@ -6,6 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { createTestResultSuccess } from '@store/test-records';
@@ -31,7 +32,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     private router: Router,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private resultOfTestService: ResultOfTestService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -113,5 +115,9 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
   isAnyFormInvalid(forms: Array<FormGroup>) {
     return forms.some(form => form.invalid);
+  }
+
+  handleAbandon() {
+    this.resultOfTestService.toggleAbandoned();
   }
 }

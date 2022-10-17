@@ -2,6 +2,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
 
@@ -34,6 +35,7 @@ export const updateEditingTestResult = createAction('[test-results] Update editi
 export const testTypeIdChanged = createAction('[test-results] test type id changed', props<{ testTypeId: string }>());
 
 export const updateResultOfTest = createAction('[test-results] update the result of the test');
+export const setResultOfTest = createAction('[test-results] set the result of the test', props<{ result: resultOfTestEnum }>());
 
 export const initialContingencyTest = createAction('[Contingency test] Create', props<{ testResult: Partial<TestResultModel> }>());
 
