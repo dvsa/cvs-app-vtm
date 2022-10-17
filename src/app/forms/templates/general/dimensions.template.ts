@@ -66,7 +66,7 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
     });
   }
 
-  if (vehicleType == VehicleTypes.HGV || vehicleType == VehicleTypes.TRL) {
+  if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
     section.children!.push({
       name: 'dimensionsBottomSection',
       label: 'Dimensions',
