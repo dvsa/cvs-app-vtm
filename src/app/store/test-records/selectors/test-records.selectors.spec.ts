@@ -105,7 +105,6 @@ describe('Test Results Selectors', () => {
 
     it('should sort the test history', () => {
       // Adding entries with null created at at the end if they exist
-      const noDateMock: TestResultModel = { ...mock, createdAt: undefined };
       const sortedTestHistory = selectedTestSortedAmendmentHistory.projector(mock);
       let previous = new Date(sortedTestHistory![0].createdAt!).getTime();
       let notfound: TestResultModel[] = [];

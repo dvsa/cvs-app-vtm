@@ -186,7 +186,6 @@ describe('Test Results Reducer', () => {
           }
         ]
       } as unknown as TestResultModel;
-      // const updatedTestResult = service.calculateTestResult(testResult);
       const newState = testResultsReducer({ ...initialTestResultsState, editingTestResult: testResult }, action);
       expect(newState.editingTestResult?.testTypes[0].testResult).toEqual('pass');
     });
