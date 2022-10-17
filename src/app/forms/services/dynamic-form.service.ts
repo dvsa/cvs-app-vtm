@@ -17,7 +17,7 @@ type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
   providedIn: 'root'
 })
 export class DynamicFormService {
-  constructor(private store: Store<State>) {}
+  constructor(private store: Store<State>) { }
 
   validatorMap: Record<ValidatorNames, (args: any) => ValidatorFn> = {
     [ValidatorNames.CustomPattern]: (args: string[]) => CustomValidators.customPattern([...args]),
@@ -48,7 +48,8 @@ export class DynamicFormService {
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
-    [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store)
+    [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
+    [AsyncValidatorNames.RequiredIfNotFail]: () => CustomAsyncValidators.requiredIfNotFail(this.store)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {
@@ -94,10 +95,10 @@ export class DynamicFormService {
     // make sure the template has the correct name to the node.
     return Array.isArray(data)
       ? data.map(() =>
-          FormNodeTypes.CONTROL !== child.type
-            ? this.createForm(child, data[Number(child.name)])
-            : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })
-        )
+        FormNodeTypes.CONTROL !== child.type
+          ? this.createForm(child, data[Number(child.name)])
+          : new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })
+      )
       : [new CustomFormControl({ ...child }, { value: child.value, disabled: !!child.disabled })];
   }
 

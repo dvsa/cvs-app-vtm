@@ -16,5 +16,4 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class SelectComponent extends BaseControlComponent {
   @Input() options!: Array<FormNodeOption<string | number | boolean>>;
-  @Input() isEditing = true;
 }
