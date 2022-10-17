@@ -53,7 +53,8 @@ export const ContingencyTestSectionGroup7: FormNode = {
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }
               ],
               type: FormNodeTypes.CONTROL
             },
@@ -101,6 +102,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               type: FormNodeTypes.CONTROL,
               required: true,
               validators: [
+                { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'pass' }
@@ -110,10 +112,16 @@ export const ContingencyTestSectionGroup7: FormNode = {
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
-              disabled: true,
+              value: '',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',
