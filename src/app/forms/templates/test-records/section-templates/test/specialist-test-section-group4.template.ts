@@ -126,7 +126,11 @@ export const SpecialistTestSectionGroup4: FormNode = {
               label: 'Start time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+              ]
             },
             {
               name: 'testTypeEndTimestamp',

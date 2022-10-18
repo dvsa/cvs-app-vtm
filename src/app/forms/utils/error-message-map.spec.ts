@@ -21,7 +21,9 @@ describe('ErrorMessageMap', () => {
     ['Notes is required', ValidatorNames.ValidateDefectNotes, undefined],
     ['foo', 'invalidTestResult', [{ message: 'foo' }]],
     ['Date must be in the past', ValidatorNames.PastDate, [true, 'Date']],
-    ['This date must be in the past', ValidatorNames.PastDate, [true, undefined]]
+    ['This date must be in the past', ValidatorNames.PastDate, [true, undefined]],
+    ['This date must be ahead of the previous date', ValidatorNames.AheadOfDate, [true, undefined]],
+    ['bar must be ahead of foo', ValidatorNames.AheadOfDate, [{sibling: 'foo'}, 'bar']]
   ])('should return "%s" for %s with %o', (expected, key, props) => {
     props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });

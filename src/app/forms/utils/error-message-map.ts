@@ -18,6 +18,7 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.Max]: (err: { max: number }, label?: string) => `${label || DEFAULT_LABEL} must be less than or equal to ${err.max}`,
   [ValidatorNames.Min]: (err: { min: number }, label?: string) => `${label || DEFAULT_LABEL} must be greater than or equal to ${err.min}`,
   [ValidatorNames.PastDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the past`,
+  [ValidatorNames.AheadOfDate]: (err: { sibling: string } , label?: string) => `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   // Date errors
   invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`

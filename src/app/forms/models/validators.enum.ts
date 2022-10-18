@@ -19,5 +19,6 @@ export enum ValidatorNames {
   Defined = 'defined',
   ValidateDefectNotes = 'validateDefectNotes',
   PastDate = 'pastDate',
+  AheadOfDate = 'aheadOfDate',
   CopyValueToRootControl = 'copyValueToRootControl'
 }
