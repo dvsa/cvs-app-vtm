@@ -22,6 +22,7 @@ import { ContingencyTestSectionGroup7 } from './section-templates/test/contingen
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency-test-section-specialist-group1.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency-test-section-specialist-group5.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
+import { ContingencyTestSectionGroup15and16 } from './section-templates/test/contingency-test-section-group15and16.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13.template';
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
@@ -176,6 +177,16 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSectionHgvTrl
+    },
+    testTypesGroup15And16: {
+      required: CreateRequiredSectionHgvTrl,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionGroup15and16,
+      emissions: EmissionsSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection
     }
   },
   trl: {
