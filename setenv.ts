@@ -17,6 +17,7 @@ const environmentFileContent = `export const environment = {
   VTM_REDIRECT_URI: "${process.env['VTM_REDIRECT_URI']}",
   VTM_API_URI: "${process.env['VTM_API_URI']}",
   VTM_API_CLIENT_ID: "${process.env['VTM_API_CLIENT_ID']}",
+  DOC_RETRIEVAL_API_KEY: "${process.env['DOC_RETRIEVAL_API_KEY']}"
 };
 `;
 // write the content to the respective file

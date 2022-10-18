@@ -13,6 +13,8 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
+import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
+import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { RouterModule } from '@angular/router';
     TestTypeNamePipe,
     AccordionComponent,
     AccordionControlComponent,
-    PaginationComponent
+    PaginationComponent,
+    TestCertificateComponent,
+    PreventDoubleClickDirective
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -42,7 +46,8 @@ import { RouterModule } from '@angular/router';
     TestTypeNamePipe,
     AccordionComponent,
     AccordionControlComponent,
-    PaginationComponent
+    PaginationComponent,
+    TestCertificateComponent
   ]
 })
 export class SharedModule {}

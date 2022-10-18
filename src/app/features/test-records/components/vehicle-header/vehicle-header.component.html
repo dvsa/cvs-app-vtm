@@ -114,6 +114,14 @@
           {{ combinedOdometerReading(testResult?.odometerReading, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
         </dd>
       </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Certificate:</dt>
+        <dd id="test-certificate" class="govuk-summary-list__value">
+          <app-test-certificate design="link">
+            {{ test?.certificateNumber | defaultNullOrEmpty }}
+          </app-test-certificate>
+        </dd>
+      </div>
     </dl>
   </ng-container>
 </ng-container>
