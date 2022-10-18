@@ -1,4 +1,12 @@
-import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { ValidatorNames } from '@forms/models/validators.enum';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import getOptionsFromEnum from '@forms/utils/enum-map';
+import { EmissionStandard } from '@models/test-types/emissions.enum';
+import { VehicleClass } from '@models/vehicle-class.model';
+import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
+import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
+import { VehicleSize } from '@models/vehicle-size.enum';
+import { FuelPropulsionSystem } from '@models/fuel-propulsion-system.model';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -9,7 +17,6 @@ export const PsvTechRecord: FormNode = {
       name: 'vehicleType',
       label: 'Vehicle type',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE
     },
@@ -17,25 +24,28 @@ export const PsvTechRecord: FormNode = {
       name: 'regnDate',
       label: 'Date of first registration',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
+
     },
     {
       name: 'manufactureYear',
       label: 'Year of manufacture',
       value: '',
-
+      width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 4 }]
     },
     {
       name: 'noOfAxles',
       label: 'Number of axles',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
     },
     {
       name: 'brakes',
@@ -55,21 +65,20 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING
     },
     {
-      name: 'axles',
+      name: 'axles',  //Must display as a list: Axles fitted with a parking brake : Axle 1 [True], Axle 2 [false]
       value: '',
       type: FormNodeTypes.ARRAY,
       children: [
         {
           name: '0',
-          label: 'Axel',
           value: '',
           type: FormNodeTypes.GROUP,
           children: [
             {
               name: 'parkingBrakeMrk',
-              label: 'Axles fitted with a parking brake',
+              label: 'Axle fitted with parking brake',
               value: '',
-
+              width: FormNodeWidth.S,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING
             }
@@ -81,33 +90,43 @@ export const PsvTechRecord: FormNode = {
       name: 'speedLimiterMrk',
       label: 'Speed limiter exempt',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Exempt' },
+        { value: false, label: 'Not exempt' }
+      ]
     },
     {
       name: 'tachoExemptMrk',
       label: 'Tacho exempt',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Exempt' },
+        { value: false, label: 'Not exempt' }
+      ]
     },
     {
       name: 'euroStandard',
       label: 'Euro standard',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.RADIO,
+      options: getOptionsFromEnum(EmissionStandard)
     },
     {
       name: 'fuelPropulsionSystem',
       label: 'Fuel / propulsion system',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(FuelPropulsionSystem)
     },
     {
       name: 'vehicleClass',
@@ -119,9 +138,10 @@ export const PsvTechRecord: FormNode = {
           name: 'description',
           label: 'Vehicle class',
           value: '',
-
           type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
+          viewType: FormNodeViewTypes.STRING,
+          editType: FormNodeEditTypes.SELECT,
+          options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
         }
       ]
     },
@@ -129,81 +149,108 @@ export const PsvTechRecord: FormNode = {
       name: 'vehicleConfiguration',
       label: 'Vehicle configuration',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(VehicleConfiguration)
     },
     {
       name: 'euVehicleCategory',
       label: 'EU vehicle category',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.SELECT,
+      options: getOptionsFromEnum(EuVehicleCategories)
     },
     {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 2 }],
+      width: FormNodeWidth.XXS,
+
     },
     {
-      name: 'seatsLowerDeck',
+      name: 'seatsLowerDeck',   // Should display as a list : Seats: Lower Deck: 22, Upper deck: 0
       label: 'Seats lower deck',
       value: '',
 
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 3 }],
+      width: FormNodeWidth.XXS,
     },
     {
       name: 'seatsUpperDeck',
       label: 'Seats upper deck',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 2 }],
+      width: FormNodeWidth.XXS,
     },
     {
       name: 'standingCapacity',
       label: 'Standing capacity',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
-    },
-    {
-      name: 'vehicleSize',
-      label: 'Vehicle size',
-      value: '',
-
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 3 }],
+      width: FormNodeWidth.XXS,
     },
     {
       name: 'numberOfSeatbelts',
       label: 'Number of seat belts',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.TEXT,
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 2 }],
+      width: FormNodeWidth.XXS,
     },
+
     {
       name: 'seatbeltInstallationApprovalDate',
       label: 'Seatbelt installation approval date / type approved',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
+    },
+    {
+      name: 'vehicleSize',
+      label: 'Vehicle size',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.RADIO,
+      options: getOptionsFromEnum(VehicleSize)
     },
     {
       name: 'departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
       value: '',
-
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
+      ]
+
     }
   ]
 };
