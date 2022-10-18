@@ -29,6 +29,8 @@ import { DimensionsComponent } from './custom-sections/dimensions/dimensions.com
 import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
+import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
+import { AbandonDialogComponent } from './components/abandon-dialog/abandon-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,8 @@ import { SuffixDirective } from './directives/suffix.directive';
     SwitchableInputComponent,
     ReadOnlyComponent,
     SuffixDirective,
+    BaseDialogComponent,
+    AbandonDialogComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

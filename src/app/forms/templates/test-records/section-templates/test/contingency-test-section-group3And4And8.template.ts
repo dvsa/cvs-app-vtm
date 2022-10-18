@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const ContingencyTestSectionGroup3And4And8: FormNode = {
   name: 'testSection',
@@ -77,7 +77,7 @@ export const ContingencyTestSectionGroup3And4And8: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              options: TestAbandonmentReasonsPsvData
+              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',
