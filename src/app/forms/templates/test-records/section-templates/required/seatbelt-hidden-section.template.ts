@@ -1,8 +1,7 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
 export const SeatbeltHiddenSection: FormNode = {
-  name: 'seatbeltSection',
-  label: 'Seatbelt',
+  name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
     {
