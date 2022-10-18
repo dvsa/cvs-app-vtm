@@ -7,6 +7,7 @@ import { NotesSection } from './section-templates/notes/notes-section.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
+import { SpecialistRequiredSectionHGVTRL } from './section-templates/required/specialist-required-hidden-section-hgv-trl.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { TestSectionGroup1 } from './section-templates/test/test-section-group1.template';
 import { TestSectionGroup3And4And8 } from './section-templates/test/test-section-group3And4And8.template';
@@ -215,9 +216,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
+      required: SpecialistRequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
     }
   },
@@ -292,9 +292,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
-      defects: DefectsTpl,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
+      required: SpecialistRequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
     }
   }
