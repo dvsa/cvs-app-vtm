@@ -8,7 +8,8 @@
     <ng-container *ngSwitchCase="formNodeViewTypes.SUBHEADING">
       <div class="subheading-container">
         <h2 class="govuk-heading-m">{{ form.meta.label }}</h2>
-        <a *ngIf="form.meta.subHeadingLink" class="govuk-link" [routerLink]="form.meta.subHeadingLink.url">{{ form.meta.subHeadingLink.label }}</a>
+        <a *ngIf="form.meta.subHeadingLink" class="govuk-link" [routerLink]="form.meta.subHeadingLink.url">{{
+          form.meta.subHeadingLink.label }}</a>
       </div>
     </ng-container>
     <ng-container *ngSwitchCaseDefault>
@@ -21,23 +22,28 @@
   <ng-container *ngFor="let control of entriesOf(form.controls); let i = index; trackBy: trackByFn">
     <ng-container [ngSwitch]="control.value.meta.type">
       <ng-container *ngSwitchCase="formNodeTypes.CONTROL">
-        <ng-template [ngTemplateOutlet]="controlTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
+        <ng-template [ngTemplateOutlet]="controlTemplate"
+          [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.GROUP">
-        <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+        <ng-template [ngTemplateOutlet]="childNode" [ngTemplateOutletContext]="{ form: form.controls[control.key] }">
+        </ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.ARRAY">
-        <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
+        <ng-template [ngTemplateOutlet]="nodeTemplateRef"
+          [ngTemplateOutletContext]="{ form: form.controls[control.key] }"></ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.SECTION">
-        <ng-template [ngTemplateOutlet]="sectionTemplate" [ngTemplateOutletContext]="{ control: control }"></ng-template>
+        <ng-template [ngTemplateOutlet]="sectionTemplate" [ngTemplateOutletContext]="{ control: control }">
+        </ng-template>
       </ng-container>
 
       <ng-container *ngSwitchCase="formNodeTypes.COMBINATION">
-        <ng-template [ngTemplateOutlet]="combinationTemplate" [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
+        <ng-template [ngTemplateOutlet]="combinationTemplate"
+          [ngTemplateOutletContext]="{ control: control, formGroup: form }"></ng-template>
       </ng-container>
     </ng-container>
   </ng-container>
@@ -46,15 +52,8 @@
 <ng-template #controlTemplate let-control="control" let-formGroup="formGroup">
   <ng-container [formGroup]="formGroup">
     <ng-container *ngIf="control.value.meta && !control.value.meta.hide" [ngSwitch]="edit">
-      <div
-        app-view-list-item
-        *ngSwitchCase="false"
-        [label]="control.value.meta.label"
-        [name]="control.value.meta.name"
-        [viewType]="control.value.meta.viewType"
-        [formControlName]="control.key"
-        class="govuk-summary-list"
-      ></div>
+      <div app-view-list-item *ngSwitchCase="false" [label]="control.value.meta.label" [name]="control.value.meta.name"
+        [viewType]="control.value.meta.viewType" [formControlName]="control.key" class="govuk-summary-list"></div>
       <app-dynamic-form-field *ngSwitchCase="true" [control]="control" [form]="formGroup"></app-dynamic-form-field>
     </ng-container>
   </ng-container>
@@ -77,6 +76,14 @@
 <ng-template #combinationTemplate let-control="control" let-formGroup="formGroup">
   <!-- check for editable here so that we don't render this template as well as the actual form fields -->
   <div *ngIf="control.value.meta && !edit">
-    <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list"></app-view-combination>
+    <app-view-combination [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list">
+    </app-view-combination>
+  </div>
+</ng-template>
+
+<ng-template #combinationTemplate let-control="control" let-formGroup="formGroup">
+  <div *ngIf="control.value.meta && !edit">
+    <app-view-nodes-adjacent [formNode]="control.value.meta" [formGroup]="formGroup" class="govuk-summary-list">
+    </app-view-nodes-adjacent>
   </div>
 </ng-template>
