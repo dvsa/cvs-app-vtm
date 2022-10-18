@@ -43,13 +43,8 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' },
-                { value: 'abandoned', label: 'Abandoned' }
-              ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
@@ -61,7 +56,6 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {

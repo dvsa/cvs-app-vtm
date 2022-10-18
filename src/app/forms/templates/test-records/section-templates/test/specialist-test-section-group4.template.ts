@@ -12,18 +12,15 @@ export const SpecialistTestSectionGroup4: FormNode = {
       name: 'createdAt',
       label: 'Created',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
     },
-
     {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
