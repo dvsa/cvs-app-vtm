@@ -116,6 +116,10 @@ export class DefectComponent implements OnInit, OnDestroy {
     return this.defect!.deficiencyCategory === 'advisory';
   }
 
+  get isDangerousAsterisk(): boolean {
+    return this.defect!.stdForProhibition === true;
+  }
+
   handleSubmit() {
     const errors: GlobalError[] = [];
     DynamicFormService.updateValidity(this.form, errors);
@@ -185,7 +189,8 @@ export class DefectComponent implements OnInit, OnDestroy {
       //initializing if defect is advisory
       deficiencyCategory: TestResultDefect.DeficiencyCategoryEnum.Advisory,
       deficiencyRef: `${defect.imNumber}.${item.itemNumber}`,
-      prohibitionIssued: false
+      prohibitionIssued: false,
+      stdForProhibition: false
     };
 
     if (deficiency) {
