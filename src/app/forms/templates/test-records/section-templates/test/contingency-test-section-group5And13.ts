@@ -41,7 +41,6 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
-              
               name: 'testResult',
               label: 'Result',
               viewType: FormNodeViewTypes.HIDDEN,
@@ -99,9 +98,12 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
+              value: '',
               validators: [
+                { name: ValidatorNames.Alphanumeric },
                 {
-                  name: ValidatorNames.Required
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
                 }
               ]
             },

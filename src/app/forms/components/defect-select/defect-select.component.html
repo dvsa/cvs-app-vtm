@@ -37,7 +37,9 @@
           {{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}</a
         >
         <span>
-          <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>
+          <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)"
+            >{{ deficiency.deficiencyCategory }}{{ deficiency.stdForProhibition ? '*' : '' }}</app-tag
+          >
         </span>
         <span class="browse__description">{{ deficiency.deficiencyText }}</span>
       </li>

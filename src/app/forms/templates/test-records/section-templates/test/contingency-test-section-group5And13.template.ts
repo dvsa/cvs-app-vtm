@@ -1,9 +1,8 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionSpecialistGroup1: FormNode = {
+export const ContingencyTestSectionGroup5And13: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -55,7 +54,6 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -99,10 +97,12 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              validators: [
+                {
+                  name: ValidatorNames.Required
+                }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',

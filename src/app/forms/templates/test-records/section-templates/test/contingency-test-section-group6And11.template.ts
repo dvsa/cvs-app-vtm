@@ -1,9 +1,8 @@
-import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionSpecialistGroup1: FormNode = {
+export const ContingencyTestSectionGroup6And11: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -55,7 +54,6 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -128,21 +126,11 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
             },
             {
               name: 'prohibitionIssued',
-              type: FormNodeTypes.CONTROL,
               label: 'Prohibition issued',
+              type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' }
-              ],
-              validators: [{ name: ValidatorNames.Required }]
-            },
-            {
-              name: 'defects',
-              type: FormNodeTypes.ARRAY,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
+              required: true
             }
           ]
         }
