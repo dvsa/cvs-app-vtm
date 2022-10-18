@@ -139,30 +139,6 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               validators: [{ name: ValidatorNames.Required }]
             },
             {
-              name: 'seatbeltInstallationCheckDate',
-              label: 'Carried out during test',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
-              value: null
-            },
-            {
-              name: 'numberOfSeatbeltsFitted',
-              label: 'Number of seatbelts fitted',
-              type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
-              value: null
-            },
-            {
-              name: 'lastSeatbeltInstallationCheckDate',
-              label: 'Most recent installation check',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null
-            },
-            {
               name: 'defects',
               type: FormNodeTypes.ARRAY,
               viewType: FormNodeViewTypes.HIDDEN,
