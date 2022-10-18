@@ -28,6 +28,7 @@ import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist
 import { SpecialistTestSectionGroup3 } from './section-templates/test/specialist-test-section-group3.template';
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
 import { SpecialistTestSectionGroup4 } from './section-templates/test/specialist-test-section-group4.template';
+import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
@@ -52,6 +53,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
@@ -62,6 +64,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
@@ -166,6 +169,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
@@ -184,6 +188,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
@@ -193,6 +198,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
@@ -249,6 +255,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
@@ -267,6 +274,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSectionHGVTRL
     },
@@ -276,9 +284,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesSpecialistGroup5: {
       vehicle: VehicleSectionDefaultTrl,
