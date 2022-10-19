@@ -1,8 +1,8 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
-export const ContingencyTestSectionGroup9And10: FormNode = {
+export const ContingencyTestSectionGroup15and16: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -43,25 +43,50 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              value: null,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' },
+                { value: 'abandoned', label: 'Abandoned' }
+              ],
+              validators: [
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }
+              ],
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              label: 'Reason for abandoning',
+              editType: FormNodeEditTypes.CHECKBOX,
+              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
+              required: true,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                }
+              ],
+              options: TestAbandonmentReasonsPsvData
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
+              value: '',
+              required: true,
+              label: 'Additional details for abandoning',
+              editType: FormNodeEditTypes.TEXTAREA,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'abandoned' }
+                },
+                { name: ValidatorNames.MaxLength, args: 500 }
+              ]
             },
             {
               name: 'certificateNumber',
@@ -74,10 +99,12 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
-              disabled: true,
+              value: '',
+              disabled: false,
+
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',
@@ -107,11 +134,21 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
             },
             {
               name: 'prohibitionIssued',
-              label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
+              label: 'Prohibition issued',
               value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
+            },
+            {
+              name: 'defects',
+              type: FormNodeTypes.ARRAY,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }

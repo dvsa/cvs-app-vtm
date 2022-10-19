@@ -29,7 +29,7 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
     },
     {
       name: 'testTypes',
@@ -46,6 +46,13 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
               value: null,
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testTypeName',
+              label: 'Description',
+              value: '',
+              disabled: true,
               type: FormNodeTypes.CONTROL
             },
             {
@@ -72,14 +79,6 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               editType: FormNodeEditTypes.HIDDEN
             },
             {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              disabled: true,
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
-            },
-            {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
@@ -99,7 +98,11 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               label: 'Test end date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+              ]
             },
             {
               name: 'prohibitionIssued',

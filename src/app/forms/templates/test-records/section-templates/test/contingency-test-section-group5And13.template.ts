@@ -1,8 +1,9 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const ContingencyTestSectionGroup9And10: FormNode = {
+export const ContingencyTestSectionGroup5And13: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -43,9 +44,21 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              value: null,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' }
+              ],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              type: FormNodeTypes.CONTROL
+            },
+            {
+              name: 'testTypeName',
+              label: 'Description',
+              value: '',
+              disabled: true,
+
               type: FormNodeTypes.CONTROL
             },
             {
@@ -61,23 +74,21 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
+              value: null,
               required: true
             },
             {
               name: 'certificateNumber',
               label: 'Certificate number',
+              type: FormNodeTypes.CONTROL,
               value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
-            },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              disabled: true,
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',
@@ -107,11 +118,15 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
             },
             {
               name: 'prohibitionIssued',
-              label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
+              label: 'Prohibition issued',
               value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' }
+              ],
+              validators: [{ name: ValidatorNames.Required }]
             }
           ]
         }

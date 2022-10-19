@@ -1,0 +1,42 @@
+<ng-template [ngTemplateOutlet]="isEditing ? editCustomDefect : viewCustomDefect" [ngTemplateOutletContext]="{ data: form }"></ng-template>
+
+<ng-template #viewCustomDefect let-data="data">
+  <h3 class="govuk-heading-m">Defect {{ index + 1 }}</h3>
+  <dl *ngIf="data.getCleanValue(data) as customDefect" class="govuk-summary-list">
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Reference number', data: customDefect?.referenceNumber | defaultNullOrEmpty }"
+    ></ng-template>
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Defect name', data: customDefect?.defectName | defaultNullOrEmpty }"
+    ></ng-template>
+    <ng-template
+      [ngTemplateOutlet]="viewDefectRow"
+      [ngTemplateOutletContext]="{ label: 'Defect notes', data: customDefect?.defectNotes | defaultNullOrEmpty }"
+    ></ng-template>
+  </dl>
+</ng-template>
+
+<ng-template #viewDefectRow let-label="label" let-data="data">
+  <dl class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">{{ label }}</dt>
+    <dd class="govuk-summary-list__value">{{ data }}</dd>
+  </dl>
+</ng-template>
+
+<ng-template #editCustomDefect>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h3 class="govuk-heading-m">Defect {{ index + 1 }}</h3>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <app-button type="underline" class="float-right" (click)="removeCustomDefect.emit(index)">Remove defect</app-button>
+    </div>
+  </div>
+  <ng-container [formGroup]="form">
+    <app-text-input formControlName="referenceNumber" label="Reference Number" [width]="30"></app-text-input>
+    <app-text-input formControlName="defectName" label="Defect Name" [width]="30"></app-text-input>
+    <app-text-area formControlName="defectNotes" label="Defect Notes"></app-text-area>
+  </ng-container>
+</ng-template>

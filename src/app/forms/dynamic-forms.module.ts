@@ -7,6 +7,8 @@ import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
+import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
+import { CustomDefectsComponent } from './custom-sections/custom-defects/custom-defects.component';
 import { DateComponent } from './components/date/date.component';
 import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
@@ -56,6 +58,9 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     WeightsComponent,
     DimensionsComponent,
     BrakesComponent,
+    ReadOnlyComponent,
+    CustomDefectsComponent,
+    CustomDefectComponent,
     SwitchableInputComponent,
     ReadOnlyComponent,
     SuffixDirective,
@@ -82,6 +87,9 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     WeightsComponent,
     DimensionsComponent,
     BrakesComponent,
+    ReadOnlyComponent,
+    CustomDefectsComponent,
+    CustomDefectComponent,
     SwitchableInputComponent,
     SuffixDirective,
     ReadOnlyComponent,

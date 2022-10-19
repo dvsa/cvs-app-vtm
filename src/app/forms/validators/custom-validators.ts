@@ -89,7 +89,7 @@ export class CustomValidators {
         const siblingValue = siblingControl.value;
         const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
-        if (newValue && (control.value === null || control.value === undefined)) {
+        if (newValue && (control.value === null || control.value === undefined || control.value === '')) {
           return { requiredIfEquals: { sibling: siblingControl.meta.label } };
         }
       }
@@ -105,7 +105,7 @@ export class CustomValidators {
         const siblingValue = siblingControl.value;
         const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
 
-        if (!newValue && (control.value === null || control.value === undefined)) {
+        if (!newValue && (control.value === null || control.value === undefined || control.value === '')) {
           return { requiredIfNotEqual: { sibling: siblingControl.meta.label } };
         }
       }
@@ -122,7 +122,7 @@ export class CustomValidators {
       return null;
     };
   };
-  
+
   static alphanumeric(): ValidatorFn {
     return this.customPattern(['^[a-zA-Z0-9]*$', 'must be alphanumeric']);
   }
@@ -154,6 +154,20 @@ export class CustomValidators {
       return { pastDate: true };
     }
     return null;
+  };
+
+  static aheadOfDate = (sibling: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        
+        if (new Date(control.value) < new Date(siblingControl.value)) {
+          return { aheadOfDate: { sibling: siblingControl.meta.label } };
+        }
+      }
+
+      return null;
+    };
   };
 
   /**
