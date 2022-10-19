@@ -159,12 +159,9 @@ export class CustomValidators {
   static aheadOfDate = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
-        const date = control.value;
-
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
-        const siblingValue = siblingControl.value;
-
-        if (new Date(date) < new Date(siblingValue)) {
+        
+        if (new Date(control.value) < new Date(siblingControl.value)) {
           return { aheadOfDate: { sibling: siblingControl.meta.label } };
         }
       }
