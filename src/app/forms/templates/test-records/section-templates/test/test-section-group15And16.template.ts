@@ -140,7 +140,7 @@ export const TestSectionGroup15And16: FormNode = {
               value: '',
               disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME,
+              viewType: FormNodeViewTypes.TIME
             },
             {
               name: 'prohibitionIssued',

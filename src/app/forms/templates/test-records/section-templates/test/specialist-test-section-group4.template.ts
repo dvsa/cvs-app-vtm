@@ -128,8 +128,8 @@ export const SpecialistTestSectionGroup4: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
-                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+                { name: ValidatorNames.PastDate },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
               ]
             },
             {
@@ -141,8 +141,8 @@ export const SpecialistTestSectionGroup4: FormNode = {
               editType: FormNodeEditTypes.DATETIME,
               validators: [
                 { name: ValidatorNames.Required },
-                { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
               ]
             },
             {
