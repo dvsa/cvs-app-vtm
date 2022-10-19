@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '../../services/dynamic-form.types';
+import { CustomFormControl, FormNode, FormNodeCombinationOptions, FormNodeOption } from '../../services/dynamic-form.types';
 
 @Component({
   selector: 'app-view-nodes-adjacent',
@@ -18,10 +18,15 @@ export class ViewNodesAdjacentComponent implements OnInit {
   @Input() formNode: FormNode;
   @Input() formGroup: FormGroup;
 
-  leftComponent?: CustomFormControl;
-  rightComponent?: CustomFormControl;
-  separator: string = ' ';
-  label?: string;
+  title?: string;
+
+  leftNodeData?: any
+  rightNodeData?: any
+
+  booleanOptions: FormNodeOption<string | number | boolean>[] = [
+    { value: true, label: 'Yes' },
+    { value: false, label: 'No' }
+  ];
 
   constructor() {
     this.formNode = <FormNode>{};
@@ -30,13 +35,14 @@ export class ViewNodesAdjacentComponent implements OnInit {
 
   ngOnInit(): void {
     const options = <FormNodeCombinationOptions>this.formNode.options;
-    this.leftComponent = this.findComponentByName(options.leftComponentName, this.formGroup);
-    this.rightComponent = this.findComponentByName(options.rightComponentName, this.formGroup);
-    this.separator = options.separator;
-    this.label = this.formNode.label;
+    this.title = this.formNode.label;
+    this.rightNodeData = this.findNodeByName(options.rightComponentName, this.formGroup);
+    this.leftNodeData = this.findNodeByName(options.leftComponentName, this.formGroup)
+    console.log(this.leftNodeData)
+  }
+  private findNodeByName(nodeName: string, formGroup: FormGroup) {
+    const data = formGroup.get(nodeName)
+  return data //want to return just the data.meta
   }
 
-  private findComponentByName(nodeName: string, formGroup: FormGroup): CustomFormControl {
-    return formGroup.get(nodeName) as CustomFormControl;
-  }
 }

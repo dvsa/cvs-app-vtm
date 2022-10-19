@@ -59,7 +59,6 @@ export const PsvTechRecord: FormNode = {
           name: 'dtpNumber',
           label: 'DTP number',
           value: '',
-
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING
         }
@@ -68,8 +67,8 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING
     },
     {
-      name: 'axles',  //Must display as a list: Axles fitted with a parking brake : Axle 1 [True], Axle 2 [false]
-      value: '', // or, out of scope with the DTp / Axle management ticket?
+      name: 'axles',
+      value: '',
       type: FormNodeTypes.ARRAY,
       children: [
         {
@@ -88,7 +87,16 @@ export const PsvTechRecord: FormNode = {
           ]
         }
       ]
-    },
+    },//////////////////////////////////////////////////////////// ONLY USABLE ONCE PER FORM??
+    // {
+    //    name: 'preparerAdjacent',
+    //    type: FormNodeTypes.ADJACENT,
+    //    options: {
+    //      leftComponentName: 'speedLimiterMrk',
+    //      rightComponentName: 'tachoExemptMrk',
+    //      separator: ' - '
+    //    }
+    // },
     {
       name: 'speedLimiterMrk',
       label: 'Speed limiter exempt',
@@ -139,23 +147,6 @@ export const PsvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Required }]
     },
-    //Vehicle class code not in form state, so this won't appear until there is something in the DB
-    // {
-    //   name: '<DataObjName>',
-    //   value: '',
-    //   type: FormNodeTypes.GROUP,
-    //   children: [
-    //     {
-    //       name: 'description',
-    //       label: 'Vehicle class code',
-    //       value: '',
-    //       type: FormNodeTypes.CONTROL,
-    //       viewType: FormNodeViewTypes.STRING,
-    //       editType: FormNodeEditTypes.SELECT,
-    //       options: getOptionsFromEnum(<CodeEnum>)
-    //     }
-    //   ]
-    // },
     {
       name: 'vehicleClass',
       label: 'Vehicle class',
@@ -208,9 +199,19 @@ export const PsvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.MaxLength, args: 2 }],
 
+    },/////////////////////////////////////////////////////////////////////
+    {
+      name: 'preparerAdjacent',
+      type: FormNodeTypes.ADJACENT,
+      label: 'Seats',
+      options: {
+        leftComponentName: 'seatsLowerDeck',
+        rightComponentName: 'seatsUpperDeck',
+        separator: ' - '
+      }
     },
     {
-      name: 'seatsLowerDeck',   // Should display as a list : Seats: Lower Deck: 22, Upper deck: 0
+      name: 'seatsLowerDeck',
       label: 'Seats lower deck',
       value: '',
       width: FormNodeWidth.XS,
@@ -227,7 +228,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
-      editType: FormNodeEditTypes.NUMBER,
+      editType: FormNodeEditTypes.TEXT,
       validators: [
         { name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
     },
