@@ -160,11 +160,13 @@ export class CustomValidators {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const date = control.value;
+        console.log(date);
 
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const siblingValue = siblingControl.value;
+        console.log(siblingValue);
 
-        if (new Date(date).getTime() < new Date(siblingValue).getTime()) {
+        if (new Date(date) < new Date(siblingValue)) {
           return { aheadOfDate: { sibling: siblingControl.meta.label } };
         }
       }
