@@ -23,12 +23,3 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   // Date errors
   invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`
 };
-
-function displayArray(array: string[]) {
-  const message = array.join(', ');
-  const last = message.lastIndexOf(',');
-  if (last !== -1) {
-    return message.substring(0, last) + ' or ' + message.substring(last + 1, message.length);
-  }
-  return array[0];
-}
