@@ -30,7 +30,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
     },
     {
       name: 'testTypes',
@@ -101,8 +101,11 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               label: 'Certificate number',
               value: '',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              viewType: FormNodeViewTypes.STRING,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [
+                { name: ValidatorNames.Alphanumeric }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',
@@ -124,7 +127,11 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               label: 'Test end date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }]
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+              ]
             },
             {
               name: 'prohibitionIssued',

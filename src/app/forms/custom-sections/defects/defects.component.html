@@ -17,21 +17,15 @@
         <tbody class="govuk-table__body">
           <tr *ngFor="let defect of testDefects; let i = index" class="govuk-table__row">
             <td class="govuk-table__cell">
-              <a
-                data-action="retain-data"
-                routerLink="defect/{{ i }}"
-                queryParamsHandling="preserve"
-                class="govuk-link govuk-link--no-visited-state"
-                >{{ defect.deficiencyRef }}</a
+              <a data-action="retain-data" routerLink="defect/{{ i }}" queryParamsHandling="preserve" class="govuk-link govuk-link--no-visited-state"
+                >{{ defect.deficiencyRef }}{{ defect.stdForProhibition ? '*' : '' }}</a
               >
             </td>
             <td class="govuk-table__cell">
               {{ defect.itemDescription + ' ' + defect.imDescription + ' ' + defect.deficiencyText | truncate: [47] }}
             </td>
             <td class="govuk-table__cell">
-              <app-tag [type]="categoryColor(defect.deficiencyCategory)"
-                >{{ defect.deficiencyCategory }}{{ defect.stdForProhibition ? '*' : '' }}</app-tag
-              >
+              <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
             </td>
             <td class="govuk-table__cell">
               <app-tag [type]="defect.prs ? 'green' : 'red'">{{ defect.prs ? 'Yes' : 'No' }}</app-tag>
