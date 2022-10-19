@@ -156,6 +156,20 @@ export class CustomValidators {
     return null;
   };
 
+  static aheadOfDate = (sibling: string): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        
+        if (new Date(control.value) < new Date(siblingControl.value)) {
+          return { aheadOfDate: { sibling: siblingControl.meta.label } };
+        }
+      }
+
+      return null;
+    };
+  };
+
   /**
    * Validator that copies control value to control of given name at the top-level ancestor of control.
    * @param rootControlName - control in top-level ancestor of this control

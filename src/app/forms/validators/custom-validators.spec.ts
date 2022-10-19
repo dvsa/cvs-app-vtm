@@ -343,3 +343,31 @@ describe('pastDate', () => {
     expect(CustomValidators.pastDate(new FormControl(input))).toEqual(expected);
   });
 });
+
+describe('aheadOfDate', () => {
+  let form : FormGroup;
+  beforeEach(() => {
+    form = new FormGroup({
+      foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
+      sibling: new CustomFormControl({ name: 'sibling', label: 'sibling', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+  });
+
+  describe('tests', () => {
+    it('should return an error message if sibling date is ahead of foo', () => {
+      form.controls['foo'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
+      form.controls['sibling'].patchValue(new Date('2021-01-01T00:00:00.000Z').toISOString());
+
+      const result = CustomValidators.aheadOfDate('sibling')(form.controls['foo'] as AbstractControl);
+      expect(result).toEqual({ aheadOfDate: { sibling: 'sibling' } });
+    });
+
+    it('should return null if sibling date is not ahead of foo', () => {
+      form.controls['foo'].patchValue(new Date('2021-01-01T00:00:00.000Z').toISOString());
+      form.controls['sibling'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
+      
+      const result = CustomValidators.aheadOfDate('sibling')(form.controls['foo'] as AbstractControl);
+      expect(result).toBeNull();
+    });
+  });
+});
