@@ -15,6 +15,7 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
+import { string } from 'yargs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
@@ -96,6 +97,7 @@ export interface FormNode {
   referenceData?: ReferenceDataResourceType | SpecialRefData;
   suffix?: string;
   isoDate?: boolean;
+  id?: string
 }
 
 export interface FormNodeCombinationOptions {

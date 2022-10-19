@@ -20,3 +20,22 @@
     gap: 15px;
   }
 }
+
+@media screen and (min-width: 400px) {
+  #style-float-limiter {
+    float: right;
+    padding-right: 1.5rem;
+  }
+  #style-float-seats {
+    float: right;
+    padding-right: 5rem;
+  }
+}
+@media screen and (min-width: 900px) {
+  #style-float-limiter {
+    padding-right: 15rem;
+  }
+  #style-float-seats {
+    padding-right: 20rem;
+  }
+}

@@ -27,10 +27,8 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE,
-      validators: [
-        { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Required }],
       isoDate: false
-
     },
     {
       name: 'manufactureYear',
@@ -40,15 +38,14 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 4 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 4 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'noOfAxles',
       label: 'Number of axles',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING,
+      viewType: FormNodeViewTypes.STRING
     },
     {
       name: 'brakes',
@@ -68,8 +65,8 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING
     },
     {
-      name: 'axles',  //Must display as a list: Axles fitted with a parking brake : Axle 1 [True], Axle 2 [false]
-      value: '', // or, out of scope with the DTp / Axle management ticket?
+      name: 'axles',
+      value: '',
       type: FormNodeTypes.ARRAY,
       children: [
         {
@@ -100,8 +97,8 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      id: 'style-float-limiter'
     },
     {
       name: 'tachoExemptMrk',
@@ -114,8 +111,7 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euroStandard',
@@ -125,8 +121,7 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard),
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'fuelPropulsionSystem',
@@ -136,26 +131,8 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(FuelPropulsionSystem),
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }]
     },
-    //Vehicle class code not in form state, so this won't appear until there is something in the DB
-    // {
-    //   name: '<DataObjName>',
-    //   value: '',
-    //   type: FormNodeTypes.GROUP,
-    //   children: [
-    //     {
-    //       name: 'description',
-    //       label: 'Vehicle class code',
-    //       value: '',
-    //       type: FormNodeTypes.CONTROL,
-    //       viewType: FormNodeViewTypes.STRING,
-    //       editType: FormNodeEditTypes.SELECT,
-    //       options: getOptionsFromEnum(<CodeEnum>)
-    //     }
-    //   ]
-    // },
     {
       name: 'vehicleClass',
       label: 'Vehicle class',
@@ -172,8 +149,7 @@ export const PsvTechRecord: FormNode = {
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
         }
       ],
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'vehicleConfiguration',
@@ -183,8 +159,7 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(VehicleConfiguration),
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'euVehicleCategory',
@@ -194,8 +169,7 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories),
-      validators: [
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'emissionsLimit',
@@ -205,31 +179,28 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXT,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 2 }],
-
+      validators: [{ name: ValidatorNames.MaxLength, args: 2 }]
     },
     {
-      name: 'seatsLowerDeck',   // Should display as a list : Seats: Lower Deck: 22, Upper deck: 0
-      label: 'Seats lower deck',
+      name: 'seatsUpperDeck',
+      label: 'Seats Upper deck',
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXT,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
+      id: 'style-float-seats'
     },
     {
-      name: 'seatsUpperDeck',
-      label: 'Seats upper deck',
+      name: 'seatsLowerDeck',
+      label: 'Seats Lower deck',
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
-      editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
+      editType: FormNodeEditTypes.TEXT,
+      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'standingCapacity',
@@ -239,8 +210,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXT,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'numberOfSeatbelts',
@@ -250,8 +220,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXT,
-      validators: [
-        { name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }]
     },
 
     {
@@ -283,7 +252,6 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
       ]
-
     }
   ]
 };
