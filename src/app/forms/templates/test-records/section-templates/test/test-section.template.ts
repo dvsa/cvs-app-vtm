@@ -41,7 +41,6 @@ export const TestSection: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -49,7 +48,6 @@ export const TestSection: FormNode = {
               label: 'Result',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -57,41 +55,23 @@ export const TestSection: FormNode = {
               label: 'Result',
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
-              ],
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
-              label: 'Reason for abandoning',
-              editType: FormNodeEditTypes.CHECKBOX,
-              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
-              required: true,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
-                }
-              ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
-              value: '',
-              required: true,
-              label: 'Additional details for abandoning',
-              editType: FormNodeEditTypes.TEXTAREA,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
-                },
-                { name: ValidatorNames.MaxLength, args: 500 }
-              ]
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
             },
             {
               name: 'certificateNumber',

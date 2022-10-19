@@ -19,15 +19,12 @@ export class ResultOfTestService {
     this.store.dispatch(updateResultOfTest());
   }
 
-  toggleAbandoned() {
-    this.store.pipe(take(1), select(testResultInEdit)).subscribe(testResult => {
-      const result = testResult?.testTypes[0].testResult;
-      if (result !== resultOfTestEnum.abandoned) {
-        this.store.dispatch(setResultOfTest({ result: resultOfTestEnum.abandoned }));
-      } else {
-        this.store.dispatch(setResultOfTest({ result: resultOfTestEnum.pass }));
-        this.updateResultOfTest();
-      }
-    });
+  toggleAbandoned(result: resultOfTestEnum) {
+    if (result !== resultOfTestEnum.abandoned) {
+      this.store.dispatch(setResultOfTest({ result: result }));
+    } else {
+      this.store.dispatch(setResultOfTest({ result: result }));
+      this.updateResultOfTest();
+    }
   }
 }

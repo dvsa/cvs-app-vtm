@@ -1,4 +1,4 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
@@ -32,7 +32,7 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       options: [],
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }]
     },
     {
       name: 'euVehicleCategory',

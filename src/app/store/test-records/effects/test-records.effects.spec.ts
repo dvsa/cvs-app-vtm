@@ -510,7 +510,7 @@ describe('TestResultsEffects', () => {
                   name: '',
                   numberOfSeatbeltsFitted: 0,
                   prohibitionIssued: false,
-                  reasonForAbandoning: null,
+                  reasonForAbandoning: '',
                   seatbeltInstallationCheckDate: false,
                   secondaryCertificateNumber: null,
                   testExpiryDate: '',

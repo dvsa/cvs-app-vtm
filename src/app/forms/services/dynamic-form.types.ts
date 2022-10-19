@@ -80,6 +80,7 @@ export interface FormNode {
   editType?: FormNodeEditTypes;
   width?: FormNodeWidth;
   label?: string;
+  hint?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
