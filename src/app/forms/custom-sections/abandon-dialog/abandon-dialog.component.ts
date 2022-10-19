@@ -48,8 +48,7 @@ const ABANDON_FORM: FormNode = {
 
 @Component({
   selector: 'app-abandon-dialog',
-  templateUrl: './abandon-dialog.component.html',
-  styleUrls: ['./abandon-dialog.component.scss']
+  templateUrl: './abandon-dialog.component.html'
 })
 export class AbandonDialogComponent extends BaseDialogComponent {
   @ViewChild(DynamicFormGroupComponent) dynamicFormGroup?: DynamicFormGroupComponent;
