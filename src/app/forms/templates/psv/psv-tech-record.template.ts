@@ -35,7 +35,7 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMBER,
+      editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 4 }, { name: ValidatorNames.Required }]
     },
     {
