@@ -1,14 +1,21 @@
-.float-right {
-  float: right;
-}
+@import 'node_modules/govuk-frontend/govuk/all';
 
 .categories {
   display: flex;
-  display: -webkit-box;
   width: 100%;
 }
 
 .list_container {
+  overflow: hidden;
+
+  &:last-child {
+    flex-basis: 100%;
+  }
+
+  @include govuk-media-query($until: desktop) {
+    min-width: 100px;
+  }
+
   &--shrink {
     flex-grow: 1;
     flex-shrink: 1;
@@ -17,15 +24,13 @@
     -webkit-flex-grow: 1;
     -webkit-flex-shrink: 1;
 
-    overflow: hidden;
-
     &:hover {
       flex-basis: auto;
     }
   }
 
   &:not(:first-child) {
-    border-left: 1px solid #b1b4b6;
+    border-left: 1px solid govuk-colour('mid-grey', $legacy: 'grey-2');
   }
   & > h2 {
     padding-left: 1rem;
@@ -40,41 +45,56 @@
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   padding-inline-start: 0px;
-  background: white;
+  background: govuk-colour('white');
 
   &__item {
+    font-family: 'GDS Transport', arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, 0.0625rem);
+    text-underline-offset: 0.1em;
+    font-family: 'GDS Transport', arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.25;
     position: relative;
-    color: #505a5f;
+    display: block;
+    padding: 15px 30px 20px 15px;
+    color: $govuk-link-colour;
+    background: inherit;
+    border: none;
+    cursor: pointer;
+    min-width: 250px;
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
 
     &:hover:not(&--active) {
-      background: #f3f2f1;
-      color: #1d70b8;
+      text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+      -webkit-text-decoration-skip-ink: none;
+      text-decoration-skip-ink: none;
+      -webkit-text-decoration-skip: none;
+      text-decoration-skip: none;
+      background: govuk-colour('light-grey', $legacy: 'grey-4');
     }
 
     &--active {
-      background: #1d70b8;
-      color: white;
-    }
-
-    & > button {
-      background: inherit;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      color: inherit;
-      justify-content: space-between;
-      min-width: 150px;
-      text-align: left;
-      padding: 15px 30px 20px 15px;
-      white-space: nowrap;
-      width: 100%;
+      background: $govuk-link-colour;
+      color: govuk-colour('white');
     }
 
     &--more {
-      padding-left: 1rem;
       &::after {
+        position: absolute;
+        top: 50%;
+        margin-top: -8px;
+        right: 10px;
+        float: right;
         content: '›';
-        color: #000000;
       }
     }
   }
