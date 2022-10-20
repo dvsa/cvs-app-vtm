@@ -84,16 +84,7 @@ export const PsvTechRecord: FormNode = {
           ]
         }
       ]
-    },//////////////////////////////////////////////////////////// ONLY USABLE ONCE PER FORM??
-    // {
-    //    name: 'preparerAdjacent',
-    //    type: FormNodeTypes.ADJACENT,
-    //    options: {
-    //      leftComponentName: 'speedLimiterMrk',
-    //      rightComponentName: 'tachoExemptMrk',
-    //      separator: ' - '
-    //    }
-    // },
+    },
     {
       name: 'speedLimiterMrk',
       label: 'Speed limiter exempt',

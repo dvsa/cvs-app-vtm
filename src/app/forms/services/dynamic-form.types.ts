@@ -15,7 +15,6 @@ import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { map, Observable } from 'rxjs';
-import { string } from 'yargs';
 import { DynamicFormService } from './dynamic-form.service';
 import { SpecialRefData } from './multi-options.service';
 
@@ -32,7 +31,6 @@ export enum FormNodeViewTypes {
 
 export enum FormNodeTypes {
   ARRAY = 'array',
-  ADJACENT = 'adjacent',
   COMBINATION = 'combination',
   CONTROL = 'control',
   DIMENSIONS = 'dimensions',
@@ -105,7 +103,7 @@ export interface FormNodeCombinationOptions {
   leftComponentName: string;
   rightComponentName: string;
   separator: string;
-}// make an interface for new component?
+}
 
 export interface SubHeadingLink {
   label: string;
@@ -113,13 +111,13 @@ export interface SubHeadingLink {
 }
 
 export interface CustomControl extends FormControl {
-  meta: FormNode; //want
+  meta: FormNode;
 }
 
 export class CustomFormControl extends FormControl implements CustomControl {
   meta: FormNode;
 
-  constructor(   /// WANT
+  constructor(
     meta: FormNode,
     formState?: any,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
