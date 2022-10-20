@@ -107,11 +107,12 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
             },
             {
               name: 'secondaryCertificateNumber',
-              label: 'Secondary (COIF) Certificate number',
+              label: 'Secondary Certificate number',
               value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING,
               editType: FormNodeEditTypes.TEXT,
+              hint: 'COIF Certificate number',
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,
