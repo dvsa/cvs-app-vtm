@@ -29,14 +29,14 @@ export const EmissionsSection: FormNode = {
                 { value: 'Euro VI', label: 'Euro VI' },
                 { value: 'Full Electric', label: 'Full Electric' }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }, { name: AsyncValidatorNames.RequiredIfNotAbandoned }]
             },
             {
               name: 'smokeTestKLimitApplied',
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
               validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }, { name: AsyncValidatorNames.RequiredIfNotAbandoned }]
             },
             {
               name: 'fuelType',
@@ -52,7 +52,7 @@ export const EmissionsSection: FormNode = {
                 { value: 'petrol', label: 'Petrol' },
                 { value: 'full electric', label: 'Full electric' }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }, { name: AsyncValidatorNames.RequiredIfNotAbandoned }]
             },
             {
               name: 'modType',

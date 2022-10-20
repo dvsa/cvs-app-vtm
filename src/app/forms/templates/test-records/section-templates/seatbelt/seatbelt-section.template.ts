@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
@@ -25,7 +26,7 @@ export const SeatbeltSection: FormNode = {
                 { value: true, label: 'Yes' },
                 { value: false, label: 'No' }
               ],
-              validators: [{ name: ValidatorNames.Required }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }]
             },
             {
               name: 'numberOfSeatbeltsFitted',

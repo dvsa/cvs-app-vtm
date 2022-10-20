@@ -173,16 +173,16 @@ export interface AxleWeights {
 }
 
 export interface Purchaser {
-  emailAddress: string;
-  telephoneNumber: string;
-  address3: string;
-  address2: string;
-  address1: string;
   name: string;
-  faxNumber: string;
-  postCode: string;
+  address1: string;
+  address2: string;
   postTown: string;
-  purchaserNotes: string;
+  address3?: string | null;
+  postCode?: string | null;
+  telephoneNumber?: string | null;
+  emailAddress?: string | null;
+  faxNumber?: string | null;
+  purchaserNotes?: string | null;
 }
 
 export interface TechRecordModel {

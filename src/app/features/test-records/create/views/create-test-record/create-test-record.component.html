@@ -1,14 +1,25 @@
 <ng-container *ngIf="testResult$ | async as testResult">
-  <app-base-test-record
-    [isEditing]="true"
-    [testResult]="testResult"
-    [expandSections]="true"
-    (newTestResult)="handleNewTestResult($event)"
-  ></app-base-test-record>
+  <ng-container *ngIf="!isAbandon; else abandoned">
+    <app-base-test-record
+      [isEditing]="true"
+      [testResult]="testResult"
+      [expandSections]="true"
+      (newTestResult)="handleNewTestResult($event)"
+    ></app-base-test-record>
 
-  <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+    <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
 
-  <app-button-group>
-    <app-button id="save-test-result" (clicked)="handleSave()">Review and submit</app-button>
-  </app-button-group>
+    <app-button-group>
+      <app-button id="save-test-result" (clicked)="handleSave()">Review and submit</app-button>
+      <app-button id="save-test-result" type="secondary" (clicked)="abandon()">Mark as abandoned</app-button>
+    </app-button-group>
+  </ng-container>
+
+  <ng-template #abandoned>
+    <app-abandon-dialog
+      [testResult]="testResult"
+      (newTestResult)="handleNewTestResult($event)"
+      (action)="handleAbandonAction($event)"
+    ></app-abandon-dialog>
+  </ng-template>
 </ng-container>
