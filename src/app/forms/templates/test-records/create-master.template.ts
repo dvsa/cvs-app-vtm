@@ -84,7 +84,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
-      defects: DefectsTpl,
+      defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
     },
