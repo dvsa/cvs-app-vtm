@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
 import { take } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ViewportScroller } from '@angular/common';
 
@@ -16,16 +16,16 @@ import { ViewportScroller } from '@angular/common';
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() viewableTechRecord?: TechRecordModel;
-  @Input() editableState = false;
-  @Input() isDirty: boolean = false;
+  @Input() isEditing = false;
+  @Input() isDirty = false;
 
-  @Output() editableStateChange = new EventEmitter<boolean>();
-  @Output() submitCheckFormValidity = new EventEmitter();
-
+  @Output() isEditingChange = new EventEmitter<boolean>();
+  @Output() submitChange = new EventEmitter();
 
   constructor(
     private actions$: Actions,
     private errorService: GlobalErrorService,
+    private route: ActivatedRoute,
     private router: Router,
     private store: Store,
     private viewportScroller: ViewportScroller
@@ -52,11 +52,15 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   toggleEditMode() {
-    this.editableState = !this.editableState;
-    this.editableStateChange.emit(this.editableState);
+    if (this.viewableTechRecord?.statusCode === StatusCodes.PROVISIONAL) {
+      this.router.navigate(['amend-reason'], { relativeTo: this.route });
+    } else {
+      this.isEditing = !this.isEditing;
+      this.isEditingChange.emit(this.isEditing);
+    }
   }
 
-  cancelAmend() {
+  cancel() {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
       this.router.navigate([]);
@@ -65,8 +69,8 @@ export class EditTechRecordButtonComponent implements OnInit {
     }
   }
 
-  submitTechRecord() {
-    this.submitCheckFormValidity.emit();
+  submit() {
+    this.submitChange.emit();
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 }

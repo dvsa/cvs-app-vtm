@@ -4,15 +4,22 @@ import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
+import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
 import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
   {
     path: '',
-    data: { roles: Roles.TechRecordView },
     component: TechRecordComponent,
+    data: { roles: Roles.TechRecordView },
     canActivateChild: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'amend-reason',
+    component: TechAmendReasonComponent,
+    data: { roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard],
   },
   {
     path: 'historic/:techCreatedAt',
@@ -30,9 +37,9 @@ const routes: Routes = [
   },
   {
     path: 'test-records/create-test',
-    resolve: { techRecord: TechRecordViewResolver },
     data: { roles: Roles.TestResultAmend },
     canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver },
     loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
   }
 ];
