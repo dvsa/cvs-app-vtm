@@ -1,12 +1,12 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories } from '@models/vehicle-tech-record.model';
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { FuelPropulsionSystem } from '@models/fuel-propulsion-system.model';
+import getOptionsFromEnum from '@forms/utils/enum-map';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -45,7 +45,7 @@ export const PsvTechRecord: FormNode = {
       label: 'Number of axles',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING
+      viewType: FormNodeViewTypes.STRING,
     },
     {
       name: 'brakes',
@@ -56,7 +56,6 @@ export const PsvTechRecord: FormNode = {
           name: 'dtpNumber',
           label: 'DTP number',
           value: '',
-
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING
         }
@@ -98,7 +97,7 @@ export const PsvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      id: 'style-float-limiter'
+      id: 'style-float-right-medium'
     },
     {
       name: 'tachoExemptMrk',
@@ -190,7 +189,7 @@ export const PsvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
-      id: 'style-float-seats'
+      id: 'style-float-right-small'
     },
     {
       name: 'seatsLowerDeck',

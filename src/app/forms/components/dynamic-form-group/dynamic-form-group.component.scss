@@ -14,3 +14,22 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+@media screen and (min-width: 400px) {
+  #style-float-right-medium {
+    float: right;
+    padding-right: 1.5rem;
+  }
+  #style-float-right-small {
+    float: right;
+    padding-right: 5rem;
+  }
+}
+@media screen and (min-width: 900px) {
+  #style-float-right-medium {
+    padding-right: 15rem;
+  }
+  #style-float-right-small {
+    padding-right: 20rem;
+  }
+}
