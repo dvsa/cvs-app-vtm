@@ -52,7 +52,7 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   toggleEditMode() {
-    if (this.viewableTechRecord?.statusCode === StatusCodes.PROVISIONAL) {
+    if (this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL) {
       this.router.navigate(['amend-reason'], { relativeTo: this.route });
     } else {
       this.isEditing = !this.isEditing;
