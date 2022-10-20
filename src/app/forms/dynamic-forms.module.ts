@@ -31,6 +31,7 @@ import { DimensionsComponent } from './custom-sections/dimensions/dimensions.com
 import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
+import { ViewNodesAdjacentComponent } from './components/view-nodes-adjacent/view-nodes-adjacent.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { SuffixDirective } from './directives/suffix.directive';
     CustomDefectComponent,
     SwitchableInputComponent,
     ReadOnlyComponent,
-    SuffixDirective
+    SuffixDirective,
+    ViewNodesAdjacentComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [

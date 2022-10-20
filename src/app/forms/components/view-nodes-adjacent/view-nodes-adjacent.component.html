@@ -1,0 +1,10 @@
+<dt *ngIf="title" class="govuk-label govuk-label--m">{{ title }}:</dt>
+<div class="flexbox">
+  <div class="flexItem">
+    <app-text-input name="seatsLowerDeck" label="{{ leftNodeData?.meta?.label }}:" [width]="leftNodeData?.meta?.width"></app-text-input>
+  </div>
+  <div class="flexItem">
+    <app-text-input name="seatsUpperDeck" label="{{ rightNodeData?.meta?.label }}:" [width]="rightNodeData?.meta?.width"></app-text-input>
+  </div>
+  <!-- Need switch based on form type -->
+</div>

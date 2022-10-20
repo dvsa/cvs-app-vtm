@@ -32,6 +32,7 @@ export enum FormNodeViewTypes {
 
 export enum FormNodeTypes {
   ARRAY = 'array',
+  ADJACENT = 'adjacent',
   COMBINATION = 'combination',
   CONTROL = 'control',
   DIMENSIONS = 'dimensions',
@@ -104,7 +105,7 @@ export interface FormNodeCombinationOptions {
   leftComponentName: string;
   rightComponentName: string;
   separator: string;
-}
+}// make an interface for new component?
 
 export interface SubHeadingLink {
   label: string;
@@ -112,13 +113,13 @@ export interface SubHeadingLink {
 }
 
 export interface CustomControl extends FormControl {
-  meta: FormNode;
+  meta: FormNode; //want
 }
 
 export class CustomFormControl extends FormControl implements CustomControl {
   meta: FormNode;
 
-  constructor(
+  constructor(   /// WANT
     meta: FormNode,
     formState?: any,
     validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null,
