@@ -619,5 +619,25 @@ describe('TestResultsEffects', () => {
         });
       });
     });
+
+    it('should return createTestResultFailed and add a validation error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResult: TestResultModel = mockTestResult();
+        actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
+
+        const expectedError = new HttpErrorResponse({
+          status: 400,
+          error: 'Certificate number not present on TIR test type'
+        });
+
+        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+
+        const expectedErrors: GlobalError[] = [{ error: 'Certificate number not present on TIR test type' }];
+
+        expectObservable(effects.createTestResult$).toBe('----b', {
+          b: createTestResultFailed({ errors: expectedErrors })
+        });
+      });
+    });
   });
 });
