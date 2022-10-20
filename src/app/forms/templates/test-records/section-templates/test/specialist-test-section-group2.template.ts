@@ -1,7 +1,7 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const SpecialistTestSectionGroup2: FormNode = {
   name: 'testSection',
@@ -75,7 +75,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              options: TestAbandonmentReasonsPsvData
+              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

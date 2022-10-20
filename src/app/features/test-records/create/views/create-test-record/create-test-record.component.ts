@@ -1,11 +1,13 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { createTestResultSuccess } from '@store/test-records';
@@ -19,9 +21,11 @@ import { BaseTestRecordComponent } from '../../../components/base-test-record/ba
 })
 export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BaseTestRecordComponent) private baseTestRecordComponent?: BaseTestRecordComponent;
+  @ViewChild(AbandonDialogComponent) abandonDialog?: AbandonDialogComponent;
 
   private destroy$ = new Subject<void>();
 
+  isAbandon = false;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
 
   constructor(
@@ -31,7 +35,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     private router: Router,
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private resultOfTestService: ResultOfTestService
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -73,26 +78,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
    * @returns void
    */
   async handleSave(): Promise<void> {
-    const errors: GlobalError[] = [];
-    const forms = [];
-
-    if (this.baseTestRecordComponent?.sections) {
-      this.baseTestRecordComponent.sections.forEach(section => forms.push(section.form));
-    }
-
-    if (this.baseTestRecordComponent?.defects) {
-      forms.push(this.baseTestRecordComponent.defects.form);
-    }
-
-    forms.forEach(form => {
-      DynamicFormService.updateValidity(form, errors);
-    });
-
-    if (errors.length > 0) {
-      this.errorService.setErrors(errors);
-    }
-
-    if (this.isAnyFormInvalid(forms)) {
+    if (this.isAnyFormInvalid()) {
       return;
     }
 
@@ -111,7 +97,55 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.testRecordsService.updateEditingTestResult(testResult);
   }
 
-  isAnyFormInvalid(forms: Array<FormGroup>) {
+  isAnyFormInvalid() {
+    const errors: GlobalError[] = [];
+    const forms = [];
+
+    if (this.baseTestRecordComponent?.sections) {
+      this.baseTestRecordComponent.sections.forEach(section => forms.push(section.form));
+    }
+
+    if (this.baseTestRecordComponent?.defects) {
+      forms.push(this.baseTestRecordComponent.defects.form);
+    }
+
+    if (this.isAbandon && this.abandonDialog?.dynamicFormGroup) {
+      forms.push(this.abandonDialog.dynamicFormGroup.form);
+    }
+
+    forms.forEach(form => {
+      DynamicFormService.updateValidity(form, errors);
+    });
+
+    if (errors.length > 0) {
+      this.errorService.setErrors(errors);
+    }
+
     return forms.some(form => form.invalid);
+  }
+
+  abandon() {
+    this.resultOfTestService.toggleAbandoned(resultOfTestEnum.abandoned);
+
+    if (this.isAnyFormInvalid()) {
+      return;
+    }
+
+    this.isAbandon = true;
+  }
+
+  handleAbandonAction(event: string) {
+    switch (event) {
+      case 'yes':
+        this.handleSave();
+        break;
+      case 'no':
+        this.abandonDialog?.dynamicFormGroup?.form.reset();
+        this.resultOfTestService.toggleAbandoned(resultOfTestEnum.pass);
+        this.isAbandon = false;
+        break;
+      default:
+        console.error('Invalid action');
+    }
   }
 }

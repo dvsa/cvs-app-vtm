@@ -1,6 +1,9 @@
+import { VehicleTypes } from './vehicle-tech-record.model';
+
 export enum ReferenceDataResourceType {
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
-  User = 'USER'
+  User = 'USER',
+  ReasonsForAbandoning = 'REASONS_FOR_ABANDONING'
 }
 
 export interface ReferenceDataModelBase {
@@ -10,6 +13,9 @@ export interface ReferenceDataModelBase {
 }
 
 export interface CountryOfRegistration extends ReferenceDataModelBase {}
+export interface ReasonsForAbandoning extends ReferenceDataModelBase {
+  vehicleType: VehicleTypes;
+}
 export interface User extends ReferenceDataModelBase {
   name: string;
   email: string;

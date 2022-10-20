@@ -13,6 +13,7 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
+import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { RouterModule } from '@angular/router';
     TestTypeNamePipe,
     AccordionComponent,
     AccordionControlComponent,
-    PaginationComponent
+    PaginationComponent,
+    BaseDialogComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -42,7 +44,8 @@ import { RouterModule } from '@angular/router';
     TestTypeNamePipe,
     AccordionComponent,
     AccordionControlComponent,
-    PaginationComponent
+    PaginationComponent,
+    BaseDialogComponent
   ]
 })
 export class SharedModule {}

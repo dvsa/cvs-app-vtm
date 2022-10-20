@@ -2,6 +2,7 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
@@ -69,20 +70,26 @@ export class CustomAsyncValidators {
     };
   }
 
-  static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
+  static requiredIfNotResult(store: Store<State>, result: resultOfTestEnum): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
         select(testResultInEdit),
         map(testResult => {
-          const result = testResult?.testTypes[0].testResult;
-
-          if (result !== 'fail' && (control.value === null || control.value === undefined || control.value === '')) {
-            return { requiredIfNotFail: true };
-          } else {
-            return null;
+          const currentResult = testResult?.testTypes[0].testResult;
+          if (currentResult !== result && (control.value == null || control.value === '')) {
+            return { [`requiredIfNot${result}`]: true };
           }
+          return null;
         })
       );
+  }
+
+  static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
+    return this.requiredIfNotResult(store, resultOfTestEnum.fail);
+  }
+
+  static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
+    return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
   }
 }
