@@ -150,7 +150,7 @@ export class CustomValidators {
   static pastDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const now = new Date();
     const date = control.value;
-    if (new Date(date).getTime() > now.getTime()) {
+    if (date && new Date(date).getTime() > now.getTime()) {
       return { pastDate: true };
     }
     return null;
