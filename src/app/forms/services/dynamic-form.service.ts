@@ -42,6 +42,7 @@ export class DynamicFormService {
     [ValidatorNames.Defined]: () => CustomValidators.defined(),
     [ValidatorNames.ValidateDefectNotes]: () => DefectValidators.validateDefectNotes,
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
+    [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
     [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg)
   };

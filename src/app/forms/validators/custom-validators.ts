@@ -156,11 +156,20 @@ export class CustomValidators {
     return null;
   };
 
+  static futureDate: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const now = new Date();
+    const date = control.value;
+    if (date && new Date(date).getTime() < now.getTime()) {
+      return { futureDate: true };
+    }
+    return null;
+  };
+
   static aheadOfDate = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
-        
+
         if (new Date(control.value) < new Date(siblingControl.value)) {
           return { aheadOfDate: { sibling: siblingControl.meta.label } };
         }

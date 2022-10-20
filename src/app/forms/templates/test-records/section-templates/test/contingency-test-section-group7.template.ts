@@ -122,7 +122,8 @@ export const ContingencyTestSectionGroup7: FormNode = {
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'pass' }
-                }
+                },
+                { name: ValidatorNames.FutureDate }
               ]
             },
             {

@@ -264,17 +264,17 @@ describe('defined', () => {
     [null, ''],
     [null, null],
     [null, 'hello world!'],
-    [null, 1234],
-  ])('should return %o for %r', (expected: null | {[index: string]: boolean}, input: any) => {
+    [null, 1234]
+  ])('should return %o for %r', (expected: null | { [index: string]: boolean }, input: any) => {
     const definedValidator = CustomValidators.defined();
-    let form = new FormControl(input)
+    let form = new FormControl(input);
     if (typeof input === 'undefined') {
       // Unable to instantiate form with a value that is not defined...
-      form.patchValue(undefined)
+      form.patchValue(undefined);
     }
     expect(definedValidator(form)).toEqual(expected);
-  })
-})
+  });
+});
 
 describe('alphanumeric', () => {
   it.each([
@@ -344,8 +344,27 @@ describe('pastDate', () => {
   });
 });
 
+describe('futureDate', () => {
+  beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-01-01T00:00:00.000Z'));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  it.each([
+    [null, ''],
+    [null, null],
+    [null, '2022-01-01T00:00:01.000Z'],
+    [{ futureDate: true }, '2020-01-01T00:00:00.000Z']
+  ])('should return %p when control value is %s', (expected: object | null, input: string | null) => {
+    expect(CustomValidators.futureDate(new FormControl(input))).toEqual(expected);
+  });
+});
+
 describe('aheadOfDate', () => {
-  let form : FormGroup;
+  let form: FormGroup;
   beforeEach(() => {
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
@@ -365,7 +384,7 @@ describe('aheadOfDate', () => {
     it('should return null if sibling date is not ahead of foo', () => {
       form.controls['foo'].patchValue(new Date('2021-01-01T00:00:00.000Z').toISOString());
       form.controls['sibling'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
-      
+
       const result = CustomValidators.aheadOfDate('sibling')(form.controls['foo'] as AbstractControl);
       expect(result).toBeNull();
     });
