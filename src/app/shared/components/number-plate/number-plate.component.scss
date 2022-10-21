@@ -1,7 +1,9 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
 .govuk-number-plate {
   display: inline-block;
   color: #0b0c0c;
-  background-color: #ffd307;
+  background-color: govuk-colour('yellow');
   border-radius: 0.25em;
   letter-spacing: 1px;
   text-align: center;
