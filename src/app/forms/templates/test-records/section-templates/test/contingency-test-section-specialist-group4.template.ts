@@ -2,7 +2,7 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const ContingencyTestSectionGroup5And13: FormNode = {
+export const ContingencyTestSectionSpecialistGroup4: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -25,8 +25,8 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
     },
     {
       name: 'testEndTimestamp',
-      type: FormNodeTypes.CONTROL,
       label: 'Test end date',
+      type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
@@ -49,6 +49,7 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' }
               ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass'] } }],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
             },
@@ -57,7 +58,6 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -79,14 +79,25 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              type: FormNodeTypes.CONTROL,
               value: '',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'secondaryCertificateNumber',
+              label: 'Secondary certificate number',
+              value: '',
+              required: true,
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'pass' }
-                }
+                },
+                { name: ValidatorNames.MaxLength, args: 20 }
               ]
             },
             {
