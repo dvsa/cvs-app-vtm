@@ -64,6 +64,22 @@ export const ContingencyTestSectionSpecialistGroup2: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
+            },
+            {
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
+            },
+            {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
