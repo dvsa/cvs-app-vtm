@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { NumberPlateComponent } from './number-plate.component';
 
 describe('NumberPlateComponent', () => {
@@ -7,7 +8,7 @@ describe('NumberPlateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NumberPlateComponent]
+      declarations: [NumberPlateComponent, DefaultNullOrEmpty]
     }).compileComponents();
   });
 
