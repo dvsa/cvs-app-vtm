@@ -48,8 +48,8 @@ export const HgvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
-      validators: [{ name: ValidatorNames.Required }]
-      // id: 'style-float-right-small' //// will work on merge with 5695
+      validators: [{ name: ValidatorNames.Required }],
+      id: 'style-float-right-small'
     },
     {
       name: 'brakes',
@@ -69,7 +69,7 @@ export const HgvTechRecord: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       validators: [{ name: ValidatorNames.Required }]
     },
-    // {   /// not on UI model
+    // {   /// Not on UI model but may be needed later
     //   name: 'axles',
     //   value: '',
     //   type: FormNodeTypes.ARRAY,
@@ -103,7 +103,7 @@ export const HgvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      // id: 'style-float-right-medium' /// will work on push of 5695
+      id: 'style-float-right-medium'
     },
     {
       name: 'tachoExemptMrk',

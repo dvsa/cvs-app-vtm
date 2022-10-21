@@ -51,7 +51,7 @@ export const TrlTechRecordTemplate: FormNode = {
       isoDate: false
     },
 
-    // {   ///// not on UI model
+    // {   /// Not on UI model but may be needed later
     //   name: 'noOfAxles',
     //   label: 'Number of axles',
     //   value: '',
@@ -74,7 +74,7 @@ export const TrlTechRecordTemplate: FormNode = {
     //   type: FormNodeTypes.GROUP,
     //   viewType: FormNodeViewTypes.STRING
     // },
-    // {    /////////////// not on ui
+    // {    /// Not on UI model but may be needed later
     //   name: 'axles',
     //   value: '',
     //   type: FormNodeTypes.ARRAY,
@@ -104,8 +104,8 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.TEXT,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
-      // id: 'style-float-right-small' //// will work on merge with 5695
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
+      id: 'style-float-right-small'
     },
     {
       name: 'roadFriendly',
@@ -142,8 +142,8 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       width: FormNodeWidth.S,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 5 }]
-      // id: 'style-float-right-small' //// will work on merge with 5695
+      validators: [{ name: ValidatorNames.MaxLength, args: 5 }],
+      id: 'style-float-right-small'
     },
     {
       name: 'couplingType',
