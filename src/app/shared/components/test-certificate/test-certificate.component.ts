@@ -29,12 +29,13 @@ export class TestCertificateComponent {
         })
       )
       .subscribe({
-        next: doc => {
-          console.log(doc);
-          const { name, data } = doc;
+        next: data => {
+          console.log(data);
+          const file = new Blob([data], { type: 'application/pdf' });
           const link: HTMLAnchorElement | undefined = document.createElement('a');
-          link.download = name;
-          link.href = URL.createObjectURL(data);
+          link.href = URL.createObjectURL(file);
+          link.target = '_blank';
+          link.download = 'test_cert.pdf';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
