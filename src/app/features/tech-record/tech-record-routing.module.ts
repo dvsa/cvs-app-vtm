@@ -22,6 +22,12 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
   },
   {
+    path: 'amend-reason/correcting-an-error',
+    component: TechRecordComponent,
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: 1 },
+    canActivate: [MsalGuard, RoleGuard],
+  },
+  {
     path: 'historic/:techCreatedAt',
     component: TechRecordComponent,
     data: { title: 'Historic tech record' },

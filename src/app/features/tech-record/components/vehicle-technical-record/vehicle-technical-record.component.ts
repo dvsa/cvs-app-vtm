@@ -13,6 +13,7 @@ import { createProvisionalTechRecord, updateTechRecords } from '@store/technical
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -29,14 +30,18 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   isEditable = false;
   isDirty = false;
   isInvalid = false;
+  editableReason = 0;
 
   constructor(
     testRecordService: TestRecordsService,
     private errorService: GlobalErrorService,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.records$ = testRecordService.testRecords$;
+    this.isEditable = this.activatedRoute.snapshot.data['isEditing'] ?? false;
+    this.editableReason = this.activatedRoute.snapshot.data['reason'] ?? 0;
   }
 
   ngOnInit(): void {
@@ -92,6 +97,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     if (!this.isInvalid) {
       const { systemNumber } = this.vehicleTechRecord!;
       const hasProvisional = this.vehicleTechRecord!.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+
+      //TODO: enum
+      if(this.editableReason == 1) {
+        this.store.dispatch(updateTechRecords({ systemNumber }));
+      }
 
       if (this.isCurrent && hasProvisional) {
         this.store.dispatch(updateTechRecords({ systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));

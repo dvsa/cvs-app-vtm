@@ -30,6 +30,7 @@ export class TechAmendReasonComponent {
   handleSubmit(): void {
     const reason: number = this.form.get('reason')?.value;
 
+    //TODO:historic technical records may not be valid
     if (this.form.valid && reason) {
       this.router.navigate([this.routes[reason]], { relativeTo: this.route });
     }
