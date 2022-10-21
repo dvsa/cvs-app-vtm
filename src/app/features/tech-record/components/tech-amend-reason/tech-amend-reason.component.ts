@@ -9,11 +9,9 @@ import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } fro
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TechAmendReasonComponent {
-  private routes: Record<number, string> = { 1: 'correcting-an-error', 2: 'notifiable-alteration-needed' };
-
-  reasons: Array<FormNodeOption<number>> = [
-    { label: 'Correcting an error', value: 1, hint: 'Amend the current technical record' },
-    { label: 'Notifiable alteration needed', value: 2, hint: 'Create a new provisional technical record' }
+  reasons: Array<FormNodeOption<string>> = [
+    { label: 'Correcting an error', value: 'correcting-an-error', hint: 'Amend the current technical record' },
+    { label: 'Notifiable alteration needed', value: 'notifiable-alteration-needed', hint: 'Create a new provisional technical record' }
   ];
 
   form: CustomFormGroup;
@@ -21,18 +19,16 @@ export class TechAmendReasonComponent {
   constructor(private router: Router, private route: ActivatedRoute) {
     this.form = new CustomFormGroup(
       { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-      {
-        reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required])
-      }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required]) }
     );
   }
 
   handleSubmit(): void {
-    const reason: number = this.form.get('reason')?.value;
+    const reason: string = this.form.get('reason')?.value;
 
-    //TODO:historic technical records may not be valid
+    // TODO: historic technical records may not be valid
     if (this.form.valid && reason) {
-      this.router.navigate([this.routes[reason]], { relativeTo: this.route });
+      this.router.navigate([`../${reason}`], { relativeTo: this.route });
     }
   }
 }

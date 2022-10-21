@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MsalGuard } from '@azure/msal-angular';
 import { RoleGuard } from '@guards/roles.guard';
 import { Roles } from '@models/roles.enum';
+import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
 import { TechRecordComponent } from './tech-record.component';
@@ -22,9 +23,15 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: 'amend-reason/correcting-an-error',
+    path: 'correcting-an-error',
     component: TechRecordComponent,
-    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: 1 },
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },
+    canActivate: [MsalGuard, RoleGuard],
+  },
+  {
+    path: 'notifiable-alteration-needed',
+    component: TechRecordComponent,
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
     canActivate: [MsalGuard, RoleGuard],
   },
   {

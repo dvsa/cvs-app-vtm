@@ -67,6 +67,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.sectionTemplates = this.vehicleTemplates;
+    this.toggleReasonForCreation();
     this.calculateVehicleModel();
   }
 
