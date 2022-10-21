@@ -67,6 +67,7 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
+              value: null,
               required: true
             },
             {
