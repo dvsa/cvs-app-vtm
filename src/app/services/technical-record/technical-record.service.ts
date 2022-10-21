@@ -66,11 +66,6 @@ export class TechnicalRecordService {
     const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? '?oldStatusCode=' + oldStatusCode : ''}`;
     const newTechRecord = cloneDeep(techRecord);
 
-    // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
-    if (techRecord.statusCode === StatusCodes.CURRENT) {
-      newTechRecord.statusCode = StatusCodes.PROVISIONAL;
-    }
-
     if (techRecord.updateType) {
       delete newTechRecord.updateType;
     }
