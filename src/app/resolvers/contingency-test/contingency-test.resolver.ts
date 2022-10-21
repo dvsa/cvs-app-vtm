@@ -61,7 +61,8 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               testTypes: [
                 {
                   testResult: 'pass',
-                  prohibitionIssued: null
+                  prohibitionIssued: null,
+                  additionalCommentsForAbandon: null
                 } as TestType
               ]
             } as Partial<TestResultModel>;
