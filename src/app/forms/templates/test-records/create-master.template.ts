@@ -20,6 +20,7 @@ import { CreateRequiredSectionHgvTrl } from './section-templates/required/contin
 import { ContingencyTestSectionGroup3And4And8 } from './section-templates/test/contingency-test-section-group3And4And8.template';
 import { ContingencyTestSectionGroup7 } from './section-templates/test/contingency-test-section-group7.template';
 import { ContingencyTestSectionSpecialistGroup1 } from './section-templates/test/contingency-test-section-specialist-group1.template';
+import { ContingencyTestSectionSpecialistGroup2 } from './section-templates/test/contingency-test-section-specialist-group2.template';
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency-test-section-specialist-group5.template';
 import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { ContingencyTestSectionGroup15and16 } from './section-templates/test/contingency-test-section-group15and16.template';
@@ -69,6 +70,17 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: ContingencyTestSectionSpecialistGroup1,
       seatbelts: SeatbeltHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      defects: defectsHiddenSection,
+      reasonForCreation: reasonForCreationSection,
+      required: CreateRequiredSection
+    },
+    testTypesSpecialistGroup2: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionSpecialistGroup2,
+      seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
