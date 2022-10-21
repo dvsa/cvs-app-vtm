@@ -16,6 +16,7 @@ export const PsvTechRecord: FormNode = {
       name: 'vehicleType',
       label: 'Vehicle type',
       value: '',
+      width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE
     },
@@ -42,6 +43,7 @@ export const PsvTechRecord: FormNode = {
       name: 'noOfAxles',
       label: 'Number of axles',
       value: '',
+      width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
     },
     {
@@ -55,14 +57,11 @@ export const PsvTechRecord: FormNode = {
           value: '',
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
+          validators: [{ name: ValidatorNames.Required }],
         }
       ],
       type: FormNodeTypes.GROUP,
-      viewType: FormNodeViewTypes.STRING
     },
-
-    { name: 'axlesTitle', label: 'Axles fitted with a parking brake:', value: 'read only', type: FormNodeTypes.TITLE },
     {
       name: 'axles',
       value: '',
@@ -76,17 +75,9 @@ export const PsvTechRecord: FormNode = {
             {
               name: 'parkingBrakeMrk',
               value: '',
-              label: '#', //////// Reusable table template for weights/dimensions/parking brakes and tyres with hard coded axle numbers?
+              label: 'Axle fitted with parking brake',
               width: FormNodeWidth.S,
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.FULLWIDTH,
-              editType: FormNodeEditTypes.RADIO,////////////////////////// ???
-              options: [
-                { value: true, label: 'Yes' },
-                { value: false, label: 'No' },
-                { value: null, label: 'Unknown' }
-              ],
-              // id: 'style-float-right-medium',///// odds only//////////////////
+              type: FormNodeTypes.CONTROL
             }
           ]
         }
