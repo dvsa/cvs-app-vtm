@@ -20,4 +20,14 @@ describe('NumberPlateComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should format a standard vrm', () => {
+    component.vrm = 'AA21AAA';
+    expect(component.vrm).toEqual('AA21 AAA');
+  });
+
+  it('should not format a short vrm', () => {
+    component.vrm = 'A123';
+    expect(component.vrm).toEqual('A123');
+  });
 });
