@@ -22,7 +22,7 @@ export function createSingleSearchResult(systemNumber: string, vin: string): For
         name: 'vrm',
         label: 'Vehicle registration mark (VRM)',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.VRM
+        viewType: FormNodeViewTypes.VRM,
       },
       {
         name: 'trailerId',
@@ -34,7 +34,10 @@ export function createSingleSearchResult(systemNumber: string, vin: string): For
         label: 'Vehicle type',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING,
-        validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'trailerId', value: 'TRL' } }]
+        validators: [
+          { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'trailerId', value: 'TRL' } },
+          { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'vrm', value: ['HGV', 'PSV'] } }
+        ]
       },
       {
         name: 'manufactureYear',
