@@ -19,17 +19,21 @@
   #style-float-right-medium {
     float: right;
     padding-right: 1.5rem;
+    height: .5rem;
   }
   #style-float-right-small {
     float: right;
-    padding-right: 5rem;
+    padding-right: 10rem;
+    height: .5rem;
   }
 }
 @media screen and (min-width: 900px) {
   #style-float-right-medium {
     padding-right: 15rem;
+    height: .5rem;
   }
   #style-float-right-small {
-    padding-right: 20rem;
+    padding-right: 30rem;
+    height: .5rem;
   }
 }

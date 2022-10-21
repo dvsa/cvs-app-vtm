@@ -43,7 +43,6 @@ export const PsvTechRecord: FormNode = {
       label: 'Number of axles',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING,
     },
     {
       name: 'brakes',
@@ -54,6 +53,7 @@ export const PsvTechRecord: FormNode = {
           name: 'dtpNumber',
           label: 'DTP number',
           value: '',
+          width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING
         }
@@ -61,6 +61,8 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.GROUP,
       viewType: FormNodeViewTypes.STRING
     },
+
+    { name: 'axlesTitle', label: 'Axles fitted with a parking brake:', value: 'read only', type: FormNodeTypes.TITLE },
     {
       name: 'axles',
       value: '',
@@ -73,11 +75,18 @@ export const PsvTechRecord: FormNode = {
           children: [
             {
               name: 'parkingBrakeMrk',
-              label: 'Axle fitted with parking brake',
               value: '',
+              label: '#', //////// Reusable table template for weights/dimensions/parking brakes and tyres with hard coded axle numbers?
               width: FormNodeWidth.S,
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.STRING
+              viewType: FormNodeViewTypes.FULLWIDTH,
+              editType: FormNodeEditTypes.RADIO,////////////////////////// ???
+              options: [
+                { value: true, label: 'Yes' },
+                { value: false, label: 'No' },
+                { value: null, label: 'Unknown' }
+              ],
+              // id: 'style-float-right-medium',///// odds only//////////////////
             }
           ]
         }
@@ -172,9 +181,10 @@ export const PsvTechRecord: FormNode = {
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 2 }]
     },
+    { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {
       name: 'seatsUpperDeck',
-      label: 'Seats Upper deck',
+      label: `Upper deck`,
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
@@ -184,7 +194,7 @@ export const PsvTechRecord: FormNode = {
     },
     {
       name: 'seatsLowerDeck',
-      label: 'Seats Lower deck',
+      label: 'Lower deck',
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
