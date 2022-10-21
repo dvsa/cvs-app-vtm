@@ -63,7 +63,7 @@ export class EditTechRecordButtonComponent implements OnInit {
   cancel() {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
-      this.router.navigate(['../..'], { relativeTo: this.route });
+      this.router.navigate(['../'], { relativeTo: this.route });
       this.errorService.clearErrors();
       this.store.dispatch(updateEditingTechRecordCancel());
     }

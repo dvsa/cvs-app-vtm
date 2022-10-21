@@ -5,7 +5,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { ReasonForEditing, StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -26,11 +26,11 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
   records$: Observable<TestResultModel[]>;
 
-  isCurrent = false;
-  isEditable = false;
   isDirty = false;
+  isCurrent = false;
   isInvalid = false;
-  editableReason = 0;
+  isEditing = false;
+  editingReason?: ReasonForEditing;
 
   constructor(
     testRecordService: TestRecordsService,
@@ -40,8 +40,8 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.records$ = testRecordService.testRecords$;
-    this.isEditable = this.activatedRoute.snapshot.data['isEditing'] ?? false;
-    this.editableReason = this.activatedRoute.snapshot.data['reason'] ?? 0;
+    this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
+    this.editingReason = this.activatedRoute.snapshot.data['reason'];
   }
 
   ngOnInit(): void {
@@ -99,7 +99,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
       const hasProvisional = this.vehicleTechRecord!.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
 
       //TODO: enum
-      if(this.editableReason == 1) {
+      if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
         this.store.dispatch(updateTechRecords({ systemNumber }));
       }
 

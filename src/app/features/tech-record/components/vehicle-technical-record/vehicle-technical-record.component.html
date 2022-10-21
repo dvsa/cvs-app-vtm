@@ -45,7 +45,7 @@
     <app-edit-tech-record-button
       [vehicleTechRecord]="vehicleTechRecord"
       [viewableTechRecord]="(currentTechRecord$ | async) || undefined"
-      [(isEditing)]="isEditable"
+      [(isEditing)]="isEditing"
       [isDirty]="isDirty"
       (submitChange)="handleSubmit()"
       *appRoleRequired="roles.TechRecordAmend"
@@ -53,7 +53,7 @@
 
     <app-tech-record-summary
       *ngIf="currentTechRecord$ | async as currentTechRecord"
-      [isEditing]="isEditable"
+      [isEditing]="isEditing"
       [vehicleTechRecord]="currentTechRecord"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>
