@@ -12,7 +12,7 @@ export class NumberPlateComponent {
   @Input() isSecondary: boolean = false;
   @Input() set vrm(value: string | undefined) {
     // formatting: if the number plate is long enough, add a space before the final 3 characters
-    if (value && value.length >= 5) {
+    if (value?.length >= 5) {
       this._vrm = value.slice(0, value.length -3) + ' ' + value.slice(value.length -3);
     } else {
       this._vrm = value;
