@@ -12,7 +12,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
         <dd id="current-vrm" class="govuk-summary-list__value">
-          {{ currentVrm | defaultNullOrEmpty }}
+          <app-number-plate [vrm]="currentVrm"></app-number-plate>
         </dd>
         <dd class="govuk-summary-list__value"></dd>
       </div>
@@ -20,7 +20,12 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Previous VRM</dt>
         <dd id="previous-vrm" class="govuk-summary-list__value">
-          <p class="govuk-body govuk-!-margin-bottom-0" *ngFor="let secondaryVrm of otherVrms">{{ secondaryVrm.vrm | defaultNullOrEmpty }}</p>
+          <app-number-plate
+            *ngFor="let secondaryVrm of otherVrms"
+            class="govuk-body govuk-!-margin-bottom-0"
+            [vrm]="secondaryVrm.vrm"
+            [isSecondary]="true"
+          ></app-number-plate>
         </dd>
         <dd class="govuk-summary-list__value"></dd>
       </div>

@@ -26,7 +26,8 @@ export enum FormNodeViewTypes {
   STRING = 'string',
   SUBHEADING = 'subHeading',
   TIME = 'time',
-  VEHICLETYPE = 'vehicleType'
+  VEHICLETYPE = 'vehicleType',
+  VRM = 'vrm'
 }
 
 export enum FormNodeTypes {
