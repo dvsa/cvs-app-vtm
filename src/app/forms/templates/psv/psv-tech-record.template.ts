@@ -19,6 +19,12 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { value: 'psv', label: 'PSV' },
+        { value: 'hgv', label: 'HGV' },
+        { value: 'trl', label: 'Trailer' }
+      ],
     },
     {
       name: 'regnDate',
@@ -94,7 +100,7 @@ export const PsvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      class: 'style-float-right-medium'
+      class: 'flex--half'
     },
     {
       name: 'tachoExemptMrk',
@@ -106,7 +112,8 @@ export const PsvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      class: 'flex--half'
     },
     {
       name: 'euroStandard',
@@ -181,7 +188,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
-      class: 'style-float-right-small'
+      class: 'flex--half'
     },
     {
       name: 'seatsLowerDeck',
@@ -190,7 +197,8 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }],
+      class: 'flex--half'
     },
     {
       name: 'standingCapacity',
