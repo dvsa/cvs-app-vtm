@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-tech-record-history',
@@ -38,6 +38,13 @@ export class TechRecordHistoryComponent {
   }
 
   summaryLinkUrl(techRecord: TechRecordModel) {
-    return techRecord.statusCode !== 'current' ? `/historic/${this.convertToUnix(techRecord.createdAt)}`: ''
+    switch (techRecord.statusCode) {
+      case StatusCodes.PROVISIONAL:
+        return '/provisional'
+      case StatusCodes.ARCHIVED:
+        return `/historic/${this.convertToUnix(techRecord.createdAt)}`
+      default:
+        return ''
+    }
   }
 }

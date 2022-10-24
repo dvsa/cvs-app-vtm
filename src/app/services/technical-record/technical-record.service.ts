@@ -142,9 +142,17 @@ export class TechnicalRecordService {
       select(selectRouteNestedParams),
       map(params => {
         const createdAt = params['techCreatedAt'];
-        return createdAt
-          ? vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt)
-          : this.filterTechRecordByStatusCode(vehicleRecord);
+        const isProvisional = params['provisional'] === 'provisional';
+
+        if (isProvisional) {
+          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
+        }
+
+        if (createdAt) {
+          vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED)
+        }
+
+        return this.filterTechRecordByStatusCode(vehicleRecord);
       })
     );
   }
