@@ -62,16 +62,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  public get roles() {
+  get roles() {
     return Roles;
   }
 
   get vehicleTypes() {
     return VehicleTypes;
-  }
-
-  isAnyFormDirty(forms: Array<CustomFormGroup | CustomFormArray>) {
-    return forms.some(form => form.dirty);
   }
 
   isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>) {
@@ -87,7 +83,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   handleFormState() {
     const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, this.summary.weights.form);
 
-    this.isDirty = this.isAnyFormDirty(form);
+    this.isDirty = form.some(form => form.dirty);
     this.isInvalid = this.isAnyFormInvalid(form);
   }
 
