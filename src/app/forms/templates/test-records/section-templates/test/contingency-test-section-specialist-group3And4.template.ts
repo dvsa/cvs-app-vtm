@@ -1,32 +1,35 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const SpecialistTestSectionGroup3: FormNode = {
+export const ContingencyTestSectionSpecialistGroup3And4: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
+  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
-      name: 'createdAt',
-      label: 'Created',
-      disabled: true,
-
+      name: 'contingencyTestNumber',
+      label: 'Contingency Test Number',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      editType: FormNodeEditTypes.NUMERICSTRING,
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }]
     },
-
     {
       name: 'testStartTimestamp',
-      label: 'Test Date',
-      value: '',
-      disabled: true,
-
+      label: 'Test start date',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.DATE,
-      editType: FormNodeEditTypes.DATE
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.PastDate }]
+    },
+    {
+      name: 'testEndTimestamp',
+      label: 'Test end date',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
     },
     {
       name: 'testTypes',
@@ -38,58 +41,17 @@ export const SpecialistTestSectionGroup3: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
-              name: 'testCode',
-              label: 'Test Code',
-              value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL
-            },
-            {
               name: 'testResult',
               label: 'Result',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' },
-                { value: 'abandoned', label: 'Abandoned' }
+                { value: 'fail', label: 'Fail' }
               ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass', 'abandoned'] } }
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'secondaryCertificateNumber', value: ['pass'] } }],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'reasonForAbandoning',
-              type: FormNodeTypes.CONTROL,
-              label: 'Reason for abandoning',
-              editType: FormNodeEditTypes.CHECKBOX,
-              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
-              required: true,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
-                }
-              ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
-            },
-            {
-              name: 'additionalCommentsForAbandon',
-              type: FormNodeTypes.CONTROL,
-              value: '',
-              required: true,
-              label: 'Additional details for abandoning',
-              editType: FormNodeEditTypes.TEXTAREA,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
-                },
-                { name: ValidatorNames.MaxLength, args: 500 }
-              ]
             },
             {
               name: 'testTypeName',
@@ -99,31 +61,50 @@ export const SpecialistTestSectionGroup3: FormNode = {
               type: FormNodeTypes.CONTROL
             },
             {
-              name: 'secondaryCertificateNumber',
-              label: 'Secondary certificate number',
-              value: '',
+              name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.TEXT,
-              validators: [
-                { name: ValidatorNames.MaxLength, args: 20 },
-                { name: ValidatorNames.Alphanumeric },
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'testResult', value: 'pass' } }
-              ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
               required: true
             },
             {
-              name: 'testNumber',
-              label: 'Test Number',
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
               value: '',
-              disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'secondaryCertificateNumber',
+              label: 'Secondary certificate number',
+              value: '',
+              required: true,
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                },
+                { name: ValidatorNames.MaxLength, args: 20 }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'Start time',
+              label: 'Test start date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
@@ -136,7 +117,7 @@ export const SpecialistTestSectionGroup3: FormNode = {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              label: 'End time',
+              label: 'Test end date and time',
               viewType: FormNodeViewTypes.TIME,
               editType: FormNodeEditTypes.DATETIME,
               validators: [
