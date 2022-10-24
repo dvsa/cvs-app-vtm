@@ -1,6 +1,7 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const TestSectionGroup5And13: FormNode = {
   name: 'testSection',
@@ -60,6 +61,7 @@ export const TestSectionGroup5And13: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass', 'prs', 'abandoned'] } }
               ],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -99,7 +101,7 @@ export const TestSectionGroup5And13: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              options: TestAbandonmentReasonsPsvData
+              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

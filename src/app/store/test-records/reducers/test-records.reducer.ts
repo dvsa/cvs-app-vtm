@@ -28,7 +28,8 @@ import {
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess
+  updateTestResultSuccess,
+  setResultOfTest
 } from '../actions/test-records.actions';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
@@ -73,6 +74,7 @@ export const testResultsReducer = createReducer(
     editingTestResult: merge({}, action.testResult)
   })),
   on(updateResultOfTest, state => ({ ...state, editingTestResult: calculateTestResult(state.editingTestResult) })),
+  on(setResultOfTest, (state, action) => ({ ...state, editingTestResult: setTestResult(state.editingTestResult, action.result) })),
   on(initialContingencyTest, (state, action) => ({
     ...state,
     editingTestResult: { ...action.testResult } as TestResultModel
@@ -162,4 +164,13 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
     return testType;
   });
   return { ...testResult, testTypes: [...newTestTypes] };
+}
+
+function setTestResult(testResult: TestResultModel | undefined, result: resultOfTestEnum): TestResultModel | undefined {
+  if (!testResult) {
+    return;
+  }
+  const testResultCopy = cloneDeep(testResult);
+  testResultCopy.testTypes[0].testResult = result;
+  return testResultCopy;
 }

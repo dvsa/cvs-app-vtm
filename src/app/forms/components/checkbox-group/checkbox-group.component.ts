@@ -54,4 +54,8 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 
     this.onChange(this.value);
   }
+
+  trackByFn(i: number) {
+    return i;
+  }
 }

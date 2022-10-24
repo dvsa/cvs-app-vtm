@@ -61,19 +61,14 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
+  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, recordToArchiveStatus?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? '?oldStatusCode=' + oldStatusCode : ''}`;
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
     const newTechRecord = cloneDeep(techRecord);
 
-    // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
-    if (techRecord.statusCode === StatusCodes.CURRENT) {
-      newTechRecord.statusCode = StatusCodes.PROVISIONAL;
-    }
+    newTechRecord.statusCode = recordToArchiveStatus ?? newTechRecord.statusCode;
 
-    if (techRecord.updateType) {
-      delete newTechRecord.updateType;
-    }
+    this.removeUpdateType(techRecord, newTechRecord);
 
     const body = {
       msUserDetails: { msOid: id, msUser: username },
@@ -83,10 +78,17 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
+  private removeUpdateType(techRecord: TechRecordModel, newTechRecord: TechRecordModel) {
+    if (techRecord.updateType) {
+      delete newTechRecord.updateType;
+    }
+  }
+
   postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
+    this.removeUpdateType(techRecord, recordCopy);
 
     const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;

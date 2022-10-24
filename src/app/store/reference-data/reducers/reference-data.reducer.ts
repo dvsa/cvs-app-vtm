@@ -20,6 +20,7 @@ export interface ReferenceDataState {
   loading: boolean;
   [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
+  [ReferenceDataResourceType.ReasonsForAbandoning]: EntityState<ReferenceDataModelBase>;
 }
 
 function createAdapter() {
@@ -32,11 +33,15 @@ export const initialCountriesOfRegistrationState = countriesOfRegistrationEntity
 export const usersEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialUsersState = usersEntityAdapter.getInitialState();
 
+export const reasonsForAbandoningAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
+export const initialReasonsForAbandoning = reasonsForAbandoningAdapter.getInitialState();
+
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
   [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
-  [ReferenceDataResourceType.User]: initialUsersState
+  [ReferenceDataResourceType.User]: initialUsersState,
+  [ReferenceDataResourceType.ReasonsForAbandoning]: initialReasonsForAbandoning
 };
 
 export const referenceDataReducer = createReducer(
@@ -50,7 +55,7 @@ export const referenceDataReducer = createReducer(
       loading: false
     };
   }),
-  on(fetchReferenceDataFailed, (state, action) => ({ ...state, loading: false })),
+  on(fetchReferenceDataFailed, state => ({ ...state, loading: false })),
 
   on(fetchReferenceDataByKey, state => ({ ...state, loading: true })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
@@ -61,12 +66,13 @@ export const referenceDataReducer = createReducer(
       loading: false
     };
   }),
-  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, loading: false }))
+  on(fetchReferenceDataByKeyFailed, state => ({ ...state, loading: false }))
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);
 
-export const resourceTypeAdapters = {
+export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
   [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
-  [ReferenceDataResourceType.User]: usersEntityAdapter
+  [ReferenceDataResourceType.User]: usersEntityAdapter,
+  [ReferenceDataResourceType.ReasonsForAbandoning]: reasonsForAbandoningAdapter
 };

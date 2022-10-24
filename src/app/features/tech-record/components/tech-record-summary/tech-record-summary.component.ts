@@ -67,6 +67,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.sectionTemplates = this.vehicleTemplates;
+    this.toggleReasonForCreation();
     this.calculateVehicleModel();
   }
 
@@ -91,7 +92,6 @@ export class TechRecordSummaryComponent implements OnInit {
 
   calculateVehicleModel(): void {
     this.vehicleTechRecordCalculated = this.isEditing ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
-
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 

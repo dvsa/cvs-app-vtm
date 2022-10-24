@@ -7,10 +7,11 @@
       <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-m">{{ defect.imDescription }}</span>
         <h2 class="govuk-heading-s">
-          {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : '' }}
-          {{ defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : '' }} - {{ defect.itemDescription }} {{ defect.deficiencyText }}
+          {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : ''
+          }}{{ defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : '' }}{{ isDangerousAsterisk ? '*' : '' }} - {{ defect.itemDescription }}
+          {{ defect.deficiencyText }}
         </h2>
-        <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}{{ isDangerousAsterisk ? '*' : '' }}</app-tag>
+        <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
         <app-tag *ngIf="defect.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
       </div>
     </div>
@@ -79,10 +80,11 @@
       <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-m">{{ defect.imDescription }}</span>
         <h2 class="govuk-heading-s">
-          {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : '' }}
-          {{ defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : '' }} - {{ defect.itemDescription }} {{ defect.deficiencyText }}
+          {{ defect.imNumber }}.{{ defect.itemNumber }} {{ defect.deficiencyId ? '(' + defect.deficiencyId + ')' : ''
+          }}{{ defect.deficiencySubId ? '(' + defect.deficiencySubId + ')' : '' }}{{ isDangerousAsterisk ? '*' : '' }} - {{ defect.itemDescription }}
+          {{ defect.deficiencyText }}
         </h2>
-        <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}{{ isDangerousAsterisk ? '*' : '' }}</app-tag>
+        <app-tag [type]="categoryColor(defect.deficiencyCategory)">{{ defect.deficiencyCategory }}</app-tag>
         <app-tag *ngIf="defect.prs" id="prs-display" [type]="'blue'">PRS</app-tag>
       </div>
     </div>

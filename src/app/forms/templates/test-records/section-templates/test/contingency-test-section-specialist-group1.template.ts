@@ -1,7 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
 
 export const ContingencyTestSectionSpecialistGroup1: FormNode = {
   name: 'testSection',
@@ -48,12 +47,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               editType: FormNodeEditTypes.RADIO,
               options: [
                 { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' },
-                { value: 'abandoned', label: 'Abandoned' }
-              ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { value: 'fail', label: 'Fail' }
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
@@ -69,40 +63,27 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
-              label: 'Reason for abandoning',
-              editType: FormNodeEditTypes.CHECKBOX,
-              delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' },
-              required: true,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
-                }
-              ],
-              options: TestAbandonmentReasonsPsvData
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
-              value: '',
-              required: true,
-              label: 'Additional details for abandoning',
-              editType: FormNodeEditTypes.TEXTAREA,
-              validators: [
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'abandoned' }
-                },
-                { name: ValidatorNames.MaxLength, args: 500 }
-              ]
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null,
+              required: true
             },
             {
               name: 'certificateNumber',
               label: 'Certificate number',
               value: '',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              viewType: FormNodeViewTypes.STRING,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [{ name: ValidatorNames.Alphanumeric }]
             },
             {
               name: 'testTypeStartTimestamp',

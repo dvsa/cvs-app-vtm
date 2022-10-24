@@ -26,7 +26,8 @@ export enum FormNodeViewTypes {
   STRING = 'string',
   SUBHEADING = 'subHeading',
   TIME = 'time',
-  VEHICLETYPE = 'vehicleType'
+  VEHICLETYPE = 'vehicleType',
+  VRM = 'vrm'
 }
 
 export enum FormNodeTypes {
@@ -36,7 +37,8 @@ export enum FormNodeTypes {
   DIMENSIONS = 'dimensions',
   GROUP = 'group',
   ROOT = 'root',
-  SECTION = 'section'
+  SECTION = 'section',
+  TITLE = 'title'
 }
 
 export enum FormNodeEditTypes {
@@ -80,6 +82,7 @@ export interface FormNode {
   editType?: FormNodeEditTypes;
   width?: FormNodeWidth;
   label?: string;
+  hint?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
@@ -96,6 +99,8 @@ export interface FormNode {
   referenceData?: ReferenceDataResourceType | SpecialRefData;
   suffix?: string;
   isoDate?: boolean;
+  class?: string;
+
 }
 
 export interface FormNodeCombinationOptions {
