@@ -9,6 +9,8 @@ import { TechRecordHistoryComponent } from './components/tech-record-history/tec
 import { TechRecordSummaryComponent } from './components/tech-record-summary/tech-record-summary.component';
 import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-record/vehicle-technical-record.component';
 import { EditTechRecordButtonComponent } from './components/edit-tech-record-button/edit-tech-record-button.component';
+import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,15 @@ import { EditTechRecordButtonComponent } from './components/edit-tech-record-but
     TechRecordHistoryComponent,
     TechRecordSummaryComponent,
     TestRecordSummaryComponent,
-    VehicleTechnicalRecordComponent
+    VehicleTechnicalRecordComponent,
+    TechAmendReasonComponent
   ],
-  imports: [CommonModule, DynamicFormsModule, TechRecordsRoutingModule, SharedModule],
+  imports: [
+    CommonModule,
+    DynamicFormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    TechRecordsRoutingModule],
   exports: [EditTechRecordButtonComponent]
 })
 export class TechRecordsModule {}

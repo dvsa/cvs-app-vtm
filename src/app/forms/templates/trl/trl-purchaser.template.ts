@@ -16,7 +16,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 150 }, {name:ValidatorNames.Required}]
+          validators: [{ name: ValidatorNames.MaxLength, args: 150 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'address1',
@@ -24,7 +24,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, {name:ValidatorNames.Required}]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'address2',
@@ -32,7 +32,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XXL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, {name:ValidatorNames.Required}]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'postTown',
@@ -40,7 +40,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, {name:ValidatorNames.Required}]
+          validators: [{ name: ValidatorNames.MaxLength, args: 60 }, { name: ValidatorNames.Required }]
         },
         {
           name: 'address3',
@@ -72,7 +72,7 @@ export const TrlPurchasers: FormNode = {
           value: '',
           width: FormNodeWidth.XL,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.MaxLength, args: 225 }]
+          validators: [{ name: ValidatorNames.MaxLength, args: 255 }]
         },
         {
           name: 'faxNumber',
@@ -89,7 +89,7 @@ export const TrlPurchasers: FormNode = {
           editType: FormNodeEditTypes.TEXTAREA,
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
-        },
+        }
       ]
     }
   ]

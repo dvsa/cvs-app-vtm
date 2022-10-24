@@ -1,4 +1,4 @@
-<div id="{{ 'test-' + form.meta.name || 'test-dynamic-form' }}">
+<div class="flex" id="{{ 'test-' + form.meta.name || 'test-dynamic-form' }}">
   <ng-template [ngTemplateOutlet]="templateHeading"></ng-template>
   <ng-template [ngTemplateOutlet]="nodeTemplateRef" [ngTemplateOutletContext]="{ form: form }"> </ng-template>
 </div>
