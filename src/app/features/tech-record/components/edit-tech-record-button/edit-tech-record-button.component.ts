@@ -54,7 +54,7 @@ export class EditTechRecordButtonComponent implements OnInit {
   checkIfEditableReasonRequired() {
     this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
-      : this.toggleEditMode();
+      : this.router.navigate(['../../notifiable-alteration-needed'], { relativeTo: this.route })
   }
 
   toggleEditMode() {
@@ -67,10 +67,7 @@ export class EditTechRecordButtonComponent implements OnInit {
       this.toggleEditMode();
       this.errorService.clearErrors();
       this.store.dispatch(updateEditingTechRecordCancel());
-
-      if (this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL) {
-        this.router.navigate(['../'], { relativeTo: this.route });
-      }
+      this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
 

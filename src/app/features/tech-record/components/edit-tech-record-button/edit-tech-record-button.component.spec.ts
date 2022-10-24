@@ -76,18 +76,18 @@ describe('EditTechRecordButtonComponent', () => {
   })
 
   describe('when user clicks edit button', () => {
-    it('component should emit event for provisional records', () => {
-      jest.spyOn(component.isEditingChange, 'emit')
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional'};
+    it('component should nagivate away for current ammendments', () => {
+      jest.spyOn(router,'navigate');
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current'};
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('#edit')).nativeElement.click();
 
-      expect(component.isEditingChange.emit).toHaveBeenCalledTimes(1)
+      expect(router.navigate).toHaveBeenCalled();
     })
-    it('component should nagivate away for current records', () => {
+    it('component should nagivate away for notifyable alterations', () => {
       jest.spyOn(router,'navigate');
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current'};
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'provisional'};
 
       fixture.detectChanges();
       fixture.debugElement.query(By.css('#edit')).nativeElement.click();
