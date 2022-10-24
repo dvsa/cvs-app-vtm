@@ -36,4 +36,8 @@ export class TechRecordHistoryComponent {
   trackByFn(i: number, tr: TechRecordModel) {
     return tr.createdAt;
   }
+
+  summaryLinkUrl(techRecord: TechRecordModel) {
+    return techRecord.statusCode !== 'current' ? `/historic/${this.convertToUnix(techRecord.createdAt)}`: ''
+  }
 }
