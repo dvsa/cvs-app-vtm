@@ -27,14 +27,6 @@ export class TechAmendReasonComponent {
     );
   }
 
-
-
-
-
-
-
-
-
   handleSubmit(): void {
     const reason: string = this.form.get('reason')?.value;
 
