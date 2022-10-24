@@ -11,10 +11,14 @@ import { Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import { createProvisionalTechRecordSuccess, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { clearError } from '@store/global-error/actions/global-error.actions';
+import { selectedAmendedTestResultState } from '@store/test-records';
+import { mockTestResult } from '@mocks/mock-test-result';
+import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 
 let component: EditTechRecordButtonComponent;
 let fixture: ComponentFixture<EditTechRecordButtonComponent>;
@@ -97,21 +101,25 @@ describe('EditTechRecordButtonComponent', () => {
   })
 
   describe('when amending a current tech record', () => {
+    let expectedResult: TechnicalRecordServiceState;
+    let expectedDate: Date;
     beforeEach(() => {
-      component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
-      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
-      component.isEditing = true;
-    })
-
-    describe('and the user submits their changes', () => {
-      const expectedDate = new Date();
-      const expectedResult = {
+      store = TestBed.inject(MockStore);
+      expectedDate = new Date();
+      expectedResult = <TechnicalRecordServiceState> {
         vehicleTechRecords: [{
           systemNumber: '1',
           vin: '1',
           techRecord: [<TechRecordModel>{ createdAt: expectedDate }]
         } as VehicleTechRecordModel]
       };
+      store.overrideSelector(selectVehicleTechnicalRecordsBySystemNumber, expectedResult.vehicleTechRecords[0]);
+      component.vehicleTechRecord = <VehicleTechRecordModel>{ techRecord: [{ statusCode: 'current', vehicleType: 'psv' }] };
+      component.viewableTechRecord = <TechRecordModel>{ statusCode: 'current', vehicleType: 'psv' };
+      component.isEditing = true;
+    })
+
+    describe('and the user submits their changes', () => {
 
       it('component should emit event', fakeAsync(() => {
         jest.spyOn(component.submitChange, 'emit')
