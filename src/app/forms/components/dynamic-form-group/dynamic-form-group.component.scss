@@ -21,18 +21,23 @@
     padding-right: 1.5rem;
     height: 0.5rem;
   }
-  .style-float-right-medium {
-    float: right;
-    padding-right: 1.5rem;
-    height: 0.5rem;
-  }
   .style-float-right-small {
     float: right;
     padding-right: 10rem;
     height: 0.5rem;
   }
 }
+@media screen and (min-width: 550px) {
+  .style-float-right-wide {
+    float: right;
+    height: 0.5rem;
+  }
+}
 @media screen and (min-width: 900px) {
+  .style-float-right-wide {
+    padding-right: 8rem;
+    height: 0.5rem;
+  }
   .style-float-right-medium {
     padding-right: 15rem;
     height: 0.5rem;

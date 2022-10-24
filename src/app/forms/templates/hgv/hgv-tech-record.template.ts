@@ -49,7 +49,7 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       validators: [{ name: ValidatorNames.Required }],
-      id: 'style-float-right-small'
+      class: 'style-float-right-medium'
     },
     {
       name: 'brakes',
@@ -103,7 +103,7 @@ export const HgvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      id: 'style-float-right-medium'
+      class: 'style-float-right-medium'
     },
     {
       name: 'tachoExemptMrk',

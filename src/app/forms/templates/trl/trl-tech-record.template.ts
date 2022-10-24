@@ -105,7 +105,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-      id: 'style-float-right-small'
+      class: 'style-float-right-wide'
     },
     {
       name: 'roadFriendly',
@@ -140,16 +140,16 @@ export const TrlTechRecordTemplate: FormNode = {
       name: 'maxLoadOnCoupling',
       label: 'Max load on coupling (optional)',
       value: '',
-      width: FormNodeWidth.S,
+      width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 5 }],
-      id: 'style-float-right-small'
+      class: 'style-float-right-wide'
     },
     {
       name: 'couplingType',
       label: 'Coupling type (optional)',
       value: '',
-      width: FormNodeWidth.S,
+      width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
     },
