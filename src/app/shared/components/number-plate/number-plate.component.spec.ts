@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
 import { NumberPlateComponent } from './number-plate.component';
 
 describe('NumberPlateComponent', () => {
@@ -7,7 +8,7 @@ describe('NumberPlateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NumberPlateComponent]
+      declarations: [NumberPlateComponent, DefaultNullOrEmpty]
     }).compileComponents();
   });
 
@@ -19,5 +20,15 @@ describe('NumberPlateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should format a standard vrm', () => {
+    component.vrm = 'AA21AAA';
+    expect(component.vrm).toEqual('AA21 AAA');
+  });
+
+  it('should not format a short vrm', () => {
+    component.vrm = 'A123';
+    expect(component.vrm).toEqual('A123');
   });
 });

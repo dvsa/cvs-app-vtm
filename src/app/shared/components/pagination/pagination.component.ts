@@ -84,6 +84,6 @@ export class PaginationComponent implements OnInit, OnDestroy {
     const middle = Math.ceil(this.numberOfVisiblePages / 2);
     const clampedPage = range(this.currentPage, middle, this.pages.length - (middle - 1));
 
-    return this.pages.slice(clampedPage - middle, clampedPage + middle - 1);
+    return this.pages.slice(Math.max(clampedPage - middle, 0), clampedPage + middle - 1);
   }
 }

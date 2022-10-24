@@ -18,7 +18,7 @@
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">VRM</dt>
             <dd class="govuk-summary-list__value">
-              <app-number-plate>{{ testResult?.vrm }}</app-number-plate>
+              <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
             </dd>
           </div>
           <div class="govuk-summary-list__row">
@@ -78,9 +78,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">{{ testResult?.vehicleType === vehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}</dt>
         <dd id="test-testTypeId" class="govuk-summary-list__value">
-          <app-number-plate *ngIf="testResult?.vehicleType !== vehicleTypes.TRL; else trailerId">
-            {{ testResult?.vrm | defaultNullOrEmpty }}
-          </app-number-plate>
+          <app-number-plate *ngIf="testResult?.vehicleType !== vehicleTypes.TRL; else trailerId" [vrm]="testResult?.vrm"></app-number-plate>
           <ng-template #trailerId>{{ testResult?.trailerId | defaultNullOrEmpty }}</ng-template>
         </dd>
       </div>
