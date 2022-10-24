@@ -11,6 +11,11 @@ export interface Vrm {
   isPrimary: boolean;
 }
 
+export enum ReasonForEditing {
+  CORRECTING_AN_ERROR = 'correctingAnError',
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiableAlterationNeeded'
+}
+
 export enum StatusCodes {
   ARCHIVED = 'archived',
   CURRENT = 'current',

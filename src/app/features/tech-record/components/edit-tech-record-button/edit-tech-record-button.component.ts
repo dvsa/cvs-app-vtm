@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import { createProvisionalTechRecordSuccess, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
-import { take } from 'rxjs';
-import { Router } from '@angular/router';
+import { mergeMap, take } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ViewportScroller } from '@angular/common';
 
@@ -16,16 +16,16 @@ import { ViewportScroller } from '@angular/common';
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() viewableTechRecord?: TechRecordModel;
-  @Input() editableState = false;
-  @Input() isDirty: boolean = false;
+  @Input() isEditing = false;
+  @Input() isDirty = false;
 
-  @Output() editableStateChange = new EventEmitter<boolean>();
-  @Output() submitCheckFormValidity = new EventEmitter();
-
+  @Output() isEditingChange = new EventEmitter<boolean>();
+  @Output() submitChange = new EventEmitter();
 
   constructor(
     private actions$: Actions,
     private errorService: GlobalErrorService,
+    private route: ActivatedRoute,
     private router: Router,
     private store: Store,
     private viewportScroller: ViewportScroller
@@ -33,13 +33,17 @@ export class EditTechRecordButtonComponent implements OnInit {
 
   ngOnInit() {
     this.actions$
-      .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
-      .subscribe(action => {
-        const techRecord = action.vehicleTechRecords[0];
+      .pipe(
+        ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
+        mergeMap(_action => this.store.select(selectVehicleTechnicalRecordsBySystemNumber)),
+        take(1)
+      )
+      .subscribe(vehicleTechRecord => {
+        const techRecord = vehicleTechRecord!.techRecord[0];
 
-        this.router.navigateByUrl(
-          `/tech-records/${techRecord.systemNumber}/${techRecord.vin}/historic/${this.getLatestRecordTimestamp(techRecord)}`
-        );
+        const routeSuffix = techRecord.statusCode === StatusCodes.CURRENT ? '' : `/historic/${this.getLatestRecordTimestamp(vehicleTechRecord!)}`;
+
+        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}/${vehicleTechRecord!.vin}${routeSuffix}`);
       });
   }
 
@@ -51,22 +55,28 @@ export class EditTechRecordButtonComponent implements OnInit {
     return Math.max(...record.techRecord.map(record => new Date(record.createdAt).getTime()));
   }
 
-  toggleEditMode() {
-    this.editableState = !this.editableState;
-    this.editableStateChange.emit(this.editableState);
+  checkIfEditableReasonRequired() {
+    this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
+      ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
+      : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route })
   }
 
-  cancelAmend() {
+  toggleEditMode() {
+      this.isEditing = !this.isEditing;
+      this.isEditingChange.emit(this.isEditing);
+  }
+
+  cancel() {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
-      this.router.navigate([]);
       this.errorService.clearErrors();
       this.store.dispatch(updateEditingTechRecordCancel());
+      this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
 
-  submitTechRecord() {
-    this.submitCheckFormValidity.emit();
+  submit() {
+    this.submitChange.emit();
     this.viewportScroller.scrollToPosition([0, 0]);
   }
 }

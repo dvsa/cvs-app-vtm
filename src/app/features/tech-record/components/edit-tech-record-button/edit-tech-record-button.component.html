@@ -1,8 +1,10 @@
 <ng-container *ngIf="!isArchived">
-  <button *ngIf="!editableState; else editing" id="edit" class="govuk-button" data-module="govuk-button" (click)="toggleEditMode()">Edit</button>
+  <button *ngIf="!isEditing; else editing" class="govuk-button" id="edit" data-module="govuk-button" (click)="checkIfEditableReasonRequired()">
+    Amend
+  </button>
 
   <ng-template #editing>
-    <button id="cancel" class="govuk-button margin-right" data-module="govuk-button" (click)="cancelAmend()">Cancel</button>
-    <button id="submit" class="govuk-button" data-module="govuk-button" (click)="submitTechRecord()">Submit</button>
+    <button id="cancel" class="govuk-button margin-right" data-module="govuk-button" (click)="cancel()">Cancel</button>
+    <button id="submit" class="govuk-button" data-module="govuk-button" (click)="submit()">Submit</button>
   </ng-template>
 </ng-container>
