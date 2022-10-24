@@ -59,7 +59,12 @@
         [formControlName]="control.key"
         class="govuk-summary-list"
       ></div>
-      <app-dynamic-form-field *ngSwitchCase="true" [control]="control" [form]="formGroup" [attr.id]="control.value.meta.id"></app-dynamic-form-field>
+      <app-dynamic-form-field
+        *ngSwitchCase="true"
+        [control]="control"
+        [form]="formGroup"
+        [ngClass]="control.value.meta.class"
+      ></app-dynamic-form-field>
     </ng-container>
   </ng-container>
 </ng-template>

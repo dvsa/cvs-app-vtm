@@ -97,7 +97,8 @@ export interface FormNode {
   referenceData?: ReferenceDataResourceType | SpecialRefData;
   suffix?: string;
   isoDate?: boolean;
-  id?: string
+  class?: string;
+
 }
 
 export interface FormNodeCombinationOptions {

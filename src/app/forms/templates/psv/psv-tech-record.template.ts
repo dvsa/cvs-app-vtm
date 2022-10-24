@@ -18,7 +18,7 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.VEHICLETYPE
+      viewType: FormNodeViewTypes.VEHICLETYPE,
     },
     {
       name: 'regnDate',
@@ -94,7 +94,7 @@ export const PsvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      id: 'style-float-right-medium'
+      class: 'style-float-right-medium'
     },
     {
       name: 'tachoExemptMrk',
@@ -181,7 +181,7 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
-      id: 'style-float-right-small'
+      class: 'style-float-right-small'
     },
     {
       name: 'seatsLowerDeck',
