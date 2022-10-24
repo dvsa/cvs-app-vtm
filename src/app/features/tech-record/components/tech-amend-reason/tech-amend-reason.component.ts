@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 
