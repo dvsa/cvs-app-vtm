@@ -97,7 +97,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
       if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
         this.store.dispatch(updateTechRecords({ systemNumber }));
       } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
-        this.isCurrent && hasProvisional
+        hasProvisional
           ? this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL }))
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }

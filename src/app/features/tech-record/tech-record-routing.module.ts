@@ -35,6 +35,12 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
   },
   {
+    path: 'historic/:techCreatedAt/notifiable-alteration-needed',
+    component: TechRecordComponent,
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+    canActivate: [MsalGuard, RoleGuard],
+  },
+  {
     path: 'historic/:techCreatedAt',
     component: TechRecordComponent,
     data: { title: 'Historic tech record' },
