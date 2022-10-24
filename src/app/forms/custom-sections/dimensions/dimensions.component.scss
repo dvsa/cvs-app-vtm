@@ -13,7 +13,8 @@
     }
   }
 
-  .main-dimensions, .min-max {
+  .main-dimensions,
+  .min-max {
     display: flex;
     flex-flow: row wrap;
     gap: 2rem 1rem;
