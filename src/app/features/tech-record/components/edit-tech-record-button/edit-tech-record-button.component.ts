@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import { createProvisionalTechRecordSuccess, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
-import { take } from 'rxjs';
+import { mergeMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { ViewportScroller } from '@angular/common';
@@ -33,13 +33,17 @@ export class EditTechRecordButtonComponent implements OnInit {
 
   ngOnInit() {
     this.actions$
-      .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
-      .subscribe(action => {
-        const techRecord = action.vehicleTechRecords[0];
+      .pipe(
+        ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
+        mergeMap(_action => this.store.select(selectVehicleTechnicalRecordsBySystemNumber)),
+        take(1)
+      )
+      .subscribe(vehicleTechRecord => {
+        const techRecord = vehicleTechRecord!.techRecord[0];
 
-        this.router.navigateByUrl(
-          `/tech-records/${techRecord.systemNumber}/${techRecord.vin}/historic/${this.getLatestRecordTimestamp(techRecord)}`
-        );
+        const routeSuffix = techRecord.statusCode === StatusCodes.CURRENT ? '' : `/historic/${this.getLatestRecordTimestamp(vehicleTechRecord!)}`;
+
+        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}/${vehicleTechRecord!.vin}${routeSuffix}`);
       });
   }
 
