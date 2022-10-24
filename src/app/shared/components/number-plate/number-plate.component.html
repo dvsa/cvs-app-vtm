@@ -1,3 +1,3 @@
-<span class="govuk-number-plate">
-  <ng-content></ng-content>
+<span class="govuk-number-plate" [ngClass]="{ secondary: isSecondary }">
+  {{ vrm | defaultNullOrEmpty }}
 </span>

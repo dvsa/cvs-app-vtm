@@ -4,6 +4,7 @@
   display: inline-block;
   color: #0b0c0c;
   background-color: govuk-colour('yellow');
+  border: 1px solid #c7a304;
   border-radius: 0.25em;
   letter-spacing: 1px;
   text-align: center;
@@ -17,4 +18,10 @@
   line-height: 1;
   padding: 0.5rem 0.1rem;
   width: 100px;
+}
+
+.secondary {
+  color: #636363;
+  background-color: #efefef;
+  border: 1px solid #cac8c8;
 }
