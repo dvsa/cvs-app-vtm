@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
 @Component({
@@ -16,7 +17,9 @@ export class TechAmendReasonComponent {
 
   form: CustomFormGroup;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private errorService: GlobalErrorService, private route: ActivatedRoute, private router: Router) {
+    this.errorService.clearErrors();
+
     this.form = new CustomFormGroup(
       { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required]) }
