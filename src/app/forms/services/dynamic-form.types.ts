@@ -37,7 +37,8 @@ export enum FormNodeTypes {
   DIMENSIONS = 'dimensions',
   GROUP = 'group',
   ROOT = 'root',
-  SECTION = 'section'
+  SECTION = 'section',
+  TITLE = 'title'
 }
 
 export enum FormNodeEditTypes {
@@ -98,6 +99,8 @@ export interface FormNode {
   referenceData?: ReferenceDataResourceType | SpecialRefData;
   suffix?: string;
   isoDate?: boolean;
+  class?: string;
+
 }
 
 export interface FormNodeCombinationOptions {

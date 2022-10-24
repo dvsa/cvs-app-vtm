@@ -1,5 +1,7 @@
+import { MultiOptionsService, SpecialRefData } from '@forms/services/multi-options.service';
+import getOptionsFromEnum from '@forms/utils/enum-map';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export function getBodyTemplate(vehicleType: VehicleTypes): FormNode {
   let bodyFormControl: FormNode = {
@@ -37,6 +39,8 @@ export function getBodyTemplate(vehicleType: VehicleTypes): FormNode {
         label: 'Body make',
         value: '',
         type: FormNodeTypes.CONTROL,
+        editType: FormNodeEditTypes.SELECT,
+        options: []
       },
       {
         name: 'model',
