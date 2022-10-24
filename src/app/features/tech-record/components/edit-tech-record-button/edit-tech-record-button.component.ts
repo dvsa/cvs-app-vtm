@@ -51,13 +51,15 @@ export class EditTechRecordButtonComponent implements OnInit {
     return Math.max(...record.techRecord.map(record => new Date(record.createdAt).getTime()));
   }
 
+  checkIfEditableReasonRequired() {
+    this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
+      ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
+      : this.toggleEditMode();
+  }
+
   toggleEditMode() {
-    if (this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL) {
-      this.router.navigate(['amend-reason'], { relativeTo: this.route });
-    } else {
       this.isEditing = !this.isEditing;
       this.isEditingChange.emit(this.isEditing);
-    }
   }
 
   cancel() {

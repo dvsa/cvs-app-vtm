@@ -96,20 +96,15 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
     if (!this.isInvalid) {
       const { systemNumber } = this.vehicleTechRecord!;
-      //const hasProvisional = this.vehicleTechRecord!.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
+      const hasProvisional = this.vehicleTechRecord!.techRecord.some(record => record.statusCode === StatusCodes.PROVISIONAL);
 
-      //TODO: enum
       if (this.editingReason == ReasonForEditing.CORRECTING_AN_ERROR) {
         this.store.dispatch(updateTechRecords({ systemNumber }));
+      } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
+        this.isCurrent && hasProvisional
+          ? this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL }))
+          : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
-
-      /*if (this.isCurrent && hasProvisional) {
-        this.store.dispatch(updateTechRecords({ systemNumber, oldStatusCode: StatusCodes.PROVISIONAL }));
-      } else if (hasProvisional) {
-        this.store.dispatch(updateTechRecords({ systemNumber }));
-      } else {
-        this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
-      }*/
     }
   }
 }

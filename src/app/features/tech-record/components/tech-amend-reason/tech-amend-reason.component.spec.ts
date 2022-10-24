@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 
 import { TechAmendReasonComponent } from './tech-amend-reason.component';
+import { StoreModule } from '@ngrx/store';
 
 describe('TechAmendReasonComponent', () => {
   let component: TechAmendReasonComponent;
@@ -15,7 +16,7 @@ describe('TechAmendReasonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TechAmendReasonComponent ],
-      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule]
+      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({}),]
     })
     .compileComponents();
 
