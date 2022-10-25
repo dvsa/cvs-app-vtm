@@ -1,65 +1,164 @@
-<app-switchable-input
-  *ngIf="isPsv"
-  [form]="dimensions"
-  [type]="types.NUMBER"
-  name="height"
-  label="Height"
-  [isEditing]="isEditing"
-  [width]="widths.M"
-  suffix="mm"
-></app-switchable-input>
+<div class="main-dimensions">
+  <app-switchable-input
+    *ngIf="isPsv"
+    [form]="dimensions"
+    [type]="types.NUMBER"
+    name="height"
+    label="Height"
+    [isEditing]="isEditing"
+    [width]="widths.XS"
+    suffix="mm"
+  ></app-switchable-input>
 
-<app-switchable-input
-  [form]="dimensions"
-  [type]="types.NUMBER"
-  name="length"
-  label="Length"
-  [isEditing]="isEditing"
-  [width]="widths.M"
-  suffix="mm"
-></app-switchable-input>
+  <app-switchable-input
+    [form]="dimensions"
+    [type]="types.NUMBER"
+    name="length"
+    label="Length"
+    [isEditing]="isEditing"
+    [width]="widths.XS"
+    suffix="mm"
+  ></app-switchable-input>
 
-<app-switchable-input
-  [form]="dimensions"
-  [type]="types.NUMBER"
-  name="width"
-  label="Width"
-  [isEditing]="isEditing"
-  [width]="widths.M"
-  suffix="mm"
-></app-switchable-input>
+  <app-switchable-input
+    [form]="dimensions"
+    [type]="types.NUMBER"
+    name="width"
+    label="Width"
+    [isEditing]="isEditing"
+    [width]="widths.XS"
+    suffix="mm"
+  ></app-switchable-input>
 
-<app-switchable-input
-  [form]="form"
-  [type]="types.NUMBER"
-  name="frontAxleToRearAxle"
-  label="Front axle to rear axle"
-  [isEditing]="isEditing"
-  [width]="widths.M"
-  suffix="mm"
-></app-switchable-input>
+  <app-switchable-input
+    [form]="form"
+    [type]="types.NUMBER"
+    name="frontAxleToRearAxle"
+    label="Front axle to rear axle"
+    [isEditing]="isEditing"
+    [width]="widths.XS"
+    suffix="mm"
+  ></app-switchable-input>
 
-<app-switchable-input
-  *ngIf="isTrl"
-  [form]="form"
-  [type]="types.NUMBER"
-  name="rearAxleToRearTrl"
-  label="Rear axle to rear trailer"
-  [isEditing]="isEditing"
-  [width]="widths.M"
-  suffix="mm"
-></app-switchable-input>
+  <app-switchable-input
+    *ngIf="isTrl"
+    [form]="form"
+    [type]="types.NUMBER"
+    name="rearAxleToRearTrl"
+    label="Rear axle to rear trailer"
+    [isEditing]="isEditing"
+    [width]="widths.XS"
+    suffix="mm"
+  ></app-switchable-input>
 
-<ng-container *ngIf="!isPsv">
-  <div *ngFor="let axle of bottomSection?.meta?.children">
+  <ng-container *ngIf="!isPsv">
     <app-switchable-input
+      *ngFor="let axle of bottomSection?.meta?.children"
       [form]="bottomSection"
       [type]="types.NUMBER"
       [name]="axle.name"
       [label]="axle.label"
       [isEditing]="isEditing"
-      [width]="widths.M"
+      [width]="widths.XS"
       suffix="mm"
     ></app-switchable-input>
+  </ng-container>
+</div>
+
+<div class="min-max-container" *ngIf="!isPsv">
+  <span class="govuk-label govuk-label--m">{{ isTrl ? 'Coupling center to rear axle' : 'Front of vehicle to 5th wheel coupling' }}</span>
+
+  <div class="min-max">
+    <ng-container *ngIf="isTrl; else hgv">
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="couplingCenterToRearAxleMin"
+        label="Minimum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="couplingCenterToRearAxleMax"
+        label="Maximum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+    </ng-container>
+
+    <ng-template #hgv>
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="frontAxleTo5thWheelCouplingMin"
+        label="Minimum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="frontAxleTo5thWheelCouplingMax"
+        label="Maximum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+    </ng-template>
   </div>
-</ng-container>
+
+  <span class="govuk-label govuk-label--m extra-margin">{{ isTrl ? 'Coupling center to rear trailer' : 'Front axle to 5th wheel' }}</span>
+
+  <div class="min-max">
+    <ng-container *ngIf="isTrl; else hgv">
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="couplingCenterToRearTrlMin"
+        label="Minimum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="couplingCenterToRearTrlMax"
+        label="Maximum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+    </ng-container>
+
+    <ng-template #hgv>
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="frontAxleTo5thWheelMin"
+        label="Minimum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+
+      <app-switchable-input
+        [form]="form"
+        [type]="types.NUMBER"
+        name="frontAxleTo5thWheelMax"
+        label="Maximum"
+        [isEditing]="isEditing"
+        [width]="widths.XS"
+        suffix="mm"
+      ></app-switchable-input>
+    </ng-template>
+  </div>
+</div>

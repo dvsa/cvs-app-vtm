@@ -67,6 +67,9 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
   }
 
   if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
+    const firstName = vehicleType === VehicleTypes.HGV ? 'frontAxleTo5thWheelCoupling' : 'couplingCenterToRearAxle';
+    const secondName = vehicleType === VehicleTypes.HGV ? 'frontAxleTo5thWheel' : 'couplingCenterToRearTrl';
+
     section.children!.push({
       name: 'dimensionsBottomSection',
       label: 'Dimensions',
@@ -79,6 +82,42 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
           children: generateAxleToAxleNodes(noOfAxles, axleSpacings)
         }
       ]
+    },
+    {
+      name: firstName + 'Min',
+      label: 'Minimum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: firstName + 'Max',
+      label: 'Maximum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: secondName + 'Min',
+      label: 'Minimum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
+    },
+    {
+      name: secondName + 'Max',
+      label: 'Maximum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }]
     })
   }
 
