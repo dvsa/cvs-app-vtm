@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockDefectList } from '@mocks/mock-defects';
@@ -25,7 +26,7 @@ describe('AmendedTestRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AmendedTestRecordComponent, BaseTestRecordComponent, VehicleHeaderComponent, ResultOfTestComponent],
-      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule],
+      imports: [HttpClientTestingModule, SharedModule, DynamicFormsModule, TestResultsApiModule, RouterTestingModule],
       providers: [
         TestRecordsService,
         provideMockStore({ initialState: initialAppState }),

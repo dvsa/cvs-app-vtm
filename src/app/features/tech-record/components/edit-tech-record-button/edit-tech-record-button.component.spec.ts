@@ -139,7 +139,7 @@ describe('EditTechRecordButtonComponent', () => {
         tick();
 
         expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/historic/' + expectedDate.getTime());
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/provisional');
       }));
 
       it('router should be called on createProvisionalTechRecordSuccess', fakeAsync(() => {
@@ -150,7 +150,7 @@ describe('EditTechRecordButtonComponent', () => {
         tick();
 
         expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/historic/' + expectedDate.getTime());
+        expect(router.navigateByUrl).toHaveBeenCalledWith('/tech-records/1/1/provisional');
       }));
     })
 

@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { ResultOfTestComponent } from '../result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 import { TechRecordModel, VehicleTypes, VehicleConfigurations } from '@models/vehicle-tech-record.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
@@ -17,7 +18,7 @@ describe('VehicleHeaderComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent, ResultOfTestComponent],
-      imports: [SharedModule, HttpClientTestingModule],
+      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
       providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
     }).compileComponents();
   }));
