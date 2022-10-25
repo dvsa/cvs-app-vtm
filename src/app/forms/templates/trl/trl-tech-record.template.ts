@@ -17,6 +17,12 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { value: 'psv', label: 'PSV' },
+        { value: 'hgv', label: 'HGV' },
+        { value: 'trl', label: 'Trailer' }
+      ],
       validators: [{ name: ValidatorNames.Required }],
     },
     {
@@ -29,7 +35,7 @@ export const TrlTechRecordTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Required }],
       isoDate: false
     },
-    { ///// null in data obj
+    {
       name: 'manufactureYear',
       label: 'Year of manufacture',
       value: '',
@@ -57,23 +63,23 @@ export const TrlTechRecordTemplate: FormNode = {
     //   value: '',
     //   type: FormNodeTypes.CONTROL,
     // },
-    // {    /////////////// not on UI model
-    //   name: 'brakes',
-    //   label: 'DTP number',
-    //   value: '',
-    //   children: [
-    //     {
-    //       name: 'dtpNumber',
-    //       label: 'DTP number',
-    //       value: '',
-    //       width: FormNodeWidth.L,
-    //       type: FormNodeTypes.CONTROL,
-    //       viewType: FormNodeViewTypes.STRING
-    //     }
-    //   ],
-    //   type: FormNodeTypes.GROUP,
-    //   viewType: FormNodeViewTypes.STRING
-    // },
+    {
+      name: 'brakes',
+      label: 'DTP number',
+      value: '',
+      children: [
+        {
+          name: 'dtpNumber',
+          label: 'DTP number',
+          value: '',
+          width: FormNodeWidth.L,
+          type: FormNodeTypes.CONTROL,
+          viewType: FormNodeViewTypes.STRING
+        }
+      ],
+      type: FormNodeTypes.GROUP,
+      viewType: FormNodeViewTypes.STRING
+    },
     // {    /// Not on UI model but may be needed later
     //   name: 'axles',
     //   value: '',
@@ -97,17 +103,6 @@ export const TrlTechRecordTemplate: FormNode = {
     //   ]
     // },
     {
-      name: 'suspensionType',
-      label: 'Suspension type (optional)',
-      value: '',
-      width: FormNodeWidth.L,
-      editType: FormNodeEditTypes.TEXT,
-      type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
-      class: 'style-float-right-wide'
-    },
-    {
       name: 'roadFriendly',
       label: 'Road friendly suspension',
       value: '',
@@ -117,6 +112,18 @@ export const TrlTechRecordTemplate: FormNode = {
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
       ],
+      class: 'flex--half'
+    },
+    {
+      name: 'suspensionType',
+      label: 'Suspension type (optional)',
+      value: '',
+      width: FormNodeWidth.L,
+      editType: FormNodeEditTypes.TEXT,
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.STRING,
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
+      class: 'flex--half'
     },
     {
       name: 'vehicleClass',
@@ -137,21 +144,22 @@ export const TrlTechRecordTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Required }]
     },
     {
+      name: 'couplingType',
+      label: 'Coupling type (optional)',
+      value: '',
+      width: FormNodeWidth.M,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
+      class: 'flex--half'
+    },
+    {
       name: 'maxLoadOnCoupling',
       label: 'Max load on coupling (optional)',
       value: '',
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 5 }],
-      class: 'style-float-right-wide'
-    },
-    {
-      name: 'couplingType',
-      label: 'Coupling type (optional)',
-      value: '',
-      width: FormNodeWidth.M,
-      type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
+      class: 'flex--half'
     },
     {
       name: 'vehicleConfiguration',

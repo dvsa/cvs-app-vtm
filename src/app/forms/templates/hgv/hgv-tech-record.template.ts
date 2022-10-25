@@ -17,7 +17,13 @@ export const HgvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.VEHICLETYPE
+      viewType: FormNodeViewTypes.VEHICLETYPE,
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { value: 'psv', label: 'PSV' },
+        { value: 'hgv', label: 'HGV' },
+        { value: 'trl', label: 'Trailer' }
+      ],
     },
     {
       name: 'regnDate',
@@ -47,27 +53,23 @@ export const HgvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.STRING,
       validators: [{ name: ValidatorNames.Required }],
-      class: 'style-float-right-medium'
     },
     {
       name: 'brakes',
       label: 'DTP number',
       value: '',
+      type: FormNodeTypes.GROUP,
       children: [
         {
           name: 'dtpNumber',
           label: 'DTP number',
           value: '',
-          width: FormNodeWidth.L,
+          width: FormNodeWidth.M,
           type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
+          validators: [{ name: ValidatorNames.Required }],
         }
       ],
-      type: FormNodeTypes.GROUP,
-      viewType: FormNodeViewTypes.STRING,
-      validators: [{ name: ValidatorNames.Required }]
     },
     // {   /// Not on UI model but may be needed later
     //   name: 'axles',
@@ -103,7 +105,7 @@ export const HgvTechRecord: FormNode = {
         { value: false, label: 'Not exempt' }
       ],
       validators: [{ name: ValidatorNames.Required }],
-      class: 'style-float-right-medium'
+      class: 'flex--half'
     },
     {
       name: 'tachoExemptMrk',
@@ -115,7 +117,8 @@ export const HgvTechRecord: FormNode = {
         { value: true, label: 'Exempt' },
         { value: false, label: 'Not exempt' }
       ],
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Required }],
+      class: 'flex--half'
     },
     {
       name: 'euroStandard',
@@ -168,7 +171,6 @@ export const HgvTechRecord: FormNode = {
           label: 'Vehicle class',
           value: '',
           type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING,
           editType: FormNodeEditTypes.SELECT,
           options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
         }
