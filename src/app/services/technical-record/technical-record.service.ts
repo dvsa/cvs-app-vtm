@@ -15,7 +15,7 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { map, Observable, of, switchMap, take } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
