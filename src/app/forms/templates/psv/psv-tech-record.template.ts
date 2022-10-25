@@ -177,7 +177,11 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }]
+      validators: [
+        { name: ValidatorNames.Min, args: 0 },
+        { name: ValidatorNames.Max, args: 99 },
+        { name: ValidatorNames.Numeric, args: 99 },
+      ]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {
