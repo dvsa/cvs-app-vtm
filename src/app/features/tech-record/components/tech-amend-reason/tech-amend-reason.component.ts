@@ -3,6 +3,7 @@ import { Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 
 
 @Component({
@@ -12,8 +13,8 @@ import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } fro
 })
 export class TechAmendReasonComponent {
   reasons: Array<FormNodeOption<string>> = [
-    { label: 'Correcting an error', value: 'correcting-an-error', hint: 'Amend the current technical record' },
-    { label: 'Notifiable alteration needed', value: 'notifiable-alteration-needed', hint: 'Create a new provisional technical record' }
+    { label: 'Correcting an error', value: ReasonForEditing.CORRECTING_AN_ERROR, hint: 'Amend the current technical record' },
+    { label: 'Notifiable alteration needed', value: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, hint: 'Create a new provisional technical record' }
   ];
 
   form: CustomFormGroup;
@@ -23,7 +24,7 @@ export class TechAmendReasonComponent {
 
     this.form = new CustomFormGroup(
       { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 'correcting-an-error', [Validators.required]) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL },ReasonForEditing.CORRECTING_AN_ERROR , [Validators.required]) }
     );
   }
 

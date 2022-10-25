@@ -12,8 +12,8 @@ export interface Vrm {
 }
 
 export enum ReasonForEditing {
-  CORRECTING_AN_ERROR = 'correctingAnError',
-  NOTIFIABLE_ALTERATION_NEEDED = 'notifiableAlterationNeeded'
+  CORRECTING_AN_ERROR = 'correcting-an-error',
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed'
 }
 
 export enum StatusCodes {
