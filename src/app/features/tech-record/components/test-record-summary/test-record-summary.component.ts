@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TestResultModel } from '@models/test-results/test-result.model';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 
 interface TestField {
@@ -18,10 +18,15 @@ interface TestField {
 })
 export class TestRecordSummaryComponent {
   @Input() testRecords: TestResultModel[] = [];
-  @Input() vehicleTechRecord?: VehicleTechRecordModel;
+  @Input() currentTechRecord?: TechRecordModel;
+
 
   pageStart?: number;
   pageEnd?: number;
+
+  get isArchived(): boolean {
+    return !(this.currentTechRecord?.statusCode === StatusCodes.CURRENT || this.currentTechRecord?.statusCode === StatusCodes.PROVISIONAL);
+  }
 
   constructor(private cdr: ChangeDetectorRef) {}
 

@@ -17,6 +17,7 @@ import { VehicleHeaderComponent } from '../vehicle-header/vehicle-header.compone
 import { UserService } from '@services/user-service/user-service';
 import { of } from 'rxjs';
 import { Roles } from '@models/roles.enum';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('BaseTestRecordComponent', () => {
   let component: BaseTestRecordComponent;
@@ -25,7 +26,7 @@ describe('BaseTestRecordComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BaseTestRecordComponent, ResultOfTestComponent, DefaultNullOrEmpty, VehicleHeaderComponent],
-      imports: [DynamicFormsModule, HttpClientTestingModule, SharedModule],
+      imports: [DynamicFormsModule, HttpClientTestingModule, SharedModule, RouterTestingModule],
       providers: [
         RouterService,
         provideMockStore({ initialState: initialAppState }),
