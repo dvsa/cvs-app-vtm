@@ -23,14 +23,13 @@ export class TechAmendReasonComponent {
 
     this.form = new CustomFormGroup(
       { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required]) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 'correcting-an-error', [Validators.required]) }
     );
   }
 
   handleSubmit(): void {
     const reason: string = this.form.get('reason')?.value;
 
-    // TODO: historic technical records may not be valid
     if (this.form.valid && reason) {
       this.router.navigate([`../${reason}`], { relativeTo: this.route });
     }
