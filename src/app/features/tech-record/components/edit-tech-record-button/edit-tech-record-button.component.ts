@@ -48,7 +48,7 @@ export class EditTechRecordButtonComponent implements OnInit {
   }
 
   get isArchived(): boolean {
-    return this.viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+    return !(this.viewableTechRecord?.statusCode === StatusCodes.CURRENT || this.viewableTechRecord?.statusCode === StatusCodes.PROVISIONAL);
   }
 
   getLatestRecordTimestamp(record: VehicleTechRecordModel): number {

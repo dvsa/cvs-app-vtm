@@ -35,14 +35,14 @@ const routes: Routes = [
     canActivate: [MsalGuard, RoleGuard],
   },
   {
-    path: ':provisional',
+    path: 'provisional',
     component: TechRecordComponent,
     data: { title: 'Provisional tech record' },
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: ':provisional/notifiable-alteration-needed',
+    path: 'provisional/notifiable-alteration-needed',
     component: TechRecordComponent,
     canActivate: [MsalGuard],
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
@@ -63,6 +63,13 @@ const routes: Routes = [
   },
   {
     path: 'test-records/create-test',
+    data: { roles: Roles.TestResultAmend },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver },
+    loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
+  },
+  {
+    path: 'provisional/test-records/create-test',
     data: { roles: Roles.TestResultAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },

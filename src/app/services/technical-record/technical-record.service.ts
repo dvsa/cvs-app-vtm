@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthIntoService, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { Router } from '@angular/router';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
@@ -14,7 +15,7 @@ import {
   vehicleTechRecords
 } from '@store/technical-records';
 import { cloneDeep } from 'lodash';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export enum SEARCH_TYPES {
@@ -28,7 +29,7 @@ export enum SEARCH_TYPES {
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private store: Store, private http: HttpClient) {}
+  constructor(private store: Store, private http: HttpClient, private router: Router) {}
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
     return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
@@ -142,14 +143,14 @@ export class TechnicalRecordService {
       select(selectRouteNestedParams),
       map(params => {
         const createdAt = params['techCreatedAt'];
-        const isProvisional = params['provisional'] === 'provisional';
+        const isProvisional = this.router.url.split('/').pop() === 'provisional';
 
         if (isProvisional) {
           return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
         }
 
         if (createdAt) {
-          vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED)
+          return vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED)
         }
 
         return this.filterTechRecordByStatusCode(vehicleRecord);
