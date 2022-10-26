@@ -48,6 +48,7 @@ const routes: Routes = [
     component: TechRecordComponent,
     canActivate: [MsalGuard],
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'historic/:techCreatedAt',
