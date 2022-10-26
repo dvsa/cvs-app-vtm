@@ -209,7 +209,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
-      value: '',
+      value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
