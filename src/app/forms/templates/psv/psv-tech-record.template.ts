@@ -19,12 +19,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      editType: FormNodeEditTypes.SELECT,
-      options: [
-        { value: 'psv', label: 'PSV' },
-        { value: 'hgv', label: 'HGV' },
-        { value: 'trl', label: 'Trailer' }
-      ],
+      disabled: true
     },
     {
       name: 'regnDate',

@@ -17,12 +17,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      editType: FormNodeEditTypes.SELECT,
-      options: [
-        { value: 'psv', label: 'PSV' },
-        { value: 'hgv', label: 'HGV' },
-        { value: 'trl', label: 'Trailer' }
-      ],
+      disabled: true,
       validators: [{ name: ValidatorNames.Required }],
     },
     {
@@ -57,7 +52,7 @@ export const TrlTechRecordTemplate: FormNode = {
       isoDate: false
     },
 
-    // {   /// Not on UI model but may be needed later
+    // {
     //   name: 'noOfAxles',
     //   label: 'Number of axles',
     //   value: '',
@@ -80,7 +75,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.GROUP,
       viewType: FormNodeViewTypes.STRING
     },
-    // {    /// Not on UI model but may be needed later
+    // {
     //   name: 'axles',
     //   value: '',
     //   type: FormNodeTypes.ARRAY,

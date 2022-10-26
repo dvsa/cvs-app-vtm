@@ -18,12 +18,7 @@ export const HgvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      editType: FormNodeEditTypes.SELECT,
-      options: [
-        { value: 'psv', label: 'PSV' },
-        { value: 'hgv', label: 'HGV' },
-        { value: 'trl', label: 'Trailer' }
-      ],
+      disabled: true
     },
     {
       name: 'regnDate',
@@ -71,7 +66,7 @@ export const HgvTechRecord: FormNode = {
         }
       ],
     },
-    // {   /// Not on UI model but may be needed later
+    // {
     //   name: 'axles',
     //   value: '',
     //   type: FormNodeTypes.ARRAY,
