@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
-import { PsvAxleUpdate } from '@forms/templates/psv/psv-axle-update.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
