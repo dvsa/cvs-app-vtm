@@ -164,6 +164,24 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
   get cleanValueChanges() {
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
+
+  // override patchValue(
+  //   value: {
+  //     [key: string]: any;
+  //   },
+  //   options?: {
+  //     onlySelf?: boolean;
+  //     emitEvent?: boolean;
+  //   }
+  // ): void {
+  //   //go over the form and make sure that the controls are the same length, if not sort that
+  //   //only if array
+  //   if (this.controls['axleNumber']) {
+  //     console.log('patch in form group', this.controls);
+  //     console.log('patch in form group value', value);
+  //   }
+  //   super.patchValue(value, options);
+  // }
 }
 
 export interface CustomArray extends FormArray {
@@ -192,10 +210,31 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
 
-  addControl(data?: any): void {
+  addControl(data?: any, templateArray?: FormNode): void {
+    if (templateArray) {
+      super.push(this.dynamicFormService.createForm(templateArray, data));
+      return;
+    }
     if (this.meta?.children) {
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
     }
+  }
+
+  override patchValue(
+    value: any[],
+    options?: {
+      onlySelf?: boolean;
+      emitEvent?: boolean;
+    }
+  ): void {
+    if (value.length !== this.controls.length) {
+      if (value.length > this.controls.length && this.meta.children) {
+        super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
+      } else {
+        this.controls.pop();
+      }
+    }
+    super.patchValue(value, options);
   }
 }
 

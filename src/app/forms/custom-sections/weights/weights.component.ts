@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { PsvAxleUpdate } from '@forms/templates/psv/psv-axle-update.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
@@ -20,6 +20,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
+  public isError: boolean = false;
+  public errorMessage?: string;
 
   constructor(public dfs: DynamicFormService) {}
 
@@ -61,11 +63,50 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     return FormNodeEditTypes;
   }
 
-  get axles(): FormArray {
-    return this.form.get(['axles']) as FormArray;
+  get axles(): CustomFormArray {
+    return this.form.get(['axles']) as CustomFormArray;
   }
 
-  getAxleWeights(i: number): FormGroup {
-    return this.axles.get([i, 'weights']) as FormGroup;
+  getAxleWeights(i: number): CustomFormGroup {
+    return this.axles.get([i, 'weights']) as CustomFormGroup;
+  }
+
+  addAxle(): void {
+    const newAxle: Axle = {
+      axleNumber: this.axles.length + 1,
+      tyres: {
+        tyreSize: null,
+        speedCategorySymbol: null,
+        fitmentCode: null,
+        dataTrAxles: null,
+        plyRating: null,
+        tyreCode: null
+      },
+      parkingBrakeMrk: false,
+      weights: {
+        kerbWeight: null,
+        ladenWeight: null,
+        gbWeight: null,
+        eecWeight: null,
+        designWeight: null
+      }
+    };
+    if (this.vehicleTechRecord.axles.length < 5) {
+      this.isError = false;
+      this.axles.addControl(newAxle, PsvAxleUpdate);
+    } else {
+      this.isError = true;
+      this.errorMessage = 'Cannot have more than 5 axles';
+    }
+  }
+
+  removeAxle(index: number): void {
+    if (this.vehicleTechRecord.axles.length > 1) {
+      this.isError = false;
+      this.axles.removeAt(index);
+    } else {
+      this.isError = true;
+      this.errorMessage = 'Cannot have less than 1 axle';
+    }
   }
 }
