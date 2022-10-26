@@ -70,15 +70,16 @@ export class CustomAsyncValidators {
     };
   }
 
-  static requiredIfNotResult(store: Store<State>, result: resultOfTestEnum): AsyncValidatorFn {
+  static requiredIfNotResult(store: Store<State>, result: any): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
         select(testResultInEdit),
         map(testResult => {
           const currentResult = testResult?.testTypes[0].testResult;
-          if (currentResult !== result && (control.value == null || control.value === '')) {
-            return { [`requiredIfNot${result}`]: true };
+          if ((Array.isArray(result) ? !result.includes(currentResult) : currentResult !== result) && (control.value == null || control.value === '')) {
+            if(Array.isArray(result)) return { requiredIfNotResult: true }
+            else return { [`requiredIfNot${result}`]: true };
           }
           return null;
         })
@@ -92,4 +93,28 @@ export class CustomAsyncValidators {
   static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
     return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
   }
+  
+  static requiredIfNotResultAndSiblingEquals(store: Store<State>, result: any, sibling: string, value: any): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+          if (control?.parent) {
+            const siblingControl = control.parent.get(sibling) as CustomFormControl;
+            const siblingValue = siblingControl.value;
+            const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
+
+            const currentResult = testResult?.testTypes[0].testResult;
+
+            if ((Array.isArray(result) ? !result.includes(currentResult) : currentResult !== result) && newValue && (control.value === null || control.value === undefined || control.value === '')) {
+              return { requiredIfNotResultAndSiblingEquals: { sibling: siblingControl.meta.label } };
+            }
+          }
+
+          return null;
+        })
+      );
+  }
+ 
 }
