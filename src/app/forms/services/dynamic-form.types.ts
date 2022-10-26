@@ -164,24 +164,6 @@ export class CustomFormGroup extends FormGroup implements CustomGroup, BaseForm 
   get cleanValueChanges() {
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
-
-  // override patchValue(
-  //   value: {
-  //     [key: string]: any;
-  //   },
-  //   options?: {
-  //     onlySelf?: boolean;
-  //     emitEvent?: boolean;
-  //   }
-  // ): void {
-  //   //go over the form and make sure that the controls are the same length, if not sort that
-  //   //only if array
-  //   if (this.controls['axleNumber']) {
-  //     console.log('patch in form group', this.controls);
-  //     console.log('patch in form group value', value);
-  //   }
-  //   super.patchValue(value, options);
-  // }
 }
 
 export interface CustomArray extends FormArray {
