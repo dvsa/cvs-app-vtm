@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
+import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
@@ -48,6 +49,8 @@ export class ReferenceDataService {
         return mockCountriesOfRegistration;
       case ReferenceDataResourceType.User:
         return mockUsers;
+      case ReferenceDataResourceType.ReasonsForAbandoning:
+        return mockReasonsForAbandoning;
       default:
         return new Error('Unknown reference data resourceType');
     }

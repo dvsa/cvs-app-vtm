@@ -6,7 +6,7 @@ import { Item } from '@models/defects/item.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { DefectsState, filteredDefects } from '@store/defects';
-import { selectedTestResultState, toEditOrNotToEdit } from '@store/test-records';
+import { toEditOrNotToEdit } from '@store/test-records';
 import { TestResultsState } from '@store/test-records/reducers/test-records.reducer';
 import { takeUntil, filter, Subject } from 'rxjs';
 
@@ -80,10 +80,14 @@ export class DefectSelectComponent implements OnInit, OnDestroy {
         break;
       case Types.Deficiency:
         this.selectedDeficiency = selected as Deficiency;
-        this.router.navigate([this.selectedDeficiency!.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
+        this.router.navigate([this.selectedDeficiency.ref], { relativeTo: this.route, queryParamsHandling: 'merge' });
         break;
       default:
-        this.router.navigate([`${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}`], {
+        let advisoryRoute = `${this.selectedDefect?.imNumber}.${this.selectedItem?.itemNumber}.advisory`;
+        if (this.selectedDefect?.imNumber === 71 && this.selectedItem?.itemNumber === 1) {
+          advisoryRoute += this.selectedItem.itemDescription === 'All Roller Brake Test Machines:' ? '.0' : '.1';
+        }
+        this.router.navigate([advisoryRoute], {
           relativeTo: this.route,
           queryParamsHandling: 'merge'
         });

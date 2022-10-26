@@ -1,6 +1,7 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const SpecialistTestSectionGroup1: FormNode = {
   name: 'testSection',
@@ -46,12 +47,18 @@ export const SpecialistTestSectionGroup1: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' },
+                { value: 'abandoned', label: 'Abandoned' }
+              ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -67,7 +74,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              options: TestAbandonmentReasonsPsvData
+              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -96,7 +103,8 @@ export const SpecialistTestSectionGroup1: FormNode = {
               label: 'Certificate number',
               value: '',
               type: FormNodeTypes.CONTROL,
-              editType: FormNodeEditTypes.TEXT
+              editType: FormNodeEditTypes.TEXT,
+              validators: [{ name: ValidatorNames.Alphanumeric }]
             },
             {
               name: 'testNumber',
@@ -109,17 +117,27 @@ export const SpecialistTestSectionGroup1: FormNode = {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              disabled: true,
               label: 'Start time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.PastDate },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
+              ]
             },
             {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
-              disabled: true,
               label: 'End time',
-              viewType: FormNodeViewTypes.TIME
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATETIME,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+              ]
             },
             {
               name: 'prohibitionIssued',

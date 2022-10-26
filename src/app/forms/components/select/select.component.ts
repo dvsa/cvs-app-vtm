@@ -4,7 +4,7 @@ import { FormNodeOption } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
 
 @Component({
-  selector: 'app-select',
+  selector: 'app-select[options]',
   templateUrl: './select.component.html',
   providers: [
     {
@@ -15,5 +15,5 @@ import { BaseControlComponent } from '../base-control/base-control.component';
   ]
 })
 export class SelectComponent extends BaseControlComponent {
-  @Input() options: FormNodeOption<string | number | boolean>[] = [];
+  @Input() options!: Array<FormNodeOption<string | number | boolean>>;
 }

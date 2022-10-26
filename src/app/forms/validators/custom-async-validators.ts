@@ -1,11 +1,12 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { CustomFormControl, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
-import { sectionTemplates, testResultInEdit, updateResultOfTest } from '@store/test-records';
+import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
 import { catchError, map, Observable, of, take, tap } from 'rxjs';
 
@@ -68,5 +69,27 @@ export class CustomAsyncValidators {
       );
     };
   }
-  
+
+  static requiredIfNotResult(store: Store<State>, result: resultOfTestEnum): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+          const currentResult = testResult?.testTypes[0].testResult;
+          if (currentResult !== result && (control.value == null || control.value === '')) {
+            return { [`requiredIfNot${result}`]: true };
+          }
+          return null;
+        })
+      );
+  }
+
+  static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
+    return this.requiredIfNotResult(store, resultOfTestEnum.fail);
+  }
+
+  static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
+    return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
+  }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { TestType } from '@models/test-types/test-type.model';
@@ -61,7 +61,8 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               testTypes: [
                 {
                   testResult: 'pass',
-                  prohibitionIssued: null
+                  prohibitionIssued: null,
+                  additionalCommentsForAbandon: null
                 } as TestType
               ]
             } as Partial<TestResultModel>;

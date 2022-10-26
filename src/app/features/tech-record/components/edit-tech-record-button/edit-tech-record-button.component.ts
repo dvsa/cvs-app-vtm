@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { createProvisionalTechRecordSuccess, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import { createProvisionalTechRecordSuccess, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
-import { take } from 'rxjs';
-import { Router } from '@angular/router';
+import { mergeMap, take } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-edit-tech-record-button',
@@ -15,52 +16,67 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 export class EditTechRecordButtonComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() viewableTechRecord?: TechRecordModel;
-  @Input() editableState = false;
-  @Input() isDirty: boolean = false;
+  @Input() isEditing = false;
+  @Input() isDirty = false;
 
-  @Output() editableStateChange = new EventEmitter<boolean>();
-  @Output() submitCheckFormValidity = new EventEmitter();
+  @Output() isEditingChange = new EventEmitter<boolean>();
+  @Output() submitChange = new EventEmitter();
 
-  constructor(private actions$: Actions, private errorService: GlobalErrorService, private router: Router, private store: Store) {}
+  constructor(
+    private actions$: Actions,
+    private errorService: GlobalErrorService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store,
+    private viewportScroller: ViewportScroller
+  ) {}
 
   ngOnInit() {
     this.actions$
-      .pipe(ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess), take(1))
-      .subscribe(action =>
-        this.router.navigateByUrl(
-          `/tech-records/${action.vehicleTechRecords[0].systemNumber}/${action.vehicleTechRecords[0].vin}/historic/${this.getLatestRecordTimestamp(
-            action.vehicleTechRecords[0]
-          )}`
-        )
-      );
+      .pipe(
+        ofType(updateTechRecordsSuccess, createProvisionalTechRecordSuccess),
+        mergeMap(_action => this.store.select(selectVehicleTechnicalRecordsBySystemNumber)),
+        take(1)
+      )
+      .subscribe(vehicleTechRecord => {
+        const techRecord = vehicleTechRecord!.techRecord[0];
+
+        const routeSuffix = techRecord.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
+
+        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}/${vehicleTechRecord!.vin}${routeSuffix}`);
+      });
   }
 
   get isArchived(): boolean {
-    return this.viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+    return !(this.viewableTechRecord?.statusCode === StatusCodes.CURRENT || this.viewableTechRecord?.statusCode === StatusCodes.PROVISIONAL);
   }
 
   getLatestRecordTimestamp(record: VehicleTechRecordModel): number {
     return Math.max(...record.techRecord.map(record => new Date(record.createdAt).getTime()));
   }
 
-  toggleEditMode() {
-    this.editableState = !this.editableState;
-    this.editableStateChange.emit(this.editableState);
+  checkIfEditableReasonRequired() {
+    this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
+      ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
+      : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route })
   }
 
-  cancelAmend() {
+  toggleEditMode() {
+      this.isEditing = !this.isEditing;
+      this.isEditingChange.emit(this.isEditing);
+  }
+
+  cancel() {
     if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
       this.toggleEditMode();
+      this.errorService.clearErrors();
+      this.store.dispatch(updateEditingTechRecordCancel());
+      this.router.navigate(['../'], { relativeTo: this.route });
     }
-
-    this.errorService.clearErrors();
-    this.store.dispatch(updateEditingTechRecordCancel());
-    this.router.navigate([]);
   }
 
-  submitTechRecord() {
-    this.submitCheckFormValidity.emit();
-
-    this.toggleEditMode();
+  submit() {
+    this.submitChange.emit();
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 }

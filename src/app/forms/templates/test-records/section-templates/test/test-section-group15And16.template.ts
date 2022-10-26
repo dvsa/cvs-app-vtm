@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const TestSectionGroup15And16: FormNode = {
   name: 'testSection',
@@ -56,7 +56,9 @@ export const TestSectionGroup15And16: FormNode = {
               ],
               validators: [
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: ['pass', 'abandoned'] } },
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: ['pass', 'abandoned'] } }
               ],
               type: FormNodeTypes.CONTROL
             },
@@ -73,7 +75,7 @@ export const TestSectionGroup15And16: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              options: TestAbandonmentReasonsPsvData
+              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

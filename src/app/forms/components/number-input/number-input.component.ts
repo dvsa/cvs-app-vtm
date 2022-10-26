@@ -13,4 +13,8 @@ import { BaseControlComponent } from '../base-control/base-control.component';
     }
   ]
 })
-export class NumberInputComponent extends BaseControlComponent {}
+export class NumberInputComponent extends BaseControlComponent {
+  get style(): string {
+    return 'govuk-input ' + (this.width ? 'govuk-input--width-' + this.width : '');
+  }
+}

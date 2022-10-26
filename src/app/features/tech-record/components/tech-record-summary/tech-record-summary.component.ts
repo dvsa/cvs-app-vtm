@@ -18,7 +18,7 @@ import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
-import { TrlManufacturerTemplate } from '@forms/templates/trl/trl-manufacturer.template';
+import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
@@ -26,9 +26,9 @@ import cloneDeep from 'lodash.clonedeep';
 import { Store } from '@ngrx/store';
 import { updateEditingTechRecord } from '@store/technical-records';
 import merge from 'lodash.merge';
-import { WeightsComponent } from '@forms/components/weights/weights.component';
+import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { DimensionsComponent } from '@forms/components/dimensions/dimensions.component';
+import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
@@ -46,13 +46,14 @@ export class TechRecordSummaryComponent implements OnInit {
 
   @Input() vehicleTechRecord!: TechRecordModel;
 
-  private _isEditable: boolean = false;
-  get isEditable(): boolean {
-    return this._isEditable;
+  private _isEditing: boolean = false;
+  get isEditing(): boolean {
+    return this._isEditing;
   }
   @Input()
-  set isEditable(value: boolean) {
-    this._isEditable = value;
+  set isEditing(value: boolean) {
+    this._isEditing = value;
+    this.toggleReasonForCreation();
     this.calculateVehicleModel();
   }
 
@@ -65,29 +66,32 @@ export class TechRecordSummaryComponent implements OnInit {
   constructor(private store: Store<TechnicalRecordServiceState>) {}
 
   ngOnInit(): void {
-    this.initializeVehicleTemplates();
+    this.sectionTemplates = this.vehicleTemplates;
+    this.toggleReasonForCreation();
     this.calculateVehicleModel();
   }
 
-  initializeVehicleTemplates(): void {
+  get vehicleTemplates(): Array<FormNode> {
     switch (this.vehicleTechRecord.vehicleType) {
-      case 'psv':
-        this.sectionTemplates = this.getPsvTemplates();
-        break;
-      case 'hgv':
-        this.sectionTemplates = this.getHgvTemplates();
-        break;
-      case 'trl':
-        this.sectionTemplates = this.getTrlTemplates();
-        break;
+      case VehicleTypes.PSV:
+        return this.getPsvTemplates();
+      case VehicleTypes.HGV:
+        return this.getHgvTemplates();
+      case VehicleTypes.TRL:
+        return this.getTrlTemplates();
+    }
+  }
+
+  toggleReasonForCreation(): void {
+    if (this.isEditing) {
+      this.sectionTemplates.unshift(reasonForCreationSection);
+    } else {
+      this.sectionTemplates.shift()
     }
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditable ? 
-    { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } 
-    : this.vehicleTechRecord;
-
+    this.vehicleTechRecordCalculated = this.isEditing ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
@@ -103,7 +107,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   getPsvTemplates(): Array<FormNode> {
     return [
-      /*  1 */ reasonForCreationSection,
+      /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ PsvNotes,
       /*  3 */ PsvTechRecord,
       /*  4 */ getTypeApprovalSection(VehicleTypes.PSV),
@@ -121,7 +125,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   getHgvTemplates(): Array<FormNode> {
     return [
-      /*  1 */ reasonForCreationSection,
+      /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ NotesTemplate,
       /*  3 */ HgvTechRecord,
       /*  4 */ getTypeApprovalSection(VehicleTypes.HGV),
@@ -143,7 +147,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   getTrlTemplates(): Array<FormNode> {
     return [
-      /*  1 */ reasonForCreationSection,
+      /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ NotesTemplate,
       /*  3 */ TrlTechRecordTemplate,
       /*  4 */ getTypeApprovalSection(VehicleTypes.TRL),
@@ -159,7 +163,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /* 14 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),
       /* 15 */ PlatesTemplate,
       /* 16 */ TrlAuthIntoServiceTemplate,
-      /* 17 */ TrlManufacturerTemplate
+      /* 17 */ ManufacturerTemplate
     ];
   }
 }

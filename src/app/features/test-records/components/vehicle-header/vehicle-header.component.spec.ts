@@ -8,6 +8,8 @@ import { initialAppState } from '@store/.';
 import { of } from 'rxjs';
 import { ResultOfTestComponent } from '../result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from './vehicle-header.component';
+import { TechRecordModel, VehicleTypes, VehicleConfigurations } from '@models/vehicle-tech-record.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
@@ -16,7 +18,7 @@ describe('VehicleHeaderComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent, ResultOfTestComponent],
-      imports: [SharedModule, HttpClientTestingModule],
+      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
       providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
     }).compileComponents();
   }));
@@ -41,5 +43,42 @@ describe('VehicleHeaderComponent', () => {
 
   it('should display the reading if the unit is undefined', () => {
     expect(component.combinedOdometerReading(1234, undefined)).toEqual('1234 ');
+  });
+
+  it('should display the correct data based on vehicle type', () => {
+    const mockRecord = {
+      vehicleConfiguration: VehicleConfigurations.RIGID,
+      bodyMake: 'testBody',
+      bodyModel: 'testBodyModel',
+      chassisMake: 'testChassis',
+      chassisModel: 'testChassisModel'
+    } as TechRecordModel;
+
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testChassis-testChassisModel');
+  });
+
+  it('should display an empty string if all required data cannot be retrieved', () => {
+    const mockRecord = {
+      bodyMake: '',
+      bodyModel: 'testBodyModel',
+      chassisMake: '',
+      chassisModel: 'testChassisModel'
+    } as TechRecordModel;
+
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toBeFalsy();
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toBeFalsy();
+  });
+
+  it('should display "Unknown Vehicle Type" if vehicle type is unknown/undefined', () => {
+    const mockRecord = {
+      bodyMake: 'testBodyMake',
+      bodyModel: 'testBodyModel',
+      chassisMake: 'testChassisMake',
+      chassisModel: 'testChassisModel'
+    } as TechRecordModel;
+    expect(component.getVehicleDescription(mockRecord, undefined)).toEqual('Unknown Vehicle Type');
   });
 });

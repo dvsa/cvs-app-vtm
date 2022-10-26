@@ -9,29 +9,28 @@
         <dd class="govuk-summary-list__value"></dd>
       </div>
 
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
-        <dd id="current-vrm" class="govuk-summary-list__value">
-          {{ currentVrm | defaultNullOrEmpty }}
-        </dd>
-        <dd class="govuk-summary-list__value"></dd>
-      </div>
+      <ng-container *ngIf="(currentTechRecord$ | async)?.vehicleType !== vehicleTypes.TRL; else trailerHeader">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
+          <dd id="current-vrm" class="govuk-summary-list__value">
+            <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
 
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Previous VRM</dt>
-        <dd id="previous-vrm" class="govuk-summary-list__value">
-          <p class="govuk-body govuk-!-margin-bottom-0" *ngFor="let secondaryVrm of otherVrms">{{ secondaryVrm.vrm | defaultNullOrEmpty }}</p>
-        </dd>
-        <dd class="govuk-summary-list__value"></dd>
-      </div>
-
-      <div *ngIf="(currentTechRecord$ | async)?.vehicleType === vehicleTypes.TRL" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Trailer ID</dt>
-        <dd id="trailer-id" class="govuk-summary-list__value">
-          {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
-        </dd>
-        <dd class="govuk-summary-list__value"></dd>
-      </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Previous VRM</dt>
+          <dd id="previous-vrm" class="govuk-summary-list__value">
+            <app-number-plate
+              *ngFor="let secondaryVrm of otherVrms"
+              class="govuk-body govuk-!-margin-bottom-0"
+              [vrm]="secondaryVrm.vrm"
+              [isSecondary]="true"
+            ></app-number-plate>
+          </dd>
+          <dd class="govuk-summary-list__value"></dd>
+        </div>
+      </ng-container>
 
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Record status</dt>
@@ -43,28 +42,41 @@
     </dl>
 
     <app-edit-tech-record-button
-      [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [vehicleTechRecord]="vehicleTechRecord"
       [viewableTechRecord]="(currentTechRecord$ | async) || undefined"
+      [(isEditing)]="isEditing"
       [isDirty]="isDirty"
-      [(editableState)]="isEditable"
-      (submitCheckFormValidity)="handleSubmit()"
+      (submitChange)="handleSubmit()"
       *appRoleRequired="roles.TechRecordAmend"
     ></app-edit-tech-record-button>
+
     <app-tech-record-summary
       *ngIf="currentTechRecord$ | async as currentTechRecord"
-      [isEditable]="isEditable"
+      [isEditing]="isEditing"
       [vehicleTechRecord]="currentTechRecord"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>
+
     <app-tech-record-history
       [currentRecord]="(currentTechRecord$ | async) || undefined"
-      [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [vehicleTechRecord]="vehicleTechRecord"
     ></app-tech-record-history>
+
     <app-test-record-summary
       *appRoleRequired="roles.TestResultView"
       [testRecords]="(records$ | async) || []"
-      [vehicleTechRecord]="vehicleTechRecord || undefined"
+      [currentTechRecord]="(currentTechRecord$ | async) || undefined"
     >
     </app-test-record-summary>
   </div>
 </div>
+
+<ng-template #trailerHeader>
+  <div *ngIf="(currentTechRecord$ | async)?.vehicleType === vehicleTypes.TRL" class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Trailer ID</dt>
+    <dd id="trailer-id" class="govuk-summary-list__value">
+      {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+</ng-template>

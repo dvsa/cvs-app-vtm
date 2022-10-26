@@ -4,9 +4,10 @@ import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
-import { reasonForCreationSection } from './section-templates/reasonForCreation/resonForCreation.template';
+import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
+import { SpecialistRequiredSectionHGVTRL } from './section-templates/required/specialist-required-hidden-section-hgv-trl.template';
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { TestSectionGroup1 } from './section-templates/test/test-section-group1.template';
 import { TestSectionGroup3And4And8 } from './section-templates/test/test-section-group3And4And8.template';
@@ -22,8 +23,11 @@ import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist-test-section-group1.template';
-import { RequiredSpecialistSectionGroup1And5 } from './section-templates/required/specialist-required-hidden-section-group1And5.template';
+import { RequiredSpecialistSection } from './section-templates/required/specialist-required-hidden-section.template';
 import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist-test-section-group5.template';
+import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
+import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
+import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist-test-section-group3And4.template';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
@@ -48,7 +52,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
@@ -59,7 +63,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
-      customDefects: CustomDefectsSection,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
     },
@@ -89,7 +93,36 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSectionGroup1And5
+      required: RequiredSpecialistSection
+    },
+    testTypesSpecialistGroup2: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup2,
+      seatbelts: SeatbeltSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSpecialistSection
+    },
+    testTypesSpecialistGroup3: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup3And4,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSpecialistSection
+    },
+    testTypesSpecialistGroup4: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup3And4,
+      seatbelts: SeatbeltSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: RequiredSpecialistSection
     },
     testTypesSpecialistGroup5: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -98,7 +131,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSpecialistSectionGroup1And5
+      required: RequiredSpecialistSection
     }
   },
   hgv: {
@@ -135,9 +168,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -154,9 +187,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -164,9 +197,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup15And16: {
       vehicle: VehicleSectionDefaultPsvHgv,
@@ -177,6 +210,24 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSection
+    },
+    testTypesSpecialistGroup1: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup1,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: SpecialistRequiredSectionHGVTRL
+    },
+    testTypesSpecialistGroup5: {
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: SpecialistTestSectionGroup5,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection,
+      required: SpecialistRequiredSectionHGVTRL,
+      customDefects: CustomDefectsSection
     }
   },
   trl: {
@@ -212,9 +263,9 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
     testTypesGroup7: {
       vehicle: VehicleSectionDefaultTrl,
@@ -231,19 +282,36 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
-      customDefects: CustomDefectsSection
+      required: RequiredSectionHGVTRL
     },
-
     testTypesGroup12And14: {
       vehicle: VehicleSectionDefaultTrl,
       test: TestSectionGroup12And14,
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
-      required: RequiredSectionHGVTRL,
+      required: RequiredSectionHGVTRL
+    },
+    testTypesSpecialistGroup1: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: SpecialistTestSectionGroup1,
+      visit: VisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection,
+      required: SpecialistRequiredSectionHGVTRL
+    },
+    testTypesSpecialistGroup5: {
+      vehicle: VehicleSectionDefaultTrl,
+      test: SpecialistTestSectionGroup5,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection,
+      required: SpecialistRequiredSectionHGVTRL,
       customDefects: CustomDefectsSection
     }
   }

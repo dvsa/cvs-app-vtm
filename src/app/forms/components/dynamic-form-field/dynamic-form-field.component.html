@@ -9,6 +9,7 @@
     [name]="control.value.meta.name"
     [options$]="options"
     [formControlName]="control.key"
+    [hint]="control.value.meta.hint"
   ></app-autocomplete>
 
   <app-date
@@ -16,6 +17,8 @@
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
+    [isoDate]="control.value.meta.isoDate ?? true"
+    [hint]="control.value.meta.hint"
   ></app-date>
 
   <app-date
@@ -23,7 +26,8 @@
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
-    [includeTime]="true"
+    [displayTime]="true"
+    [hint]="control.value.meta.hint"
   ></app-date>
 
   <app-number-input
@@ -31,7 +35,10 @@
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
-  ></app-number-input>
+    [hint]="control.value.meta.hint"
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
+  </app-number-input>
 
   <app-radio-group
     *ngSwitchCase="formNodeEditTypes.RADIO"
@@ -39,13 +46,24 @@
     [name]="control.value.meta.name"
     [options]="(options | async) || []"
     [formControlName]="control.key"
+    [hint]="control.value.meta.hint"
   ></app-radio-group>
+
+  <app-select
+    *ngSwitchCase="formNodeEditTypes.SELECT"
+    [label]="control.value.meta.label"
+    [name]="control.value.meta.name"
+    [options]="(options | async) || []"
+    [formControlName]="control.key"
+    [hint]="control.value.meta.hint"
+  ></app-select>
 
   <app-text-area
     *ngSwitchCase="formNodeEditTypes.TEXTAREA"
     [label]="control.value.meta.label"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
+    [hint]="control.value.meta.hint"
   ></app-text-area>
 
   <app-checkbox-group
@@ -55,6 +73,7 @@
     [options]="(options | async) || []"
     [formControlName]="control.key"
     [delimited]="control.value.meta.delimited"
+    [hint]="control.value.meta.hint"
   ></app-checkbox-group>
 
   <app-text-input
@@ -63,7 +82,10 @@
     [name]="control.value.meta.name"
     [formControlName]="control.key"
     [numeric]="true"
-  ></app-text-input>
+    [hint]="control.value.meta.hint"
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
+  </app-text-input>
 
   <app-text-input
     *ngSwitchDefault
@@ -71,5 +93,8 @@
     [width]="control.value.meta.width"
     [name]="control.value.meta.name"
     [formControlName]="control.key"
-  ></app-text-input>
+    [hint]="control.value.meta.hint"
+  >
+    <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template></app-text-input
+  >
 </ng-container>

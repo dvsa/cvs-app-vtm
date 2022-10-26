@@ -11,6 +11,9 @@ import { IconComponent } from './components/icon/icon.component';
 import { TestTypeNamePipe } from './pipes/test-type-name/test-type-name.pipe';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { RouterModule } from '@angular/router';
+import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,9 +27,11 @@ import { AccordionControlComponent } from './components/accordion-control/accord
     IconComponent,
     TestTypeNamePipe,
     AccordionComponent,
-    AccordionControlComponent
+    AccordionControlComponent,
+    PaginationComponent,
+    BaseDialogComponent
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   exports: [
     DefaultNullOrEmpty,
     ButtonGroupComponent,
@@ -38,7 +43,9 @@ import { AccordionControlComponent } from './components/accordion-control/accord
     IconComponent,
     TestTypeNamePipe,
     AccordionComponent,
-    AccordionControlComponent
+    AccordionControlComponent,
+    PaginationComponent,
+    BaseDialogComponent
   ]
 })
 export class SharedModule {}

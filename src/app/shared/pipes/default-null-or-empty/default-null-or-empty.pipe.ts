@@ -8,7 +8,13 @@ export class DefaultNullOrEmpty implements PipeTransform {
 
   transform(value: any): any {
     if (typeof value === 'string') {
-      return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
+      if (value.toLowerCase() === 'true') {
+        return 'Yes';
+      } else if (value.toLowerCase() === 'false') {
+        return 'No';
+      } else {
+        return value.trim().length > 0 ? this.titleCaseFirstWord(value) : '-';
+      }
     } else if (typeof value === 'boolean') {
       return value ? 'Yes' : 'No';
     } else {

@@ -7,25 +7,31 @@ import { SharedModule } from '@shared/shared.module';
 import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
 import { BaseControlComponent } from './components/base-control/base-control.component';
 import { CheckboxGroupComponent } from './components/checkbox-group/checkbox-group.component';
+import { CustomDefectComponent } from './custom-sections/custom-defect/custom-defect.component';
+import { CustomDefectsComponent } from './custom-sections/custom-defects/custom-defects.component';
 import { DateComponent } from './components/date/date.component';
+import { FocusNextDirective } from './components/date/focus-next.directive';
 import { DefectSelectComponent } from './components/defect-select/defect-select.component';
-import { DefectComponent } from './components/defect/defect.component';
-import { DefectsComponent } from './components/defects/defects.component';
+import { DefectComponent } from './custom-sections/defect/defect.component';
+import { DefectsComponent } from './custom-sections/defects/defects.component';
 import { DynamicFormFieldComponent } from './components/dynamic-form-field/dynamic-form-field.component';
 import { DynamicFormGroupComponent } from './components/dynamic-form-group/dynamic-form-group.component';
 import { FieldErrorMessageComponent } from './components/field-error-message/field-error-message.component';
 import { NumberInputComponent } from './components/number-input/number-input.component';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
+import { ReadOnlyComponent } from './components/read-only/read-only.component';
 import { SelectComponent } from './components/select/select.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { ViewCombinationComponent } from './components/view-combination/view-combination.component';
 import { ViewListItemComponent } from './components/view-list-item/view-list-item.component';
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
-import { FocusNextDirective } from './components/date/focus-next.directive';
-import { WeightsComponent } from './components/weights/weights.component';
-import { DimensionsComponent } from './components/dimensions/dimensions.component';
-import { NumberInputWithSuffixComponent } from './components/number-input-with-suffix/number-input-with-suffix.component';
+import { WeightsComponent } from './custom-sections/weights/weights.component';
+import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
+import { BrakesComponent } from './custom-sections/brakes/brakes.component';
+import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
+import { SuffixDirective } from './directives/suffix.directive';
+import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +57,14 @@ import { NumberInputWithSuffixComponent } from './components/number-input-with-s
     TruncatePipe,
     WeightsComponent,
     DimensionsComponent,
-    NumberInputWithSuffixComponent
+    BrakesComponent,
+    ReadOnlyComponent,
+    CustomDefectsComponent,
+    CustomDefectComponent,
+    SwitchableInputComponent,
+    ReadOnlyComponent,
+    SuffixDirective,
+    AbandonDialogComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -72,7 +85,15 @@ import { NumberInputWithSuffixComponent } from './components/number-input-with-s
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
-    DimensionsComponent
+    DimensionsComponent,
+    BrakesComponent,
+    ReadOnlyComponent,
+    CustomDefectsComponent,
+    CustomDefectComponent,
+    SwitchableInputComponent,
+    SuffixDirective,
+    ReadOnlyComponent,
+    AbandonDialogComponent
   ]
 })
 export class DynamicFormsModule {}

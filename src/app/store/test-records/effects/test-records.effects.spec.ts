@@ -510,7 +510,7 @@ describe('TestResultsEffects', () => {
                   name: '',
                   numberOfSeatbeltsFitted: 0,
                   prohibitionIssued: false,
-                  reasonForAbandoning: null,
+                  reasonForAbandoning: '',
                   seatbeltInstallationCheckDate: false,
                   secondaryCertificateNumber: null,
                   testExpiryDate: '',
@@ -613,6 +613,26 @@ describe('TestResultsEffects', () => {
           { error: '"age" is missing', anchorLink: 'age' },
           { error: 'random error', anchorLink: '' }
         ];
+
+        expectObservable(effects.createTestResult$).toBe('----b', {
+          b: createTestResultFailed({ errors: expectedErrors })
+        });
+      });
+    });
+
+    it('should return createTestResultFailed and add a validation error', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const testResult: TestResultModel = mockTestResult();
+        actions$ = hot('-a--', { a: createTestResult({ value: testResult }) });
+
+        const expectedError = new HttpErrorResponse({
+          status: 400,
+          error: 'Certificate number not present on TIR test type'
+        });
+
+        jest.spyOn(testResultsService, 'postTestResult').mockReturnValue(cold('---#|', {}, expectedError));
+
+        const expectedErrors: GlobalError[] = [{ error: 'Certificate number not present on TIR test type' }];
 
         expectObservable(effects.createTestResult$).toBe('----b', {
           b: createTestResultFailed({ errors: expectedErrors })

@@ -1,35 +1,35 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
+import { RoleRequiredDirective } from '@directives/app-role-required.directive';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
+import { mockTestResult } from '@mocks/mock-test-result';
+import { Roles } from '@models/roles.enum';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { initialAppState, State } from '@store/.';
-import { Observable, of, ReplaySubject } from 'rxjs';
-import { CreateTestRecordComponent } from './create-test-record.component';
-import { GetTestResultsService, UpdateTestResultsService, DefaultService as CreateTestResultsService } from '@api/test-results';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
-import { TestResultModel } from '@models/test-results/test-result.model';
-import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
-import { sectionTemplates, testResultInEdit } from '@store/test-records';
-import { FormGroup } from '@angular/forms';
-import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
+import { UserService } from '@services/user-service/user-service';
 import { ButtonGroupComponent } from '@shared/components/button-group/button-group.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
-import { TestTypeNamePipe } from '@shared/pipes/test-type-name/test-type-name.pipe';
-import { DynamicFormsModule } from '@forms/dynamic-forms.module';
-import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
 import { IconComponent } from '@shared/components/icon/icon.component';
 import { NumberPlateComponent } from '@shared/components/number-plate/number-plate.component';
-import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
-import { RoleRequiredDirective } from '@directives/app-role-required.directive';
-import { UserService } from '@services/user-service/user-service';
-import { Roles } from '@models/roles.enum';
+import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-null-or-empty.pipe';
+import { TestTypeNamePipe } from '@shared/pipes/test-type-name/test-type-name.pipe';
 import { SharedModule } from '@shared/shared.module';
+import { initialAppState, State } from '@store/.';
+import { sectionTemplates, testResultInEdit } from '@store/test-records';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
+import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
+import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
+import { CreateTestRecordComponent } from './create-test-record.component';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -59,12 +59,7 @@ describe('CreateTestRecordComponent', () => {
         VehicleHeaderComponent,
         RoleRequiredDirective
       ],
-      imports: [
-        DynamicFormsModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
-        SharedModule
-      ],
+      imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
       providers: [
         GlobalErrorService,
         RouterService,
@@ -142,14 +137,54 @@ describe('CreateTestRecordComponent', () => {
     expect(updateTestResultSpy).toHaveBeenCalled();
   });
 
-  it('should return true if some forms are invalid', () => {
-    const forms = [{ invalid: true }, { invalid: false }] as FormGroup[];
-    expect(component.isAnyFormInvalid(forms)).toBe(true);
+  describe(CreateTestRecordComponent.prototype.isAnyFormInvalid.name, () => {
+    beforeEach(() => {
+      store.overrideSelector(testResultInEdit, mockTestResult());
+    });
+
+    afterEach(() => {
+      store.resetSelectors();
+    });
+
+    it('should return true if some forms are invalid', fakeAsync(() => {
+      const mockTest = mockTestResult();
+      mockTest.countryOfRegistration = '';
+      store.overrideSelector(testResultInEdit, mockTest);
+      tick();
+      fixture.detectChanges();
+      expect(component.isAnyFormInvalid()).toBe(true);
+    }));
+
+    it('should return false if no forms are invalid', fakeAsync(() => {
+      tick();
+      fixture.detectChanges();
+      expect(component.isAnyFormInvalid()).toBe(false);
+    }));
   });
 
-  it('should return false if no forms are invalid', () => {
-    const forms = [{ invalid: false }, { invalid: false }] as FormGroup[];
-    expect(component.isAnyFormInvalid(forms)).toBe(false);
+  describe(CreateTestRecordComponent.prototype.abandon.name, () => {
+    it('should set isAbandon to true', () => {
+      component.abandon();
+      expect(component.isAbandon).toBeTruthy();
+    });
+  });
+
+  describe(CreateTestRecordComponent.prototype.handleAbandonAction.name, () => {
+    it('should call handle save', () => {
+      const handleSaveSpy = jest.spyOn(component, 'handleSave');
+
+      component.handleAbandonAction('yes');
+
+      expect(handleSaveSpy).toBeCalledTimes(1);
+    });
+
+    it('should set isAbandon to false', () => {
+      component.isAbandon = true;
+
+      component.handleAbandonAction('no');
+
+      expect(component.isAbandon).toBeFalsy();
+    });
   });
 
   it('should combine forms', fakeAsync(() => {

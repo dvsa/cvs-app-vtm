@@ -1,7 +1,10 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
 .govuk-number-plate {
   display: inline-block;
   color: #0b0c0c;
-  background-color: #ffd307;
+  background-color: govuk-colour('yellow');
+  border: 1px solid #c7a304;
   border-radius: 0.25em;
   letter-spacing: 1px;
   text-align: center;
@@ -10,10 +13,15 @@
   font-family: 'GDS Transport', arial, sans-serif;
   font-weight: 600;
   font-size: 1rem;
-  padding: 0.5rem 0.1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1;
   padding: 0.5rem 0.1rem;
   width: 100px;
+}
+
+.secondary {
+  color: #636363;
+  background-color: #efefef;
+  border: 1px solid #cac8c8;
 }

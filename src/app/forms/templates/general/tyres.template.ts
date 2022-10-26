@@ -74,9 +74,5 @@ export function getTyresSection(vehicleType: VehicleTypes): FormNode {
     ]
   };
 
-  if (vehicleType === VehicleTypes.PSV) {
-    section.children = [{ name: 'axleNumber', label: 'Axle Number', type: FormNodeTypes.CONTROL }, ...section.children as FormNode[]];
-  }
-
   return section;
 }

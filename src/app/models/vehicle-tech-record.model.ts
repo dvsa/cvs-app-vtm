@@ -11,6 +11,11 @@ export interface Vrm {
   isPrimary: boolean;
 }
 
+export enum ReasonForEditing {
+  CORRECTING_AN_ERROR = 'correctingAnError',
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiableAlterationNeeded'
+}
+
 export enum StatusCodes {
   ARCHIVED = 'archived',
   CURRENT = 'current',
@@ -143,6 +148,7 @@ export enum SpeedCategorySymbol {
 
 export interface Axle {
   axleNumber?: number;
+  brakes?: AxleBrakeProperties;
   parkingBrakeMrk?: boolean;
   tyres?: Tyres;
   weights?: AxleWeights;
@@ -172,16 +178,16 @@ export interface AxleWeights {
 }
 
 export interface Purchaser {
-  emailAddress: string;
-  telephoneNumber: string;
-  address3: string;
-  address2: string;
-  address1: string;
   name: string;
-  faxNumber: string;
-  postCode: string;
+  address1: string;
+  address2: string;
   postTown: string;
-  purchaserNotes: string;
+  address3?: string | null;
+  postCode?: string | null;
+  telephoneNumber?: string | null;
+  emailAddress?: string | null;
+  faxNumber?: string | null;
+  purchaserNotes?: string | null;
 }
 
 export interface TechRecordModel {
@@ -245,6 +251,7 @@ export interface TechRecordModel {
   functionCode?: string;
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;
+  authIntoService?: AuthIntoService;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
@@ -255,8 +262,14 @@ export interface TechRecordModel {
   unladenWeight?: number;
 
   // Train weights
-  maxTrainGbWeight?: number;
   trainDesignWeight?: number;
+  trainEecWeight?: number;
+  trainGbWeight?: number;
+
+  //Max Train Weights
+  maxTrainGbWeight?: number;
+  maxTrainDesignWeight?: number;
+  maxTrainEecWeight?: number;
 
   // Dimensions
   dimensions?: Dimensions;
@@ -281,6 +294,14 @@ export interface TechRecordModel {
   plates?: Plates[];
   dda?: DDA;
   updateType?: string;
+}
+
+export interface AuthIntoService {
+  cocIssueDate?: string | null;
+  dateReceived?: string | null;
+  datePending?: string | null;
+  dateAuthorised?: string | null;
+  dateRejected?: string | null;
 }
 
 export interface DDA {
@@ -376,7 +397,7 @@ export enum RetarderBrake {
 export interface AxleBrakeProperties {
   brakeActuator: string;
   leverLength: string;
-  springBrakeParking: string;
+  springBrakeParking: boolean;
 }
 
 export interface Microfilm {
