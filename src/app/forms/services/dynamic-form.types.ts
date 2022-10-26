@@ -210,11 +210,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
     return this.valueChanges.pipe(map(() => this.getCleanValue(this)));
   }
 
-  addControl(data?: any, templateArray?: FormNode): void {
-    if (templateArray) {
-      super.push(this.dynamicFormService.createForm(templateArray, data));
-      return;
-    }
+  addControl(data?: any): void {
     if (this.meta?.children) {
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
     }

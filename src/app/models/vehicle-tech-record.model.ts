@@ -165,10 +165,10 @@ export interface Tyres {
 }
 
 export interface AxleWeights {
-  kerbWeight: number | null;
-  ladenWeight: number | null;
+  kerbWeight?: number | null;
+  ladenWeight?: number | null;
   gbWeight: number | null;
-  eecWeight: number | null;
+  eecWeight?: number | null;
   designWeight: number | null;
 }
 

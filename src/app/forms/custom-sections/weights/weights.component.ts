@@ -72,28 +72,27 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addAxle(): void {
+    const weights = this.isPsv
+      ? {
+          kerbWeight: null,
+          ladenWeight: null,
+          gbWeight: null,
+          designWeight: null
+        }
+      : {
+          gbWeight: null,
+          eecWeight: null,
+          designWeight: null
+        };
+
     const newAxle: Axle = {
       axleNumber: this.axles.length + 1,
-      tyres: {
-        tyreSize: null,
-        speedCategorySymbol: null,
-        fitmentCode: null,
-        dataTrAxles: null,
-        plyRating: null,
-        tyreCode: null
-      },
-      parkingBrakeMrk: false,
-      weights: {
-        kerbWeight: null,
-        ladenWeight: null,
-        gbWeight: null,
-        eecWeight: null,
-        designWeight: null
-      }
+      weights: weights
     };
+
     if (this.vehicleTechRecord.axles.length < 5) {
       this.isError = false;
-      this.axles.addControl(newAxle, PsvAxleUpdate);
+      this.axles.addControl(newAxle);
     } else {
       this.isError = true;
       this.errorMessage = 'Cannot have more than 5 axles';
@@ -101,7 +100,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   removeAxle(index: number): void {
-    if (this.vehicleTechRecord.axles.length > 1) {
+    if (this.vehicleTechRecord.axles.length > 2) {
       this.isError = false;
       this.axles.removeAt(index);
     } else {
