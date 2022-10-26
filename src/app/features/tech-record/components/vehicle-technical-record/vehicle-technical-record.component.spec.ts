@@ -130,6 +130,7 @@ describe('VehicleTechnicalRecordComponent', () => {
       component.vehicleTechRecord = mockVehicleTechnicalRecord();
       fixture.detectChanges();
 
+      component.isEditing = true;
       component.handleSubmit()
 
       expect(handleFormStateSpy).toHaveBeenCalled();
