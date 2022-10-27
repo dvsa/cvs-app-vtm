@@ -9,7 +9,8 @@ import { debounceTime, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-weights[vehicleTechRecord]',
-  templateUrl: './weights.component.html'
+  templateUrl: './weights.component.html',
+  styleUrls: ['./weights.component.scss']
 })
 export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() vehicleTechRecord!: TechRecordModel;
