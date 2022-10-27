@@ -10,10 +10,10 @@ import {
   EuVehicleCategories,
   VehicleSizes,
   approvalType,
-  MicrofilmDocumentType,
-  BodyTypeDescription
+  MicrofilmDocumentType
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
+import { BodyTypeDescription } from '@models/body-type-enum';
 
 export const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
@@ -160,7 +160,7 @@ const provisionalTechRecord = {
   bodyMake: 'Body make',
   bodyModel: 'Body model',
   bodyType: {
-    description: BodyTypeDescription.DOUBLEDECKER
+    description: BodyTypeDescription.DOUBLE_DECKER
   },
   functionCode: 'r',
   conversionRefNo: '345345',
@@ -299,7 +299,7 @@ const archivedTechRecord = {
   bodyMake: 'Body make',
   bodyModel: 'Body model',
   bodyType: {
-    description: BodyTypeDescription.DOUBLEDECKER
+    description: BodyTypeDescription.DOUBLE_DECKER
   },
   functionCode: 'r',
   conversionRefNo: '345345',
@@ -424,7 +424,7 @@ const currentTechRecord = {
   bodyMake: 'Body make',
   bodyModel: 'Body model',
   bodyType: {
-    description: BodyTypeDescription.DOUBLEDECKER
+    description: BodyTypeDescription.DOUBLE_DECKER
   },
   functionCode: 'r',
   conversionRefNo: '345345',

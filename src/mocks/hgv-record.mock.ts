@@ -6,10 +6,10 @@ import {
   VehicleConfigurations,
   EuVehicleCategories,
   approvalType,
-  PlateReasonForIssue,
-  BodyTypeDescription
+  PlateReasonForIssue
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
+import { BodyTypeDescription } from '@models/body-type-enum';
 
 export const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({

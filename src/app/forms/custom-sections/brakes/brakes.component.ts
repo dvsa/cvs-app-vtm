@@ -39,7 +39,7 @@ export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     const { vehicleTechRecord } =  changes;
 
-    if (vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
+    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
       this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
     }
   }
