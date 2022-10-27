@@ -245,6 +245,8 @@ export interface TechRecordModel {
   chassisModel?: string;
   bodyMake?: string;
   bodyModel?: string;
+  make?: string;
+  model?: string;
   bodyType?: {
     description: BodyTypeDescription;
   };
