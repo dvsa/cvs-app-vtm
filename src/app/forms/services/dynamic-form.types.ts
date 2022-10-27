@@ -205,8 +205,8 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
       emitEvent?: boolean;
     }
   ): void {
-    if (value.length !== this.controls.length) {
-      if (value.length > this.controls.length && this.meta.children) {
+    if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
+      if (value.length > this.controls.length) {
         super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
       } else {
         this.controls.pop();
