@@ -42,9 +42,9 @@ describe('TechRecordSummaryComponent', () => {
     expect(form).toBeTruthy();
   }
 
-  describe( 'TechRecordSummaryComponent View', () => {
+  describe('TechRecordSummaryComponent View', () => {
     it('should show PSV record found', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
@@ -52,7 +52,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show PSV record found without dimensions', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
@@ -61,7 +61,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show HGV record found', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       fixture.detectChanges();
 
@@ -69,7 +69,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show HGV record found without dimensions', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
@@ -78,7 +78,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show TRL record found', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       fixture.detectChanges();
 
@@ -86,7 +86,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show TRL record found without dimensions', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
@@ -95,7 +95,7 @@ describe('TechRecordSummaryComponent', () => {
     });
   });
 
-  describe( 'TechRecordSummaryComponent Amend', () => {
+  describe('TechRecordSummaryComponent Amend', () => {
     it('should make reason for change null in editMode', () => {
       component.isEditing = true;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
@@ -108,10 +108,12 @@ describe('TechRecordSummaryComponent', () => {
   describe('handleFormState', () => {
     it('should dispatch updateEditingTechRecord', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
 
       component.handleFormState({});
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({techRecord: component.vehicleTechRecordCalculated!}));
+      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ techRecord: component.vehicleTechRecordCalculated! }));
     });
   });
 });

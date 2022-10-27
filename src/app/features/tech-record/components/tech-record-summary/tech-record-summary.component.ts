@@ -95,42 +95,42 @@ export class TechRecordSummaryComponent implements OnInit {
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
-  processAxleEvent(axleEvent: any): void {
-    if (axleEvent.axles.length < this.vehicleTechRecordCalculated.axles.length) {
-      this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
+  removeAxle(axleEvent: any): void {
+    this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
-      let previousAxleRow = 1;
-      let axleToRemove = 0;
-      axleEvent.axles.every((ax: Axle) => {
-        if (ax.axleNumber === previousAxleRow) {
-          previousAxleRow += 1;
-        } else {
-          axleToRemove = ax.axleNumber! - 1;
-          return false;
-        }
-        axleToRemove = ax.axleNumber + 1;
-        return true;
-      });
+    const axleToRemove = this.findAxelToRemove(axleEvent.axles);
 
-      this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => ax.axleNumber !== axleToRemove);
-
-      this.vehicleTechRecordCalculated.axles.forEach((ax: Axle) => {
+    this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => {
+      if (ax.axleNumber !== axleToRemove) {
         if (ax.axleNumber! > axleToRemove) {
           ax.axleNumber! -= 1;
         }
-      });
-    } else {
-      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), axleEvent);
+        return true;
+      }
+      return false;
+    });
+  }
+
+  findAxelToRemove(axles: Axle[]): number {
+    let previousAxleRow = 1;
+
+    for (const ax of axles) {
+      if (ax.axleNumber === previousAxleRow) {
+        previousAxleRow += 1;
+      } else {
+        return ax.axleNumber! - 1;
+      }
     }
-    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length;
+    return axles.length;
   }
 
   handleFormState(event: any): void {
-    if (event.axles) {
-      this.processAxleEvent(event);
+    if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
+      this.removeAxle(event);
     } else {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
     }
+    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length;
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
