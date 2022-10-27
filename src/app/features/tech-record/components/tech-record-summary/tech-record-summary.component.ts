@@ -121,7 +121,7 @@ export class TechRecordSummaryComponent implements OnInit {
         return ax.axleNumber! - 1;
       }
     }
-    return axles.length;
+    return axles.length + 1;
   }
 
   handleFormState(event: any): void {
