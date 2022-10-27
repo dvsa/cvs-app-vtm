@@ -32,6 +32,7 @@ import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
+import { BodyComponent } from './custom-sections/body/body.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     SwitchableInputComponent,
     ReadOnlyComponent,
     SuffixDirective,
-    AbandonDialogComponent
+    AbandonDialogComponent,
+    BodyComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -93,7 +95,8 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     SwitchableInputComponent,
     SuffixDirective,
     ReadOnlyComponent,
-    AbandonDialogComponent
+    AbandonDialogComponent,
+    BodyComponent
   ]
 })
 export class DynamicFormsModule {}

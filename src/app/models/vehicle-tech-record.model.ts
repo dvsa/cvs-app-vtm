@@ -1,3 +1,5 @@
+import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
+
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
   vin: string;
@@ -113,21 +115,6 @@ export enum approvalType {
   ECSSTA = 'ECSSTA'
 }
 
-export enum BodyTypeDescription {
-  ARTICULATED = 'articulated',
-  BOX = 'box',
-  DOUBLEDECKER = 'double decker',
-  FLAT = 'flat',
-  OTHER = 'other',
-  PETROL = 'petrol/oil tanker',
-  REFRIGIRATED = 'refrigerated',
-  REFUSE = 'refuse',
-  SINGLEDECKER = 'single decker',
-  SKELETAL = 'skeletal',
-  SKIPLOADER = 'skip loader',
-  TIPPER = 'tipper'
-}
-
 export enum SpeedCategorySymbol {
   A7 = 'a7',
   A8 = 'a8',
@@ -190,6 +177,11 @@ export interface Purchaser {
   purchaserNotes?: string | null;
 }
 
+export interface BodyType {
+  description?: BodyTypeDescription;
+  code?: BodyTypeCode;
+}
+
 export interface TechRecordModel {
   createdAt: Date;
   createdByName: string;
@@ -241,13 +233,13 @@ export interface TechRecordModel {
   remarks?: string;
   reasonForCreation: string;
   modelLiteral?: string;
+  make?: string;
+  model?: string;
   chassisMake?: string;
   chassisModel?: string;
   bodyMake?: string;
   bodyModel?: string;
-  bodyType?: {
-    description: BodyTypeDescription;
-  };
+  bodyType?: BodyType;
   functionCode?: string;
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;

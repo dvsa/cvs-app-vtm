@@ -1,39 +1,35 @@
-import { MultiOptionsService, SpecialRefData } from '@forms/services/multi-options.service';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export function getBodyTemplate(vehicleType: VehicleTypes): FormNode {
-  let bodyFormControl: FormNode = {
-    name: 'body',
+  return {
+    name: 'bodySection',
     label: 'Body',
     type: FormNodeTypes.GROUP,
-    children: []
-  };
-  if(vehicleType === VehicleTypes.PSV) {
-    bodyFormControl.children!.push(
-      {
-        name: 'modelLiteral',
-        label: 'Model literal',
-        value: '',
-        type: FormNodeTypes.CONTROL
-      },
-      {
-        name: 'chassisMake',
-        label: 'Chassis make',
-        value: '',
-        type: FormNodeTypes.CONTROL,
-      },
-      {
-        name: 'chassisModel',
-        label: 'Chassis model',
-        value: '',
-        type: FormNodeTypes.CONTROL,
-      }
-    )
-  }
-
-  bodyFormControl.children!.push(
+    children: [
+      ...vehicleType === VehicleTypes.PSV
+        ? [
+          {
+            name: 'modelLiteral',
+            label: 'Model literal',
+            value: '',
+            type: FormNodeTypes.CONTROL
+          },
+          {
+            name: 'chassisMake',
+            label: 'Chassis make',
+            value: '',
+            type: FormNodeTypes.CONTROL,
+          },
+          {
+            name: 'chassisModel',
+            label: 'Chassis model',
+            value: '',
+            type: FormNodeTypes.CONTROL,
+          }
+        ]
+        : [],
       {
         name: 'make',
         label: 'Body make',
@@ -67,13 +63,15 @@ export function getBodyTemplate(vehicleType: VehicleTypes): FormNode {
         label: 'Function code',
         value: '',
         type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
       },
       {
         name: 'conversionRefNo',
         label: 'Conversion ref no',
         value: '',
         type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.MaxLength, args: 10 }]
       }
-  )
-  return bodyFormControl;
+    ]
+  };
 }

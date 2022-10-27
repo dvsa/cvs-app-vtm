@@ -10,6 +10,7 @@ import { TechRecordSummaryComponent } from './tech-record-summary.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { SharedModule } from '@shared/shared.module';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
 
 describe('TechRecordSummaryComponent', () => {
   let component: TechRecordSummaryComponent;
@@ -20,7 +21,7 @@ describe('TechRecordSummaryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordSummaryComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, RouterTestingModule, SharedModule],
-      providers: [provideMockStore({ initialState: initialAppState })]
+      providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
     }).compileComponents();
   });
 
