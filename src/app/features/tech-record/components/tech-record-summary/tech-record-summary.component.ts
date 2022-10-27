@@ -98,7 +98,7 @@ export class TechRecordSummaryComponent implements OnInit {
   removeAxle(axleEvent: any): void {
     this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
-    const axleToRemove = this.findAxelToRemove(axleEvent.axles);
+    const axleToRemove = this.findAxleToRemove(axleEvent.axles);
 
     this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => {
       if (ax.axleNumber !== axleToRemove) {
@@ -111,7 +111,7 @@ export class TechRecordSummaryComponent implements OnInit {
     });
   }
 
-  findAxelToRemove(axles: Axle[]): number {
+  findAxleToRemove(axles: Axle[]): number {
     let previousAxleRow = 1;
 
     for (const ax of axles) {
