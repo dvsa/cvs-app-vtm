@@ -11,6 +11,11 @@ export interface Vrm {
   isPrimary: boolean;
 }
 
+export enum ReasonForEditing {
+  CORRECTING_AN_ERROR = 'correcting-an-error',
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed'
+}
+
 export enum StatusCodes {
   ARCHIVED = 'archived',
   CURRENT = 'current',
@@ -240,6 +245,8 @@ export interface TechRecordModel {
   chassisModel?: string;
   bodyMake?: string;
   bodyModel?: string;
+  make?: string;
+  model?: string;
   bodyType?: {
     description: BodyTypeDescription;
   };

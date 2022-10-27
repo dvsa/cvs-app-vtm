@@ -64,7 +64,8 @@ describe('PaginationComponent', () => {
     [[1, 2, 3, 4, 5], 1, 50, 5],
     [[2, 3, 4, 5, 6], 4, 50, 5],
     [[6, 7, 8, 9, 10], 10, 50, 5],
-    [[4, 5, 6, 7, 8], 6, 100, 10]
+    [[4, 5, 6, 7, 8], 6, 100, 10],
+    [[1, 2, 3, 4], 1, 17, 5]
   ])(
     'should show pages %s on page %d when number of items is %d and items per page is %d',
     fakeAsync((visiblePages: Array<number>, currentPage: number, numberOfItems: number, itemsPerPage: number) => {

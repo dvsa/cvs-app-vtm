@@ -1,6 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const ContingencyTestSectionGroup9And10: FormNode = {
   name: 'testSection',
@@ -61,6 +60,7 @@ export const ContingencyTestSectionGroup9And10: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
+              value: null,
               required: true
             },
             {
