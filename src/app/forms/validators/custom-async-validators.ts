@@ -70,14 +70,14 @@ export class CustomAsyncValidators {
     };
   }
 
-  static requiredIfNotResult(store: Store<State>, result: any): AsyncValidatorFn {
+  static requiredIfNotResult(store: Store<State>, result: resultOfTestEnum | resultOfTestEnum[]): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
         select(testResultInEdit),
         map(testResult => {
           const currentResult = testResult?.testTypes[0].testResult;
-          if ((Array.isArray(result) ? !result.includes(currentResult) : currentResult !== result) && (control.value == null || control.value === '')) {
+          if ((Array.isArray(result) ? currentResult&&!result.includes(currentResult) : currentResult !== result) && (control.value == null || control.value === '')) {
             if(Array.isArray(result)) return { requiredIfNotResult: true }
             else return { [`requiredIfNot${result}`]: true };
           }
@@ -94,7 +94,7 @@ export class CustomAsyncValidators {
     return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
   }
   
-  static requiredIfNotResultAndSiblingEquals(store: Store<State>, result: any, sibling: string, value: any): AsyncValidatorFn {
+  static requiredIfNotResultAndSiblingEquals(store: Store<State>, result: resultOfTestEnum | resultOfTestEnum[], sibling: string, value: any): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
@@ -107,8 +107,8 @@ export class CustomAsyncValidators {
 
             const currentResult = testResult?.testTypes[0].testResult;
 
-            if ((Array.isArray(result) ? !result.includes(currentResult) : currentResult !== result) && newValue && (control.value === null || control.value === undefined || control.value === '')) {
-              return { requiredIfNotResultAndSiblingEquals: { sibling: siblingControl.meta.label } };
+            if ((Array.isArray(result) ? currentResult&&!result.includes(currentResult) : currentResult !== result) && newValue && (control.value === null || control.value === undefined || control.value === '')) {
+              return { requiredIfNotResultAndSiblingEquals: true };
             }
           }
 
