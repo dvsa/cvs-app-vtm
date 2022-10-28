@@ -15,33 +15,29 @@ const selectResourceKey = (a: ReferenceDataModelBase): string => {
   return a.resourceKey;
 };
 
-export interface ReferenceDataState {
-  error: string;
-  loading: boolean;
-  [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.ReasonsForAbandoning]: EntityState<ReferenceDataModelBase>;
-}
+export type ReferenceDataState = Record<ReferenceDataResourceType, EntityState<ReferenceDataModelBase>> & { error: string; loading: boolean };
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
 }
 
-export const countriesOfRegistrationEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
-
-export const usersEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialUsersState = usersEntityAdapter.getInitialState();
-
-export const reasonsForAbandoningAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialReasonsForAbandoning = reasonsForAbandoningAdapter.getInitialState();
+export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
+  [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
+  [ReferenceDataResourceType.User]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter()
+};
 
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
-  [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
-  [ReferenceDataResourceType.User]: initialUsersState,
-  [ReferenceDataResourceType.ReasonsForAbandoning]: initialReasonsForAbandoning
+  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
+    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState()
 };
 
 export const referenceDataReducer = createReducer(
@@ -70,9 +66,3 @@ export const referenceDataReducer = createReducer(
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);
-
-export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
-  [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
-  [ReferenceDataResourceType.User]: usersEntityAdapter,
-  [ReferenceDataResourceType.ReasonsForAbandoning]: reasonsForAbandoningAdapter
-};

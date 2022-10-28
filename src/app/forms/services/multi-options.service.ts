@@ -16,10 +16,14 @@ export class MultiOptionsService {
   ) {}
 
   getOptions(referenceData: ReferenceDataResourceType | SpecialRefData): Observable<MultiOptions> {
-    if (referenceData === SpecialRefData.TEST_STATION_P_NUMBER) {
-      return this.testStationsService.getTestStationsOptions();
+    switch (referenceData) {
+      case SpecialRefData.TEST_STATION_P_NUMBER:
+        return this.testStationsService.getTestStationsOptions();
+      case ReferenceDataResourceType.ReasonsForAbandoning:
+        return this.referenceDataService.getReasonsForAbandoning();
+      default:
+        return this.referenceDataService.getReferenceDataOptions(referenceData);
     }
-    return this.referenceDataService.getReferenceDataOptions(referenceData);
   }
 
   loadOptions(referenceData: ReferenceDataResourceType | SpecialRefData): void {
