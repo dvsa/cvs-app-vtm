@@ -70,7 +70,7 @@ export class CustomAsyncValidators {
     };
   }
 
-  static requiredIfNotResult(store: Store<State>, result: any): AsyncValidatorFn {
+  static requiredIfNotResult(store: Store<State>, result: resultOfTestEum | resultOfTestEnum[]): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
