@@ -15,7 +15,6 @@ import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.temp
 import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
-import { getBodyTemplate as getBodySection } from '@forms/templates/general/body.template';
 import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
@@ -34,6 +33,8 @@ import { updateEditingTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
+import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
+import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 
 @Component({
   selector: 'app-tech-record-summary[vehicleTechRecord]',
@@ -118,7 +119,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  7 */ PsvBrakeSectionWheelsHalfLocked,
       /*  8 */ PsvDdaTemplate,
       /*  9 */ DocumentsTemplate,
-      /* 10 */ getBodySection(VehicleTypes.PSV),
+      /* 10 */ psvBodyTemplate,
       /* 11 */ PsvWeight,
       /* 12 */ getTyresSection(VehicleTypes.PSV),
       /* 13 */ getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing)
@@ -133,7 +134,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  4 */ getTypeApprovalSection(VehicleTypes.HGV),
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
-      /*  7 */ getBodySection(VehicleTypes.HGV),
+      /*  7 */ hgvAndTrlBodyTemplate,
       /*  8 */ HgvWeight,
       /*  9 */ getTyresSection(VehicleTypes.HGV),
       /* 10 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
@@ -155,7 +156,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  4 */ getTypeApprovalSection(VehicleTypes.TRL),
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
-      /*  7 */ getBodySection(VehicleTypes.TRL),
+      /*  7 */ hgvAndTrlBodyTemplate,
       /*  8 */ TrlWeight,
       /*  9 */ getTyresSection(VehicleTypes.TRL),
       /* 10 */ TrlBrakes,

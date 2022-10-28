@@ -4,10 +4,12 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { getBodyTemplate } from '@forms/templates/general/body.template';
-import { getBodyTypesAsOptions, getCode } from '@models/body-type-enum';
+import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
+import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
+import getOptionsFromEnum from '@forms/utils/enum-map';
+import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
 import { BodyModel, ReferenceDataResourceType } from '@models/reference-data.model';
-import { BodyType, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectAllReferenceDataByResourceType } from '@store/reference-data';
 import { Subject, debounceTime, takeUntil, Observable, map } from 'rxjs';
@@ -28,10 +30,14 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataStore: Store<ReferenceDataState>) { }
+  constructor(
+    private dfs: DynamicFormService,
+    private optionsService: MultiOptionsService,
+    private referenceDataStore: Store<ReferenceDataState>
+  ) {}
 
   ngOnInit(): void {
-    this.template = getBodyTemplate(this.vehicleTechRecord.vehicleType);
+    this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? psvBodyTemplate : hgvAndTrlBodyTemplate;
 
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
@@ -41,7 +47,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         // Set the body type code automatically based selection
         const bodyType = event?.bodyType as BodyType;
         if (bodyType?.description) {
-          event.bodyType['code'] = getCode(bodyType.description);
+          event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
         }
 
         this.formChange.emit(event);
@@ -79,7 +85,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get bodyTypes(): MultiOptions {
-    return getBodyTypesAsOptions();
+    return getOptionsFromEnum(BodyTypeDescription);
   }
 
   get bodyMakes$(): Observable<MultiOptions> {

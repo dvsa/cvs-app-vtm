@@ -1,7 +1,5 @@
 // The types and codes need to be lowercase for the API.
 
-import { MultiOptions } from '@forms/models/options.model';
-
 export enum BodyTypeDescription {
   ARTICULATED = 'articulated',
   BOX = 'box',
@@ -15,12 +13,6 @@ export enum BodyTypeDescription {
   SKELETAL = 'skeletal',
   SKIP_LOADER = 'skip loader',
   TIPPER = 'tipper',
-}
-
-export function getBodyTypesAsOptions(): MultiOptions {
-  return Object
-    .entries(BodyTypeDescription)
-    .map(([, value]) => ({ value, label: value }));
 }
 
 export enum BodyTypeCode {
@@ -39,31 +31,17 @@ export enum BodyTypeCode {
   X = 'x'
 }
 
-export function getCode(bodyType: BodyTypeDescription): BodyTypeCode {
-  switch (bodyType) {
-    case BodyTypeDescription.ARTICULATED:
-      return BodyTypeCode.A;
-    case BodyTypeDescription.BOX:
-      return BodyTypeCode.K;
-    case BodyTypeDescription.DOUBLE_DECKER:
-      return BodyTypeCode.D;
-    case BodyTypeDescription.FLAT:
-      return BodyTypeCode.T;
-    case BodyTypeDescription.OTHER:
-      return BodyTypeCode.O;
-    case BodyTypeDescription.PETROL_OR_OIL_TANKER:
-      return BodyTypeCode.M;
-    case BodyTypeDescription.REFUSE:
-      return BodyTypeCode.B;
-    case BodyTypeDescription.REFRIGERATED:
-      return BodyTypeCode.R;
-    case BodyTypeDescription.SINGLE_DECKER:
-      return BodyTypeCode.S;
-    case BodyTypeDescription.SKELETAL:
-      return BodyTypeCode.X;
-    case BodyTypeDescription.SKIP_LOADER:
-      return BodyTypeCode.F;
-    case BodyTypeDescription.TIPPER:
-      return BodyTypeCode.P;
-  }
-}
+export const bodyTypeMap = new Map<BodyTypeDescription, BodyTypeCode>([
+  [BodyTypeDescription.ARTICULATED,           BodyTypeCode.A],
+  [BodyTypeDescription.BOX,                   BodyTypeCode.K],
+  [BodyTypeDescription.DOUBLE_DECKER,         BodyTypeCode.D],
+  [BodyTypeDescription.FLAT,                  BodyTypeCode.T],
+  [BodyTypeDescription.OTHER,                 BodyTypeCode.O],
+  [BodyTypeDescription.PETROL_OR_OIL_TANKER,  BodyTypeCode.M],
+  [BodyTypeDescription.REFUSE,                BodyTypeCode.B],
+  [BodyTypeDescription.REFRIGERATED,          BodyTypeCode.R],
+  [BodyTypeDescription.SINGLE_DECKER,         BodyTypeCode.S],
+  [BodyTypeDescription.SKELETAL,              BodyTypeCode.X],
+  [BodyTypeDescription.SKIP_LOADER,           BodyTypeCode.F],
+  [BodyTypeDescription.TIPPER,                BodyTypeCode.P],
+]);
