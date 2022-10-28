@@ -1,0 +1,48 @@
+<form [formGroup]="form">
+  <table class="govuk-table">
+    <caption class="govuk-table__caption govuk-table__caption--m">
+      Tyres
+    </caption>
+
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header"></th>
+        <th scope="col" class="govuk-table__header">speedCategorySymbol</th>
+        <th scope="col" class="govuk-table__header">tyreSize</th>
+        <th scope="col" class="govuk-table__header">fitmentCode</th>
+        <th scope="col" class="govuk-table__header">dataTrAxles</th>
+        <th scope="col" class="govuk-table__header">plyRating</th>
+        <th scope="col" class="govuk-table__header">tyreCode</th>
+        <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
+      </tr>
+    </thead>
+
+    <tbody class="govuk-table__body">
+      <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="axles">
+        <ng-container [formGroupName]="i">
+          <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+          <td class="govuk-table__cell">{{ axle.value.tyres.speedCategorySymbol }}</td>
+          <td class="govuk-table__cell">{{ axle.value.tyres.tyreSize }}</td>
+          <td class="govuk-table__cell">{{ axle.value.tyres.fitmentCode }}</td>
+          <td class="govuk-table__cell">{{ axle.value.tyres.dataTrAxles }}</td>
+          <td class="govuk-table__cell">{{ axle.value.tyres.plyRating }}</td>
+          <td class="govuk-table__cell">{{ axle.value.tyres.tyreCode }}</td>
+          <td *ngIf="isEditing" class="govuk-table__cell">
+            <a class="axleButton" (click)="removeAxle(i)">Remove</a>
+          </td>
+        </ng-container>
+      </tr>
+
+      <tr *ngIf="isEditing">
+        <a class="axleButton" role="button" (click)="addAxle()">Add Axle</a>
+        <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
+      </tr>
+
+      <ng-template #tdNumberInput let-name="name">
+        <td class="govuk-table__cell">
+          <app-switchable-input [form]="form" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
+        </td>
+      </ng-template>
+    </tbody>
+  </table>
+</form>

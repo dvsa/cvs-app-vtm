@@ -32,6 +32,7 @@ import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
+import { TyresComponent } from './custom-sections/tyres/tyres.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     SwitchableInputComponent,
     ReadOnlyComponent,
     SuffixDirective,
-    AbandonDialogComponent
+    AbandonDialogComponent,
+    TyresComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -85,6 +87,7 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
+    TyresComponent,
     DimensionsComponent,
     BrakesComponent,
     ReadOnlyComponent,

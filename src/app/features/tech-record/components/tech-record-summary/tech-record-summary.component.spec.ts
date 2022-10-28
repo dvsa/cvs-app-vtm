@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState, State } from '@store/.';
 import { TechRecordSummaryComponent } from './tech-record-summary.component';
@@ -42,9 +42,9 @@ describe('TechRecordSummaryComponent', () => {
     expect(form).toBeTruthy();
   }
 
-  describe( 'TechRecordSummaryComponent View', () => {
+  describe('TechRecordSummaryComponent View', () => {
     it('should show PSV record found', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       fixture.detectChanges();
 
@@ -52,7 +52,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show PSV record found without dimensions', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
@@ -61,7 +61,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show HGV record found', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       fixture.detectChanges();
 
@@ -69,7 +69,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show HGV record found without dimensions', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
@@ -78,7 +78,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show TRL record found', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       fixture.detectChanges();
 
@@ -86,7 +86,7 @@ describe('TechRecordSummaryComponent', () => {
     });
 
     it('should show TRL record found without dimensions', () => {
-      component.isEditing = false
+      component.isEditing = false;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.TRL).techRecord.pop()!;
       component.vehicleTechRecord!.dimensions = undefined;
       fixture.detectChanges();
@@ -95,7 +95,7 @@ describe('TechRecordSummaryComponent', () => {
     });
   });
 
-  describe( 'TechRecordSummaryComponent Amend', () => {
+  describe('TechRecordSummaryComponent Amend', () => {
     it('should make reason for change null in editMode', () => {
       component.isEditing = true;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
@@ -108,10 +108,85 @@ describe('TechRecordSummaryComponent', () => {
   describe('handleFormState', () => {
     it('should dispatch updateEditingTechRecord', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord.pop()!;
 
       component.handleFormState({});
 
-      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({techRecord: component.vehicleTechRecordCalculated!}));
+      expect(dispatchSpy).toHaveBeenCalledWith(updateEditingTechRecord({ techRecord: component.vehicleTechRecordCalculated! }));
+    });
+  });
+
+  describe('findAxleToRemove', () => {
+    it('should find first axle and remove', () => {
+      const axles: Axle[] = [
+        {
+          axleNumber: 2
+        },
+        {
+          axleNumber: 3
+        },
+        {
+          axleNumber: 4
+        }
+      ];
+
+      expect(component.findAxleToRemove(axles)).toBe(1);
+    });
+
+    it('should find a middle axle and remove', () => {
+      const axles: Axle[] = [
+        {
+          axleNumber: 1
+        },
+        {
+          axleNumber: 3
+        },
+        {
+          axleNumber: 4
+        }
+      ];
+
+      expect(component.findAxleToRemove(axles)).toBe(2);
+    });
+
+    it('should find last axle and remove', () => {
+      const axles: Axle[] = [
+        {
+          axleNumber: 1
+        },
+        {
+          axleNumber: 2
+        },
+        {
+          axleNumber: 3
+        }
+      ];
+
+      expect(component.findAxleToRemove(axles)).toBe(4);
+    });
+  });
+
+  describe('removeAxle', () => {
+    it('should remove axle', () => {
+      component.isEditing = true;
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+
+      const axleEvent = {
+        axles: [
+          {
+            axleNumber: 1
+          },
+          {
+            axleNumber: 3
+          }
+        ]
+      };
+
+      component.removeAxle(axleEvent);
+
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
     });
   });
 });
