@@ -23,6 +23,8 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
     `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
+  [AsyncValidatorNames.RequiredIfNotResult]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
+  [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   // Date errors
   invalidDate: (err: { error: boolean; reason: string; index: number }) => `${err.reason}`
 };
