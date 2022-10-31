@@ -78,7 +78,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: ReferenceDataResourceType.SpecialistReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',
