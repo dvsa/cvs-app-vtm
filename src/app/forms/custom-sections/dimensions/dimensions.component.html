@@ -53,11 +53,11 @@
 
   <ng-container *ngIf="!isPsv">
     <app-switchable-input
-      *ngFor="let axle of bottomSection?.meta?.children"
-      [form]="bottomSection"
+      *ngFor="let axle of axleSpacings?.meta?.children; let i = index"
+      [form]="getAxleSpacing(i)"
       [type]="types.NUMBER"
-      [name]="axle.name"
-      [label]="axle.label"
+      name="value"
+      label="Axle {{ i + 1 }} to axle {{ i + 2 }} (mm)"
       [isEditing]="isEditing"
       [width]="widths.XS"
       suffix="mm"
@@ -69,7 +69,7 @@
   <span class="govuk-label govuk-label--m">{{ isTrl ? 'Coupling center to rear axle' : 'Front of vehicle to 5th wheel coupling' }}</span>
 
   <div class="min-max">
-    <ng-container *ngIf="isTrl; else hgv">
+    <ng-container *ngIf="isTrl; else hgvTop">
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
@@ -91,7 +91,7 @@
       ></app-switchable-input>
     </ng-container>
 
-    <ng-template #hgv>
+    <ng-template #hgvTop>
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
@@ -117,7 +117,7 @@
   <span class="govuk-label govuk-label--m extra-margin">{{ isTrl ? 'Coupling center to rear trailer' : 'Front axle to 5th wheel' }}</span>
 
   <div class="min-max">
-    <ng-container *ngIf="isTrl; else hgv">
+    <ng-container *ngIf="isTrl; else hgvBottom">
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
@@ -139,7 +139,7 @@
       ></app-switchable-input>
     </ng-container>
 
-    <ng-template #hgv>
+    <ng-template #hgvBottom>
       <app-switchable-input
         [form]="form"
         [type]="types.NUMBER"
