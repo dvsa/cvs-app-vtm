@@ -8,11 +8,11 @@ import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-brakes[vehicleTechRecord]',
+  selector: 'app-hgv-trl-brakes[vehicleTechRecord]',
   templateUrl: './brakes.component.html',
   styleUrls: ['./brakes.component.scss']
 })
-export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
+export class HgvAndTrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();

@@ -28,12 +28,13 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
-import { BrakesComponent } from './custom-sections/brakes/brakes.component';
+import { HgvAndTrlBrakesComponent } from './custom-sections/hgv-trl-brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { BodyComponent } from './custom-sections/body/body.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
+import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
     TruncatePipe,
     WeightsComponent,
     DimensionsComponent,
-    BrakesComponent,
+    HgvAndTrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
@@ -68,7 +69,8 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
     SuffixDirective,
     AbandonDialogComponent,
     BodyComponent,
-    TyresComponent
+    TyresComponent,
+    PsvBrakesComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -91,7 +93,7 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
     WeightsComponent,
     TyresComponent,
     DimensionsComponent,
-    BrakesComponent,
+    HgvAndTrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
@@ -99,7 +101,8 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
     SuffixDirective,
     ReadOnlyComponent,
     AbandonDialogComponent,
-    BodyComponent
+    BodyComponent,
+    PsvBrakesComponent
   ]
 })
 export class DynamicFormsModule {}

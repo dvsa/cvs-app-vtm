@@ -9,12 +9,12 @@
           (formChange)="handleFormState($event)"
         ></app-body>
 
-        <app-brakes
+        <app-hgv-trl-brakes
           *ngSwitchCase="'trlBrakesSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
           [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
-        ></app-brakes>
+        ></app-hgv-trl-brakes>
 
         <app-dimensions
           *ngSwitchCase="'dimensionsSection'"

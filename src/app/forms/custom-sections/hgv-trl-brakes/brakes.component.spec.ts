@@ -4,15 +4,15 @@ import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
-import { BrakesComponent } from './brakes.component';
+import { HgvAndTrlBrakesComponent } from './brakes.component';
 
 describe('BrakesComponent', () => {
-  let component: BrakesComponent;
-  let fixture: ComponentFixture<BrakesComponent>;
+  let component: HgvAndTrlBrakesComponent;
+  let fixture: ComponentFixture<HgvAndTrlBrakesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BrakesComponent ],
+      declarations: [ HgvAndTrlBrakesComponent ],
       imports: [ DynamicFormsModule ],
       providers: [provideMockStore({ initialState: initialAppState })]
     })
@@ -20,7 +20,7 @@ describe('BrakesComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BrakesComponent);
+    fixture = TestBed.createComponent(HgvAndTrlBrakesComponent);
     component = fixture.componentInstance;
     component.vehicleTechRecord = mockVehicleTechnicalRecord().techRecord.pop()!;
     fixture.detectChanges();
