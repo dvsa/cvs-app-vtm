@@ -22,6 +22,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { APP_BASE_HREF } from '@angular/common';
 import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -48,6 +49,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         VehicleTechnicalRecordComponent
       ],
       providers: [
+        MultiOptionsService,
         provideMockStore({ initialState: initialAppState }),
         { provide: APP_BASE_HREF, useValue: '/' },
         {
@@ -130,6 +132,7 @@ describe('VehicleTechnicalRecordComponent', () => {
       component.vehicleTechRecord = mockVehicleTechnicalRecord();
       fixture.detectChanges();
 
+      component.isEditing = true;
       component.handleSubmit()
 
       expect(handleFormStateSpy).toHaveBeenCalled();

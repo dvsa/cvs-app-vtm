@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
+import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
+import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
@@ -45,12 +47,16 @@ export class ReferenceDataService {
 
   private getMockReferenceData(type: ReferenceDataResourceType): ReferenceDataModelBase[] | Error {
     switch (type) {
+      case ReferenceDataResourceType.BodyMake:
+        return mockBodyMakes;
+      case ReferenceDataResourceType.BodyModel:
+        return mockBodyModels;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
-      case ReferenceDataResourceType.User:
-        return mockUsers;
       case ReferenceDataResourceType.ReasonsForAbandoning:
         return mockReasonsForAbandoning;
+      case ReferenceDataResourceType.User:
+        return mockUsers;
       default:
         return new Error('Unknown reference data resourceType');
     }

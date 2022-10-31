@@ -53,7 +53,9 @@ export class DynamicFormService {
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.RequiredIfNotFail]: () => CustomAsyncValidators.requiredIfNotFail(this.store),
-    [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store)
+    [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store),
+    [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: any }) => CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
+    [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: { testResult: any, sibling: string; value: any }) => CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

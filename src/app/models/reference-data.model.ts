@@ -1,9 +1,11 @@
 import { VehicleTypes } from './vehicle-tech-record.model';
 
 export enum ReferenceDataResourceType {
+  BodyMake = 'BODY_MAKE',
+  BodyModel = 'BODY_MODEL',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
-  User = 'USER',
-  ReasonsForAbandoning = 'REASONS_FOR_ABANDONING'
+  ReasonsForAbandoning = 'REASONS_FOR_ABANDONING',
+  User = 'USER'
 }
 
 export interface ReferenceDataModelBase {
@@ -12,6 +14,10 @@ export interface ReferenceDataModelBase {
   description: string;
 }
 
+export interface BodyMake extends ReferenceDataModelBase {}
+export interface BodyModel extends ReferenceDataModelBase {
+  bodyMake: string;
+}
 export interface CountryOfRegistration extends ReferenceDataModelBase {}
 export interface ReasonsForAbandoning extends ReferenceDataModelBase {
   vehicleType: VehicleTypes;
