@@ -4,7 +4,7 @@ import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
-import { mockTyresModels } from '@mocks/reference-data/mock-tyres';
+import { mockTyres } from '@mocks/reference-data/mock-tyres';
 import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-data/mock-specialist-reasons-for-abandoning.reference-data';
 import { mockTIRReasonsForAbandoning } from '@mocks/reference-data/mock-TIR-reasons-for-abandoning.reference-data';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
@@ -56,7 +56,7 @@ export class ReferenceDataService {
       case ReferenceDataResourceType.BodyModel:
         return mockBodyModels;
       case ReferenceDataResourceType.Tyres:
-        return mockTyresModels;
+        return mockTyres;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
       case ReferenceDataResourceType.ReasonsForAbandoning:

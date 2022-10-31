@@ -22,7 +22,7 @@ export interface BodyModel extends ReferenceDataModelBase {
   bodyMake: string;
 }
 
-export interface TyresModel extends ReferenceDataModelBase {
+export interface ReferenceDataTyre extends ReferenceDataModelBase {
   code: string;
   loadIndexSingleLoad: string;
   tyreSize: string;

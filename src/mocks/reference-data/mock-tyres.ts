@@ -1,6 +1,6 @@
-import { ReferenceDataResourceType, TyresModel } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 
-export const mockTyresModels: TyresModel[] = [
+export const mockTyres: ReferenceDataTyre[] = [
   {
     resourceType: ReferenceDataResourceType.Tyres,
     resourceKey: '101',

@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
-import { ReferenceDataResourceType, TyresModel } from '@models/reference-data.model';
+import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import {
   Axle,
   FitmentCode,
@@ -103,12 +103,12 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe({
         next: data => {
           const newTyre = {
-            tyreSize: (data as TyresModel).tyreSize,
-            plyRating: (data as TyresModel).plyRating,
+            tyreSize: (data as ReferenceDataTyre).tyreSize,
+            plyRating: (data as ReferenceDataTyre).plyRating,
             dataTrAxles:
               tyre.fitmentCode === FitmentCode.SINGLE
-                ? Number((data as TyresModel).loadIndexSingleLoad)
-                : Number((data as TyresModel).loadIndexTwinLoad),
+                ? Number((data as ReferenceDataTyre).loadIndexSingleLoad)
+                : Number((data as ReferenceDataTyre).loadIndexTwinLoad),
             speedCategorySymbol: tyre.speedCategorySymbol,
             fitmentCode: tyre.fitmentCode,
             tyreCode: tyre.tyreCode
