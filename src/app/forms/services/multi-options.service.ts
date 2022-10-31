@@ -7,7 +7,7 @@ import { TestStationsService } from '@services/test-stations/test-stations.servi
 import { fetchTestStations, TestStationsState } from '@store/test-stations';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MultiOptionsService {
   constructor(
     private referenceDataService: ReferenceDataService,

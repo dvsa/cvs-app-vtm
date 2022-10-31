@@ -6,6 +6,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 @Component({
   selector: 'app-select[options]',
   templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -16,4 +17,8 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 })
 export class SelectComponent extends BaseControlComponent {
   @Input() options!: Array<FormNodeOption<string | number | boolean>>;
+
+  get style(): string {
+    return 'govuk-select ' + (this.width ? 'govuk-input--width-' + this.width : '');
+  }
 }

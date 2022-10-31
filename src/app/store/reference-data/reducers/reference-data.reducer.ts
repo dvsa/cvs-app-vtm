@@ -26,14 +26,20 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.User]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
-  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter()
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.BodyMake]: createAdapter(),
+  [ReferenceDataResourceType.BodyModel]: createAdapter()
 };
+
+//IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
 
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
   [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
   [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
+  [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:

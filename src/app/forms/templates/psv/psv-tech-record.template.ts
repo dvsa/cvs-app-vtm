@@ -19,12 +19,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      editType: FormNodeEditTypes.SELECT,
-      options: [
-        { value: 'psv', label: 'PSV' },
-        { value: 'hgv', label: 'HGV' },
-        { value: 'trl', label: 'Trailer' }
-      ],
+      disabled: true
     },
     {
       name: 'regnDate',
@@ -173,11 +168,15 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
-      value: '',
+      value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }]
+      validators: [
+        { name: ValidatorNames.Min, args: 0 },
+        { name: ValidatorNames.Max, args: 99 },
+        { name: ValidatorNames.Numeric, args: 99 },
+      ]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {
