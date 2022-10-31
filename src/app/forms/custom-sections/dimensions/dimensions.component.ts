@@ -75,6 +75,10 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     return this.form.get(['dimensions']) as CustomFormGroup;
   }
 
+  get hasAxleSpacings(): boolean {
+    return !!this.vehicleTechRecord.dimensions?.axleSpacing?.length;
+  }
+
   get axleSpacings(): CustomFormGroup {
     return this.form.get(['dimensions', 'axleSpacing']) as CustomFormGroup;
   }

@@ -1,11 +1,10 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeTypes, FormNodeValidator } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const PsvDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
   label: 'Dimensions',
-  type: FormNodeTypes.GROUP,
+  type: FormNodeTypes.SECTION,
   children: [
     {
       name: 'dimensions',

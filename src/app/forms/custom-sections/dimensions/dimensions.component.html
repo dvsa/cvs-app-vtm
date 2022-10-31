@@ -51,7 +51,7 @@
     suffix="mm"
   ></app-switchable-input>
 
-  <ng-container *ngIf="!isPsv">
+  <ng-container *ngIf="!isPsv && hasAxleSpacings">
     <app-switchable-input
       *ngFor="let axle of axleSpacings?.meta?.children; let i = index"
       [form]="getAxleSpacing(i)"
