@@ -32,6 +32,7 @@ import { BrakesComponent } from './custom-sections/brakes/brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
+import { BodyComponent } from './custom-sections/body/body.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 
 @NgModule({
@@ -66,6 +67,7 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
     ReadOnlyComponent,
     SuffixDirective,
     AbandonDialogComponent,
+    BodyComponent,
     TyresComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
@@ -96,7 +98,8 @@ import { TyresComponent } from './custom-sections/tyres/tyres.component';
     SwitchableInputComponent,
     SuffixDirective,
     ReadOnlyComponent,
-    AbandonDialogComponent
+    AbandonDialogComponent,
+    BodyComponent
   ]
 })
 export class DynamicFormsModule {}

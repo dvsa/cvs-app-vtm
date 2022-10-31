@@ -2,6 +2,13 @@
   <app-accordion-control>
     <ng-container *ngFor="let section of sectionTemplates" [ngSwitch]="section.name">
       <app-accordion [id]="section.name" [title]="section.label">
+        <app-body
+          *ngSwitchCase="'bodySection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
+          [isEditing]="isEditing"
+          (formChange)="handleFormState($event)"
+        ></app-body>
+
         <app-brakes
           *ngSwitchCase="'trlBrakesSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
