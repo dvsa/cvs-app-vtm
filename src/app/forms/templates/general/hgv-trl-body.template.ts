@@ -11,14 +11,14 @@ export const hgvAndTrlBodyTemplate: FormNode = {
       label: 'Body make',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'model',
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'bodyType',
@@ -40,14 +40,14 @@ export const hgvAndTrlBodyTemplate: FormNode = {
       label: 'Function code',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
     },
     {
       name: 'conversionRefNo',
       label: 'Conversion ref no',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 10 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 10 }]
     }
   ]
 };
