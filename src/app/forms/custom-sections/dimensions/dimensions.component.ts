@@ -38,10 +38,10 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { data } =  changes;
+    const { vehicleTechRecord } =  changes;
 
-    if (data?.currentValue && data.currentValue !== data.previousValue) {
-      this.form.patchValue(data.currentValue, { emitEvent: false });
+    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
+      this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
     }
   }
 
