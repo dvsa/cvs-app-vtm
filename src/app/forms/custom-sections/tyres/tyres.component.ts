@@ -2,7 +2,9 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { getTyresSection } from '@forms/templates/general/tyres.template';
+import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
+import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
+import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { ReferenceDataResourceType, TyresModel } from '@models/reference-data.model';
 import { Axle, fitmentCodeAsOptions, speedCategorySymbolAsOptions, TechRecordModel, Tyres, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -43,7 +45,14 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get template() {
-    return getTyresSection(this.vehicleTechRecord.vehicleType);
+    switch (this.vehicleTechRecord.vehicleType) {
+      case VehicleTypes.PSV:
+        return tyresTemplatePsv;
+      case VehicleTypes.HGV:
+        return tyresTemplateHgv;
+      case VehicleTypes.TRL:
+        return tyresTemplateTrl;
+    }
   }
 
   get isPsv(): boolean {
