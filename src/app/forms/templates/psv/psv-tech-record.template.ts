@@ -38,7 +38,11 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 4 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Required }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -113,11 +117,10 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'euroStandard',
       label: 'Euro standard',
-      value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Defined }]
     },
     {
       name: 'fuelPropulsionSystem',
