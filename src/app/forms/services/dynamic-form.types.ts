@@ -201,6 +201,23 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
     }
   }
+
+  override patchValue(
+    value: any[],
+    options?: {
+      onlySelf?: boolean;
+      emitEvent?: boolean;
+    }
+  ): void {
+    if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
+      if (value.length > this.controls.length) {
+        super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
+      } else {
+        this.controls.pop();
+      }
+    }
+    super.patchValue(value, options);
+  }
 }
 
 const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
