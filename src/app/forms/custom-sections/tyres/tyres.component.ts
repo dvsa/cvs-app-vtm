@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -6,7 +6,15 @@ import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { ReferenceDataResourceType, TyresModel } from '@models/reference-data.model';
-import { Axle, fitmentCodeAsOptions, speedCategorySymbolAsOptions, TechRecordModel, Tyres, VehicleTypes } from '@models/vehicle-tech-record.model';
+import {
+  Axle,
+  FitmentCode,
+  fitmentCodeAsOptions,
+  speedCategorySymbolAsOptions,
+  TechRecordModel,
+  Tyres,
+  VehicleTypes
+} from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime, take } from 'rxjs';
@@ -97,7 +105,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
           const newTyre = {
             tyreSize: (data as TyresModel).tyreSize,
             plyRating: (data as TyresModel).plyRating,
-            dataTrAxles: Number((data as TyresModel).loadIndexSingleLoad),
+            dataTrAxles:
+              tyre.fitmentCode === FitmentCode.SINGLE
+                ? Number((data as TyresModel).loadIndexSingleLoad)
+                : Number((data as TyresModel).loadIndexTwinLoad),
             speedCategorySymbol: tyre.speedCategorySymbol,
             fitmentCode: tyre.fitmentCode,
             tyreCode: tyre.tyreCode
