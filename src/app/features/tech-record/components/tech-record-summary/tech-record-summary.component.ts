@@ -38,6 +38,7 @@ import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { updateEditingTechRecord } from '@store/technical-records';
 
 @Component({
+  selector: 'app-tech-record-summary',
   templateUrl: './tech-record-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
