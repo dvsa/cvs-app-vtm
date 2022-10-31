@@ -1,3 +1,5 @@
+import { MultiOptions } from '@forms/models/options.model';
+
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
   vin: string;
@@ -146,6 +148,10 @@ export enum SpeedCategorySymbol {
   Q = 'q'
 }
 
+export function speedCategorySymbolAsOptions(): MultiOptions {
+  return Object.entries(SpeedCategorySymbol).map(([, value]) => ({ value, label: value.toUpperCase() }));
+}
+
 export interface Axle {
   axleNumber?: number;
   brakes?: AxleBrakeProperties;
@@ -155,8 +161,12 @@ export interface Axle {
 }
 
 export enum FitmentCode {
-  DOUBLE = 'double',
-  SINGLE = 'single'
+  SINGLE = 'single',
+  DOUBLE = 'double'
+}
+
+export function fitmentCodeAsOptions(): MultiOptions {
+  return Object.entries(FitmentCode).map(([, value]) => ({ value, label: value.charAt(0).toUpperCase() }));
 }
 
 export interface Tyres {

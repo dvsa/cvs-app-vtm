@@ -13,13 +13,15 @@ export function getTyresSection(vehicleType: VehicleTypes): FormNode {
       name: 'tyreSize',
       label: 'Tyre Size',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'plyRating',
       label: 'Ply Rating',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'fitmentCode',
@@ -31,7 +33,8 @@ export function getTyresSection(vehicleType: VehicleTypes): FormNode {
       name: 'dataTrAxles',
       label: 'Load index',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      disabled: true
     }
   ];
 

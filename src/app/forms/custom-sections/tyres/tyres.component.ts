@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, fitmentCodeAsOptions, speedCategorySymbolAsOptions, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -39,22 +40,39 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get template() {
-    switch (this.vehicleTechRecord.vehicleType) {
-      case VehicleTypes.PSV:
-        return getTyresSection(VehicleTypes.PSV);
-      case VehicleTypes.HGV:
-        return getTyresSection(VehicleTypes.HGV);
-      case VehicleTypes.TRL:
-        return getTyresSection(VehicleTypes.TRL);
-    }
+    return getTyresSection(this.vehicleTechRecord.vehicleType);
+  }
+
+  get isPsv(): boolean {
+    return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
+  }
+
+  get isHgvOrTrl(): boolean {
+    return this.vehicleTechRecord.vehicleType === VehicleTypes.HGV || this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
   }
 
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
 
+  get widths(): typeof FormNodeWidth {
+    return FormNodeWidth;
+  }
+
+  get speedCategorySymbol(): MultiOptions {
+    return speedCategorySymbolAsOptions();
+  }
+
+  get fitmentCode(): MultiOptions {
+    return fitmentCodeAsOptions();
+  }
+
   get axles(): CustomFormArray {
     return this.form.get(['axles']) as CustomFormArray;
+  }
+
+  getAxleTyres(i: number): CustomFormGroup {
+    return this.axles.get([i, 'tyres']) as CustomFormGroup;
   }
 
   addAxle(): void {
