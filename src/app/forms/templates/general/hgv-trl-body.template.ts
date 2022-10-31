@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const hgvAndTrlBodyTemplate: FormNode = {
   name: 'bodySection',
@@ -11,14 +11,14 @@ export const hgvAndTrlBodyTemplate: FormNode = {
       label: 'Body make',
       value: '',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.SELECT,
-      options: []
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'model',
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'bodyType',
@@ -31,6 +31,7 @@ export const hgvAndTrlBodyTemplate: FormNode = {
           label: 'Body type',
           value: '',
           type: FormNodeTypes.CONTROL,
+          validators: [{ name: ValidatorNames.Required }]
         },
       ]
     },
@@ -39,14 +40,14 @@ export const hgvAndTrlBodyTemplate: FormNode = {
       label: 'Function code',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 1 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'conversionRefNo',
       label: 'Conversion ref no',
       value: '',
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.MaxLength, args: 10 }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 10 }, { name: ValidatorNames.Required }]
     }
   ]
 };
