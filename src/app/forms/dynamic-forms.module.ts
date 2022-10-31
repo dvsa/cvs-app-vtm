@@ -33,6 +33,7 @@ import { SwitchableInputComponent } from './components/switchable-input/switchab
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
 import { BodyComponent } from './custom-sections/body/body.component';
+import { TyresComponent } from './custom-sections/tyres/tyres.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { BodyComponent } from './custom-sections/body/body.component';
     ReadOnlyComponent,
     SuffixDirective,
     AbandonDialogComponent,
-    BodyComponent
+    BodyComponent,
+    TyresComponent
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -87,6 +89,7 @@ import { BodyComponent } from './custom-sections/body/body.component';
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
+    TyresComponent,
     DimensionsComponent,
     BrakesComponent,
     ReadOnlyComponent,

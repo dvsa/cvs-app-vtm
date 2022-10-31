@@ -147,21 +147,21 @@ export enum FitmentCode {
 }
 
 export interface Tyres {
-  tyreSize: string;
-  speedCategorySymbol: SpeedCategorySymbol;
-  fitmentCode: FitmentCode;
-  dataTrAxles: number;
-  plyRating: string;
-  tyreCode: number;
-  weights?: AxleWeights;
+  tyreSize: string | null;
+  speedCategorySymbol: SpeedCategorySymbol | null;
+  fitmentCode: FitmentCode | null;
+  dataTrAxles: number | null;
+  plyRating: string | null;
+  tyreCode: number | null;
+  weights?: AxleWeights | null;
 }
 
 export interface AxleWeights {
-  kerbWeight: number;
-  ladenWeight: number;
-  gbWeight: number;
-  eecWeight: number;
-  designWeight: number;
+  kerbWeight?: number | null;
+  ladenWeight?: number | null;
+  gbWeight: number | null;
+  eecWeight?: number | null;
+  designWeight: number | null;
 }
 
 export interface Purchaser {

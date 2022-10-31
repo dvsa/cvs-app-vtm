@@ -50,6 +50,9 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
                 { value: 'fail', label: 'Fail' }
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              validators: [
+                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } }
+              ],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -80,14 +83,15 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
-              value: '',
               validators: [
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'pass' }
                 }
-              ]
+              ],
+              required: true,
+              value: null
             },
             {
               name: 'testTypeStartTimestamp',

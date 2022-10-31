@@ -30,6 +30,13 @@
           (formChange)="handleFormState($event)"
         ></app-weights>
 
+        <app-tyres
+          *ngSwitchCase="'tyreSection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
+          [isEditing]="isEditing"
+          (formChange)="handleFormState($event)"
+        ></app-tyres>
+
         <app-dynamic-form-group
           *ngSwitchDefault
           [data]="vehicleTechRecordCalculated"

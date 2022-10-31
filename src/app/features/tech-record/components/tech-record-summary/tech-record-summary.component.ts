@@ -12,6 +12,7 @@ import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-w
 import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
+import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
@@ -27,17 +28,16 @@ import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
-import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { updateEditingTechRecord } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
 import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
+import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
+import { updateEditingTechRecord } from '@store/technical-records';
 
 @Component({
-  selector: 'app-tech-record-summary[vehicleTechRecord]',
   templateUrl: './tech-record-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -46,6 +46,7 @@ export class TechRecordSummaryComponent implements OnInit {
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
+  @ViewChild(TyresComponent) tyres!: TyresComponent;
 
   @Input() vehicleTechRecord!: TechRecordModel;
 
@@ -89,7 +90,7 @@ export class TechRecordSummaryComponent implements OnInit {
     if (this.isEditing) {
       this.sectionTemplates.unshift(reasonForCreationSection);
     } else {
-      this.sectionTemplates.shift()
+      this.sectionTemplates.shift();
     }
   }
 
@@ -98,8 +99,42 @@ export class TechRecordSummaryComponent implements OnInit {
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
+  removeAxle(axleEvent: any): void {
+    this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
+
+    const axleToRemove = this.findAxleToRemove(axleEvent.axles);
+
+    this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => {
+      if (ax.axleNumber !== axleToRemove) {
+        if (ax.axleNumber! > axleToRemove) {
+          ax.axleNumber! -= 1;
+        }
+        return true;
+      }
+      return false;
+    });
+  }
+
+  findAxleToRemove(axles: Axle[]): number {
+    let previousAxleRow = 1;
+
+    for (const ax of axles) {
+      if (ax.axleNumber === previousAxleRow) {
+        previousAxleRow += 1;
+      } else {
+        return ax.axleNumber! - 1;
+      }
+    }
+    return axles.length + 1;
+  }
+
   handleFormState(event: any): void {
-    this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
+      this.removeAxle(event);
+    } else {
+      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    }
+    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length;
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }

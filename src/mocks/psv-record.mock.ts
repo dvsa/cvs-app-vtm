@@ -101,6 +101,25 @@ const provisionalTechRecord = {
         eecWeight: 4,
         designWeight: 5
       }
+    },
+    {
+      axleNumber: 3,
+      parkingBrakeMrk: true,
+      tyres: {
+        tyreSize: '295/80-22.5',
+        speedCategorySymbol: SpeedCategorySymbol.P,
+        fitmentCode: FitmentCode.DOUBLE,
+        dataTrAxles: 0,
+        plyRating: 'A',
+        tyreCode: 456
+      },
+      weights: {
+        kerbWeight: 1,
+        ladenWeight: 2,
+        gbWeight: 3,
+        eecWeight: 4,
+        designWeight: 5
+      }
     }
   ],
   speedLimiterMrk: true,
