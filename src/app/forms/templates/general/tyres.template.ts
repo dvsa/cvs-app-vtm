@@ -47,6 +47,7 @@ export function getTyresSection(vehicleType: VehicleTypes): FormNode {
     type: FormNodeTypes.GROUP,
     label: 'Tyres',
     children: [
+      { name: 'speedRestriction', label: 'Speed Restriction', value: '', type: FormNodeTypes.CONTROL },
       {
         name: 'axles',
         value: '',

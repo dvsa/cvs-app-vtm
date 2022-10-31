@@ -4,6 +4,7 @@ import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
+import { mockTyresModels } from '@mocks/reference-data/mock-tyres';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { select, Store } from '@ngrx/store';
@@ -51,6 +52,8 @@ export class ReferenceDataService {
         return mockBodyMakes;
       case ReferenceDataResourceType.BodyModel:
         return mockBodyModels;
+      case ReferenceDataResourceType.Tyres:
+        return mockTyresModels;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
       case ReferenceDataResourceType.ReasonsForAbandoning:

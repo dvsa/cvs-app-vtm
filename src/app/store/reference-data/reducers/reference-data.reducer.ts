@@ -20,6 +20,7 @@ export interface ReferenceDataState {
   loading: boolean;
   [ReferenceDataResourceType.BodyMake]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.BodyModel]: EntityState<ReferenceDataModelBase>;
+  [ReferenceDataResourceType.Tyres]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.ReasonsForAbandoning]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
@@ -35,6 +36,9 @@ export const initialBodyMakesState = bodyMakesEntityAdapter.getInitialState();
 export const bodyModelsEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialBodyModelsState = bodyModelsEntityAdapter.getInitialState();
 
+export const tyresModelsEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
+export const initialTyresModelsState = tyresModelsEntityAdapter.getInitialState();
+
 export const countriesOfRegistrationEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
 
@@ -49,6 +53,7 @@ export const initialReferenceDataState: ReferenceDataState = {
   loading: false,
   [ReferenceDataResourceType.BodyMake]: initialBodyMakesState,
   [ReferenceDataResourceType.BodyModel]: initialBodyModelsState,
+  [ReferenceDataResourceType.Tyres]: initialTyresModelsState,
   [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
   [ReferenceDataResourceType.ReasonsForAbandoning]: initialReasonsForAbandoning,
   [ReferenceDataResourceType.User]: initialUsersState
@@ -84,6 +89,7 @@ export const referenceDataFeatureState = createFeatureSelector<ReferenceDataStat
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
   [ReferenceDataResourceType.BodyMake]: bodyMakesEntityAdapter,
   [ReferenceDataResourceType.BodyModel]: bodyModelsEntityAdapter,
+  [ReferenceDataResourceType.Tyres]: tyresModelsEntityAdapter,
   [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
   [ReferenceDataResourceType.User]: usersEntityAdapter,
   [ReferenceDataResourceType.ReasonsForAbandoning]: reasonsForAbandoningAdapter
