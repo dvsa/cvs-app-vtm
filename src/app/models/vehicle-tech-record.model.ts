@@ -1,3 +1,5 @@
+import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
+
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
   vin: string;
@@ -9,6 +11,11 @@ export interface VehicleTechRecordModel {
 export interface Vrm {
   vrm: string;
   isPrimary: boolean;
+}
+
+export enum ReasonForEditing {
+  CORRECTING_AN_ERROR = 'correcting-an-error',
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed'
 }
 
 export enum StatusCodes {
@@ -108,21 +115,6 @@ export enum approvalType {
   ECSSTA = 'ECSSTA'
 }
 
-export enum BodyTypeDescription {
-  ARTICULATED = 'articulated',
-  BOX = 'box',
-  DOUBLEDECKER = 'double decker',
-  FLAT = 'flat',
-  OTHER = 'other',
-  PETROL = 'petrol/oil tanker',
-  REFRIGIRATED = 'refrigerated',
-  REFUSE = 'refuse',
-  SINGLEDECKER = 'single decker',
-  SKELETAL = 'skeletal',
-  SKIPLOADER = 'skip loader',
-  TIPPER = 'tipper'
-}
-
 export enum SpeedCategorySymbol {
   A7 = 'a7',
   A8 = 'a8',
@@ -155,34 +147,39 @@ export enum FitmentCode {
 }
 
 export interface Tyres {
-  tyreSize: string;
-  speedCategorySymbol: SpeedCategorySymbol;
-  fitmentCode: FitmentCode;
-  dataTrAxles: number;
-  plyRating: string;
-  tyreCode: number;
-  weights?: AxleWeights;
+  tyreSize: string | null;
+  speedCategorySymbol: SpeedCategorySymbol | null;
+  fitmentCode: FitmentCode | null;
+  dataTrAxles: number | null;
+  plyRating: string | null;
+  tyreCode: number | null;
+  weights?: AxleWeights | null;
 }
 
 export interface AxleWeights {
-  kerbWeight: number;
-  ladenWeight: number;
-  gbWeight: number;
-  eecWeight: number;
-  designWeight: number;
+  kerbWeight?: number | null;
+  ladenWeight?: number | null;
+  gbWeight: number | null;
+  eecWeight?: number | null;
+  designWeight: number | null;
 }
 
 export interface Purchaser {
-  emailAddress: string;
-  telephoneNumber: string;
-  address3: string;
-  address2: string;
-  address1: string;
   name: string;
-  faxNumber: string;
-  postCode: string;
+  address1: string;
+  address2: string;
   postTown: string;
-  purchaserNotes: string;
+  address3?: string | null;
+  postCode?: string | null;
+  telephoneNumber?: string | null;
+  emailAddress?: string | null;
+  faxNumber?: string | null;
+  purchaserNotes?: string | null;
+}
+
+export interface BodyType {
+  description?: BodyTypeDescription;
+  code?: BodyTypeCode;
 }
 
 export interface TechRecordModel {
@@ -236,13 +233,13 @@ export interface TechRecordModel {
   remarks?: string;
   reasonForCreation: string;
   modelLiteral?: string;
+  make?: string;
+  model?: string;
   chassisMake?: string;
   chassisModel?: string;
   bodyMake?: string;
   bodyModel?: string;
-  bodyType?: {
-    description: BodyTypeDescription;
-  };
+  bodyType?: BodyType;
   functionCode?: string;
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;

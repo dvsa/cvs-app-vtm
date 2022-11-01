@@ -33,8 +33,8 @@
     <ol class="list">
       <li *ngFor="let deficiency of selectedItem?.deficiencies">
         <a class="browse__normal-link govuk-link--no-visited-state" (click)="handleSelect(deficiency, types.Deficiency)"
-          >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : '' }}
-          {{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}</a
+          >{{ selectedDefect?.imNumber }}.{{ selectedItem.itemNumber }} {{ deficiency.deficiencyId ? '(' + deficiency.deficiencyId + ')' : ''
+          }}{{ deficiency.deficiencySubId ? '(' + deficiency.deficiencySubId + ')' : '' }}{{ deficiency.stdForProhibition ? '*' : '' }}</a
         >
         <span>
           <app-tag class="browse__category" [type]="categoryColor(deficiency.deficiencyCategory)">{{ deficiency.deficiencyCategory }}</app-tag>

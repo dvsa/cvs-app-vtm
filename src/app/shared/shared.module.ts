@@ -15,6 +15,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { RouterModule } from '@angular/router';
 import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
+import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PreventDoubleClickDirective } from './directives/prevent-double-click/p
     AccordionControlComponent,
     PaginationComponent,
     TestCertificateComponent,
-    PreventDoubleClickDirective
+    PreventDoubleClickDirective,
+    BaseDialogComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -47,7 +49,8 @@ import { PreventDoubleClickDirective } from './directives/prevent-double-click/p
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
-    TestCertificateComponent
+    TestCertificateComponent,
+    BaseDialogComponent
   ]
 })
 export class SharedModule {}

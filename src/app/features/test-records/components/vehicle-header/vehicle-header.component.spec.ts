@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { ResultOfTestComponent } from '../result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from './vehicle-header.component';
 import { TechRecordModel, VehicleTypes, VehicleConfigurations } from '@models/vehicle-tech-record.model';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('VehicleHeaderComponent', () => {
   let component: VehicleHeaderComponent;
@@ -17,7 +18,7 @@ describe('VehicleHeaderComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [VehicleHeaderComponent, ResultOfTestComponent],
-      imports: [SharedModule, HttpClientTestingModule],
+      imports: [SharedModule, HttpClientTestingModule, RouterTestingModule],
       providers: [TestTypesService, provideMockStore({ initialState: initialAppState }), ResultOfTestService]
     }).compileComponents();
   }));
@@ -50,12 +51,14 @@ describe('VehicleHeaderComponent', () => {
       bodyMake: 'testBody',
       bodyModel: 'testBodyModel',
       chassisMake: 'testChassis',
-      chassisModel: 'testChassisModel'
+      chassisModel: 'testChassisModel',
+      make: 'testHGV',
+      model: 'testHGVModel'
     } as TechRecordModel;
 
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toEqual('rigid');
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.PSV)).toEqual('testBody-testBodyModel');
-    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testChassis-testChassisModel');
+    expect(component.getVehicleDescription(mockRecord, VehicleTypes.HGV)).toEqual('testHGV-testHGVModel');
   });
 
   it('should display an empty string if all required data cannot be retrieved', () => {
@@ -63,7 +66,9 @@ describe('VehicleHeaderComponent', () => {
       bodyMake: '',
       bodyModel: 'testBodyModel',
       chassisMake: '',
-      chassisModel: 'testChassisModel'
+      chassisModel: 'testChassisModel',
+      make: '',
+      model: 'testHGVModel'
     } as TechRecordModel;
 
     expect(component.getVehicleDescription(mockRecord, VehicleTypes.TRL)).toBeFalsy();

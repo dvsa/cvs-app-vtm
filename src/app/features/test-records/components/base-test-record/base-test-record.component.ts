@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { DefectsComponent } from '@forms/components/defects/defects.component';
+import { DefectsComponent } from '@forms/custom-sections/defects/defects.component';
 import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/dynamic-form-group.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Defect } from '@models/defects/defect.model';
@@ -13,6 +13,7 @@ import { TestRecordsService } from '@services/test-records/test-records.service'
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
 import { map, Observable } from 'rxjs';
+import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -21,6 +22,7 @@ import { map, Observable } from 'rxjs';
 export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
   @ViewChild(DefectsComponent) defects?: DefectsComponent;
+  @ViewChild(CustomDefectsComponent) customDefects?: CustomDefectsComponent;
 
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
@@ -49,7 +51,9 @@ export class BaseTestRecordComponent implements AfterViewInit {
       latestTest = merge(latestTest, form.getCleanValue(form));
     });
     const defectsValue = this.defects?.form.getCleanValue(this.defects?.form);
-    latestTest = merge(latestTest, defectsValue, event);
+    const customDefectsValue = this.customDefects?.form.getCleanValue(this.customDefects?.form);
+
+    latestTest = merge(latestTest, defectsValue, customDefectsValue, event);
     latestTest && Object.keys(latestTest).length > 0 && this.newTestResult.emit(latestTest as TestResultModel);
   }
 
@@ -66,6 +70,10 @@ export class BaseTestRecordComponent implements AfterViewInit {
 
   get sectionTemplates$(): Observable<FormNode[] | undefined> {
     return this.testRecordsService.sectionTemplates$;
+  }
+
+  get resultOfTest$(): Observable<string | undefined> {
+    return this.testRecordsService.editingTestResult$.pipe(map(testResult => testResult?.testTypes[0].testResult));
   }
 
   get testNumber$(): Observable<string | undefined> {

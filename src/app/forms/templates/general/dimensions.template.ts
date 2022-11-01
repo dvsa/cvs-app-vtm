@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { AxleSpacing, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes } from '../../services/dynamic-form.types';
 
 export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: number, axleSpacings?: AxleSpacing[]): FormNode {
   const section: FormNode = {
@@ -18,8 +18,6 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
             label: 'Height (mm)',
             value: '',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.HIDDEN,
-            editType: FormNodeEditTypes.HIDDEN,
             validators: [{ name: ValidatorNames.Max, args: 99999 }]
           }]: []),
           {
@@ -27,8 +25,6 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
             label: 'Length (mm)',
             value: '',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.HIDDEN,
-            editType: FormNodeEditTypes.HIDDEN,
             validators: [{ name: ValidatorNames.Max, args: 99999 }]
           },
           {
@@ -36,9 +32,7 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
             label: 'Width (mm)',
             value: '',
             type: FormNodeTypes.CONTROL,
-            viewType: FormNodeViewTypes.HIDDEN,
-            editType: FormNodeEditTypes.HIDDEN,
-            validators: [{ name: ValidatorNames.Max, args: 99999 }]
+            validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
           }
         ]
       },
@@ -47,9 +41,7 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
         label: 'Front axle to rear axle (mm)',
         value: '',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.HIDDEN,
-        editType: FormNodeEditTypes.HIDDEN,
-        validators: [{ name: ValidatorNames.Max, args: 99999 }]
+        validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
       }
     ]
   };
@@ -60,16 +52,16 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
       label: 'Rear axle to rear trailer',
       value: '',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
     });
   }
 
-  if (vehicleType == VehicleTypes.HGV || vehicleType == VehicleTypes.TRL) {
+  if (vehicleType === VehicleTypes.HGV || vehicleType === VehicleTypes.TRL) {
+    const firstName = vehicleType === VehicleTypes.HGV ? 'frontAxleTo5thWheelCoupling' : 'couplingCenterToRearAxle';
+    const secondName = vehicleType === VehicleTypes.HGV ? 'frontAxleTo5thWheel' : 'couplingCenterToRearTrl';
+
     section.children!.push({
-      name: 'dimensionsBottomSection',
-      label: 'Dimensions',
+      name: 'dimensions',
       type: FormNodeTypes.GROUP,
       children: [
         {
@@ -79,6 +71,34 @@ export function getDimensionsSection(vehicleType: VehicleTypes, noOfAxles: numbe
           children: generateAxleToAxleNodes(noOfAxles, axleSpacings)
         }
       ]
+    },
+    {
+      name: firstName + 'Min',
+      label: 'Minimum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+    },
+    {
+      name: firstName + 'Max',
+      label: 'Maximum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+    },
+    {
+      name: secondName + 'Min',
+      label: 'Minimum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
+    },
+    {
+      name: secondName + 'Max',
+      label: 'Maximum',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
     })
   }
 
@@ -96,7 +116,7 @@ function generateAxleToAxleNodes(noOfAxles: number, axles?: AxleSpacing[]): Form
         value: '',
         type: FormNodeTypes.CONTROL,
         viewType: FormNodeViewTypes.STRING,
-        validators: [{ name: ValidatorNames.Max, args: 99999 }]
+        validators: [{ name: ValidatorNames.Max, args: 99999 }, { name: ValidatorNames.Required }]
       });
     }
 

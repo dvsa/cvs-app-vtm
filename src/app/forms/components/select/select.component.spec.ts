@@ -4,6 +4,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CustomFormControl, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { BaseControlComponent } from '../base-control/base-control.component';
+import { FieldErrorMessageComponent } from '../field-error-message/field-error-message.component';
 
 import { SelectComponent } from './select.component';
 
@@ -32,7 +33,7 @@ describe('SelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostComponent, SelectComponent, BaseControlComponent],
+      declarations: [BaseControlComponent, FieldErrorMessageComponent, HostComponent, SelectComponent],
       imports: [FormsModule, ReactiveFormsModule]
     }).compileComponents();
   });

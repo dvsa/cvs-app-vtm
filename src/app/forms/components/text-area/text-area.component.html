@@ -1,9 +1,10 @@
 <div class="govuk-form-group">
-  <h1 *ngIf="label" class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
-  </h1>
+  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
+
   <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
+
   <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+
   <textarea
     class="govuk-textarea"
     rows="5"

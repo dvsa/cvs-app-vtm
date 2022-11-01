@@ -1,8 +1,17 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
 .govuk-button {
   &--link {
     border: none;
-    border-bottom: 1px solid #1d70b8;
-    color: #1d70b8;
+    border-bottom: 1px solid $govuk-brand-colour;
+    color: $govuk-brand-colour;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  &--link {
+    border: none;
     background-color: transparent;
     box-shadow: none;
     padding: 0;

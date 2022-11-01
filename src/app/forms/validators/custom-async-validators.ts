@@ -2,6 +2,7 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
 import { TestStation } from '@models/test-stations/test-station.model';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
@@ -68,4 +69,52 @@ export class CustomAsyncValidators {
       );
     };
   }
+
+  static requiredIfNotResult(store: Store<State>, result: resultOfTestEnum | resultOfTestEnum[]): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+          const currentResult = testResult?.testTypes[0].testResult;
+          if ((Array.isArray(result) ? currentResult&&!result.includes(currentResult) : currentResult !== result) && (control.value == null || control.value === '')) {
+            if(Array.isArray(result)) return { requiredIfNotResult: true }
+            else return { [`requiredIfNot${result}`]: true };
+          }
+          return null;
+        })
+      );
+  }
+
+  static requiredIfNotFail(store: Store<State>): AsyncValidatorFn {
+    return this.requiredIfNotResult(store, resultOfTestEnum.fail);
+  }
+
+  static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
+    return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
+  }
+  
+  static requiredIfNotResultAndSiblingEquals(store: Store<State>, result: resultOfTestEnum | resultOfTestEnum[], sibling: string, value: any): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+          if (control?.parent) {
+            const siblingControl = control.parent.get(sibling) as CustomFormControl;
+            const siblingValue = siblingControl.value;
+            const newValue = Array.isArray(value) ? value.includes(siblingValue) : siblingValue === value;
+
+            const currentResult = testResult?.testTypes[0].testResult;
+
+            if ((Array.isArray(result) ? currentResult&&!result.includes(currentResult) : currentResult !== result) && newValue && (control.value === null || control.value === undefined || control.value === '')) {
+              return { requiredIfNotResultAndSiblingEquals: true };
+            }
+          }
+
+          return null;
+        })
+      );
+  }
+ 
 }

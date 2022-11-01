@@ -26,7 +26,8 @@ export enum FormNodeViewTypes {
   STRING = 'string',
   SUBHEADING = 'subHeading',
   TIME = 'time',
-  VEHICLETYPE = 'vehicleType'
+  VEHICLETYPE = 'vehicleType',
+  VRM = 'vrm'
 }
 
 export enum FormNodeTypes {
@@ -36,7 +37,8 @@ export enum FormNodeTypes {
   DIMENSIONS = 'dimensions',
   GROUP = 'group',
   ROOT = 'root',
-  SECTION = 'section'
+  SECTION = 'section',
+  TITLE = 'title'
 }
 
 export enum FormNodeEditTypes {
@@ -44,6 +46,7 @@ export enum FormNodeEditTypes {
   CHECKBOX = 'checkbox',
   DATE = 'date',
   DATETIME = 'datetime',
+  DROPDOWN = 'dropdown',
   HIDDEN = 'hidden',
   NUMBER = 'number',
   NUMERICSTRING = 'numericstring',
@@ -79,6 +82,7 @@ export interface FormNode {
   editType?: FormNodeEditTypes;
   width?: FormNodeWidth;
   label?: string;
+  hint?: string;
   delimited?: { regex?: string; separator: string };
   value?: any;
   path?: string;
@@ -95,6 +99,8 @@ export interface FormNode {
   referenceData?: ReferenceDataResourceType | SpecialRefData;
   suffix?: string;
   isoDate?: boolean;
+  class?: string;
+
 }
 
 export interface FormNodeCombinationOptions {
@@ -193,6 +199,25 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   addControl(data?: any): void {
     if (this.meta?.children) {
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
+    }
+  }
+
+  override patchValue(
+    value: any[] | undefined | null,
+    options?: {
+      onlySelf?: boolean;
+      emitEvent?: boolean;
+    }
+  ): void {
+    if(value){
+      if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
+        if (value.length > this.controls.length) {
+          super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
+        } else {
+          this.controls.pop();
+        }
+      }
+      super.patchValue(value, options);
     }
   }
 }

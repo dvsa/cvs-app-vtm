@@ -15,28 +15,35 @@ const selectResourceKey = (a: ReferenceDataModelBase): string => {
   return a.resourceKey;
 };
 
-export interface ReferenceDataState {
-  error: string;
-  loading: boolean;
-  [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
-}
+export type ReferenceDataState = Record<ReferenceDataResourceType, EntityState<ReferenceDataModelBase>> & { error: string; loading: boolean };
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
 }
 
-export const countriesOfRegistrationEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
+export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
+  [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
+  [ReferenceDataResourceType.User]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.BodyMake]: createAdapter(),
+  [ReferenceDataResourceType.BodyModel]: createAdapter()
+};
 
-export const usersEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialUsersState = usersEntityAdapter.getInitialState();
+//IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
 
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
-  [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
-  [ReferenceDataResourceType.User]: initialUsersState
+  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
+  [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
+    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState()
 };
 
 export const referenceDataReducer = createReducer(
@@ -50,7 +57,7 @@ export const referenceDataReducer = createReducer(
       loading: false
     };
   }),
-  on(fetchReferenceDataFailed, (state, action) => ({ ...state, loading: false })),
+  on(fetchReferenceDataFailed, state => ({ ...state, loading: false })),
 
   on(fetchReferenceDataByKey, state => ({ ...state, loading: true })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
@@ -61,12 +68,7 @@ export const referenceDataReducer = createReducer(
       loading: false
     };
   }),
-  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, loading: false }))
+  on(fetchReferenceDataByKeyFailed, state => ({ ...state, loading: false }))
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);
-
-export const resourceTypeAdapters = {
-  [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
-  [ReferenceDataResourceType.User]: usersEntityAdapter
-};

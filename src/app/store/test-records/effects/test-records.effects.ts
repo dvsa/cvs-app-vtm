@@ -212,10 +212,12 @@ export class TestResultsEffects {
               const {
                 error: { errors }
               } = e;
-              errors.forEach((error: string) => {
-                const field = error.match(/"([^"]+)"/);
-                validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
-              });
+              Array.isArray(errors)
+                ? errors.forEach((error: string) => {
+                    const field = error.match(/"([^"]+)"/);
+                    validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
+                  })
+                : validationsErrors.push({ error: e.error });
             }
             return of(createTestResultFailed({ errors: validationsErrors }));
           })

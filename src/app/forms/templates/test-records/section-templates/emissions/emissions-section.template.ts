@@ -1,5 +1,6 @@
-import { FormNode, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeViewTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 export const EmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',
@@ -28,13 +29,18 @@ export const EmissionsSection: FormNode = {
                 { value: 'Euro VI', label: 'Euro VI' },
                 { value: 'Full Electric', label: 'Full Electric' }
               ],
-              validators: [{ name: ValidatorNames.Required }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }],
+              required: true,
+              value: null
             },
             {
               name: 'smokeTestKLimitApplied',
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
-              validators: [{ name: ValidatorNames.MaxLength, args: 100 }, { name: ValidatorNames.Required }]
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }],
+              required: true,
+              value: null
             },
             {
               name: 'fuelType',
@@ -50,7 +56,9 @@ export const EmissionsSection: FormNode = {
                 { value: 'petrol', label: 'Petrol' },
                 { value: 'full electric', label: 'Full electric' }
               ],
-              validators: [{ name: ValidatorNames.Required }]
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }],
+              required: true,
+              value: null
             },
             {
               name: 'modType',
@@ -91,31 +99,34 @@ export const EmissionsSection: FormNode = {
               label: 'Modification type used',
               type: FormNodeTypes.CONTROL,
               validators: [
-                { name: ValidatorNames.MaxLength, args: 100 },
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'm' } },
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'g' } }
+                { name: ValidatorNames.MaxLength, args: 100 }
               ],
-              value: ''
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'm' } }, 
+                { name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'g' } }],
+              required: true,
+              value: null
             },
             {
               name: 'particulateTrapFitted',
               label: 'Particulate trap fitted',
               type: FormNodeTypes.CONTROL,
               validators: [
-                { name: ValidatorNames.MaxLength, args: 100 },
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
+                { name: ValidatorNames.MaxLength, args: 100 }
               ],
-              value: ''
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' } }],
+              required: true,
+              value: null
             },
             {
               name: 'particulateTrapSerialNumber',
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL,
               validators: [
-                { name: ValidatorNames.MaxLength, args: 100 },
-                { name: ValidatorNames.RequiredIfEquals, args: { sibling: 'modType.code', value: 'p' } }
+                { name: ValidatorNames.MaxLength, args: 100 }
               ],
-              value: ''
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' } }],
+              required: true,
+              value: null
             }
           ]
         }

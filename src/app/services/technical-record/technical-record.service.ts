@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthIntoService, StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { Router } from '@angular/router';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import {
@@ -28,7 +29,7 @@ export enum SEARCH_TYPES {
 
 @Injectable({ providedIn: 'root' })
 export class TechnicalRecordService {
-  constructor(private store: Store, private http: HttpClient) {}
+  constructor(private store: Store, private http: HttpClient, private router: Router) {}
 
   getByVin(vin: string): Observable<VehicleTechRecordModel[]> {
     return this.getVehicleTechRecordModels(vin, SEARCH_TYPES.VIN);
@@ -61,19 +62,14 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, oldStatusCode?: StatusCodes) {
+  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, recordToArchiveStatus?: StatusCodes) {
     const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${oldStatusCode ? '?oldStatusCode=' + oldStatusCode : ''}`;
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
     const newTechRecord = cloneDeep(techRecord);
 
-    // SCENARIO WHERE TECH RECORD TO BE AMENDED IS CURRENT TECH RECORD, THE BELOW MEANS WE CREATE A PROVISIONAL RECORD NOT A CURRENT
-    if (techRecord.statusCode === StatusCodes.CURRENT) {
-      newTechRecord.statusCode = StatusCodes.PROVISIONAL;
-    }
+    newTechRecord.statusCode = recordToArchiveStatus ?? newTechRecord.statusCode;
 
-    if (techRecord.updateType) {
-      delete newTechRecord.updateType;
-    }
+    this.removeUpdateType(techRecord, newTechRecord);
 
     const body = {
       msUserDetails: { msOid: id, msUser: username },
@@ -83,10 +79,17 @@ export class TechnicalRecordService {
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
+  private removeUpdateType(techRecord: TechRecordModel, newTechRecord: TechRecordModel) {
+    if (techRecord.updateType) {
+      delete newTechRecord.updateType;
+    }
+  }
+
   postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
+    this.removeUpdateType(techRecord, recordCopy);
 
     const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
@@ -140,9 +143,17 @@ export class TechnicalRecordService {
       select(selectRouteNestedParams),
       map(params => {
         const createdAt = params['techCreatedAt'];
-        return createdAt
-          ? vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt)
-          : this.filterTechRecordByStatusCode(vehicleRecord);
+        const isProvisional = this.router.url.split('/').pop() === 'provisional';
+
+        if (isProvisional) {
+          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
+        }
+
+        if (createdAt) {
+          return vehicleRecord.techRecord.find(techRecord => new Date(techRecord.createdAt).getTime() == createdAt && techRecord.statusCode === StatusCodes.ARCHIVED)
+        }
+
+        return this.filterTechRecordByStatusCode(vehicleRecord);
       })
     );
   }
