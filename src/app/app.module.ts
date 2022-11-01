@@ -24,6 +24,7 @@ import { InterceptorModule } from './interceptors/interceptor.module';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
+import { ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -70,7 +71,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     InterceptorModule,
     CoreModule,
     TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
-    TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI }))
+    TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI })),
+    ReferenceDataApiModule.forRoot(() => new ReferenceDataConfiguration({ basePath: environment.VTM_API_URI }))
   ],
   providers: [
     {
