@@ -177,9 +177,8 @@ export const PsvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [
-        { name: ValidatorNames.Min, args: 0 },
-        { name: ValidatorNames.Max, args: 99 },
-        { name: ValidatorNames.Numeric, args: 99 },
+        { name: ValidatorNames.MaxLength, args: 2 },
+        { name: ValidatorNames.Numeric },
       ]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
@@ -190,7 +189,11 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 2},
+        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Required }
+      ],
       class: 'flex--half'
     },
     {
@@ -200,7 +203,11 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }],
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 3},
+        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Required }
+      ],
       class: 'flex--half'
     },
     {
@@ -210,7 +217,11 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 3},
+        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Required }
+      ]
     },
     {
       name: 'numberOfSeatbelts',
@@ -219,7 +230,11 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.MaxLength, args: 2 }, 
+        { name: ValidatorNames.Numeric},
+        { name: ValidatorNames.Required }
+      ]
     },
 
     {
