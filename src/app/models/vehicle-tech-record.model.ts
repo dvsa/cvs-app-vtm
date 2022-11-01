@@ -162,7 +162,24 @@ export interface Tyres {
   dataTrAxles: number | null;
   plyRating: string | null;
   tyreCode: number | null;
-  weights?: AxleWeights | null;
+}
+
+export class Tyre implements Tyres {
+  public tyreSize: string | null;
+  public speedCategorySymbol: SpeedCategorySymbol | null;
+  public fitmentCode: FitmentCode | null;
+  public dataTrAxles: number | null;
+  public plyRating: string | null;
+  public tyreCode: number | null;
+
+  constructor(public tyre: Tyres) {
+    (this.tyreSize = null),
+      (this.speedCategorySymbol = tyre.speedCategorySymbol || null),
+      (this.fitmentCode = tyre.fitmentCode || null),
+      (this.dataTrAxles = null),
+      (this.plyRating = null),
+      (this.tyreCode = tyre.tyreCode || null);
+  }
 }
 
 export interface AxleWeights {

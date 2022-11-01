@@ -13,6 +13,7 @@ import {
   speedCategorySymbolAsOptions,
   TechRecordModel,
   Tyres,
+  Tyre,
   VehicleTypes
 } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -42,6 +43,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
       this.formChange.emit(event);
     });
+
+    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
   }
 
   ngOnChanges() {
@@ -98,43 +101,32 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   getTyresRefData(tyre: Tyres, axleNumber: number) {
     this.isError = false;
     this.referenceDataService
-      .fetchReferenceData(ReferenceDataResourceType.Tyres, String(tyre.tyreCode))
+      .getByKey$(ReferenceDataResourceType.Tyres, String(tyre.tyreCode))
       .pipe(take(1))
       .subscribe({
         next: data => {
-          const newTyre = {
-            tyreSize: (data as ReferenceDataTyre).tyreSize,
-            plyRating: (data as ReferenceDataTyre).plyRating,
-            dataTrAxles:
-              tyre.fitmentCode === FitmentCode.SINGLE
-                ? Number((data as ReferenceDataTyre).loadIndexSingleLoad)
-                : Number((data as ReferenceDataTyre).loadIndexTwinLoad),
-            speedCategorySymbol: tyre.speedCategorySymbol,
-            fitmentCode: tyre.fitmentCode,
-            tyreCode: tyre.tyreCode
-          };
+          const refTyre = data as ReferenceDataTyre;
+          const newTyre = new Tyre(tyre);
+          newTyre.tyreSize = refTyre.tyreSize;
+          newTyre.plyRating = refTyre.plyRating;
+          newTyre.dataTrAxles = tyre.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
 
-          this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
-          this.vehicleTechRecord.axles.find(ax => ax.axleNumber === axleNumber)!.tyres = newTyre;
-          this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
+          this.addTyreToTechRecord(newTyre, axleNumber);
         },
         error: _err => {
           this.errorMessage = 'Cannot find data of this tyre';
           this.isError = true;
+          const newTyre = new Tyre(tyre);
 
-          const emptyTyre = {
-            tyreSize: null,
-            plyRating: null,
-            dataTrAxles: null,
-            speedCategorySymbol: tyre.speedCategorySymbol,
-            fitmentCode: tyre.fitmentCode,
-            tyreCode: tyre.tyreCode
-          };
-          this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
-          this.vehicleTechRecord.axles.find(ax => ax.axleNumber === axleNumber)!.tyres = emptyTyre;
-          this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
+          this.addTyreToTechRecord(newTyre, axleNumber);
         }
       });
+  }
+
+  addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
+    this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
+    this.vehicleTechRecord.axles.find(ax => ax.axleNumber === axleNumber)!.tyres = tyre;
+    this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
   }
 
   addAxle(): void {
