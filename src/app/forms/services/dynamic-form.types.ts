@@ -87,7 +87,7 @@ export interface FormNode {
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
-  validators?: { name: ValidatorNames; args?: any }[];
+  validators?: FormNodeValidator[];
   customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
   disabled?: boolean;
@@ -100,7 +100,11 @@ export interface FormNode {
   suffix?: string;
   isoDate?: boolean;
   class?: string;
+}
 
+export interface FormNodeValidator{
+  name: ValidatorNames;
+  args?: any;
 }
 
 export interface FormNodeCombinationOptions {
