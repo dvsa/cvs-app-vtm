@@ -116,7 +116,7 @@
             ></app-select>
           </ng-container>
         </ng-container>
-        <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
+        <app-text-area [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
       </ng-container>
 
       <app-radio-group
@@ -125,6 +125,8 @@
         label="Prohibition issued in mobile compliance"
         formControlName="prohibitionIssued"
         [options]="booleanOptions"
+        hint="{{ isDangerousAsterisk ? '' : 'You must issue a prohibition notice in search before adding this defect' }}"
+        (change)="toggleDefectField('prohibitionIssued')"
       ></app-radio-group>
 
       <div class="govuk-form-group" *ngIf="!isAdvisory">
@@ -135,10 +137,10 @@
               id="prs"
               [name]="'prs-' + index"
               type="checkbox"
-              [checked]="defect?.prs"
+              [checked]="defect.prs"
               (change)="toggleDefectField('prs')"
             />
-            <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test </label>
+            <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test</label>
           </div>
         </div>
       </div>
