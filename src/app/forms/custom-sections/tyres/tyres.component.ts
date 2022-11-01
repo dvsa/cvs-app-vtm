@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -47,7 +47,20 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
   }
 
-  ngOnChanges() {
+  ngOnChanges(simpleChanges: SimpleChanges) {
+    const { vehicleTechRecord } = simpleChanges;
+
+    if (vehicleTechRecord.firstChange === false) {
+      const currentAxles = vehicleTechRecord.currentValue.axles;
+      const previousAxles = vehicleTechRecord.previousValue.axles;
+
+      currentAxles.forEach((value: Axle, index: number) => {
+        if (value.tyres?.fitmentCode !== previousAxles[index].tyres.fitmentCode) {
+          this.getTyresRefData(value.tyres!, value.axleNumber!);
+        }
+      });
+    }
+
     this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
   }
 
@@ -105,20 +118,21 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(take(1))
       .subscribe({
         next: data => {
-          const refTyre = data as ReferenceDataTyre;
-          const newTyre = new Tyre(tyre);
-          newTyre.tyreSize = refTyre.tyreSize;
-          newTyre.plyRating = refTyre.plyRating;
-          newTyre.dataTrAxles = tyre.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
+          try {
+            const refTyre = data as ReferenceDataTyre;
+            const newTyre = new Tyre(tyre);
+            newTyre.tyreSize = refTyre.tyreSize;
+            newTyre.plyRating = refTyre.plyRating;
+            newTyre.dataTrAxles = tyre.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
 
-          this.addTyreToTechRecord(newTyre, axleNumber);
-        },
-        error: _err => {
-          this.errorMessage = 'Cannot find data of this tyre';
-          this.isError = true;
-          const newTyre = new Tyre(tyre);
+            this.addTyreToTechRecord(newTyre, axleNumber);
+          } catch {
+            this.errorMessage = 'Cannot find data of this tyre';
+            this.isError = true;
+            const newTyre = new Tyre(tyre);
 
-          this.addTyreToTechRecord(newTyre, axleNumber);
+            this.addTyreToTechRecord(newTyre, axleNumber);
+          }
         }
       });
   }
@@ -126,7 +140,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
     this.vehicleTechRecord.axles.find(ax => ax.axleNumber === axleNumber)!.tyres = tyre;
-    this.form.patchValue(this.vehicleTechRecord, { emitEvent: false });
+    this.form.patchValue(this.vehicleTechRecord);
   }
 
   addAxle(): void {
