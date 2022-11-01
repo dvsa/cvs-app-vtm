@@ -147,11 +147,13 @@
     </ng-container>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-button-group">
-          <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
-          <a *ngIf="index || index === 0" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
-          <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">{{ index || index === 0 ? 'Cancel changes' : 'Cancel' }}</a>
-        </div>
+        <app-button-group>
+          <app-button id="confirm-defect" (clicked)="handleSubmit()">Confirm</app-button>
+          <app-button id="remove-defect" *ngIf="index || index === 0" type="warning" (clicked)="handleRemove()">Remove defect</app-button>
+          <app-button id="remove-nav-back" type="underline" (clicked)="navigateBack()">{{
+            index || index === 0 ? 'Cancel changes' : 'Cancel'
+          }}</app-button>
+        </app-button-group>
       </div>
     </div>
   </ng-container>
