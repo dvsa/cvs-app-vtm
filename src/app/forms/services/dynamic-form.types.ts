@@ -203,20 +203,22 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   }
 
   override patchValue(
-    value: any[],
+    value: any[] | undefined | null,
     options?: {
       onlySelf?: boolean;
       emitEvent?: boolean;
     }
   ): void {
-    if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
-      if (value.length > this.controls.length) {
-        super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
-      } else {
-        this.controls.pop();
+    if(value){
+      if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
+        if (value.length > this.controls.length) {
+          super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
+        } else {
+          this.controls.pop();
+        }
       }
+      super.patchValue(value, options);
     }
-    super.patchValue(value, options);
   }
 }
 

@@ -67,6 +67,17 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
     },
+    testTypesGroup15And16: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: ContingencyTestSectionGroup15and16,
+      emissions: EmissionsSection,
+      seatbelts: SeatbeltSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      customDefects: CustomDefectsSection,
+      reasonForCreation: reasonForCreationSection
+    },
     testTypesSpecialistGroup1: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: ContingencyTestSectionSpecialistGroup1,
