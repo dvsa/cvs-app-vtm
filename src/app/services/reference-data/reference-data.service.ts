@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
+import { mockBrakes } from '@mocks/reference-data/mock-brakes';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
 import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-data/mock-specialist-reasons-for-abandoning.reference-data';
@@ -54,6 +55,8 @@ export class ReferenceDataService {
         return mockBodyMakes;
       case ReferenceDataResourceType.BodyModel:
         return mockBodyModels;
+      case ReferenceDataResourceType.Brake:
+        return mockBrakes;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
       case ReferenceDataResourceType.ReasonsForAbandoning:

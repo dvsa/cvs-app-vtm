@@ -22,13 +22,14 @@ function createAdapter() {
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
+  [ReferenceDataResourceType.BodyMake]: createAdapter(),
+  [ReferenceDataResourceType.BodyModel]: createAdapter(),
+  [ReferenceDataResourceType.Brake]: createAdapter(),
   [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
-  [ReferenceDataResourceType.User]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
-  [ReferenceDataResourceType.BodyMake]: createAdapter(),
-  [ReferenceDataResourceType.BodyModel]: createAdapter()
+  [ReferenceDataResourceType.User]: createAdapter()
 };
 
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
@@ -36,14 +37,15 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
-  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
-  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
   [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
   [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
+  [ReferenceDataResourceType.Brake]: resourceTypeAdapters[ReferenceDataResourceType.Brake].getInitialState(),
+  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoning].getInitialState(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
-    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState()
+    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
+    [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
 };
 
 export const referenceDataReducer = createReducer(

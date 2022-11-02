@@ -58,6 +58,10 @@ export class AutocompleteComponent extends BaseControlComponent implements After
     this.addValidators();
   }
 
+  get style(): string {
+    return 'autocomplete__wrapper' + (this.width ? ' govuk-input--width-' + this.width : '') + (this.noBottomMargin ? '' : ' extra-margin');
+  }
+
   handleChange(event: any) {
     const {
       target: { value }

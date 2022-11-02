@@ -82,9 +82,17 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   handleFormState() {
     if (this.isEditing) {
+      const isPsv = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType === VehicleTypes.PSV;
+
       const form = this.summary.sections
         .map(section => section.form)
-        .concat(this.summary.body.form, this.summary.dimensions.form, this.summary.weights.form);
+        .concat(
+          this.summary.body.form,
+          isPsv ? this.summary.psvBrakes!.form : this.summary.hgvandTrlBrakes!.form,
+          this.summary.dimensions.form,
+          this.summary.tyres.form,
+          this.summary.weights.form
+        );
 
       this.isDirty = form.some(form => form.dirty);
       this.isInvalid = this.isAnyFormInvalid(form);

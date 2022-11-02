@@ -28,7 +28,7 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
-import { HgvAndTrlBrakesComponent } from './custom-sections/hgv-trl-brakes/brakes.component';
+import { HgvAndTrlBrakesComponent } from './custom-sections/hgv-trl-brakes/hgv-trl-brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';

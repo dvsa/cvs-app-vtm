@@ -9,13 +9,6 @@
           (formChange)="handleFormState($event)"
         ></app-body>
 
-        <app-hgv-trl-brakes
-          *ngSwitchCase="'trlBrakesSection'"
-          [vehicleTechRecord]="vehicleTechRecordCalculated"
-          [isEditing]="isEditing"
-          (formChange)="handleFormState($event)"
-        ></app-hgv-trl-brakes>
-
         <app-dimensions
           *ngSwitchCase="'dimensionsSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
@@ -23,12 +16,19 @@
           (formChange)="handleFormState($event)"
         ></app-dimensions>
 
-        <app-weights
-          *ngSwitchCase="'weightsSection'"
+        <app-hgv-trl-brakes
+          *ngSwitchCase="'hgvAndTrlBrakesSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
           [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
-        ></app-weights>
+        ></app-hgv-trl-brakes>
+
+        <app-psv-brakes
+          *ngSwitchCase="'psvBrakesSection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
+          [isEditing]="isEditing"
+          (formChange)="handleFormState($event)"
+        ></app-psv-brakes>
 
         <app-tyres
           *ngSwitchCase="'tyreSection'"
@@ -36,6 +36,13 @@
           [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
         ></app-tyres>
+
+        <app-weights
+          *ngSwitchCase="'weightsSection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
+          [isEditing]="isEditing"
+          (formChange)="handleFormState($event)"
+        ></app-weights>
 
         <app-dynamic-form-group
           *ngSwitchDefault

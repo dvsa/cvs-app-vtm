@@ -4,7 +4,7 @@ import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/index';
 
-import { HgvAndTrlBrakesComponent } from './brakes.component';
+import { HgvAndTrlBrakesComponent } from './hgv-trl-brakes.component';
 
 describe('BrakesComponent', () => {
   let component: HgvAndTrlBrakesComponent;

@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const hgvAndTrlBodyTemplate: FormNode = {
+export const HgvAndTrlBodyTemplate: FormNode = {
   name: 'bodySection',
   label: 'Body',
   type: FormNodeTypes.GROUP,

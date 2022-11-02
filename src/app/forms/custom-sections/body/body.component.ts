@@ -4,8 +4,8 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
-import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
+import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
+import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import getOptionsFromEnum from '@forms/utils/enum-map';
 import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
 import { BodyModel, ReferenceDataResourceType } from '@models/reference-data.model';
@@ -37,7 +37,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? psvBodyTemplate : hgvAndTrlBodyTemplate;
+    this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
 
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
@@ -46,6 +46,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((event: any) => {
         // Set the body type code automatically based selection
         const bodyType = event?.bodyType as BodyType;
+
         if (bodyType?.description) {
           event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
         }

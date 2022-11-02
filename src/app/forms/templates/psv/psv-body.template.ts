@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const psvBodyTemplate: FormNode = {
+export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
   label: 'Body',
   type: FormNodeTypes.GROUP,
