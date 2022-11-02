@@ -21,11 +21,9 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error) => {
         if (error instanceof HttpErrorResponse)
         {
-          if (error.status === 502)
+          if (error.status === 500)
           {
-            console.log("Caught the error")
             this.router.navigateByUrl('error')
-            //could also just be navigate and a route
           }
         }
         return throwError(() => new Error(error.statusText))
