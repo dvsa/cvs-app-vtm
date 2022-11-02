@@ -175,10 +175,9 @@ export const PsvTechRecord: FormNode = {
       value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMERICSTRING,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 2 },
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 99 },
       ]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
@@ -188,10 +187,9 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 2},
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 99},
         { name: ValidatorNames.Required }
       ],
       class: 'flex--half'
@@ -202,10 +200,9 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 3},
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 999},
         { name: ValidatorNames.Required }
       ],
       class: 'flex--half'
@@ -216,10 +213,9 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 3},
-        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Max, args: 999},
         { name: ValidatorNames.Required }
       ]
     },
@@ -229,10 +225,9 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMERICSTRING,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 2 }, 
-        { name: ValidatorNames.Numeric},
+        { name: ValidatorNames.Max, args: 99 }, 
         { name: ValidatorNames.Required }
       ]
     },
