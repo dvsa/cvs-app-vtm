@@ -68,7 +68,7 @@ describe('Reference Data Selectors', () => {
     ];
 
     const selectedState = selectReasonsForAbandoning.projector(ReasonsForAbandoning, { vehicleType: VehicleTypes.PSV });
-    console.log(Object.entries(ReasonsForAbandoning));
+
     expect(selectedState).toEqual([ReasonsForAbandoning[0]]);
   });
 });
