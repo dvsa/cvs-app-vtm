@@ -223,7 +223,7 @@ export class TestResultsEffects {
                 : validationsErrors.push({ error: e.error });
             }
             else if (e.status === 502) {
-              validationsErrors.push({ error: "Internal Server Error ", anchorLink: '' });
+              validationsErrors.push({ error: "Internal Server Error", anchorLink: '' });
             }
             return of(createTestResultFailed({ errors: validationsErrors }));
           })
