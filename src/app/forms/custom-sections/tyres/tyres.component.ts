@@ -5,17 +5,9 @@ import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } fr
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
+import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import {
-  Axle,
-  FitmentCode,
-  fitmentCodeAsOptions,
-  speedCategorySymbolAsOptions,
-  TechRecordModel,
-  Tyres,
-  Tyre,
-  VehicleTypes
-} from '@models/vehicle-tech-record.model';
+import { Axle, FitmentCode, TechRecordModel, Tyres, Tyre, VehicleTypes, SpeedCategorySymbol } from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime, take } from 'rxjs';
@@ -96,11 +88,11 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get speedCategorySymbol(): MultiOptions {
-    return speedCategorySymbolAsOptions();
+    return getOptionsFromEnum(SpeedCategorySymbol);
   }
 
   get fitmentCode(): MultiOptions {
-    return fitmentCodeAsOptions();
+    return getOptionsFromEnumOneChar(FitmentCode);
   }
 
   get axles(): CustomFormArray {

@@ -134,10 +134,6 @@ export enum SpeedCategorySymbol {
   Q = 'q'
 }
 
-export function speedCategorySymbolAsOptions(): MultiOptions {
-  return Object.entries(SpeedCategorySymbol).map(([, value]) => ({ value, label: value.toUpperCase() }));
-}
-
 export interface Axle {
   axleNumber?: number;
   brakes?: AxleBrakeProperties;
@@ -149,10 +145,6 @@ export interface Axle {
 export enum FitmentCode {
   SINGLE = 'single',
   DOUBLE = 'double'
-}
-
-export function fitmentCodeAsOptions(): MultiOptions {
-  return Object.entries(FitmentCode).map(([, value]) => ({ value, label: value.charAt(0).toUpperCase() }));
 }
 
 export interface Tyres {
@@ -173,12 +165,12 @@ export class Tyre implements Tyres {
   public tyreCode: number | null;
 
   constructor(public tyre: Tyres) {
-    (this.tyreSize = null),
-      (this.speedCategorySymbol = tyre.speedCategorySymbol || null),
-      (this.fitmentCode = tyre.fitmentCode || null),
-      (this.dataTrAxles = null),
-      (this.plyRating = null),
-      (this.tyreCode = tyre.tyreCode || null);
+    this.tyreSize = null;
+    this.speedCategorySymbol = tyre.speedCategorySymbol || null;
+    this.fitmentCode = tyre.fitmentCode || null;
+    this.dataTrAxles = null;
+    this.plyRating = null;
+    this.tyreCode = tyre.tyreCode || null;
   }
 }
 

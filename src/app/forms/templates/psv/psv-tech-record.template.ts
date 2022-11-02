@@ -5,7 +5,7 @@ import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.model';
 import { VehicleSize } from '@models/vehicle-size.enum';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 
 export const PsvTechRecord: FormNode = {
   name: 'techRecordSummary',
@@ -50,7 +50,7 @@ export const PsvTechRecord: FormNode = {
       label: 'Number of axles',
       value: '',
       width: FormNodeWidth.XS,
-      type: FormNodeTypes.CONTROL,
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'brakes',
@@ -63,10 +63,10 @@ export const PsvTechRecord: FormNode = {
           value: '',
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.Required }]
         }
       ],
-      type: FormNodeTypes.GROUP,
+      type: FormNodeTypes.GROUP
     },
     {
       name: 'axles',
@@ -179,7 +179,7 @@ export const PsvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Min, args: 0 },
         { name: ValidatorNames.Max, args: 99 },
-        { name: ValidatorNames.Numeric, args: 99 },
+        { name: ValidatorNames.Numeric, args: 99 }
       ]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },

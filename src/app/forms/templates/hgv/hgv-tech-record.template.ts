@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -50,7 +50,7 @@ export const HgvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'brakes',
@@ -64,9 +64,9 @@ export const HgvTechRecord: FormNode = {
           value: '',
           width: FormNodeWidth.M,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.Required }]
         }
-      ],
+      ]
     },
     // {
     //   name: 'axles',
@@ -134,7 +134,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'fuelPropulsionSystem',
@@ -154,7 +154,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'vehicleClass',
@@ -191,7 +191,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'euVehicleCategory',
@@ -212,7 +212,7 @@ export const HgvTechRecord: FormNode = {
       validators: [
         { name: ValidatorNames.Min, args: 0 },
         { name: ValidatorNames.Max, args: 99 },
-        { name: ValidatorNames.Numeric, args: 99 },
+        { name: ValidatorNames.Numeric, args: 99 }
       ]
     },
     {
