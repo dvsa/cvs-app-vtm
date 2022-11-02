@@ -14,6 +14,7 @@ import { AccordionControlComponent } from './components/accordion-control/accord
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
+import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
-    BaseDialogComponent
+    BaseDialogComponent,
+    DigitGroupSeparatorPipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -45,7 +47,8 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
-    BaseDialogComponent
+    BaseDialogComponent,
+    DigitGroupSeparatorPipe
   ]
 })
 export class SharedModule {}
