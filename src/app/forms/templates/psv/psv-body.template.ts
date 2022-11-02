@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const psvBodyTemplate: FormNode = {
+export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
   label: 'Body',
   type: FormNodeTypes.GROUP,
@@ -17,26 +17,29 @@ export const psvBodyTemplate: FormNode = {
       label: 'Chassis make',
       value: '',
       type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'chassisModel',
       label: 'Chassis model',
       value: '',
       type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
-      name: 'make',
+      name: 'bodyMake',
       label: 'Body make',
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: []
+      disabled: true
     },
     {
-      name: 'model',
+      name: 'bodyModel',
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
+      disabled: true
     },
     {
       name: 'bodyType',
@@ -48,8 +51,8 @@ export const psvBodyTemplate: FormNode = {
           name: 'description',
           label: 'Body type',
           value: '',
-          type: FormNodeTypes.CONTROL,
-        },
+          type: FormNodeTypes.CONTROL
+        }
       ]
     },
     {

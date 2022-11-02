@@ -3,6 +3,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
+import { mockPsvMakes } from '@mocks/reference-data/mock-psv-make.reference-data';
 import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
@@ -31,7 +32,6 @@ export class ReferenceDataService {
 
     // ** Until the reference data API is provisioned, return in-memory data ** //
     const mockData = this.getMockReferenceData(resourceType);
-
     if (mockData instanceof Error) {
       return throwError(() => mockData);
     }
@@ -53,6 +53,8 @@ export class ReferenceDataService {
         return mockBodyModels;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
+      case ReferenceDataResourceType.PsvMake:
+        return mockPsvMakes;
       case ReferenceDataResourceType.ReasonsForAbandoning:
         return mockReasonsForAbandoning;
       case ReferenceDataResourceType.User:

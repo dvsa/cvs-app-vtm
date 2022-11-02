@@ -21,6 +21,7 @@ export interface ReferenceDataState {
   [ReferenceDataResourceType.BodyMake]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.BodyModel]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
+  [ReferenceDataResourceType.PsvMake]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.ReasonsForAbandoning]: EntityState<ReferenceDataModelBase>;
   [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
 }
@@ -38,6 +39,9 @@ export const initialBodyModelsState = bodyModelsEntityAdapter.getInitialState();
 export const countriesOfRegistrationEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
 
+export const psvMakesEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
+export const initialpsvMakesState = psvMakesEntityAdapter.getInitialState();
+
 export const reasonsForAbandoningAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialReasonsForAbandoning = reasonsForAbandoningAdapter.getInitialState();
 
@@ -50,6 +54,7 @@ export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.BodyMake]: initialBodyMakesState,
   [ReferenceDataResourceType.BodyModel]: initialBodyModelsState,
   [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
+  [ReferenceDataResourceType.PsvMake]: initialpsvMakesState,
   [ReferenceDataResourceType.ReasonsForAbandoning]: initialReasonsForAbandoning,
   [ReferenceDataResourceType.User]: initialUsersState
 };
@@ -85,6 +90,7 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.BodyMake]: bodyMakesEntityAdapter,
   [ReferenceDataResourceType.BodyModel]: bodyModelsEntityAdapter,
   [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
+  [ReferenceDataResourceType.PsvMake]: psvMakesEntityAdapter,
   [ReferenceDataResourceType.User]: usersEntityAdapter,
   [ReferenceDataResourceType.ReasonsForAbandoning]: reasonsForAbandoningAdapter
 };
