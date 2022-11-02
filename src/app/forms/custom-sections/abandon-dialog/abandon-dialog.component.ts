@@ -31,7 +31,7 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
               editType: FormNodeEditTypes.CHECKBOX,
               delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' }, // the space is important here
               required: true,
-              referenceData: SpecialRefData.ReasonsForAbandoning,
+              referenceData: ReasonsForAbandoning,
               validators: [{ name: ValidatorNames.Required }]
             },
             {
@@ -59,7 +59,7 @@ export class AbandonDialogComponent extends BaseDialogComponent {
   @Output() newTestResult = new EventEmitter<TestResultModel>();
   template = this.getTemplate();
 
-  private getTemplate(): FormNode {
+  getTemplate(): FormNode {
     const testTypeId = this.testResult?.testTypes[0].testTypeId ?? '';
 
     if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
