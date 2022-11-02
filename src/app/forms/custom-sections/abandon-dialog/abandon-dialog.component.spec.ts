@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { SPECIALIST_TEST_TYPE_IDS, TEST_TYPES_GROUP5_13 } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -49,7 +50,7 @@ describe('AbandonDialogComponent', () => {
       const mockTestResult = { testTypes: [{ testTypeId: 'foobar' }] } as TestResultModel;
       component.testResult = mockTestResult;
       const ReasonsForAbandoning = component.template.children![0].children![0].children![0].referenceData;
-      expect(ReasonsForAbandoning).toEqual(ReferenceDataResourceType.ReasonsForAbandoning);
+      expect(ReasonsForAbandoning).toEqual(SpecialRefData.ReasonsForAbandoning);
     });
   });
 });

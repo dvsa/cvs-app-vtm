@@ -50,25 +50,4 @@ describe('Reference Data Selectors', () => {
     const selectedState = referenceDataLoadingState.projector(state);
     expect(selectedState).toEqual(state.loading);
   });
-
-  it('should return the reasons for abandoning for the right vehicle', () => {
-    const ReasonsForAbandoning: ReasonsForAbandoning[] = [
-      {
-        resourceType: ReferenceDataResourceType.ReasonsForAbandoning,
-        resourceKey: '123',
-        vehicleType: VehicleTypes.PSV,
-        description: 'foo'
-      },
-      {
-        resourceType: ReferenceDataResourceType.ReasonsForAbandoning,
-        resourceKey: '456',
-        vehicleType: VehicleTypes.HGV,
-        description: 'foo'
-      }
-    ];
-
-    const selectedState = selectReasonsForAbandoning.projector(ReasonsForAbandoning, { vehicleType: VehicleTypes.PSV });
-    console.log(Object.entries(ReasonsForAbandoning));
-    expect(selectedState).toEqual([ReasonsForAbandoning[0]]);
-  });
 });

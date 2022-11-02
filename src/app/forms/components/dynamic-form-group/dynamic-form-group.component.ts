@@ -33,7 +33,9 @@ export class DynamicFormGroupComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => {
+      return this.formChange.emit(e);
+    });
   }
 
   ngOnDestroy(): void {
