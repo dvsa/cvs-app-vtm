@@ -36,11 +36,10 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [
         { name: ValidatorNames.Max, args: 9999 },
         { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.Numeric},
         { name: ValidatorNames.Required }]
     },
     {
@@ -53,13 +52,6 @@ export const TrlTechRecordTemplate: FormNode = {
       validators: [{ name: ValidatorNames.Required }],
       isoDate: false
     },
-
-    // {
-    //   name: 'noOfAxles',
-    //   label: 'Number of axles',
-    //   value: '',
-    //   type: FormNodeTypes.CONTROL,
-    // },
     {
       name: 'brakes',
       label: 'DTP number',
@@ -71,34 +63,16 @@ export const TrlTechRecordTemplate: FormNode = {
           value: '',
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING
+          viewType: FormNodeViewTypes.STRING,
+          validators: [
+            { name: ValidatorNames.MaxLength, args: 6 },
+            { name: ValidatorNames.Required }
+          ]
         }
       ],
       type: FormNodeTypes.GROUP,
       viewType: FormNodeViewTypes.STRING
     },
-    // {
-    //   name: 'axles',
-    //   value: '',
-    //   type: FormNodeTypes.ARRAY,
-    //   children: [
-    //     {
-    //       name: '0',
-    //       label: 'Axle',
-    //       value: '',
-    //       type: FormNodeTypes.GROUP,
-    //       children: [
-    //         {
-    //           name: 'parkingBrakeMrk',
-    //           label: 'Axles fitted with a parking brake',
-    //           value: '',
-    //           type: FormNodeTypes.CONTROL,
-    //           viewType: FormNodeViewTypes.STRING
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // },
     {
       name: 'roadFriendly',
       label: 'Road friendly suspension',
@@ -155,6 +129,7 @@ export const TrlTechRecordTemplate: FormNode = {
       value: '',
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.MaxLength, args: 5 }],
       class: 'flex--half'
     },
@@ -195,6 +170,17 @@ export const TrlTechRecordTemplate: FormNode = {
       editType: FormNodeEditTypes.SELECT,
       options: getOptionsFromEnum(EuVehicleCategories),
       validators: [{ name: ValidatorNames.Required }]
+    },
+    {
+      name: 'alterationMarker',
+      label: 'Alteration marker',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
+      ],
     }
   ]
 };
