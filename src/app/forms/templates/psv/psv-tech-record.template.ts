@@ -61,7 +61,7 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
             type: FormNodeTypes.CONTROL,
             editType: FormNodeEditTypes.AUTOCOMPLETE,
             options: dtpNumbersFromRefData,
-            validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }, { name: ValidatorNames.Numeric }]
+            validators: [{ name: ValidatorNames.Required }]
           }
         ],
         type: FormNodeTypes.GROUP
