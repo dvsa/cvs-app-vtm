@@ -1,5 +1,7 @@
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+
 export interface ReferenceDataItem {
-  resourceType: string;
+  resourceType: ReferenceDataResourceType;
   resourceKey: string;
 }
 

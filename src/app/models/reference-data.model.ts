@@ -1,5 +1,3 @@
-import { VehicleTypes } from './vehicle-tech-record.model';
-
 export enum ReferenceDataResourceType {
   BodyMake = 'BODY_MAKE',
   BodyModel = 'BODY_MODEL',
@@ -16,7 +14,7 @@ export enum ReferenceDataResourceType {
 export interface ReferenceDataModelBase {
   resourceType: ReferenceDataResourceType;
   resourceKey: string;
-  description: string;
+  description?: string;
 }
 
 export interface BodyMake extends ReferenceDataModelBase {}

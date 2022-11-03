@@ -45,47 +45,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
       return throwError(() => new Error('Reference data resourceType is required'));
     }
 
-    // ** Until the reference data API is provisioned, return in-memory data ** //
-    const mockData = this.getMockReferenceData(resourceType);
-
-    if (mockData instanceof Error) {
-      return throwError(() => mockData);
-    }
-
-    if (!resourceKey) {
-      return of(mockData);
-    }
-
-    const result = mockData.find(model => model.resourceKey === resourceKey);
-
-    return result ? of(result) : throwError(() => new Error('Reference data with specified resource key not found (404)'));
-  }
-
-  private getMockReferenceData(type: ReferenceDataResourceType): ReferenceDataModelBase[] | Error {
-    switch (type) {
-      case ReferenceDataResourceType.BodyMake:
-        return mockBodyMakes;
-      case ReferenceDataResourceType.BodyModel:
-        return mockBodyModels;
-      case ReferenceDataResourceType.Tyres:
-        return mockTyres;
-      case ReferenceDataResourceType.CountryOfRegistration:
-        return mockCountriesOfRegistration;
-      case ReferenceDataResourceType.ReasonsForAbandoningPsv:
-        return mockReasonsForAbandoningPsv;
-      case ReferenceDataResourceType.ReasonsForAbandoningHgv:
-        return mockReasonsForAbandoningHgv;
-      case ReferenceDataResourceType.ReasonsForAbandoningTrl:
-        return mockReasonsForAbandoningTrl;
-      case ReferenceDataResourceType.TIRReasonsForAbandoning:
-        return mockTIRReasonsForAbandoning;
-      case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
-        return mockSpecialistSpecialistReasonsForAbandoning;
-      case ReferenceDataResourceType.User:
-        return mockUsers;
-      default:
-        return new Error('Unknown reference data resourceType');
-    }
+    return resourceKey ? this.getOneFromResource(resourceType, resourceKey) : this.getAllFromResource(resourceType);
   }
 
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
