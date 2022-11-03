@@ -68,16 +68,14 @@ export class DocumentRetrievalService {
     }
 
     // to determine the Accept header
-    let httpHeaderAccepts: string[] = ['application/pdf'];
-    // let httpHeaderAccepts: string[] = [];
+    let httpHeaderAccepts: string[] = [];
     const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     if (httpHeaderAcceptSelected) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
     // to determine the Content-Type header
-    // const consumes: string[] = ['application/pdf; charset=utf-8'];
-    const consumes: string[] = ['application/json'];
+    const consumes: string[] = ['application/pdf; charset=utf-8'];
     const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
     if (httpContentTypeSelected) {
       headers = headers.set('Content-Type', httpContentTypeSelected);
@@ -91,21 +89,6 @@ export class DocumentRetrievalService {
     //   responseType: 'blob',
     //   withCredentials: this.configuration.withCredentials,
     // });
-    /*
-    {
-        headers?: HttpHeaders | {
-            [header: string]: string | string[];
-        };
-        observe: 'response';
-        context?: HttpContext;
-        params?: HttpParams | {
-            [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>;
-        };
-        reportProgress?: boolean;
-        responseType: 'arraybuffer';
-        withCredentials?: boolean;
-    }
-     */
     return this.httpClient.get(`${this.basePath}/v1/document-retrieval`, {
       headers,
       observe,
