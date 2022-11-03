@@ -149,8 +149,8 @@ export enum FitmentCode {
 
 export interface Tyres {
   tyreSize: string | null;
-  speedCategorySymbol: string | null;
-  fitmentCode: string | null;
+  speedCategorySymbol: SpeedCategorySymbol | null;
+  fitmentCode: FitmentCode | null;
   dataTrAxles: number | null;
   plyRating: string | null;
   tyreCode: number | null;
@@ -158,8 +158,8 @@ export interface Tyres {
 
 export class Tyre implements Tyres {
   tyreSize!: string | null;
-  speedCategorySymbol!: string | null;
-  fitmentCode!: string | null;
+  speedCategorySymbol!: SpeedCategorySymbol | null;
+  fitmentCode!: FitmentCode | null;
   dataTrAxles!: number | null;
   plyRating!: string | null;
   tyreCode!: number | null;

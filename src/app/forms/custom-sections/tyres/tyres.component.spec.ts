@@ -7,7 +7,7 @@ import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { initialAppState, State } from '@store/index';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
