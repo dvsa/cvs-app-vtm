@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ErrorInterceptor } from './error-handling.interceptor';
 
 @Component({
-  selector: 'dummyComponent',
+  selector: 'app-dummy-component',
   template: ''
 })
 class DummyComponent {}
