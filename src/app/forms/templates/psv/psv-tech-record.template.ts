@@ -61,7 +61,7 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
             type: FormNodeTypes.CONTROL,
             editType: FormNodeEditTypes.AUTOCOMPLETE,
             options: dtpNumbersFromRefData,
-            validators: [{ name: ValidatorNames.Required }]
+            validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }, { name: ValidatorNames.Numeric }]
           }
         ],
         type: FormNodeTypes.GROUP
@@ -145,7 +145,8 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
             type: FormNodeTypes.CONTROL,
             viewType: FormNodeViewTypes.STRING,
             editType: FormNodeEditTypes.SELECT,
-            options: getOptionsFromEnum(VehicleClass.DescriptionEnum)
+            options: getOptionsFromEnum(VehicleClass.DescriptionEnum),
+            class: '.govuk-input--width-10'
           }
         ],
         validators: [{ name: ValidatorNames.Required }]

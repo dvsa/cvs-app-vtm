@@ -36,11 +36,12 @@ import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { updateEditingTechRecord } from '@store/technical-records';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
-import { PsvMake, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { ReferenceDataState } from '@store/reference-data/reducers/reference-data.reducer';
 import { selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { firstValueFrom, map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { BodyTypeCode, bodyTypeCodeMap, BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -68,7 +69,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
-  dtpNumbersFromRefData: FormNodeOption<string>[] = [{ value: '007000', label: '007000' }];
+  dtpNumbersFromRefData: FormNodeOption<string>[] = [];
 
   constructor(
     private store: Store<TechnicalRecordServiceState>,
@@ -77,16 +78,12 @@ export class TechRecordSummaryComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    if (this.vehicleTechRecord.vehicleType) {
-      let items = await firstValueFrom(this.psvMakes$);
-      this.dtpNumbersFromRefData = items.map(x => ({ value: x.dtpNumber, label: x.dtpNumber }));
-    }
-    console.log(this.dtpNumbersFromRefData);
-
     this.sectionTemplates = this.vehicleTemplates;
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+    this.psvMakes$.subscribe(data => data.map(i => this.dtpNumbersFromRefData.push({ value: i.dtpNumber, label: i.dtpNumber })));
+    console.log(this.vehicleTechRecord);
   }
 
   get isEditing(): boolean {
@@ -161,7 +158,13 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecordCalculated.chassisMake = payload?.psvChassisMake;
       this.vehicleTechRecordCalculated.chassisModel = payload?.psvChassisModel;
       this.vehicleTechRecordCalculated.bodyMake = payload?.psvBodyMake;
-      this.vehicleTechRecordCalculated.bodyModel = payload?.psvBodyModel;
+
+      const code = payload?.psvBodyType.toLowerCase() as BodyTypeCode;
+
+      this.vehicleTechRecordCalculated.bodyType = {
+        description: bodyTypeCodeMap.get(code),
+        code: code
+      };
     });
   }
 
@@ -172,7 +175,7 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
     }
 
-    if (event.brakes.dtpNumber && event.brakes.dtpNumber.length >= 4) {
+    if (event.brakes && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
       this.setBodyFields();
     } else {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);

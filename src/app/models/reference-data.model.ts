@@ -20,7 +20,7 @@ export interface PsvMake extends ReferenceDataModelBase {
   psvChassisMake: string;
   psvChassisModel: string;
   psvBodyMake: string;
-  psvBodyModel: string;
+  psvBodyType: string;
 }
 
 export interface BodyMake extends ReferenceDataModelBase {}

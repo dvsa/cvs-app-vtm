@@ -26,6 +26,16 @@
       [width]="widths.L"
     ></app-switchable-input>
   </div>
+
+  <app-switchable-input
+    [form]="bodyTypeForm"
+    [type]="editTypes.TEXT"
+    name="description"
+    label="Body type"
+    [isEditing]="isEditing"
+    [options]="bodyTypes"
+    [width]="widths.L"
+  ></app-switchable-input>
 </ng-container>
 
 <ng-container *ngIf="vehicleTechRecord.vehicleType !== 'psv'">
@@ -50,17 +60,17 @@
       [width]="widths.M"
     ></app-switchable-input>
   </div>
-</ng-container>
 
-<app-switchable-input
-  [form]="bodyTypeForm"
-  [type]="editTypes.DROPDOWN"
-  name="description"
-  label="Body type"
-  [isEditing]="isEditing"
-  [options]="bodyTypes"
-  [width]="widths.L"
-></app-switchable-input>
+  <app-switchable-input
+    [form]="bodyTypeForm"
+    [type]="editTypes.DROPDOWN"
+    name="description"
+    label="Body type"
+    [isEditing]="isEditing"
+    [options]="bodyTypes"
+    [width]="widths.L"
+  ></app-switchable-input>
+</ng-container>
 
 <app-switchable-input
   [form]="form"

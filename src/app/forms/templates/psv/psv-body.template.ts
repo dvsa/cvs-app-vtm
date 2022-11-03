@@ -10,13 +10,15 @@ export const PsvBodyTemplate: FormNode = {
       name: 'modelLiteral',
       label: 'Model literal',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
       name: 'chassisMake',
       label: 'Chassis make',
       value: '',
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
       disabled: true
     },
     {
@@ -24,6 +26,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Chassis model',
       value: '',
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
       disabled: true
     },
     {
@@ -32,6 +35,7 @@ export const PsvBodyTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
       disabled: true
     },
     {
@@ -39,7 +43,7 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
       name: 'bodyType',
@@ -51,7 +55,8 @@ export const PsvBodyTemplate: FormNode = {
           name: 'description',
           label: 'Body type',
           value: '',
-          type: FormNodeTypes.CONTROL
+          type: FormNodeTypes.CONTROL,
+          disabled: true
         }
       ]
     },
