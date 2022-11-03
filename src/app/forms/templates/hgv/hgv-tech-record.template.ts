@@ -38,7 +38,9 @@ export const HgvTechRecord: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 4 },
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.Numeric },
         { name: ValidatorNames.Required }
       ]
     },
@@ -118,11 +120,10 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'euroStandard',
       label: 'Euro standard',
-      value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Defined }]
     },
     {
       name: 'roadFriendly',
@@ -207,11 +208,9 @@ export const HgvTechRecord: FormNode = {
       value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
+      editType: FormNodeEditTypes.NUMERICSTRING,
       validators: [
-        { name: ValidatorNames.Min, args: 0 },
         { name: ValidatorNames.Max, args: 99 },
-        { name: ValidatorNames.Numeric, args: 99 },
       ]
     },
     {

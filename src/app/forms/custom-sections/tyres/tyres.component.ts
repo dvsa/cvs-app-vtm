@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { getTyresSection } from '@forms/templates/general/tyres.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subscription, debounceTime } from 'rxjs';
 
 @Component({
@@ -24,10 +24,11 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   constructor(public dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
-      this.formChange.emit(event);
-    });
+    const template = getTyresSection(this.vehicleTechRecord.vehicleType);
+
+    this.form = this.dfs.createForm(template, this.vehicleTechRecord) as CustomFormGroup;
+
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
   ngOnChanges() {
@@ -36,17 +37,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this._formSubscription.unsubscribe();
-  }
-
-  get template() {
-    switch (this.vehicleTechRecord.vehicleType) {
-      case VehicleTypes.PSV:
-        return getTyresSection(VehicleTypes.PSV);
-      case VehicleTypes.HGV:
-        return getTyresSection(VehicleTypes.HGV);
-      case VehicleTypes.TRL:
-        return getTyresSection(VehicleTypes.TRL);
-    }
   }
 
   get types(): typeof FormNodeEditTypes {

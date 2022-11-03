@@ -38,7 +38,9 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
       validators: [
-        { name: ValidatorNames.MaxLength, args: 4 },
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.Numeric},
         { name: ValidatorNames.Required }]
     },
     {

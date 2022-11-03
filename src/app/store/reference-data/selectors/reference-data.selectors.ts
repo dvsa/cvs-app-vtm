@@ -1,6 +1,6 @@
-import { Brake, ReasonsForAbandoning, ReferenceDataResourceType } from '@models/reference-data.model';
+import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { testResultInEdit } from '@store/test-records';
 import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
 const resourceTypeSelector = (resourceType: ReferenceDataResourceType) =>
@@ -17,11 +17,18 @@ export const referenceDataLoadingState = createSelector(referenceDataFeatureStat
 export const selectBrakeByCode = (code: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
 
-export const selectReasonsForAbandoning = createSelector(
-  selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoning),
-  testResultInEdit,
-  (referenceData, testResult) => (referenceData as ReasonsForAbandoning[]).filter(reason => reason.vehicleType === testResult?.vehicleType)
-);
+export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
+  switch (vehicleType) {
+    case VehicleTypes.PSV:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningPsv);
+    case VehicleTypes.HGV:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningHgv);
+    case VehicleTypes.TRL:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+    default:
+      throw new Error('Unknown Vehicle Type');
+  }
+};
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

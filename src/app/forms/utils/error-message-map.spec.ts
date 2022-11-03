@@ -33,12 +33,13 @@ describe('ErrorMessageMap', () => {
     ['bar must be ahead of foo', ValidatorNames.AheadOfDate, [{ sibling: 'foo' }, 'bar']],
     ['This field is required', AsyncValidatorNames.RequiredIfNotFail, [{ sibling: 'foo' }, '']],
     ['Name is required', AsyncValidatorNames.RequiredIfNotFail, [{ sibling: 'foo' }, 'Name']],
+    ['Prohibition notice has not been issued.', ValidatorNames.ValidateProhibitionIssued, undefined],
     ['This field is required', AsyncValidatorNames.RequiredIfNotAbandoned, [{ sibling: 'foo' }, '']],
     ['Name is required', AsyncValidatorNames.RequiredIfNotAbandoned, [{ sibling: 'foo' }, 'Name']],
     ['This field is required', AsyncValidatorNames.RequiredIfNotResult, [{ sibling: 'foo' }, '']],
     ['Name is required', AsyncValidatorNames.RequiredIfNotResult, [{ sibling: 'foo' }, 'Name']],
     ['This field is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, '']],
-    ['Name is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, 'Name']],
+    ['Name is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, 'Name']]
   ])('should return "%s" for %s with %o', (expected, key, props) => {
     props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });
