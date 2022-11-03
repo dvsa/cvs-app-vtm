@@ -3,6 +3,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
+import { mockTyres } from '@mocks/reference-data/mock-tyres';
 import { mockReasonsForAbandoningHgv } from '@mocks/reference-data/mock-hgv-reasons-for-abandoning.reference-data';
 import { mockReasonsForAbandoningPsv } from '@mocks/reference-data/mock-psv-reasons-for-abandoning.reference-data';
 import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-data/mock-specialist-reasons-for-abandoning.reference-data';
@@ -57,6 +58,8 @@ export class ReferenceDataService {
         return mockBodyMakes;
       case ReferenceDataResourceType.BodyModel:
         return mockBodyModels;
+      case ReferenceDataResourceType.Tyres:
+        return mockTyres;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
       case ReferenceDataResourceType.ReasonsForAbandoningPsv:

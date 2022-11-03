@@ -13,7 +13,6 @@ import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
@@ -35,6 +34,9 @@ import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { updateEditingTechRecord } from '@store/technical-records';
+import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
+import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
+import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
@@ -159,7 +161,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  9 */ DocumentsTemplate,
       /* 10 */ psvBodyTemplate,
       /* 11 */ PsvWeight,
-      /* 12 */ getTyresSection(VehicleTypes.PSV),
+      /* 12 */ tyresTemplatePsv,
       /* 13 */ PsvDimensionsTemplate
     ];
   }
@@ -174,7 +176,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  6 */ DocumentsTemplate,
       /*  7 */ hgvAndTrlBodyTemplate,
       /*  8 */ HgvWeight,
-      /*  9 */ getTyresSection(VehicleTypes.HGV),
+      /*  9 */ tyresTemplateHgv,
       /* 10 */ HgvDimensionsTemplate,
       /* 11 */ PlatesTemplate
     ];
@@ -190,7 +192,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  6 */ DocumentsTemplate,
       /*  7 */ hgvAndTrlBodyTemplate,
       /*  8 */ TrlWeight,
-      /*  9 */ getTyresSection(VehicleTypes.TRL),
+      /*  9 */ tyresTemplateTrl,
       /* 10 */ TrlBrakes,
       /* 11 */ TrlPurchasers,
       /* 12 */ TrlDimensionsTemplate,

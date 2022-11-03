@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -37,11 +37,7 @@ export const HgvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.Required }
-      ]
+      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'brakes',
@@ -55,12 +51,9 @@ export const HgvTechRecord: FormNode = {
           value: '',
           width: FormNodeWidth.M,
           type: FormNodeTypes.CONTROL,
-          validators: [
-            { name: ValidatorNames.Required },
-            { name: ValidatorNames.MaxLength, args: 6 },
-          ]
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
         }
-      ],
+      ]
     },
     {
       name: 'noOfAxles',
@@ -114,7 +107,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'fuelPropulsionSystem',
@@ -134,7 +127,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'vehicleClass',
@@ -171,7 +164,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'euVehicleCategory',
@@ -189,9 +182,7 @@ export const HgvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.Max, args: 99 },
-      ]
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'departmentalVehicleMarker',
@@ -213,7 +204,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     }
   ]
 };

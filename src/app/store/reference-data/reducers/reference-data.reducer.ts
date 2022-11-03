@@ -30,7 +30,8 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.BodyMake]: createAdapter(),
-  [ReferenceDataResourceType.BodyModel]: createAdapter()
+  [ReferenceDataResourceType.BodyModel]: createAdapter(),
+  [ReferenceDataResourceType.Tyres]: createAdapter()
 };
 
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
@@ -47,7 +48,8 @@ export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningPsv].getInitialState(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
-    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState()
+    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState()
 };
 
 export const referenceDataReducer = createReducer(
