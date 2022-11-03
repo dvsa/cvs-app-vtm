@@ -13,9 +13,7 @@ import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { getTyresSection } from '@forms/templates/general/tyres.template';
 import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
-import { getDimensionsMinMaxSection, getDimensionsSection } from '@forms/templates/general/dimensions.template';
 import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
@@ -36,6 +34,12 @@ import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { updateEditingTechRecord } from '@store/technical-records';
+import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
+import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
+import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
+import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
+import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
+import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -142,7 +146,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   // The 3 methods below initialize the array of sections that the *ngFor in the component's template will iterate over.
   // The order in which each section is introduced in the array will determine its order on the page when rendered.
-  // Sections which use custom components need an empty FormNode object with 'name' and 'label' properties.
+  // Sections which use custom components require a FormNode object with 'name' and 'label' properties.
 
   getPsvTemplates(): Array<FormNode> {
     return [
@@ -157,8 +161,8 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  9 */ DocumentsTemplate,
       /* 10 */ psvBodyTemplate,
       /* 11 */ PsvWeight,
-      /* 12 */ getTyresSection(VehicleTypes.PSV),
-      /* 13 */ getDimensionsSection(VehicleTypes.PSV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing)
+      /* 12 */ tyresTemplatePsv,
+      /* 13 */ PsvDimensionsTemplate
     ];
   }
 
@@ -172,15 +176,9 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  6 */ DocumentsTemplate,
       /*  7 */ hgvAndTrlBodyTemplate,
       /*  8 */ HgvWeight,
-      /*  9 */ getTyresSection(VehicleTypes.HGV),
-      /* 10 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
-      /* 11 */ getDimensionsMinMaxSection(
-        'Front of vehicle to 5th wheel coupling',
-        'frontAxleTo5thWheelCouplingMin',
-        'frontAxleTo5thWheelCouplingMax'
-      ),
-      /* 12 */ getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax'),
-      /* 13 */ PlatesTemplate
+      /*  9 */ tyresTemplateHgv,
+      /* 10 */ HgvDimensionsTemplate,
+      /* 11 */ PlatesTemplate
     ];
   }
 
@@ -194,15 +192,13 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  6 */ DocumentsTemplate,
       /*  7 */ hgvAndTrlBodyTemplate,
       /*  8 */ TrlWeight,
-      /*  9 */ getTyresSection(VehicleTypes.TRL),
+      /*  9 */ tyresTemplateTrl,
       /* 10 */ TrlBrakes,
       /* 11 */ TrlPurchasers,
-      /* 12 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
-      /* 13 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),
-      /* 14 */ getDimensionsMinMaxSection('Coupling center to rear trailer', 'couplingCenterToRearTrlMin', 'couplingCenterToRearTrlMax'),
-      /* 15 */ PlatesTemplate,
-      /* 16 */ TrlAuthIntoServiceTemplate,
-      /* 17 */ ManufacturerTemplate
+      /* 12 */ TrlDimensionsTemplate,
+      /* 13 */ PlatesTemplate,
+      /* 14 */ TrlAuthIntoServiceTemplate,
+      /* 15 */ ManufacturerTemplate
     ];
   }
 }
