@@ -32,10 +32,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
-      this.formChange.emit(event);
-    });
-
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
   }
 
