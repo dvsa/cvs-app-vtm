@@ -13,12 +13,14 @@
           <th scope="col" class="govuk-table__header">Laden</th>
           <th scope="col" class="govuk-table__header">GB max</th>
           <th scope="col" class="govuk-table__header">Design</th>
+          <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
         </ng-container>
 
         <ng-template #hgvAndTrlTh>
           <th scope="col" class="govuk-table__header">GB</th>
           <th scope="col" class="govuk-table__header">EEC</th>
           <th scope="col" class="govuk-table__header">Design</th>
+          <th *ngIf="isEditing" scope="col" class="govuk-table__header"></th>
         </ng-template>
       </tr>
     </thead>
@@ -41,6 +43,10 @@
 
             <ng-template [ngTemplateOutlet]="axleTdNumberInput" [ngTemplateOutletContext]="{ name: 'designWeight' }"></ng-template>
 
+            <td *ngIf="isEditing" class="govuk-table__cell">
+              <a class="axleButton" (click)="removeAxle(i)">Remove</a>
+            </td>
+
             <ng-template #axleTdNumberInput let-name="name">
               <td class="govuk-table__cell">
                 <app-switchable-input [form]="getAxleWeights(i)" [type]="types.NUMBER" [name]="name" [isEditing]="isEditing"></app-switchable-input>
@@ -57,6 +63,7 @@
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossLadenWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossGbWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossDesignWeight' }"></ng-template>
+          <td *ngIf="isEditing" class="govuk-table__cell"></td>
         </tr>
 
         <tr class="govuk-table__row">
@@ -65,8 +72,44 @@
           <td class="govuk-table__cell"></td>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainGbWeight' }"></ng-template>
           <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainDesignWeight' }"></ng-template>
+          <td *ngIf="isEditing" class="govuk-table__cell"></td>
+        </tr>
+      </ng-container>
+
+      <ng-template #hgvAndTrlWeights>
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">Gross</th>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossGbWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossEecWeight' }"></ng-template>
+          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossDesignWeight' }"></ng-template>
+          <td *ngIf="isEditing" class="govuk-table__cell"></td>
         </tr>
 
+        <ng-container *ngIf="isHgv">
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Train</th>
+            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainGbWeight' }"></ng-template>
+            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainEecWeight' }"></ng-template>
+            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainDesignWeight' }"></ng-template>
+            <td *ngIf="isEditing" class="govuk-table__cell"></td>
+          </tr>
+
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">Max Train</th>
+            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainGbWeight' }"></ng-template>
+            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainEecWeight' }"></ng-template>
+            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainDesignWeight' }"></ng-template>
+            <td *ngIf="isEditing" class="govuk-table__cell"></td>
+          </tr>
+        </ng-container>
+      </ng-template>
+
+      <tr *ngIf="isEditing">
+        <a class="axleButton" role="button" (click)="addAxle()">Add Axle</a>
+        <p *ngIf="isError" class="govuk-error-message">{{ errorMessage }}</p>
+      </tr>
+
+      <ng-container *ngIf="isPsv">
         <br />
 
         <app-switchable-input
@@ -78,31 +121,6 @@
           suffix="kg"
         ></app-switchable-input>
       </ng-container>
-
-      <ng-template #hgvAndTrlWeights>
-        <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">Gross</th>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossGbWeight' }"></ng-template>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossEecWeight' }"></ng-template>
-          <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'grossDesignWeight' }"></ng-template>
-        </tr>
-
-        <ng-container *ngIf="isHgv">
-          <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">Train</th>
-            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainGbWeight' }"></ng-template>
-            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainEecWeight' }"></ng-template>
-            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'trainDesignWeight' }"></ng-template>
-          </tr>
-
-          <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">Max Train</th>
-            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainGbWeight' }"></ng-template>
-            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainEecWeight' }"></ng-template>
-            <ng-template [ngTemplateOutlet]="tdNumberInput" [ngTemplateOutletContext]="{ name: 'maxTrainDesignWeight' }"></ng-template>
-          </tr>
-        </ng-container>
-      </ng-template>
 
       <ng-template #tdNumberInput let-name="name">
         <td class="govuk-table__cell">

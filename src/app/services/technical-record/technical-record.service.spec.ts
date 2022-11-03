@@ -1,11 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordService } from './technical-record.service';

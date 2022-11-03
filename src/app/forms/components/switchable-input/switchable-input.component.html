@@ -35,16 +35,6 @@
     ></app-date>
   </ng-template>
 
-  <app-select
-    *ngSwitchCase="types.DROPDOWN"
-    [formControlName]="name"
-    [name]="name"
-    [label]="label"
-    [width]="width"
-    [options]="options!"
-    [noBottomMargin]="true"
-  ></app-select>
-
   <app-number-input *ngSwitchCase="types.NUMBER" [formControlName]="name" [name]="name" [label]="label" [width]="width" [noBottomMargin]="true">
     <ng-template *ngIf="suffix" appSuffix>{{ suffix }}</ng-template>
   </app-number-input>
@@ -58,6 +48,16 @@
     [options]="options!"
     [noBottomMargin]="true"
   ></app-radio-group>
+
+  <app-select
+    *ngSwitchCase="types.DROPDOWN"
+    [formControlName]="name"
+    [name]="name"
+    [label]="label"
+    [width]="width"
+    [options]="options!"
+    [noBottomMargin]="true"
+  ></app-select>
 
   <app-text-area
     *ngSwitchCase="types.TEXTAREA"

@@ -153,6 +153,258 @@ describe('DynamicFormGroupComponent', () => {
     }));
   });
 
+  describe('template for nested array with groups', () => {
+    const template = <FormNode>{
+      name: 'myForm',
+      type: FormNodeTypes.GROUP,
+      children: [
+        { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+        {
+          name: 'levelOneGroup',
+          type: FormNodeTypes.GROUP,
+          children: [
+            { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
+            {
+              name: 'levelTwoArray',
+              type: FormNodeTypes.ARRAY,
+              children: [
+                {
+                  name: 'levelThreeArray',
+                  type: FormNodeTypes.ARRAY,
+                  children: [
+                    {
+                      name: 'levelThreeGroup',
+                      type: FormNodeTypes.GROUP,
+                      children: [
+                        { name: 'levelThreeArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
+                        { name: 'levelThreeArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const data = {
+      levelOneControl: 'some string',
+      levelOneGroup: {
+        levelTwoControl: 'some string',
+        levelTwoArray: [
+          [
+            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
+          ],
+          [
+            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+            { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
+          ]
+        ]
+      }
+    };
+
+    it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.form = dfs.createForm(template, data);
+
+      fixture.detectChanges();
+
+      const dtList = fixture.debugElement.queryAll(By.css('dt'));
+      const ddList = fixture.debugElement.queryAll(By.css('dd'));
+
+      expect(dtList.length).toBe(10);
+      expect(ddList.length).toBe(10);
+    }));
+
+    it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.edit = true;
+      component.form = dfs.createForm(template, data);
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(10);
+    }));
+
+    it('should generate the correct number of input elements if I reduce the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      const newData = {
+        levelOneControl: 'some string',
+        levelOneGroup: {
+          levelTwoControl: 'some string',
+          levelTwoArray: [
+            [{ levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }],
+            [{ levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }]
+          ]
+        }
+      };
+      component.edit = true;
+      component.form = dfs.createForm(template, newData);
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(6);
+    }));
+
+    it('should generate the correct number of input elements if I increase the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      const newData = {
+        levelOneControl: 'some string',
+        levelOneGroup: {
+          levelTwoControl: 'some string',
+          levelTwoArray: [
+            [
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
+            ],
+            [
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' },
+              { levelThreeArrayControlOne: 'some string', levelThreeArrayControlTwo: 'some string' }
+            ]
+          ]
+        }
+      };
+      component.edit = true;
+      component.form = dfs.createForm(template, newData);
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(14);
+    }));
+  });
+
+  describe('template for array with groups', () => {
+    const template = <FormNode>{
+      name: 'myForm',
+      type: FormNodeTypes.GROUP,
+      children: [
+        { name: 'levelOneControl', type: FormNodeTypes.CONTROL, label: 'Level one control', value: 'some string' },
+        {
+          name: 'levelOneGroup',
+          type: FormNodeTypes.GROUP,
+          children: [
+            { name: 'levelTwoControl', type: FormNodeTypes.CONTROL, label: 'Level two control', value: 'some string' },
+            {
+              name: 'levelTwoArray',
+              type: FormNodeTypes.ARRAY,
+              children: [
+                {
+                  name: 'levelTwoGroup',
+                  type: FormNodeTypes.GROUP,
+                  children: [
+                    { name: 'levelTwoArrayControlOne', type: FormNodeTypes.CONTROL, value: '1' },
+                    { name: 'levelTwoArrayControlTwo', type: FormNodeTypes.CONTROL, value: '2' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const data = {
+      levelOneControl: 'some string',
+      levelOneGroup: {
+        levelTwoControl: 'some string',
+        levelTwoArray: [
+          {
+            levelTwoArrayControlOne: 'some string',
+            levelTwoArrayControlTwo: 'some string'
+          },
+          {
+            levelTwoArrayControlOne: 'some string',
+            levelTwoArrayControlTwo: 'some string'
+          }
+        ]
+      }
+    };
+
+    it('should generate the correct number of detail summary elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.form = dfs.createForm(template, data);
+
+      fixture.detectChanges();
+
+      const dtList = fixture.debugElement.queryAll(By.css('dt'));
+      const ddList = fixture.debugElement.queryAll(By.css('dd'));
+
+      expect(dtList.length).toBe(6);
+      expect(ddList.length).toBe(6);
+    }));
+
+    it('should generate the correct number of input elements', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      component.edit = true;
+      component.form = dfs.createForm(template, data);
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(6);
+    }));
+
+    it('should generate the correct number of input elements if I reduce the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      const newData = {
+        levelOneControl: 'some string',
+        levelOneGroup: {
+          levelTwoControl: 'some string',
+          levelTwoArray: [
+            {
+              levelTwoArrayControlOne: 'some string',
+              levelTwoArrayControlTwo: 'some string'
+            }
+          ]
+        }
+      };
+      component.edit = true;
+      component.form = dfs.createForm(template, newData);
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(4);
+    }));
+
+    it('should generate the correct number of input elements if I increase the data', inject([DynamicFormService], (dfs: DynamicFormService) => {
+      const newData = {
+        levelOneControl: 'some string',
+        levelOneGroup: {
+          levelTwoControl: 'some string',
+          levelTwoArray: [
+            {
+              levelTwoArrayControlOne: 'some string',
+              levelTwoArrayControlTwo: 'some string'
+            },
+            {
+              levelTwoArrayControlOne: 'some string',
+              levelTwoArrayControlTwo: 'some string'
+            },
+            {
+              levelTwoArrayControlOne: 'some string',
+              levelTwoArrayControlTwo: 'some string'
+            }
+          ]
+        }
+      };
+      component.edit = true;
+      component.form = dfs.createForm(template, newData);
+
+      fixture.detectChanges();
+
+      const inputList = fixture.debugElement.queryAll(By.css('input'));
+
+      expect(inputList.length).toBe(8);
+    }));
+  });
+
   describe('value changes', () => {
     const template = <FormNode>{
       name: 'myForm',

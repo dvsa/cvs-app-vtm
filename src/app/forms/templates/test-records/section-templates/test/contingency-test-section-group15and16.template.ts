@@ -74,20 +74,26 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              editType: FormNodeEditTypes.HIDDEN,
+              required: true,
+              value: null
             },
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
               value: '',
-              disabled: false,
-
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              viewType: FormNodeViewTypes.TIME,
+              editType: FormNodeEditTypes.DATE,
+              validators: [
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                },
+                { name: ValidatorNames.FutureDate }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',

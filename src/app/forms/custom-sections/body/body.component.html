@@ -1,0 +1,50 @@
+<div class="first-row">
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.DROPDOWN"
+    name="make"
+    label="Body make"
+    [isEditing]="isEditing"
+    [options]="(bodyMakes$ | async) || []"
+    [width]="widths.M"
+  ></app-switchable-input>
+
+  <app-switchable-input
+    [form]="form"
+    [type]="editTypes.DROPDOWN"
+    name="model"
+    label="Body model"
+    [isEditing]="isEditing"
+    [options]="(bodyModels$ | async) || []"
+    [width]="widths.M"
+  ></app-switchable-input>
+</div>
+
+<app-switchable-input
+  [form]="bodyTypeForm"
+  [type]="editTypes.DROPDOWN"
+  name="description"
+  label="Body type"
+  [isEditing]="isEditing"
+  [options]="bodyTypes"
+  [width]="widths.L"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.DROPDOWN"
+  name="functionCode"
+  label="Function code"
+  [isEditing]="isEditing"
+  [options]="numberOptions"
+  [width]="widths.XXS"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="form"
+  [type]="editTypes.NUMERICSTRING"
+  name="conversionRefNo"
+  label="Conversion refernce number"
+  [isEditing]="isEditing"
+  [width]="widths.L"
+></app-switchable-input>

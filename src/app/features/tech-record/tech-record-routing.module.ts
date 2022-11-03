@@ -27,12 +27,14 @@ const routes: Routes = [
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },
     canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'notifiable-alteration-needed',
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
     canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'provisional',
@@ -46,6 +48,7 @@ const routes: Routes = [
     component: TechRecordComponent,
     canActivate: [MsalGuard],
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+    resolve: { load: TechRecordViewResolver }
   },
   {
     path: 'historic/:techCreatedAt',

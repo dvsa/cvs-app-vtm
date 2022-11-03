@@ -81,10 +81,14 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   handleFormState() {
-    const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, this.summary.weights.form);
+    if (this.isEditing) {
+      const form = this.summary.sections
+        .map(section => section.form)
+        .concat(this.summary.body.form, this.summary.dimensions.form, this.summary.weights.form);
 
-    this.isDirty = form.some(form => form.dirty);
-    this.isInvalid = this.isAnyFormInvalid(form);
+      this.isDirty = form.some(form => form.dirty);
+      this.isInvalid = this.isAnyFormInvalid(form);
+    }
   }
 
   handleSubmit() {

@@ -12,7 +12,7 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { updateTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { combineLatest, filter, firstValueFrom, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, map, Observable, of, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -26,6 +26,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
+  isCanceled: boolean = false;
 
   constructor(
     private actions$: Actions,
@@ -118,6 +119,14 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     this.testRecordsService.updateTestResult(cloneDeep(testResult));
   }
 
+  handleCancel() {
+    this.isCanceled = !this.isCanceled;
+  }
+
+  handleConfirmCancel() {
+    this.router.navigate(['../..'], { relativeTo: this.route.parent });
+  }
+
   watchForUpdateSuccess() {
     this.actions$.pipe(ofType(updateTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.backToTestRecord();
@@ -138,5 +147,9 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   isAnyFormInvalid(forms: Array<FormGroup>) {
     return forms.some(form => form.invalid);
+  }
+
+  get testNumber$(): Observable<string | undefined> {
+    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
   }
 }

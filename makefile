@@ -1,11 +1,11 @@
 # Commake (v0.0.1) - https://niallbunting.com/commake/common/makefile/2022/03/09/commake-common-makefile.html
 
 .PHONY: all help init install build run lint test e2e plan deploy versioncheck
-all: lint test run #help Full check
-
+all: #help Full check
+	lint test run 
 help:
 	@echo "-- HELP --"
-	@grep '#[h]elp' makefile
+	@grep '#[h]elp' makefile | sed s/#[h]elp//g
 
 init: #help Run through dependencies and check
 	git secrets
@@ -19,7 +19,7 @@ versioncheck:
 install: versioncheck #help Install packages
 	npm i
 
-build: #help Bulid the project files
+build: #help Build the project files
 	npm run build
 
 run: versioncheck #help Run Locally

@@ -19,12 +19,7 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
-      editType: FormNodeEditTypes.SELECT,
-      options: [
-        { value: 'psv', label: 'PSV' },
-        { value: 'hgv', label: 'HGV' },
-        { value: 'trl', label: 'Trailer' }
-      ],
+      disabled: true
     },
     {
       name: 'regnDate',
@@ -43,7 +38,12 @@ export const PsvTechRecord: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 4 }, { name: ValidatorNames.Required }]
+      validators: [
+        { name: ValidatorNames.Max, args: 9999 },
+        { name: ValidatorNames.Min, args: 1000 },
+        { name: ValidatorNames.Numeric },
+        { name: ValidatorNames.Required }
+      ]
     },
     {
       name: 'noOfAxles',
@@ -118,11 +118,10 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'euroStandard',
       label: 'Euro standard',
-      value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: getOptionsFromEnum(EmissionStandard),
-      validators: [{ name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Defined }]
     },
     {
       name: 'fuelPropulsionSystem',
@@ -173,11 +172,13 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'emissionsLimit',
       label: 'Emission limit (plate value)',
-      value: '',
+      value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }]
+      editType: FormNodeEditTypes.NUMERICSTRING,
+      validators: [
+        { name: ValidatorNames.Max, args: 99 },
+      ]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
     {
@@ -186,8 +187,11 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }],
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [
+        { name: ValidatorNames.Max, args: 99},
+        { name: ValidatorNames.Required }
+      ],
       class: 'flex--half'
     },
     {
@@ -196,8 +200,11 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }],
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [
+        { name: ValidatorNames.Max, args: 999},
+        { name: ValidatorNames.Required }
+      ],
       class: 'flex--half'
     },
     {
@@ -206,8 +213,11 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }]
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [
+        { name: ValidatorNames.Max, args: 999},
+        { name: ValidatorNames.Required }
+      ]
     },
     {
       name: 'numberOfSeatbelts',
@@ -215,8 +225,11 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.MaxLength, args: 2 }, { name: ValidatorNames.Required }]
+      editType: FormNodeEditTypes.NUMERICSTRING,
+      validators: [
+        { name: ValidatorNames.Max, args: 99 }, 
+        { name: ValidatorNames.Required }
+      ]
     },
 
     {

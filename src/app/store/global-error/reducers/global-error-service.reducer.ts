@@ -4,6 +4,7 @@ import * as TestResultActions from '@store/test-records';
 import * as TechnicalRecordServiceActions from '../../technical-records/actions/technical-record-service.actions';
 import * as GlobalErrorActions from '../actions/global-error.actions';
 import * as ReferenceDataActions from '../../reference-data/actions/reference-data.actions';
+import { routerNavigatedAction } from '@ngrx/router-store';
 
 export const STORE_FEATURE_GLOBAL_ERROR_KEY = 'globalError';
 
@@ -35,6 +36,7 @@ export const globalErrorReducer = createReducer(
     TestResultActions.fetchSelectedTestResult,
     ReferenceDataActions.fetchReferenceData,
     ReferenceDataActions.fetchReferenceDataByKey,
+    routerNavigatedAction,
     successMethod
   ),
 

@@ -36,6 +36,7 @@
     [name]="control.value.meta.name"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [width]="control.value.meta.width"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-number-input>
@@ -56,6 +57,7 @@
     [options]="(options | async) || []"
     [formControlName]="control.key"
     [hint]="control.value.meta.hint"
+    [width]="control.value.meta.width"
   ></app-select>
 
   <app-text-area
@@ -83,6 +85,7 @@
     [formControlName]="control.key"
     [numeric]="true"
     [hint]="control.value.meta.hint"
+    [width]="control.value.meta.width"
   >
     <ng-template *ngIf="control.value.meta.suffix" appSuffix> {{ control.value.meta.suffix }} </ng-template>
   </app-text-input>

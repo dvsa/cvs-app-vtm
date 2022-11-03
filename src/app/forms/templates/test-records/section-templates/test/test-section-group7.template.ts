@@ -75,10 +75,10 @@ export const TestSectionGroup7: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              required: true,
+              value: null
             },
             {
               name: 'testExpiryDate',

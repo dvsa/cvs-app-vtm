@@ -75,10 +75,10 @@ export const TestSectionGroup5And13: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              required: true,
+              value: null
             },
             {
               name: 'testNumber',
@@ -101,7 +101,7 @@ export const TestSectionGroup5And13: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: ReferenceDataResourceType.TIRReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

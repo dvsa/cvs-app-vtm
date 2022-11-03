@@ -1,17 +1,33 @@
-<app-banner *ngIf="(isTestTypeGroupEditable$ | async) === false">
-  <ng-container title>Important</ng-container>
+<ng-container *ngIf="!isCanceled; else canceled">
+  <app-banner *ngIf="(isTestTypeGroupEditable$ | async) === false">
+    <ng-container title>Important</ng-container>
 
-  <ng-container content>Editing this record is not currently supported</ng-container>
-</app-banner>
+    <ng-container content>Editing this record is not currently supported</ng-container>
+  </app-banner>
 
-<ng-container *ngIf="testResult$ | async as testResult">
-  <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)"></app-base-test-record>
+  <ng-container *ngIf="testResult$ | async as testResult">
+    <app-base-test-record [isEditing]="true" [testResult]="testResult" (newTestResult)="handleNewTestResult($event)"></app-base-test-record>
 
-  <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
+    <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
 
-  <ng-container *appRoleRequired="Roles.TestResultAmend">
-    <app-button-group *ngIf="isTestTypeGroupEditable$ | async">
-      <app-button id="save-test-result" (clicked)="handleSave()">Review and submit</app-button>
-    </app-button-group>
+    <ng-container *appRoleRequired="Roles.TestResultAmend">
+      <app-button-group *ngIf="isTestTypeGroupEditable$ | async">
+        <app-button id="save-test-result" (clicked)="handleSave()">Review and submit</app-button>
+        <app-button type="underline" (click)="handleCancel()">Cancel</app-button>
+      </app-button-group>
+    </ng-container>
   </ng-container>
 </ng-container>
+
+<ng-template #canceled>
+  <ng-container *ngIf="testResult$ | async as testResult">
+    <app-vehicle-header [isEditing]="true" [testResult]="testResult" [testNumber]="testNumber$ | async"></app-vehicle-header>
+  </ng-container>
+  <h1 class="govuk-heading-l">Are you sure you want to cancel these changes?</h1>
+  <p class="govuk-heading-s">You will lose all the changes you made to the technical record in this session.</p>
+
+  <app-button-group>
+    <app-button id="confirm-cancel-amend" type="warning" (clicked)="handleConfirmCancel()">Cancel changes</app-button>
+    <app-button id="retract-cancel-amend" type="underline" (clicked)="handleCancel()">Back</app-button>
+  </app-button-group>
+</ng-template>

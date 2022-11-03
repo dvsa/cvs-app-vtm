@@ -85,14 +85,15 @@ export const ContingencyTestSectionGroup7: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
-              required: true,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
                 {
                   name: ValidatorNames.RequiredIfEquals,
                   args: { sibling: 'testResult', value: 'pass' }
                 }
-              ]
+              ],
+              required: true,
+              value: null
             },
             {
               name: 'testExpiryDate',
@@ -100,7 +101,7 @@ export const ContingencyTestSectionGroup7: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.TIME,
-              editType: FormNodeEditTypes.DATETIME,
+              editType: FormNodeEditTypes.DATE,
               validators: [
                 {
                   name: ValidatorNames.RequiredIfEquals,

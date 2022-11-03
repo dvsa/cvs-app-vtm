@@ -2,6 +2,7 @@ import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const VisitSection: FormNode = {
   name: 'visitSection',
@@ -43,18 +44,26 @@ export const VisitSection: FormNode = {
       disabled: true
     },
     {
+      name: 'testerStaffId',
+      type: FormNodeTypes.CONTROL,
+      label: 'Tester details',
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
+      referenceData: ReferenceDataResourceType.User,
+      validators: [{ name: ValidatorNames.Required }],
+      asyncValidators: [{ name: AsyncValidatorNames.UpdateTesterDetails }]
+    },
+    {
       name: 'testerName',
       label: 'Tester name',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.Required }]
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testerEmailAddress',
       label: 'Tester email address',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [{ name: ValidatorNames.Required }]
+      editType: FormNodeEditTypes.HIDDEN
     }
   ]
 };
