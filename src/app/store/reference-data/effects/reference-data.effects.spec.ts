@@ -1,13 +1,25 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
-import { initialAppState } from '@store/.';
+import { initialAppState, State } from '@store/.';
+import { testResultInEdit } from '@store/test-records';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { fetchReferenceData, fetchReferenceDataByKey, fetchReferenceDataByKeyFailed, fetchReferenceDataByKeySuccess, fetchReferenceDataFailed, fetchReferenceDataSuccess } from '../actions/reference-data.actions';
+import {
+  fetchReasonsForAbandoning,
+  fetchReferenceData,
+  fetchReferenceDataByKey,
+  fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySuccess,
+  fetchReferenceDataFailed,
+  fetchReferenceDataSuccess
+} from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { ReferenceDataEffects } from './reference-data.effects';
 
@@ -16,6 +28,7 @@ describe('ReferenceDataEffects', () => {
   let actions$ = new Observable<Action>();
   let testScheduler: TestScheduler;
   let referenceDataService: ReferenceDataService;
+  let store: MockStore<State>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,6 +44,7 @@ describe('ReferenceDataEffects', () => {
     });
 
     effects = TestBed.inject(ReferenceDataEffects);
+    store = TestBed.inject(MockStore);
     referenceDataService = TestBed.inject(ReferenceDataService);
   });
 
@@ -41,7 +55,7 @@ describe('ReferenceDataEffects', () => {
   });
 
   describe('fetchReferenceDataByType$', () => {
-    it.each(testCases)('should return fetchReferenceDataSuccess action on successfull API call', (value) => {
+    it.each(testCases)('should return fetchReferenceDataSuccess action on successfull API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, payload } = value;
 
@@ -58,7 +72,7 @@ describe('ReferenceDataEffects', () => {
       });
     });
 
-    it.each(testCases)('should return fetchReferenceDataFailed action on API error', (value) => {
+    it.each(testCases)('should return fetchReferenceDataFailed action on API error', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, payload } = value;
         actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: null as any }) });
@@ -67,13 +81,15 @@ describe('ReferenceDataEffects', () => {
 
         jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchReferenceDataByType$).toBe('---b', { b: fetchReferenceDataFailed({ error: 'Reference data resourceType is required' }) });
+        expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
+          b: fetchReferenceDataFailed({ error: 'Reference data resourceType is required' })
+        });
       });
     });
   });
 
   describe('fetchReferenceDataByKey$', () => {
-    it.each(testCases)('should return fetchReferenceDataByKeySuccess action on successfull API call', (value) => {
+    it.each(testCases)('should return fetchReferenceDataByKeySuccess action on successfull API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, resourceKey, payload } = value;
         const entity = payload.find(p => p.resourceKey === resourceKey)!;
@@ -91,7 +107,7 @@ describe('ReferenceDataEffects', () => {
       });
     });
 
-    it.each(testCases)('should return fetchReferenceDataByKeyFailed action on API error', (value) => {
+    it.each(testCases)('should return fetchReferenceDataByKeyFailed action on API error', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, resourceKey, payload } = value;
         actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey: null as any }) });
@@ -100,7 +116,42 @@ describe('ReferenceDataEffects', () => {
 
         jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', { b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required' }) });
+        expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
+          b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required' })
+        });
+      });
+    });
+  });
+
+  const vehicleTypeReasonsForAbandoning = [
+    {
+      vehicleType: VehicleTypes.PSV,
+      resourceType: ReferenceDataResourceType.ReasonsForAbandoningPsv
+    },
+    {
+      vehicleType: VehicleTypes.TRL,
+      resourceType: ReferenceDataResourceType.ReasonsForAbandoningTrl
+    },
+    {
+      vehicleType: VehicleTypes.HGV,
+      resourceType: ReferenceDataResourceType.ReasonsForAbandoningHgv
+    }
+  ];
+  it.each(vehicleTypeReasonsForAbandoning)('should dispatch the action to fetch the reasons for abandoning for the right vehicle', values => {
+    const { vehicleType, resourceType } = values;
+    const testResult = { vehicleType } as TestResultModel;
+
+    testScheduler.run(({ hot, expectObservable }) => {
+      store.overrideSelector(testResultInEdit, testResult);
+
+      actions$ = hot('-a', {
+        a: fetchReasonsForAbandoning()
+      });
+
+      expectObservable(effects.fetchReasonsForAbandoning).toBe('-b', {
+        b: fetchReferenceData({
+          resourceType
+        })
       });
     });
   });

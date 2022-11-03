@@ -21,3 +21,5 @@ export const fetchReferenceDataByKeySuccess = createAction(
   props<{ resourceType: ReferenceDataResourceType; resourceKey: string; payload: ReferenceDataModelBase | CountryOfRegistration }>()
 );
 export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<GlobalError>());
+
+export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');
