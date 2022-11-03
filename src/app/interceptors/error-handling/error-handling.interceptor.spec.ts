@@ -61,7 +61,7 @@ describe('ErrorInterceptor', () => {
     http.get('http://www.google.com').subscribe({
       next: response => {},
       error: e => {
-        expect(e.message).toBe('Internal Server Error');
+        expect(e.status).toBe(500);
       }
     });
 

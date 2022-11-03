@@ -24,7 +24,6 @@ import { InterceptorModule } from './interceptors/interceptor.module';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
-import { ErrorInterceptor } from './interceptors/error-handling/error-handling.interceptor';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -81,11 +80,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
       multi: true
     },
     {
