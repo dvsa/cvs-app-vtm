@@ -40,16 +40,11 @@ import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.templ
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
 import cloneDeep from 'lodash.clonedeep';
 import merge from 'lodash.merge';
-import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
-import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
-import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
-import { updateEditingTechRecord } from '@store/technical-records';
-import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
-import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
-import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
-import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
-import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
-import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
+import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { ReferenceDataResourceType, PsvMake } from '@models/reference-data.model';
+import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
