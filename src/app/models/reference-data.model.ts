@@ -5,7 +5,9 @@ export enum ReferenceDataResourceType {
   BodyModel = 'BODY_MODEL',
   Tyres = 'TYRES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
-  ReasonsForAbandoning = 'REASONS_FOR_ABANDONING',
+  ReasonsForAbandoningHgv = 'REASONS_FOR_ABANDONING_HGV',
+  ReasonsForAbandoningTrl = 'REASONS_FOR_ABANDONING_TRL',
+  ReasonsForAbandoningPsv = 'REASONS_FOR_ABANDONING_PSV',
   TIRReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
   SpecialistReasonsForAbandoning = 'SPECIALIST_REASONS_FOR_ABANDONING',
   User = 'USER'
@@ -32,9 +34,6 @@ export interface ReferenceDataTyre extends ReferenceDataModelBase {
   plyRating: string;
 }
 export interface CountryOfRegistration extends ReferenceDataModelBase {}
-export interface ReasonsForAbandoning extends ReferenceDataModelBase {
-  vehicleType: VehicleTypes;
-}
 
 export interface User extends ReferenceDataModelBase {
   name: string;

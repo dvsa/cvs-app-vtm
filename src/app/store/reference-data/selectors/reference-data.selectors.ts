@@ -1,5 +1,8 @@
-import { ReasonsForAbandoning, ReferenceDataResourceType } from '@models/reference-data.model';
-import { createSelector } from '@ngrx/store';
+import { inject } from '@angular/core';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
+import { createSelector, DefaultProjectorFn, MemoizedSelector, Store } from '@ngrx/store';
+import { State } from '@store/index';
 import { testResultInEdit } from '@store/test-records';
 import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
@@ -25,10 +28,15 @@ export const selectUserByResourceKey = (resourceKey: string) =>
     return state[ReferenceDataResourceType.User].entities[resourceKey];
   });
 
-export const selectReasonsForAbandoning = createSelector(
-  selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoning),
-  testResultInEdit,
-  (referenceData, testResult) => {
-    return (referenceData as ReasonsForAbandoning[]).filter(reason => reason.vehicleType === testResult?.vehicleType);
+export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
+  switch (vehicleType) {
+    case VehicleTypes.PSV:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningPsv);
+    case VehicleTypes.HGV:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningHgv);
+    case VehicleTypes.TRL:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+    default:
+      throw new Error('Unknown Vehicle Type');
   }
-);
+};
