@@ -77,13 +77,12 @@ export class TechRecordSummaryComponent implements OnInit {
     private referenceDataStore: Store<ReferenceDataState>
   ) {}
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.sectionTemplates = this.vehicleTemplates;
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
     this.psvMakes$.subscribe(data => data.map(i => this.dtpNumbersFromRefData.push({ value: i.dtpNumber, label: i.dtpNumber })));
-    console.log(this.vehicleTechRecord);
   }
 
   get isEditing(): boolean {
