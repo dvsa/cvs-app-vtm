@@ -13,7 +13,7 @@ export interface HttpResponseRedirectConfig {
   /**
    * The route to redirect to
    */
-  route?: string;
+  redirectTo?: string;
 }
 
 @NgModule({

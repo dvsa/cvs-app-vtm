@@ -8,7 +8,7 @@ import { ErrorInterceptorModule } from './error-handling/error-handling.module';
   imports: [
     CommonModule,
     DelayedRetryModule.forRoot({ count: 3, delay: 2000, httpStatusRetry: [504], backoff: true }),
-    ErrorInterceptorModule.forRoot({ httpStatusRedirect: [500], route: 'error' })
+    ErrorInterceptorModule.forRoot({ httpStatusRedirect: [500], redirectTo: 'error' })
   ]
 })
 export class InterceptorModule {}
