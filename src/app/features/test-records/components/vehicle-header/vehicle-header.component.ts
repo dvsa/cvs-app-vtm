@@ -28,7 +28,7 @@ export class VehicleHeaderComponent {
     return this.testTypesService.selectAllTestTypes$;
   }
 
-  combinedOdometerReading(reading: number | undefined | string, unit: string | undefined) {
+  combinedOdometerReading(reading: string | undefined, unit: string | undefined) {
     return `${reading ?? ''} ${(unit && ('kilometres' === unit ? 'km' : 'mi')) ?? ''}`;
   }
 

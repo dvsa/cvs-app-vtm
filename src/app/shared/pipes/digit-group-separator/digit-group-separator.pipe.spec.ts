@@ -4,6 +4,10 @@ describe('digitGroupSeparator pipe tests', () => {
   // This pipe is a pure, stateless function so no need for BeforeEach
   const pipe = new DigitGroupSeparatorPipe();
 
+  it('returns undefined', () => {
+    expect(pipe.transform(undefined)).toBe(undefined);
+  });
+
   it('does not separate number', () => {
     expect(pipe.transform(10)).toBe('10');
   });

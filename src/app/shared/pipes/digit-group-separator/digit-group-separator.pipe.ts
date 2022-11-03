@@ -4,11 +4,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'digitGroupSeparator'
 })
 export class DigitGroupSeparatorPipe implements PipeTransform {
-  transform(value: number | undefined): string {
-    if (value !== undefined && value !== null) {
+  transform(value: number | undefined): string | undefined {
+    if (value != undefined) {
       return value.toLocaleString();
-    } else {
-      return '';
     }
+    return value;
   }
 }
