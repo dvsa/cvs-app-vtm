@@ -37,13 +37,8 @@ export const PsvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [
-        { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.Numeric },
-        { name: ValidatorNames.Required }
-      ]
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'noOfAxles',
@@ -63,7 +58,7 @@ export const PsvTechRecord: FormNode = {
           value: '',
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }]
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
         }
       ],
       type: FormNodeTypes.GROUP
@@ -175,7 +170,7 @@ export const PsvTechRecord: FormNode = {
       value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMERICSTRING,
+      editType: FormNodeEditTypes.NUMBER,
       validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
@@ -237,6 +232,17 @@ export const PsvTechRecord: FormNode = {
     {
       name: 'departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
+      ]
+    },
+    {
+      name: 'alterationMarker',
+      label: 'Alteration marker',
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
