@@ -88,7 +88,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         .map(section => section.form)
         .concat(
           this.summary.body.form,
-          isPsv ? this.summary.psvBrakes!.form : this.summary.hgvandTrlBrakes!.form,
+          isPsv ? this.summary.psvBrakes!.form : this.summary.trlBrakes!.form,
           this.summary.dimensions.form,
           this.summary.tyres.form,
           this.summary.weights.form

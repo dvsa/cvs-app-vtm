@@ -16,19 +16,19 @@
           (formChange)="handleFormState($event)"
         ></app-dimensions>
 
-        <app-hgv-trl-brakes
-          *ngSwitchCase="'hgvAndTrlBrakesSection'"
-          [vehicleTechRecord]="vehicleTechRecordCalculated"
-          [isEditing]="isEditing"
-          (formChange)="handleFormState($event)"
-        ></app-hgv-trl-brakes>
-
         <app-psv-brakes
           *ngSwitchCase="'psvBrakesSection'"
           [vehicleTechRecord]="vehicleTechRecordCalculated"
           [isEditing]="isEditing"
           (formChange)="handleFormState($event)"
         ></app-psv-brakes>
+
+        <app-trl-brakes
+          *ngSwitchCase="'trlBrakesSection'"
+          [vehicleTechRecord]="vehicleTechRecordCalculated"
+          [isEditing]="isEditing"
+          (formChange)="handleFormState($event)"
+        ></app-trl-brakes>
 
         <app-tyres
           *ngSwitchCase="'tyreSection'"

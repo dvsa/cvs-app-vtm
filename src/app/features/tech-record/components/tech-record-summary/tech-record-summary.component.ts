@@ -4,7 +4,7 @@ import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
 import { FormNode } from '@forms/services/dynamic-form.types';
-import { HgvAndTrlBrakesTemplate } from '@forms/templates/general/hgv-trl-brakes.template';
+import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
@@ -36,7 +36,7 @@ import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { updateEditingTechRecord } from '@store/technical-records';
-import { HgvAndTrlBrakesComponent } from '@forms/custom-sections/hgv-trl-brakes/hgv-trl-brakes.component';
+import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 
 @Component({
@@ -48,8 +48,8 @@ export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
   @ViewChild(BodyComponent) body!: BodyComponent;
   @ViewChild(DimensionsComponent) dimensions!: DimensionsComponent;
-  @ViewChild(HgvAndTrlBrakesComponent) hgvandTrlBrakes?: HgvAndTrlBrakesComponent;
   @ViewChild(PsvBrakesComponent) psvBrakes?: PsvBrakesComponent;
+  @ViewChild(TrlBrakesComponent) trlBrakes?: TrlBrakesComponent;
   @ViewChild(TyresComponent) tyres!: TyresComponent;
   @ViewChild(WeightsComponent) weights!: WeightsComponent;
 
@@ -177,15 +177,14 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  7 */ HgvAndTrlBodyTemplate,
       /*  8 */ HgvWeight,
       /*  9 */ getTyresSection(VehicleTypes.HGV),
-      /* 10 */ HgvAndTrlBrakesTemplate,
-      /* 11 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
-      /* 12 */ getDimensionsMinMaxSection(
+      /* 10 */ getDimensionsSection(VehicleTypes.HGV, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
+      /* 11 */ getDimensionsMinMaxSection(
         'Front of vehicle to 5th wheel coupling',
         'frontAxleTo5thWheelCouplingMin',
         'frontAxleTo5thWheelCouplingMax'
       ),
-      /* 13 */ getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax'),
-      /* 14 */ PlatesTemplate
+      /* 12 */ getDimensionsMinMaxSection('Front axle to 5th wheel', 'frontAxleTo5thWheelMin', 'frontAxleTo5thWheelMax'),
+      /* 13 */ PlatesTemplate
     ];
   }
 
@@ -200,7 +199,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  7 */ HgvAndTrlBodyTemplate,
       /*  8 */ TrlWeight,
       /*  9 */ getTyresSection(VehicleTypes.TRL),
-      /* 10 */ HgvAndTrlBrakesTemplate,
+      /* 10 */ TrlBrakesTemplate,
       /* 11 */ TrlPurchasers,
       /* 12 */ getDimensionsSection(VehicleTypes.TRL, this.vehicleTechRecord.noOfAxles, this.vehicleTechRecord.dimensions?.axleSpacing),
       /* 13 */ getDimensionsMinMaxSection('Coupling center to rear axle', 'couplingCenterToRearAxleMin', 'couplingCenterToRearAxleMax'),

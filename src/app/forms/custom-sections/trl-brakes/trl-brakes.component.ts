@@ -3,16 +3,16 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
-import { HgvAndTrlBrakesTemplate } from '@forms/templates/general/hgv-trl-brakes.template';
+import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-hgv-trl-brakes[vehicleTechRecord]',
-  templateUrl: './hgv-trl-brakes.component.html',
-  styleUrls: ['./hgv-trl-brakes.component.scss']
+  selector: 'app-trl-brakes[vehicleTechRecord]',
+  templateUrl: './trl-brakes.component.html',
+  styleUrls: ['./trl-brakes.component.scss']
 })
-export class HgvAndTrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
+export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
@@ -26,7 +26,7 @@ export class HgvAndTrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(HgvAndTrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
     this.form.cleanValueChanges
       .pipe(debounceTime(400), takeUntil(this.destroy$))

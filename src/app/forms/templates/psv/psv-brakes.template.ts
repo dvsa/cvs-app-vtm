@@ -15,7 +15,7 @@ export const PsvBrakesTemplate: FormNode = {
           label: 'Brake code',
           value: '',
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }]
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
         },
         {
           name: 'dataTrBrakeOne',

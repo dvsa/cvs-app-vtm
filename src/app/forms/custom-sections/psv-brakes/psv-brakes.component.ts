@@ -5,8 +5,9 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
+import getOptionsFromEnum from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
-import { Brakes, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Brakes, Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { ReferenceDataState, selectBrakeByCode } from '@store/reference-data';
 import { debounceTime, mergeMap, Observable, of, Subject, takeUntil, withLatestFrom } from 'rxjs';
@@ -83,14 +84,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get retarderOptions(): MultiOptions {
-    return [
-      { value: 'electric',  label: 'Electric' },
-      { value: 'exhaust',   label: 'Exhuast' },
-      { value: 'friction',  label: 'Friction' },
-      { value: 'hydraulic', label: 'Hydraulic' },
-      { value: 'other',     label: 'Other' },
-      { value: 'none',      label: 'None' }
-    ];
+    return getOptionsFromEnum(Retarders);
   }
 
   get brakeCodeOptions$(): Observable<MultiOptions> {
