@@ -105,10 +105,8 @@ export class TestResultsEffects {
                 validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
               });
             } else if (e.status === 502) {
-              console.log('foo');
               validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
             }
-            console.log(e);
             return of(updateTestResultFailed({ errors: validationsErrors }));
           })
         );
@@ -223,10 +221,8 @@ export class TestResultsEffects {
                   })
                 : validationsErrors.push({ error: e.error });
             } else if (e.status === 502) {
-              console.log('foo');
               validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
             }
-            console.log(e);
             return of(createTestResultFailed({ errors: validationsErrors }));
           })
         );
