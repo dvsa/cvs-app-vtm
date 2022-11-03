@@ -44,7 +44,8 @@ export class DynamicFormService {
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
-    [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg)
+    [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg),
+    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {

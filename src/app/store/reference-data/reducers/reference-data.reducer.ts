@@ -15,48 +15,46 @@ const selectResourceKey = (a: ReferenceDataModelBase): string => {
   return a.resourceKey;
 };
 
-export interface ReferenceDataState {
-  error: string;
-  loading: boolean;
-  [ReferenceDataResourceType.BodyMake]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.BodyModel]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.CountryOfRegistration]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.PsvMake]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.ReasonsForAbandoning]: EntityState<ReferenceDataModelBase>;
-  [ReferenceDataResourceType.User]: EntityState<ReferenceDataModelBase>;
-}
+export type ReferenceDataState = Record<ReferenceDataResourceType, EntityState<ReferenceDataModelBase>> & { error: string; loading: boolean };
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
 }
 
-export const bodyMakesEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialBodyMakesState = bodyMakesEntityAdapter.getInitialState();
+export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
+  [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
+  [ReferenceDataResourceType.User]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoningHgv]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoningPsv]: createAdapter(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.BodyMake]: createAdapter(),
+  [ReferenceDataResourceType.BodyModel]: createAdapter(),
+  [ReferenceDataResourceType.Tyres]: createAdapter(),
+  [ReferenceDataResourceType.PsvMake]: createAdapter()
+};
 
 export const bodyModelsEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
 export const initialBodyModelsState = bodyModelsEntityAdapter.getInitialState();
 
-export const countriesOfRegistrationEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialCountriesOfRegistrationState = countriesOfRegistrationEntityAdapter.getInitialState();
-
-export const psvMakesEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialpsvMakesState = psvMakesEntityAdapter.getInitialState();
-
-export const reasonsForAbandoningAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialReasonsForAbandoning = reasonsForAbandoningAdapter.getInitialState();
-
-export const usersEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialUsersState = usersEntityAdapter.getInitialState();
+//IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
 
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
-  [ReferenceDataResourceType.BodyMake]: initialBodyMakesState,
-  [ReferenceDataResourceType.BodyModel]: initialBodyModelsState,
-  [ReferenceDataResourceType.CountryOfRegistration]: initialCountriesOfRegistrationState,
-  [ReferenceDataResourceType.PsvMake]: initialpsvMakesState,
-  [ReferenceDataResourceType.ReasonsForAbandoning]: initialReasonsForAbandoning,
-  [ReferenceDataResourceType.User]: initialUsersState
+  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
+  [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
+  [ReferenceDataResourceType.PsvMake]: resourceTypeAdapters[ReferenceDataResourceType.PsvMake].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningHgv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningHgv].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningPsv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningPsv].getInitialState(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
+    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState()
 };
 
 export const referenceDataReducer = createReducer(
@@ -85,12 +83,3 @@ export const referenceDataReducer = createReducer(
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);
-
-export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
-  [ReferenceDataResourceType.BodyMake]: bodyMakesEntityAdapter,
-  [ReferenceDataResourceType.BodyModel]: bodyModelsEntityAdapter,
-  [ReferenceDataResourceType.CountryOfRegistration]: countriesOfRegistrationEntityAdapter,
-  [ReferenceDataResourceType.PsvMake]: psvMakesEntityAdapter,
-  [ReferenceDataResourceType.User]: usersEntityAdapter,
-  [ReferenceDataResourceType.ReasonsForAbandoning]: reasonsForAbandoningAdapter
-};

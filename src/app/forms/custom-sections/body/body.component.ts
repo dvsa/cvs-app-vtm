@@ -5,8 +5,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { hgvAndTrlBodyTemplate } from '@forms/templates/hgv/hgv-trl-body.template';
-import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
 import { BodyModel, ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -43,6 +42,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       if (bodyType?.description) {
         event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
       }
+
       this.formChange.emit(event);
     });
 
@@ -52,6 +52,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { vehicleTechRecord } = changes;
+
     if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
       this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
     }
