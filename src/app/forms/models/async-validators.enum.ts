@@ -5,5 +5,6 @@ export enum AsyncValidatorNames {
   RequiredIfNotFail = 'requiredIfNotfail',
   RequiredIfNotAbandoned = 'requiredIfNotabandoned',
   RequiredIfNotResultAndSiblingEquals = 'requiredIfNotResultAndSiblingEquals',
-  RequiredIfNotResult = 'requiredIfNotResult'
+  RequiredIfNotResult = 'requiredIfNotResult',
+  HideIfEqualsWithCondition = 'hideIfEqualsWithCondition'
 }

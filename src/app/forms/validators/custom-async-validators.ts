@@ -1,6 +1,9 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { TestType } from '@api/test-types';
+import { Condition, operatorEnum } from '@forms/models/condition.model';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
@@ -8,7 +11,9 @@ import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
+import { cond } from 'lodash';
 import { catchError, map, Observable, of, take, tap } from 'rxjs';
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -114,7 +119,62 @@ export class CustomAsyncValidators {
 
           return null;
         })
+   
+        );
+  }
+
+  static hideIfEqualsWithCondition(store: Store<State>, sibling: string, value: string, conditions: Condition | Condition[]): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+
+          if(testResult){
+            const conditionsPassed = CustomAsyncValidators.checkConditions(testResult, conditions);
+
+            if (control?.parent) {
+              const siblingControl = control.parent.get(sibling) as CustomFormControl;
+              siblingControl.meta.hide = Array.isArray(value) ? (conditionsPassed && value.includes(control.value)) : (conditionsPassed && control.value === value);
+            }
+          }
+
+          return null;
+        })
       );
   }
- 
+
+  static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[] ){
+    if(Array.isArray(conditions)){
+      let failed: boolean = false;
+
+      conditions.forEach((condition) => {
+        if(!CustomAsyncValidators.checkCondition(testResult, condition)) failed = true;
+      });
+
+      return !failed;
+    }else{
+      return CustomAsyncValidators.checkCondition(testResult, conditions);
+    }
+  }
+
+  static checkCondition(testResult: TestResultModel, condition: Condition ){
+
+    const {field, operator, value} = condition
+
+    let fieldValue: any;
+
+    if(testResult?.testTypes[0].hasOwnProperty(field)) {
+      fieldValue = (testResult?.testTypes[0] as any)[field];
+    }else if(testResult?.hasOwnProperty(field)) {
+      fieldValue = (testResult as any)[field];
+    }
+
+    if(operator === operatorEnum.Equals){
+        return Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value
+      }else if(operator === operatorEnum.NotEquals){
+        return Array.isArray(value) ? !value.includes(fieldValue) : fieldValue !== value
+      }
+      return false;
+    }
 }
