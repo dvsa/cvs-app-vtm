@@ -23,10 +23,9 @@
     height: unset;
   }
 
-  @media(max-width: 640px) {
+  @media (max-width: 640px) {
     .prefix {
       line-height: 1.25;
     }
   }
 }
-
