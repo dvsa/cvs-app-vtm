@@ -49,19 +49,6 @@ export const PsvBrakesTemplate: FormNode = {
           label: 'Retarder 2',
           value: '',
           type: FormNodeTypes.CONTROL
-        },
-        {
-          name: 'antilockBrakingSystem',
-          label: 'Antilock braking system',
-          value: '',
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }]
-        },
-        {
-          name: 'loadSensingValve',
-          label: 'Load sensing valve',
-          value: '',
-          type: FormNodeTypes.CONTROL
         }
       ]
     }

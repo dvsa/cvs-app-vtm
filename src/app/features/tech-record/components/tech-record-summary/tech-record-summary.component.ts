@@ -181,7 +181,7 @@ export class TechRecordSummaryComponent implements OnInit {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
     }
 
-    if (event.brakes && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
+    if (event.brakes && (event.brakes.dtpNumber?.length === 4 || event.brakes.dtpNumber?.length === 6)) {
       this.setBodyFields();
     } else {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
