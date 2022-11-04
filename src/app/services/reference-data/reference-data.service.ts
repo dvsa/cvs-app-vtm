@@ -4,6 +4,7 @@ import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { mockTyres } from '@mocks/reference-data/mock-tyres';
+import { mockPsvMakes } from '@mocks/reference-data/mock-psv-make.reference-data';
 import { mockReasonsForAbandoningHgv } from '@mocks/reference-data/mock-hgv-reasons-for-abandoning.reference-data';
 import { mockReasonsForAbandoningPsv } from '@mocks/reference-data/mock-psv-reasons-for-abandoning.reference-data';
 import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-data/mock-specialist-reasons-for-abandoning.reference-data';
@@ -38,7 +39,6 @@ export class ReferenceDataService {
 
     // ** Until the reference data API is provisioned, return in-memory data ** //
     const mockData = this.getMockReferenceData(resourceType);
-
     if (mockData instanceof Error) {
       return throwError(() => mockData);
     }
@@ -62,6 +62,8 @@ export class ReferenceDataService {
         return mockTyres;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
+      case ReferenceDataResourceType.PsvMake:
+        return mockPsvMakes;
       case ReferenceDataResourceType.ReasonsForAbandoningPsv:
         return mockReasonsForAbandoningPsv;
       case ReferenceDataResourceType.ReasonsForAbandoningHgv:

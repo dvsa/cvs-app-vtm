@@ -3,35 +3,33 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
-import { FormNode } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
+import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
+import { DocumentsTemplate } from '@forms/templates/general/documents.template';
+import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
+import { hgvAndTrlBodyTemplate } from '@forms/templates/hgv/hgv-trl-body.template';
+import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { NotesTemplate } from '@forms/templates/general/notes.template';
+import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
+import { PlatesTemplate } from '@forms/templates/general/plates.template';
+import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
+import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
+import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
 import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
 import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
-import { PsvBrakeSection } from '@forms/templates/psv/psv-brake.template';
-import { PsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
-import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
-import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
-import { NotesTemplate } from '@forms/templates/general/notes.template';
-import { DocumentsTemplate } from '@forms/templates/general/documents.template';
-import { PlatesTemplate } from '@forms/templates/general/plates.template';
-import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
-import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
-import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
-import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
-import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
-import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
+import { getPsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
+import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import cloneDeep from 'lodash.clonedeep';
-import merge from 'lodash.merge';
-import { psvBodyTemplate } from '@forms/templates/psv/psv-body.template';
-import { hgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
+import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
+import { TrlPurchasers } from '@forms/templates/trl/trl-purchaser.template';
+import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
+import { TrlAuthIntoServiceTemplate } from '@forms/templates/trl/trl-auth-into-service.template';
 import { TyresComponent } from '@forms/custom-sections/tyres/tyres.component';
 import { updateEditingTechRecord } from '@store/technical-records';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
@@ -40,6 +38,13 @@ import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
+import cloneDeep from 'lodash.clonedeep';
+import merge from 'lodash.merge';
+import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
+import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { ReferenceDataResourceType, PsvMake } from '@models/reference-data.model';
+import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -54,30 +59,47 @@ export class TechRecordSummaryComponent implements OnInit {
   @ViewChild(TyresComponent) tyres!: TyresComponent;
 
   @Input() vehicleTechRecord!: TechRecordModel;
-
-  private _isEditing: boolean = false;
-  get isEditing(): boolean {
-    return this._isEditing;
-  }
+  @Input() refDataState!: ReferenceDataState;
   @Input()
   set isEditing(value: boolean) {
     this._isEditing = value;
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
   }
-
   @Output() formChange = new EventEmitter();
 
+  private _isEditing: boolean = false;
+
   vehicleTechRecordCalculated!: TechRecordModel;
-
   sectionTemplates: Array<FormNode> = [];
+  dtpNumbersFromRefData: FormNodeOption<string>[] = [];
 
-  constructor(private store: Store<TechnicalRecordServiceState>) {}
+  constructor(
+    private store: Store<TechnicalRecordServiceState>,
+    private optionsService: MultiOptionsService,
+    private referenceDataStore: Store<ReferenceDataState>
+  ) {}
 
   ngOnInit(): void {
     this.sectionTemplates = this.vehicleTemplates;
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
+    this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
+    this.psvMakes$.subscribe(data => data.map(i => this.dtpNumbersFromRefData.push({ value: i.dtpNumber, label: i.dtpNumber })));
+  }
+
+  get isEditing(): boolean {
+    return this._isEditing;
+  }
+
+  get psvMakes$(): Observable<PsvMake[]> {
+    return this.referenceDataStore.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.PsvMake)) as Observable<PsvMake[]>;
+  }
+
+  get psvFromDtp$() {
+    return this.referenceDataStore.select(
+      selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, this.vehicleTechRecordCalculated.brakes.dtpNumber as string)
+    ) as Observable<PsvMake | undefined>;
   }
 
   get vehicleTemplates(): Array<FormNode> {
@@ -104,6 +126,19 @@ export class TechRecordSummaryComponent implements OnInit {
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
+  findAxleToRemove(axles: Axle[]): number {
+    let previousAxleRow = 1;
+
+    for (const ax of axles) {
+      if (ax.axleNumber === previousAxleRow) {
+        previousAxleRow += 1;
+      } else {
+        return ax.axleNumber! - 1;
+      }
+    }
+    return axles.length + 1;
+  }
+
   removeAxle(axleEvent: any): void {
     this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
@@ -120,17 +155,19 @@ export class TechRecordSummaryComponent implements OnInit {
     });
   }
 
-  findAxleToRemove(axles: Axle[]): number {
-    let previousAxleRow = 1;
+  setBodyFields() {
+    this.psvFromDtp$.subscribe(payload => {
+      this.vehicleTechRecordCalculated.chassisMake = payload?.psvChassisMake;
+      this.vehicleTechRecordCalculated.chassisModel = payload?.psvChassisModel;
+      this.vehicleTechRecordCalculated.bodyMake = payload?.psvBodyMake;
 
-    for (const ax of axles) {
-      if (ax.axleNumber === previousAxleRow) {
-        previousAxleRow += 1;
-      } else {
-        return ax.axleNumber! - 1;
-      }
-    }
-    return axles.length + 1;
+      const code = payload?.psvBodyType.toLowerCase() as BodyTypeCode;
+
+      this.vehicleTechRecordCalculated.bodyType = {
+        description: bodyTypeCodeMap.get(code),
+        code: code
+      };
+    });
   }
 
   handleFormState(event: any): void {
@@ -139,6 +176,13 @@ export class TechRecordSummaryComponent implements OnInit {
     } else {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
     }
+
+    if (event.brakes && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
+      this.setBodyFields();
+    } else {
+      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
+    }
+
     this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length;
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
@@ -152,14 +196,14 @@ export class TechRecordSummaryComponent implements OnInit {
     return [
       /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ PsvNotes,
-      /*  3 */ PsvTechRecord,
+      /*  3 */ getPsvTechRecord(this.dtpNumbersFromRefData),
       /*  4 */ getTypeApprovalSection(VehicleTypes.PSV),
       /*  5 */ PsvBrakeSection,
       /*  6 */ PsvBrakeSectionWheelsNotLocked,
       /*  7 */ PsvBrakeSectionWheelsHalfLocked,
       /*  8 */ PsvDdaTemplate,
       /*  9 */ DocumentsTemplate,
-      /* 10 */ psvBodyTemplate,
+      /* 10 */ PsvBodyTemplate,
       /* 11 */ PsvWeight,
       /* 12 */ tyresTemplatePsv,
       /* 13 */ PsvDimensionsTemplate

@@ -31,8 +31,12 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.BodyMake]: createAdapter(),
   [ReferenceDataResourceType.BodyModel]: createAdapter(),
-  [ReferenceDataResourceType.Tyres]: createAdapter()
+  [ReferenceDataResourceType.Tyres]: createAdapter(),
+  [ReferenceDataResourceType.PsvMake]: createAdapter()
 };
+
+export const bodyModelsEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
+export const initialBodyModelsState = bodyModelsEntityAdapter.getInitialState();
 
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
 
@@ -43,6 +47,7 @@ export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
   [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
   [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
+  [ReferenceDataResourceType.PsvMake]: resourceTypeAdapters[ReferenceDataResourceType.PsvMake].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningHgv].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningPsv].getInitialState(),
