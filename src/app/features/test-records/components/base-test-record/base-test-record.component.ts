@@ -12,7 +12,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 
 @Component({

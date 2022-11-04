@@ -7,9 +7,10 @@ import { HeaderComponent } from './components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ServerErrorComponent } from './components/server-error/server-error.component';
 
 @NgModule({
-  declarations: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent, PageNotFoundComponent],
+  declarations: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent, PageNotFoundComponent, ServerErrorComponent],
   imports: [CommonModule, RouterModule],
   exports: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent]
 })

@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
 import { EuVehicleCategories, FrameDescriptions } from '@models/vehicle-tech-record.model';
@@ -18,7 +18,7 @@ export const TrlTechRecordTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.VEHICLETYPE,
       disabled: true,
-      validators: [{ name: ValidatorNames.Required }],
+      validators: [{ name: ValidatorNames.Required }]
     },
     {
       name: 'regnDate',
@@ -37,10 +37,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'firstUseDate',
@@ -64,10 +61,7 @@ export const TrlTechRecordTemplate: FormNode = {
           width: FormNodeWidth.L,
           type: FormNodeTypes.CONTROL,
           viewType: FormNodeViewTypes.STRING,
-          validators: [
-            { name: ValidatorNames.MaxLength, args: 6 },
-            { name: ValidatorNames.Required }
-          ]
+          validators: [{ name: ValidatorNames.MaxLength, args: 6 }, { name: ValidatorNames.Required }]
         }
       ],
       type: FormNodeTypes.GROUP,
@@ -149,7 +143,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.XL,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: getOptionsFromEnum(FrameDescriptions),
+      options: getOptionsFromEnum(FrameDescriptions)
     },
     {
       name: 'departmentalVehicleMarker',
@@ -160,7 +154,7 @@ export const TrlTechRecordTemplate: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'euVehicleCategory',
@@ -180,7 +174,7 @@ export const TrlTechRecordTemplate: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     }
   ]
 };

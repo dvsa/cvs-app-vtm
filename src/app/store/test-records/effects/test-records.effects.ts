@@ -104,6 +104,8 @@ export class TestResultsEffects {
                 const field = error.match(/"([^"]+)"/);
                 validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
               });
+            } else if (e.status === 502) {
+              validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
             }
             return of(updateTestResultFailed({ errors: validationsErrors }));
           })
@@ -218,6 +220,8 @@ export class TestResultsEffects {
                     validationsErrors.push({ error, anchorLink: field && field.length > 1 ? field[1].replace('"', '') : '' });
                   })
                 : validationsErrors.push({ error: e.error });
+            } else if (e.status === 502) {
+              validationsErrors.push({ error: 'Internal Server Error, please contact technical support', anchorLink: '' });
             }
             return of(createTestResultFailed({ errors: validationsErrors }));
           })

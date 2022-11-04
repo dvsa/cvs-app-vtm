@@ -77,6 +77,8 @@ export const TestSectionGroup5And13: FormNode = {
               label: 'Certificate number',
               disabled: true,
               type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
               required: true,
               value: null
             },
