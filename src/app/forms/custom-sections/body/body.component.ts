@@ -6,7 +6,7 @@ import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@fo
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
 import { BodyModel, ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -30,36 +30,30 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private dfs: DynamicFormService,
-    private optionsService: MultiOptionsService,
-    private referenceDataStore: Store<ReferenceDataState>
-  ) {}
+  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataStore: Store<ReferenceDataState>) {}
 
   ngOnInit(): void {
     this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
 
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
-    this.form.cleanValueChanges
-      .pipe(debounceTime(400), takeUntil(this.destroy$))
-      .subscribe((event: any) => {
-        // Set the body type code automatically based selection
-        const bodyType = event?.bodyType as BodyType;
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe((event: any) => {
+      // Set the body type code automatically based selection
+      const bodyType = event?.bodyType as BodyType;
 
-        if (bodyType?.description) {
-          event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
-        }
+      if (bodyType?.description) {
+        event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
+      }
 
-        this.formChange.emit(event);
-      });
+      this.formChange.emit(event);
+    });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyModel);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { vehicleTechRecord } =  changes;
+    const { vehicleTechRecord } = changes;
 
     if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
       this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
@@ -80,9 +74,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get numberOptions(): MultiOptions {
-    return Array
-      .from(Array(10).keys())
-      .map(i => ({ value: i, label: `${i}` }));
+    return Array.from(Array(10).keys()).map(i => ({ value: i, label: `${i}` }));
   }
 
   get bodyTypes(): MultiOptions {
@@ -96,11 +88,13 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   get bodyModels$(): Observable<MultiOptions> {
     return this.referenceDataStore
       .select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.BodyModel))
-      .pipe(map(bodyModels =>
-        bodyModels
-          .filter(bodyModel => (bodyModel as BodyModel).bodyMake === this.vehicleTechRecord.make)
-          .map(bodyModel => ({ value: bodyModel.description, label: bodyModel.description }))
-      ));
+      .pipe(
+        map(bodyModels =>
+          bodyModels
+            .filter(bodyModel => (bodyModel as BodyModel).bodyMake === this.vehicleTechRecord.make)
+            .map(bodyModel => ({ value: bodyModel.description, label: bodyModel.description }))
+        )
+      );
   }
 
   get bodyTypeForm(): FormGroup {

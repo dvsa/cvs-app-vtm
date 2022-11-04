@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
 import { VehicleConfiguration } from '@models/vehicle-configuration.enum';
@@ -36,21 +36,8 @@ export const HgvTechRecord: FormNode = {
       value: '',
       width: FormNodeWidth.XS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.TEXT,
-      validators: [
-        { name: ValidatorNames.Max, args: 9999 },
-        { name: ValidatorNames.Min, args: 1000 },
-        { name: ValidatorNames.Numeric },
-        { name: ValidatorNames.Required }
-      ]
-    },
-    {
-      name: 'noOfAxles',
-      label: 'Number of axles',
-      value: '',
-      width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL,
-      validators: [{ name: ValidatorNames.Required }],
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
     },
     {
       name: 'brakes',
@@ -64,33 +51,19 @@ export const HgvTechRecord: FormNode = {
           value: '',
           width: FormNodeWidth.M,
           type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }],
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
         }
-      ],
+      ]
     },
-    // {
-    //   name: 'axles',
-    //   value: '',
-    //   type: FormNodeTypes.ARRAY,
-    //   children: [
-    //     {
-    //       name: '0',
-    //       label: 'Axle',
-    //       value: '',
-    //       type: FormNodeTypes.GROUP,
-    //       children: [
-    //         {
-    //           name: 'parkingBrakeMrk',
-    //           label: 'Axles fitted with a parking brake',
-    //           value: '',
-
-    //           type: FormNodeTypes.CONTROL,
-    //           viewType: FormNodeViewTypes.STRING
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // },
+    {
+      name: 'noOfAxles',
+      label: 'Number of axles',
+      value: '',
+      width: FormNodeWidth.XXS,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Required }],
+      disabled: true
+    },
     {
       name: 'speedLimiterMrk',
       label: 'Speed limiter exempt',
@@ -134,7 +107,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'fuelPropulsionSystem',
@@ -154,7 +127,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'vehicleClass',
@@ -191,7 +164,7 @@ export const HgvTechRecord: FormNode = {
       options: [
         { value: true, label: 'Yes' },
         { value: false, label: 'No' }
-      ],
+      ]
     },
     {
       name: 'euVehicleCategory',
@@ -208,14 +181,23 @@ export const HgvTechRecord: FormNode = {
       value: '' || null,
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMERICSTRING,
-      validators: [
-        { name: ValidatorNames.Max, args: 99 },
-      ]
+      editType: FormNodeEditTypes.NUMBER,
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.RADIO,
+      options: [
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
+      ]
+    },
+    {
+      name: 'alterationMarker',
+      label: 'Alteration marker',
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,

@@ -4,6 +4,7 @@ import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockBrakes } from '@mocks/reference-data/mock-brakes';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
+import { mockTyres } from '@mocks/reference-data/mock-tyres';
 import { mockReasonsForAbandoningHgv } from '@mocks/reference-data/mock-hgv-reasons-for-abandoning.reference-data';
 import { mockReasonsForAbandoningPsv } from '@mocks/reference-data/mock-psv-reasons-for-abandoning.reference-data';
 import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-data/mock-specialist-reasons-for-abandoning.reference-data';
@@ -68,10 +69,12 @@ export class ReferenceDataService {
         return mockReasonsForAbandoningHgv;
       case ReferenceDataResourceType.ReasonsForAbandoningTrl:
         return mockReasonsForAbandoningTrl;
-      case ReferenceDataResourceType.TIRReasonsForAbandoning:
-        return mockTIRReasonsForAbandoning;
       case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
         return mockSpecialistSpecialistReasonsForAbandoning;
+      case ReferenceDataResourceType.TIRReasonsForAbandoning:
+        return mockTIRReasonsForAbandoning;
+      case ReferenceDataResourceType.Tyres:
+        return mockTyres;
       case ReferenceDataResourceType.User:
         return mockUsers;
       default:

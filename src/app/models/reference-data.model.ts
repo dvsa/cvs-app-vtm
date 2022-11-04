@@ -6,8 +6,9 @@ export enum ReferenceDataResourceType {
   ReasonsForAbandoningHgv = 'REASONS_FOR_ABANDONING_HGV',
   ReasonsForAbandoningTrl = 'REASONS_FOR_ABANDONING_TRL',
   ReasonsForAbandoningPsv = 'REASONS_FOR_ABANDONING_PSV',
-  TIRReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
   SpecialistReasonsForAbandoning = 'SPECIALIST_REASONS_FOR_ABANDONING',
+  TIRReasonsForAbandoning = 'TIR_REASONS_FOR_ABANDONING',
+  Tyres = 'TYRES',
   User = 'USER'
 }
 
@@ -23,13 +24,23 @@ export interface BodyModel extends ReferenceDataModelBase {
   bodyMake: string;
 }
 
+export interface CountryOfRegistration extends ReferenceDataModelBase {}
+
 export interface Brake extends ReferenceDataModelBase {
   service: string;
   secondary: string;
   parking: string;
 }
 
-export interface CountryOfRegistration extends ReferenceDataModelBase {}
+export interface ReferenceDataTyre extends ReferenceDataModelBase {
+  code: string;
+  loadIndexSingleLoad: string;
+  tyreSize: string;
+  dateTimeStamp: string;
+  userId: string;
+  loadIndexTwinLoad: string;
+  plyRating: string;
+}
 
 export interface User extends ReferenceDataModelBase {
   name: string;

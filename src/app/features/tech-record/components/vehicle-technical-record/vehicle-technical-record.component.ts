@@ -70,6 +70,25 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return VehicleTypes;
   }
 
+  get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
+    const customSections = [
+      this.summary.body.form,
+      this.summary.dimensions.form,
+      this.summary.tyres.form,
+      this.summary.weights.form
+    ];
+
+    const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
+
+    if (type === VehicleTypes.PSV) {
+      customSections.push(this.summary.psvBrakes!.form);
+    } else if (type === VehicleTypes.TRL) {
+      customSections.push(this.summary.trlBrakes!.form);
+    }
+
+    return customSections;
+  }
+
   isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>) {
     const errors: GlobalError[] = [];
 
@@ -82,17 +101,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   handleFormState() {
     if (this.isEditing) {
-      const isPsv = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType === VehicleTypes.PSV;
-
-      const form = this.summary.sections
-        .map(section => section.form)
-        .concat(
-          this.summary.body.form,
-          isPsv ? this.summary.psvBrakes!.form : this.summary.trlBrakes!.form,
-          this.summary.dimensions.form,
-          this.summary.tyres.form,
-          this.summary.weights.form
-        );
+      const form = this.summary.sections.map(section => section.form).concat(this.customSectionForms);
 
       this.isDirty = form.some(form => form.dirty);
       this.isInvalid = this.isAnyFormInvalid(form);

@@ -34,7 +34,7 @@ describe('VehicleHeaderComponent', () => {
   });
 
   it('should combine the odometer reading', () => {
-    expect(component.combinedOdometerReading(1234, 'kilometres')).toEqual('1234 km');
+    expect(component.combinedOdometerReading('1234', 'kilometres')).toEqual('1234 km');
   });
 
   it('should display the unit if the reading is undefined', () => {
@@ -42,7 +42,7 @@ describe('VehicleHeaderComponent', () => {
   });
 
   it('should display the reading if the unit is undefined', () => {
-    expect(component.combinedOdometerReading(1234, undefined)).toEqual('1234 ');
+    expect(component.combinedOdometerReading('1234', undefined)).toEqual('1234 ');
   });
 
   it('should display the correct data based on vehicle type', () => {

@@ -29,8 +29,9 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: createAdapter(),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: createAdapter(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.Tyres]: createAdapter(),
   [ReferenceDataResourceType.User]: createAdapter()
 };
 
@@ -46,10 +47,10 @@ export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.ReasonsForAbandoningHgv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningHgv].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoningPsv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningPsv].getInitialState(),
   [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
     resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
-    [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState(),
   [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
 };
 

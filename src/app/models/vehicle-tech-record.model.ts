@@ -1,3 +1,4 @@
+import { MultiOptions } from '@forms/models/options.model';
 import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
 
 export interface VehicleTechRecordModel {
@@ -142,8 +143,8 @@ export interface Axle {
 }
 
 export enum FitmentCode {
-  DOUBLE = 'double',
-  SINGLE = 'single'
+  SINGLE = 'single',
+  DOUBLE = 'double'
 }
 
 export interface Tyres {
@@ -153,7 +154,19 @@ export interface Tyres {
   dataTrAxles: number | null;
   plyRating: string | null;
   tyreCode: number | null;
-  weights?: AxleWeights | null;
+}
+
+export class Tyre implements Tyres {
+  tyreSize!: string | null;
+  speedCategorySymbol!: SpeedCategorySymbol | null;
+  fitmentCode!: FitmentCode | null;
+  dataTrAxles!: number | null;
+  plyRating!: string | null;
+  tyreCode!: number | null;
+
+  constructor(tyre: Tyres) {
+    Object.assign(this, tyre);
+  }
 }
 
 export interface AxleWeights {
