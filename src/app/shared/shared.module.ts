@@ -17,6 +17,7 @@ import { TestCertificateComponent } from './components/test-certificate/test-cer
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
+import { DocumentRetrievalService } from '@api/document-retrieval';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-gro
     TestCertificateComponent,
     BaseDialogComponent,
     DigitGroupSeparatorPipe
-  ]
+  ],
+  providers: [DocumentRetrievalService]
 })
 export class SharedModule {}

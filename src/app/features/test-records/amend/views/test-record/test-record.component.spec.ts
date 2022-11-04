@@ -91,6 +91,7 @@ describe('TestRecordComponent', () => {
         .spyOn(testRecordsService, 'testResult$', 'get')
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
     });
+
     it('should display save button when edit query param is true', waitForAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
@@ -107,7 +108,7 @@ describe('TestRecordComponent', () => {
       fixture.detectChanges();
 
       jest.spyOn(component, 'handleSave');
-      el.query(By.css('button#save-test-result')).triggerEventHandler('click', {});
+      el.query(By.css('button#save-test-result')).nativeElement.click();
       expect(component.handleSave).toHaveBeenCalledTimes(1);
     }));
   });
