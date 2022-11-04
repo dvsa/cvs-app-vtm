@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
+import { mockBrakes } from '@mocks/reference-data/mock-brakes';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { mockTyres } from '@mocks/reference-data/mock-tyres';
 import { mockPsvMakes } from '@mocks/reference-data/mock-psv-make.reference-data';
@@ -58,8 +59,8 @@ export class ReferenceDataService {
         return mockBodyMakes;
       case ReferenceDataResourceType.BodyModel:
         return mockBodyModels;
-      case ReferenceDataResourceType.Tyres:
-        return mockTyres;
+      case ReferenceDataResourceType.Brake:
+        return mockBrakes;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
       case ReferenceDataResourceType.PsvMake:
@@ -70,10 +71,12 @@ export class ReferenceDataService {
         return mockReasonsForAbandoningHgv;
       case ReferenceDataResourceType.ReasonsForAbandoningTrl:
         return mockReasonsForAbandoningTrl;
-      case ReferenceDataResourceType.TIRReasonsForAbandoning:
-        return mockTIRReasonsForAbandoning;
       case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
         return mockSpecialistSpecialistReasonsForAbandoning;
+      case ReferenceDataResourceType.TIRReasonsForAbandoning:
+        return mockTIRReasonsForAbandoning;
+      case ReferenceDataResourceType.Tyres:
+        return mockTyres;
       case ReferenceDataResourceType.User:
         return mockUsers;
       default:

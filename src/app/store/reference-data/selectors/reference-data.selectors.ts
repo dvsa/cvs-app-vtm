@@ -1,32 +1,21 @@
-import { inject } from '@angular/core';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
-import { createSelector, DefaultProjectorFn, MemoizedSelector, Store } from '@ngrx/store';
-import { State } from '@store/index';
-import { testResultInEdit } from '@store/test-records';
+import { createSelector } from '@ngrx/store';
 import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
 const resourceTypeSelector = (resourceType: ReferenceDataResourceType) =>
-  createSelector(referenceDataFeatureState, state => {
-    return state[resourceType];
-  });
+  createSelector(referenceDataFeatureState, state => state[resourceType]);
 
 export const selectAllReferenceDataByResourceType = (resourceType: ReferenceDataResourceType) =>
-  createSelector(resourceTypeSelector(resourceType), state => {
-    return resourceTypeAdapters[resourceType].getSelectors().selectAll(state);
-  });
+  createSelector(resourceTypeSelector(resourceType), state => resourceTypeAdapters[resourceType].getSelectors().selectAll(state));
 
 export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string) =>
-  createSelector(referenceDataFeatureState, state => {
-    return state[resourceType].entities[resourceKey];
-  });
+  createSelector(referenceDataFeatureState, state => state[resourceType].entities[resourceKey]);
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => state.loading);
 
-export const selectUserByResourceKey = (resourceKey: string) =>
-  createSelector(referenceDataFeatureState, state => {
-    return state[ReferenceDataResourceType.User].entities[resourceKey];
-  });
+export const selectBrakeByCode = (code: string) =>
+  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
 
 export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
   switch (vehicleType) {
@@ -40,3 +29,6 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
       throw new Error('Unknown Vehicle Type');
   }
 };
+
+export const selectUserByResourceKey = (resourceKey: string) =>
+  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

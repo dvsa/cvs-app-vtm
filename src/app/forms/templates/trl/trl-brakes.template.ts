@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const TrlBrakes: FormNode = {
+export const TrlBrakesTemplate: FormNode = {
   name: 'trlBrakesSection',
   label: 'Brakes',
   type: FormNodeTypes.GROUP,
@@ -20,7 +20,8 @@ export const TrlBrakes: FormNode = {
           name: 'antilockBrakingSystem',
           label: 'Antilock braking system',
           value: '',
-          type: FormNodeTypes.CONTROL
+          type: FormNodeTypes.CONTROL,
+          validators: [{ name: ValidatorNames.Required }]
         }
       ]
     },

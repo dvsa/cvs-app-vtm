@@ -1,9 +1,10 @@
+import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const PsvBrakeSection: FormNode = {
+export const PsvBrakesTemplate: FormNode = {
   name: 'psvBrakesSection',
   label: 'Brakes',
-  type: FormNodeTypes.GROUP,
+  type: FormNodeTypes.SECTION,
   children: [
     {
       name: 'brakes',
@@ -11,39 +12,43 @@ export const PsvBrakeSection: FormNode = {
       children: [
         {
           name: 'brakeCode',
-          label: 'Brake Code',
+          label: 'Brake code',
           value: '',
           type: FormNodeTypes.CONTROL,
+          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
         },
         {
           name: 'dataTrBrakeOne',
-          label: 'Service brake information',
+          label: 'Service *',
           value: '',
           type: FormNodeTypes.CONTROL,
+          disabled: true
         },
         {
           name: 'dataTrBrakeTwo',
-          label: 'Secondary brake information',
+          label: 'Secondary *',
           value: '',
           type: FormNodeTypes.CONTROL,
+          disabled: true
         },
         {
           name: 'dataTrBrakeThree',
-          label: 'Parking brake information',
+          label: 'Parking *',
           value: '',
           type: FormNodeTypes.CONTROL,
+          disabled: true
         },
         {
           name: 'retarderBrakeOne',
-          label: 'Retarder brake one (optional)',
+          label: 'Retarder 1',
           value: '',
-          type: FormNodeTypes.CONTROL,
+          type: FormNodeTypes.CONTROL
         },
         {
           name: 'retarderBrakeTwo',
-          label: 'Retarder brake two (optional)',
+          label: 'Retarder 2',
           value: '',
-          type: FormNodeTypes.CONTROL,
+          type: FormNodeTypes.CONTROL
         }
       ]
     }

@@ -2,23 +2,22 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FormArray, FormGroup } from '@angular/forms';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
-import { TrlBrakes } from '@forms/templates/trl/trl-brakes.template';
+import { CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-brakes[vehicleTechRecord]',
-  templateUrl: './brakes.component.html',
-  styleUrls: ['./brakes.component.scss']
+  selector: 'app-trl-brakes[vehicleTechRecord]',
+  templateUrl: './trl-brakes.component.html',
+  styleUrls: ['./trl-brakes.component.scss']
 })
-export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
+export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
-  template!: FormNode;
 
   booleanOptions: MultiOptions = [{ value: true, label: 'Yes' }, { value: false, label: 'No' }];
 
@@ -27,13 +26,11 @@ export class BrakesComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.template = TrlBrakes;
-
-    this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
     this.form.cleanValueChanges
       .pipe(debounceTime(400), takeUntil(this.destroy$))
-      .subscribe(e => this.formChange.emit(e));
+      .subscribe(event => this.formChange.emit(event));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
