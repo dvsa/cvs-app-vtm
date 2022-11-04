@@ -5,7 +5,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
-import getOptionsFromEnum from '@forms/utils/enum-map';
+import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Brakes, Retarders, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
