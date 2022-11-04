@@ -94,13 +94,18 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   checkFitmentCodeHasChanged(simpleChanges: SimpleChanges): boolean {
     const { vehicleTechRecord } = simpleChanges;
 
-    if (vehicleTechRecord.firstChange === false) {
+    if (vehicleTechRecord.firstChange !== undefined && vehicleTechRecord.firstChange === false) {
       const currentAxles = vehicleTechRecord.currentValue.axles;
       const previousAxles = vehicleTechRecord.previousValue.axles;
 
       for (let [index, axle] of currentAxles.entries()) {
-        if (axle.tyres?.fitmentCode !== previousAxles[index].tyres.fitmentCode) {
-          this.getTyresRefData(axle.tyres!, axle.axleNumber!);
+        if (
+          axle.tyres !== undefined &&
+          previousAxles[index] &&
+          previousAxles[index].tyres !== undefined &&
+          axle.tyres.fitmentCode !== previousAxles[index].tyres.fitmentCode
+        ) {
+          this.getTyresRefData(axle.tyres, axle.axleNumber);
           return true;
         }
       }

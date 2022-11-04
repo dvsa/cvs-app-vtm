@@ -175,7 +175,9 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   handleFormState(event: any): void {
-    if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
+    const removeAxle = event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length;
+
+    if (removeAxle) {
       this.removeAxle(event);
     } else {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
@@ -183,7 +185,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
     if (event.brakes && (event.brakes.dtpNumber?.length === 4 || event.brakes.dtpNumber?.length === 6)) {
       this.setBodyFields();
-    } else {
+    } else if (!removeAxle) {
       this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
     }
 
