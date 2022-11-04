@@ -89,6 +89,5 @@ export class DocumentRetrievalService {
       responseType: 'text',
       withCredentials: this.configuration.withCredentials
     });
-    // .pipe(switchMap(data => of({ name: `${testNumber}_${vin}.pdf`, data: data })));
   }
 }
