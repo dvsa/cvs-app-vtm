@@ -1,3 +1,3 @@
-<app-button id="test-certificate-link" design="link" (clicked)="download()">
+<app-button id="test-certificate-link" design="link" (clicked)="download()" [disabled]="!testNumber || !vin">
   <ng-content></ng-content>
 </app-button>

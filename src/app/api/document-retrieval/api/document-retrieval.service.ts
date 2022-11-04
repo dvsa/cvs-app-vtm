@@ -32,10 +32,10 @@ export class DocumentRetrievalService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public testCertificateGet(testNumber?: string, vin?: string, observe?: 'body', reportProgress?: boolean): Observable<Blob> {
-    // public testCertificateGet(testNumber?: string, vin?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    // public testCertificateGet(testNumber?: string, vin?: string, observe?: 'events', reportProgress?: boolean);
-    // public testCertificateGet(testNumber?: string, vin?: string, observe = 'body', reportProgress = false): Observable<Blob> {
+  public testCertificateGet(testNumber?: string, vin?: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+  public testCertificateGet(testNumber?: string, vin?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+  public testCertificateGet(testNumber?: string, vin?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+  public testCertificateGet(testNumber?: string, vin?: string, observe: any = 'body', reportProgress = false): Observable<any> {
     if (!vin) {
       throw new Error('Required parameter vin was null or undefined when calling testCertificateGet.');
     }
@@ -81,21 +81,14 @@ export class DocumentRetrievalService {
       headers = headers.set('Content-Type', httpContentTypeSelected);
     }
 
-    // return this.httpClient.get<Observable<Blob>>(`${this.basePath}/v1/document-retrieval`, {
-    //   params: queryParameters,
-    //   headers: headers,
-    //   observe: observe,
-    //   reportProgress: reportProgress,
-    //   responseType: 'blob',
-    //   withCredentials: this.configuration.withCredentials,
-    // });
     return this.httpClient.get(`${this.basePath}/v1/document-retrieval`, {
       headers,
-      observe,
       params,
       reportProgress,
-      responseType: 'blob',
+      observe,
+      responseType: 'text',
       withCredentials: this.configuration.withCredentials
     });
+    // .pipe(switchMap(data => of({ name: `${testNumber}_${vin}.pdf`, data: data })));
   }
 }

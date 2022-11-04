@@ -115,7 +115,7 @@
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Certificate:</dt>
         <dd id="test-certificate" class="govuk-summary-list__value">
-          <app-test-certificate design="link">
+          <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''">
             {{ test?.certificateNumber | defaultNullOrEmpty }}
           </app-test-certificate>
         </dd>

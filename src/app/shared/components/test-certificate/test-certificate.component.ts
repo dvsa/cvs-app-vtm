@@ -1,47 +1,54 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { HttpEventType } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
-import { RouterService } from '@services/router/router.service';
-import { combineLatest, map, Observable, switchMap, take } from 'rxjs';
+import { takeWhile } from 'rxjs';
 
 @Component({
-  selector: 'app-test-certificate',
+  selector: 'app-test-certificate[testNumber][vin]',
   templateUrl: './test-certificate.component.html',
   styleUrls: ['./test-certificate.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TestCertificateComponent {
-  @Input() render: string = '';
-  constructor(private routerService: RouterService, private documentRetrievalService: DocumentRetrievalService) {}
+  @Input() testNumber!: string;
+  @Input() vin!: string;
+  @Output() isSuccess = new EventEmitter<boolean>();
 
-  get testNumber$(): Observable<string | undefined> {
-    return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
-  }
-  get vin$(): Observable<string | undefined> {
-    return this.routerService.routeNestedParams$.pipe(map(params => params['vin']));
-  }
+  constructor(private documentRetrievalService: DocumentRetrievalService) {}
 
   download() {
-    combineLatest([this.testNumber$, this.vin$])
-      .pipe(
-        take(1),
-        switchMap(([testNumber, vin]) => {
-          return this.documentRetrievalService.testCertificateGet(testNumber, vin);
-        })
-      )
+    return this.documentRetrievalService
+      .testCertificateGet(this.testNumber, this.vin, 'events', true)
+      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
       .subscribe({
-        next: data => {
-          console.log(data);
-          const file = new Blob([data], { type: 'application/pdf' });
-          const link: HTMLAnchorElement | undefined = document.createElement('a');
-          link.href = URL.createObjectURL(file);
-          link.target = '_blank';
-          link.download = 'test_cert.pdf';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+        next: res => {
+          switch (res.type) {
+            case HttpEventType.DownloadProgress:
+              console.log(res);
+              break;
+            case HttpEventType.Response:
+              const byteArray = new Uint8Array(
+                window
+                  .atob(res.body)
+                  .split('')
+                  .map(char => char.charCodeAt(0))
+              );
+
+              const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
+              const url = window.URL.createObjectURL(file);
+              const link: HTMLAnchorElement | undefined = document.createElement('a');
+              link.href = url;
+              link.target = '_blank';
+              link.download = `${this.testNumber}_${this.vin}.pdf`;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+
+              this.isSuccess.emit(true);
+          }
         },
-        error: e => {
-          console.error(e);
+        error: () => {
+          this.isSuccess.emit(false);
         }
       });
   }
