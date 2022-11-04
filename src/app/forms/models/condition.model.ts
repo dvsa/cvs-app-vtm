@@ -5,7 +5,6 @@ export enum operatorEnum {
 
 export interface Condition {
   field: string;
-  operator: operatorEnum,
+  operator: operatorEnum;
   value: any;
-  //value: string | number | boolean | string[] | number[] | boolean[];
 }

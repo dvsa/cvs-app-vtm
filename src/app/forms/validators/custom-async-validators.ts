@@ -11,9 +11,7 @@ import { State } from '@store/.';
 import { selectUserByResourceKey } from '@store/reference-data';
 import { testResultInEdit } from '@store/test-records';
 import { getTestStationFromProperty } from '@store/test-stations';
-import { cond } from 'lodash';
 import { catchError, map, Observable, of, take, tap } from 'rxjs';
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
