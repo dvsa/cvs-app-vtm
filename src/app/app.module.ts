@@ -77,7 +77,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         new DocumentRetrievalConfiguration({
           basePath: environment.VTM_API_URI,
           apiKeys: {
-            ['X-Api-Key']: environment.DOC_RETRIEVAL_API_KEY
+            ['X-Api-Key']: environment.DOCUMENT_RETRIEVAL_API_KEY
           }
         })
     )
