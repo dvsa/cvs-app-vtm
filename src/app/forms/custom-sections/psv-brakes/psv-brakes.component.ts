@@ -98,4 +98,8 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
   }
+
+  round(n: number): number {
+    return Math.round(n);
+  }
 }

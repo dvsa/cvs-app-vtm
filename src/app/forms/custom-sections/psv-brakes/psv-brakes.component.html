@@ -38,7 +38,7 @@
 <div class="row">
   <app-switchable-input
     [form]="brakesForm"
-    [type]="editTypes.DROPDOWN"
+    [type]="editTypes.RADIO"
     name="retarderBrakeOne"
     label="Retarder 1"
     [isEditing]="isEditing"
@@ -47,7 +47,7 @@
 
   <app-switchable-input
     [form]="brakesForm"
-    [type]="editTypes.DROPDOWN"
+    [type]="editTypes.RADIO"
     name="retarderBrakeTwo"
     label="Retarder 2"
     [isEditing]="isEditing"
@@ -67,20 +67,20 @@
   <tbody class="govuk-table__body">
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Service</th>
-      <td class="govuk-table__cell">{{ ((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100 }}</td>
-      <td class="govuk-table__cell">{{ ((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100 }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100) }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100) }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Secondary</th>
-      <td class="govuk-table__cell">{{ ((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100 }}</td>
-      <td class="govuk-table__cell">{{ ((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100 }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100) }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100) }}</td>
     </tr>
 
     <tr class="govuk-table__row">
       <th scope="row" class="govuk-table__header">Parking</th>
-      <td class="govuk-table__cell">{{ ((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100 }}</td>
-      <td class="govuk-table__cell">{{ ((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100 }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100) }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100) }}</td>
     </tr>
   </tbody>
 </table>
