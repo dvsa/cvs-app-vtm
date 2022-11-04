@@ -12,7 +12,7 @@ export enum BodyTypeDescription {
   SINGLE_DECKER = 'single decker',
   SKELETAL = 'skeletal',
   SKIP_LOADER = 'skip loader',
-  TIPPER = 'tipper',
+  TIPPER = 'tipper'
 }
 
 export enum BodyTypeCode {
@@ -32,16 +32,31 @@ export enum BodyTypeCode {
 }
 
 export const bodyTypeMap = new Map<BodyTypeDescription, BodyTypeCode>([
-  [BodyTypeDescription.ARTICULATED,           BodyTypeCode.A],
-  [BodyTypeDescription.BOX,                   BodyTypeCode.K],
-  [BodyTypeDescription.DOUBLE_DECKER,         BodyTypeCode.D],
-  [BodyTypeDescription.FLAT,                  BodyTypeCode.T],
-  [BodyTypeDescription.OTHER,                 BodyTypeCode.O],
-  [BodyTypeDescription.PETROL_OR_OIL_TANKER,  BodyTypeCode.M],
-  [BodyTypeDescription.REFUSE,                BodyTypeCode.B],
-  [BodyTypeDescription.REFRIGERATED,          BodyTypeCode.R],
-  [BodyTypeDescription.SINGLE_DECKER,         BodyTypeCode.S],
-  [BodyTypeDescription.SKELETAL,              BodyTypeCode.X],
-  [BodyTypeDescription.SKIP_LOADER,           BodyTypeCode.F],
-  [BodyTypeDescription.TIPPER,                BodyTypeCode.P],
+  [BodyTypeDescription.ARTICULATED, BodyTypeCode.A],
+  [BodyTypeDescription.BOX, BodyTypeCode.K],
+  [BodyTypeDescription.DOUBLE_DECKER, BodyTypeCode.D],
+  [BodyTypeDescription.FLAT, BodyTypeCode.T],
+  [BodyTypeDescription.OTHER, BodyTypeCode.O],
+  [BodyTypeDescription.PETROL_OR_OIL_TANKER, BodyTypeCode.M],
+  [BodyTypeDescription.REFUSE, BodyTypeCode.B],
+  [BodyTypeDescription.REFRIGERATED, BodyTypeCode.R],
+  [BodyTypeDescription.SINGLE_DECKER, BodyTypeCode.S],
+  [BodyTypeDescription.SKELETAL, BodyTypeCode.X],
+  [BodyTypeDescription.SKIP_LOADER, BodyTypeCode.F],
+  [BodyTypeDescription.TIPPER, BodyTypeCode.P]
+]);
+
+export const bodyTypeCodeMap = new Map<BodyTypeCode, BodyTypeDescription>([
+  [BodyTypeCode.A, BodyTypeDescription.ARTICULATED],
+  [BodyTypeCode.K, BodyTypeDescription.BOX],
+  [BodyTypeCode.D, BodyTypeDescription.DOUBLE_DECKER],
+  [BodyTypeCode.T, BodyTypeDescription.FLAT],
+  [BodyTypeCode.O, BodyTypeDescription.OTHER],
+  [BodyTypeCode.M, BodyTypeDescription.PETROL_OR_OIL_TANKER],
+  [BodyTypeCode.B, BodyTypeDescription.REFUSE],
+  [BodyTypeCode.R, BodyTypeDescription.REFRIGERATED],
+  [BodyTypeCode.S, BodyTypeDescription.SINGLE_DECKER],
+  [BodyTypeCode.X, BodyTypeDescription.SKELETAL],
+  [BodyTypeCode.F, BodyTypeDescription.SKIP_LOADER],
+  [BodyTypeCode.P, BodyTypeDescription.TIPPER]
 ]);

@@ -3,6 +3,7 @@ export enum ReferenceDataResourceType {
   BodyModel = 'BODY_MODEL',
   Tyres = 'TYRES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
+  PsvMake = 'PSV_MAKE',
   ReasonsForAbandoningHgv = 'REASONS_FOR_ABANDONING_HGV',
   ReasonsForAbandoningTrl = 'REASONS_FOR_ABANDONING_TRL',
   ReasonsForAbandoningPsv = 'REASONS_FOR_ABANDONING_PSV',
@@ -17,7 +18,16 @@ export interface ReferenceDataModelBase {
   description?: string;
 }
 
+export interface PsvMake extends ReferenceDataModelBase {
+  dtpNumber: string;
+  psvChassisMake: string;
+  psvChassisModel: string;
+  psvBodyMake: string;
+  psvBodyType: string;
+}
+
 export interface BodyMake extends ReferenceDataModelBase {}
+
 export interface BodyModel extends ReferenceDataModelBase {
   bodyMake: string;
 }
