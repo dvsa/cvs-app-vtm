@@ -20,8 +20,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
   @Input() delimited?: { regex?: string; separator: string };
 
   isChecked(option: string | number | boolean): boolean {
-    const checked = this.value && this.value.includes(option);
-    return checked;
+    return this.value && this.value.includes(option);
   }
 
   handleChange(event: boolean, option: FormNodeOption<OptionsType>): void {
@@ -39,7 +38,7 @@ export class CheckboxGroupComponent extends BaseControlComponent {
 
   private remove(option: FormNodeOption<OptionsType>) {
     const separator = this.delimited && this.delimited?.regex ? new RegExp(this.delimited?.regex) : this.delimited?.separator;
-    let newValue = separator ? this.value.split(separator) : [...this.value];
+    let newValue = separator ? this.value?.split(separator) : [...this.value];
     if (newValue && newValue.length > 0) {
       const i = newValue.indexOf(option.value);
       if (i > -1) {

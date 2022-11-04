@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
-export const psvBodyTemplate: FormNode = {
+export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
   label: 'Body',
   type: FormNodeTypes.GROUP,
@@ -10,33 +10,40 @@ export const psvBodyTemplate: FormNode = {
       name: 'modelLiteral',
       label: 'Model literal',
       value: '',
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }]
     },
     {
       name: 'chassisMake',
       label: 'Chassis make',
       value: '',
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
+      disabled: true
     },
     {
       name: 'chassisModel',
       label: 'Chassis model',
       value: '',
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
+      disabled: true
     },
     {
-      name: 'make',
+      name: 'bodyMake',
       label: 'Body make',
       value: '',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.SELECT,
-      options: []
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
+      disabled: true
     },
     {
-      name: 'model',
+      name: 'bodyModel',
       label: 'Body model',
       value: '',
       type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 20 }]
     },
     {
       name: 'bodyType',
@@ -49,7 +56,8 @@ export const psvBodyTemplate: FormNode = {
           label: 'Body type',
           value: '',
           type: FormNodeTypes.CONTROL,
-        },
+          disabled: true
+        }
       ]
     },
     {

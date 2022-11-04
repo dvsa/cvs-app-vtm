@@ -3,11 +3,16 @@ import { MultiOptions } from '@forms/models/options.model';
 import { mockBodyMakes } from '@mocks/reference-data/mock-body-makes';
 import { mockBodyModels } from '@mocks/reference-data/mock-body-models';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
-import { mockReasonsForAbandoning } from '@mocks/reference-data/mock-reasons-for-abandoning.reference-data';
+import { mockTyres } from '@mocks/reference-data/mock-tyres';
+import { mockPsvMakes } from '@mocks/reference-data/mock-psv-make.reference-data';
+import { mockReasonsForAbandoningHgv } from '@mocks/reference-data/mock-hgv-reasons-for-abandoning.reference-data';
+import { mockReasonsForAbandoningPsv } from '@mocks/reference-data/mock-psv-reasons-for-abandoning.reference-data';
 import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-data/mock-specialist-reasons-for-abandoning.reference-data';
 import { mockTIRReasonsForAbandoning } from '@mocks/reference-data/mock-TIR-reasons-for-abandoning.reference-data';
+import { mockReasonsForAbandoningTrl } from '@mocks/reference-data/mock-trl-reasons-for-abandoning.reference-data';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
   fetchReferenceData,
@@ -34,7 +39,6 @@ export class ReferenceDataService {
 
     // ** Until the reference data API is provisioned, return in-memory data ** //
     const mockData = this.getMockReferenceData(resourceType);
-
     if (mockData instanceof Error) {
       return throwError(() => mockData);
     }
@@ -54,10 +58,18 @@ export class ReferenceDataService {
         return mockBodyMakes;
       case ReferenceDataResourceType.BodyModel:
         return mockBodyModels;
+      case ReferenceDataResourceType.Tyres:
+        return mockTyres;
       case ReferenceDataResourceType.CountryOfRegistration:
         return mockCountriesOfRegistration;
-      case ReferenceDataResourceType.ReasonsForAbandoning:
-        return mockReasonsForAbandoning;
+      case ReferenceDataResourceType.PsvMake:
+        return mockPsvMakes;
+      case ReferenceDataResourceType.ReasonsForAbandoningPsv:
+        return mockReasonsForAbandoningPsv;
+      case ReferenceDataResourceType.ReasonsForAbandoningHgv:
+        return mockReasonsForAbandoningHgv;
+      case ReferenceDataResourceType.ReasonsForAbandoningTrl:
+        return mockReasonsForAbandoningTrl;
       case ReferenceDataResourceType.TIRReasonsForAbandoning:
         return mockTIRReasonsForAbandoning;
       case ReferenceDataResourceType.SpecialistReasonsForAbandoning:
@@ -89,7 +101,10 @@ export class ReferenceDataService {
     return referenceData.pipe(map(options => options.map(option => ({ value: option.resourceKey, label: option.description }))));
   }
 
-  getReasonsForAbandoning(): Observable<MultiOptions> {
-    return this.mapReferenceDataOptions(this.store.pipe(select(selectReasonsForAbandoning)));
+  getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions> {
+    if (!vehicleType) {
+      return of([]);
+    }
+    return this.mapReferenceDataOptions(this.store.pipe(select(selectReasonsForAbandoning(vehicleType))));
   }
 }

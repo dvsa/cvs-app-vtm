@@ -42,4 +42,4 @@
   </div>
 </div>
 
-<a *ngIf="isEditing" routerLink="selectDefect" queryParamsHandling="merge" class="govuk-button govuk-button--secondary">Add defect</a>
+<app-button *ngIf="isEditing" type="secondary" id="add-defect-button" routerLink="selectDefect" queryParamsHandling="merge">Add defect</app-button>

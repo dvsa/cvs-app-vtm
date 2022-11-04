@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
 import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
+import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
     PaginationComponent,
     TestCertificateComponent,
     PreventDoubleClickDirective,
-    BaseDialogComponent
+    BaseDialogComponent,
+    DigitGroupSeparatorPipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -50,7 +52,8 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
     AccordionControlComponent,
     PaginationComponent,
     TestCertificateComponent,
-    BaseDialogComponent
+    BaseDialogComponent,
+    DigitGroupSeparatorPipe
   ]
 })
 export class SharedModule {}

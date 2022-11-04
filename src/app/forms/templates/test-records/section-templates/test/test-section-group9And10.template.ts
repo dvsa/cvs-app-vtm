@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup9And10: FormNode = {
   name: 'testSection',
@@ -102,7 +102,7 @@ export const TestSectionGroup9And10: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: SpecialRefData.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

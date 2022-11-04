@@ -109,7 +109,7 @@
       <div *ngIf="testResult?.vehicleType !== vehicleTypes.TRL" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Odometer reading</dt>
         <dd id="test-testTypeId" class="govuk-summary-list__value">
-          {{ combinedOdometerReading(testResult?.odometerReading, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
+          {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
