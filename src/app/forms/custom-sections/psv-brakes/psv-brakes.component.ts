@@ -99,6 +99,12 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return FormNodeWidth;
   }
 
+  get brakeCodePrefix(): string {
+    const prefix = `${Math.round(this.vehicleTechRecord!.grossLadenWeight! / 100)}`;
+
+    return prefix.length <= 2 ? ('0' + prefix) : prefix;
+  }
+
   round(n: number): number {
     return Math.round(n);
   }

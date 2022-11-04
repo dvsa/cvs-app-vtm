@@ -35,6 +35,7 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
 import { BodyComponent } from './custom-sections/body/body.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
+import { PrefixDirective } from './directives/prefix.directive';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.comp
     AbandonDialogComponent,
     BodyComponent,
     TyresComponent,
-    PsvBrakesComponent
+    PsvBrakesComponent,
+    PrefixDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -102,7 +104,8 @@ import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.comp
     ReadOnlyComponent,
     AbandonDialogComponent,
     BodyComponent,
-    PsvBrakesComponent
+    PsvBrakesComponent,
+    PrefixDirective
   ]
 })
 export class DynamicFormsModule {}

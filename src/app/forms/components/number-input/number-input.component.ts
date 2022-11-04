@@ -5,6 +5,7 @@ import { BaseControlComponent } from '../base-control/base-control.component';
 @Component({
   selector: 'app-number-input',
   templateUrl: './number-input.component.html',
+  styleUrls: ['./number-input.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

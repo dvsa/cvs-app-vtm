@@ -11,3 +11,22 @@
 .extra-margin {
   margin-bottom: 30px;
 }
+
+.internal-wrapper {
+  align-items: flex-start;
+  display: flex;
+  margin-top: 10px;
+
+  .prefix {
+    border: 2px solid #0b0c0c;
+    border-right: 0;
+    height: unset;
+  }
+
+  @media(max-width: 640px) {
+    .prefix {
+      line-height: 1.25;
+    }
+  }
+}
+
