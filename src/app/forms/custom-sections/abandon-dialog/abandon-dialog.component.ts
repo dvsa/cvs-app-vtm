@@ -53,11 +53,14 @@ const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialR
   selector: 'app-abandon-dialog',
   templateUrl: './abandon-dialog.component.html'
 })
-export class AbandonDialogComponent extends BaseDialogComponent {
+export class AbandonDialogComponent extends BaseDialogComponent implements OnInit {
   @ViewChild(DynamicFormGroupComponent) dynamicFormGroup?: DynamicFormGroupComponent;
   @Input() testResult?: TestResultModel;
   @Output() newTestResult = new EventEmitter<TestResultModel>();
-  template = this.getTemplate();
+  template?: FormNode;
+  ngOnInit() {
+    this.template = this.getTemplate();
+  }
 
   getTemplate(): FormNode {
     const testTypeId = this.testResult?.testTypes[0].testTypeId ?? '';
