@@ -124,7 +124,7 @@ export const TrlTechRecordTemplate: FormNode = {
       width: FormNodeWidth.M,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [{ name: ValidatorNames.MaxLength, args: 5 }],
+      validators: [{ name: ValidatorNames.Max, args: 99999 }],
       class: 'flex--half'
     },
     {
