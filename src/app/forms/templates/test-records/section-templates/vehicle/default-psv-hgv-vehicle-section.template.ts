@@ -40,8 +40,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-      type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.XXS
+      width: FormNodeWidth.XXS,
+      type: FormNodeTypes.CONTROL
     },
     {
       name: 'odometerCombination',

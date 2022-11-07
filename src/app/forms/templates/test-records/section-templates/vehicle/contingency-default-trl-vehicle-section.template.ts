@@ -1,5 +1,5 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const ContingencyVehicleSectionDefaultTrl: FormNode = {
@@ -37,7 +37,8 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.XS
     },
     {
       name: 'preparerName',
