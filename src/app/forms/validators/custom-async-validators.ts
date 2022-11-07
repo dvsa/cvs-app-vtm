@@ -139,17 +139,17 @@ export class CustomAsyncValidators {
   }
 
   static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[] ){
-    if(Array.isArray(conditions)){
-      let failed: boolean = false;
-
-      conditions.forEach((condition) => {
-        if(!CustomAsyncValidators.checkCondition(testResult, condition)) failed = true;
-      });
-
-      return !failed;
-    }else{
+    if (!Array.isArray(conditions)) {
       return CustomAsyncValidators.checkCondition(testResult, conditions);
     }
+
+    for (const condition of conditions) {
+      if(!CustomAsyncValidators.checkCondition(testResult, condition)) {
+        return false;
+      }
+    }
+    
+    return true;
   }
 
   static checkCondition(testResult: TestResultModel, condition: Condition ){
