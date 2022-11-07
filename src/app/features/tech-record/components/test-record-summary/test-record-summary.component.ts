@@ -21,7 +21,7 @@ export class TestRecordSummaryComponent {
   @Input() testRecords: TestResultModel[] = [];
   @Input() currentTechRecord?: TechRecordModel;
 
-  public get Roles() {
+  public get roles() {
     return Roles;
   }
 
