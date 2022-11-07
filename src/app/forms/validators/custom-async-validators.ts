@@ -140,7 +140,7 @@ export class CustomAsyncValidators {
       );
   }
 
-  static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[] ){
+  private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[] ){
     if (!Array.isArray(conditions)) {
       return CustomAsyncValidators.checkCondition(testResult, conditions);
     }
@@ -148,15 +148,15 @@ export class CustomAsyncValidators {
     return conditions.every(condition => CustomAsyncValidators.checkCondition(testResult,condition))
   }
 
-  static checkCondition(testResult: TestResultModel, condition: Condition ){
+  private static checkCondition(testResult: TestResultModel, condition: Condition ){
     const {field, operator, value} = condition
 
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
-      ? (testResult?.testTypes[0] as any)[field]
+      ? (testResult.testTypes[0] as any)[field]
       : (testResult as any)[field];
 
     const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
 
     return operator === operatorEnum.Equals ? isTrue : !isTrue;
-    }
+  }
 }
