@@ -13,13 +13,15 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       label: 'VIN/chassis number',
       value: '',
       disabled: true,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.L
     },
     {
       name: 'trailerId',
       label: 'Trailer ID',
       value: '',
       disabled: true,
+      width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL
     },
     {

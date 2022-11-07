@@ -13,7 +13,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'VIN/chassis number',
       value: '',
       disabled: true,
-
+      width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL
     },
     {
@@ -21,7 +21,7 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'Trailer ID',
       value: '',
       disabled: true,
-
+      width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL
     },
     {
