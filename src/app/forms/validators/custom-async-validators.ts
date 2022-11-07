@@ -153,7 +153,7 @@ export class CustomAsyncValidators {
 
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
       ? (testResult.testTypes[0] as any)[field]
-      : (testResult as any)[field];
+      : (testResult as any)[field as keyof TestType];
 
     const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
 
