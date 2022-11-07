@@ -127,17 +127,13 @@ export class CustomAsyncValidators {
         take(1),
         select(testResultInEdit),
         map(testResult => {
+          if (!testResult || !control?.parent) { return null; }
 
-          if(testResult){
-            const conditionsPassed = CustomAsyncValidators.checkConditions(testResult, conditions);
+          const siblingControl = control.parent.get(sibling) as CustomFormControl;
 
-            if (control?.parent) {
-              const siblingControl = control.parent.get(sibling) as CustomFormControl;
-              siblingControl.meta.hide = Array.isArray(value) ? (conditionsPassed && value.includes(control.value)) : (conditionsPassed && control.value === value);
-            }
-          }
+          const conditionsPassed = CustomAsyncValidators.checkConditions(testResult, conditions);
 
-          return null;
+          siblingControl.meta.hide = conditionsPassed && (Array.isArray(value) ? value.includes(control.value) : control.value === value);
         })
       );
   }
