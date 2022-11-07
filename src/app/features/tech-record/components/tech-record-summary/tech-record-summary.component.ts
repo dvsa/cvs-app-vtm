@@ -193,12 +193,12 @@ export class TechRecordSummaryComponent implements OnInit {
       brakeForceWheelsNotLocked: {
         serviceBrakeForceA:   Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 16) / 100),
         secondaryBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100),
-        parkingBrakeForceA:   Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 45) / 100),
+        parkingBrakeForceA:   Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 45) / 100)
       },
       brakeForceWheelsUpToHalfLocked: {
         serviceBrakeForceB:   Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 16) / 100),
         secondaryBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 25) / 100),
-        parkingBrakeForceB:   Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 50) / 100),
+        parkingBrakeForceB:   Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 50) / 100)
       }
     };
   }
