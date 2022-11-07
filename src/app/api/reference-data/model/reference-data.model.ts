@@ -1,8 +1,12 @@
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export interface ReferenceDataItem {
+export type ReferenceDataItem = {
   resourceType: ReferenceDataResourceType;
-  resourceKey: string;
-}
+  resourceKey: string | number;
+};
 
-export interface ReferenceDataList extends Array<ReferenceDataItem> {}
+export type ReferenceDataList = Array<ReferenceDataItem>;
+
+export type ReferenceDataApiResponse = {
+  data: ReferenceDataList;
+};

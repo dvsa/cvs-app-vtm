@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpResponse } from '@angular/commo
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Configuration } from '../configuration';
-import { ReferenceDataItem, ReferenceDataList } from '../model/reference-data.model';
+import { ReferenceDataApiResponse } from '../model/reference-data.model';
 import { BASE_PATH } from '../variables';
 
 @Injectable({
@@ -23,9 +23,9 @@ export class ReferenceDataApiService {
     }
   }
 
-  getAllFromResource(resourceType: string, observe?: 'body', reportProgress?: boolean): Observable<ReferenceDataList>;
-  getAllFromResource(resourceType: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceDataList>>;
-  getAllFromResource(resourceType: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceDataList>>;
+  getAllFromResource(resourceType: string, observe?: 'body', reportProgress?: boolean): Observable<ReferenceDataApiResponse>;
+  getAllFromResource(resourceType: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceDataApiResponse>>;
+  getAllFromResource(resourceType: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceDataApiResponse>>;
   getAllFromResource(resourceType: string, observe: any = 'body', reportProgress?: boolean): Observable<any> {
     if (!resourceType) {
       console.log('*** EMPTY ***');
@@ -41,7 +41,7 @@ export class ReferenceDataApiService {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
-    return this.httpClient.get<ReferenceDataList>(`${this.basePath}/reference/${resourceType}`, {
+    return this.httpClient.get<ReferenceDataApiResponse>(`${this.basePath}/reference/${resourceType}`, {
       withCredentials: this.configuration.withCredentials,
       headers: headers,
       observe: observe,
@@ -49,19 +49,24 @@ export class ReferenceDataApiService {
     });
   }
 
-  getOneFromResource(resourceType: string, resourceKey?: string, observe?: 'body', reportProgress?: boolean): Observable<ReferenceDataItem>;
+  getOneFromResource(
+    resourceType: string,
+    resourceKey?: string | number,
+    observe?: 'body',
+    reportProgress?: boolean
+  ): Observable<ReferenceDataApiResponse>;
   getOneFromResource(
     resourceType: string,
     resourceKey?: string,
     observe?: 'response',
     reportProgress?: boolean
-  ): Observable<HttpResponse<ReferenceDataItem>>;
+  ): Observable<HttpResponse<ReferenceDataApiResponse>>;
   getOneFromResource(
     resourceType: string,
     resourceKey?: string,
     observe?: 'events',
     reportProgress?: boolean
-  ): Observable<HttpEvent<ReferenceDataItem>>;
+  ): Observable<HttpEvent<ReferenceDataApiResponse>>;
   getOneFromResource(resourceType: string, resourceKey: string, observe: any = 'body', reportProgress?: boolean): Observable<any> {
     let headers = this.defaultHeaders;
 
@@ -80,7 +85,7 @@ export class ReferenceDataApiService {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
     }
 
-    return this.httpClient.get<ReferenceDataItem>(`${this.basePath}/reference/${resourceType}/${resourceKey}`, {
+    return this.httpClient.get<ReferenceDataApiResponse>(`${this.basePath}/reference/${resourceType}/${resourceKey}`, {
       withCredentials: this.configuration.withCredentials,
       headers: headers,
       observe: observe,

@@ -11,14 +11,14 @@ import {
 } from '../actions/reference-data.actions';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
-const selectResourceKey = (a: ReferenceDataModelBase): string => {
+const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
   return a.resourceKey;
 };
 
 export type ReferenceDataState = Record<ReferenceDataResourceType, EntityState<ReferenceDataModelBase>> & { error: string; loading: boolean };
 
 function createAdapter() {
-  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
+  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {

@@ -1,19 +1,16 @@
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { toArray } from 'rxjs';
 import { Configuration } from '../configuration';
-import { ReferenceDataItem, ReferenceDataList } from '../model/reference-data.model';
+import { ReferenceDataApiResponse } from '../model/reference-data.model';
 import { BASE_PATH } from '../variables';
 import { ReferenceDataApiService } from './reference-data-api.service';
 
 describe('ReferenceDataApiService', () => {
   let service: ReferenceDataApiService;
   let controller: HttpTestingController;
-
-  const isReferenceData = (data: any): data is ReferenceDataItem => {
-    return (data as ReferenceDataItem).resourceType !== undefined && (data as ReferenceDataItem).resourceKey !== undefined;
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,11 +38,10 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should return an observable of response body', done => {
-      const mockData = <ReferenceDataList>[{ resourceType: 'foo', resourceKey: 'bar' }];
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service.getAllFromResource('foo').subscribe(res => {
-        expect(Array.isArray(res)).toBeTruthy();
-        expect(isReferenceData(res[0])).toBeTruthy();
+        expect(res.data[0]).toBeTruthy();
         done();
       });
 
@@ -54,12 +50,10 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should return an observable instance of HttpResponse', done => {
-      const mockData = <ReferenceDataList>[{ resourceType: 'foo', resourceKey: 'bar' }];
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service.getAllFromResource('foo', 'response').subscribe(res => {
-        expect(res instanceof HttpResponse).toBeTruthy();
-        expect(Array.isArray(res.body)).toBeTruthy();
-        expect(isReferenceData(res.body![0])).toBeTruthy();
+        expect(res.body?.data[0]).toBeTruthy();
         done();
       });
 
@@ -68,7 +62,7 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should emit HttpEvents', done => {
-      const mockData = <ReferenceDataList>[{ resourceType: 'foo', resourceKey: 'bar' }];
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service
         .getAllFromResource('foo', 'events')
@@ -93,7 +87,7 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should use base path value from injection token', done => {
-      const mockData = <ReferenceDataList>[{ resourceType: 'foo', resourceKey: 'bar' }];
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service.getAllFromResource('foo').subscribe(res => {
         done();
@@ -112,7 +106,7 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should use base path value from injection token', done => {
-      const mockData = <ReferenceDataList>[{ resourceType: 'foo', resourceKey: 'bar' }];
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service.getAllFromResource('foo').subscribe(res => {
         done();
@@ -153,10 +147,10 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should return an observable of response body', done => {
-      const mockData = <ReferenceDataItem>{ resourceType: 'foo', resourceKey: 'bar' };
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service.getOneFromResource('foo', 'bar').subscribe(res => {
-        expect(isReferenceData(res)).toBeTruthy();
+        expect(res).toBeTruthy();
         done();
       });
 
@@ -165,11 +159,11 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should return an observable instance of HttpResponse', done => {
-      const mockData = <ReferenceDataItem>{ resourceType: 'foo', resourceKey: 'bar' };
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service.getOneFromResource('foo', 'bar', 'response').subscribe(res => {
         expect(res instanceof HttpResponse).toBeTruthy();
-        expect(isReferenceData(res.body as ReferenceDataItem)).toBeTruthy();
+        expect(res.body).toBeTruthy();
         done();
       });
 
@@ -178,7 +172,7 @@ describe('ReferenceDataApiService', () => {
     });
 
     it('should emit HttpEvents', done => {
-      const mockData = <ReferenceDataItem>{ resourceType: 'foo', resourceKey: 'bar' };
+      const mockData = <ReferenceDataApiResponse>{ data: [{ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: 'bar' }] };
 
       service
         .getOneFromResource('foo', 'bar', 'events')

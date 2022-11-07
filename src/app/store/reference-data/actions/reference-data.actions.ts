@@ -14,11 +14,15 @@ export const fetchReferenceDataFailed = createAction('[API/reference-data] Fetch
 
 export const fetchReferenceDataByKey = createAction(
   '[API/reference-data] Fetch ResourceType by Key',
-  props<{ resourceType: ReferenceDataResourceType; resourceKey: string }>()
+  props<{ resourceType: ReferenceDataResourceType; resourceKey: string | number }>()
 );
 export const fetchReferenceDataByKeySuccess = createAction(
   '[API/reference-data] Fetch ResourceType by Key Success',
-  props<{ resourceType: ReferenceDataResourceType; resourceKey: string; payload: ReferenceDataModelBase | CountryOfRegistration }>()
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string | number;
+    payload: ReferenceDataModelBase | CountryOfRegistration;
+  }>()
 );
 export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<GlobalError>());
 

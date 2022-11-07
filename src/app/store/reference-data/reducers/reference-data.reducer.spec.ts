@@ -1,7 +1,14 @@
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Dictionary } from '@ngrx/entity';
-import { fetchReferenceData, fetchReferenceDataByKey, fetchReferenceDataByKeyFailed, fetchReferenceDataByKeySuccess, fetchReferenceDataFailed, fetchReferenceDataSuccess } from '../actions/reference-data.actions';
+import {
+  fetchReferenceData,
+  fetchReferenceDataByKey,
+  fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySuccess,
+  fetchReferenceDataFailed,
+  fetchReferenceDataSuccess
+} from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
 
@@ -29,10 +36,13 @@ describe('Reference Data Reducer', () => {
   });
 
   describe('fetchReferenceDataSuccess', () => {
-    it.each(testCases)('should set all reference data on success', (value) => {
+    it.each(testCases)('should set all reference data on success', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map((v) => v.resourceKey);
-      const entities: Dictionary<ReferenceDataModelBase> = payload.reduce((acc, v) => ({ ...acc, [v.resourceKey]: v }), {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V });
+      const ids = payload.map(v => v.resourceKey);
+      const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
+        (acc, v) => ({ ...acc, [v.resourceKey]: v }),
+        {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
+      );
       const newState: ReferenceDataState = {
         ...initialReferenceDataState,
         [resourceType]: { ids, entities }
@@ -59,7 +69,10 @@ describe('Reference Data Reducer', () => {
   describe('fetchReferenceDataByKey actions', () => {
     it('should set loading to true', () => {
       const newState: ReferenceDataState = { ...initialReferenceDataState, loading: true };
-      const action = fetchReferenceDataByKey({ resourceType: ReferenceDataResourceType.CountryOfRegistration, resourceKey: mockCountriesOfRegistration[0].resourceKey });
+      const action = fetchReferenceDataByKey({
+        resourceType: ReferenceDataResourceType.CountryOfRegistration,
+        resourceKey: mockCountriesOfRegistration[0].resourceKey
+      });
       const state = referenceDataReducer(initialReferenceDataState, action);
 
       expect(state).toEqual(newState);
@@ -67,10 +80,10 @@ describe('Reference Data Reducer', () => {
     });
 
     describe('fetchReferenceDataByKeySuccess', () => {
-      it.each(testCases)('should set the the resource data item based on the type and key', (value) => {
+      it.each(testCases)('should set the the resource data item based on the type and key', value => {
         const { resourceType, resourceKey, payload } = value;
-        const entity = payload.find((p) => p.resourceKey === resourceKey)!;
-        const ids: string[] = [resourceKey];
+        const entity = payload.find(p => p.resourceKey === resourceKey)!;
+        const ids = [resourceKey];
         const entities: Dictionary<ReferenceDataModelBase> = { [resourceKey]: entity };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,

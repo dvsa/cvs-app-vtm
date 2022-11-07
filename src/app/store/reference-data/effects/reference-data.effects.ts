@@ -24,7 +24,7 @@ export class ReferenceDataEffects {
       ofType(fetchReferenceData),
       mergeMap(({ resourceType }) =>
         this.referenceDataService.fetchReferenceData(resourceType).pipe(
-          map(data => fetchReferenceDataSuccess({ resourceType, payload: data as Array<ReferenceDataModelBase> })),
+          map(data => fetchReferenceDataSuccess({ resourceType, payload: data.data })),
           catchError(e => of(fetchReferenceDataFailed({ error: e.message })))
         )
       )
@@ -36,7 +36,7 @@ export class ReferenceDataEffects {
       ofType(fetchReferenceDataByKey),
       mergeMap(({ resourceType, resourceKey }) =>
         this.referenceDataService.fetchReferenceData(resourceType, resourceKey).pipe(
-          map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
+          map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data.data[0] })),
           catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message })))
         )
       )

@@ -16,7 +16,7 @@ export const selectAllReferenceDataByResourceType = (resourceType: ReferenceData
     return resourceTypeAdapters[resourceType].getSelectors().selectAll(state);
   });
 
-export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string) =>
+export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string | number) =>
   createSelector(referenceDataFeatureState, state => {
     return state[resourceType].entities[resourceKey];
   });

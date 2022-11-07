@@ -14,7 +14,7 @@ export enum ReferenceDataResourceType {
 
 export interface ReferenceDataModelBase {
   resourceType: ReferenceDataResourceType;
-  resourceKey: string;
+  resourceKey: string | number;
   description?: string;
 }
 

@@ -4,17 +4,21 @@ import { initialAppState } from '@store/.';
 import { ReferenceDataService } from './reference-data.service';
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReferenceDataApiResponse, ReferenceDataApiService } from '@api/reference-data';
+import { of } from 'rxjs';
 
 describe('TechnicalRecordService', () => {
   let service: ReferenceDataService;
+  let apiService: ReferenceDataApiService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ReferenceDataService, provideMockStore({ initialState: initialAppState })]
+      providers: [ReferenceDataService, ReferenceDataApiService, provideMockStore({ initialState: initialAppState })]
     });
 
     service = TestBed.inject(ReferenceDataService);
+    apiService = TestBed.inject(ReferenceDataApiService);
   });
 
   it('should be created', () => {
@@ -24,8 +28,9 @@ describe('TechnicalRecordService', () => {
   describe('API', () => {
     describe('resourceTypes', () => {
       it.each(testCases)('should return all data for a given resourceType', (value, done: any) => {
+        const apiResponse: ReferenceDataApiResponse = { data: value.payload };
         service.fetchReferenceData(value.resourceType).subscribe(response => {
-          expect(response).toEqual(value.payload);
+          expect(response).toEqual(apiResponse);
           done();
         });
       });
@@ -53,7 +58,7 @@ describe('TechnicalRecordService', () => {
   describe('resourceKeys', () => {
     it.each(testCases)('should return one result for a given resourceType and resourceKey', (value, done: any) => {
       const { resourceType, resourceKey, payload } = value;
-      const expectedResult = payload.find(p => p.resourceKey === resourceKey);
+      const expectedResult: ReferenceDataApiResponse = { data: [payload.find(p => p.resourceKey === resourceKey)!] };
 
       service.fetchReferenceData(resourceType, resourceKey).subscribe(response => {
         expect(response).toEqual(expectedResult);

@@ -91,7 +91,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
         map(bodyModels =>
           bodyModels
             .filter(bodyModel => (bodyModel as BodyModel).bodyMake === this.vehicleTechRecord.make)
-            .map(bodyModel => ({ value: bodyModel.description, label: bodyModel.description }))
+            .map(bodyModel => ({ value: bodyModel.description ?? '', label: bodyModel.description ?? '' }))
         )
       );
   }
