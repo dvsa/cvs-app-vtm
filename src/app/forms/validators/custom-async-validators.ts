@@ -1,6 +1,9 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { TestType } from '@api/test-types';
+import { Condition, operatorEnum } from '@forms/models/condition.model';
 import { CustomFormControl } from '@forms/services/dynamic-form.types';
 import { User } from '@models/reference-data.model';
+import { TestResultModel } from '@models/test-results/test-result.model';
 import { TestStation } from '@models/test-stations/test-station.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { select, Store } from '@ngrx/store';
@@ -114,7 +117,46 @@ export class CustomAsyncValidators {
 
           return null;
         })
+   
+        );
+  }
+
+  static hideIfEqualsWithCondition(store: Store<State>, sibling: string, value: string, conditions: Condition | Condition[]): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> =>
+      store.pipe(
+        take(1),
+        select(testResultInEdit),
+        map(testResult => {
+          if (!testResult || !control?.parent) { return null; }
+
+          const siblingControl = control.parent.get(sibling) as CustomFormControl;
+
+          const conditionsPassed = CustomAsyncValidators.checkConditions(testResult, conditions);
+
+          siblingControl.meta.hide = conditionsPassed && (Array.isArray(value) ? value.includes(control.value) : control.value === value);
+
+          return null;
+        })
       );
   }
- 
+
+  private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[] ){
+    if (!Array.isArray(conditions)) {
+      return CustomAsyncValidators.checkCondition(testResult, conditions);
+    }
+
+    return conditions.every(condition => CustomAsyncValidators.checkCondition(testResult,condition))
+  }
+
+  private static checkCondition(testResult: TestResultModel, condition: Condition ){
+    const {field, operator, value} = condition
+
+    const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
+      ? (testResult.testTypes[0] as any)[field]
+      : (testResult as any)[field as keyof TestResultModel];
+
+    const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
+
+    return operator === operatorEnum.Equals ? isTrue : !isTrue;
+  }
 }
