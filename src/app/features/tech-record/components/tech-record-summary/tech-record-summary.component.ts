@@ -128,26 +128,6 @@ export class TechRecordSummaryComponent implements OnInit {
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
-  handleFormStateOriginal(event: any): void {
-    const removeAxle = event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length;
-
-    if (removeAxle) {
-      this.removeAxle(event);
-    } else {
-      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
-    }
-
-    if (event.brakes && (event.brakes.dtpNumber?.length === 4 || event.brakes.dtpNumber?.length === 6)) {
-      this.setBodyFields();
-    } else if (!removeAxle) {
-      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
-    }
-
-    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length;
-    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
-    this.formChange.emit();
-  }
-
   handleFormState(event: any): void {
     this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
