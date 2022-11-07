@@ -46,14 +46,6 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         ]
       },
       {
-        name: 'noOfAxles',
-        label: 'Number of axles',
-        value: '',
-        disabled: true,
-        width: FormNodeWidth.XS,
-        type: FormNodeTypes.CONTROL,
-      },
-      {
         name: 'brakes',
         label: 'DTP number',
         value: '',
