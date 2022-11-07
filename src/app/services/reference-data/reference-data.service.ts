@@ -32,7 +32,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
       return throwError(() => new Error('Reference data resourceType is required'));
     }
 
-    return resourceKey ? this.getOneFromResource(resourceType, resourceKey) : this.getAllFromResource(resourceType);
+    return resourceKey ? this.getOneFromResource(resourceType, resourceKey, 'body') : this.getAllFromResource(resourceType, 'body');
   }
 
   loadReferenceData(resourceType: ReferenceDataResourceType): void {

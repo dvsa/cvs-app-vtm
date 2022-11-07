@@ -1,15 +1,17 @@
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
-import { ReferenceDataService } from './reference-data.service';
-import { testCases } from '@store/reference-data/reference-data.test-cases';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReferenceDataApiResponse, ReferenceDataApiService } from '@api/reference-data';
-import { of } from 'rxjs';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialAppState } from '@store/.';
+import { initialReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from '@store/reference-data';
+import { testCases } from '@store/reference-data/reference-data.test-cases';
+import { ReferenceDataService } from './reference-data.service';
 
 describe('TechnicalRecordService', () => {
   let service: ReferenceDataService;
-  let apiService: ReferenceDataApiService;
+  let controller: HttpTestingController;
+  let store: MockStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,7 +20,14 @@ describe('TechnicalRecordService', () => {
     });
 
     service = TestBed.inject(ReferenceDataService);
-    apiService = TestBed.inject(ReferenceDataApiService);
+    controller = TestBed.inject(HttpTestingController);
+    store = TestBed.inject(MockStore);
+
+    controller.verify();
+  });
+
+  afterEach(() => {
+    store.refreshState();
   });
 
   it('should be created', () => {
@@ -27,12 +36,14 @@ describe('TechnicalRecordService', () => {
 
   describe('API', () => {
     describe('resourceTypes', () => {
-      it.each(testCases)('should return all data for a given resourceType', (value, done: any) => {
+      it.each(testCases)('should return all data for a given resourceType', value => {
         const apiResponse: ReferenceDataApiResponse = { data: value.payload };
         service.fetchReferenceData(value.resourceType).subscribe(response => {
           expect(response).toEqual(apiResponse);
-          done();
         });
+
+        const req = controller.expectOne('https://url/api/v1/reference/COUNTRY_OF_REGISTRATION');
+        req.flush(apiResponse);
       });
     });
 
@@ -44,50 +55,76 @@ describe('TechnicalRecordService', () => {
         }
       });
     });
-
-    it('should thrown an error if resource type is not valid', done => {
-      service.fetchReferenceData('NOT_SUPPORTED' as any).subscribe({
-        error: e => {
-          expect(e.message).toBe('Unknown reference data resourceType');
-          done();
-        }
-      });
-    });
   });
 
   describe('resourceKeys', () => {
-    it.each(testCases)('should return one result for a given resourceType and resourceKey', (value, done: any) => {
+    it.each(testCases)('should return one result for a given resourceType and resourceKey', value => {
+      const getOneFromResourceSpy = jest.spyOn(service, 'getOneFromResource');
       const { resourceType, resourceKey, payload } = value;
       const expectedResult: ReferenceDataApiResponse = { data: [payload.find(p => p.resourceKey === resourceKey)!] };
 
       service.fetchReferenceData(resourceType, resourceKey).subscribe(response => {
         expect(response).toEqual(expectedResult);
+        expect(getOneFromResourceSpy).toHaveBeenCalled();
+      });
+
+      const req = controller.expectOne('https://url/api/v1/reference/COUNTRY_OF_REGISTRATION/gb');
+      req.flush(expectedResult);
+    });
+  });
+
+  describe('selectors', () => {
+    beforeEach(() => {
+      store.setState({
+        ...initialAppState,
+        [STORE_FEATURE_REFERENCE_DATA_KEY]: {
+          ...initialReferenceDataState,
+          [ReferenceDataResourceType.CountryOfRegistration]: {
+            ids: ['gb', 'gba'],
+            entities: {
+              gb: {
+                resourceType: ReferenceDataResourceType.CountryOfRegistration,
+                resourceKey: 'gb',
+                description: 'Great Britain and Northern Ireland - GB'
+              },
+              gba: {
+                resourceType: ReferenceDataResourceType.CountryOfRegistration,
+                resourceKey: 'gba',
+                description: 'Alderney - GBA'
+              }
+            }
+          }
+        }
+      });
+    });
+
+    it('should get all of the reference data', done => {
+      service.getAll$(ReferenceDataResourceType.CountryOfRegistration).subscribe(response => {
+        expect(response).toEqual([
+          {
+            resourceType: ReferenceDataResourceType.CountryOfRegistration,
+            resourceKey: 'gb',
+            description: 'Great Britain and Northern Ireland - GB'
+          },
+          {
+            resourceType: ReferenceDataResourceType.CountryOfRegistration,
+            resourceKey: 'gba',
+            description: 'Alderney - GBA'
+          }
+        ]);
         done();
       });
     });
 
-    it.each(testCases)('should thrown an error if resource key is not valid', (value, done: any) => {
-      service.fetchReferenceData(value.resourceType, 'NOT_FOUND').subscribe({
-        error: e => {
-          expect(e.message).toBe('Reference data with specified resource key not found (404)');
-          done();
-        }
+    it('should get a specific reference data record', (done: any) => {
+      service.getByKey$(ReferenceDataResourceType.CountryOfRegistration, 'gba').subscribe(response => {
+        expect(response).toEqual({
+          resourceType: ReferenceDataResourceType.CountryOfRegistration,
+          resourceKey: 'gba',
+          description: 'Alderney - GBA'
+        });
+        done();
       });
-    });
-  });
-
-  it.each(testCases)('should get all of the reference data', value => {
-    service.getAll$(value.resourceType).subscribe(response => {
-      expect(response).toEqual(value.payload);
-    });
-  });
-
-  it.each(testCases)('should get a specific reference data record', value => {
-    const { resourceType, resourceKey, payload } = value;
-    const expectedResult = payload.find(p => p.resourceKey === resourceKey);
-
-    service.getByKey$(resourceType, resourceKey).subscribe(response => {
-      expect(response).toEqual(expectedResult);
     });
   });
 });
