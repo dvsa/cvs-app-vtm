@@ -104,7 +104,8 @@ export const SpecialistTestSectionGroup1: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric }]
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'testNumber',

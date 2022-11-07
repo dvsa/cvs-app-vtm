@@ -13,8 +13,11 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
+import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
+import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
+import { DocumentRetrievalService } from '@api/document-retrieval';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,8 @@ import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-gro
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
+    TestCertificateComponent,
+    PreventDoubleClickDirective,
     BaseDialogComponent,
     DigitGroupSeparatorPipe
   ],
@@ -47,8 +52,10 @@ import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-gro
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
+    TestCertificateComponent,
     BaseDialogComponent,
     DigitGroupSeparatorPipe
-  ]
+  ],
+  providers: [DocumentRetrievalService]
 })
 export class SharedModule {}

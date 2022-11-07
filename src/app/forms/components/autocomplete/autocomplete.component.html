@@ -1,4 +1,4 @@
-<div class="autocomplete__wrapper">
+<div [class]="style">
   <label for="{{ name }}-autocomplete" class="govuk-label govuk-label--m">
     {{ label }}
 
@@ -6,9 +6,15 @@
 
     <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
-    <select [id]="name">
-      <option value=""></option>
-      <option *ngFor="let option of options" [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
-    </select>
+    <div class="internal-wrapper">
+      <div *ngIf="prefix" class="govuk-input__suffix prefix" aria-hidden="true">
+        <ng-container [ngTemplateOutlet]="prefix.templateRef"></ng-container>
+      </div>
+
+      <select [id]="name">
+        <option value=""></option>
+        <option *ngFor="let option of options" [value]="option.value" [selected]="option.value === control?.value">{{ option.label }}</option>
+      </select>
+    </div>
   </label>
 </div>

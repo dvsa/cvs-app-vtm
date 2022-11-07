@@ -9,7 +9,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class ButtonComponent {
   @Input() id?: string;
   @Input() disabled = false;
-  @Input() type: '' | 'secondary' | 'warning' | 'link' | 'underline' = '';
+  @Input() type: 'link' | 'button' = 'button';
+  @Input() design: '' | 'secondary' | 'warning' | 'link' = '';
+  @Input() routerLink = [''];
 
   @Output() clicked = new EventEmitter();
 }
