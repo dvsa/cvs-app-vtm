@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const VehicleSectionDefaultTrl: FormNode = {
@@ -13,7 +13,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'VIN/chassis number',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL
     },
     {
@@ -21,7 +20,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'Trailer ID',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL
     },
     {
@@ -39,8 +37,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.XXS
     },
     {
       name: 'preparerCombination',
@@ -57,7 +55,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true
@@ -66,7 +63,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true
