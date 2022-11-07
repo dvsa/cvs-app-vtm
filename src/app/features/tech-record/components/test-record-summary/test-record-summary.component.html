@@ -28,6 +28,8 @@
   </table>
   <app-pagination tableName="test-history" [numberOfItems]="numberOfRecords" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
 </ng-container>
-<div *ngIf="!isArchived" class="govuk-button-group">
-  <a class="govuk-button" [routerLink]="'test-records/create-test/type'">Create a test for this vehicle</a>
-</div>
+<ng-container *appRoleRequired="roles.TestResultCreateContingency">
+  <div *ngIf="!isArchived" class="govuk-button-group">
+    <a class="govuk-button" [routerLink]="'test-records/create-test/type'">Create a test for this vehicle</a>
+  </div>
+</ng-container>
