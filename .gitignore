@@ -16,6 +16,9 @@ documentation.json
 npm-debug.log
 yarn-error.log
 
+# Storybook
+/storybook-static
+
 # IDEs and editors
 .idea/
 .project
