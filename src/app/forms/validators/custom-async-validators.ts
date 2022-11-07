@@ -134,6 +134,8 @@ export class CustomAsyncValidators {
           const conditionsPassed = CustomAsyncValidators.checkConditions(testResult, conditions);
 
           siblingControl.meta.hide = conditionsPassed && (Array.isArray(value) ? value.includes(control.value) : control.value === value);
+
+          return null;
         })
       );
   }
