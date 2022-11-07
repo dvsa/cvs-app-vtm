@@ -66,14 +66,14 @@ const routes: Routes = [
   },
   {
     path: 'test-records/create-test',
-    data: { roles: Roles.TestResultAmend },
+    data: { roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },
     loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
   },
   {
     path: 'provisional/test-records/create-test',
-    data: { roles: Roles.TestResultAmend },
+    data: { roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver },
     loadChildren: () => import('../test-records/create/create-test-records.module').then(m => m.CreateTestRecordsModule)
