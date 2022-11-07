@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
 import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
@@ -36,7 +36,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     this.referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
   }
 
-  ngOnChanges(simpleChanges: SimpleChanges) {
+  ngOnChanges(simpleChanges: SimpleChanges): void {
     const fitmentUpdated = this.checkFitmentCodeHasChanged(simpleChanges);
 
     if (!fitmentUpdated) {
@@ -48,7 +48,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription.unsubscribe();
   }
 
-  get template() {
+  get template(): FormNode {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
         return tyresTemplatePsv;
@@ -61,10 +61,6 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
 
   get isPsv(): boolean {
     return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
-  }
-
-  get isHgvOrTrl(): boolean {
-    return this.vehicleTechRecord.vehicleType === VehicleTypes.HGV || this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
   }
 
   get types(): typeof FormNodeEditTypes {
@@ -114,7 +110,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return false;
   }
 
-  getTyresRefData(tyre: Tyres, axleNumber: number) {
+  getTyresRefData(tyre: Tyres, axleNumber: number): void {
     this.isError = false;
     this.referenceDataService
       .getByKey$(ReferenceDataResourceType.Tyres, String(tyre.tyreCode))
