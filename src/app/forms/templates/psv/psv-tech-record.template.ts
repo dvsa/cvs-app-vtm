@@ -237,7 +237,18 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
       {
         name: 'departmentalVehicleMarker',
         label: 'Departmental vehicle marker',
-        value: '',
+        value: undefined,
+        type: FormNodeTypes.CONTROL,
+        editType: FormNodeEditTypes.RADIO,
+        options: [
+          { value: true, label: 'Yes' },
+          { value: false, label: 'No' }
+        ]
+      },
+      {
+        name: 'alterationMarker',
+        label: 'Alteration marker',
+        value: undefined,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.RADIO,
         options: [

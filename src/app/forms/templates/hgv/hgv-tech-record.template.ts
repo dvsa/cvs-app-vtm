@@ -187,7 +187,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
-      value: '',
+      value: undefined,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -198,7 +198,7 @@ export const HgvTechRecord: FormNode = {
     {
       name: 'alterationMarker',
       label: 'Alteration marker',
-      value: '',
+      value: undefined,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
