@@ -49,6 +49,7 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         name: 'noOfAxles',
         label: 'Number of axles',
         value: '',
+        disabled: true,
         width: FormNodeWidth.XS,
         type: FormNodeTypes.CONTROL,
       },
@@ -69,27 +70,6 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
           }
         ],
         type: FormNodeTypes.GROUP,
-      },
-      {
-        name: 'axles',
-        value: '',
-        type: FormNodeTypes.ARRAY,
-        children: [
-          {
-            name: '0',
-            value: '',
-            type: FormNodeTypes.GROUP,
-            children: [
-              {
-                name: 'parkingBrakeMrk',
-                value: '',
-                label: 'Axle fitted with parking brake',
-                width: FormNodeWidth.S,
-                type: FormNodeTypes.CONTROL
-              }
-            ]
-          }
-        ]
       },
       {
         name: 'speedLimiterMrk',
