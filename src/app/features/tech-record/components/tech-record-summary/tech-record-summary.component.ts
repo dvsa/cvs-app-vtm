@@ -120,7 +120,7 @@ export class TechRecordSummaryComponent implements OnInit {
   toggleReasonForCreation(): void {
     if (this.isEditing) {
       this.sectionTemplates.unshift(reasonForCreationSection);
-    } else if (this.sectionTemplates[0] && this.sectionTemplates[0].name === 'reasonForCreationSection') {
+    } else if (this.sectionTemplates[0]?.name === 'reasonForCreationSection') {
       this.sectionTemplates.shift();
     }
   }
