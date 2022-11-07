@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const VehicleSectionDefaultPsvHgv: FormNode = {
@@ -40,7 +40,7 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-
+      width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL
     },
     {
@@ -61,7 +61,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       validators: [{ name: ValidatorNames.Numeric }, { name: ValidatorNames.Required }, { name: ValidatorNames.Max, args: 9999999 }],
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      width: FormNodeWidth.L
     },
     {
       name: 'odometerReadingUnits',
