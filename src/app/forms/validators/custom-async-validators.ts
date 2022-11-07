@@ -145,13 +145,7 @@ export class CustomAsyncValidators {
       return CustomAsyncValidators.checkCondition(testResult, conditions);
     }
 
-    for (const condition of conditions) {
-      if(!CustomAsyncValidators.checkCondition(testResult, condition)) {
-        return false;
-      }
-    }
-    
-    return true;
+    return conditions.every(condition => CustomAsyncValidators.checkCondition(testResult,condition))
   }
 
   static checkCondition(testResult: TestResultModel, condition: Condition ){
