@@ -148,7 +148,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'departmentalVehicleMarker',
       label: 'Departmental vehicle marker',
-      value: '',
+      value: undefined,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
@@ -168,7 +168,7 @@ export const TrlTechRecordTemplate: FormNode = {
     {
       name: 'alterationMarker',
       label: 'Alteration marker',
-      value: '',
+      value: undefined,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.RADIO,
       options: [
