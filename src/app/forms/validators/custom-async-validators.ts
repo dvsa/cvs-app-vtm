@@ -153,22 +153,14 @@ export class CustomAsyncValidators {
   }
 
   static checkCondition(testResult: TestResultModel, condition: Condition ){
-
     const {field, operator, value} = condition
 
-    let fieldValue: any;
+    const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
+      ? (testResult?.testTypes[0] as any)[field]
+      : (testResult as any)[field];
 
-    if(testResult?.testTypes[0].hasOwnProperty(field)) {
-      fieldValue = (testResult?.testTypes[0] as any)[field];
-    }else if(testResult?.hasOwnProperty(field)) {
-      fieldValue = (testResult as any)[field];
-    }
+    const isTrue = Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value;
 
-    if(operator === operatorEnum.Equals){
-        return Array.isArray(value) ? value.includes(fieldValue) : fieldValue === value
-      }else if(operator === operatorEnum.NotEquals){
-        return Array.isArray(value) ? !value.includes(fieldValue) : fieldValue !== value
-      }
-      return false;
+    return operator === operatorEnum.Equals ? isTrue : !isTrue;
     }
 }
