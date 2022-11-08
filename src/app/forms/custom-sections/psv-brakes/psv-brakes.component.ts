@@ -30,11 +30,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private dfs: DynamicFormService,
-    private optionsService: MultiOptionsService,
-    private referenceDataStore: Store<ReferenceDataState>
-  ) {}
+  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataStore: Store<ReferenceDataState>) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(PsvBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
@@ -43,23 +39,25 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(
         debounceTime(400),
         takeUntil(this.destroy$),
-        mergeMap((event: any) => event?.brakes?.brakeCode ? this.referenceDataStore.select(selectBrakeByCode(event.brakes.brakeCode)) : of()),
+        mergeMap((event: any) =>
+          event?.brakes?.brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.brakes.brakeCodeOriginal)) : of()
+        ),
         withLatestFrom(this.form.cleanValueChanges)
       )
-      .subscribe(([selectedBrake, event]: ([Brake | undefined, any])) => {
+      .subscribe(([selectedBrake, event]: [Brake | undefined, any]) => {
         // Set the brake details automatically based selection
         const brakes = event?.brakes as Brakes;
 
-        if (selectedBrake && brakes?.brakeCode) {
+        if (selectedBrake && brakes?.brakeCodeOriginal) {
           event.brakes['dataTrBrakeOne'] = selectedBrake.service;
           event.brakes['dataTrBrakeTwo'] = selectedBrake.secondary;
           event.brakes['dataTrBrakeThree'] = selectedBrake.parking;
         }
 
-        this.formChange.emit(event)
+        this.formChange.emit(event);
       });
 
-      this.optionsService.loadOptions(ReferenceDataResourceType.Brake);
+    this.optionsService.loadOptions(ReferenceDataResourceType.Brake);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -80,7 +78,10 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get booleanOptions(): MultiOptions {
-    return [{ value: true, label: 'Yes' }, { value: false, label: 'No' }];
+    return [
+      { value: true, label: 'Yes' },
+      { value: false, label: 'No' }
+    ];
   }
 
   get retarderOptions(): MultiOptions {
@@ -102,7 +103,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
   get brakeCodePrefix(): string {
     const prefix = `${Math.round(this.vehicleTechRecord!.grossLadenWeight! / 100)}`;
 
-    return prefix.length <= 2 ? ('0' + prefix) : prefix;
+    return prefix.length <= 2 ? '0' + prefix : prefix;
   }
 
   round(n: number): number {

@@ -1,13 +1,18 @@
 <app-switchable-input
+  *ngIf="isEditing; else view"
   [form]="brakesForm"
   [type]="editTypes.AUTOCOMPLETE"
-  name="brakeCode"
+  name="brakeCodeOriginal"
   label="Brake code"
   [isEditing]="isEditing"
   [width]="widths.L"
   [prefix]="brakeCodePrefix"
   [options]="(brakeCodeOptions$ | async) || []"
 ></app-switchable-input>
+
+<ng-template #view [formGroup]="brakesForm">
+  <app-read-only formControlName="brakeCode" label="Brake code"></app-read-only>
+</ng-template>
 
 <app-switchable-input
   [form]="brakesForm"

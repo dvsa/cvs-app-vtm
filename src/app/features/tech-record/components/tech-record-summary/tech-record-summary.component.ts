@@ -134,14 +134,14 @@ export class TechRecordSummaryComponent implements OnInit {
     if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
       this.removeAxle(event);
     } else {
-      this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event)
+      this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
     }
 
     if (event.brakes?.dtpNumber && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
       this.setBodyFields();
     }
 
-    if (event.grossKerbWeight || event.grossLadenWeight) {
+    if (this.vehicleTechRecord.vehicleType === VehicleTypes.PSV && (event.grossKerbWeight || event.grossLadenWeight || event.brakes)) {
       this.setBrakesForces();
     }
 
@@ -187,18 +187,25 @@ export class TechRecordSummaryComponent implements OnInit {
     });
   }
 
+  get brakeCodePrefix(): string {
+    const prefix = `${Math.round(this.vehicleTechRecordCalculated!.grossLadenWeight! / 100)}`;
+
+    return prefix.length <= 2 ? '0' + prefix : prefix;
+  }
+
   setBrakesForces(): void {
     this.vehicleTechRecordCalculated.brakes = {
       ...this.vehicleTechRecordCalculated.brakes,
+      brakeCode: this.brakeCodePrefix + this.vehicleTechRecordCalculated.brakes.brakeCodeOriginal,
       brakeForceWheelsNotLocked: {
-        serviceBrakeForceA:   Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 16) / 100),
+        serviceBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 16) / 100),
         secondaryBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100),
-        parkingBrakeForceA:   Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 45) / 100)
+        parkingBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 45) / 100)
       },
       brakeForceWheelsUpToHalfLocked: {
-        serviceBrakeForceB:   Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 16) / 100),
+        serviceBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 16) / 100),
         secondaryBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 25) / 100),
-        parkingBrakeForceB:   Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 50) / 100)
+        parkingBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 50) / 100)
       }
     };
   }
