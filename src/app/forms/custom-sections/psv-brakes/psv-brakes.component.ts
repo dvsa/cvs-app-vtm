@@ -40,7 +40,7 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
         debounceTime(400),
         takeUntil(this.destroy$),
         mergeMap((event: any) =>
-          event?.brakes?.brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.brakes.brakeCodeOriginal)) : of()
+          event?.brakes?.brakeCodeOriginal ? this.referenceDataStore.select(selectBrakeByCode(event.brakes.brakeCodeOriginal)) : of(undefined)
         ),
         withLatestFrom(this.form.cleanValueChanges)
       )
