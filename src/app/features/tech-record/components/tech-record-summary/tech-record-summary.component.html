@@ -1,6 +1,6 @@
 <section>
-  <app-accordion-control>
-    <app-accordion *ngFor="let section of sectionTemplates" [ngSwitch]="section.name" [id]="section.name" [title]="section.label">
+  <app-accordion-control layout="grid">
+    <app-accordion class="accordion" *ngFor="let section of sectionTemplates" [ngSwitch]="section.name" [id]="section.name" [title]="section.label">
       <app-body
         *ngSwitchCase="'bodySection'"
         [vehicleTechRecord]="vehicleTechRecordCalculated"
@@ -51,5 +51,23 @@
         (formChange)="handleFormState($event)"
       ></app-dynamic-form-group>
     </app-accordion>
+  </app-accordion-control>
+</section>
+
+<hr />
+<br />
+
+<section [style]="{ 'margin-top': '12rem' }">
+  <app-accordion-control layout="flex">
+    <div class="left">
+      <ng-container *ngFor="let n of ['1', '2', '3', '4']; let isOdd = odd">
+        <app-accordion *ngIf="isOdd" [id]="n" [title]="n">{{ n }}</app-accordion>
+      </ng-container>
+    </div>
+    <div class="right">
+      <ng-container *ngFor="let n of ['1', '2', '3', '4']; let isEven = even">
+        <app-accordion *ngIf="isEven" [id]="n" [title]="n">{{ n }}</app-accordion>
+      </ng-container>
+    </div>
   </app-accordion-control>
 </section>

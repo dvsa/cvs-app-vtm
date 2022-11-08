@@ -4,4 +4,6 @@
     <span class="govuk-accordion__show-all-text">{{ isExpanded ? 'Hide' : 'Show' }} all sections</span>
   </button>
 </div>
-<ng-content></ng-content>
+<div [ngClass]="layout || ''">
+  <ng-content></ng-content>
+</div>

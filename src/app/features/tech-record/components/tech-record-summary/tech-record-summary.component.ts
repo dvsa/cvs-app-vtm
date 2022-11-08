@@ -49,7 +49,8 @@ import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 @Component({
   selector: 'app-tech-record-summary',
   templateUrl: './tech-record-summary.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./tech-record-summary.component.scss']
 })
 export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
