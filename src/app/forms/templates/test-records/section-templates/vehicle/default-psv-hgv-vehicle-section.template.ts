@@ -72,7 +72,6 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
         { value: 'kilometres', label: 'Kilometres' },
         { value: 'miles', label: 'Miles' }
       ],
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO
@@ -92,7 +91,6 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true
@@ -101,7 +99,6 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true

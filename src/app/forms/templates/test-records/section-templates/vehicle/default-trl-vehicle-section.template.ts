@@ -57,7 +57,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'preparerName',
       label: 'Preparer Name',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true
@@ -66,7 +65,6 @@ export const VehicleSectionDefaultTrl: FormNode = {
       name: 'preparerId',
       label: 'Preparer ID',
       value: '',
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       disabled: true

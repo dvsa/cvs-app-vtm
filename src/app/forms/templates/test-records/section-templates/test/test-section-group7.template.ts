@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup7: FormNode = {
@@ -13,7 +13,6 @@ export const TestSectionGroup7: FormNode = {
       label: 'Created',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -23,7 +22,6 @@ export const TestSectionGroup7: FormNode = {
       label: 'Test Date',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -42,8 +40,8 @@ export const TestSectionGroup7: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
             },
             {
               name: 'testResult',
@@ -69,7 +67,6 @@ export const TestSectionGroup7: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -95,7 +92,6 @@ export const TestSectionGroup7: FormNode = {
               label: 'Test Number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
