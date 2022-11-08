@@ -1,9 +1,9 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { approvalType } from '@models/vehicle-tech-record.model';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 
-export const HgvAndTrlTypeApprovalTemplate: FormNode = {
+export const PsvTypeApprovalTemplate: FormNode = {
   name: 'approvalSection',
   label: 'Type approval',
   type: FormNodeTypes.GROUP,
@@ -27,8 +27,30 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       name: 'ntaNumber',
       label: 'National type number',
       type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.XXL,
+      width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 40 }]
+    },
+    {
+      name: 'coifSerialNumber',
+      label: 'COIF Serial number',
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.M,
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }]
+    },
+    {
+      name: 'coifCertifierName',
+      label: 'COIF Certifier name',
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.XL,
+      validators: [{ name: ValidatorNames.MaxLength, args: 20 }]
+    },
+    {
+      name: 'coifDate',
+      label: 'COIF Certifier date',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.DATE,
+      editType: FormNodeEditTypes.DATE,
+      isoDate: false
     },
     {
       name: 'variantNumber',
@@ -41,7 +63,7 @@ export const HgvAndTrlTypeApprovalTemplate: FormNode = {
       name: 'variantVersionNumber',
       label: 'Variant version number',
       type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.XXL,
+      width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 35 }]
     }
   ]

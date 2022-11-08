@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
 
-export const tyresTemplatePsv: FormNode = {
+export const PsvTyresTemplate: FormNode = {
   name: 'tyreSection',
   type: FormNodeTypes.GROUP,
   label: 'Tyres',
