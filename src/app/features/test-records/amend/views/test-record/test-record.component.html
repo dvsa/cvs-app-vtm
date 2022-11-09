@@ -13,7 +13,7 @@
     <ng-container *appRoleRequired="Roles.TestResultAmend">
       <app-button-group *ngIf="isTestTypeGroupEditable$ | async">
         <app-button id="save-test-result" (clicked)="handleSave()">Review and submit</app-button>
-        <app-button id="cancel" design="link" (click)="handleCancel()">Cancel</app-button>
+        <app-button id="cancel" design="link" (clicked)="handleCancel()">Cancel</app-button>
       </app-button-group>
     </ng-container>
   </ng-container>

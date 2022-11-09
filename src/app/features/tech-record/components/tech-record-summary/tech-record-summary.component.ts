@@ -7,8 +7,6 @@ import { FormNode, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
-import { PsvBrakeSectionWheelsHalfLocked } from '@forms/templates/psv/psv-brake-wheels-half-locked.template';
-import { PsvBrakeSectionWheelsNotLocked } from '@forms/templates/psv/psv-brake-wheels-not-locked.template';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
@@ -100,7 +98,7 @@ export class TechRecordSummaryComponent implements OnInit {
     return this.referenceDataStore.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.PsvMake)) as Observable<PsvMake[]>;
   }
 
-  get psvFromDtp$() {
+  get psvFromDtp$(): Observable<PsvMake | undefined> {
     return this.referenceDataStore.select(
       selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, this.vehicleTechRecordCalculated.brakes.dtpNumber as string)
     ) as Observable<PsvMake | undefined>;
@@ -120,7 +118,7 @@ export class TechRecordSummaryComponent implements OnInit {
   toggleReasonForCreation(): void {
     if (this.isEditing) {
       this.sectionTemplates.unshift(reasonForCreationSection);
-    } else {
+    } else if (this.sectionTemplates[0]?.name === 'reasonForCreationSection') {
       this.sectionTemplates.shift();
     }
   }
@@ -128,6 +126,41 @@ export class TechRecordSummaryComponent implements OnInit {
   calculateVehicleModel(): void {
     this.vehicleTechRecordCalculated = this.isEditing ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
+  }
+
+  handleFormState(event: any): void {
+    this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
+
+    if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
+      this.removeAxle(event);
+    } else {
+      this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
+    }
+
+    if (event.brakes?.dtpNumber && (event.brakes.dtpNumber.length === 4 || event.brakes.dtpNumber.length === 6)) {
+      this.setBodyFields();
+    }
+
+    if (this.vehicleTechRecord.vehicleType === VehicleTypes.PSV && (event.grossKerbWeight || event.grossLadenWeight || event.brakes)) {
+      this.setBrakesForces();
+    }
+
+    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
+    this.formChange.emit();
+  }
+
+  removeAxle(axleEvent: any): void {
+    const axleToRemove = this.findAxleToRemove(axleEvent.axles);
+
+    this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => {
+      if (ax.axleNumber !== axleToRemove) {
+        if (ax.axleNumber! > axleToRemove) {
+          ax.axleNumber! -= 1;
+        }
+        return true;
+      }
+      return false;
+    });
   }
 
   findAxleToRemove(axles: Axle[]): number {
@@ -143,55 +176,38 @@ export class TechRecordSummaryComponent implements OnInit {
     return axles.length + 1;
   }
 
-  removeAxle(axleEvent: any): void {
-    this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
-
-    const axleToRemove = this.findAxleToRemove(axleEvent.axles);
-
-    this.vehicleTechRecordCalculated.axles = this.vehicleTechRecordCalculated.axles.filter(ax => {
-      if (ax.axleNumber !== axleToRemove) {
-        if (ax.axleNumber! > axleToRemove) {
-          ax.axleNumber! -= 1;
-        }
-        return true;
-      }
-      return false;
-    });
-  }
-
-  setBodyFields() {
+  setBodyFields(): void {
     this.psvFromDtp$.subscribe(payload => {
-      this.vehicleTechRecordCalculated.chassisMake = payload?.psvChassisMake;
-      this.vehicleTechRecordCalculated.chassisModel = payload?.psvChassisModel;
-      this.vehicleTechRecordCalculated.bodyMake = payload?.psvBodyMake;
-
       const code = payload?.psvBodyType.toLowerCase() as BodyTypeCode;
 
-      this.vehicleTechRecordCalculated.bodyType = {
-        description: bodyTypeCodeMap.get(code),
-        code: code
-      };
+      this.vehicleTechRecordCalculated.bodyType = { code, description: bodyTypeCodeMap.get(code) };
+      this.vehicleTechRecordCalculated.bodyMake = payload?.psvBodyMake;
+      this.vehicleTechRecordCalculated.chassisMake = payload?.psvChassisMake;
+      this.vehicleTechRecordCalculated.chassisModel = payload?.psvChassisModel;
     });
   }
 
-  handleFormState(event: any): void {
-    const removeAxle = event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length;
+  get brakeCodePrefix(): string {
+    const prefix = `${Math.round(this.vehicleTechRecordCalculated!.grossLadenWeight! / 100)}`;
 
-    if (removeAxle) {
-      this.removeAxle(event);
-    } else {
-      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
-    }
+    return prefix.length <= 2 ? '0' + prefix : prefix;
+  }
 
-    if (event.brakes && (event.brakes.dtpNumber?.length === 4 || event.brakes.dtpNumber?.length === 6)) {
-      this.setBodyFields();
-    } else if (!removeAxle) {
-      this.vehicleTechRecordCalculated = merge(cloneDeep(this.vehicleTechRecordCalculated), event);
-    }
-
-    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length;
-    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
-    this.formChange.emit();
+  setBrakesForces(): void {
+    this.vehicleTechRecordCalculated.brakes = {
+      ...this.vehicleTechRecordCalculated.brakes,
+      brakeCode: this.brakeCodePrefix + this.vehicleTechRecordCalculated.brakes.brakeCodeOriginal,
+      brakeForceWheelsNotLocked: {
+        serviceBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 16) / 100),
+        secondaryBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100),
+        parkingBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 45) / 100)
+      },
+      brakeForceWheelsUpToHalfLocked: {
+        serviceBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 16) / 100),
+        secondaryBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 25) / 100),
+        parkingBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 50) / 100)
+      }
+    };
   }
 
   // The 3 methods below initialize the array of sections that the *ngFor in the component's template will iterate over.
@@ -205,14 +221,12 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  3 */ getPsvTechRecord(this.dtpNumbersFromRefData),
       /*  4 */ getTypeApprovalSection(VehicleTypes.PSV),
       /*  5 */ PsvBrakesTemplate,
-      /*  6 */ PsvBrakeSectionWheelsNotLocked,
-      /*  7 */ PsvBrakeSectionWheelsHalfLocked,
-      /*  8 */ PsvDdaTemplate,
-      /*  9 */ DocumentsTemplate,
-      /* 10 */ PsvBodyTemplate,
-      /* 11 */ PsvWeight,
-      /* 12 */ tyresTemplatePsv,
-      /* 13 */ PsvDimensionsTemplate
+      /*  6 */ PsvDdaTemplate,
+      /*  7 */ DocumentsTemplate,
+      /*  8 */ PsvBodyTemplate,
+      /*  9 */ PsvWeight,
+      /* 10 */ tyresTemplatePsv,
+      /* 11 */ PsvDimensionsTemplate
     ];
   }
 

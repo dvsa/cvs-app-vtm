@@ -370,6 +370,7 @@ export interface Brakes {
   axleNumber?: string;
   axleBrakeProperties?: AxleBrakeProperties; //Check to here and including object
   brakeCode?: string;
+  brakeCodeOriginal?: string;
   dataTrBrakeOne?: string;
   dataTrBrakeTwo?: string;
   dataTrBrakeThree?: string;

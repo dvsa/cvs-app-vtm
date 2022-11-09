@@ -39,14 +39,11 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         width: FormNodeWidth.XS,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMBER,
-        validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
-      },
-      {
-        name: 'noOfAxles',
-        label: 'Number of axles',
-        value: '',
-        width: FormNodeWidth.XS,
-        type: FormNodeTypes.CONTROL
+        validators: [
+          { name: ValidatorNames.Max, args: 9999 },
+          { name: ValidatorNames.Min, args: 1000 },
+          { name: ValidatorNames.Required }
+        ]
       },
       {
         name: 'brakes',
@@ -61,31 +58,12 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
             type: FormNodeTypes.CONTROL,
             editType: FormNodeEditTypes.AUTOCOMPLETE,
             options: dtpNumbersFromRefData,
-            validators: [{ name: ValidatorNames.Required }]
+            validators: [
+              { name: ValidatorNames.Required }
+            ],
           }
         ],
-        type: FormNodeTypes.GROUP
-      },
-      {
-        name: 'axles',
-        value: '',
-        type: FormNodeTypes.ARRAY,
-        children: [
-          {
-            name: '0',
-            value: '',
-            type: FormNodeTypes.GROUP,
-            children: [
-              {
-                name: 'parkingBrakeMrk',
-                value: '',
-                label: 'Axle fitted with parking brake',
-                width: FormNodeWidth.S,
-                type: FormNodeTypes.CONTROL
-              }
-            ]
-          }
-        ]
+        type: FormNodeTypes.GROUP,
       },
       {
         name: 'speedLimiterMrk',
@@ -116,7 +94,6 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
       {
         name: 'euroStandard',
         label: 'Euro standard',
-        value: '',
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.RADIO,
         options: getOptionsFromEnum(EmissionStandard),
@@ -176,7 +153,9 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         width: FormNodeWidth.XXS,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMBER,
-        validators: [{ name: ValidatorNames.Max, args: 99 }]
+        validators: [
+          { name: ValidatorNames.Max, args: 99 },
+        ]
       },
       { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
       {
@@ -186,7 +165,10 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         width: FormNodeWidth.XS,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMBER,
-        validators: [{ name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Required }],
+        validators: [
+          { name: ValidatorNames.Max, args: 99},
+          { name: ValidatorNames.Required }
+        ],
         class: 'flex--half'
       },
       {
@@ -195,8 +177,11 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         value: '',
         width: FormNodeWidth.XS,
         type: FormNodeTypes.CONTROL,
-        editType: FormNodeEditTypes.TEXT,
-        validators: [{ name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Required }],
+        editType: FormNodeEditTypes.NUMBER,
+        validators: [
+          { name: ValidatorNames.Max, args: 999},
+          { name: ValidatorNames.Required }
+        ],
         class: 'flex--half'
       },
       {
@@ -205,8 +190,11 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         value: '',
         width: FormNodeWidth.XXS,
         type: FormNodeTypes.CONTROL,
-        editType: FormNodeEditTypes.TEXT,
-        validators: [{ name: ValidatorNames.MaxLength, args: 3 }, { name: ValidatorNames.Required }]
+        editType: FormNodeEditTypes.NUMBER,
+        validators: [
+          { name: ValidatorNames.Max, args: 999},
+          { name: ValidatorNames.Required }
+        ]
       },
       {
         name: 'numberOfSeatbelts',
@@ -215,9 +203,11 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         width: FormNodeWidth.XXS,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMERICSTRING,
-        validators: [{ name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Required }]
+        validators: [
+          { name: ValidatorNames.Max, args: 99 }, 
+          { name: ValidatorNames.Required }
+        ]
       },
-
       {
         name: 'seatbeltInstallationApprovalDate',
         label: 'Seatbelt installation approval date / type approved',

@@ -75,8 +75,8 @@ export const TEST_TYPES_GROUP9_10: string[] = [
 // tests for TRL - Paid/Part paid prohibition clearance(retest, full inspection, part inspection, without cert)
 export const TEST_TYPES_GROUP12_14: string[] = ['117', '108', '109', '110', '114', '71', '72', '73', '77', '80'];
 
-// 39 - LEC with annual test for PSV, 45 - LEC without annual test for HGV, 44 - LEC with annual test for HGV
-export const TEST_TYPES_GROUP15_16: string[] = ['39', '45', '44'];
+// 39 - LEC with linked test for PSV, 201 - LEC without linked test for PSV, 45 - LEC without linked test for HGV, 44 - LEC with linked test for HGV
+export const TEST_TYPES_GROUP15_16: string[] = ['39', '201', '45', '44'];
 
 // CVSB-10372 - the following constants are based on the grouping of the test-types for specialist tests in the excel "specialist test fields mapping"
 
