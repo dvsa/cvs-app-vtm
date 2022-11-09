@@ -1,3 +1,3 @@
-export * from './reference-data-api.service';
-import { ReferenceDataApiService } from './reference-data-api.service';
-export const APIS = [ReferenceDataApiService];
+export * from './referenceData.service';
+import { ReferenceDataService } from './referenceData.service';
+export const APIS = [ReferenceDataService];

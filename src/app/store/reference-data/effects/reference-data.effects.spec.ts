@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataItem } from '@api/reference-data';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -73,7 +74,7 @@ describe('ReferenceDataEffects', () => {
       });
     });
 
-    it.each(testCases)('should return fetchReferenceDataFailed action on API error', value => {
+    it.each(testCases)('should return fetchReferenceDataFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: null as any }) });
 
@@ -92,17 +93,17 @@ describe('ReferenceDataEffects', () => {
     it.each(testCases)('should return fetchReferenceDataByKeySuccess action on successful API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { resourceType, resourceKey, payload } = value;
-        const entity = { data: [payload.find(p => p.resourceKey === resourceKey)!] };
+        const entity: ReferenceDataItem = payload.find(p => p.resourceKey === resourceKey)!;
 
         // mock action to trigger effect
         actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey }) });
 
         // mock service call
-        jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: entity }));
+        jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--a|', { a: entity }));
 
         // expect effect to return success action
         expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
-          b: fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: entity.data[0] })
+          b: fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: entity as ReferenceDataModelBase })
         });
       });
     });
@@ -114,7 +115,7 @@ describe('ReferenceDataEffects', () => {
 
         const expectedError = new Error('Reference data resourceKey is required');
 
-        jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
+        jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
           b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required' })

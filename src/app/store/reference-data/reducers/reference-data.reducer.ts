@@ -57,7 +57,7 @@ export const initialReferenceDataState: ReferenceDataState = {
     resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState(),
-  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState()
 };
 
 export const referenceDataReducer = createReducer(
@@ -67,7 +67,7 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload } = action;
     return {
       ...state,
-      [resourceType]: resourceTypeAdapters[resourceType].setAll(payload, state[resourceType]),
+      [resourceType]: resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]),
       loading: false
     };
   }),

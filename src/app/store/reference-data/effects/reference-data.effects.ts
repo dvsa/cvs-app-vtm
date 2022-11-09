@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ReferenceDataApiResponse, ReferenceDataApiResponseWithPagination } from '@api/reference-data';
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -22,9 +23,17 @@ export class ReferenceDataEffects {
   fetchReferenceDataByType$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchReferenceData),
-      mergeMap(({ resourceType }) =>
-        this.referenceDataService.fetchReferenceData(resourceType).pipe(
-          map(data => fetchReferenceDataSuccess({ resourceType, payload: data.data })),
+      mergeMap(({ resourceType, paginationToken }) =>
+        this.referenceDataService.fetchReferenceData(resourceType, paginationToken).pipe(
+          switchMap(data => {
+            if (isPaginated(data)) {
+              return of(
+                fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[] }),
+                fetchReferenceData({ resourceType, paginationToken: data.paginationToken })
+              );
+            }
+            return of(fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[] }));
+          }),
           catchError(e => of(fetchReferenceDataFailed({ error: e.message })))
         )
       )
@@ -35,8 +44,8 @@ export class ReferenceDataEffects {
     this.actions$.pipe(
       ofType(fetchReferenceDataByKey),
       mergeMap(({ resourceType, resourceKey }) =>
-        this.referenceDataService.fetchReferenceData(resourceType, resourceKey).pipe(
-          map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data.data[0] })),
+        this.referenceDataService.fetchReferenceDataByKey(resourceType, resourceKey).pipe(
+          map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
           catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message })))
         )
       )
@@ -63,4 +72,8 @@ export class ReferenceDataEffects {
   );
 
   constructor(private actions$: Actions, private referenceDataService: ReferenceDataService, private store: Store<State>) {}
+}
+
+function isPaginated(referenceDataApiResponse: ReferenceDataApiResponse): referenceDataApiResponse is ReferenceDataApiResponseWithPagination {
+  return referenceDataApiResponse.hasOwnProperty('paginationToken');
 }

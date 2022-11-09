@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ReferenceDataApiResponse, ReferenceDataApiService } from '@api/reference-data';
+import { ReferenceDataApiResponse, ReferenceDataService as ReferenceDataApiService } from '@api/reference-data';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
@@ -8,7 +8,7 @@ import { initialReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from '@st
 import { testCases } from '@store/reference-data/reference-data.test-cases';
 import { ReferenceDataService } from './reference-data.service';
 
-describe('TechnicalRecordService', () => {
+describe('ReferenceDataService', () => {
   let service: ReferenceDataService;
   let controller: HttpTestingController;
   let store: MockStore;
@@ -59,11 +59,11 @@ describe('TechnicalRecordService', () => {
 
   describe('resourceKeys', () => {
     it.each(testCases)('should return one result for a given resourceType and resourceKey', value => {
-      const getOneFromResourceSpy = jest.spyOn(service, 'getOneFromResource');
+      const getOneFromResourceSpy = jest.spyOn(service, 'referenceResourceTypeResourceKeyGet');
       const { resourceType, resourceKey, payload } = value;
       const expectedResult: ReferenceDataApiResponse = { data: [payload.find(p => p.resourceKey === resourceKey)!] };
 
-      service.fetchReferenceData(resourceType, resourceKey).subscribe(response => {
+      service.fetchReferenceDataByKey(resourceType, resourceKey).subscribe(response => {
         expect(response).toEqual(expectedResult);
         expect(getOneFromResourceSpy).toHaveBeenCalled();
       });

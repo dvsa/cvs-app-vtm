@@ -4,11 +4,11 @@ import { createAction, props } from '@ngrx/store';
 
 export const fetchReferenceData = createAction(
   '[API/reference-data] Fetch all of ResourceType',
-  props<{ resourceType: ReferenceDataResourceType }>()
+  props<{ resourceType: ReferenceDataResourceType; paginationToken?: string }>()
 );
 export const fetchReferenceDataSuccess = createAction(
   '[API/reference-data] Fetch all of ResourceType Success',
-  props<{ resourceType: ReferenceDataResourceType; payload: Array<ReferenceDataModelBase | CountryOfRegistration> }>()
+  props<{ resourceType: ReferenceDataResourceType; payload: Array<ReferenceDataModelBase> }>()
 );
 export const fetchReferenceDataFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<GlobalError>());
 
@@ -21,7 +21,7 @@ export const fetchReferenceDataByKeySuccess = createAction(
   props<{
     resourceType: ReferenceDataResourceType;
     resourceKey: string | number;
-    payload: ReferenceDataModelBase | CountryOfRegistration;
+    payload: ReferenceDataModelBase;
   }>()
 );
 export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<GlobalError>());
