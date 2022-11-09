@@ -416,7 +416,7 @@ const currentTechRecord = {
   ntaNumber: 'nta789',
   coifSerialNumber: 'coifSerial123456',
   coifCertifierName: 'coifName',
-  coifDate: new Date(),
+  coifDate: '1233-12-31',
   variantNumber: 'variant123456',
   variantVersionNumber: 'variantversion123456',
   applicantDetails: {
