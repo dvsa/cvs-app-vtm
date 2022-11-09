@@ -138,7 +138,8 @@ export const SpecialistTestSectionGroup2: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
             },
             {
               name: 'testAnniversaryDate',
@@ -146,7 +147,12 @@ export const SpecialistTestSectionGroup2: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',

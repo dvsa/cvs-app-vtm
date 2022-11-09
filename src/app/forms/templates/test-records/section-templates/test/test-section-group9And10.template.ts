@@ -82,11 +82,10 @@ export const TestSectionGroup9And10: FormNode = {
               name: 'testExpiryDate',
               label: 'Expiry Date',
               value: '',
-              disabled: true,
-
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
             },
             {
               name: 'reasonForAbandoning',
@@ -120,12 +119,16 @@ export const TestSectionGroup9And10: FormNode = {
             },
             {
               name: 'testAnniversaryDate',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              disabled: true,
               label: 'Anniversary date',
+              value: '',
+              type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
+              ]
             },
             {
               name: 'testTypeStartTimestamp',
