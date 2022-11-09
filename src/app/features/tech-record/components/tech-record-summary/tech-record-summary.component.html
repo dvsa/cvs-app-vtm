@@ -1,73 +1,72 @@
 <section>
-  <app-accordion-control layout="grid">
-    <app-accordion class="accordion" *ngFor="let section of sectionTemplates" [ngSwitch]="section.name" [id]="section.name" [title]="section.label">
-      <app-body
-        *ngSwitchCase="'bodySection'"
-        [vehicleTechRecord]="vehicleTechRecordCalculated"
-        [isEditing]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-body>
-
-      <app-dimensions
-        *ngSwitchCase="'dimensionsSection'"
-        [vehicleTechRecord]="vehicleTechRecordCalculated"
-        [isEditing]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-dimensions>
-
-      <app-psv-brakes
-        *ngSwitchCase="'psvBrakesSection'"
-        [vehicleTechRecord]="vehicleTechRecordCalculated"
-        [isEditing]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-psv-brakes>
-
-      <app-trl-brakes
-        *ngSwitchCase="'trlBrakesSection'"
-        [vehicleTechRecord]="vehicleTechRecordCalculated"
-        [isEditing]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-trl-brakes>
-
-      <app-tyres
-        *ngSwitchCase="'tyreSection'"
-        [vehicleTechRecord]="vehicleTechRecordCalculated"
-        [isEditing]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-tyres>
-
-      <app-weights
-        *ngSwitchCase="'weightsSection'"
-        [vehicleTechRecord]="vehicleTechRecordCalculated"
-        [isEditing]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-weights>
-
-      <app-dynamic-form-group
-        *ngSwitchDefault
-        [data]="vehicleTechRecordCalculated"
-        [template]="section"
-        [edit]="isEditing"
-        (formChange)="handleFormState($event)"
-      ></app-dynamic-form-group>
-    </app-accordion>
-  </app-accordion-control>
-</section>
-
-<hr />
-<br />
-
-<section [style]="{ 'margin-top': '12rem' }">
-  <app-accordion-control layout="flex">
-    <div class="left">
-      <ng-container *ngFor="let n of ['1', '2', '3', '4']; let isOdd = odd">
-        <app-accordion *ngIf="isOdd" [id]="n" [title]="n">{{ n }}</app-accordion>
+  <app-accordion-control>
+    <div class="govuk-grid-column-one-half">
+      <ng-container *ngFor="let section of sectionTemplates; let i = index">
+        <app-accordion *ngIf="i < middle" [id]="section.name" [title]="section.label">
+          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+        </app-accordion>
       </ng-container>
     </div>
-    <div class="right">
-      <ng-container *ngFor="let n of ['1', '2', '3', '4']; let isEven = even">
-        <app-accordion *ngIf="isEven" [id]="n" [title]="n">{{ n }}</app-accordion>
+    <div class="govuk-grid-column-one-half">
+      <ng-container *ngFor="let section of sectionTemplates; let i = index">
+        <app-accordion *ngIf="i >= middle" [id]="section.name" [title]="section.label">
+          <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
+        </app-accordion>
       </ng-container>
     </div>
   </app-accordion-control>
 </section>
+
+<ng-template #accordion let-sectionName="sectionName" let-section="section">
+  <ng-container [ngSwitch]="sectionName">
+    <app-body
+      *ngSwitchCase="'bodySection'"
+      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-body>
+
+    <app-dimensions
+      *ngSwitchCase="'dimensionsSection'"
+      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-dimensions>
+
+    <app-psv-brakes
+      *ngSwitchCase="'psvBrakesSection'"
+      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-psv-brakes>
+
+    <app-trl-brakes
+      *ngSwitchCase="'trlBrakesSection'"
+      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-trl-brakes>
+
+    <app-tyres
+      *ngSwitchCase="'tyreSection'"
+      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-tyres>
+
+    <app-weights
+      *ngSwitchCase="'weightsSection'"
+      [vehicleTechRecord]="vehicleTechRecordCalculated"
+      [isEditing]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-weights>
+
+    <app-dynamic-form-group
+      *ngSwitchDefault
+      [data]="vehicleTechRecordCalculated"
+      [template]="section"
+      [edit]="isEditing"
+      (formChange)="handleFormState($event)"
+    ></app-dynamic-form-group>
+  </ng-container>
+</ng-template>

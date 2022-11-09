@@ -76,6 +76,7 @@ export class TechRecordSummaryComponent implements OnInit {
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   dtpNumbersFromRefData: FormNodeOption<string>[] = [];
+  middle!: number;
 
   constructor(
     private store: Store<TechnicalRecordServiceState>,
@@ -89,6 +90,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.calculateVehicleModel();
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
     this.psvMakes$.subscribe(data => data.map(i => this.dtpNumbersFromRefData.push({ value: i.dtpNumber, label: i.dtpNumber })));
+    this.middle = Math.floor(this.sectionTemplates.length / 2);
   }
 
   get isEditing(): boolean {
