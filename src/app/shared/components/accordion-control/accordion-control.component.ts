@@ -20,6 +20,7 @@ export class AccordionControlComponent {
 
   @Input() isExpanded = false;
   @Input() layout?: string;
+  @Input() class: string = '';
 
   constructor(private cdr: ChangeDetectorRef) {}
 

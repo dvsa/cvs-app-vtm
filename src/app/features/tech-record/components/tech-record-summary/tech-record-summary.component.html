@@ -1,15 +1,15 @@
-<section>
-  <app-accordion-control>
+<section class="govuk-grid-row">
+  <app-accordion-control [class]="'padding'">
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <app-accordion *ngIf="i < middle" [id]="section.name" [title]="section.label">
+        <app-accordion *ngIf="i < middleIndex" [id]="section.name" [title]="section.label">
           <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
         </app-accordion>
       </ng-container>
     </div>
     <div class="govuk-grid-column-one-half">
       <ng-container *ngFor="let section of sectionTemplates; let i = index">
-        <app-accordion *ngIf="i >= middle" [id]="section.name" [title]="section.label">
+        <app-accordion *ngIf="i >= middleIndex" [id]="section.name" [title]="section.label">
           <ng-template [ngTemplateOutlet]="accordion" [ngTemplateOutletContext]="{ sectionName: section.name, section: section }"></ng-template>
         </app-accordion>
       </ng-container>

@@ -2,7 +2,14 @@ section {
   max-height: 100vh;
 }
 
-.left,
-.right {
-  flex: 1 1 50%;
+@media screen and (max-width: 1870px) {
+  .govuk-grid-column-one-half {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1230px) {
+  .govuk-grid-column-one-half {
+    width: 100%;
+  }
 }
