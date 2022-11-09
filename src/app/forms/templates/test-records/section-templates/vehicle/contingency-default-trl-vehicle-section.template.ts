@@ -14,15 +14,17 @@ export const ContingencyVehicleSectionDefaultTrl: FormNode = {
       value: '',
       disabled: true,
       type: FormNodeTypes.CONTROL,
-      width: FormNodeWidth.L
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'trailerId',
       label: 'Trailer ID',
       value: '',
       disabled: true,
-      width: FormNodeWidth.L,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'countryOfRegistration',

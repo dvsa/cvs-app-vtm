@@ -13,8 +13,9 @@ export const VehicleSectionDefaultTrl: FormNode = {
       label: 'VIN/chassis number',
       value: '',
       disabled: true,
-      width: FormNodeWidth.L,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'trailerId',
@@ -22,7 +23,9 @@ export const VehicleSectionDefaultTrl: FormNode = {
       value: '',
       disabled: true,
       width: FormNodeWidth.L,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'countryOfRegistration',
@@ -59,7 +62,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      disabled: true
+      disabled: true,
+      width: FormNodeWidth.XL
     },
     {
       name: 'preparerId',
@@ -67,7 +71,8 @@ export const VehicleSectionDefaultTrl: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      disabled: true
+      disabled: true,
+      width: FormNodeWidth.L
     }
   ]
 };

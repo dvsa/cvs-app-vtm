@@ -93,7 +93,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      disabled: true
+      disabled: true,
+      width: FormNodeWidth.XL
     },
     {
       name: 'preparerId',
@@ -101,7 +102,8 @@ export const VehicleSectionDefaultPsvHgv: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      disabled: true
+      disabled: true,
+      width: FormNodeWidth.L
     }
   ]
 };

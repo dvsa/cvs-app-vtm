@@ -35,7 +35,7 @@ export const SeatbeltSection: FormNode = {
               editType: FormNodeEditTypes.NUMBER,
               value: null,
               validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }],
-              width: FormNodeWidth.XXS
+              width: FormNodeWidth.M
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',
