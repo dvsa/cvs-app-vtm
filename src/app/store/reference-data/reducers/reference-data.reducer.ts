@@ -11,14 +11,14 @@ import {
 } from '../actions/reference-data.actions';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
-const selectResourceKey = (a: ReferenceDataModelBase): string => {
+const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
   return a.resourceKey;
 };
 
 export type ReferenceDataState = Record<ReferenceDataResourceType, EntityState<ReferenceDataModelBase>> & { error: string; loading: boolean };
 
 function createAdapter() {
-  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
+  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
@@ -57,7 +57,7 @@ export const initialReferenceDataState: ReferenceDataState = {
     resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
   [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState(),
-  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState()
 };
 
 export const referenceDataReducer = createReducer(
@@ -67,7 +67,7 @@ export const referenceDataReducer = createReducer(
     const { resourceType, payload } = action;
     return {
       ...state,
-      [resourceType]: resourceTypeAdapters[resourceType].setAll(payload, state[resourceType]),
+      [resourceType]: resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]),
       loading: false
     };
   }),

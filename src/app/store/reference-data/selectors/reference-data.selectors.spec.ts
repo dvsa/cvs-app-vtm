@@ -10,7 +10,7 @@ describe('Reference Data Selectors', () => {
   describe('selectAllReferenceDataByResourceType', () => {
     it.each(testCases)('should return all of the reference data for given resource type', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map(v => v.resourceKey);
+      const ids = payload.map(v => v.resourceKey);
       const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
         (acc, v) => ({ ...acc, [v.resourceKey]: v }),
         {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
@@ -26,7 +26,7 @@ describe('Reference Data Selectors', () => {
   describe('selectReferenceDataByResourceKey', () => {
     it.each(testCases)('should return one specific reference data by type and key', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map(v => v.resourceKey);
+      const ids: string[] = payload.map(v => v.resourceKey as string);
       const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
         (acc, v) => ({ ...acc, [v.resourceKey]: v }),
         {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }

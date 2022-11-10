@@ -3,13 +3,12 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
-const resourceTypeSelector = (resourceType: ReferenceDataResourceType) =>
-  createSelector(referenceDataFeatureState, state => state[resourceType]);
+const resourceTypeSelector = (resourceType: ReferenceDataResourceType) => createSelector(referenceDataFeatureState, state => state[resourceType]);
 
 export const selectAllReferenceDataByResourceType = (resourceType: ReferenceDataResourceType) =>
   createSelector(resourceTypeSelector(resourceType), state => resourceTypeAdapters[resourceType].getSelectors().selectAll(state));
 
-export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string) =>
+export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string | number) =>
   createSelector(referenceDataFeatureState, state => state[resourceType].entities[resourceKey]);
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => state.loading);
