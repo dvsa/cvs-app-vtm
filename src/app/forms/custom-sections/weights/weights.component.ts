@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } 
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
-import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
@@ -41,7 +41,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   get template(): FormNode {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
-        return PsvWeight;
+        return PsvWeightsTemplate;
       case VehicleTypes.HGV:
         return HgvWeight;
       case VehicleTypes.TRL:

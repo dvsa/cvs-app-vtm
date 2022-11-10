@@ -11,14 +11,13 @@ import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
-import { getTypeApprovalSection } from '@forms/templates/general/approval-type.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
 import { PlatesTemplate } from '@forms/templates/general/plates.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
-import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { getPsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
 import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
 import { Store } from '@ngrx/store';
@@ -33,7 +32,7 @@ import { updateEditingTechRecord } from '@store/technical-records';
 import { TrlBrakesComponent } from '@forms/custom-sections/trl-brakes/trl-brakes.component';
 import { PsvBrakesComponent } from '@forms/custom-sections/psv-brakes/psv-brakes.component';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
-import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
+import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
@@ -45,6 +44,8 @@ import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferen
 import { Observable } from 'rxjs';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
+import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -219,13 +220,13 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ PsvNotes,
       /*  3 */ getPsvTechRecord(this.dtpNumbersFromRefData),
-      /*  4 */ getTypeApprovalSection(VehicleTypes.PSV),
+      /*  4 */ PsvTypeApprovalTemplate,
       /*  5 */ PsvBrakesTemplate,
       /*  6 */ PsvDdaTemplate,
       /*  7 */ DocumentsTemplate,
       /*  8 */ PsvBodyTemplate,
-      /*  9 */ PsvWeight,
-      /* 10 */ tyresTemplatePsv,
+      /*  9 */ PsvWeightsTemplate,
+      /* 10 */ PsvTyresTemplate,
       /* 11 */ PsvDimensionsTemplate
     ];
   }
@@ -235,7 +236,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ NotesTemplate,
       /*  3 */ HgvTechRecord,
-      /*  4 */ getTypeApprovalSection(VehicleTypes.HGV),
+      /*  4 */ HgvAndTrlTypeApprovalTemplate,
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
       /*  7 */ HgvAndTrlBodyTemplate,
@@ -251,7 +252,7 @@ export class TechRecordSummaryComponent implements OnInit {
       /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ NotesTemplate,
       /*  3 */ TrlTechRecordTemplate,
-      /*  4 */ getTypeApprovalSection(VehicleTypes.TRL),
+      /*  4 */ HgvAndTrlTypeApprovalTemplate,
       /*  5 */ ApplicantDetails,
       /*  6 */ DocumentsTemplate,
       /*  7 */ HgvAndTrlBodyTemplate,
