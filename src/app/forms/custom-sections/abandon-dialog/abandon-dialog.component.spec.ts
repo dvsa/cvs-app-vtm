@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { SPECIALIST_TEST_TYPE_IDS, TEST_TYPES_GROUP5_13 } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -18,7 +19,7 @@ describe('AbandonDialogComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AbandonDialogComponent],
-      imports: [DynamicFormsModule, SharedModule],
+      imports: [DynamicFormsModule, SharedModule, RouterTestingModule],
       providers: [provideMockStore({ initialState: initialAppState }), DynamicFormService]
     }).compileComponents();
   });
