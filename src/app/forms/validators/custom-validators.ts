@@ -184,9 +184,9 @@ export class CustomValidators {
       if (control?.parent) {
         const siblingControl = control.parent.get(sibling) as CustomFormControl;
         const siblingDate = new Date(siblingControl.value);
-        const maxDate = new Date(siblingDate.setMonth(siblingDate.getMonth() + months));
+        siblingDate.setMonth(siblingDate.getMonth() + months);
 
-        if (new Date(control.value) > maxDate) {
+        if (new Date(control.value) > siblingDate) {
           return { dateNotExceed: { sibling: siblingControl.meta.label, months: months } };
         }
       }
