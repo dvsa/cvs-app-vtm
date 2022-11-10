@@ -401,7 +401,7 @@ describe('dateNotExceed', () => {
   });
 
   describe('dateNotExceed tests', () => {
-    it('should return an error message if sibling date plus 10 months is ahead of foo', () => {
+    it('should return an error message if sibling date plus 10 months is not ahead of foo', () => {
       form.controls['foo'].patchValue(new Date('2020-12-01T00:00:00.000Z').toISOString());
       form.controls['sibling'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
 
@@ -409,7 +409,7 @@ describe('dateNotExceed', () => {
       expect(result).toEqual({ dateNotExceed: { sibling: 'sibling', months: 10 } });
     });
 
-    it('should return an error message if sibling date plus 14 months is ahead of foo', () => {
+    it('should return an error message if sibling date plus 14 months is not ahead of foo', () => {
       form.controls['foo'].patchValue(new Date('2021-04-01T00:00:00.000Z').toISOString());
       form.controls['sibling'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
 
@@ -417,7 +417,7 @@ describe('dateNotExceed', () => {
       expect(result).toEqual({ dateNotExceed: { sibling: 'sibling', months: 14 } });
     });
 
-    it('should return null if sibling date plus 10 months is not ahead of foo', () => {
+    it('should return null if sibling date plus 10 months is ahead of foo', () => {
       form.controls['foo'].patchValue(new Date('2020-09-01T00:00:00.000Z').toISOString());
       form.controls['sibling'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
 
@@ -425,7 +425,7 @@ describe('dateNotExceed', () => {
       expect(result).toBeNull();
     });
 
-    it('should return null if sibling date plus 14 months is not ahead of foo', () => {
+    it('should return null if sibling date plus 14 months is ahead of foo', () => {
       form.controls['foo'].patchValue(new Date('2021-02-01T00:00:00.000Z').toISOString());
       form.controls['sibling'].patchValue(new Date('2020-01-01T00:00:00.000Z').toISOString());
 
