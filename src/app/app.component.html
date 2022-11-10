@@ -1,7 +1,7 @@
 <app-header [username]="userService.name$ | async" (logOutEvent)="userService.logOut()"></app-header>
 
-<div [ngClass]="{ 'no-scroll': loading | async }">
-  <main class="govuk-main-wrapper govuk-main-wrapper--l gutters">
+<div class="{{ (isStandardLayout | async) ? 'govuk-width-container' : 'gutters' }}" [ngClass]="{ 'no-scroll': loading | async }">
+  <main class="govuk-main-wrapper {{ (isStandardLayout | async) ? '' : 'full-width' }}">
     <app-breadcrumbs></app-breadcrumbs>
     <app-global-error></app-global-error>
     <app-spinner [loading]="loading | async"></app-spinner>

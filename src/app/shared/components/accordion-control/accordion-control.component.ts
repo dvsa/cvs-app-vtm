@@ -13,7 +13,6 @@ export class AccordionControlComponent {
     return this._accordions;
   }
   @ContentChildren(AccordionComponent, { descendants: true }) set accordions(value: QueryList<AccordionComponent> | undefined) {
-    console.log(value ? value.length : 'no accordions found');
     this._accordions = value;
     this.toggleAccordions();
   }
