@@ -74,6 +74,28 @@ describe('ReferenceDataEffects', () => {
       });
     });
 
+    it.each(testCases)(
+      'should return fetchReferenceDataSuccess and fetchReferenceData actions on successfull API call with pagination token',
+      value => {
+        testScheduler.run(({ hot, cold, expectObservable }) => {
+          const { resourceType, payload } = value;
+          const apiResponse = { data: [...payload], paginationToken: 'token' };
+
+          // mock action to trigger effect
+          actions$ = hot('-a--', { a: fetchReferenceData({ resourceType }) });
+
+          // mock service call
+          jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: apiResponse }));
+
+          // expect effect to return success action
+          expectObservable(effects.fetchReferenceDataByType$).toBe('---(bc)', {
+            b: fetchReferenceDataSuccess({ resourceType, payload }),
+            c: fetchReferenceData({ resourceType, paginationToken: 'token' })
+          });
+        });
+      }
+    );
+
     it.each(testCases)('should return fetchReferenceDataFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: null as any }) });
