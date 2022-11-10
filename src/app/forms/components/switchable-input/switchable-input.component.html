@@ -7,7 +7,9 @@
     [width]="width"
     [options$]="options$"
     [noBottomMargin]="true"
-  ></app-autocomplete>
+  >
+    <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
+  </app-autocomplete>
 
   <app-checkbox-group
     *ngSwitchCase="types.CHECKBOX"
@@ -36,6 +38,7 @@
   </ng-template>
 
   <app-number-input *ngSwitchCase="types.NUMBER" [formControlName]="name" [name]="name" [label]="label" [width]="width" [noBottomMargin]="true">
+    <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
     <ng-template *ngIf="suffix" appSuffix>{{ suffix }}</ng-template>
   </app-number-input>
 
@@ -77,10 +80,11 @@
     [numeric]="type === types.NUMERICSTRING"
     [noBottomMargin]="true"
   >
+    <ng-template *ngIf="prefix" appPrefix>{{ prefix }}</ng-template>
     <ng-template *ngIf="suffix" appSuffix>{{ suffix }}</ng-template>
   </app-text-input>
 </ng-container>
 
 <ng-template #view [formGroup]="form">
-  <app-read-only [formControlName]="name" [label]="label"></app-read-only>
+  <app-read-only [formControlName]="name" [label]="label" [readOnlySuffix]="suffix"></app-read-only>
 </ng-template>

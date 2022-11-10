@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 import { State } from '@store/.';
+import { Condition } from '@forms/models/condition.model';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 
@@ -57,7 +58,9 @@ export class DynamicFormService {
     [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store),
     [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: any }) => CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
     [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: { testResult: any; sibling: string; value: any }) =>
-      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value)
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
+    [AsyncValidatorNames.HideIfEqualsWithCondition]: (args: { sibling: string; value: string; conditions: Condition | Condition[] }) =>
+      CustomAsyncValidators.hideIfEqualsWithCondition(this.store, args.sibling, args.value, args.conditions)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

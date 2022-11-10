@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup9And10: FormNode = {
   name: 'testSection',
@@ -67,8 +67,9 @@ export const TestSectionGroup9And10: FormNode = {
               label: 'Certificate number',
               value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testNumber',
@@ -100,7 +101,7 @@ export const TestSectionGroup9And10: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: SpecialRefData.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

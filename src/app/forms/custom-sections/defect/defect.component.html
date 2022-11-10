@@ -149,8 +149,8 @@
       <div class="govuk-grid-column-two-thirds">
         <app-button-group>
           <app-button id="confirm-defect" (clicked)="handleSubmit()">Confirm</app-button>
-          <app-button id="remove-defect" *ngIf="index || index === 0" type="warning" (clicked)="handleRemove()">Remove defect</app-button>
-          <app-button id="remove-nav-back" type="underline" (clicked)="navigateBack()">{{
+          <app-button id="remove-defect" *ngIf="index || index === 0" design="warning" (clicked)="handleRemove()">Remove defect</app-button>
+          <app-button id="remove-nav-back" design="link" (clicked)="navigateBack()">{{
             index || index === 0 ? 'Cancel changes' : 'Cancel'
           }}</app-button>
         </app-button-group>

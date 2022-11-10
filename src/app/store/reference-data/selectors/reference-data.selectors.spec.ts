@@ -1,11 +1,6 @@
-import {
-  referenceDataLoadingState,
-  selectAllReferenceDataByResourceType,
-  selectReasonsForAbandoning,
-  selectReferenceDataByResourceKey
-} from './reference-data.selectors';
+import * as referenceDataSelectors from './reference-data.selectors';
 import { ReferenceDataState, initialReferenceDataState } from '../reducers/reference-data.reducer';
-import { ReasonsForAbandoning, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { Dictionary } from '@ngrx/entity';
 import { testCases } from '../reference-data.test-cases';
@@ -22,7 +17,7 @@ describe('Reference Data Selectors', () => {
       );
       const state: ReferenceDataState = { ...initialReferenceDataState, [resourceType]: { ids, entities } };
 
-      const expectedState = selectAllReferenceDataByResourceType(resourceType).projector(state[resourceType]);
+      const expectedState = referenceDataSelectors.selectAllReferenceDataByResourceType(resourceType).projector(state[resourceType]);
       expect(expectedState).toHaveLength(mockCountriesOfRegistration.length);
       expect(expectedState).toEqual(payload);
     });
@@ -40,35 +35,24 @@ describe('Reference Data Selectors', () => {
 
       const key = ids[Math.floor(Math.random() * ids.length)]; // select a random key
 
-      const expectedState = selectReferenceDataByResourceKey(resourceType, key).projector(state);
+      const expectedState = referenceDataSelectors.selectReferenceDataByResourceKey(resourceType, key).projector(state);
       expect(expectedState).toBe(mockCountriesOfRegistration.find(r => r.resourceKey === key));
     });
   });
 
   it('should return loading state', () => {
     const state: ReferenceDataState = { ...initialReferenceDataState, loading: true };
-    const selectedState = referenceDataLoadingState.projector(state);
+    const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
     expect(selectedState).toEqual(state.loading);
   });
 
-  it('should return the reasons for abandoning for the right vehicle', () => {
-    const ReasonsForAbandoning: ReasonsForAbandoning[] = [
-      {
-        resourceType: ReferenceDataResourceType.ReasonsForAbandoning,
-        resourceKey: '123',
-        vehicleType: VehicleTypes.PSV,
-        description: 'foo'
-      },
-      {
-        resourceType: ReferenceDataResourceType.ReasonsForAbandoning,
-        resourceKey: '456',
-        vehicleType: VehicleTypes.HGV,
-        description: 'foo'
-      }
-    ];
-
-    const selectedState = selectReasonsForAbandoning.projector(ReasonsForAbandoning, { vehicleType: VehicleTypes.PSV });
-    console.log(Object.entries(ReasonsForAbandoning));
-    expect(selectedState).toEqual([ReasonsForAbandoning[0]]);
+  it('should return the reasons for abandoning for the right vehicle type', () => {
+    const selectorSpy = jest.spyOn(referenceDataSelectors, 'selectAllReferenceDataByResourceType');
+    referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.PSV);
+    expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningPsv);
+    referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.HGV);
+    expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningHgv);
+    referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
+    expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningTrl);
   });
 });

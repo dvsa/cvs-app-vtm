@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
-import { PsvWeight } from '@forms/templates/psv/psv-weight.template';
+import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { TrlWeight } from '@forms/templates/trl/trl-weight.template';
 import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { debounceTime, Subscription } from 'rxjs';
@@ -27,12 +27,10 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
-    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => {
-      this.formChange.emit(event);
-    });
+    this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.form?.patchValue(this.vehicleTechRecord, { emitEvent: false });
   }
 
@@ -40,10 +38,10 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription.unsubscribe();
   }
 
-  get template() {
+  get template(): FormNode {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
-        return PsvWeight;
+        return PsvWeightsTemplate;
       case VehicleTypes.HGV:
         return HgvWeight;
       case VehicleTypes.TRL:
@@ -74,16 +72,16 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   addAxle(): void {
     const weights = this.isPsv
       ? {
-          kerbWeight: null,
-          ladenWeight: null,
-          gbWeight: null,
-          designWeight: null
-        }
+        kerbWeight: null,
+        ladenWeight: null,
+        gbWeight: null,
+        designWeight: null
+      }
       : {
-          gbWeight: null,
-          eecWeight: null,
-          designWeight: null
-        };
+        gbWeight: null,
+        eecWeight: null,
+        designWeight: null
+      };
 
     const newAxle: Axle = {
       axleNumber: this.axles.length + 1,

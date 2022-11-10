@@ -58,7 +58,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'reasonForAbandoning', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
+              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }, { name: AsyncValidatorNames.HideIfEqualsWithCondition, args: { sibling: 'certificateNumber', value: 'fail', conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] }} }],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -104,7 +104,8 @@ export const SpecialistTestSectionGroup1: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric }]
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'testNumber',

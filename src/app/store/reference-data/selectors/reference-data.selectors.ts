@@ -1,34 +1,34 @@
-import { ReasonsForAbandoning, ReferenceDataResourceType } from '@models/reference-data.model';
+import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { testResultInEdit } from '@store/test-records';
 import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
 const resourceTypeSelector = (resourceType: ReferenceDataResourceType) =>
-  createSelector(referenceDataFeatureState, state => {
-    return state[resourceType];
-  });
+  createSelector(referenceDataFeatureState, state => state[resourceType]);
 
 export const selectAllReferenceDataByResourceType = (resourceType: ReferenceDataResourceType) =>
-  createSelector(resourceTypeSelector(resourceType), state => {
-    return resourceTypeAdapters[resourceType].getSelectors().selectAll(state);
-  });
+  createSelector(resourceTypeSelector(resourceType), state => resourceTypeAdapters[resourceType].getSelectors().selectAll(state));
 
 export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string) =>
-  createSelector(referenceDataFeatureState, state => {
-    return state[resourceType].entities[resourceKey];
-  });
+  createSelector(referenceDataFeatureState, state => state[resourceType].entities[resourceKey]);
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => state.loading);
 
-export const selectUserByResourceKey = (resourceKey: string) =>
-  createSelector(referenceDataFeatureState, state => {
-    return state[ReferenceDataResourceType.User].entities[resourceKey];
-  });
+export const selectBrakeByCode = (code: string) =>
+  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
 
-export const selectReasonsForAbandoning = createSelector(
-  selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoning),
-  testResultInEdit,
-  (referenceData, testResult) => {
-    return (referenceData as ReasonsForAbandoning[]).filter(reason => reason.vehicleType === testResult?.vehicleType);
+export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
+  switch (vehicleType) {
+    case VehicleTypes.PSV:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningPsv);
+    case VehicleTypes.HGV:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningHgv);
+    case VehicleTypes.TRL:
+      return selectAllReferenceDataByResourceType(ReferenceDataResourceType.ReasonsForAbandoningTrl);
+    default:
+      throw new Error('Unknown Vehicle Type');
   }
-);
+};
+
+export const selectUserByResourceKey = (resourceKey: string) =>
+  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

@@ -14,7 +14,7 @@ const optionalValidation = [
   { name: ValidatorNames.Min, args: 0 }
 ];
 
-export const PsvWeight: FormNode = {
+export const PsvWeightsTemplate: FormNode = {
   name: 'weightsSection',
   label: 'Weights',
   type: FormNodeTypes.GROUP,

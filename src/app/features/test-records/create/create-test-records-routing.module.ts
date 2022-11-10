@@ -31,7 +31,7 @@ const routes: Routes = [
         path: 'test-details',
         component: TestRouterOutletComponent,
         resolve: { testTypeTaxonomy: TestTypeTaxonomyResolver, defectTaxonomy: DefectsTaxonomyResolver },
-        data: { title: 'Test details', roles: Roles.TestResultAmend },
+        data: { title: 'Test details', roles: Roles.TestResultCreateContingency },
         canActivate: [RoleGuard],
         children: [
           {
@@ -41,7 +41,7 @@ const routes: Routes = [
           {
             path: 'defect/:defectIndex',
             component: DefectComponent,
-            data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+            data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
             canActivate: [RoleGuard]
           },
           {
@@ -51,13 +51,13 @@ const routes: Routes = [
               {
                 path: '',
                 component: DefectSelectComponent,
-                data: { title: 'Select Defect', roles: Roles.TestResultAmend },
+                data: { title: 'Select Defect', roles: Roles.TestResultCreateContingency },
                 canActivate: [RoleGuard]
               },
               {
                 path: ':ref',
                 component: DefectComponent,
-                data: { title: 'Defect', roles: Roles.TestResultAmend, isEditing: true },
+                data: { title: 'Defect', roles: Roles.TestResultCreateContingency, isEditing: true },
                 canActivate: [RoleGuard]
               }
             ]

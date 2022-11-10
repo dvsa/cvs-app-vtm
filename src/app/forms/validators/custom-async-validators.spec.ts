@@ -13,6 +13,7 @@ import { masterTpl } from '@forms/templates/test-records/master.template';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { operatorEnum } from '@forms/models/condition.model';
 
 describe('resultDependantOnCustomDefects', () => {
   let form: FormGroup;
@@ -451,4 +452,84 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 
 
 
+});
+
+describe('hide if equals with condition', () => {
+  let form: FormGroup;
+  let store: MockStore<State>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
+
+    store = TestBed.inject(MockStore);
+
+
+    form = new FormGroup({
+      foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
+      bar: new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+  });
+
+  it('"bar" should be hidden when "foo" is "x" and testTypeId is "1" and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
+    form.controls['foo'].patchValue('x');
+
+    const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] })(form.controls['foo']) as Observable<ValidationErrors | null>);
+
+    expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(true);
+  });
+
+  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "1" and validator specifies hideIfEqualsWithCondition for current field equals "y" with the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
+    form.controls['foo'].patchValue('x');
+
+    const testResult = { testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'y', { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] })(form.controls['foo']) as Observable<ValidationErrors | null>);
+
+    expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(false);
+  });
+
+  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "5" and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4"', async () => {
+    form.controls['foo'].patchValue('x');
+
+    const testResult = { testTypes: [{ testTypeId: '5' }] } as TestResultModel;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] })(form.controls['foo']) as Observable<ValidationErrors | null>);
+
+    expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(false);
+  });
+
+  it('"bar" should be hidden when "foo" is "x" and testTypeId is "1" and "odometerReading" is 100 and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
+    form.controls['foo'].patchValue('x');
+
+    const testResult = { odometerReading: 100, testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', [{ field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] }, { field: 'odometerReading', operator: operatorEnum.Equals, value: 100 }])(form.controls['foo']) as Observable<ValidationErrors | null>);
+
+    expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(true);
+  });
+
+  it('"bar" should not be hidden when "foo" is "x" and testTypeId is "1" and "odometerReading" is 101 and validator specifies hideIfEqualsWithCondition for current field equals "x" with the condition that the "testTypeId" field has a value in "1,2,3,4" and "odometerReading" is 100', async () => {
+    form.controls['foo'].patchValue('x');
+
+    const testResult = { odometerReading: 101, testTypes: [{ testTypeId: '1' }] } as TestResultModel;
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', [{ field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] }, { field: 'odometerReading', operator: operatorEnum.Equals, value: 100 }])(form.controls['foo']) as Observable<ValidationErrors | null>);
+
+    expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(false);
+  });
+  
 });

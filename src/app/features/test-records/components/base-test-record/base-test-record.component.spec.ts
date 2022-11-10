@@ -38,7 +38,7 @@ describe('BaseTestRecordComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of([Roles.TestResultAmend])
+            roles$: of([Roles.TestResultCreateContingency, Roles.TestResultAmend])
           }
         }
       ]

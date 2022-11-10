@@ -22,28 +22,42 @@ function createAdapter() {
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
-  [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
-  [ReferenceDataResourceType.User]: createAdapter(),
-  [ReferenceDataResourceType.ReasonsForAbandoning]: createAdapter(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
-  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
   [ReferenceDataResourceType.BodyMake]: createAdapter(),
-  [ReferenceDataResourceType.BodyModel]: createAdapter()
+  [ReferenceDataResourceType.BodyModel]: createAdapter(),
+  [ReferenceDataResourceType.Brake]: createAdapter(),
+  [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
+  [ReferenceDataResourceType.PsvMake]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoningHgv]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoningPsv]: createAdapter(),
+  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: createAdapter(),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: createAdapter(),
+  [ReferenceDataResourceType.Tyres]: createAdapter(),
+  [ReferenceDataResourceType.User]: createAdapter()
 };
+
+export const bodyModelsEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
+export const initialBodyModelsState = bodyModelsEntityAdapter.getInitialState();
 
 //IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
 
 export const initialReferenceDataState: ReferenceDataState = {
   error: '',
   loading: false,
-  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
-  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
   [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
   [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
-  [ReferenceDataResourceType.ReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoning].getInitialState(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.Brake]: resourceTypeAdapters[ReferenceDataResourceType.Brake].getInitialState(),
+  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
+  [ReferenceDataResourceType.PsvMake]: resourceTypeAdapters[ReferenceDataResourceType.PsvMake].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningHgv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningHgv].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningPsv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningPsv].getInitialState(),
+  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
   [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
-    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState()
+    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
+  [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState(),
+  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
 };
 
 export const referenceDataReducer = createReducer(
