@@ -18,7 +18,6 @@ import { PreventDoubleClickDirective } from './directives/prevent-double-click/p
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 import { DocumentRetrievalService } from '@api/document-retrieval';
-import { OneAndTwoThirdsLayoutComponent } from './layouts/one-and-two-thirds-layout/one-and-two-thirds-layout.component';
 
 @NgModule({
   declarations: [
@@ -37,8 +36,7 @@ import { OneAndTwoThirdsLayoutComponent } from './layouts/one-and-two-thirds-lay
     TestCertificateComponent,
     PreventDoubleClickDirective,
     BaseDialogComponent,
-    DigitGroupSeparatorPipe,
-    OneAndTwoThirdsLayoutComponent
+    DigitGroupSeparatorPipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -56,8 +54,7 @@ import { OneAndTwoThirdsLayoutComponent } from './layouts/one-and-two-thirds-lay
     PaginationComponent,
     TestCertificateComponent,
     BaseDialogComponent,
-    DigitGroupSeparatorPipe,
-    OneAndTwoThirdsLayoutComponent
+    DigitGroupSeparatorPipe
   ],
   providers: [DocumentRetrievalService]
 })

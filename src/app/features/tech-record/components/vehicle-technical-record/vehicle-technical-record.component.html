@@ -1,5 +1,5 @@
-<app-one-and-two-thirds-layout>
-  <ng-container left>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         <dl class="govuk-summary-list">
@@ -72,16 +72,16 @@
         </app-test-record-summary>
       </div>
     </div>
-  </ng-container>
-  <ng-container right>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
     <app-tech-record-summary
       *ngIf="currentTechRecord$ | async as currentTechRecord"
       [isEditing]="isEditing"
       [vehicleTechRecord]="currentTechRecord"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>
-  </ng-container>
-</app-one-and-two-thirds-layout>
+  </div>
+</div>
 
 <ng-template #trailerHeader>
   <div *ngIf="(currentTechRecord$ | async)?.vehicleType === vehicleTypes.TRL" class="govuk-summary-list__row">

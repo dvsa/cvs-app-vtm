@@ -15,8 +15,8 @@
     <tbody class="govuk-table__body">
       <tr class="govuk-table__row" *ngFor="let techRecord of techRecords; trackBy: trackByFn">
         <th scope="row" class="govuk-table__header">{{ techRecord.statusCode }}</th>
-        <td class="govuk-table__cell">{{ techRecord.reasonForCreation }}</td>
-        <td class="govuk-table__cell" style="word-break: break-all">{{ techRecord.createdByName }}</td>
+        <td class="govuk-table__cell word-break">{{ techRecord.reasonForCreation }}</td>
+        <td class="govuk-table__cell word-break">{{ techRecord.createdByName }}</td>
         <td class="govuk-table__cell">{{ techRecord.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
         <td class="govuk-table__cell">
           <ng-container *ngIf="techRecord.createdAt !== currentRecord?.createdAt">
