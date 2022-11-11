@@ -11,7 +11,7 @@ export const selectAllReferenceDataByResourceType = (resourceType: ReferenceData
 export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string | number) =>
   createSelector(referenceDataFeatureState, state => state[resourceType].entities[resourceKey]);
 
-export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => state.loading);
+export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => Object.values(state).some(feature => feature.loading));
 
 export const selectBrakeByCode = (code: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
