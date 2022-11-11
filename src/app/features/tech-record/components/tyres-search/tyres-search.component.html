@@ -1,0 +1,87 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <dl class="govuk-summary-list">
+      <h1 class="govuk-heading-l">Tyre search</h1>
+      <h1 class="govuk-heading-m">Vehicle details</h1>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
+        <dd id="current-vrm" class="govuk-summary-list__value">
+          <app-number-plate *ngIf="vehicleTechRecord?.vrms" [vrm]="currentVrm"></app-number-plate>
+        </dd>
+        <dd class="govuk-summary-list__value"></dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+        <dd id="vin" class="govuk-summary-list__value">
+          {{ vehicleTechRecord?.vin | defaultNullOrEmpty }}
+        </dd>
+        <dd class="govuk-summary-list__value"></dd>
+      </div>
+    </dl>
+  </div>
+</div>
+<!-- Oversized lable, use custom select instead? -->
+<app-select [label]="searchFilterLabel" [width]="width" [options]="options!"></app-select>
+<!-- Add error functionality after validators are in -->
+<div class="govuk-form-group">
+  <input
+    #searchTerm
+    id="search-term"
+    name="search-term"
+    aria-describedby="search-term"
+    type="text"
+    class="govuk-input govuk-!-width-two-thirds"
+    (keyup.enter)="navigateSearch(searchTerm.value)"
+  />
+  <!-- Where do we get the search icon from? -->
+  <button id="search-term" class="govuk-button margin-right" data-module="govuk-button" (click)="navigateSearch(searchTerm.value)">Search</button>
+</div>
+<ng-template #error let-name>
+  <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
+    <span id="search-term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
+      <span class="govuk-visually-hidden">Error:</span>
+      <p class="white-space--normal">{{ errorMessage.error }}</p>
+    </span>
+  </ng-container>
+</ng-template>
+
+<ng-container *ngIf="searchResults === null">
+  <h3 class="govuk-heading-m">0 search results</h3>
+  <p class="govuk-body govuk-!-font-size-19">No results found.</p>
+</ng-container>
+<ng-container *ngIf="searchResults && searchResults.length === 1">
+  <h3 class="govuk-heading-m">{{ searchResults.length }} search result</h3>
+</ng-container>
+<ng-container *ngIf="searchResults && searchResults.length >= 2">
+  <h3 class="govuk-heading-m">{{ searchResults.length }} search results</h3>
+</ng-container>
+<ng-container *ngIf="searchResults && searchResults.length > 0">
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-rable__row">
+        <th scope="col" class="govuk-table__header">Code</th>
+        <th scope="col" class="govuk-table__header">Size</th>
+        <th scope="col" class="govuk-table__header">Ply</th>
+        <th scope="col" class="govuk-table__header">Single load index</th>
+        <th scope="col" class="govuk-table__header">Double load index</th>
+        <th scope="col" class="govuk-table__header">Axle load single fitting</th>
+        <th scope="col" class="govuk-table__header">Axle load double fitting</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row" *ngFor="let result of searchResults!">
+        <td class="govuk-table__cell">test</td>
+        <td class="govuk-table__cell">test</td>
+        <td class="govuk-table__cell">test</td>
+        <td class="govuk-table__cell">test</td>
+        <td class="govuk-table__cell">test</td>
+        <td class="govuk-table__cell">test</td>
+        <td class="govuk-table__cell">test</td>
+        <a id="add" class="govuk-link govuk-link--no-visited-state" (click)="add(1, 1)">Add</a>
+        <!-- Add btn no aligned properly  -->
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+<!-- How does pagination work? -->
+<button id="cancel" class="govuk-button govuk-button--secondary margin-right" data-module="govuk-button" (click)="cancel()">Cancel</button>

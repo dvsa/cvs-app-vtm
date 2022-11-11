@@ -131,7 +131,7 @@ describe('TyresComponent', () => {
         tyreCode: 101
       };
 
-      component.getTyresRefData(tyre, 1);
+      component.getTyreSearch(tyre, 1);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(changedTyre, 1);
@@ -160,7 +160,7 @@ describe('TyresComponent', () => {
         tyreCode: 101
       };
 
-      component.getTyresRefData(tyre, 1);
+      component.getTyreSearch(tyre, 1);
 
       expect(component.isError).toBe(true);
       expect(component.errorMessage).toBe('Cannot find data of this tyre');

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
@@ -20,15 +21,20 @@ import { Subscription, debounceTime, take } from 'rxjs';
 export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
-  public isError: boolean = false;
-  public errorMessage?: string;
 
   @Output() formChange = new EventEmitter();
 
+  public isError: boolean = false;
+  public errorMessage?: string;
   public form!: CustomFormGroup;
   private _formSubscription = new Subscription();
 
-  constructor(public dfs: DynamicFormService, private referenceDataService: ReferenceDataService) {}
+  constructor(
+    public dfs: DynamicFormService,
+    private referenceDataService: ReferenceDataService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
@@ -134,6 +140,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
+  getTyreSearchPage(axleNumber: number) {
+    this.router.navigate([`../correcting-an-error/tyre-search/${axleNumber}`], { relativeTo: this.route });
+  }
+
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
     this.vehicleTechRecord = cloneDeep(this.vehicleTechRecord);
     this.vehicleTechRecord.axles.find(ax => ax.axleNumber === axleNumber)!.tyres = tyre;
@@ -170,7 +180,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       this.axles.removeAt(index);
     } else {
       this.isError = true;
-      this.errorMessage = 'Cannot have less than 2 axles';
+      this.errorMessage = 'Cannot have fewer than 2 axles';
     }
   }
 }

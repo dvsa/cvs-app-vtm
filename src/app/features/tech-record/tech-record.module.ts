@@ -11,6 +11,7 @@ import { VehicleTechnicalRecordComponent } from './components/vehicle-technical-
 import { EditTechRecordButtonComponent } from './components/edit-tech-record-button/edit-tech-record-button.component';
 import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     TechRecordSummaryComponent,
     TestRecordSummaryComponent,
     VehicleTechnicalRecordComponent,
-    TechAmendReasonComponent
+    TechAmendReasonComponent,
+    TyresSearchComponent
   ],
   imports: [
     CommonModule,

@@ -45,6 +45,7 @@ import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferen
 import { Observable } from 'rxjs';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -71,12 +72,12 @@ export class TechRecordSummaryComponent implements OnInit {
   @Output() formChange = new EventEmitter();
 
   private _isEditing: boolean = false;
-
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   dtpNumbersFromRefData: FormNodeOption<string>[] = [];
 
   constructor(
+    private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
     private optionsService: MultiOptionsService,
     private referenceDataStore: Store<ReferenceDataState>
@@ -124,7 +125,15 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditing ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
+    this.isEditing
+      ? this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => {
+          if (data) {
+            this.vehicleTechRecordCalculated = { ...cloneDeep(data), reasonForCreation: '' };
+          } else if (this.vehicleTechRecord) {
+            this.vehicleTechRecordCalculated = { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' };
+          }
+        })
+      : (this.vehicleTechRecordCalculated = this.vehicleTechRecord);
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
