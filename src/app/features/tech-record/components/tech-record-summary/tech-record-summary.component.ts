@@ -50,7 +50,8 @@ import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval
 @Component({
   selector: 'app-tech-record-summary',
   templateUrl: './tech-record-summary.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./tech-record-summary.component.scss']
 })
 export class TechRecordSummaryComponent implements OnInit {
   @ViewChildren(DynamicFormGroupComponent) sections!: QueryList<DynamicFormGroupComponent>;
@@ -76,6 +77,7 @@ export class TechRecordSummaryComponent implements OnInit {
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   dtpNumbersFromRefData: FormNodeOption<string>[] = [];
+  middleIndex = 0;
 
   constructor(
     private store: Store<TechnicalRecordServiceState>,
@@ -89,6 +91,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.calculateVehicleModel();
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
     this.psvMakes$.subscribe(data => data.map(i => this.dtpNumbersFromRefData.push({ value: i.dtpNumber, label: i.dtpNumber })));
+    this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
   }
 
   get isEditing(): boolean {

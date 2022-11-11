@@ -17,7 +17,8 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-technical-record',
-  templateUrl: './vehicle-technical-record.component.html'
+  templateUrl: './vehicle-technical-record.component.html',
+  styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
@@ -71,12 +72,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const customSections = [
-      this.summary.body.form,
-      this.summary.dimensions.form,
-      this.summary.tyres.form,
-      this.summary.weights.form
-    ];
+    const customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
 
     const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
 
