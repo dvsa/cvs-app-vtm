@@ -77,7 +77,7 @@ export class TechRecordSummaryComponent implements OnInit {
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   dtpNumbersFromRefData: FormNodeOption<string>[] = [];
-  middleIndex!: number;
+  middleIndex = 0;
 
   constructor(
     private store: Store<TechnicalRecordServiceState>,
