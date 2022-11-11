@@ -28,13 +28,13 @@ export class ReferenceDataEffects {
           switchMap(data => {
             if (isPaginated(data)) {
               return of(
-                fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[] }),
+                fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: true }),
                 fetchReferenceData({ resourceType, paginationToken: data.paginationToken })
               );
             }
-            return of(fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[] }));
+            return of(fetchReferenceDataSuccess({ resourceType, payload: data.data as ReferenceDataModelBase[], paginated: false }));
           }),
-          catchError(e => of(fetchReferenceDataFailed({ error: e.message })))
+          catchError(e => of(fetchReferenceDataFailed({ error: e.message, resourceType })))
         )
       )
     )
@@ -46,7 +46,7 @@ export class ReferenceDataEffects {
       mergeMap(({ resourceType, resourceKey }) =>
         this.referenceDataService.fetchReferenceDataByKey(resourceType, resourceKey).pipe(
           map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
-          catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message })))
+          catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message, resourceType })))
         )
       )
     )

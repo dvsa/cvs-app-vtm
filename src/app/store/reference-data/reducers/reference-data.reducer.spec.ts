@@ -26,7 +26,13 @@ describe('Reference Data Reducer', () => {
 
   describe('fetchReferenceData', () => {
     it('should set loading to true', () => {
-      const newState: ReferenceDataState = { ...initialReferenceDataState, loading: true };
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.CountryOfRegistration]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
+          loading: true
+        }
+      };
       const action = fetchReferenceData({ resourceType: ReferenceDataResourceType.CountryOfRegistration });
       const state = referenceDataReducer(initialReferenceDataState, action);
 
@@ -45,9 +51,9 @@ describe('Reference Data Reducer', () => {
       );
       const newState: ReferenceDataState = {
         ...initialReferenceDataState,
-        [resourceType]: { ids, entities }
+        [resourceType]: { ids, entities, loading: false }
       };
-      const action = fetchReferenceDataSuccess({ resourceType, payload: [...payload] });
+      const action = fetchReferenceDataSuccess({ resourceType, payload: [...payload], paginated: false });
       const state = referenceDataReducer(initialReferenceDataState, action);
 
       expect(state).toEqual(newState);
@@ -57,9 +63,9 @@ describe('Reference Data Reducer', () => {
 
   describe('fetchReferenceDataFailed', () => {
     it('should set error state', () => {
-      const newState = { ...initialReferenceDataState, loading: false };
-      const action = fetchReferenceDataFailed({ error: 'unit testing error message' });
-      const state = referenceDataReducer({ ...initialReferenceDataState, loading: true }, action);
+      const newState = { ...initialReferenceDataState };
+      const action = fetchReferenceDataFailed({ error: 'unit testing error message', resourceType: ReferenceDataResourceType.CountryOfRegistration });
+      const state = referenceDataReducer({ ...initialReferenceDataState }, action);
 
       expect(state).toEqual(newState);
       expect(state).not.toBe(newState);
@@ -68,7 +74,13 @@ describe('Reference Data Reducer', () => {
 
   describe('fetchReferenceDataByKey actions', () => {
     it('should set loading to true', () => {
-      const newState: ReferenceDataState = { ...initialReferenceDataState, loading: true };
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.CountryOfRegistration]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
+          loading: true
+        }
+      };
       const action = fetchReferenceDataByKey({
         resourceType: ReferenceDataResourceType.CountryOfRegistration,
         resourceKey: mockCountriesOfRegistration[0].resourceKey
@@ -87,7 +99,7 @@ describe('Reference Data Reducer', () => {
         const entities: Dictionary<ReferenceDataModelBase> = { [resourceKey]: entity };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,
-          [resourceType]: { ids, entities }
+          [resourceType]: { ids, entities, loading: false }
         };
 
         const action = fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: entity });
@@ -100,9 +112,19 @@ describe('Reference Data Reducer', () => {
 
     describe('fetchReferenceDataByKeyFailed', () => {
       it('should set error state', () => {
-        const newState = { ...initialReferenceDataState, loading: false };
-        const action = fetchReferenceDataByKeyFailed({ error: 'unit testing error message by key' });
-        const state = referenceDataReducer({ ...initialReferenceDataState, loading: true }, action);
+        const newState = { ...initialReferenceDataState };
+        const action = fetchReferenceDataByKeyFailed({
+          error: 'unit testing error message by key',
+          resourceType: ReferenceDataResourceType.CountryOfRegistration
+        });
+        const inputState = {
+          ...initialReferenceDataState,
+          [ReferenceDataResourceType.CountryOfRegistration]: {
+            ...initialReferenceDataState[ReferenceDataResourceType.CountryOfRegistration],
+            loading: true
+          }
+        };
+        const state = referenceDataReducer(inputState, action);
 
         expect(state).toEqual(newState);
         expect(state).not.toBe(newState);

@@ -1,4 +1,12 @@
-import { fetchReferenceData, fetchReferenceDataSuccess, fetchReferenceDataFailed, fetchReferenceDataByKey, fetchReferenceDataByKeyFailed, fetchReferenceDataByKeySuccess } from './reference-data.actions';
+import {
+  fetchReferenceData,
+  fetchReferenceDataSuccess,
+  fetchReferenceDataFailed,
+  fetchReferenceDataByKey,
+  fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySuccess,
+  fetchReasonsForAbandoning
+} from './reference-data.actions';
 describe('Test Result Actions', () => {
   it('should return correct types', () => {
     expect(fetchReferenceData.type).toBe('[API/reference-data] Fetch all of ResourceType');
@@ -8,5 +16,6 @@ describe('Test Result Actions', () => {
     expect(fetchReferenceDataByKey.type).toBe('[API/reference-data] Fetch ResourceType by Key');
     expect(fetchReferenceDataByKeySuccess.type).toBe('[API/reference-data] Fetch ResourceType by Key Success');
     expect(fetchReferenceDataByKeyFailed.type).toBe('[API/reference-data] Fetch ResourceType by Key Failed');
+    expect(fetchReasonsForAbandoning.type).toBe('[API/reference-data] Fetch reasons for abandoning');
   });
 });
