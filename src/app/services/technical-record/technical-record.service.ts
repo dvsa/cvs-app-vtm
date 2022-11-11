@@ -145,12 +145,7 @@ export class TechnicalRecordService {
         const createdAt = params['techCreatedAt'];
         const lastTwoUrlParts = this.router.url.split('/').slice(-2)
 
-        function isProvisional() {
-          if (lastTwoUrlParts.includes('provisional')) {
-            return true
-          }
-          return false;
-        }
+       const isProvisional = () => lastTwoUrlParts.includes('provisional');
 
         if (isProvisional()) {
           return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
