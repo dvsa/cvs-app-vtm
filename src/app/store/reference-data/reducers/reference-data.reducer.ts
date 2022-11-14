@@ -11,14 +11,21 @@ import {
 } from '../actions/reference-data.actions';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
-const selectResourceKey = (a: ReferenceDataModelBase): string => {
+const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
   return a.resourceKey;
 };
+interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
+  loading: boolean;
+}
 
-export type ReferenceDataState = Record<ReferenceDataResourceType, EntityState<ReferenceDataModelBase>> & { error: string; loading: boolean };
+export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState>;
 
 function createAdapter() {
-  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey });
+  return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
+}
+
+function getInitialState(resourceType: ReferenceDataResourceType) {
+  return resourceTypeAdapters[resourceType].getInitialState({ loading: false });
 }
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
@@ -36,53 +43,44 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
   [ReferenceDataResourceType.User]: createAdapter()
 };
 
-export const bodyModelsEntityAdapter: EntityAdapter<ReferenceDataModelBase> = createAdapter();
-export const initialBodyModelsState = bodyModelsEntityAdapter.getInitialState();
-
-//IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching adapter in resourceTypeAdapters
+//IMPORTANT: Ensure the keys in initialReferenceDataState call get the initial state from the matching resourceType
 
 export const initialReferenceDataState: ReferenceDataState = {
-  error: '',
-  loading: false,
-  [ReferenceDataResourceType.BodyMake]: resourceTypeAdapters[ReferenceDataResourceType.BodyMake].getInitialState(),
-  [ReferenceDataResourceType.BodyModel]: resourceTypeAdapters[ReferenceDataResourceType.BodyModel].getInitialState(),
-  [ReferenceDataResourceType.Brake]: resourceTypeAdapters[ReferenceDataResourceType.Brake].getInitialState(),
-  [ReferenceDataResourceType.CountryOfRegistration]: resourceTypeAdapters[ReferenceDataResourceType.CountryOfRegistration].getInitialState(),
-  [ReferenceDataResourceType.PsvMake]: resourceTypeAdapters[ReferenceDataResourceType.PsvMake].getInitialState(),
-  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
-  [ReferenceDataResourceType.ReasonsForAbandoningHgv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningHgv].getInitialState(),
-  [ReferenceDataResourceType.ReasonsForAbandoningPsv]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningPsv].getInitialState(),
-  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: resourceTypeAdapters[ReferenceDataResourceType.ReasonsForAbandoningTrl].getInitialState(),
-  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]:
-    resourceTypeAdapters[ReferenceDataResourceType.SpecialistReasonsForAbandoning].getInitialState(),
-  [ReferenceDataResourceType.TIRReasonsForAbandoning]: resourceTypeAdapters[ReferenceDataResourceType.TIRReasonsForAbandoning].getInitialState(),
-  [ReferenceDataResourceType.Tyres]: resourceTypeAdapters[ReferenceDataResourceType.Tyres].getInitialState(),
-  [ReferenceDataResourceType.User]: resourceTypeAdapters[ReferenceDataResourceType.User].getInitialState(),
+  [ReferenceDataResourceType.BodyMake]: getInitialState(ReferenceDataResourceType.BodyMake),
+  [ReferenceDataResourceType.BodyModel]: getInitialState(ReferenceDataResourceType.BodyModel),
+  [ReferenceDataResourceType.Brake]: getInitialState(ReferenceDataResourceType.Brake),
+  [ReferenceDataResourceType.CountryOfRegistration]: getInitialState(ReferenceDataResourceType.CountryOfRegistration),
+  [ReferenceDataResourceType.PsvMake]: getInitialState(ReferenceDataResourceType.PsvMake),
+  [ReferenceDataResourceType.ReasonsForAbandoningTrl]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningTrl),
+  [ReferenceDataResourceType.ReasonsForAbandoningHgv]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningHgv),
+  [ReferenceDataResourceType.ReasonsForAbandoningPsv]: getInitialState(ReferenceDataResourceType.ReasonsForAbandoningPsv),
+  [ReferenceDataResourceType.SpecialistReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.SpecialistReasonsForAbandoning),
+  [ReferenceDataResourceType.TIRReasonsForAbandoning]: getInitialState(ReferenceDataResourceType.TIRReasonsForAbandoning),
+  [ReferenceDataResourceType.Tyres]: getInitialState(ReferenceDataResourceType.Tyres),
+  [ReferenceDataResourceType.User]: getInitialState(ReferenceDataResourceType.User)
 };
 
 export const referenceDataReducer = createReducer(
   initialReferenceDataState,
-  on(fetchReferenceData, state => ({ ...state, loading: true })),
+  on(fetchReferenceData, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
   on(fetchReferenceDataSuccess, (state, action) => {
-    const { resourceType, payload } = action;
+    const { resourceType, payload, paginated } = action;
     return {
       ...state,
-      [resourceType]: resourceTypeAdapters[resourceType].setAll(payload, state[resourceType]),
-      loading: false
+      [resourceType]: { ...resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]), loading: paginated }
     };
   }),
-  on(fetchReferenceDataFailed, state => ({ ...state, loading: false })),
+  on(fetchReferenceDataFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
 
-  on(fetchReferenceDataByKey, state => ({ ...state, loading: true })),
+  on(fetchReferenceDataByKey, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
   on(fetchReferenceDataByKeySuccess, (state, action) => {
     const { resourceType, payload } = action;
     return {
       ...state,
-      [resourceType]: resourceTypeAdapters[resourceType].upsertOne(payload, state[resourceType]),
-      loading: false
+      [resourceType]: { ...resourceTypeAdapters[resourceType].upsertOne(payload, state[resourceType]), loading: false }
     };
   }),
-  on(fetchReferenceDataByKeyFailed, state => ({ ...state, loading: false }))
+  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } }))
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);

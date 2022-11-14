@@ -39,7 +39,9 @@ describe('ErrorMessageMap', () => {
     ['This field is required', AsyncValidatorNames.RequiredIfNotResult, [{ sibling: 'foo' }, '']],
     ['Name is required', AsyncValidatorNames.RequiredIfNotResult, [{ sibling: 'foo' }, 'Name']],
     ['This field is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, '']],
-    ['Name is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, 'Name']]
+    ['Name is required', AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, [{ sibling: 'foo' }, 'Name']],
+    ['This date must be less than 10 months after the previous date', ValidatorNames.DateNotExceed, [{ months: '10' }, '']],
+    ['Name must be less than 15 months after foo', ValidatorNames.DateNotExceed, [{ sibling: 'foo', months: '15' }, 'Name']]
   ])('should return "%s" for %s with %o', (expected, key, props) => {
     props ? expect(ErrorMessageMap[key](...props)).toBe(expected) : expect(ErrorMessageMap[key]()).toBe(expected);
   });

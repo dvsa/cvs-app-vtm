@@ -107,7 +107,6 @@ export class TyresSearchComponent implements OnInit {
     this.globalErrorService.clearErrors();
     this.searchResults = [];
     term = term.trim();
-    // clear tyres store?
     // display loading
     // api call/reducer
     // switch case once the api changes are in?
@@ -128,7 +127,6 @@ export class TyresSearchComponent implements OnInit {
     } else if (term && filter) {
       this.tyres$.subscribe(data =>
         data.map(each => {
-          /// filter in case of state double pop?
           if (each.code === term) {
             this.searchResults?.push(each);
           } else {
@@ -142,7 +140,9 @@ export class TyresSearchComponent implements OnInit {
   handleSubmit(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
     console.log('adding: ', tyre, 'to axle index: ', axleIndex);
+
     // addTyreToTechRecord()
+
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 

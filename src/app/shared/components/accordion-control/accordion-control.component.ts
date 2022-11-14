@@ -7,22 +7,24 @@ import { AccordionComponent } from '../accordion/accordion.component';
   styleUrls: ['accordion-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccordionControlComponent  {
+export class AccordionControlComponent {
   private _accordions?: QueryList<AccordionComponent>;
   get accordions(): QueryList<AccordionComponent> | undefined {
     return this._accordions;
   }
-  @ContentChildren(AccordionComponent) set accordions(value: QueryList<AccordionComponent> | undefined) {
+  @ContentChildren(AccordionComponent, { descendants: true }) set accordions(value: QueryList<AccordionComponent> | undefined) {
     this._accordions = value;
     this.toggleAccordions();
   }
 
   @Input() isExpanded = false;
+  @Input() layout?: string;
+  @Input() class: string = '';
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   get iconStyle(): string {
-    return 'govuk-accordion-nav__chevron' +(this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down');
+    return 'govuk-accordion-nav__chevron' + (this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down');
   }
 
   toggle(): void {
@@ -33,7 +35,7 @@ export class AccordionControlComponent  {
 
   toggleAccordions(): void {
     if (this.accordions) {
-      this.accordions.forEach(a => this.isExpanded ? a.open() : a.close());
+      this.accordions.forEach(a => (this.isExpanded ? a.open() : a.close()));
     }
   }
 }
