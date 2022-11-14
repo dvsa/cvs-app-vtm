@@ -6,7 +6,6 @@ import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } fro
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 
-
 @Component({
   selector: 'app-tech-amend-reason',
   templateUrl: './tech-amend-reason.component.html',

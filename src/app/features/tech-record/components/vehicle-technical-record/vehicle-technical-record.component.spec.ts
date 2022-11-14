@@ -23,6 +23,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { createProvisionalTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
+import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
 describe('VehicleTechnicalRecordComponent', () => {
   let component: VehicleTechnicalRecordComponent;
@@ -45,6 +46,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         EditTechRecordButtonComponent,
         TechRecordHistoryComponent,
         TechRecordSummaryComponent,
+        TechRecordTitleComponent,
         TestRecordSummaryComponent,
         VehicleTechnicalRecordComponent
       ],
@@ -168,7 +170,11 @@ describe('VehicleTechnicalRecordComponent', () => {
         component.vehicleTechRecord = mockVehicleTechnicalRecord();
         tick();
         component.handleSubmit()
-        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicleTechRecord.systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL}));
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({
+          systemNumber: component.vehicleTechRecord.systemNumber,
+          recordToArchiveStatus: StatusCodes.PROVISIONAL,
+          newStatus: StatusCodes.PROVISIONAL
+        }));
       }));
 
       it('should dispatch updateTechRecords to create a new provisional when one isnt present', fakeAsync(() => {
