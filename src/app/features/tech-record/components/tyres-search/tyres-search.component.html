@@ -44,11 +44,32 @@
     (ngModelChange)="onChange($event)"
     (keyup.enter)="handleSearch(searchTerm.value, searchFilter.value)"
   />
-  <!-- Where do we get our icons from? -->
-  <button id="search" class="govuk-button margin-right" data-module="govuk-button" (click)="handleSearch(searchTerm.value, searchFilter.value)">
-    Search
+  <button
+    class="govuk-button margin-right search-btn"
+    type="submit"
+    data-module="govuk-button"
+    enterkeyhint="search"
+    data-gem-track-click-module-started="true"
+    (click)="handleSearch(searchTerm.value, searchFilter.value)"
+  >
+    <svg
+      class="gem-c-search__icon"
+      width="25"
+      height="25"
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
+      <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+    </svg>
   </button>
 </div>
+<!-- <button id="search" class="govuk-button margin-right" data-module="govuk-button" (click)="handleSearch(searchTerm.value, searchFilter.value)">
+    Search
+ -->
 
 <ng-template #error let-name>
   <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
@@ -72,7 +93,7 @@
   <h3 class="govuk-heading-m">{{ searchResults.length }} search results</h3>
 </ng-container>
 
-<ng-container *ngIf="searchResults && searchResults.length > 0">
+<ng-container *ngIf="searchResults && searchResults.length">
   <table class="govuk-table">
     <thead class="govuk-table__head">
       <tr class="govuk-rable__row">
@@ -87,7 +108,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row" *ngFor="let tyre of searchResults!">
+      <tr class="govuk-table__row" *ngFor="let tyre of paginatedFields!; trackBy: trackByFn">
         <td class="govuk-table__cell">{{ tyre.code }}</td>
         <td class="govuk-table__cell">{{ tyre.tyreSize }}</td>
         <td class="govuk-table__cell">{{ tyre.plyRating }}</td>
@@ -101,7 +122,7 @@
       </tr>
     </tbody>
   </table>
+  <app-pagination tableName="search-results" [numberOfItems]="numberOfResults" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
 </ng-container>
 
-<!-- How does pagination work? -->
 <button id="cancel" class="govuk-button govuk-button--secondary margin-right" data-module="govuk-button" (click)="cancel()">Cancel</button>

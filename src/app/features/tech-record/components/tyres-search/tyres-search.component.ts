@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, Params } from '@forms/services/dynamic-form.types';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -13,7 +13,8 @@ import { fetchReferenceDataByKey, ReferenceDataState } from '@store/reference-da
 import { Store } from '@ngrx/store';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { VehicleTechRecordModel, TechRecordModel, SpeedCategorySymbol } from '@models/vehicle-tech-record.model';
+import { number, string } from 'yargs';
 
 @Component({
   selector: 'app-tyres-search',
@@ -35,6 +36,7 @@ export class TyresSearchComponent implements OnInit {
   @Output() formChange = new EventEmitter();
 
   constructor(
+    private cdr: ChangeDetectorRef,
     public dfs: DynamicFormService,
     public globalErrorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
@@ -48,7 +50,7 @@ export class TyresSearchComponent implements OnInit {
 
   public searchResults: Array<ReferenceDataTyre> | null = null;
   public missingTermErrorMessage = 'You must provide search criteria';
-  public missingTypeErrorMessage = 'You must select a valid search filter';
+  public missingFilterErrorMessage = 'You must select a valid search filter';
   public vehicleTechRecord?: VehicleTechRecordModel;
   public editingTechRecord: TechRecordModel | undefined = undefined;
   public form!: CustomFormGroup;
@@ -84,7 +86,6 @@ export class TyresSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    // when done: make sure no tyre reference data is populated before here
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
     this.globalErrorService.clearErrors();
@@ -107,11 +108,12 @@ export class TyresSearchComponent implements OnInit {
     this.globalErrorService.clearErrors();
     this.searchResults = [];
     term = term.trim();
+
     // display loading
     // api call/reducer
     // switch case once the api changes are in?
 
-    this.referenceDataStore.dispatch(fetchReferenceDataByKey({ resourceType: ReferenceDataResourceType.Tyres, resourceKey: term }));
+    // this.referenceDataStore.dispatch(fetchReferenceDataByKey({ resourceType: ReferenceDataResourceType.Tyres, resourceKey: term }));
 
     // if api fail display 0 found
     // if api success set state
@@ -123,14 +125,14 @@ export class TyresSearchComponent implements OnInit {
     if (!term) {
       this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'term' });
     } else if (!filter) {
-      this.globalErrorService.addError({ error: this.missingTypeErrorMessage, anchorLink: 'term' });
+      this.globalErrorService.addError({ error: this.missingFilterErrorMessage, anchorLink: 'term' });
     } else if (term && filter) {
       this.tyres$.subscribe(data =>
         data.map(each => {
-          if (each.code === term) {
+          if (each['code'].includes(term)) {
+            console.log(this.searchResults);
             this.searchResults?.push(each);
           } else {
-            this.searchResults = [];
           }
         })
       );
@@ -140,9 +142,15 @@ export class TyresSearchComponent implements OnInit {
   handleSubmit(tyre: ReferenceDataTyre): void {
     const axleIndex = Number(this.params.axleNumber!) - 1;
     console.log('adding: ', tyre, 'to axle index: ', axleIndex);
+    this.editingTechRecord!.axles[axleIndex].tyres!.tyreCode = Number(tyre.code);
+    this.editingTechRecord!.axles[axleIndex].tyres!.tyreSize = tyre.tyreSize;
+    this.editingTechRecord!.axles[axleIndex].tyres!.plyRating = tyre.plyRating;
+    this.editingTechRecord!.axles[axleIndex].tyres!.loadIndexSingleLoad = tyre.loadIndexSingleLoad;
+    this.editingTechRecord!.axles[axleIndex].tyres!.loadIndexDoubleLoad = tyre.loadIndexTwinLoad;
 
-    // addTyreToTechRecord()
-
+    // load index 124
+    // sr m - fitment code enum, data tr axles?!
+    // sd S = single double
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
@@ -156,4 +164,27 @@ export class TyresSearchComponent implements OnInit {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
   }
+
+  ///// pagination/////////////////////////////
+
+  private pageStart?: number;
+  private pageEnd?: number;
+
+  get paginatedFields() {
+    return this.searchResults!.slice(this.pageStart, this.pageEnd);
+  }
+  get numberOfResults(): number {
+    return this.searchResults?.length!;
+  }
+
+  handlePaginationChange({ start, end }: { start: number; end: number }) {
+    this.pageStart = start;
+    this.pageEnd = end;
+    this.cdr.detectChanges();
+  }
+  trackByFn(i: number, r: ReferenceDataTyre) {
+    return r.resourceKey!;
+  }
+
+  /////////////////////////////////////////////
 }
