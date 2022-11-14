@@ -49,6 +49,8 @@ export interface ReferenceDataTyre extends ReferenceDataModelBase {
   userId: string;
   loadIndexTwinLoad: string;
   plyRating: string;
+  axleLoadSingle?: string;
+  axleLoadDouble?: string;
 }
 
 export interface User extends ReferenceDataModelBase {

@@ -102,7 +102,7 @@ export interface FormNode {
   class?: string;
 }
 
-export interface FormNodeValidator{
+export interface FormNodeValidator {
   name: ValidatorNames;
   args?: any;
 }
@@ -120,6 +120,13 @@ export interface SubHeadingLink {
 
 export interface CustomControl extends FormControl {
   meta: FormNode;
+}
+
+export interface Params {
+  systemNumber?: string;
+  vin?: string;
+  reason?: string;
+  axleNumber?: number;
 }
 
 export class CustomFormControl extends FormControl implements CustomControl {
@@ -213,7 +220,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
       emitEvent?: boolean;
     }
   ): void {
-    if(value){
+    if (value) {
       if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
         if (value.length > this.controls.length) {
           super.push(this.dynamicFormService.createForm(this.meta.children[0], value));

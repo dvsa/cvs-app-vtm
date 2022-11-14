@@ -12,7 +12,7 @@ import { mockSpecialistSpecialistReasonsForAbandoning } from '@mocks/reference-d
 import { mockTIRReasonsForAbandoning } from '@mocks/reference-data/mock-TIR-reasons-for-abandoning.reference-data';
 import { mockReasonsForAbandoningTrl } from '@mocks/reference-data/mock-trl-reasons-for-abandoning.reference-data';
 import { mockUsers } from '@mocks/reference-data/mock-user.reference-data';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
@@ -33,7 +33,7 @@ export class ReferenceDataService {
   fetchReferenceData(
     resourceType: ReferenceDataResourceType,
     resourceKey?: string
-  ): Observable<Array<ReferenceDataModelBase> | ReferenceDataModelBase> {
+  ): Observable<Array<ReferenceDataModelBase> | ReferenceDataModelBase | ReferenceDataTyre> {
     if (!resourceType) {
       return throwError(() => new Error('Reference data resourceType is required'));
     }
