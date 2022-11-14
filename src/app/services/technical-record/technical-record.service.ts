@@ -143,9 +143,10 @@ export class TechnicalRecordService {
       select(selectRouteNestedParams),
       map(params => {
         const createdAt = params['techCreatedAt'];
-        const isProvisional = this.router.url.split('/').pop() === 'provisional';
+        const lastTwoUrlParts = this.router.url.split('/').slice(-2)
+        const isProvisional = () => lastTwoUrlParts.includes('provisional');
 
-        if (isProvisional) {
+        if (isProvisional()) {
           return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
         }
 
