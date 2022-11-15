@@ -89,7 +89,6 @@ export class TyresSearchComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
     this.globalErrorService.clearErrors();
-    this.referenceDataService.loadReferenceData(ReferenceDataResourceType.Tyres);
     this.route.params.subscribe(p => (this.params = p));
     this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => (this.editingTechRecord = data));
   }
@@ -108,6 +107,8 @@ export class TyresSearchComponent implements OnInit {
     this.globalErrorService.clearErrors();
     this.searchResults = [];
     term = term.trim();
+
+    //in here pass in your search term and call the correct service method to load the data in.
 
     // display loading
     // api call/reducer

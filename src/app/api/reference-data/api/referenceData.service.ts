@@ -60,6 +60,98 @@ export class ReferenceDataService {
 
 
     /**
+     * Get reference data for a particular resourceType and resourceKey, allows partials.
+     * 
+     * @param resourceType 
+     * @param resourceKey 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public referenceLookupResourceTypeResourceKeyGet(resourceType: string, resourceKey: ResourceKey, observe?: 'body', reportProgress?: boolean): Observable<ReferenceDataApiResponse>;
+    public referenceLookupResourceTypeResourceKeyGet(resourceType: string, resourceKey: ResourceKey, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceDataApiResponse>>;
+    public referenceLookupResourceTypeResourceKeyGet(resourceType: string, resourceKey: ResourceKey, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceDataApiResponse>>;
+    public referenceLookupResourceTypeResourceKeyGet(resourceType: string, resourceKey: ResourceKey, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (resourceType === null || resourceType === undefined) {
+            throw new Error('Required parameter resourceType was null or undefined when calling referenceLookupResourceTypeResourceKeyGet.');
+        }
+
+        if (resourceKey === null || resourceKey === undefined) {
+            throw new Error('Required parameter resourceKey was null or undefined when calling referenceLookupResourceTypeResourceKeyGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/lookup/${encodeURIComponent(String(resourceType))}/${encodeURIComponent(String(resourceKey))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get reference data for a particular resourceType and resourceKey, allows partials.
+     * 
+     * @param searchKey 
+     * @param param 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public referenceLookupTyresSearchKeyParamGet(searchKey: string, param: string, observe?: 'body', reportProgress?: boolean): Observable<ReferenceDataApiResponse>;
+    public referenceLookupTyresSearchKeyParamGet(searchKey: string, param: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReferenceDataApiResponse>>;
+    public referenceLookupTyresSearchKeyParamGet(searchKey: string, param: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReferenceDataApiResponse>>;
+    public referenceLookupTyresSearchKeyParamGet(searchKey: string, param: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (searchKey === null || searchKey === undefined) {
+            throw new Error('Required parameter searchKey was null or undefined when calling referenceLookupTyresSearchKeyParamGet.');
+        }
+
+        if (param === null || param === undefined) {
+            throw new Error('Required parameter param was null or undefined when calling referenceLookupTyresSearchKeyParamGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ReferenceDataApiResponse>('get',`${this.basePath}/reference/lookup/tyres/${encodeURIComponent(String(searchKey))}/${encodeURIComponent(String(param))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get reference data for a particular resourceType.
      * 
      * @param resourceType 
