@@ -45,6 +45,7 @@ export class DynamicFormService {
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
+    [ValidatorNames.DateNotExceed]: (args: { sibling: string; months: number }) => CustomValidators.dateNotExceed(args.sibling, args.months),
     [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg),
     [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued
   };
@@ -56,8 +57,10 @@ export class DynamicFormService {
     [AsyncValidatorNames.RequiredIfNotFail]: () => CustomAsyncValidators.requiredIfNotFail(this.store),
     [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store),
     [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: any }) => CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
-    [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: { testResult: any, sibling: string; value: any }) => CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
-    [AsyncValidatorNames.HideIfEqualsWithCondition]: (args: { sibling: string, value: string; conditions: Condition | Condition[]}) => CustomAsyncValidators.hideIfEqualsWithCondition(this.store, args.sibling, args.value, args.conditions)
+    [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: { testResult: any; sibling: string; value: any }) =>
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
+    [AsyncValidatorNames.HideIfEqualsWithCondition]: (args: { sibling: string; value: string; conditions: Condition | Condition[] }) =>
+      CustomAsyncValidators.hideIfEqualsWithCondition(this.store, args.sibling, args.value, args.conditions)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

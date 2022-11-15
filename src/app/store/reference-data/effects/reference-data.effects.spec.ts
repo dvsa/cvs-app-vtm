@@ -69,7 +69,7 @@ describe('ReferenceDataEffects', () => {
 
         // expect effect to return success action
         expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
-          b: fetchReferenceDataSuccess({ resourceType, payload })
+          b: fetchReferenceDataSuccess({ resourceType, payload, paginated: false })
         });
       });
     });
@@ -89,7 +89,7 @@ describe('ReferenceDataEffects', () => {
 
           // expect effect to return success action
           expectObservable(effects.fetchReferenceDataByType$).toBe('---(bc)', {
-            b: fetchReferenceDataSuccess({ resourceType, payload }),
+            b: fetchReferenceDataSuccess({ resourceType, payload, paginated: true }),
             c: fetchReferenceData({ resourceType, paginationToken: 'token' })
           });
         });
@@ -105,7 +105,7 @@ describe('ReferenceDataEffects', () => {
         jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
-          b: fetchReferenceDataFailed({ error: 'Reference data resourceType is required' })
+          b: fetchReferenceDataFailed({ error: 'Reference data resourceType is required', resourceType: null as any })
         });
       });
     });
@@ -140,7 +140,7 @@ describe('ReferenceDataEffects', () => {
         jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
-          b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required' })
+          b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required', resourceType: resourceType })
         });
       });
     });

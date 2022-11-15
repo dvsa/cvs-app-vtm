@@ -1,6 +1,10 @@
 import { GlobalError } from '@core/components/global-error/global-error.interface';
-import { CountryOfRegistration, ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { createAction, props } from '@ngrx/store';
+
+interface featureError extends GlobalError {
+  resourceType: ReferenceDataResourceType;
+}
 
 export const fetchReferenceData = createAction(
   '[API/reference-data] Fetch all of ResourceType',
@@ -8,9 +12,9 @@ export const fetchReferenceData = createAction(
 );
 export const fetchReferenceDataSuccess = createAction(
   '[API/reference-data] Fetch all of ResourceType Success',
-  props<{ resourceType: ReferenceDataResourceType; payload: Array<ReferenceDataModelBase> }>()
+  props<{ resourceType: ReferenceDataResourceType; payload: Array<ReferenceDataModelBase>; paginated: boolean }>()
 );
-export const fetchReferenceDataFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<GlobalError>());
+export const fetchReferenceDataFailed = createAction('[API/reference-data] Fetch all of ResourceType Failed', props<featureError>());
 
 export const fetchReferenceDataByKey = createAction(
   '[API/reference-data] Fetch ResourceType by Key',
@@ -24,6 +28,6 @@ export const fetchReferenceDataByKeySuccess = createAction(
     payload: ReferenceDataModelBase;
   }>()
 );
-export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<GlobalError>());
+export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<featureError>());
 
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');

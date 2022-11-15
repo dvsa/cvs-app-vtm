@@ -31,7 +31,7 @@ describe('Reference Data Selectors', () => {
         (acc, v) => ({ ...acc, [v.resourceKey]: v }),
         {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
       );
-      const state: ReferenceDataState = { ...initialReferenceDataState, COUNTRY_OF_REGISTRATION: { ids, entities } };
+      const state: ReferenceDataState = { ...initialReferenceDataState, COUNTRY_OF_REGISTRATION: { ids, entities, loading: false } };
 
       const key = ids[Math.floor(Math.random() * ids.length)]; // select a random key
 
@@ -40,10 +40,11 @@ describe('Reference Data Selectors', () => {
     });
   });
 
-  it('should return loading state', () => {
-    const state: ReferenceDataState = { ...initialReferenceDataState, loading: true };
+  it('should return true if any feature is loading state', () => {
+    const state: ReferenceDataState = { ...initialReferenceDataState };
+    state.BODY_MAKE.loading = true;
     const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
-    expect(selectedState).toEqual(state.loading);
+    expect(selectedState).toEqual(true);
   });
 
   it('should return the reasons for abandoning for the right vehicle type', () => {
