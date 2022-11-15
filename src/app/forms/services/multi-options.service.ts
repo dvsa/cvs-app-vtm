@@ -17,7 +17,7 @@ export class MultiOptionsService {
     private testStationsService: TestStationsService
   ) {}
 
-  getOptions(referenceData: ReferenceDataResourceType | SpecialRefData): Observable<MultiOptions> {
+  getOptions(referenceData: ReferenceDataResourceType | SpecialRefData): Observable<MultiOptions | undefined> {
     switch (referenceData) {
       case SpecialRefData.TEST_STATION_P_NUMBER:
         return this.testStationsService.getTestStationsOptions();

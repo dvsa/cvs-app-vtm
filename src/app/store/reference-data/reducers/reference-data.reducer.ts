@@ -9,6 +9,7 @@ import {
   fetchReferenceDataFailed,
   fetchReferenceDataSuccess
 } from '../actions/reference-data.actions';
+import { isResourceType } from '../selectors/reference-data.selectors';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
 
 const selectResourceKey = (a: ReferenceDataModelBase): string | number => {
