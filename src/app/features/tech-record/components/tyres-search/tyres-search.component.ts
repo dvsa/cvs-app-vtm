@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeWidth, Params } from '@forms/services/dynamic-form.types';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
+import { cloneDeep } from 'lodash';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
-import { Observable, Subscription, debounceTime, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -13,10 +14,9 @@ import { ReferenceDataState } from '@store/reference-data';
 import { Store } from '@ngrx/store';
 import { selectAllReferenceDataByResourceType } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
-import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import cloneDeep from 'lodash.clonedeep';
+import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
+import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
 
 @Component({
   selector: 'app-tyres-search',
@@ -45,16 +45,16 @@ export class TyresSearchComponent implements OnInit {
     this.technicalRecordService.selectedVehicleTechRecord$.subscribe(data => (this.vehicleTechRecord = data));
   }
 
-  public searchResults: Array<ReferenceDataTyre> | null = null;
+  public form!: CustomFormGroup;
+  public isDirty = false;
+  public isEditing = true;
   public missingTermErrorMessage = 'You must provide search criteria';
   public missingFilterErrorMessage = 'You must select a valid search filter';
+  public searchResults: Array<ReferenceDataTyre> | null = null;
+  public type: FormNodeEditTypes = FormNodeEditTypes.SELECT;
   public vehicleTechRecord?: VehicleTechRecordModel;
   public viewableTechRecord: TechRecordModel | undefined = undefined;
-  public isEditing = true;
-  public form!: CustomFormGroup;
   private params: Params = {};
-  public isDirty = false;
-  public type: FormNodeEditTypes = FormNodeEditTypes.SELECT;
 
   public template: FormNode = {
     name: 'criteria',
@@ -107,7 +107,7 @@ export class TyresSearchComponent implements OnInit {
     // api call/reducer
     // switch case once the api changes are in?
 
-    // this.referenceDataStore.dispatch(fetchReferenceDataByKey({ resourceType: ReferenceDataResourceType.Tyres, resourceKey: term }));
+    this.referenceDataStore.dispatch(fetchReferenceDataByKey({ resourceType: ReferenceDataResourceType.Tyres, resourceKey: term }));
 
     // if api fail display 0 found
     // if api success set state
@@ -155,7 +155,6 @@ export class TyresSearchComponent implements OnInit {
     if (this.viewableTechRecord) {
       const axleIndex = Number(this.params.axleNumber!) - 1;
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
-      console.log('adding: ', tyre, 'to axle index: ', axleIndex);
 
       this.viewableTechRecord!.axles[axleIndex].tyres!.tyreCode = Number(tyre.code);
       this.viewableTechRecord!.axles[axleIndex].tyres!.tyreSize = tyre.tyreSize;
@@ -164,7 +163,8 @@ export class TyresSearchComponent implements OnInit {
       this.store.dispatch(updateEditingTechRecord({ techRecord: this.viewableTechRecord! }));
       this.router.navigate(['../..'], { relativeTo: this.route });
     } else {
-      console.error('No record found');
+      console.error('Unable to update state, changes not saved');
+      /// record relative to previous page lost on refresh - on refresh nav back a page
     }
   }
 
@@ -179,8 +179,7 @@ export class TyresSearchComponent implements OnInit {
     }
   }
 
-  ///// pagination/////////////////////////////
-
+  ///// pagination /////
   private pageStart?: number;
   private pageEnd?: number;
 
@@ -199,6 +198,7 @@ export class TyresSearchComponent implements OnInit {
   trackByFn(i: number, r: ReferenceDataTyre) {
     return r.resourceKey!;
   }
-
-  /////////////////////////////////////////////
+}
+function fetchReferenceDataByKey(arg0: { resourceType: ReferenceDataResourceType; resourceKey: string }): any {
+  throw new Error('Function not implemented.');
 }
