@@ -37,7 +37,7 @@ export const createProvisionalTechRecord = createAction(`${prefix} createProvisi
 export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
 export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
 
-export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string, vehicleTechRecord: VehicleTechRecordModel}>());
+export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string}>());
 export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
 export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
