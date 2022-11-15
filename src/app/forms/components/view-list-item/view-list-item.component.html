@@ -20,7 +20,9 @@
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <dd id="test-{{ name }}" class="govuk-summary-list__value">{{ value | defaultNullOrEmpty }}</dd>
+      <dd id="test-{{ name }}" class="govuk-summary-list__value">
+        {{ value | refDataDecode$: control?.meta?.referenceData | async | defaultNullOrEmpty }}
+      </dd>
     </ng-container>
   </ng-container>
 </ng-container>
