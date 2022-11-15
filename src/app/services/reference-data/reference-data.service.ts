@@ -45,14 +45,13 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.referenceResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
   }
 
-  fetchReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataItemApiResponse> {
+  fetchReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataApiResponse> {
     return this.referenceLookupResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
   }
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   fetchTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): Observable<ReferenceDataApiResponse> {
     return this.referenceLookupTyresSearchKeyParamGet(searchFilter, searchTerm, 'body');
   }
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));

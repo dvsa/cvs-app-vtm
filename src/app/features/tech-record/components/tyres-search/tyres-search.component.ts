@@ -26,9 +26,9 @@ import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-re
 export class TyresSearchComponent implements OnInit {
   options?: MultiOptions = [
     { label: 'Tyre code', value: 'code' },
-    { label: 'Ply rating', value: 'plyRating' },
-    { label: 'Single load index', value: 'loadIndexSingleLoad' },
-    { label: 'Double load index', value: 'loadIndexTwinLoad' }
+    { label: 'Ply rating', value: 'plyrating' },
+    { label: 'Single load index', value: 'singleload' },
+    { label: 'Double load index', value: 'doubleload' }
   ];
 
   constructor(
@@ -105,17 +105,15 @@ export class TyresSearchComponent implements OnInit {
     this.searchResults = [];
     term = term.trim();
 
-    //in here pass in your search term and call the correct service method to load the data in.
-
-    // display loading
-    // api call/reducer
-
-    // this.referenceDataService.fetchTyreReferenceDataByKeySearch(filter, term).subscribe(res => {
-    //   console.log(res)
-    // if res.length > 0 set searchResults
-    // else searchResults = []
-    // });
-    this.displaySearchResults(term, filter);
+    if (filter === 'code') {
+      this.referenceDataService
+        .fetchReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, term)
+        .subscribe(res => res.data.map(each => this.searchResults?.push(each as ReferenceDataTyre)));
+    } else {
+      this.referenceDataService.fetchTyreReferenceDataByKeySearch(filter, term).subscribe(res => {
+        console.log(res);
+      });
+    }
   }
 
   displaySearchResults(term: string, filter: string) {
@@ -182,7 +180,6 @@ export class TyresSearchComponent implements OnInit {
     }
   }
 
-  ///// pagination /////
   private pageStart?: number;
   private pageEnd?: number;
   public itemsPerPage: number = 10;
