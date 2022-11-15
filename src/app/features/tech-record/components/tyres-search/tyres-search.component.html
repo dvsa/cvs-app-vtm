@@ -26,10 +26,8 @@
   <app-select
     #searchFilter
     label="Search filter"
-    [id]="form.meta.children![1].name"
     [formControlName]="form.meta.children![1].name"
     [name]="form.meta.children![1].name"
-    [width]="width"
     [options]="options!"
     (ngModelChange)="onChange($event)"
   ></app-select>
@@ -67,9 +65,6 @@
     </svg>
   </button>
 </div>
-<!-- <button id="search" class="govuk-button margin-right" data-module="govuk-button" (click)="handleSearch(searchTerm.value, searchFilter.value)">
-    Search
- -->
 
 <ng-template #error let-name>
   <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
@@ -117,7 +112,7 @@
         <td class="govuk-table__cell">{{ tyre.axleLoadSingle || '-' }}</td>
         <td class="govuk-table__cell">{{ tyre.axleLoadDouble || '-' }}</td>
         <td class="govuk-table__cell">
-          <a id="add" class="govuk-link" (click)="handleSubmit(tyre)">Add</a>
+          <a id="add" class="govuk-link add-link" (click)="handleSubmit(tyre)">Add</a>
         </td>
       </tr>
     </tbody>

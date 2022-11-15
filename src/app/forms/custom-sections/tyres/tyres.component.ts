@@ -141,7 +141,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getTyreSearchPage(axleNumber: number) {
-    this.router.navigate([`../correcting-an-error/tyre-search/${axleNumber}`], { relativeTo: this.route });
+    this.router.navigate([`../correcting-an-error/tyre-search/${axleNumber}`], { relativeTo: this.route, state: this.vehicleTechRecord });
   }
 
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {
