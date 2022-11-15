@@ -117,7 +117,12 @@
       </tr>
     </tbody>
   </table>
-  <app-pagination tableName="search-results" [numberOfItems]="numberOfResults" (paginationOptions)="handlePaginationChange($event)"></app-pagination>
+  <app-pagination
+    tableName="search-results"
+    [numberOfItems]="numberOfResults"
+    [itemsPerPage]="itemsPerPage"
+    (paginationOptions)="handlePaginationChange($event)"
+  ></app-pagination>
 </ng-container>
 
 <button id="cancel" class="govuk-button govuk-button--secondary margin-right" data-module="govuk-button" (click)="cancel()">Cancel</button>

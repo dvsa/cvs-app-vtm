@@ -48,8 +48,11 @@ export class ReferenceDataService extends ReferenceDataApiService {
   fetchReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataItemApiResponse> {
     return this.referenceLookupResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
   }
-  //copy the above function and make it work for the tyres in referenceData.service.ts method referenceLookupTyresSearchKeyParamGet
-  //you need to pass in the search type (ply, single, double) and the value.
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  fetchTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): Observable<ReferenceDataApiResponse> {
+    return this.referenceLookupTyresSearchKeyParamGet(searchFilter, searchTerm, 'body');
+  }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));

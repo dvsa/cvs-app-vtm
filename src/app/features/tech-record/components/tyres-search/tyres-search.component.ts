@@ -89,6 +89,9 @@ export class TyresSearchComponent implements OnInit {
     this.globalErrorService.clearErrors();
     this.route.params.subscribe(p => (this.params = p));
     this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => (this.viewableTechRecord = data));
+    if (!this.viewableTechRecord) {
+      this.router.navigate(['../..'], { relativeTo: this.route });
+    }
   }
 
   onChange = (event: any) => {
@@ -106,13 +109,12 @@ export class TyresSearchComponent implements OnInit {
 
     // display loading
     // api call/reducer
-    // switch case once the api changes are in?
 
-    this.referenceDataStore.dispatch(fetchReferenceDataByKey({ resourceType: ReferenceDataResourceType.Tyres, resourceKey: term }));
-
-    // if api fail display 0 found
-    // if api success set state
-
+    // this.referenceDataService.fetchTyreReferenceDataByKeySearch(filter, term).subscribe(res => {
+    //   console.log(res)
+    // if res.length > 0 set searchResults
+    // else searchResults = []
+    // });
     this.displaySearchResults(term, filter);
   }
 
@@ -183,6 +185,7 @@ export class TyresSearchComponent implements OnInit {
   ///// pagination /////
   private pageStart?: number;
   private pageEnd?: number;
+  public itemsPerPage: number = 10;
 
   get paginatedFields() {
     return this.searchResults!.slice(this.pageStart, this.pageEnd);
@@ -199,7 +202,4 @@ export class TyresSearchComponent implements OnInit {
   trackByFn(i: number, r: ReferenceDataTyre) {
     return r.resourceKey!;
   }
-}
-function fetchReferenceDataByKey(arg0: { resourceType: ReferenceDataResourceType; resourceKey: string }): any {
-  throw new Error('Function not implemented.');
 }
