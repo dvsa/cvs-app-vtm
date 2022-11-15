@@ -120,4 +120,17 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        return techRecord.vehicleConfiguration ?? '';
+      case VehicleTypes.PSV:
+        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+      case VehicleTypes.HGV:
+        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
+      default:
+        return 'Unknown Vehicle Type';
+    }
+  }
 }
