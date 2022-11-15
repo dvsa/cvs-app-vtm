@@ -2,12 +2,12 @@
   <div class="govuk-grid-column-one-third">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-        <div class="vehicle_heading govuk-!-margin-bottom-6">
+        <div class="vehicle_heading govuk-!-margin-bottom-6 govuk-!-margin-top-2">
           <h1 class="govuk-heading-l">
             <ng-container *ngIf="currentTechRecord$ | async as techRecord">
               {{ getVehicleDescription(techRecord, techRecord?.vehicleType) }}
-              <app-icon [icon]="techRecord?.vehicleType || ''"></app-icon>
             </ng-container>
+            <app-icon [icon]="(currentTechRecord$ | async)?.vehicleType || ''"></app-icon>
           </h1>
         </div>
         <dl class="govuk-summary-list">
