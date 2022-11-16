@@ -79,7 +79,7 @@ export const ManufacturerTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
           validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
-        },
+        }
       ]
     }
   ]

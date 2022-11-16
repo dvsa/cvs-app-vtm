@@ -1,0 +1,117 @@
+import { TestBed } from '@angular/core/testing';
+import { BrowserModule } from '@angular/platform-browser';
+import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { initialAppState, State } from '@store/index';
+import { initialReferenceDataState, STORE_FEATURE_REFERENCE_DATA_KEY } from '@store/reference-data';
+import { RefDataDecodePipe } from './ref-data-decode.pipe';
+
+describe('RefDataDecodePipe', () => {
+  let store: MockStore<State>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [BrowserModule],
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
+
+    store = TestBed.inject(MockStore);
+
+    store.setState({
+      ...initialAppState,
+      [STORE_FEATURE_REFERENCE_DATA_KEY]: {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.CountryOfRegistration]: {
+          ids: ['gb'],
+          entities: {
+            gb: {
+              resourceType: ReferenceDataResourceType.CountryOfRegistration,
+              resourceKey: 'gb',
+              description: 'Great Britain'
+            }
+          },
+          loading: false
+        },
+        [ReferenceDataResourceType.Tyres]: {
+          ids: ['101'],
+          entities: {
+            '101': {
+              resourceType: ReferenceDataResourceType.Tyres,
+              resourceKey: '101',
+              tyreSize: '235/75-17.5'
+            } as ReferenceDataTyre
+          },
+          loading: false
+        }
+      }
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    store.refreshState();
+  });
+
+  it('should return description', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('gb', ReferenceDataResourceType.CountryOfRegistration).subscribe(val => {
+      expect(val).toBe('Great Britain');
+      done();
+    });
+  });
+
+  it('should return tyreSize', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('101', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe(val => {
+      expect(val).toBe('235/75-17.5');
+      done();
+    });
+  });
+
+  it('should return untransformed value when description is undefined', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('101', ReferenceDataResourceType.Tyres).subscribe(val => {
+      expect(val).toBe('101');
+      done();
+    });
+  });
+
+  it('should return untransformed value when value is not a known resourceKey', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('foo', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe(val => {
+      expect(val).toBe('foo');
+      done();
+    });
+  });
+
+  it('should return untransformed value when value is falsy', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('', ReferenceDataResourceType.Tyres, 'tyreSize').subscribe(val => {
+      expect(val).toBe('');
+      done();
+    });
+  });
+
+  it('should return untransformed value when resourceType is falsy', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('101', '', 'tyreSize').subscribe(val => {
+      expect(val).toBe('101');
+      done();
+    });
+  });
+
+  it('should return untransformed value when data not in state', done => {
+    const pipe = new RefDataDecodePipe(store);
+
+    pipe.transform('bar', 'baz').subscribe(val => {
+      expect(val).toBe('bar');
+      done();
+    });
+  });
+});

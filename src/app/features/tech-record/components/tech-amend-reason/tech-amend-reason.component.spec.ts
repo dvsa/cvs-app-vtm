@@ -15,10 +15,9 @@ describe('TechAmendReasonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TechAmendReasonComponent ],
-      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({}),]
-    })
-    .compileComponents();
+      declarations: [TechAmendReasonComponent],
+      imports: [RouterTestingModule, DynamicFormsModule, ReactiveFormsModule, StoreModule.forRoot({})]
+    }).compileComponents();
 
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);

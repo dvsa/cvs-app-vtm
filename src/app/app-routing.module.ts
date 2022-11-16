@@ -42,7 +42,7 @@ const routes: Routes = [
         path: 'error',
         pathMatch: 'full',
         component: ServerErrorComponent
-      },
+      }
     ]
   },
   {

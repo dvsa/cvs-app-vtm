@@ -79,7 +79,8 @@ export const EmissionsSection: FormNode = {
                     { name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'modificationTypeUsed', value: 'p' } },
                     { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapFitted', value: 'p' } },
                     { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } }
-                  ]
+                  ],
+                  asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }]
                 },
                 {
                   name: 'description',
@@ -98,11 +99,17 @@ export const EmissionsSection: FormNode = {
               name: 'modificationTypeUsed',
               label: 'Modification type used',
               type: FormNodeTypes.CONTROL,
-              validators: [
-                { name: ValidatorNames.MaxLength, args: 100 }
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+              asyncValidators: [
+                {
+                  name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'm' }
+                },
+                {
+                  name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'g' }
+                }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'm' } }, 
-                { name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'g' } }],
               required: true,
               value: null
             },
@@ -110,10 +117,13 @@ export const EmissionsSection: FormNode = {
               name: 'particulateTrapFitted',
               label: 'Particulate trap fitted',
               type: FormNodeTypes.CONTROL,
-              validators: [
-                { name: ValidatorNames.MaxLength, args: 100 }
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+              asyncValidators: [
+                {
+                  name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' }
+                }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' } }],
               required: true,
               value: null
             },
@@ -121,10 +131,13 @@ export const EmissionsSection: FormNode = {
               name: 'particulateTrapSerialNumber',
               label: 'Particulate trap serial number',
               type: FormNodeTypes.CONTROL,
-              validators: [
-                { name: ValidatorNames.MaxLength, args: 100 }
+              validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
+              asyncValidators: [
+                {
+                  name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals,
+                  args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' }
+                }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals, args: { testResult: ['fail', 'abandoned'], sibling: 'modType.code', value: 'p' } }],
               required: true,
               value: null
             }

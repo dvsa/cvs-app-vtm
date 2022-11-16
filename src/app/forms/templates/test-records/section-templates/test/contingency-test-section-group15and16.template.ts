@@ -49,10 +49,7 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' }
               ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } },
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }],
               type: FormNodeTypes.CONTROL
             },
             {
@@ -75,8 +72,9 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.Alphanumeric }],
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
               required: true,
               value: null
             },

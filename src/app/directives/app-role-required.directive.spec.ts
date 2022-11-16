@@ -58,12 +58,10 @@ describe('RoleRequiredDirective', () => {
 
 describe('RoleRequiredDirective without roles', () => {
   it('should hide the element when no roles are available', () => {
-    const  fixture: ComponentFixture<TestComponent> = TestBed
-      .configureTestingModule({
-        declarations: [RoleRequiredDirective, TestComponent],
-        providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(null) } }]
-      })
-      .createComponent(TestComponent);
+    const fixture: ComponentFixture<TestComponent> = TestBed.configureTestingModule({
+      declarations: [RoleRequiredDirective, TestComponent],
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(null) } }]
+    }).createComponent(TestComponent);
 
     fixture.detectChanges(); // initial binding
 

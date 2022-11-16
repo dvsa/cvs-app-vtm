@@ -40,7 +40,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         RouterTestingModule,
         SharedModule,
         StoreModule.forRoot({}),
-        TestResultsApiModule,
+        TestResultsApiModule
       ],
       declarations: [
         EditTechRecordButtonComponent,
@@ -130,12 +130,12 @@ describe('VehicleTechnicalRecordComponent', () => {
 
   describe('handleSubmit', () => {
     it('should evaluate form validity', () => {
-      const handleFormStateSpy = jest.spyOn(component, 'handleFormState')
+      const handleFormStateSpy = jest.spyOn(component, 'handleFormState');
       component.vehicleTechRecord = mockVehicleTechnicalRecord();
       fixture.detectChanges();
 
       component.isEditing = true;
-      component.handleSubmit()
+      component.handleSubmit();
 
       expect(handleFormStateSpy).toHaveBeenCalled();
       expect(component.isInvalid).toBeTruthy();
@@ -145,7 +145,7 @@ describe('VehicleTechnicalRecordComponent', () => {
     describe('correcting an error', () => {
       beforeEach(() => {
         component.editingReason = ReasonForEditing.CORRECTING_AN_ERROR;
-        component.handleFormState = jest.fn(() => component.isInvalid = false);
+        component.handleFormState = jest.fn(() => (component.isInvalid = false));
         fixture.detectChanges();
       });
 
@@ -153,15 +153,15 @@ describe('VehicleTechnicalRecordComponent', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.vehicleTechRecord = mockVehicleTechnicalRecord();
         tick();
-        component.handleSubmit()
-        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicleTechRecord.systemNumber}));
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({ systemNumber: component.vehicleTechRecord.systemNumber }));
       }));
-    })
+    });
 
     describe('notifiable alteration', () => {
       beforeEach(() => {
         component.editingReason = ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED;
-        component.handleFormState = jest.fn(() => component.isInvalid = false);
+        component.handleFormState = jest.fn(() => (component.isInvalid = false));
         fixture.detectChanges();
       });
 
@@ -169,23 +169,25 @@ describe('VehicleTechnicalRecordComponent', () => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.vehicleTechRecord = mockVehicleTechnicalRecord();
         tick();
-        component.handleSubmit()
-        expect(dispatchSpy).toHaveBeenCalledWith(updateTechRecords({
-          systemNumber: component.vehicleTechRecord.systemNumber,
-          recordToArchiveStatus: StatusCodes.PROVISIONAL,
-          newStatus: StatusCodes.PROVISIONAL
-        }));
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(
+          updateTechRecords({
+            systemNumber: component.vehicleTechRecord.systemNumber,
+            recordToArchiveStatus: StatusCodes.PROVISIONAL,
+            newStatus: StatusCodes.PROVISIONAL
+          })
+        );
       }));
 
       it('should dispatch updateTechRecords to create a new provisional when one isnt present', fakeAsync(() => {
         const dispatchSpy = jest.spyOn(store, 'dispatch');
         component.vehicleTechRecord = mockVehicleTechnicalRecord();
         //remove provisional
-        component.vehicleTechRecord.techRecord.splice(0,1);
+        component.vehicleTechRecord.techRecord.splice(0, 1);
         tick();
-        component.handleSubmit()
-        expect(dispatchSpy).toHaveBeenCalledWith(createProvisionalTechRecord({ systemNumber: component.vehicleTechRecord.systemNumber}));
+        component.handleSubmit();
+        expect(dispatchSpy).toHaveBeenCalledWith(createProvisionalTechRecord({ systemNumber: component.vehicleTechRecord.systemNumber }));
       }));
-    })
+    });
   });
 });

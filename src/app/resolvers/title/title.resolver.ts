@@ -12,7 +12,7 @@ export class TitleResolver implements Resolve<boolean> {
   constructor(private titleService: Title, private store: Store<State>) {}
   resolve(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      this.store.pipe(select(selectRouteData)).subscribe((navigationData) => {
+      this.store.pipe(select(selectRouteData)).subscribe(navigationData => {
         const { title } = navigationData;
         if (title) {
           this.titleService.setTitle(`Vehicle Testing Management - ${title}`);

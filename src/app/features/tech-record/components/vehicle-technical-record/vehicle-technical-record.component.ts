@@ -119,9 +119,24 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         this.store.dispatch(updateTechRecords({ systemNumber }));
       } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
         hasProvisional
-          ? this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL }))
+          ? this.store.dispatch(
+              updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
+            )
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
+    }
+  }
+
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        return techRecord.vehicleConfiguration ?? '';
+      case VehicleTypes.PSV:
+        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+      case VehicleTypes.HGV:
+        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
+      default:
+        return 'Unknown Vehicle Type';
     }
   }
 }

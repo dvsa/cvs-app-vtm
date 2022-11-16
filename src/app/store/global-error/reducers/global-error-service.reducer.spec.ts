@@ -49,7 +49,7 @@ describe('Global Error Reducer', () => {
     it.each([routerNavigatedAction])('should reset the error state', actionMethod => {
       const newState = { ...initialGlobalErrorState, errors: [] };
       //all props must be supplied here
-      const action = actionMethod({payload: <RouterNavigatedPayload<SerializedRouterStateSnapshot>>{}});
+      const action = actionMethod({ payload: <RouterNavigatedPayload<SerializedRouterStateSnapshot>>{} });
       const state = globalErrorReducer(initialGlobalErrorState, action);
 
       expect(state).toEqual(newState);
