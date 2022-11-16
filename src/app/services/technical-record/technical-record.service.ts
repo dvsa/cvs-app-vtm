@@ -62,16 +62,13 @@ export class TechnicalRecordService {
     return this.http.get<VehicleTechRecordModel[]>(url, { responseType: 'json' });
   }
 
-<<<<<<< HEAD
-  putUpdateTechRecords(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }, recordToArchiveStatus?: StatusCodes, newStatus?: StatusCodes) {
-=======
   putUpdateTechRecords(
     systemNumber: string,
     techRecord: TechRecordModel,
     user: { username: string; id?: string },
-    recordToArchiveStatus?: StatusCodes
+    recordToArchiveStatus?: StatusCodes,
+    newStatus?: StatusCodes
   ) {
->>>>>>> develop
     const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
     const newTechRecord = cloneDeep(techRecord);
@@ -151,10 +148,10 @@ export class TechnicalRecordService {
     return this.store.pipe(
       select(selectRouteNestedParams),
       map(params => {
-        const lastTwoUrlParts = this.router.url.split('/').slice(-2)
+        const lastTwoUrlParts = this.router.url.split('/').slice(-2);
 
         if (lastTwoUrlParts.includes('provisional')) {
-          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL)
+          return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL);
         }
 
         const createdAt = params['techCreatedAt'];
