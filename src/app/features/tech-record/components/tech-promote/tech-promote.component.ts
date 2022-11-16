@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
+import { RouterReducerState } from '@ngrx/router-store';
+import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { selectRouteNestedParams } from '@store/router/selectors/router.selectors';
 import { updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
-import { Observable, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-tech-promote',
@@ -16,18 +18,19 @@ import { Observable, tap } from 'rxjs';
 export class TechPromoteComponent {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
 
-  techRecord!: TechRecordModel;
+  techRecord?: TechRecordModel;
 
   form: CustomFormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store<TechnicalRecordServiceState>,
+    private routerStore: Store<RouterReducerState>,
+    private techRecordsStore: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService) {
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$.pipe(
       tap(vehicleTechRecord => this.techRecord = cloneDeep(vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL))!)
-      );
+    );
 
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
@@ -35,15 +38,17 @@ export class TechPromoteComponent {
     );
   }
 
-  handleSubmit(): void {
-    this.techRecord.reasonForCreation = this.form.get('reason')?.value;
+  handleSubmit(form: {reason: string}): void {
+    if (!this.techRecord) { return; }
 
-    this.store.dispatch(updateEditingTechRecord({ techRecord: this.techRecord }));
+    this.techRecord.reasonForCreation = form.reason;
 
-    const systemNumber = this.router.url.split('/')[2];
+    this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: this.techRecord }));
 
-    this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT }));
+    this.routerStore.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
+      this.techRecordsStore.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT }));
 
-    this.router.navigate([`../..`], { relativeTo: this.route });
+      this.router.navigate([`../..`], { relativeTo: this.route });
+    });
   }
 }

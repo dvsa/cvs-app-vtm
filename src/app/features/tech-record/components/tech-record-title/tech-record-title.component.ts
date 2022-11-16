@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable } from 'rxjs';
@@ -13,10 +14,12 @@ export class TechRecordTitleComponent implements OnInit {
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
 
-  constructor(private technicalRecordService: TechnicalRecordService) { }
+  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) { }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
+    if (this.vehicleTechRecord) {
+      this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord);
+    }
   }
 
   get currentVrm(): string | undefined {
@@ -29,5 +32,9 @@ export class TechRecordTitleComponent implements OnInit {
 
   get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
+  }
+
+  navigateToPromotion(): void {
+    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/provisional/promote`);
   }
 }
