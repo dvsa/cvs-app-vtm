@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx prettier --write $(git diff --name-only HEAD^ HEAD | tr '\n' ' ') | grep -o '^\S*' | xargs -I {} git add {} | git commit --amend --no-edit
+npx prettier --write $(git diff --name-only HEAD^ HEAD | tr '\n' ' ') | grep -o '^\S*' | xargs -I {} git add {} && git commit --amend --no-edit
