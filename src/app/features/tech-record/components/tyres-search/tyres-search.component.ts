@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
 import { cloneDeep } from 'lodash';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -10,7 +10,7 @@ import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { fetchReferenceDataByKeySearchSuccess, ReferenceDataState } from '@store/reference-data';
+import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess, ReferenceDataState } from '@store/reference-data';
 import { Store } from '@ngrx/store';
 import { selectAllReferenceDataByResourceType, selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -29,7 +29,7 @@ import { selectVehicleTechnicalRecordsBySystemNumber } from '@store/technical-re
   templateUrl: './tyres-search.component.html',
   styleUrls: ['./tyres-search.component.scss']
 })
-export class TyresSearchComponent implements OnInit {
+export class TyresSearchComponent implements OnInit, OnDestroy {
   options?: MultiOptions = [
     { label: 'Tyre code', value: 'code' },
     { label: 'Ply rating', value: 'plyrating' },
@@ -111,9 +111,11 @@ export class TyresSearchComponent implements OnInit {
     this.isDirty = true;
   };
 
-  handleSearch(term: string, filter: string): void {
-    console.log('find: {', filter, '} with value: {', term, '}');
+  ngOnDestroy() {
+    this.referenceDataService.removeTyreSearch();
+  }
 
+  handleSearch(term: string, filter: string): void {
     this.globalErrorService.clearErrors();
     this.searchResults = [];
     term = term.trim();
@@ -128,20 +130,19 @@ export class TyresSearchComponent implements OnInit {
 
     if (filter === 'code') {
       this.referenceDataService.loadReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, term);
-      this.actions$
-        .pipe(
-          ofType(fetchReferenceDataByKeySearchSuccess),
-          mergeMap(_action => this.store.select(selectTyreSearchReturn())),
-          take(1)
-        )
-        .subscribe((data: any) => {
-          this.searchResults = data;
-        });
     } else {
-      this.referenceDataService.fetchTyreReferenceDataByKeySearch(filter, term).subscribe(res => {
-        console.log(res);
-      });
+      this.referenceDataService.loadTyreReferenceDataByKeySearch(filter, term);
     }
+
+    this.actions$
+      .pipe(
+        ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
+        mergeMap(_action => this.store.select(selectTyreSearchReturn())),
+        take(1)
+      )
+      .subscribe((data: any) => {
+        this.searchResults = data;
+      });
   }
 
   handleSubmit(tyre: ReferenceDataTyre): void {

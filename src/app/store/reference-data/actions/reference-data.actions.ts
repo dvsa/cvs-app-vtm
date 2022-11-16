@@ -47,4 +47,21 @@ export const fetchReferenceDataByKeySearchFailed = createAction(
   props<featureError>()
 );
 
+export const fetchTyreReferenceDataByKeySearch = createAction(
+  '[API/reference-data] Fetch tyre by filter and term',
+  props<{ searchFilter: string; searchTerm: string }>()
+);
+export const fetchTyreReferenceDataByKeySearchSuccess = createAction(
+  '[API/reference-data] Fetch tyre by filter and term and search Success',
+  props<{
+    resourceType: ReferenceDataResourceType;
+    payload: Array<ReferenceDataModelBase>;
+  }>()
+);
+export const fetchTyreReferenceDataByKeySearchFailed = createAction(
+  '[API/reference-data] Fetch tyre by filter and term and search Failed',
+  props<featureError>()
+);
+export const removeTyreSearch = createAction('[API/reference-data] Remove search return from state');
+
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');

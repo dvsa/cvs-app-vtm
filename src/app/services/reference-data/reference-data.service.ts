@@ -14,7 +14,9 @@ import { select, Store } from '@ngrx/store';
 import {
   fetchReferenceData,
   fetchReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearch,
   ReferenceDataState,
+  removeTyreSearch,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
@@ -58,11 +60,16 @@ export class ReferenceDataService extends ReferenceDataApiService {
   loadReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
     this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType, resourceKey }));
   }
+  loadTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): void {
+    this.store.dispatch(fetchTyreReferenceDataByKeySearch({ searchFilter, searchTerm }));
+  }
 
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
-
+  removeTyreSearch() {
+    return this.store.dispatch(removeTyreSearch());
+  }
   getTyreSearchReturn$ = () => {
     return this.store.pipe(select(selectTyreSearchReturn()));
   };
