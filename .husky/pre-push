@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# Format commited files, add them and commit them as part of previous commit.
 npx prettier --write $(git diff --name-only HEAD^ HEAD | tr '\n' ' ') | grep -o '^\S*' | xargs -I {} git add {} && git commit --amend --no-edit

@@ -65,6 +65,6 @@ export const PsvTypeApprovalTemplate: FormNode = {
       type: FormNodeTypes.CONTROL,
       width: FormNodeWidth.XL,
       validators: [{ name: ValidatorNames.MaxLength, args: 35 }]
-    }
+    },
   ]
 };

@@ -21,6 +21,6 @@ export const PsvNotes: FormNode = {
       viewType: FormNodeViewTypes.STRING,
       editType: FormNodeEditTypes.TEXTAREA,
       validators: [{ name: ValidatorNames.MaxLength, args: 160 }]
-    }
+    },
   ]
 };

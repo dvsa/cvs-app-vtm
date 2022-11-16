@@ -234,7 +234,7 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
           { value: true, label: 'Yes' },
           { value: false, label: 'No' }
         ]
-      }
+      },
     ]
   };
   return PsvTechRecord;
