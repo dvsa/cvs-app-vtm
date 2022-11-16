@@ -78,15 +78,15 @@ describe('TestStationsService', () => {
 
     it('should handle errors', done => {
       const expectedId = 'some ID';
-        service.fetchTestStation(expectedId).subscribe({
-          next: () => {},
-          error: e => {
-            expect(e.error).toEqual('Deliberate 500 error');
-            expect(e.status).toEqual(500);
-            expect(e.statusText).toEqual('Server Error');
-            done();
-          }
-        });
+      service.fetchTestStation(expectedId).subscribe({
+        next: () => {},
+        error: e => {
+          expect(e.error).toEqual('Deliberate 500 error');
+          expect(e.status).toEqual(500);
+          expect(e.statusText).toEqual('Server Error');
+          done();
+        }
+      });
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/test-stations/${expectedId}`);

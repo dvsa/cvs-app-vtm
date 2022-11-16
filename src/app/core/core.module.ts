@@ -10,7 +10,15 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { ServerErrorComponent } from './components/server-error/server-error.component';
 
 @NgModule({
-  declarations: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent, PageNotFoundComponent, ServerErrorComponent],
+  declarations: [
+    FooterComponent,
+    HeaderComponent,
+    GlobalErrorComponent,
+    SpinnerComponent,
+    BreadcrumbsComponent,
+    PageNotFoundComponent,
+    ServerErrorComponent
+  ],
   imports: [CommonModule, RouterModule],
   exports: [FooterComponent, HeaderComponent, GlobalErrorComponent, SpinnerComponent, BreadcrumbsComponent]
 })

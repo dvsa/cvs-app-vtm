@@ -72,16 +72,16 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   addAxle(): void {
     const weights = this.isPsv
       ? {
-        kerbWeight: null,
-        ladenWeight: null,
-        gbWeight: null,
-        designWeight: null
-      }
+          kerbWeight: null,
+          ladenWeight: null,
+          gbWeight: null,
+          designWeight: null
+        }
       : {
-        gbWeight: null,
-        eecWeight: null,
-        designWeight: null
-      };
+          gbWeight: null,
+          eecWeight: null,
+          designWeight: null
+        };
 
     const newAxle: Axle = {
       axleNumber: this.axles.length + 1,

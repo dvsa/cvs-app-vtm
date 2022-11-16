@@ -32,7 +32,7 @@ export const HgvAndTrlBodyTemplate: FormNode = {
           value: '',
           type: FormNodeTypes.CONTROL,
           validators: [{ name: ValidatorNames.Required }]
-        },
+        }
       ]
     },
     {
