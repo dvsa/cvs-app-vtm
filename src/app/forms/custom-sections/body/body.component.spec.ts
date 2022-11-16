@@ -18,8 +18,7 @@ describe('BodyComponent', () => {
       declarations: [BodyComponent],
       imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule],
       providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

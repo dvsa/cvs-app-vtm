@@ -15,16 +15,14 @@ export class RoleRequiredDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.roles$
-      .pipe(take(1))
-      .subscribe(storedRoles => {
-        const hasAccess = this.userRolesRequired?.some(role => storedRoles?.includes(role));
+    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
+      const hasAccess = this.userRolesRequired?.some(role => storedRoles?.includes(role));
 
-        if (hasAccess) {
-          this.viewContainer.createEmbeddedView(this.templateRef);
-        } else {
-          this.viewContainer.clear();
-        }
-      });
+      if (hasAccess) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainer.clear();
+      }
+    });
   }
 }

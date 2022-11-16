@@ -14,7 +14,7 @@ describe('TechnicalRecordService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
     });
 

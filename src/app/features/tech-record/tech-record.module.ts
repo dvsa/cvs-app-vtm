@@ -22,12 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     VehicleTechnicalRecordComponent,
     TechAmendReasonComponent
   ],
-  imports: [
-    CommonModule,
-    DynamicFormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    TechRecordsRoutingModule],
+  imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule],
   exports: [EditTechRecordButtonComponent]
 })
 export class TechRecordsModule {}

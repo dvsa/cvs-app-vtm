@@ -371,7 +371,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({systemNumber: 'PSV', vin: 'XMGDE02FS0H012345'}) });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'PSV', vin: 'XMGDE02FS0H012345' }) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
@@ -431,7 +431,9 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' })
+        });
       });
     });
   });

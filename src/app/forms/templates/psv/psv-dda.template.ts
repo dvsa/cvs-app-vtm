@@ -108,8 +108,8 @@ export const PsvDdaTemplate: FormNode = {
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.TEXTAREA,
           validators: [{ name: ValidatorNames.MaxLength, args: 1024 }]
-        },
+        }
       ]
-    },
+    }
   ]
 };

@@ -16,10 +16,10 @@ export const {
   selectUrl // select the current url
 } = getSelectors();
 
-export const routerState = createSelector(selectRouter, (state) => state);
-export const currentRouteState = createSelector(selectCurrentRoute, (state) => state);
+export const routerState = createSelector(selectRouter, state => state);
+export const currentRouteState = createSelector(selectCurrentRoute, state => state);
 
-export const selectRouteNestedParams = createSelector(selectRouter, (router) => {
+export const selectRouteNestedParams = createSelector(selectRouter, router => {
   let currentRoute = router?.state?.root;
   let params: Params = {};
   while (currentRoute?.firstChild) {
@@ -32,4 +32,4 @@ export const selectRouteNestedParams = createSelector(selectRouter, (router) => 
   return params;
 });
 
-export const routeEditable = createSelector(selectQueryParam('edit'), (edit) => edit === 'true');
+export const routeEditable = createSelector(selectQueryParam('edit'), edit => edit === 'true');

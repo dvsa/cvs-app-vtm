@@ -73,6 +73,6 @@ export const PsvBodyTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 10 }]
-    },
+    }
   ]
 };

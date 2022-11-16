@@ -58,6 +58,6 @@ export const PsvBrakesTemplate: FormNode = {
           type: FormNodeTypes.CONTROL
         }
       ]
-    },
+    }
   ]
 };

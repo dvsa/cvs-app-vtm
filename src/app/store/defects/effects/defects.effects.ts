@@ -16,20 +16,24 @@ export class DefectsEffects {
   fetchDefects$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchDefects),
-      mergeMap(() => this.defectsService.fetchDefects().pipe(
-        map(defects => fetchDefectsSuccess({ payload: defects })),
-        catchError(e => of(fetchDefectsFailed({ error: e.message })))
-      ))
+      mergeMap(() =>
+        this.defectsService.fetchDefects().pipe(
+          map(defects => fetchDefectsSuccess({ payload: defects })),
+          catchError(e => of(fetchDefectsFailed({ error: e.message })))
+        )
+      )
     )
   );
 
   fetchDefect$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchDefect),
-      mergeMap(({ id }) => this.defectsService.fetchDefect(id).pipe(
-        map(defect => fetchDefectSuccess({ id, payload: defect })),
-        catchError(e => of(fetchDefectFailed({ error: e.message })))
-      ))
+      mergeMap(({ id }) =>
+        this.defectsService.fetchDefect(id).pipe(
+          map(defect => fetchDefectSuccess({ id, payload: defect })),
+          catchError(e => of(fetchDefectFailed({ error: e.message })))
+        )
+      )
     )
   );
 

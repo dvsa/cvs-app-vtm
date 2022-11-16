@@ -40,6 +40,6 @@ export const PsvDimensionsTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.Max, args: 99999 }]
-    },
+    }
   ]
 };
