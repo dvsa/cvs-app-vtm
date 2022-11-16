@@ -1,7 +1,7 @@
 import { Brake, ReferenceDataResourceType } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
-import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
+import { ReferenceDataEntityStateTyres, referenceDataFeatureState, resourceTypeAdapters } from '../reducers/reference-data.reducer';
 
 const resourceTypeSelector = (resourceType: ReferenceDataResourceType) => createSelector(referenceDataFeatureState, state => state[resourceType]);
 
@@ -28,6 +28,9 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
       throw new Error('Unknown Vehicle Type');
   }
 };
+
+export const selectTyreSearchReturn = () =>
+  createSelector(referenceDataFeatureState, state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).searchReturn);
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);

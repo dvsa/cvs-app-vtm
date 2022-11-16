@@ -30,4 +30,21 @@ export const fetchReferenceDataByKeySuccess = createAction(
 );
 export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<featureError>());
 
+export const fetchReferenceDataByKeySearch = createAction(
+  '[API/reference-data] Fetch ResourceType by Key and Search',
+  props<{ resourceType: ReferenceDataResourceType; resourceKey: string | number }>()
+);
+export const fetchReferenceDataByKeySearchSuccess = createAction(
+  '[API/reference-data] Fetch ResourceType by Key and search Success',
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string | number;
+    payload: Array<ReferenceDataModelBase>;
+  }>()
+);
+export const fetchReferenceDataByKeySearchFailed = createAction(
+  '[API/reference-data] Fetch ResourceType by Key and search Failed',
+  props<featureError>()
+);
+
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');

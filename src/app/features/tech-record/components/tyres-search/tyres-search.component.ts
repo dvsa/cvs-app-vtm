@@ -5,18 +5,24 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
-import { Observable } from 'rxjs';
+import { mergeMap, Observable, take } from 'rxjs';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ReferenceDataState } from '@store/reference-data';
+import { fetchReferenceDataByKeySearchSuccess, ReferenceDataState } from '@store/reference-data';
 import { Store } from '@ngrx/store';
-import { selectAllReferenceDataByResourceType } from '@store/reference-data/selectors/reference-data.selectors';
+import { selectAllReferenceDataByResourceType, selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
+import {
+  createProvisionalTechRecordSuccess,
+  updateEditingTechRecord,
+  updateTechRecordsSuccess
+} from '@store/technical-records/actions/technical-record-service.actions';
 import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
+import { Actions, ofType } from '@ngrx/effects';
+import { selectVehicleTechnicalRecordsBySystemNumber } from '@store/technical-records';
 
 @Component({
   selector: 'app-tyres-search',
@@ -40,7 +46,8 @@ export class TyresSearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
-    private store: Store<TechnicalRecordServiceState>
+    private store: Store<TechnicalRecordServiceState>,
+    private actions$: Actions
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.subscribe(data => (this.vehicleTechRecord = data));
   }
@@ -89,6 +96,12 @@ export class TyresSearchComponent implements OnInit {
     this.globalErrorService.clearErrors();
     this.route.params.subscribe(p => (this.params = p));
     this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => (this.viewableTechRecord = data));
+    this.referenceDataService
+      .getTyreSearchReturn$()
+      .pipe(take(1))
+      .subscribe((data: any) => {
+        this.searchResults = data;
+      });
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
@@ -105,50 +118,29 @@ export class TyresSearchComponent implements OnInit {
     this.searchResults = [];
     term = term.trim();
 
+    if (!term) {
+      this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'term' });
+      return;
+    } else if (!filter) {
+      this.globalErrorService.addError({ error: this.missingFilterErrorMessage, anchorLink: 'term' });
+      return;
+    }
+
     if (filter === 'code') {
-      this.referenceDataService
-        .fetchReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, term)
-        .subscribe(res => res.data.map(each => this.searchResults?.push(each as ReferenceDataTyre)));
+      this.referenceDataService.loadReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, term);
+      this.actions$
+        .pipe(
+          ofType(fetchReferenceDataByKeySearchSuccess),
+          mergeMap(_action => this.store.select(selectTyreSearchReturn())),
+          take(1)
+        )
+        .subscribe((data: any) => {
+          this.searchResults = data;
+        });
     } else {
       this.referenceDataService.fetchTyreReferenceDataByKeySearch(filter, term).subscribe(res => {
         console.log(res);
       });
-    }
-  }
-
-  displaySearchResults(term: string, filter: string) {
-    this.searchResults = [];
-    if (!term) {
-      this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'term' });
-    } else if (!filter) {
-      this.globalErrorService.addError({ error: this.missingFilterErrorMessage, anchorLink: 'term' });
-    } else if (term && filter) {
-      this.tyres$.subscribe(data =>
-        data.map(each => {
-          switch (filter) {
-            case 'code':
-              if (each.code.includes(term)) {
-                this.searchResults?.push(each);
-              }
-              break;
-            case 'plyRating':
-              if (each.plyRating.includes(term)) {
-                this.searchResults?.push(each);
-              }
-              break;
-            case 'loadIndexSingleLoad':
-              if (each.loadIndexSingleLoad.includes(term)) {
-                this.searchResults?.push(each);
-              }
-              break;
-            case 'loadIndexTwinLoad':
-              if (each.loadIndexTwinLoad.includes(term)) {
-                this.searchResults?.push(each);
-              }
-              break;
-          }
-        })
-      );
     }
   }
 

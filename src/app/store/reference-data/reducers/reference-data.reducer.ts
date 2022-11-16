@@ -5,6 +5,9 @@ import {
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySearch,
+  fetchReferenceDataByKeySearchFailed,
+  fetchReferenceDataByKeySearchSuccess,
   fetchReferenceDataByKeySuccess,
   fetchReferenceDataFailed,
   fetchReferenceDataSuccess
@@ -18,7 +21,12 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
 }
 
-export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState>;
+export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
+  loading: boolean;
+  searchReturn: any[];
+}
+
+export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
@@ -80,7 +88,17 @@ export const referenceDataReducer = createReducer(
       [resourceType]: { ...resourceTypeAdapters[resourceType].upsertOne(payload, state[resourceType]), loading: false }
     };
   }),
-  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } }))
+  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
+
+  on(fetchReferenceDataByKeySearch, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
+  on(fetchReferenceDataByKeySearchSuccess, (state, action) => {
+    const { resourceType, payload } = action;
+    return {
+      ...state,
+      [resourceType]: { searchReturn: payload, loading: false }
+    };
+  }),
+  on(fetchReferenceDataByKeySearchFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } }))
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);

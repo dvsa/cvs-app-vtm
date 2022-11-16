@@ -13,6 +13,9 @@ import {
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySearch,
+  fetchReferenceDataByKeySearchFailed,
+  fetchReferenceDataByKeySearchSuccess,
   fetchReferenceDataByKeySuccess,
   fetchReferenceDataFailed,
   fetchReferenceDataSuccess
@@ -47,6 +50,18 @@ export class ReferenceDataEffects {
         this.referenceDataService.fetchReferenceDataByKey(resourceType, resourceKey).pipe(
           map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
           catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message, resourceType })))
+        )
+      )
+    )
+  );
+
+  fetchReferenceDataByKeySearch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchReferenceDataByKeySearch),
+      mergeMap(({ resourceType, resourceKey }) =>
+        this.referenceDataService.fetchReferenceDataByKeySearch(resourceType, resourceKey).pipe(
+          map(data => fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: data.data as ReferenceDataModelBase[] })),
+          catchError(e => of(fetchReferenceDataByKeySearchFailed({ error: e.message, resourceType })))
         )
       )
     )

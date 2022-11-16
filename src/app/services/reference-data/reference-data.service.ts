@@ -13,10 +13,12 @@ import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
   fetchReferenceData,
+  fetchReferenceDataByKeySearch,
   ReferenceDataState,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
-  selectReferenceDataByResourceKey
+  selectReferenceDataByResourceKey,
+  selectTyreSearchReturn
 } from '@store/reference-data';
 import { map, Observable, of, throwError } from 'rxjs';
 
@@ -53,9 +55,17 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.referenceLookupTyresSearchKeyParamGet(searchFilter, searchTerm, 'body');
   }
 
+  loadReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
+    this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType, resourceKey }));
+  }
+
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
+
+  getTyreSearchReturn$ = () => {
+    return this.store.pipe(select(selectTyreSearchReturn()));
+  };
 
   getAll$ = (resourceType: ReferenceDataResourceType) => {
     return this.store.pipe(select(selectAllReferenceDataByResourceType(resourceType)));
