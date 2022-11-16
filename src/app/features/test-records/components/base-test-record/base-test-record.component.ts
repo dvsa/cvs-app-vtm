@@ -27,6 +27,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
   @Input() expandSections = false;
+  @Input() isContingency = false;
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 
