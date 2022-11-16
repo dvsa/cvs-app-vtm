@@ -29,7 +29,6 @@
     [formControlName]="form.meta.children![1].name"
     [name]="form.meta.children![1].name"
     [options]="options!"
-    (ngModelChange)="onChange($event)"
   ></app-select>
   <br />
   <input
@@ -39,7 +38,6 @@
     aria-describedby="term"
     type="text"
     class="govuk-input govuk-!-width-two-thirds"
-    (ngModelChange)="onChange($event)"
     (keyup.enter)="handleSearch(searchTerm.value, searchFilter.value)"
   />
   <button

@@ -23,6 +23,7 @@ import {
 import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { selectVehicleTechnicalRecordsBySystemNumber } from '@store/technical-records';
+import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'app-tyres-search',
@@ -53,7 +54,6 @@ export class TyresSearchComponent implements OnInit {
   }
 
   public form!: CustomFormGroup;
-  public isDirty = false;
   public isEditing = true;
   public missingTermErrorMessage = 'You must provide search criteria';
   public missingFilterErrorMessage = 'You must select a valid search filter';
@@ -93,6 +93,7 @@ export class TyresSearchComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
+    console.log(this.form);
     this.globalErrorService.clearErrors();
     this.route.params.subscribe(p => (this.params = p));
     this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => (this.viewableTechRecord = data));
@@ -106,10 +107,6 @@ export class TyresSearchComponent implements OnInit {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
   }
-
-  onChange = (event: any) => {
-    this.isDirty = true;
-  };
 
   handleSearch(term: string, filter: string): void {
     console.log('find: {', filter, '} with value: {', term, '}');
@@ -166,10 +163,8 @@ export class TyresSearchComponent implements OnInit {
   }
 
   cancel() {
-    if (!this.isDirty || confirm('Your changes will not be saved. Are you sure?')) {
-      this.globalErrorService.clearErrors();
-      this.router.navigate(['../..'], { relativeTo: this.route });
-    }
+    this.globalErrorService.clearErrors();
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
   private pageStart?: number;
