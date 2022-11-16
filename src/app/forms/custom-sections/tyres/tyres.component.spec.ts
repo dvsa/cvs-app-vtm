@@ -1,5 +1,6 @@
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
 import { FitmentCode, SpeedCategorySymbol, Tyres } from '@models/vehicle-tech-record.model';
@@ -22,7 +23,7 @@ describe('TyresComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule, StoreModule.forRoot({})],
+      imports: [RouterTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
       declarations: [TyresComponent],
       providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }]
     }).compileComponents();
@@ -131,7 +132,7 @@ describe('TyresComponent', () => {
         tyreCode: 101
       };
 
-      component.getTyreSearch(tyre, 1);
+      //component.getTyreSearch(tyre, 1);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(changedTyre, 1);
@@ -160,7 +161,7 @@ describe('TyresComponent', () => {
         tyreCode: 101
       };
 
-      component.getTyreSearch(tyre, 1);
+      //component.getTyreSearch(tyre, 1);
 
       expect(component.isError).toBe(true);
       expect(component.errorMessage).toBe('Cannot find data of this tyre');
