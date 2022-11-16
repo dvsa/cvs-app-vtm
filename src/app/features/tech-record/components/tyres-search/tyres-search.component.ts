@@ -5,32 +5,26 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
-import { mergeMap, Observable, take } from 'rxjs';
+import { mergeMap, take } from 'rxjs';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess, ReferenceDataState } from '@store/reference-data';
 import { Store } from '@ngrx/store';
-import { selectAllReferenceDataByResourceType, selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
+import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import {
-  createProvisionalTechRecordSuccess,
-  updateEditingTechRecord,
-  updateTechRecordsSuccess
-} from '@store/technical-records/actions/technical-record-service.actions';
+import { updateEditingTechRecord } from '@store/technical-records/actions/technical-record-service.actions';
 import { VehicleTechRecordModel, TechRecordModel } from '@models/vehicle-tech-record.model';
 import { Actions, ofType } from '@ngrx/effects';
-import { selectVehicleTechnicalRecordsBySystemNumber } from '@store/technical-records';
-import { ConstantPool } from '@angular/compiler';
 
 @Component({
   selector: 'app-tyres-search',
   templateUrl: './tyres-search.component.html',
   styleUrls: ['./tyres-search.component.scss']
 })
-export class TyresSearchComponent implements OnInit, OnDestroy {
+export class TyresSearchComponent implements OnInit {
   options?: MultiOptions = [
     { label: 'Tyre code', value: 'code' },
     { label: 'Ply rating', value: 'plyrating' },
@@ -43,7 +37,6 @@ export class TyresSearchComponent implements OnInit, OnDestroy {
     public dfs: DynamicFormService,
     public globalErrorService: GlobalErrorService,
     private referenceDataService: ReferenceDataService,
-    private referenceDataStore: Store<ReferenceDataState>,
     private route: ActivatedRoute,
     private router: Router,
     private technicalRecordService: TechnicalRecordService,
@@ -54,11 +47,7 @@ export class TyresSearchComponent implements OnInit, OnDestroy {
   }
 
   public form!: CustomFormGroup;
-  public isEditing = true;
-  public missingTermErrorMessage = 'You must provide search criteria';
-  public missingFilterErrorMessage = 'You must select a valid search filter';
   public searchResults: Array<ReferenceDataTyre> | null = null;
-  public type: FormNodeEditTypes = FormNodeEditTypes.SELECT;
   public vehicleTechRecord?: VehicleTechRecordModel;
   public viewableTechRecord: TechRecordModel | undefined = undefined;
   private params: Params = {};
@@ -81,19 +70,8 @@ export class TyresSearchComponent implements OnInit, OnDestroy {
     ]
   };
 
-  get roles() {
-    return Roles;
-  }
-  get currentVrm(): string | undefined {
-    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
-  }
-  get tyres$(): Observable<ReferenceDataTyre[]> {
-    return this.referenceDataStore.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.Tyres)) as Observable<ReferenceDataTyre[]>;
-  }
-
   ngOnInit() {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
-    console.log(this.form);
     this.globalErrorService.clearErrors();
     this.route.params.subscribe(p => (this.params = p));
     this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => (this.viewableTechRecord = data));
@@ -108,8 +86,11 @@ export class TyresSearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.referenceDataService.removeTyreSearch();
+  get roles() {
+    return Roles;
+  }
+  get currentVrm(): string | undefined {
+    return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
   handleSearch(term: string, filter: string): void {
@@ -118,10 +99,10 @@ export class TyresSearchComponent implements OnInit, OnDestroy {
     term = term.trim();
 
     if (!term) {
-      this.globalErrorService.addError({ error: this.missingTermErrorMessage, anchorLink: 'term' });
+      this.globalErrorService.addError({ error: 'You must provide search criteria', anchorLink: 'term' });
       return;
     } else if (!filter) {
-      this.globalErrorService.addError({ error: this.missingFilterErrorMessage, anchorLink: 'term' });
+      this.globalErrorService.addError({ error: 'You must select a valid search filter', anchorLink: 'term' });
       return;
     }
 

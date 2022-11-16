@@ -47,6 +47,7 @@ import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -83,11 +84,13 @@ export class TechRecordSummaryComponent implements OnInit {
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
     private optionsService: MultiOptionsService,
-    private referenceDataStore: Store<ReferenceDataState>
+    private referenceDataStore: Store<ReferenceDataState>,
+    private referenceDataService: ReferenceDataService
   ) {}
 
   ngOnInit(): void {
     this.sectionTemplates = this.vehicleTemplates;
+    this.referenceDataService.removeTyreSearch();
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
