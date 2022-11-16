@@ -135,7 +135,7 @@ export class TechRecordSummaryComponent implements OnInit {
     this.isEditing
       ? this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => {
           if (data) {
-            this.vehicleTechRecordCalculated = { ...cloneDeep(data), reasonForCreation: '' };
+            this.vehicleTechRecordCalculated = { ...cloneDeep(data), reasonForCreation: data.reasonForCreation ?? '' };
           } else if (this.vehicleTechRecord) {
             this.vehicleTechRecordCalculated = { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' };
           }
