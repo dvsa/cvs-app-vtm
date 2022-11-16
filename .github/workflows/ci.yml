@@ -5,7 +5,7 @@ on:
 
 jobs:
   security:
-    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@main
+    uses: dvsa/.github/.github/workflows/nodejs-security.yaml@v2
     with:
       args: '--all-projects'
     secrets:
