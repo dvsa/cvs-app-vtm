@@ -16,7 +16,7 @@
     "sonar-scanner": "npm run test && sonar-scanner",
     "security-checks": "git secrets --scan",
     "lint": "npx eslint 'src/**/*.{js,jsx,ts,tsx,html,css,scss}'",
-    "format": "npx prettier 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write",
+    "format": "npx prettier '!src/app/api/**/*.{js,ts}' 'src/**/*.{js,jsx,ts,tsx,html,css,scss}' --write",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "storybook": "npm run docs:json && storybook dev -p 6006",
     "build-storybook": "npm run docs:json && storybook build",

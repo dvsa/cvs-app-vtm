@@ -7,6 +7,10 @@ import { STORE_FEATURE_REFERENCE_DATA_KEY, referenceDataReducer } from './reduce
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, StoreModule.forFeature(STORE_FEATURE_REFERENCE_DATA_KEY, referenceDataReducer), EffectsModule.forFeature([ReferenceDataEffects])]
+  imports: [
+    CommonModule,
+    StoreModule.forFeature(STORE_FEATURE_REFERENCE_DATA_KEY, referenceDataReducer),
+    EffectsModule.forFeature([ReferenceDataEffects])
+  ]
 })
 export class ReferenceDataStateModule {}

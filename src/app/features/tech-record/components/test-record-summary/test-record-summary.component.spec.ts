@@ -94,30 +94,30 @@ describe('TestRecordSummaryComponent', () => {
   it('should retrieve all testTypes and creates sorted TestField[]', () => {
     const mockRecords = [
       {
-        testResultId: "1",
+        testResultId: '1',
         testTypes: [
           {
-            testTypeStartTimestamp: new Date("12/12/2022").toISOString(),
-            testNumber: "1",
+            testTypeStartTimestamp: new Date('12/12/2022').toISOString(),
+            testNumber: '1',
             testResult: resultOfTestEnum.pass,
-            testTypeName: "annual"
+            testTypeName: 'annual'
           },
           {
-            testTypeStartTimestamp: new Date("12/12/2023").toISOString(),
-            testNumber: "2",
+            testTypeStartTimestamp: new Date('12/12/2023').toISOString(),
+            testNumber: '2',
             testResult: resultOfTestEnum.pass,
-            testTypeName: "annual"
+            testTypeName: 'annual'
           }
         ]
       },
       {
-        testResultId: "1",
+        testResultId: '1',
         testTypes: [
           {
-            testTypeStartTimestamp: new Date("12/12/2021").toISOString(),
-            testNumber: "1",
+            testTypeStartTimestamp: new Date('12/12/2021').toISOString(),
+            testNumber: '1',
             testResult: resultOfTestEnum.pass,
-            testTypeName: "annual"
+            testTypeName: 'annual'
           }
         ]
       }

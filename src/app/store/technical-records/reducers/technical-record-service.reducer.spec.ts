@@ -203,7 +203,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('getBySystemNumber', () => {
     it('should set all vehicle technical records', () => {
       const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
-      const action = getBySystemNumberAndVin({ systemNumber: '001' , vin: "1"});
+      const action = getBySystemNumberAndVin({ systemNumber: '001', vin: '1' });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);
@@ -295,7 +295,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('putUpdateTechRecordsSuccess', () => {
     it('should set the new vehicle tech records state after update success', () => {
       const oldRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 2)
+      const newRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 2);
 
       const state: TechnicalRecordServiceState = {
         ...initialState,
@@ -305,7 +305,7 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).not.toEqual(newState);
-      expect(newState.vehicleTechRecords).toEqual(newRecord)
+      expect(newState.vehicleTechRecords).toEqual(newRecord);
     });
   });
 
@@ -316,7 +316,7 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);
-      expect(newState.error).toEqual(error)
+      expect(newState.error).toEqual(error);
       expect(initialState).not.toBe(newState);
     });
   });
@@ -340,7 +340,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('postProvisionalTechRecordSuccess', () => {
     it('should set the new vehicle tech records state after update success', () => {
       const oldRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
-      const newRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 2)
+      const newRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 2);
 
       const state: TechnicalRecordServiceState = {
         ...initialState,
@@ -350,7 +350,7 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).not.toEqual(newState);
-      expect(newState.vehicleTechRecords).toEqual(newRecord)
+      expect(newState.vehicleTechRecords).toEqual(newRecord);
     });
   });
 
@@ -361,7 +361,7 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);
-      expect(newState.error).toEqual(error)
+      expect(newState.error).toEqual(error);
       expect(initialState).not.toBe(newState);
     });
   });
@@ -369,14 +369,14 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('updateEditingTechRecord', () => {
     it('should set the editingTechRecord', () => {
       const techRecord: TechRecordModel = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
-      const action = updateEditingTechRecord({ techRecord: techRecord});
+      const action = updateEditingTechRecord({ techRecord: techRecord });
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);
-      expect(newState.editingTechRecord).toEqual(techRecord)
+      expect(newState.editingTechRecord).toEqual(techRecord);
       expect(initialState).not.toBe(newState);
     });
-  })
+  });
   describe('updateEditingTechRecordCancel', () => {
     it('should clear the state', () => {
       initialState.editingTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
@@ -384,8 +384,8 @@ describe('Vehicle Technical Record Reducer', () => {
       const newState = vehicleTechRecordReducer(initialState, action);
 
       expect(initialState).not.toEqual(newState);
-      expect(newState.editingTechRecord).toBeUndefined()
+      expect(newState.editingTechRecord).toBeUndefined();
       expect(initialState).not.toBe(newState);
     });
-  })
+  });
 });

@@ -1,9 +1,16 @@
 import { TestStation } from '@models/test-stations/test-station.model';
-import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from '../actions/test-stations.actions';
+import {
+  fetchTestStation,
+  fetchTestStationFailed,
+  fetchTestStations,
+  fetchTestStationsFailed,
+  fetchTestStationsSuccess,
+  fetchTestStationSuccess
+} from '../actions/test-stations.actions';
 import { initialTestStationsState, testStationsReducer, TestStationsState } from './test-stations.reducer';
 
 describe('Test Stations Reducer', () => {
-  const expectedTestStations = [ { testStationId: 'someId' } as TestStation ];
+  const expectedTestStations = [{ testStationId: 'someId' } as TestStation];
 
   describe('unknown action', () => {
     it('should return the default state', () => {

@@ -12,11 +12,10 @@ describe('BrakesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TrlBrakesComponent ],
-      imports: [ DynamicFormsModule ],
+      declarations: [TrlBrakesComponent],
+      imports: [DynamicFormsModule],
       providers: [provideMockStore({ initialState: initialAppState })]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

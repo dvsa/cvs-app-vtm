@@ -6,7 +6,6 @@ import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } fro
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 
-
 @Component({
   selector: 'app-tech-amend-reason',
   templateUrl: './tech-amend-reason.component.html',
@@ -25,18 +24,20 @@ export class TechAmendReasonComponent {
 
     this.form = new CustomFormGroup(
       { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined , [Validators.required]) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
   }
 
   handleSubmit(): void {
     const reason: string = this.form.get('reason')?.value;
-    const errors: GlobalError[] = [{
-      error: 'Reason for amending is required',
-      anchorLink: 'reasonForAmend'
-    }];
+    const errors: GlobalError[] = [
+      {
+        error: 'Reason for amending is required',
+        anchorLink: 'reasonForAmend'
+      }
+    ];
 
-    this.form.valid ? this.errorService.clearErrors() : this.errorService.setErrors(errors)
+    this.form.valid ? this.errorService.clearErrors() : this.errorService.setErrors(errors);
 
     if (this.form.valid && reason) {
       this.router.navigate([`../${reason}`], { relativeTo: this.route });

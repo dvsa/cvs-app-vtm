@@ -15,4 +15,3 @@ function getTitle(isPlural: boolean = false, suffix: string = ''): string {
   suffix = suffix ? ' ' + suffix : suffix;
   return '[API/test-stations] Fetch Test Station' + plural + suffix;
 }
-

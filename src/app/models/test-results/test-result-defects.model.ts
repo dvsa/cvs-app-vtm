@@ -11,5 +11,4 @@
  */
 import { TestResultDefect } from './test-result-defect.model';
 
-export interface TestResultDefects extends Array<TestResultDefect> {
-}
+export interface TestResultDefects extends Array<TestResultDefect> {}

@@ -50,9 +50,7 @@ export const ContingencyTestSectionGroup5And13: FormNode = {
                 { value: 'fail', label: 'Fail' }
               ],
               asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } }
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'certificateNumber', value: 'pass' } }],
               type: FormNodeTypes.CONTROL
             },
             {

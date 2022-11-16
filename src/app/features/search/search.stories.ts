@@ -13,7 +13,7 @@ export default {
   ]
 } as Meta;
 
-const Template: Story = (args) => ({
+const Template: Story = args => ({
   props: args
 });
 

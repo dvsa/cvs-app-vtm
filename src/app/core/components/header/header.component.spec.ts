@@ -34,7 +34,7 @@ describe('HeaderComponent', () => {
     expect(userNameText.innerHTML).toBe('Test');
   });
 
-  it('Clicking logout fires off event', (done) => {
+  it('Clicking logout fires off event', done => {
     component.logOutEvent.subscribe(() => {
       done();
     });

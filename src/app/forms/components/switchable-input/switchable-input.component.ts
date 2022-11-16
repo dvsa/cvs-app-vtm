@@ -30,10 +30,12 @@ export class SwitchableInputComponent implements OnInit {
   }
 
   get requiresOptions(): boolean {
-    return this.type === this.types.AUTOCOMPLETE
-      || this.type === this.types.CHECKBOX
-      || this.type === this.types.DROPDOWN
-      || this.type === this.types.RADIO;
+    return (
+      this.type === this.types.AUTOCOMPLETE ||
+      this.type === this.types.CHECKBOX ||
+      this.type === this.types.DROPDOWN ||
+      this.type === this.types.RADIO
+    );
   }
 
   get options$(): Observable<MultiOptions> {
