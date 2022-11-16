@@ -29,7 +29,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
-import { CreateTestRecordComponent } from './create-test-record.component';
+import { CreateTestRecordComponent, TestModeEnum } from './create-test-record.component';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -163,9 +163,9 @@ describe('CreateTestRecordComponent', () => {
   });
 
   describe(CreateTestRecordComponent.prototype.abandon.name, () => {
-    it('should set isAbandon to true', () => {
+    it('should set testMode to be abandon', () => {
       component.abandon();
-      expect(component.isAbandon).toBeTruthy();
+      expect(component.testMode).toEqual(TestModeEnum.Abandon);
     });
   });
 
@@ -178,12 +178,12 @@ describe('CreateTestRecordComponent', () => {
       expect(handleSaveSpy).toBeCalledTimes(1);
     });
 
-    it('should set isAbandon to false', () => {
-      component.isAbandon = true;
+    it('should set testMode to be edit', () => {
+      component.testMode = TestModeEnum.Abandon;
 
       component.handleAbandonAction('no');
 
-      expect(component.isAbandon).toBeFalsy();
+      expect(component.testMode).toEqual(TestModeEnum.Edit);
     });
   });
 
@@ -207,4 +207,19 @@ describe('CreateTestRecordComponent', () => {
     expect(createTestResultSpy).toHaveBeenCalledTimes(1);
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
   }));
+
+  it('should set testMode to be view', () => {
+    component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+    component.handleView();
+
+    expect(component.testMode).toEqual(TestModeEnum.View);
+  });
+
+  it('should set testMode back to edit', () => {
+    component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+    component.handleView();
+    component.handleCancel();
+
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
+  });
 });
