@@ -107,7 +107,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
           previousAxles[index].tyres !== undefined &&
           axle.tyres.fitmentCode !== previousAxles[index].tyres.fitmentCode
         ) {
-          this.getTyresRefData(axle.tyres, axle.axleNumber);
+          // this.getTyresRefData(axle.tyres, axle.axleNumber);
           return true;
         }
       }
@@ -116,29 +116,29 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return false;
   }
 
-  getTyresRefData(tyre: Tyres, axleNumber: number): void {
-    this.isError = false;
-    this.referenceDataService
-      .getByKey$(ReferenceDataResourceType.Tyres, String(tyre.tyreCode))
-      .pipe(take(1))
-      .subscribe({
-        next: data => {
-          try {
-            const refTyre = data as ReferenceDataTyre;
-            const indexLoad = tyre.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
-            const newTyre = new Tyre({ ...tyre, tyreSize: refTyre.tyreSize, plyRating: refTyre.plyRating, dataTrAxles: indexLoad });
+  // getTyresRefData(tyre: Tyres, axleNumber: number): void {
+  //   this.isError = false;
+  //   this.referenceDataService
+  //     .getByKey$(ReferenceDataResourceType.Tyres, String(tyre.tyreCode))
+  //     .pipe(take(1))
+  //     .subscribe({
+  //       next: data => {
+  //         try {
+  //           const refTyre = data as ReferenceDataTyre;
+  //           const indexLoad = tyre.fitmentCode === FitmentCode.SINGLE ? Number(refTyre.loadIndexSingleLoad) : Number(refTyre.loadIndexTwinLoad);
+  //           const newTyre = new Tyre({ ...tyre, tyreSize: refTyre.tyreSize, plyRating: refTyre.plyRating, dataTrAxles: indexLoad });
 
-            this.addTyreToTechRecord(newTyre, axleNumber);
-          } catch {
-            this.errorMessage = 'Cannot find data of this tyre';
-            this.isError = true;
-            const newTyre = new Tyre({ ...tyre, tyreSize: null, plyRating: null, dataTrAxles: null });
+  //           this.addTyreToTechRecord(newTyre, axleNumber);
+  //         } catch {
+  //           this.errorMessage = 'Cannot find data of this tyre';
+  //           this.isError = true;
+  //           const newTyre = new Tyre({ ...tyre, tyreSize: null, plyRating: null, dataTrAxles: null });
 
-            this.addTyreToTechRecord(newTyre, axleNumber);
-          }
-        }
-      });
-  }
+  //           this.addTyreToTechRecord(newTyre, axleNumber);
+  //         }
+  //       }
+  //     });
+  // }
 
   getTyreSearchPage(axleNumber: number) {
     this.router.navigate([`../correcting-an-error/tyre-search/${axleNumber}`], { relativeTo: this.route, state: this.vehicleTechRecord });

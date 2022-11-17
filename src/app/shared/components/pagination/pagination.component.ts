@@ -16,7 +16,6 @@ export class PaginationComponent implements OnInit, OnDestroy {
 
   currentPage = 1;
   currentPageSubject = new ReplaySubject<number>(this.currentPage);
-  //itemsPerPage: number = 5; // this can be extended later to be set via a dom control
   numberOfVisiblePages = 5;
 
   private destroy$ = new Subject<void>();

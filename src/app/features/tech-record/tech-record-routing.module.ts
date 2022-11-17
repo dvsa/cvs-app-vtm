@@ -38,14 +38,14 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'correcting-an-error/tyre-search/:axleNumber', ///////////////////////////////////////////
+    path: 'correcting-an-error/tyre-search/:axleNumber',
     component: TyresSearchComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'notifiable-alteration-needed/tyre-search/:axleNumber', ///////////////////////////////////////////
+    path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
     component: TyresSearchComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
     canActivate: [MsalGuard, RoleGuard],

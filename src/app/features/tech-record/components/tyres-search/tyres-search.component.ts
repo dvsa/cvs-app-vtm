@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CustomFormGroup, FormNode, FormNodeTypes, Params } from '@forms/services/dynamic-form.types';
 import { cloneDeep } from 'lodash';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
@@ -51,6 +51,9 @@ export class TyresSearchComponent implements OnInit {
   public vehicleTechRecord?: VehicleTechRecordModel;
   public viewableTechRecord: TechRecordModel | undefined = undefined;
   private params: Params = {};
+  private pageStart?: number;
+  private pageEnd?: number;
+  public itemsPerPage: number = 10;
 
   public template: FormNode = {
     name: 'criteria',
@@ -74,7 +77,7 @@ export class TyresSearchComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.subscribe(p => (this.params = p));
-    this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.editableTechRecord$.subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
@@ -91,6 +94,12 @@ export class TyresSearchComponent implements OnInit {
   }
   get currentVrm(): string | undefined {
     return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
+  }
+  get paginatedFields(): ReferenceDataTyre[] {
+    return this.searchResults!.slice(this.pageStart, this.pageEnd);
+  }
+  get numberOfResults(): number {
+    return this.searchResults?.length!;
   }
 
   handleSearch(term: string, filter: string): void {
@@ -123,7 +132,7 @@ export class TyresSearchComponent implements OnInit {
       });
   }
 
-  handleSubmit(tyre: ReferenceDataTyre): void {
+  handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
     if (this.viewableTechRecord) {
       const axleIndex = Number(this.params.axleNumber!) - 1;
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
@@ -134,30 +143,7 @@ export class TyresSearchComponent implements OnInit {
 
       this.store.dispatch(updateEditingTechRecord({ techRecord: this.viewableTechRecord! }));
       this.router.navigate(['../..'], { relativeTo: this.route });
-    } else {
-      console.error('Unable to update state, changes not saved');
-      /// record relative to previous page lost on refresh - on refresh nav back a page
     }
-  }
-
-  getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
-    return errors.find(error => error.anchorLink === name);
-  }
-
-  cancel() {
-    this.globalErrorService.clearErrors();
-    this.router.navigate(['../..'], { relativeTo: this.route });
-  }
-
-  private pageStart?: number;
-  private pageEnd?: number;
-  public itemsPerPage: number = 10;
-
-  get paginatedFields() {
-    return this.searchResults!.slice(this.pageStart, this.pageEnd);
-  }
-  get numberOfResults(): number {
-    return this.searchResults?.length!;
   }
 
   handlePaginationChange({ start, end }: { start: number; end: number }) {
@@ -165,7 +151,14 @@ export class TyresSearchComponent implements OnInit {
     this.pageEnd = end;
     this.cdr.detectChanges();
   }
+  getErrorByName(errors: GlobalError[], name: string): GlobalError | undefined {
+    return errors.find(error => error.anchorLink === name);
+  }
   trackByFn(i: number, r: ReferenceDataTyre) {
     return r.resourceKey!;
+  }
+  cancel() {
+    this.globalErrorService.clearErrors();
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 }
