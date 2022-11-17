@@ -6,6 +6,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApiModule as TestResultsApiModule } from '@api/test-results';
 import { masterTpl } from '@forms/templates/test-records/master.template';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
@@ -92,16 +93,17 @@ describe('TestRecordComponent', () => {
         .mockReturnValue(of({ vehicleType: 'psv', testTypes: [{ testTypeId: '1' }] } as TestResultModel));
     });
 
-    it('should display save button when edit query param is true', waitForAsync(() => {
+    it('should display review button when edit query param is true', waitForAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
       fixture.detectChanges();
-      expect(el.query(By.css('button#save-test-result'))).toBeTruthy();
+      expect(el.query(By.css('button#review-test-result'))).toBeTruthy();
     }));
 
     it('should run handleSave when save button is clicked', waitForAsync(() => {
       mockRouteEditable = store.overrideSelector(routeEditable, true);
+      component.testMode = TestModeEnum.View;
 
       jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
 
@@ -110,6 +112,18 @@ describe('TestRecordComponent', () => {
       jest.spyOn(component, 'handleSave');
       el.query(By.css('button#save-test-result')).nativeElement.click();
       expect(component.handleSave).toHaveBeenCalledTimes(1);
+    }));
+
+    it('should run handleReview when review button is clicked', waitForAsync(() => {
+      mockRouteEditable = store.overrideSelector(routeEditable, true);
+
+      jest.spyOn(component, 'isTestTypeGroupEditable$', 'get').mockReturnValue(of(true));
+
+      fixture.detectChanges();
+
+      jest.spyOn(component, 'handleReview');
+      el.query(By.css('button#review-test-result')).nativeElement.click();
+      expect(component.handleReview).toHaveBeenCalledTimes(1);
     }));
   });
 
@@ -203,5 +217,34 @@ describe('TestRecordComponent', () => {
       const banner = el.query(By.css('div.govuk-notification-banner'));
       expect(banner).toBeNull();
     }));
+  });
+
+  it('should set testMode to be view when has errors is false', async () => {
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
+
+    jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(false));
+    await component.handleReview();
+
+    expect(component.hasErrors).toHaveBeenCalledTimes(1);
+
+    expect(component.testMode).toEqual(TestModeEnum.View);
+  });
+
+  it('should not set testMode to be view when has errors is true', async () => {
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
+
+    jest.spyOn(component, 'hasErrors').mockReturnValue(Promise.resolve(true));
+    await component.handleReview();
+
+    expect(component.hasErrors).toHaveBeenCalledTimes(1);
+
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
+  });
+
+  it('should set testMode back to edit', () => {
+    component.testMode = TestModeEnum.View;
+    component.handleCancel();
+
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
   });
 });

@@ -9,6 +9,7 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -29,7 +30,7 @@ import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
 import { VehicleHeaderComponent } from '../../../components/vehicle-header/vehicle-header.component';
-import { CreateTestRecordComponent, TestModeEnum } from './create-test-record.component';
+import { CreateTestRecordComponent } from './create-test-record.component';
 
 describe('CreateTestRecordComponent', () => {
   let component: CreateTestRecordComponent;
@@ -210,14 +211,14 @@ describe('CreateTestRecordComponent', () => {
 
   it('should set testMode to be view', () => {
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
-    component.handleView();
+    component.handleReview();
 
     expect(component.testMode).toEqual(TestModeEnum.View);
   });
 
   it('should set testMode back to edit', () => {
     component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
-    component.handleView();
+    component.handleReview();
     component.handleCancel();
 
     expect(component.testMode).toEqual(TestModeEnum.Edit);

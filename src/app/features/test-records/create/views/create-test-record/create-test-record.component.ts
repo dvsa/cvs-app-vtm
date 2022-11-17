@@ -4,6 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -14,13 +15,6 @@ import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
 import { filter, firstValueFrom, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
-
-export type TestModeEnum = 'edit' | 'view' | 'abandon';
-export const TestModeEnum = {
-  Edit: 'edit' as TestModeEnum,
-  View: 'view' as TestModeEnum,
-  Abandon: 'abandon' as TestModeEnum
-};
 
 @Component({
   selector: 'app-create-test-record',
@@ -94,7 +88,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.testRecordsService.createTestResult(cloneDeep(testResult));
   }
 
-  async handleView(): Promise<void> {
+  async handleReview(): Promise<void> {
     if (this.isAnyFormInvalid()) {
       return;
     }

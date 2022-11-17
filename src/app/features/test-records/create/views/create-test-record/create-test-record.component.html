@@ -11,18 +11,23 @@
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
 
       <app-button-group>
-        <app-button id="submit-test-result" (clicked)="handleView()">Review and submit</app-button>
+        <app-button id="review-test-result" (clicked)="handleReview()">Review</app-button>
         <app-button id="abandon-test-result" type="button" design="secondary" (clicked)="abandon()">Mark as abandoned</app-button>
       </app-button-group>
     </ng-container>
 
     <ng-container *ngSwitchCase="TestModeEnum.View">
-      <app-base-test-record [testResult]="testResult" [isContingency]="true" [expandSections]="true"></app-base-test-record>
+      <app-banner>
+        <ng-container title>Important</ng-container>
+
+        <ng-container content>Check your answers before submitting the test</ng-container>
+      </app-banner>
+      <app-base-test-record [testResult]="testResult" [isReview]="true" [expandSections]="true"></app-base-test-record>
 
       <div class="govuk-section-break--visible govuk-!-margin-top-4 govuk-!-margin-bottom-6"></div>
 
       <app-button-group>
-        <app-button id="submit-test-result" (clicked)="handleSave()">Submit test record</app-button>
+        <app-button id="submit-test-result" (clicked)="handleSave()">Accept and submit</app-button>
         <app-button id="cancel" type="button" design="link" (clicked)="handleCancel()">Cancel</app-button>
       </app-button-group>
     </ng-container>

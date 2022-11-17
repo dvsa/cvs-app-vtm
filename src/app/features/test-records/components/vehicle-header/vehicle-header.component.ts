@@ -18,7 +18,7 @@ export class VehicleHeaderComponent {
   @Input() isEditing = false;
   @Input() testResult?: TestResultModel;
   @Input() testNumber?: string | null;
-  @Input() isContingency = false;
+  @Input() isReview = false;
 
   constructor(private testTypesService: TestTypesService, private techRecordService: TechnicalRecordService) {}
 
