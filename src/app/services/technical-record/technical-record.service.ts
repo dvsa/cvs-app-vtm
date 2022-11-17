@@ -106,7 +106,7 @@ export class TechnicalRecordService {
     const url = `${environment.VTM_API_URI}/vehicles/archive/${systemNumber}`;
     const body = {
       msUserDetails: { msOid: id, msUser: username },
-      techRecord: techRecord
+      techRecord: [techRecord]
     };
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }

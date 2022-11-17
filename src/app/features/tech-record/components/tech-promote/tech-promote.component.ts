@@ -4,10 +4,11 @@ import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/servic
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
+import { archiveTechRecord, updateEditingTechRecord, updateTechRecords } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { Observable, tap } from 'rxjs';
+import { ValidatorNames } from '@forms/models/validators.enum';
 
 @Component({
   selector: 'app-tech-promote',
@@ -19,6 +20,7 @@ export class TechPromoteComponent {
   techRecord!: TechRecordModel;
 
   form: CustomFormGroup;
+  buttonLabel: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,9 +35,11 @@ export class TechPromoteComponent {
       tap(vehicleTechRecord => this.techRecord = cloneDeep(vehicleTechRecord?.techRecord.find(condition))!)
       );
 
+    this.buttonLabel = this.isPromotion ? 'Promote' : 'Archive'
+
     this.form = new CustomFormGroup(
       { name: 'reasonGroup', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL, validators: [{ name: ValidatorNames.Required }] }, undefined) }
     );
   }
 
@@ -44,7 +48,9 @@ export class TechPromoteComponent {
   }
 
   get label(): string {
-    return `Are you sure you want to ${this.isPromotion ? 'promote this to a current' : 'archive this'} record?`;
+    return this.isPromotion
+      ? 'Are you sure you want to promote this to a current record?'
+      : 'Why are you archiving this record?';
   }
 
   handleSubmit(): void {
@@ -59,7 +65,9 @@ export class TechPromoteComponent {
 
       this.router.navigate([`../..`], { relativeTo: this.route });
     } else {
-      // do your thing Tom ;)
+      this.store.dispatch(updateTechRecords({ systemNumber }));
+      this.store.dispatch(archiveTechRecord({ systemNumber }));
+      this.router.navigate([`..`], { relativeTo: this.route });
     }
   }
 }
