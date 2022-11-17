@@ -132,7 +132,7 @@ export class TyresSearchComponent implements OnInit {
       });
   }
 
-  handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
+  handleSelectTyreData(tyre: ReferenceDataTyre): void {
     if (this.viewableTechRecord) {
       const axleIndex = Number(this.params.axleNumber!) - 1;
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
