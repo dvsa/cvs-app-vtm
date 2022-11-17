@@ -38,6 +38,12 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
+    path: 'archive',
+    component: TechPromoteComponent,
+    canActivate: [MsalGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
     path: 'provisional',
     component: TechRecordComponent,
     data: { title: 'Provisional tech record' },

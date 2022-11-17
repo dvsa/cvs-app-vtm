@@ -25,14 +25,26 @@ export class TechPromoteComponent {
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService) {
+    const condition = this.isPromotion
+        ? (record: TechRecordModel) => record.statusCode === StatusCodes.PROVISIONAL
+        : (record: TechRecordModel) => record.statusCode === StatusCodes.CURRENT;
+
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$.pipe(
-      tap(vehicleTechRecord => this.techRecord = cloneDeep(vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL))!)
+      tap(vehicleTechRecord => this.techRecord = cloneDeep(vehicleTechRecord?.techRecord.find(condition))!)
       );
 
     this.form = new CustomFormGroup(
-      { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
+      { name: 'reasonGroup', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined) }
     );
+  }
+
+  get isPromotion(): boolean {
+    return this.router.url.split('/').pop() === 'promote';
+  }
+
+  get label(): string {
+    return `Are you sure you want to ${this.isPromotion ? 'promote this to a current' : 'archive this'} record?`;
   }
 
   handleSubmit(): void {
@@ -42,8 +54,12 @@ export class TechPromoteComponent {
 
     const systemNumber = this.router.url.split('/')[2];
 
-    this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT }));
+    if (this.isPromotion) {
+      this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT }));
 
-    this.router.navigate([`../..`], { relativeTo: this.route });
+      this.router.navigate([`../..`], { relativeTo: this.route });
+    } else {
+      // do your thing Tom ;)
+    }
   }
 }

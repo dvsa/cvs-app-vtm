@@ -3,7 +3,7 @@
     <app-tech-record-title [vehicleTechRecord]="(vehicleTechRecord$ | async) || undefined"></app-tech-record-title>
 
     <form [formGroup]="form" (submit)="handleSubmit()">
-      <app-text-area name="reason" label="Are you sure you want to promote this to a current record?" formControlName="reason"></app-text-area>
+      <app-text-area name="reason" [label]="label" formControlName="reason"></app-text-area>
 
       <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
         Promote record
