@@ -14,6 +14,7 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { ActivatedRoute } from '@angular/router';
+import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -72,6 +73,10 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   get statusCodes(): typeof StatusCodes {
     return StatusCodes;
+  }
+
+  get TechRecordActions(): typeof TechRecordActions {
+    return TechRecordActions
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
