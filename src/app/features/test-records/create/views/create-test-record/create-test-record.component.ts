@@ -88,7 +88,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.testRecordsService.createTestResult(cloneDeep(testResult));
   }
 
-  async handleReview(): Promise<void> {
+  handleReview() {
     if (this.isAnyFormInvalid()) {
       return;
     }
