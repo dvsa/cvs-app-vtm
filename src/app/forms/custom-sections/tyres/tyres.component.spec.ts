@@ -8,12 +8,11 @@ import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { initialAppState, State } from '@store/index';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
-  getByKey$: jest.fn(),
-  loadReferenceData: jest.fn()
+  fetchReferenceDataByKey: jest.fn()
 };
 
 describe('TyresComponent', () => {
@@ -102,7 +101,7 @@ describe('TyresComponent', () => {
 
   describe('getTyresRefData', () => {
     it('should call add tyre to tech record with correct values', () => {
-      mockReferenceDataService.getByKey$.mockImplementationOnce(() => {
+      mockReferenceDataService.fetchReferenceDataByKey.mockImplementationOnce(() => {
         return of({
           code: '101',
           loadIndexSingleLoad: '123',
@@ -132,17 +131,14 @@ describe('TyresComponent', () => {
         tyreCode: 101
       };
 
-      //component.getTyreSearch(tyre, 1);
+      component.getTyresRefData(tyre, 1);
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(changedTyre, 1);
     });
 
     it('should call add tyre to tech record with correct values when failure', () => {
-      mockReferenceDataService.getByKey$.mockImplementationOnce(() => {
-        return of(null);
-      });
-
+      mockReferenceDataService.fetchReferenceDataByKey.mockReturnValue(throwError(() => 'error'));
       const tyre = {
         tyreSize: null,
         speedCategorySymbol: SpeedCategorySymbol.A7,
@@ -158,13 +154,13 @@ describe('TyresComponent', () => {
         fitmentCode: FitmentCode.SINGLE,
         dataTrAxles: null,
         plyRating: null,
-        tyreCode: 101
+        tyreCode: null
       };
 
-      //component.getTyreSearch(tyre, 1);
+      component.getTyresRefData(tyre, 1);
 
       expect(component.isError).toBe(true);
-      expect(component.errorMessage).toBe('Cannot find data of this tyre');
+      expect(component.errorMessage).toBe('Cannot find data of this tyre on axle 1');
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(changedTyre, 1);
     });
