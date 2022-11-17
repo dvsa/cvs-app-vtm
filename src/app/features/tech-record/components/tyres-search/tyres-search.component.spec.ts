@@ -128,7 +128,7 @@ describe('TyresSearchComponent', () => {
         resourceType: ReferenceDataResourceType.Tyres,
         resourceKey: '103'
       };
-      component.handleSelectTyreData(tyre);
+      component.handleAddTyreToRecord(tyre);
       expect(mockTechRecordService.viewableTechRecord$).toBeTruthy();
     });
     it('should clear global errors', () => {
@@ -143,7 +143,7 @@ describe('TyresSearchComponent', () => {
         resourceType: ReferenceDataResourceType.Tyres,
         resourceKey: '103'
       };
-      component.handleSelectTyreData(tyre);
+      component.handleAddTyreToRecord(tyre);
       expect(mockGlobalErrorService.clearErrors).toBeCalled();
     });
   });
