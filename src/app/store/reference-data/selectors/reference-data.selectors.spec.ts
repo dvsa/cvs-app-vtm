@@ -10,7 +10,7 @@ describe('Reference Data Selectors', () => {
   describe('selectAllReferenceDataByResourceType', () => {
     it.each(testCases)('should return all of the reference data for given resource type', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map(v => v.resourceKey);
+      const ids = payload.map(v => v.resourceKey);
       const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
         (acc, v) => ({ ...acc, [v.resourceKey]: v }),
         {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
@@ -26,12 +26,12 @@ describe('Reference Data Selectors', () => {
   describe('selectReferenceDataByResourceKey', () => {
     it.each(testCases)('should return one specific reference data by type and key', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map(v => v.resourceKey);
+      const ids: string[] = payload.map(v => v.resourceKey as string);
       const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
         (acc, v) => ({ ...acc, [v.resourceKey]: v }),
         {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
       );
-      const state: ReferenceDataState = { ...initialReferenceDataState, COUNTRY_OF_REGISTRATION: { ids, entities } };
+      const state: ReferenceDataState = { ...initialReferenceDataState, COUNTRY_OF_REGISTRATION: { ids, entities, loading: false } };
 
       const key = ids[Math.floor(Math.random() * ids.length)]; // select a random key
 
@@ -40,10 +40,11 @@ describe('Reference Data Selectors', () => {
     });
   });
 
-  it('should return loading state', () => {
-    const state: ReferenceDataState = { ...initialReferenceDataState, loading: true };
+  it('should return true if any feature is loading state', () => {
+    const state: ReferenceDataState = { ...initialReferenceDataState };
+    state.BODY_MAKE.loading = true;
     const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
-    expect(selectedState).toEqual(state.loading);
+    expect(selectedState).toEqual(true);
   });
 
   it('should return the reasons for abandoning for the right vehicle type', () => {

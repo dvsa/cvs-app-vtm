@@ -21,6 +21,8 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.FutureDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the future`,
   [ValidatorNames.AheadOfDate]: (err: { sibling: string }, label?: string) =>
     `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}`,
+  [ValidatorNames.DateNotExceed]: (err: { sibling: string; months: number }, label?: string) =>
+    `${label || 'This date'} must be less than ${err.months || 'X'} months after ${err.sibling || 'the previous date'}`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [AsyncValidatorNames.RequiredIfNotAbandoned]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
   [ValidatorNames.ValidateProhibitionIssued]: () => 'Prohibition notice has not been issued.',

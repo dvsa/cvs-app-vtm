@@ -15,11 +15,10 @@ describe('PsvBrakesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PsvBrakesComponent ],
+      declarations: [PsvBrakesComponent],
       imports: [DynamicFormsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule],
       providers: [MultiOptionsService, provideMockStore({ initialState: initialAppState })]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

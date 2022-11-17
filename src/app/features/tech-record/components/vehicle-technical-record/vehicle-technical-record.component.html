@@ -1,73 +1,86 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
-        <dd id="vin" class="govuk-summary-list__value">
-          {{ vehicleTechRecord?.vin | defaultNullOrEmpty }}
-        </dd>
-        <dd class="govuk-summary-list__value"></dd>
-      </div>
-
-      <ng-container *ngIf="(currentTechRecord$ | async)?.vehicleType !== vehicleTypes.TRL; else trailerHeader">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
-          <dd id="current-vrm" class="govuk-summary-list__value">
-            <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
-          </dd>
-          <dd class="govuk-summary-list__value"></dd>
+  <div class="govuk-grid-column-one-third">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <div class="vehicle_heading govuk-!-margin-bottom-6 govuk-!-margin-top-2">
+          <h1 class="govuk-heading-l">
+            <ng-container *ngIf="currentTechRecord$ | async as techRecord">
+              {{ getVehicleDescription(techRecord, techRecord?.vehicleType) }}
+            </ng-container>
+            <app-icon [icon]="(currentTechRecord$ | async)?.vehicleType || ''"></app-icon>
+          </h1>
         </div>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+            <dd id="vin" class="govuk-summary-list__value">
+              {{ vehicleTechRecord?.vin | defaultNullOrEmpty }}
+            </dd>
+            <dd class="govuk-summary-list__value"></dd>
+          </div>
 
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Previous VRM</dt>
-          <dd id="previous-vrm" class="govuk-summary-list__value">
-            <app-number-plate
-              *ngFor="let secondaryVrm of otherVrms"
-              class="govuk-body govuk-!-margin-bottom-0"
-              [vrm]="secondaryVrm.vrm"
-              [isSecondary]="true"
-            ></app-number-plate>
-          </dd>
-          <dd class="govuk-summary-list__value"></dd>
-        </div>
-      </ng-container>
+          <ng-container *ngIf="(currentTechRecord$ | async)?.vehicleType !== vehicleTypes.TRL; else trailerHeader">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
+              <dd id="current-vrm" class="govuk-summary-list__value">
+                <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
+              </dd>
+              <dd class="govuk-summary-list__value"></dd>
+            </div>
 
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Record status</dt>
-        <dd id="status-code" class="govuk-summary-list__value">
-          <strong class="govuk-tag govuk-phase-banner__content__tag">{{ (currentTechRecord$ | async)?.statusCode | defaultNullOrEmpty }}</strong>
-        </dd>
-        <dd class="govuk-summary-list__value"></dd>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Previous VRM</dt>
+              <dd id="previous-vrm" class="govuk-summary-list__value">
+                <app-number-plate
+                  *ngFor="let secondaryVrm of otherVrms"
+                  class="govuk-body govuk-!-margin-bottom-0"
+                  [vrm]="secondaryVrm.vrm"
+                  [isSecondary]="true"
+                ></app-number-plate>
+              </dd>
+              <dd class="govuk-summary-list__value"></dd>
+            </div>
+          </ng-container>
+
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Record status</dt>
+            <dd id="status-code" class="govuk-summary-list__value">
+              <strong class="govuk-tag govuk-phase-banner__content__tag">{{ (currentTechRecord$ | async)?.statusCode | defaultNullOrEmpty }}</strong>
+            </dd>
+            <dd class="govuk-summary-list__value"></dd>
+          </div>
+        </dl>
+
+        <app-edit-tech-record-button
+          [vehicleTechRecord]="vehicleTechRecord"
+          [viewableTechRecord]="(currentTechRecord$ | async) || undefined"
+          [(isEditing)]="isEditing"
+          [isDirty]="isDirty"
+          (submitChange)="handleSubmit()"
+          *appRoleRequired="roles.TechRecordAmend"
+        ></app-edit-tech-record-button>
+
+        <app-tech-record-history
+          [currentRecord]="(currentTechRecord$ | async) || undefined"
+          [vehicleTechRecord]="vehicleTechRecord"
+        ></app-tech-record-history>
+
+        <app-test-record-summary
+          *appRoleRequired="roles.TestResultView"
+          [testRecords]="(records$ | async) || []"
+          [currentTechRecord]="(currentTechRecord$ | async) || undefined"
+        >
+        </app-test-record-summary>
       </div>
-    </dl>
-
-    <app-edit-tech-record-button
-      [vehicleTechRecord]="vehicleTechRecord"
-      [viewableTechRecord]="(currentTechRecord$ | async) || undefined"
-      [(isEditing)]="isEditing"
-      [isDirty]="isDirty"
-      (submitChange)="handleSubmit()"
-      *appRoleRequired="roles.TechRecordAmend"
-    ></app-edit-tech-record-button>
-
+    </div>
+  </div>
+  <div class="govuk-grid-column-two-thirds">
     <app-tech-record-summary
       *ngIf="currentTechRecord$ | async as currentTechRecord"
       [isEditing]="isEditing"
       [vehicleTechRecord]="currentTechRecord"
       (formChange)="handleFormState()"
     ></app-tech-record-summary>
-
-    <app-tech-record-history
-      [currentRecord]="(currentTechRecord$ | async) || undefined"
-      [vehicleTechRecord]="vehicleTechRecord"
-    ></app-tech-record-history>
-
-    <app-test-record-summary
-      *appRoleRequired="roles.TestResultView"
-      [testRecords]="(records$ | async) || []"
-      [currentTechRecord]="(currentTechRecord$ | async) || undefined"
-    >
-    </app-test-record-summary>
   </div>
 </div>
 

@@ -26,13 +26,11 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
-    this.form.cleanValueChanges
-      .pipe(debounceTime(400), takeUntil(this.destroy$))
-      .subscribe(e => this.formChange.emit(e));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { vehicleTechRecord } =  changes;
+    const { vehicleTechRecord } = changes;
 
     if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
       this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });

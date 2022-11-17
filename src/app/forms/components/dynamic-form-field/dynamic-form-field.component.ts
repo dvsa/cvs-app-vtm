@@ -3,7 +3,7 @@ import { AfterContentInit, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CustomFormControl, FormNodeEditTypes, FormNodeOption } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, map } from 'rxjs';
 
 @Component({
   selector: 'app-dynamic-form-field',
@@ -21,11 +21,11 @@ export class DynamicFormFieldComponent implements AfterContentInit {
   }
 
   get options(): Observable<FormNodeOption<string | number | boolean>[]> {
-    const meta = this.control?.value.meta
+    const meta = this.control?.value.meta;
 
     return meta?.referenceData
-      ? this.optionsService.getOptions(meta.referenceData)
-      : of(meta?.options as FormNodeOption<string | number | boolean>[] ?? []);
+      ? this.optionsService.getOptions(meta.referenceData).pipe(map(l => (l ? l : [])))
+      : of((meta?.options as FormNodeOption<string | number | boolean>[]) ?? []);
   }
 
   ngAfterContentInit(): void {

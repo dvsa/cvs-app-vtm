@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const fetchDefects = createAction(getTitle(true));
 export const fetchDefectsSuccess = createAction(getTitle(true, 'Success'), props<{ payload: Defect[] }>());
-export const fetchDefectsFailed = createAction(getTitle(true , 'Failed'), props<GlobalError>());
+export const fetchDefectsFailed = createAction(getTitle(true, 'Failed'), props<GlobalError>());
 
 export const fetchDefect = createAction(getTitle(), props<{ id: number }>());
 export const fetchDefectSuccess = createAction(getTitle(false, 'Success'), props<{ id: number; payload: Defect }>());

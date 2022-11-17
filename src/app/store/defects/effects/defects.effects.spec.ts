@@ -8,7 +8,14 @@ import { DefectsService } from '@services/defects/defects.service';
 import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { fetchDefect, fetchDefectFailed, fetchDefects, fetchDefectsFailed, fetchDefectsSuccess, fetchDefectSuccess } from '../actions/defects.actions';
+import {
+  fetchDefect,
+  fetchDefectFailed,
+  fetchDefects,
+  fetchDefectsFailed,
+  fetchDefectsSuccess,
+  fetchDefectSuccess
+} from '../actions/defects.actions';
 import { DefectsEffects } from './defects.effects';
 
 describe('DefectsEffects', () => {
@@ -18,10 +25,12 @@ describe('DefectsEffects', () => {
   let service: DefectsService;
 
   const expectedResult = { imNumber: 1 } as Defect;
-  const testCases = [{
-    id: expectedResult.imNumber,
-    payload: [expectedResult]
-  }];
+  const testCases = [
+    {
+      id: expectedResult.imNumber,
+      payload: [expectedResult]
+    }
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -47,7 +56,7 @@ describe('DefectsEffects', () => {
   });
 
   describe('fetchDefects$', () => {
-    it.each(testCases)('should return fetchDefectsSuccess action on successfull API call', (value) => {
+    it.each(testCases)('should return fetchDefectsSuccess action on successfull API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { payload } = value;
 
@@ -78,7 +87,7 @@ describe('DefectsEffects', () => {
   });
 
   describe('fetchDefect$', () => {
-    it.each(testCases)('should return fetchDefectSuccess action on successfull API call', (value) => {
+    it.each(testCases)('should return fetchDefectSuccess action on successfull API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id, payload } = value;
         const entity = payload.find(d => d.imNumber === id)!;
@@ -96,7 +105,7 @@ describe('DefectsEffects', () => {
       });
     });
 
-    it.each(testCases)('should return fetchDefectFailed action on API error', (value) => {
+    it.each(testCases)('should return fetchDefectFailed action on API error', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id } = value;
         actions$ = hot('-a--', { a: fetchDefect({ id }) });

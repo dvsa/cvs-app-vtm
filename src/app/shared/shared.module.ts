@@ -18,6 +18,7 @@ import { PreventDoubleClickDirective } from './directives/prevent-double-click/p
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 import { DocumentRetrievalService } from '@api/document-retrieval';
+import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { DocumentRetrievalService } from '@api/document-retrieval';
     TestCertificateComponent,
     PreventDoubleClickDirective,
     BaseDialogComponent,
-    DigitGroupSeparatorPipe
+    DigitGroupSeparatorPipe,
+    RefDataDecodePipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -54,7 +56,8 @@ import { DocumentRetrievalService } from '@api/document-retrieval';
     PaginationComponent,
     TestCertificateComponent,
     BaseDialogComponent,
-    DigitGroupSeparatorPipe
+    DigitGroupSeparatorPipe,
+    RefDataDecodePipe
   ],
   providers: [DocumentRetrievalService]
 })

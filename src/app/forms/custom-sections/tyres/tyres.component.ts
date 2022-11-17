@@ -3,7 +3,7 @@ import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { tyresTemplateHgv } from '@forms/templates/hgv/hgv-tyres.template';
-import { tyresTemplatePsv } from '@forms/templates/psv/psv-tyres.template';
+import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
@@ -51,7 +51,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   get template(): FormNode {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
-        return tyresTemplatePsv;
+        return PsvTyresTemplate;
       case VehicleTypes.HGV:
         return tyresTemplateHgv;
       case VehicleTypes.TRL:

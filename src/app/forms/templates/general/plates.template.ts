@@ -21,7 +21,7 @@ export const PlatesTemplate: FormNode = {
               value: '',
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
-              disabled: true,
+              disabled: true
             },
             {
               name: 'plateIssueDate',

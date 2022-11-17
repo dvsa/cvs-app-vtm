@@ -1,3 +1,9 @@
+@import 'node_modules/govuk-frontend/govuk/all';
+
 .no-scroll {
   position: fixed;
+}
+.gutters {
+  @include govuk-responsive-padding(6, 'left');
+  @include govuk-responsive-padding(6, 'right');
 }

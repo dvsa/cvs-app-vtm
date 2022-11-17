@@ -20,7 +20,12 @@ export class TechRecordViewResolver implements Resolve<boolean> {
     });
 
     return this.action$.pipe(
-      ofType(getBySystemNumberAndVinSuccess, fetchTestResultsBySystemNumberSuccess, getBySystemNumberAndVinFailure, fetchTestResultsBySystemNumberFailed),
+      ofType(
+        getBySystemNumberAndVinSuccess,
+        fetchTestResultsBySystemNumberSuccess,
+        getBySystemNumberAndVinFailure,
+        fetchTestResultsBySystemNumberFailed
+      ),
       take(2),
       count(action => action.type === getBySystemNumberAndVinSuccess.type || action.type === fetchTestResultsBySystemNumberSuccess.type),
       map(count => (count === 2 ? true : false))

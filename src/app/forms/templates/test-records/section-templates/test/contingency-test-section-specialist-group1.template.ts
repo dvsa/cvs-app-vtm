@@ -50,10 +50,20 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.ResultDependantOnCustomDefects }, { name: AsyncValidatorNames.HideIfEqualsWithCondition, args: { sibling: 'certificateNumber', value: 'fail', conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] }} }],
+              asyncValidators: [
+                { name: AsyncValidatorNames.ResultDependantOnCustomDefects },
+                {
+                  name: AsyncValidatorNames.HideIfEqualsWithCondition,
+                  args: {
+                    sibling: 'certificateNumber',
+                    value: 'fail',
+                    conditions: { field: 'testTypeId', operator: 'equals', value: ['150', '151', '181', '182'] }
+                  }
+                }
+              ],
               type: FormNodeTypes.CONTROL
             },
-            { 
+            {
               name: 'testTypeName',
               label: 'Description',
               value: '',

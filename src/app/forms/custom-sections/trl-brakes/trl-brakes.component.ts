@@ -19,7 +19,10 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
 
   form!: CustomFormGroup;
 
-  booleanOptions: MultiOptions = [{ value: true, label: 'Yes' }, { value: false, label: 'No' }];
+  booleanOptions: MultiOptions = [
+    { value: true, label: 'Yes' },
+    { value: false, label: 'No' }
+  ];
 
   private destroy$ = new Subject<void>();
 
@@ -28,13 +31,11 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.form = this.dfs.createForm(TrlBrakesTemplate, this.vehicleTechRecord) as CustomFormGroup;
 
-    this.form.cleanValueChanges
-      .pipe(debounceTime(400), takeUntil(this.destroy$))
-      .subscribe(event => this.formChange.emit(event));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(event => this.formChange.emit(event));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { vehicleTechRecord } =  changes;
+    const { vehicleTechRecord } = changes;
 
     if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
       this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
@@ -62,5 +63,10 @@ export class TrlBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return this.form.get(['axles', i, 'brakes']) as FormGroup;
   }
 
-  pascalCase = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1).replace(/([A-Z])/g, ' $1').toLowerCase();
+  pascalCase = (s: string): string =>
+    s.charAt(0).toUpperCase() +
+    s
+      .slice(1)
+      .replace(/([A-Z])/g, ' $1')
+      .toLowerCase();
 }

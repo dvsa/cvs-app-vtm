@@ -24,6 +24,7 @@ import { InterceptorModule } from './interceptors/interceptor.module';
 import { UserService } from './services/user-service/user-service';
 import { AppStoreModule } from './store/app-store.module';
 import { ApiModule as TestTypesApiModule, Configuration as TestTypesApiConfiguration } from '@api/test-types';
+import { ApiModule as ReferenceDataApiModule, Configuration as ReferenceDataConfiguration } from '@api/reference-data';
 import { DocumentRetrievalApiModule, Configuration as DocumentRetrievalConfiguration } from '@api/document-retrieval';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
@@ -72,6 +73,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     CoreModule,
     TestResultsApiModule.forRoot(() => new TestResultsApiConfiguration({ basePath: environment.VTM_API_URI })),
     TestTypesApiModule.forRoot(() => new TestTypesApiConfiguration({ basePath: environment.VTM_API_URI })),
+    ReferenceDataApiModule.forRoot(() => new ReferenceDataConfiguration({ basePath: environment.VTM_API_URI })),
     DocumentRetrievalApiModule.forRoot(
       () =>
         new DocumentRetrievalConfiguration({

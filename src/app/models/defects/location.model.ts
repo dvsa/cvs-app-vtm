@@ -11,26 +11,26 @@ export interface Location {
 export namespace Location {
   export type Vertical = 'upper' | 'lower';
   export const Vertical = {
-      Upper: 'upper' as Vertical,
-      Lower: 'lower' as Vertical
+    Upper: 'upper' as Vertical,
+    Lower: 'lower' as Vertical
   };
 
   export type Horizontal = 'inner' | 'outer';
   export const Horizontal = {
-      Inner: 'inner' as Horizontal,
-      Outer: 'outer' as Horizontal
+    Inner: 'inner' as Horizontal,
+    Outer: 'outer' as Horizontal
   };
 
   export type Lateral = 'nearside' | 'centre' | 'offside';
   export const Lateral = {
-      Nearside: 'nearside' as Lateral,
-      Centre: 'centre' as Lateral,
-      Offside: 'offside' as Lateral
+    Nearside: 'nearside' as Lateral,
+    Centre: 'centre' as Lateral,
+    Offside: 'offside' as Lateral
   };
 
   export type Longitudinal = 'front' | 'rear';
   export const Longitudinal = {
-      Front: 'front' as Longitudinal,
-      Rear: 'rear' as Longitudinal
+    Front: 'front' as Longitudinal,
+    Rear: 'rear' as Longitudinal
   };
 }

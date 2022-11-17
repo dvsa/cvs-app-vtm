@@ -4,7 +4,8 @@ import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/ve
 @Component({
   selector: 'app-tech-record-history',
   templateUrl: './tech-record-history.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./tech-record-history.component.scss']
 })
 export class TechRecordHistoryComponent {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
@@ -40,11 +41,11 @@ export class TechRecordHistoryComponent {
   summaryLinkUrl(techRecord: TechRecordModel) {
     switch (techRecord.statusCode) {
       case StatusCodes.PROVISIONAL:
-        return '/provisional'
+        return '/provisional';
       case StatusCodes.ARCHIVED:
-        return `/historic/${this.convertToUnix(techRecord.createdAt)}`
+        return `/historic/${this.convertToUnix(techRecord.createdAt)}`;
       default:
-        return ''
+        return '';
     }
   }
 }
