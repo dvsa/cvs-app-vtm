@@ -6,12 +6,14 @@ import { referenceDataFeatureState, resourceTypeAdapters } from '../reducers/ref
 const resourceTypeSelector = (resourceType: ReferenceDataResourceType) => createSelector(referenceDataFeatureState, state => state[resourceType]);
 
 export const selectAllReferenceDataByResourceType = (resourceType: ReferenceDataResourceType) =>
-  createSelector(resourceTypeSelector(resourceType), state => resourceTypeAdapters[resourceType].getSelectors().selectAll(state));
+  createSelector(resourceTypeSelector(resourceType), state =>
+    isResourceType(resourceType) ? resourceTypeAdapters[resourceType].getSelectors().selectAll(state) : undefined
+  );
 
 export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataResourceType, resourceKey: string | number) =>
-  createSelector(referenceDataFeatureState, state => state[resourceType].entities[resourceKey]);
+  createSelector(referenceDataFeatureState, state => (isResourceType(resourceType) ? state[resourceType].entities[resourceKey] : undefined));
 
-export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => state.loading);
+export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => Object.values(state).some(feature => feature.loading));
 
 export const selectBrakeByCode = (code: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
@@ -31,3 +33,7 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);
+
+export const isResourceType = (resourceType: string): resourceType is ReferenceDataResourceType => {
+  return Object.values(ReferenceDataResourceType).includes(resourceType as ReferenceDataResourceType);
+};

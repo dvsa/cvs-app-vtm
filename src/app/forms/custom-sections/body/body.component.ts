@@ -81,17 +81,17 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
     return getOptionsFromEnum(BodyTypeDescription);
   }
 
-  get bodyMakes$(): Observable<MultiOptions> {
+  get bodyMakes$(): Observable<MultiOptions | undefined> {
     return this.optionsService.getOptions(ReferenceDataResourceType.BodyMake);
   }
 
-  get bodyModels$(): Observable<MultiOptions> {
+  get bodyModels$(): Observable<MultiOptions | undefined> {
     return this.referenceDataStore
       .select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.BodyModel))
       .pipe(
         map(bodyModels =>
           bodyModels
-            .filter(bodyModel => (bodyModel as BodyModel).bodyMake === this.vehicleTechRecord.make)
+            ?.filter(bodyModel => (bodyModel as BodyModel).bodyMake === this.vehicleTechRecord.make)
             .map(bodyModel => ({ value: bodyModel.description ?? '', label: bodyModel.description ?? '' }))
         )
       );

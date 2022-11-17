@@ -179,6 +179,22 @@ export class CustomValidators {
     };
   };
 
+  static dateNotExceed = (sibling: string, months: number): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control?.parent) {
+        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+        const maxDate = new Date(siblingControl.value);
+        maxDate.setMonth(maxDate.getMonth() + months);
+
+        if (new Date(control.value) > maxDate) {
+          return { dateNotExceed: { sibling: siblingControl.meta.label, months: months } };
+        }
+      }
+
+      return null;
+    };
+  };
+
   /**
    * Validator that copies control value to control of given name at the top-level ancestor of control.
    * @param rootControlName - control in top-level ancestor of this control

@@ -22,7 +22,7 @@ export function createSingleSearchResult(systemNumber: string, vin: string): For
         name: 'vrm',
         label: 'Vehicle registration mark (VRM)',
         type: FormNodeTypes.CONTROL,
-        viewType: FormNodeViewTypes.VRM,
+        viewType: FormNodeViewTypes.VRM
       },
       {
         name: 'trailerId',

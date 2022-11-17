@@ -53,5 +53,5 @@ export const reducers: ActionReducerMap<State> = {
   [STORE_FEATURE_TEST_RESULTS_KEY]: testResultsReducer,
   [STORE_FEATURE_TEST_STATIONS_KEY]: testStationsReducer,
   [STORE_FEATURE_TEST_TYPES_KEY]: testTypesReducer,
-  [STORE_FEATURE_USER_KEY]: userServiceReducer,
+  [STORE_FEATURE_USER_KEY]: userServiceReducer
 };

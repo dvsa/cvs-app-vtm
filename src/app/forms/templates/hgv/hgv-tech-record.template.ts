@@ -182,9 +182,7 @@ export const HgvTechRecord: FormNode = {
       width: FormNodeWidth.XXS,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMBER,
-      validators: [
-        { name: ValidatorNames.Max, args: 99 },
-      ]
+      validators: [{ name: ValidatorNames.Max, args: 99 }]
     },
     {
       name: 'departmentalVehicleMarker',

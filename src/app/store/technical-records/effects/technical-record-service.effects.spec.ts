@@ -371,7 +371,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({systemNumber: 'PSV', vin: 'XMGDE02FS0H012345'}) });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'PSV', vin: 'XMGDE02FS0H012345' }) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
@@ -431,7 +431,9 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' })
+        });
       });
     });
   });
@@ -603,9 +605,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it.each([
       [500, 'Internal server error'],
       [400, 'You are not allowed to update an archived tech-record']
-
-    ])
-    ('should return an error message if not found', () => {
+    ])('should return an error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createProvisionalTechRecord });

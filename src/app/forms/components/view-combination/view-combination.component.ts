@@ -3,7 +3,8 @@ import { FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomFormControl, FormNode, FormNodeCombinationOptions } from '../../services/dynamic-form.types';
 
 @Component({
-  selector: 'app-view-combination',
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: '[app-view-combination]',
   templateUrl: './view-combination.component.html',
   providers: [
     {

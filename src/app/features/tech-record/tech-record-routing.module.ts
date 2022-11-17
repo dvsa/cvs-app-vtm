@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     component: TechRecordComponent,
-    data: { roles: Roles.TechRecordView },
+    data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
   },
@@ -21,19 +21,19 @@ const routes: Routes = [
     path: 'amend-reason',
     component: TechAmendReasonComponent,
     data: { roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard],
+    canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'correcting-an-error',
     component: TechRecordComponent,
-    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR, isCustomLayout: true },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'notifiable-alteration-needed',
     component: TechRecordComponent,
-    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
@@ -46,7 +46,7 @@ const routes: Routes = [
   {
     path: 'provisional',
     component: TechRecordComponent,
-    data: { title: 'Provisional tech record' },
+    data: { title: 'Provisional tech record', isCustomLayout: true },
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },
@@ -54,7 +54,7 @@ const routes: Routes = [
     path: 'provisional/notifiable-alteration-needed',
     component: TechRecordComponent,
     canActivate: [MsalGuard],
-    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+    data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
     resolve: { load: TechRecordViewResolver }
   },
   {
@@ -66,7 +66,7 @@ const routes: Routes = [
   {
     path: 'historic/:techCreatedAt',
     component: TechRecordComponent,
-    data: { title: 'Historic tech record' },
+    data: { title: 'Historic tech record', isCustomLayout: true },
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },

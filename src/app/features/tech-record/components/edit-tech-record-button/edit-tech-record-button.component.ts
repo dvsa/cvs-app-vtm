@@ -1,7 +1,12 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { createProvisionalTechRecordSuccess, selectVehicleTechnicalRecordsBySystemNumber, updateEditingTechRecordCancel, updateTechRecordsSuccess } from '@store/technical-records';
+import {
+  createProvisionalTechRecordSuccess,
+  selectVehicleTechnicalRecordsBySystemNumber,
+  updateEditingTechRecordCancel,
+  updateTechRecordsSuccess
+} from '@store/technical-records';
 import { ofType, Actions } from '@ngrx/effects';
 import { mergeMap, take } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -58,12 +63,12 @@ export class EditTechRecordButtonComponent implements OnInit {
   checkIfEditableReasonRequired() {
     this.viewableTechRecord?.statusCode !== StatusCodes.PROVISIONAL
       ? this.router.navigate(['amend-reason'], { relativeTo: this.route })
-      : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route })
+      : this.router.navigate(['notifiable-alteration-needed'], { relativeTo: this.route });
   }
 
   toggleEditMode() {
-      this.isEditing = !this.isEditing;
-      this.isEditingChange.emit(this.isEditing);
+    this.isEditing = !this.isEditing;
+    this.isEditingChange.emit(this.isEditing);
   }
 
   cancel() {

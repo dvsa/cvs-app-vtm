@@ -26,12 +26,7 @@ import { TechRecordTitleComponent } from './components/tech-record-title/tech-re
     TechPromoteComponent,
     TechRecordTitleComponent
   ],
-  imports: [
-    CommonModule,
-    DynamicFormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    TechRecordsRoutingModule],
+  imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule],
   exports: [EditTechRecordButtonComponent]
 })
 export class TechRecordsModule {}
