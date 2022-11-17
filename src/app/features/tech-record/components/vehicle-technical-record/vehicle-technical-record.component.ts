@@ -63,12 +63,16 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  get roles() {
+  get roles(): typeof Roles {
     return Roles;
   }
 
-  get vehicleTypes() {
+  get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
+  }
+
+  get statusCodes(): typeof StatusCodes {
+    return StatusCodes;
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
@@ -115,7 +119,9 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         this.store.dispatch(updateTechRecords({ systemNumber }));
       } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
         hasProvisional
-          ? this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL }))
+          ? this.store.dispatch(
+              updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
+            )
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
     }

@@ -49,9 +49,7 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
                 { value: 'pass', label: 'Pass' },
                 { value: 'fail', label: 'Fail' }
               ],
-              validators: [
-                { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }
-              ],
+              validators: [{ name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: 'pass' } }],
               type: FormNodeTypes.CONTROL
             },
             {

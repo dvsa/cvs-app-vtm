@@ -29,7 +29,10 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
-export const updateTechRecords = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string; recordToArchiveStatus?: StatusCodes }>());
+export const updateTechRecords = createAction(
+  `${prefix} updateTechRecords`,
+  props<{ systemNumber: string; recordToArchiveStatus?: StatusCodes; newStatus?: StatusCodes }>()
+);
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
