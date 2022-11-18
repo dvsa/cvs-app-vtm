@@ -41,7 +41,7 @@ import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { ReferenceDataResourceType, PsvMake } from '@models/reference-data.model';
 import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -133,13 +133,14 @@ export class TechRecordSummaryComponent implements OnInit {
 
   calculateVehicleModel(): void {
     this.isEditing
-      ? this.technicalRecordService.editableTechRecord$.pipe().subscribe(data => {
-          if (data) {
-            this.vehicleTechRecordCalculated = { ...cloneDeep(data), reasonForCreation: data.reasonForCreation ?? '' };
-          } else if (this.vehicleTechRecord) {
-            this.vehicleTechRecordCalculated = { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' };
-          }
-        })
+      ? this.technicalRecordService.editableTechRecord$
+          .pipe(
+            map(data => (data ? cloneDeep(data) : { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' })),
+            take(1)
+          )
+          .subscribe(data => {
+            this.vehicleTechRecordCalculated = data;
+          })
       : (this.vehicleTechRecordCalculated = this.vehicleTechRecord);
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
