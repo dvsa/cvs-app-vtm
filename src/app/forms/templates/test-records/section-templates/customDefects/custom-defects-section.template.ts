@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const CustomDefectsSection: FormNode = {
   name: 'customDefectsSection',
@@ -27,7 +27,8 @@ export const CustomDefectsSection: FormNode = {
                       name: 'referenceNumber',
                       label: 'Reference Number',
                       type: FormNodeTypes.CONTROL,
-                      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 10 }]
+                      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 10 }],
+                      width: FormNodeWidth.XL
                     },
                     {
                       name: 'defectName',

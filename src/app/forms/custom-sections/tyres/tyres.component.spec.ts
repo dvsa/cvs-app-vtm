@@ -1,5 +1,6 @@
 import { SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { createMockPsv } from '@mocks/psv-record.mock';
 import { FitmentCode, SpeedCategorySymbol, Tyres } from '@models/vehicle-tech-record.model';
@@ -7,12 +8,11 @@ import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { initialAppState, State } from '@store/index';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { TyresComponent } from './tyres.component';
 
 const mockReferenceDataService = {
-  getByKey$: jest.fn(),
-  loadReferenceData: jest.fn()
+  fetchReferenceDataByKey: jest.fn()
 };
 
 describe('TyresComponent', () => {
@@ -22,7 +22,7 @@ describe('TyresComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DynamicFormsModule, StoreModule.forRoot({})],
+      imports: [RouterTestingModule, DynamicFormsModule, StoreModule.forRoot({})],
       declarations: [TyresComponent],
       providers: [provideMockStore<State>({ initialState: initialAppState }), { provide: ReferenceDataService, useValue: mockReferenceDataService }]
     }).compileComponents();
@@ -101,7 +101,7 @@ describe('TyresComponent', () => {
 
   describe('getTyresRefData', () => {
     it('should call add tyre to tech record with correct values', () => {
-      mockReferenceDataService.getByKey$.mockImplementationOnce(() => {
+      mockReferenceDataService.fetchReferenceDataByKey.mockImplementationOnce(() => {
         return of({
           code: '101',
           loadIndexSingleLoad: '123',
@@ -138,10 +138,7 @@ describe('TyresComponent', () => {
     });
 
     it('should call add tyre to tech record with correct values when failure', () => {
-      mockReferenceDataService.getByKey$.mockImplementationOnce(() => {
-        return of(null);
-      });
-
+      mockReferenceDataService.fetchReferenceDataByKey.mockReturnValue(throwError(() => 'error'));
       const tyre = {
         tyreSize: null,
         speedCategorySymbol: SpeedCategorySymbol.A7,
@@ -157,13 +154,13 @@ describe('TyresComponent', () => {
         fitmentCode: FitmentCode.SINGLE,
         dataTrAxles: null,
         plyRating: null,
-        tyreCode: 101
+        tyreCode: null
       };
 
       component.getTyresRefData(tyre, 1);
 
       expect(component.isError).toBe(true);
-      expect(component.errorMessage).toBe('Cannot find data of this tyre');
+      expect(component.errorMessage).toBe('Cannot find data of this tyre on axle 1');
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(changedTyre, 1);
     });

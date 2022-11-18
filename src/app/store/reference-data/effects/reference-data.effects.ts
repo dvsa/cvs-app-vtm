@@ -13,9 +13,15 @@ import {
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySearch,
+  fetchReferenceDataByKeySearchFailed,
+  fetchReferenceDataByKeySearchSuccess,
   fetchReferenceDataByKeySuccess,
   fetchReferenceDataFailed,
-  fetchReferenceDataSuccess
+  fetchReferenceDataSuccess,
+  fetchTyreReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearchFailed,
+  fetchTyreReferenceDataByKeySearchSuccess
 } from '../actions/reference-data.actions';
 
 @Injectable()
@@ -49,6 +55,35 @@ export class ReferenceDataEffects {
           handleNotFound(resourceType, resourceKey),
           map(data => fetchReferenceDataByKeySuccess({ resourceType, resourceKey, payload: data as ReferenceDataModelBase })),
           catchError(e => of(fetchReferenceDataByKeyFailed({ error: e.message, resourceType })))
+        )
+      )
+    )
+  );
+
+  fetchReferenceDataByKeySearch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchReferenceDataByKeySearch),
+      mergeMap(({ resourceType, resourceKey }) =>
+        this.referenceDataService.fetchReferenceDataByKeySearch(resourceType, resourceKey).pipe(
+          map(data => fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: data.data as ReferenceDataModelBase[] })),
+          catchError(e => of(fetchReferenceDataByKeySearchFailed({ error: e.message, resourceType })))
+        )
+      )
+    )
+  );
+
+  fetchTyreReferenceDataByKeySearch$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fetchTyreReferenceDataByKeySearch),
+      mergeMap(({ searchFilter, searchTerm }) =>
+        this.referenceDataService.fetchTyreReferenceDataByKeySearch(searchFilter, searchTerm).pipe(
+          map(data =>
+            fetchTyreReferenceDataByKeySearchSuccess({
+              resourceType: ReferenceDataResourceType.Tyres,
+              payload: data.data as ReferenceDataModelBase[]
+            })
+          ),
+          catchError(e => of(fetchTyreReferenceDataByKeySearchFailed({ error: e.message, resourceType: ReferenceDataResourceType.Tyres })))
         )
       )
     )

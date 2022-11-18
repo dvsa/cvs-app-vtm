@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const SpecialistTestSectionGroup2: FormNode = {
@@ -12,18 +12,15 @@ export const SpecialistTestSectionGroup2: FormNode = {
       name: 'createdAt',
       label: 'Created',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
     },
-
     {
       name: 'testStartTimestamp',
       label: 'Test Date',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -42,7 +39,8 @@ export const SpecialistTestSectionGroup2: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
             },
             {
               name: 'testResult',
@@ -125,7 +123,8 @@ export const SpecialistTestSectionGroup2: FormNode = {
                   args: { sibling: 'testResult', value: 'pass' }
                 },
                 { name: ValidatorNames.MaxLength, args: 20 }
-              ]
+              ],
+              width: FormNodeWidth.XL
             },
             {
               name: 'testNumber',
@@ -141,7 +140,8 @@ export const SpecialistTestSectionGroup2: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
+              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }],
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
             },
             {
               name: 'testAnniversaryDate',
@@ -151,10 +151,10 @@ export const SpecialistTestSectionGroup2: FormNode = {
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
               validators: [
-                { name: ValidatorNames.Required },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ]
+              ],
+              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
             },
             {
               name: 'testTypeStartTimestamp',

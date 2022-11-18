@@ -8,15 +8,19 @@ import {
   ReferenceDataService as ReferenceDataApiService
 } from '@api/reference-data';
 import { MultiOptions } from '@forms/models/options.model';
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
   fetchReferenceData,
+  fetchReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearch,
   ReferenceDataState,
+  removeTyreSearch,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
-  selectReferenceDataByResourceKey
+  selectReferenceDataByResourceKey,
+  selectTyreSearchReturn
 } from '@store/reference-data';
 import { map, Observable, of, throwError } from 'rxjs';
 
@@ -45,9 +49,30 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.referenceResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
   }
 
+  fetchReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): Observable<ReferenceDataApiResponse> {
+    return this.referenceLookupResourceTypeResourceKeyGet(resourceType, resourceKey, 'body');
+  }
+
+  fetchTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): Observable<ReferenceDataApiResponse> {
+    return this.referenceLookupTyresSearchKeyParamGet(searchFilter, searchTerm, 'body');
+  }
+
+  loadReferenceDataByKeySearch(resourceType: ReferenceDataResourceType, resourceKey: string | number): void {
+    this.store.dispatch(fetchReferenceDataByKeySearch({ resourceType, resourceKey }));
+  }
+  loadTyreReferenceDataByKeySearch(searchFilter: string, searchTerm: string): void {
+    this.store.dispatch(fetchTyreReferenceDataByKeySearch({ searchFilter, searchTerm }));
+  }
+
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
+  removeTyreSearch() {
+    return this.store.dispatch(removeTyreSearch());
+  }
+  getTyreSearchReturn$ = () => {
+    return this.store.pipe(select(selectTyreSearchReturn()));
+  };
 
   getAll$ = (resourceType: ReferenceDataResourceType): Observable<ReferenceDataModelBase[] | undefined> => {
     return this.store.pipe(select(selectAllReferenceDataByResourceType(resourceType)));

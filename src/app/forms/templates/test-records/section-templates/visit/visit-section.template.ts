@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
@@ -41,7 +41,8 @@ export const VisitSection: FormNode = {
       name: 'testStationType',
       label: 'Type of test facility',
       type: FormNodeTypes.CONTROL,
-      disabled: true
+      disabled: true,
+      width: FormNodeWidth.S
     },
     {
       name: 'testerStaffId',
