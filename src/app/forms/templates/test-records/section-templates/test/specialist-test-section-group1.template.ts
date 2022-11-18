@@ -113,7 +113,7 @@ export const SpecialistTestSectionGroup1: FormNode = {
               editType: FormNodeEditTypes.TEXT,
               validators: [{ name: ValidatorNames.Alphanumeric }],
               viewType: FormNodeViewTypes.HIDDEN,
-              width: FormNodeWidth.L
+              width: FormNodeWidth.L,
               required: true,
               value: null
             },
