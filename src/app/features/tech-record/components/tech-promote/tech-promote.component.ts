@@ -17,7 +17,7 @@ import {
   updateTechRecordsSuccess
 } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
-import { Observable, take, tap } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-promote',
@@ -41,9 +41,9 @@ export class TechPromoteComponent implements OnInit {
     private techRecordsStore: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
-    this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$.pipe(
-      tap(vehicle => this.technicalRecordService.viewableTechRecord$(vehicle!).subscribe(techRecord => (this.techRecord = techRecord)))
-    );
+    this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
+
+    this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
 
     this.buttonLabel = this.isPromotion ? 'Promote' : 'Archive';
 
