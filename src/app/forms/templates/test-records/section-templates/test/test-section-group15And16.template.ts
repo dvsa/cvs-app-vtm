@@ -1,3 +1,4 @@
+import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { SpecialRefData } from '@forms/services/multi-options.service';
@@ -57,6 +58,7 @@ export const TestSectionGroup15And16: FormNode = {
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'additionalCommentsForAbandon', value: 'abandoned' } },
                 { name: ValidatorNames.HideIfNotEqual, args: { sibling: 'testExpiryDate', value: ['pass', 'abandoned'] } }
               ],
+              asyncValidators: [{ name: AsyncValidatorNames.PassResultDependantOnCustomDefects }],
               type: FormNodeTypes.CONTROL
             },
             {

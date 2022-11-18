@@ -1,0 +1,13 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <app-tech-record-title [vehicleTechRecord]="(vehicleTechRecord$ | async) || undefined"></app-tech-record-title>
+
+    <form [formGroup]="form" (submit)="handleSubmit(form.value)">
+      <app-text-area name="reason" label="Reason for promotion" formControlName="reason"></app-text-area>
+
+      <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
+        Promote record
+      </button>
+    </form>
+  </div>
+</div>
