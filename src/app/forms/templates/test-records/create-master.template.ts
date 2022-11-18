@@ -72,7 +72,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       test: ContingencyTestSectionGroup15and16,
       emissions: EmissionsSection,
-      seatbelts: SeatbeltSection,
+      seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       customDefects: CustomDefectsSection,
