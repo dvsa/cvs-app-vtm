@@ -77,7 +77,7 @@ export class TyresSearchComponent implements OnInit {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
     this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
-    this.technicalRecordService.editableTechRecord$.subscribe(data => (this.viewableTechRecord = data));
+    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
