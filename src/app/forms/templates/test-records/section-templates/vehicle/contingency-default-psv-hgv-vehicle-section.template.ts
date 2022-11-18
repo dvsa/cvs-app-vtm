@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
@@ -41,7 +41,8 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
       label: 'EU Vehicle Category',
       value: '',
       disabled: true,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      width: FormNodeWidth.XXS
     },
     {
       name: 'odometerReading',
@@ -51,7 +52,8 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
       asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }],
       editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN
+      viewType: FormNodeViewTypes.HIDDEN,
+      width: FormNodeWidth.L
     },
     {
       name: 'odometerReadingUnits',

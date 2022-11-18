@@ -1,7 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { TestAbandonmentReasonsPsvData } from '../../test-abandonment-reasons';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const ContingencyTestSectionGroup15and16: FormNode = {
   name: 'testSection',
@@ -14,7 +13,8 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
       label: 'Contingency Test Number',
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.NUMERICSTRING,
-      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }]
+      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }],
+      width: FormNodeWidth.L
     },
     {
       name: 'testStartTimestamp',
