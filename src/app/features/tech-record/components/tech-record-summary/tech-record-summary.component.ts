@@ -135,10 +135,12 @@ export class TechRecordSummaryComponent implements OnInit {
     this.isEditing
       ? this.technicalRecordService.editableTechRecord$
           .pipe(
-            map(data => (data ? cloneDeep(data) : { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' })),
+            //Need to check that the editing tech record has more than just reason for creation on and is the full object.
+            map(data => (data && Object.keys(data).length > 1 ? cloneDeep(data) : { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' })),
             take(1)
           )
           .subscribe(data => {
+            console.log(data);
             this.vehicleTechRecordCalculated = data;
           })
       : (this.vehicleTechRecordCalculated = this.vehicleTechRecord);
