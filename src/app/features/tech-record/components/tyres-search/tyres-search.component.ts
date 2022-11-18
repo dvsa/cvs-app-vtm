@@ -81,7 +81,7 @@ export class TyresSearchComponent implements OnInit {
     this.referenceDataService
       .getTyreSearchReturn$()
       .pipe(take(1))
-      .subscribe((data: any) => {
+      .subscribe(data => {
         this.searchResults = data;
       });
     if (!this.viewableTechRecord) {
@@ -127,7 +127,7 @@ export class TyresSearchComponent implements OnInit {
         mergeMap(_action => this.store.select(selectTyreSearchReturn())),
         take(1)
       )
-      .subscribe((data: any) => {
+      .subscribe(data => {
         this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
         this.searchResults = data;
       });

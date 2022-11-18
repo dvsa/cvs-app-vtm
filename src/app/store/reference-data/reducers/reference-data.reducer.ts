@@ -1,4 +1,4 @@
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
@@ -28,7 +28,7 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
 
 export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
-  searchReturn: any[] | null;
+  searchReturn: ReferenceDataTyre[] | null;
 }
 
 export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
