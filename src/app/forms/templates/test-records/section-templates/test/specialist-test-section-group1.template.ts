@@ -111,11 +111,12 @@ export const SpecialistTestSectionGroup1: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.TEXT,
               validators: [{ name: ValidatorNames.Alphanumeric }],
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
+              required: true,
+              value: null
             },
             {
               name: 'testNumber',

@@ -86,6 +86,77 @@ describe('resultDependantOnCustomDefects', () => {
   });
 });
 
+describe('passResultDependantOnCustomDefects', () => {
+  let form: FormGroup;
+  let store: MockStore<State>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState: initialAppState })]
+    });
+
+    store = TestBed.inject(MockStore);
+
+    form = new FormGroup({
+      testResult: new CustomFormControl({ name: 'testResult', type: FormNodeTypes.CONTROL, children: [] }, null)
+    });
+  });
+
+  it('should fail validation when value is "pass" and defects are present', async () => {
+    form.controls['testResult'].patchValue('pass');
+
+    store.overrideSelector(testResultInEdit, mockTestResult());
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.passResultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toEqual({ invalidTestResult: { message: 'Cannot pass test when defects are present' } });
+  });
+
+  it('should pass validation when value is "fail" but no defects are present', async () => {
+    form.controls['testResult'].patchValue('fail');
+
+    const testResult = mockTestResult();
+    testResult.testTypes = [];
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.passResultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toBeNull();
+  });
+
+  it('should pass validation when value is "prs" but no defects are present', async () => {
+    form.controls['testResult'].patchValue('prs');
+
+    const testResult = mockTestResult();
+    testResult.testTypes = [];
+
+    store.overrideSelector(testResultInEdit, testResult);
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.passResultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toBeNull();
+  });
+
+  it('should pass validation when value is "abandoned"', async () => {
+    form.controls['testResult'].patchValue('abandoned');
+
+    store.overrideSelector(testResultInEdit, mockTestResult());
+
+    const result = await firstValueFrom(
+      CustomAsyncValidators.passResultDependantOnCustomDefects(store)(form.controls['testResult']) as Observable<ValidationErrors | null>
+    );
+
+    expect(result).toBeNull();
+  });
+});
+
 describe('updateTestStationDetails', () => {
   let form: FormGroup;
   let store: MockStore<State>;

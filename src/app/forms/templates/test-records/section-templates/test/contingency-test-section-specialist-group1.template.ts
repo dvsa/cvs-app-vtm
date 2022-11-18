@@ -89,11 +89,12 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.STRING,
               editType: FormNodeEditTypes.TEXT,
-              validators: [{ name: ValidatorNames.Alphanumeric }]
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              required: true,
+              value: null
             },
             {
               name: 'testTypeStartTimestamp',

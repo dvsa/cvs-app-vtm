@@ -15,6 +15,14 @@ import { catchError, map, Observable, of, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
+    return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, [resultOfTestEnum.pass, resultOfTestEnum.fail, resultOfTestEnum.prs]);
+  }
+
+  static passResultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
+    return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, resultOfTestEnum.pass);
+  }
+
+  static checkResultDependantOnCustomDefects(store: Store<State>, limitToResult: resultOfTestEnum | resultOfTestEnum[]): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
@@ -22,11 +30,23 @@ export class CustomAsyncValidators {
         map(testResult => {
           const hasCustomDefects = testResult?.testTypes?.some(testType => testType?.customDefects && testType.customDefects.length > 0);
 
-          if (control.value === 'pass' && hasCustomDefects) {
+          if (
+            control.value === 'pass' &&
+            hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+          ) {
             return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
-          } else if (control.value === 'fail' && !hasCustomDefects) {
+          } else if (
+            control.value === 'fail' &&
+            !hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+          ) {
             return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
-          } else if (control.value === 'prs' && !hasCustomDefects) {
+          } else if (
+            control.value === 'prs' &&
+            !hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+          ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
           } else {
             return null;

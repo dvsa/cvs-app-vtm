@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
 import { RouterReducerState } from '@ngrx/router-store';
@@ -23,12 +25,15 @@ export class TechPromoteComponent {
   form: CustomFormGroup;
 
   constructor(
+    private errorService: GlobalErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private routerStore: Store<RouterReducerState>,
     private techRecordsStore: Store<TechnicalRecordServiceState>,
     private technicalRecordService: TechnicalRecordService
   ) {
+    this.errorService.clearErrors();
+
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$.pipe(
       tap(
         vehicleTechRecord =>
@@ -38,7 +43,7 @@ export class TechPromoteComponent {
 
     this.form = new CustomFormGroup(
       { name: 'reasonForPromotion', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
   }
 
@@ -48,6 +53,14 @@ export class TechPromoteComponent {
     }
 
     this.techRecord.reasonForCreation = form.reason;
+
+    this.form.valid
+      ? this.errorService.clearErrors()
+      : this.errorService.setErrors([{ error: 'Reason for amending is required', anchorLink: 'reasonForAmend' }]);
+
+    if (!this.form.valid || !form.reason) {
+      return;
+    }
 
     this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: this.techRecord }));
 
