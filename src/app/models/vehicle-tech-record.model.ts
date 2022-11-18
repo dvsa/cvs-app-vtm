@@ -257,6 +257,7 @@ export interface TechRecordModel {
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;
   authIntoService?: AuthIntoService;
+  notes?: string;
 
   // Gross vehicle weights
   grossKerbWeight?: number;

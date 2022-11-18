@@ -364,7 +364,7 @@ describe('Vehicle Technical Record Reducer', () => {
         vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
         loading: true
       };
-      const action = archiveTechRecord({ systemNumber: '001' });
+      const action = archiveTechRecord({ systemNumber: '001', reasonForArchiving: 'some reason' });
       const newState = vehicleTechRecordReducer(state, action);
 
       expect(state).toEqual(newState);

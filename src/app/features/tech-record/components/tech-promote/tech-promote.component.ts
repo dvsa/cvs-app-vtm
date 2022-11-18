@@ -26,16 +26,17 @@ export class TechPromoteComponent {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService) {
+    private technicalRecordService: TechnicalRecordService
+  ) {
     const condition = this.isPromotion
-        ? (record: TechRecordModel) => record.statusCode === StatusCodes.PROVISIONAL
-        : (record: TechRecordModel) => record.statusCode === StatusCodes.CURRENT;
+      ? (record: TechRecordModel) => record.statusCode === StatusCodes.PROVISIONAL
+      : (record: TechRecordModel) => record.statusCode === StatusCodes.CURRENT;
 
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$.pipe(
-      tap(vehicleTechRecord => this.techRecord = cloneDeep(vehicleTechRecord?.techRecord.find(condition))!)
-      );
+      tap(vehicleTechRecord => (this.techRecord = cloneDeep(vehicleTechRecord?.techRecord.find(condition))!))
+    );
 
-    this.buttonLabel = this.isPromotion ? 'Promote' : 'Archive'
+    this.buttonLabel = this.isPromotion ? 'Promote' : 'Archive';
 
     this.form = new CustomFormGroup(
       { name: 'reasonGroup', type: FormNodeTypes.GROUP },
@@ -48,26 +49,26 @@ export class TechPromoteComponent {
   }
 
   get label(): string {
-    return this.isPromotion
-      ? 'Are you sure you want to promote this to a current record?'
-      : 'Why are you archiving this record?';
+    return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
   }
 
   handleSubmit(): void {
-    this.techRecord.reasonForCreation = this.form.get('reason')?.value;
+    const reason = this.form.get('reason')?.value;
+
+    if (this.isPromotion) {
+      this.techRecord.reasonForCreation = reason;
+    }
 
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.techRecord }));
 
     const systemNumber = this.router.url.split('/')[2];
 
-    if (this.isPromotion) {
-      this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT }));
+    const action = this.isPromotion
+      ? updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.CURRENT })
+      : archiveTechRecord({ systemNumber, reasonForArchiving: reason });
 
-      this.router.navigate([`../..`], { relativeTo: this.route });
-    } else {
-      this.store.dispatch(updateTechRecords({ systemNumber }));
-      this.store.dispatch(archiveTechRecord({ systemNumber }));
-      this.router.navigate([`..`], { relativeTo: this.route });
-    }
+    this.store.dispatch(action);
+
+    this.router.navigate([this.isPromotion ? '../..' : '..'], { relativeTo: this.route });
   }
 }

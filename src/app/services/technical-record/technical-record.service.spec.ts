@@ -215,9 +215,9 @@ describe('TechnicalRecordService', () => {
 
     describe('archiveTechRecord', () => {
       it('should return a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { username: 'TEST', id: '1234' } };
+        const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { username: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
-        service.archiveTechnicalRecord(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
+        service.archiveTechnicalRecord(params.systemNumber, mockData[0].techRecord[0], params.reasonForArchiving, params.user).subscribe();
 
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/archive/${params.systemNumber}`);

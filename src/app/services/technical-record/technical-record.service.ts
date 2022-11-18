@@ -107,13 +107,15 @@ export class TechnicalRecordService {
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  archiveTechnicalRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
-    const { username, id } = user;
+  archiveTechnicalRecord(systemNumber: string, techRecord: TechRecordModel, reason: string, user: { id?: string; username: string }) {
     const url = `${environment.VTM_API_URI}/vehicles/archive/${systemNumber}`;
+
     const body = {
-      msUserDetails: { msOid: id, msUser: username },
-      techRecord: [techRecord]
+      msUserDetails: { msOid: user.id, msUser: user.username },
+      techRecord: [techRecord],
+      reasonForArchiving: reason
     };
+
     return this.http.put<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
