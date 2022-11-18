@@ -140,7 +140,6 @@ export class TechRecordSummaryComponent implements OnInit {
             take(1)
           )
           .subscribe(data => {
-            console.log(data);
             this.vehicleTechRecordCalculated = data;
           })
       : (this.vehicleTechRecordCalculated = this.vehicleTechRecord);
