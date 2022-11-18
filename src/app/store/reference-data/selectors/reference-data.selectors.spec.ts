@@ -40,6 +40,26 @@ describe('Reference Data Selectors', () => {
     });
   });
 
+  describe('selectTyreSearchReturn', () => {
+    it('should return the search return state to the user', () => {
+      const value = {
+        payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+      };
+
+      const state: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          loading: false,
+          searchReturn: value.payload
+        }
+      };
+
+      const expectedState = referenceDataSelectors.selectTyreSearchReturn().projector(state);
+      expect(expectedState).toBe(value.payload);
+    });
+  });
+
   it('should return true if any feature is loading state', () => {
     const state: ReferenceDataState = { ...initialReferenceDataState };
     state.BODY_MAKE.loading = true;

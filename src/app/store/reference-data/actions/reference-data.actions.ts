@@ -52,14 +52,14 @@ export const fetchTyreReferenceDataByKeySearch = createAction(
   props<{ searchFilter: string; searchTerm: string }>()
 );
 export const fetchTyreReferenceDataByKeySearchSuccess = createAction(
-  '[API/reference-data] Fetch tyre by filter and term and search Success',
+  '[API/reference-data] Fetch tyre by filter and term Success',
   props<{
     resourceType: ReferenceDataResourceType;
     payload: Array<ReferenceDataModelBase>;
   }>()
 );
 export const fetchTyreReferenceDataByKeySearchFailed = createAction(
-  '[API/reference-data] Fetch tyre by filter and term and search Failed',
+  '[API/reference-data] Fetch tyre by filter and term Failed',
   props<featureError>()
 );
 export const removeTyreSearch = createAction('[API/reference-data] Remove search return from state');

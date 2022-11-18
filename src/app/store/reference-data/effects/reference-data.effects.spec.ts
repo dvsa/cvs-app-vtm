@@ -17,9 +17,15 @@ import {
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySearch,
+  fetchReferenceDataByKeySearchFailed,
+  fetchReferenceDataByKeySearchSuccess,
   fetchReferenceDataByKeySuccess,
   fetchReferenceDataFailed,
-  fetchReferenceDataSuccess
+  fetchReferenceDataSuccess,
+  fetchTyreReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearchFailed,
+  fetchTyreReferenceDataByKeySearchSuccess
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { ReferenceDataEffects } from './reference-data.effects';
@@ -141,6 +147,77 @@ describe('ReferenceDataEffects', () => {
 
         expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
           b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required', resourceType: resourceType })
+        });
+      });
+    });
+  });
+
+  describe('fetchReferenceDataByKeySearch', () => {
+    it('should return fetchReferenceDataByKeySearchSuccess on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.Tyres;
+        const resourceKey = '123';
+        const value = {
+          payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+        };
+        const apiResponse = { data: [...value.payload] };
+
+        actions$ = hot('-a--', { a: fetchReferenceDataByKeySearch({ resourceType, resourceKey }) });
+
+        jest.spyOn(referenceDataService, 'fetchReferenceDataByKeySearch').mockReturnValue(cold('--a|', { a: apiResponse }));
+
+        expectObservable(effects.fetchReferenceDataByKeySearch$).toBe('---b', {
+          b: fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: value.payload as ReferenceDataModelBase[] })
+        });
+      });
+    });
+
+    it('should return fetchReferenceDataByKeySearchFailed on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.Tyres;
+        actions$ = hot('-a--', { a: fetchReferenceDataByKeySearch({ resourceType, resourceKey: null as any }) });
+
+        const expectedError = new Error('Reference data resourceKey is required');
+
+        jest.spyOn(referenceDataService, 'fetchReferenceDataByKeySearch').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchReferenceDataByKeySearch$).toBe('---b', {
+          b: fetchReferenceDataByKeySearchFailed({ error: 'Reference data resourceKey is required', resourceType: resourceType })
+        });
+      });
+    });
+  });
+
+  describe('fetchTyreReferenceDataByKeySearch', () => {
+    it('should return fetchTyreReferenceDataByKeySearchSuccess on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.Tyres;
+        const value = {
+          payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+        };
+        const apiResponse = { data: [...value.payload] };
+
+        actions$ = hot('-a--', { a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: '123' }) });
+
+        jest.spyOn(referenceDataService, 'fetchTyreReferenceDataByKeySearch').mockReturnValue(cold('--a|', { a: apiResponse }));
+
+        expectObservable(effects.fetchTyreReferenceDataByKeySearch$).toBe('---b', {
+          b: fetchTyreReferenceDataByKeySearchSuccess({ resourceType, payload: value.payload as ReferenceDataModelBase[] })
+        });
+      });
+    });
+
+    it('should return fetchTyreReferenceDataByKeySearchFailed on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const resourceType = ReferenceDataResourceType.Tyres;
+        actions$ = hot('-a--', { a: fetchTyreReferenceDataByKeySearch({ searchFilter: 'plyRating', searchTerm: null as any }) });
+
+        const expectedError = new Error('Search term is required');
+
+        jest.spyOn(referenceDataService, 'fetchTyreReferenceDataByKeySearch').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.fetchTyreReferenceDataByKeySearch$).toBe('---b', {
+          b: fetchTyreReferenceDataByKeySearchFailed({ error: 'Search term is required', resourceType: resourceType })
         });
       });
     });
