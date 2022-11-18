@@ -1,5 +1,5 @@
 <ng-container *ngIf="testResult$ | async as testResult">
-  <ng-container [ngSwitch]="testMode">
+<ng-container *ngIf="testResult$ | async as testResult" [ngSwitch]="testMode">
     <ng-container *ngSwitchCase="TestModeEnum.Edit">
       <app-base-test-record
         [isEditing]="true"
