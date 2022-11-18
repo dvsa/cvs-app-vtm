@@ -22,6 +22,9 @@ import {
   createProvisionalTechRecord,
   createProvisionalTechRecordFailure,
   createProvisionalTechRecordSuccess,
+  archiveTechRecord,
+  archiveTechRecordFailure,
+  archiveTechRecordSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
   updateTechRecordsSuccess,
@@ -351,6 +354,51 @@ describe('Vehicle Technical Record Reducer', () => {
 
       expect(state).not.toEqual(newState);
       expect(newState.vehicleTechRecords).toEqual(newRecord);
+    });
+  });
+
+  describe('archiveTechRecord', () => {
+    it('should set the new vehicle tech records state after update', () => {
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecords: mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1),
+        loading: true
+      };
+      const action = archiveTechRecord({ systemNumber: '001', reasonForArchiving: 'some reason' });
+      const newState = vehicleTechRecordReducer(state, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+      expect(state.vehicleTechRecords.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('archiveTechRecordSuccess', () => {
+    it('should set the new vehicle tech records state after update success', () => {
+      const oldRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 5);
+      const newRecord = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 2);
+
+      const state: TechnicalRecordServiceState = {
+        ...initialState,
+        vehicleTechRecords: oldRecord
+      };
+      const action = archiveTechRecordSuccess({ vehicleTechRecords: [...newRecord] });
+      const newState = vehicleTechRecordReducer(state, action);
+
+      expect(state).not.toEqual(newState);
+      expect(newState.vehicleTechRecords).toEqual(newRecord);
+    });
+  });
+
+  describe('archiveTechRecordFailure', () => {
+    it('should set error state', () => {
+      const error = 'fetching vehicle tech records failed';
+      const action = archiveTechRecordFailure({ error });
+      const newState = vehicleTechRecordReducer(initialState, action);
+
+      expect(initialState).not.toEqual(newState);
+      expect(newState.error).toEqual(error);
+      expect(initialState).not.toBe(newState);
     });
   });
 

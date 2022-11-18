@@ -25,6 +25,9 @@ import {
   createProvisionalTechRecord,
   createProvisionalTechRecordSuccess,
   createProvisionalTechRecordFailure,
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  archiveTechRecordFailure,
   updateEditingTechRecord,
   updateEditingTechRecordCancel
 } from '../actions/technical-record-service.actions';
@@ -79,6 +82,10 @@ export const vehicleTechRecordReducer = createReducer(
   on(createProvisionalTechRecord, defaultArgs),
   on(createProvisionalTechRecordSuccess, successArgs),
   on(createProvisionalTechRecordFailure, updateFailureArgs),
+
+  on(archiveTechRecord, defaultArgs),
+  on(archiveTechRecordSuccess, successArgs),
+  on(archiveTechRecordFailure, updateFailureArgs),
 
   on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { techRecord: TechRecordModel }) => ({
     ...state,
