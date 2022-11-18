@@ -43,7 +43,20 @@ describe('Reference Data Selectors', () => {
   describe('selectTyreSearchReturn', () => {
     it('should return the search return state to the user', () => {
       const value = {
-        payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
       };
 
       const state: ReferenceDataState = {

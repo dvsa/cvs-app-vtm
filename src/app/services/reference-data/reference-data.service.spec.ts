@@ -60,7 +60,20 @@ describe('ReferenceDataService', () => {
   describe('fetchReferenceDataByKeySearch', () => {
     it('should call the correct end point', () => {
       const value = {
-        payload: [{ tyreCode: '123', resourceType: 'TYRES', resourceKey: '123' }]
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
       };
       const apiResponse: ReferenceDataApiResponse = { data: value.payload };
       service.fetchReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, '101').subscribe(data => {
@@ -75,7 +88,20 @@ describe('ReferenceDataService', () => {
   describe('fetchTyreReferenceDataByKeySearch', () => {
     it('should call the correct end point', () => {
       const value = {
-        payload: [{ tyreCode: '123', resourceType: 'TYRES', resourceKey: '123' }]
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
       };
       const apiResponse: ReferenceDataApiResponse = { data: value.payload };
       service.fetchTyreReferenceDataByKeySearch('plyrating', '10').subscribe(data => {

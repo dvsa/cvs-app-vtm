@@ -163,11 +163,24 @@ describe('Reference Data Reducer', () => {
         const resourceType = ReferenceDataResourceType.Tyres;
         const resourceKey = '123';
         const value = {
-          payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+          payload: [
+            {
+              tyreCode: '123',
+              resourceType: ReferenceDataResourceType.Tyres,
+              resourceKey: '123',
+              code: '123',
+              loadIndexSingleLoad: '102',
+              tyreSize: 'size',
+              dateTimeStamp: 'time',
+              userId: '1234',
+              loadIndexTwinLoad: '101',
+              plyRating: '18'
+            }
+          ]
         };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,
-          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload as ReferenceDataModelBase[], loading: false }
+          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
         };
 
         const action = fetchReferenceDataByKeySearchSuccess({ resourceType, resourceKey, payload: value.payload });
@@ -231,11 +244,24 @@ describe('Reference Data Reducer', () => {
       it('should set the the resource data item based on the type and key', () => {
         const resourceType = ReferenceDataResourceType.Tyres;
         const value = {
-          payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+          payload: [
+            {
+              tyreCode: '123',
+              resourceType: ReferenceDataResourceType.Tyres,
+              resourceKey: '123',
+              code: '123',
+              loadIndexSingleLoad: '102',
+              tyreSize: 'size',
+              dateTimeStamp: 'time',
+              userId: '1234',
+              loadIndexTwinLoad: '101',
+              plyRating: '18'
+            }
+          ]
         };
         const newState: ReferenceDataState = {
           ...initialReferenceDataState,
-          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload as ReferenceDataModelBase[], loading: false }
+          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload, loading: false }
         };
 
         const action = fetchTyreReferenceDataByKeySearchSuccess({ resourceType, payload: value.payload });
