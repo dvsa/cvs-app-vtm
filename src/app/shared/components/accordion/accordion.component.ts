@@ -15,7 +15,7 @@ export class AccordionComponent {
   constructor(private cdr: ChangeDetectorRef) {}
 
   get iconStyle(): string {
-    return 'govuk-accordion-nav__chevron' +(this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down');
+    return 'govuk-accordion-nav__chevron' + (this.isExpanded ? '' : ' govuk-accordion-nav__chevron--down');
   }
 
   open(): void {

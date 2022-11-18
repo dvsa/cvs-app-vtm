@@ -102,7 +102,7 @@ describe('ReferenceDataEffects', () => {
       }
     );
 
-    it.each(testCases)('should return fetchReferenceDataFailed action on API error', () => {
+    it('should return fetchReferenceDataFailed action on API error', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: null as any }) });
 
@@ -112,6 +112,21 @@ describe('ReferenceDataEffects', () => {
 
         expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
           b: fetchReferenceDataFailed({ error: 'Reference data resourceType is required', resourceType: null as any })
+        });
+      });
+    });
+
+    it('should return fetchReferenceDataFailed action when data is not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        actions$ = hot('-a--', { a: fetchReferenceData({ resourceType: ReferenceDataResourceType.BodyMake }) });
+
+        jest.spyOn(referenceDataService, 'fetchReferenceData').mockReturnValue(cold('--a|', { a: { data: [] } }));
+
+        expectObservable(effects.fetchReferenceDataByType$).toBe('---b', {
+          b: fetchReferenceDataFailed({
+            error: `Reference data not found for resource type ${ReferenceDataResourceType.BodyMake}`,
+            resourceType: ReferenceDataResourceType.BodyMake
+          })
         });
       });
     });
@@ -147,6 +162,19 @@ describe('ReferenceDataEffects', () => {
 
         expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
           b: fetchReferenceDataByKeyFailed({ error: 'Reference data resourceKey is required', resourceType: resourceType })
+        });
+      });
+    });
+
+    it.each(testCases)('should return fetchReferenceDataByKeyFailed action when resource not found', value => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const { resourceType } = value;
+        actions$ = hot('-a--', { a: fetchReferenceDataByKey({ resourceType, resourceKey: 'xx' }) });
+
+        jest.spyOn(referenceDataService, 'fetchReferenceDataByKey').mockReturnValue(cold('--a|', { a: {} }));
+
+        expectObservable(effects.fetchReferenceDataByKey$).toBe('---b', {
+          b: fetchReferenceDataByKeyFailed({ error: `Reference data not found for resource type ${resourceType},xx`, resourceType: resourceType })
         });
       });
     });

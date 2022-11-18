@@ -7,6 +7,7 @@ import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
+import { TechPromoteComponent } from './components/tech-promote/tech-promote.component';
 import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
@@ -63,6 +64,12 @@ const routes: Routes = [
     component: TechRecordComponent,
     canActivate: [MsalGuard],
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'provisional/promote',
+    component: TechPromoteComponent,
+    canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {

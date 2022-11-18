@@ -16,7 +16,7 @@ export const DocumentsTemplate: FormNode = {
           label: 'Microfilm document type',
           type: FormNodeTypes.CONTROL,
           editType: FormNodeEditTypes.AUTOCOMPLETE,
-          options: DOCUMENT_TYPES,
+          options: DOCUMENT_TYPES
         },
         {
           name: 'microfilmRollNumber',

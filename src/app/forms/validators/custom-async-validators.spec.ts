@@ -223,7 +223,9 @@ describe('requiredIfNotAbandoned', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotabandoned: true });
   });
@@ -235,7 +237,9 @@ describe('requiredIfNotAbandoned', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual(null);
   });
@@ -247,7 +251,9 @@ describe('requiredIfNotAbandoned', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotabandoned: true });
   });
@@ -259,7 +265,9 @@ describe('requiredIfNotAbandoned', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotabandoned: true });
   });
@@ -271,7 +279,9 @@ describe('requiredIfNotAbandoned', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotAbandoned(store)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual(null);
   });
@@ -288,7 +298,6 @@ describe('requiredIfNotResult', () => {
 
     store = TestBed.inject(MockStore);
 
-
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null)
     });
@@ -301,7 +310,9 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotfail: true });
   });
@@ -313,7 +324,11 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, [resultOfTestEnum.fail, resultOfTestEnum.abandoned])(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, [resultOfTestEnum.fail, resultOfTestEnum.abandoned])(
+        form.controls['foo']
+      ) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotResult: true });
   });
@@ -325,7 +340,9 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual(null);
   });
@@ -337,7 +354,9 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual(null);
   });
@@ -349,7 +368,9 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotfail: true });
   });
@@ -361,7 +382,9 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, resultOfTestEnum.fail)(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotfail: true });
   });
@@ -373,7 +396,11 @@ describe('requiredIfNotResult', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResult(store, [resultOfTestEnum.fail, resultOfTestEnum.pass])(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResult(store, [resultOfTestEnum.fail, resultOfTestEnum.pass])(
+        form.controls['foo']
+      ) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotResult: true });
   });
@@ -390,7 +417,6 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 
     store = TestBed.inject(MockStore);
 
-
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
       bar: new CustomFormControl({ name: 'bar', type: FormNodeTypes.CONTROL, children: [] }, null)
@@ -405,7 +431,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(store, resultOfTestEnum.fail, "bar", "x")(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
+        store,
+        resultOfTestEnum.fail,
+        'bar',
+        'x'
+      )(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotResultAndSiblingEquals: true });
   });
@@ -418,7 +451,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(store, resultOfTestEnum.fail, "bar", "x")(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
+        store,
+        resultOfTestEnum.fail,
+        'bar',
+        'x'
+      )(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual(null);
   });
@@ -431,7 +471,14 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(store, resultOfTestEnum.fail, "bar", "x")(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
+        store,
+        resultOfTestEnum.fail,
+        'bar',
+        'x'
+      )(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual(null);
   });
@@ -444,14 +491,17 @@ describe('requiredIfNotResultAndSiblingEquals', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    const result = await firstValueFrom(CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(store, [resultOfTestEnum.fail, resultOfTestEnum.abandoned], "bar", "x")(form.controls['foo']) as Observable<ValidationErrors | null>);
+    const result = await firstValueFrom(
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(
+        store,
+        [resultOfTestEnum.fail, resultOfTestEnum.abandoned],
+        'bar',
+        'x'
+      )(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect(result).toEqual({ requiredIfNotResultAndSiblingEquals: true });
   });
-
-
-
-
 });
 
 describe('hide if equals with condition', () => {
@@ -464,7 +514,6 @@ describe('hide if equals with condition', () => {
     });
 
     store = TestBed.inject(MockStore);
-
 
     form = new FormGroup({
       foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL, children: [] }, null),
@@ -479,7 +528,13 @@ describe('hide if equals with condition', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] })(form.controls['foo']) as Observable<ValidationErrors | null>);
+    await firstValueFrom(
+      CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', {
+        field: 'testTypeId',
+        operator: operatorEnum.Equals,
+        value: ['1', '2', '3', '4']
+      })(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(true);
   });
@@ -491,7 +546,13 @@ describe('hide if equals with condition', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'y', { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] })(form.controls['foo']) as Observable<ValidationErrors | null>);
+    await firstValueFrom(
+      CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'y', {
+        field: 'testTypeId',
+        operator: operatorEnum.Equals,
+        value: ['1', '2', '3', '4']
+      })(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(false);
   });
@@ -503,7 +564,13 @@ describe('hide if equals with condition', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] })(form.controls['foo']) as Observable<ValidationErrors | null>);
+    await firstValueFrom(
+      CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', {
+        field: 'testTypeId',
+        operator: operatorEnum.Equals,
+        value: ['1', '2', '3', '4']
+      })(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(false);
   });
@@ -515,7 +582,12 @@ describe('hide if equals with condition', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', [{ field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] }, { field: 'odometerReading', operator: operatorEnum.Equals, value: 100 }])(form.controls['foo']) as Observable<ValidationErrors | null>);
+    await firstValueFrom(
+      CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', [
+        { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] },
+        { field: 'odometerReading', operator: operatorEnum.Equals, value: 100 }
+      ])(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(true);
   });
@@ -527,9 +599,13 @@ describe('hide if equals with condition', () => {
 
     store.overrideSelector(testResultInEdit, testResult);
 
-    await firstValueFrom(CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', [{ field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] }, { field: 'odometerReading', operator: operatorEnum.Equals, value: 100 }])(form.controls['foo']) as Observable<ValidationErrors | null>);
+    await firstValueFrom(
+      CustomAsyncValidators.hideIfEqualsWithCondition(store, 'bar', 'x', [
+        { field: 'testTypeId', operator: operatorEnum.Equals, value: ['1', '2', '3', '4'] },
+        { field: 'odometerReading', operator: operatorEnum.Equals, value: 100 }
+      ])(form.controls['foo']) as Observable<ValidationErrors | null>
+    );
 
     expect((form.controls['bar'] as CustomFormControl).meta.hide).toEqual(false);
   });
-  
 });

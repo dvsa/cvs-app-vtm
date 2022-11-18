@@ -80,8 +80,11 @@ export class CustomAsyncValidators {
         select(testResultInEdit),
         map(testResult => {
           const currentResult = testResult?.testTypes[0].testResult;
-          if ((Array.isArray(result) ? currentResult&&!result.includes(currentResult) : currentResult !== result) && (control.value == null || control.value === '')) {
-            if(Array.isArray(result)) return { requiredIfNotResult: true }
+          if (
+            (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result) &&
+            (control.value == null || control.value === '')
+          ) {
+            if (Array.isArray(result)) return { requiredIfNotResult: true };
             else return { [`requiredIfNot${result}`]: true };
           }
           return null;
@@ -96,8 +99,13 @@ export class CustomAsyncValidators {
   static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
     return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
   }
-  
-  static requiredIfNotResultAndSiblingEquals(store: Store<State>, result: resultOfTestEnum | resultOfTestEnum[], sibling: string, value: any): AsyncValidatorFn {
+
+  static requiredIfNotResultAndSiblingEquals(
+    store: Store<State>,
+    result: resultOfTestEnum | resultOfTestEnum[],
+    sibling: string,
+    value: any
+  ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> =>
       store.pipe(
         take(1),
@@ -110,15 +118,18 @@ export class CustomAsyncValidators {
 
             const currentResult = testResult?.testTypes[0].testResult;
 
-            if ((Array.isArray(result) ? currentResult&&!result.includes(currentResult) : currentResult !== result) && newValue && (control.value === null || control.value === undefined || control.value === '')) {
+            if (
+              (Array.isArray(result) ? currentResult && !result.includes(currentResult) : currentResult !== result) &&
+              newValue &&
+              (control.value === null || control.value === undefined || control.value === '')
+            ) {
               return { requiredIfNotResultAndSiblingEquals: true };
             }
           }
 
           return null;
         })
-   
-        );
+      );
   }
 
   static hideIfEqualsWithCondition(store: Store<State>, sibling: string, value: string, conditions: Condition | Condition[]): AsyncValidatorFn {
@@ -127,7 +138,9 @@ export class CustomAsyncValidators {
         take(1),
         select(testResultInEdit),
         map(testResult => {
-          if (!testResult || !control?.parent) { return null; }
+          if (!testResult || !control?.parent) {
+            return null;
+          }
 
           const siblingControl = control.parent.get(sibling) as CustomFormControl;
 
@@ -140,16 +153,16 @@ export class CustomAsyncValidators {
       );
   }
 
-  private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[] ){
+  private static checkConditions(testResult: TestResultModel, conditions: Condition | Condition[]) {
     if (!Array.isArray(conditions)) {
       return CustomAsyncValidators.checkCondition(testResult, conditions);
     }
 
-    return conditions.every(condition => CustomAsyncValidators.checkCondition(testResult,condition))
+    return conditions.every(condition => CustomAsyncValidators.checkCondition(testResult, condition));
   }
 
-  private static checkCondition(testResult: TestResultModel, condition: Condition ){
-    const {field, operator, value} = condition
+  private static checkCondition(testResult: TestResultModel, condition: Condition) {
+    const { field, operator, value } = condition;
 
     const fieldValue = testResult.testTypes[0].hasOwnProperty(field)
       ? (testResult.testTypes[0] as any)[field]

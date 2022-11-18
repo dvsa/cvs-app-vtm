@@ -2,3 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run security-checks
+
+npx prettier --ignore-unknown --write $(git diff --name-only --staged | tr '\n' ' ') | grep -o '^\S*' | xargs -I {} git add {}

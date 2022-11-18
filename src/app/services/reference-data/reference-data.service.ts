@@ -74,7 +74,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.store.pipe(select(selectTyreSearchReturn()));
   };
 
-  getAll$ = (resourceType: ReferenceDataResourceType) => {
+  getAll$ = (resourceType: ReferenceDataResourceType): Observable<ReferenceDataModelBase[] | undefined> => {
     return this.store.pipe(select(selectAllReferenceDataByResourceType(resourceType)));
   };
 
@@ -82,15 +82,15 @@ export class ReferenceDataService extends ReferenceDataApiService {
     return this.store.pipe(select(selectReferenceDataByResourceKey(resourceType, resourceKey)));
   };
 
-  getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions> {
+  getReferenceDataOptions(resourceType: ReferenceDataResourceType): Observable<MultiOptions | undefined> {
     return this.mapReferenceDataOptions(this.getAll$(resourceType));
   }
 
-  private mapReferenceDataOptions(referenceData: Observable<ReferenceDataModelBase[]>): Observable<MultiOptions> {
-    return referenceData.pipe(map(options => options.map(option => ({ value: option.resourceKey, label: option.description ?? '' }))));
+  private mapReferenceDataOptions(referenceData: Observable<ReferenceDataModelBase[] | undefined>): Observable<MultiOptions | undefined> {
+    return referenceData.pipe(map(options => options?.map(option => ({ value: option.resourceKey, label: option.description ?? '' }))));
   }
 
-  getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions> {
+  getReasonsForAbandoning(vehicleType: VehicleTypes | undefined): Observable<MultiOptions | undefined> {
     if (!vehicleType) {
       return of([]);
     }

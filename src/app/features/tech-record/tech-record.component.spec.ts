@@ -39,7 +39,7 @@ describe('TechRecordComponent', () => {
     const roles = component.roles;
 
     expect(roles).toBe(Roles);
-  })
+  });
 
   it('should return error', () => {
     const expectedError: GlobalError = { error: 'some error', anchorLink: 'expected' };
@@ -47,7 +47,7 @@ describe('TechRecordComponent', () => {
     const expectedResult = component.getErrorByName([expectedError], expectedError.anchorLink!);
 
     expect(expectedResult).toBe(expectedError);
-  })
+  });
 
   it('reuse strategy should be set to false', () => {
     const snapshot = {} as ActivatedRouteSnapshot;
@@ -55,5 +55,5 @@ describe('TechRecordComponent', () => {
     const expectedResult = (component['router'] as Router).routeReuseStrategy.shouldReuseRoute(snapshot, snapshot);
 
     expect(expectedResult).toBeFalsy();
-  })
+  });
 });

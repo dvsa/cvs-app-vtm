@@ -28,19 +28,21 @@ export const TrlDimensionsTemplate: FormNode = {
         {
           name: 'axleSpacing',
           type: FormNodeTypes.ARRAY,
-          children: [{
-            name: '0',
-            type: FormNodeTypes.GROUP,
-            children: [
-              {
-                name: 'value',
-                label: 'Axle to axle (mm)',
-                value: '',
-                type: FormNodeTypes.CONTROL,
-                validators: [{ name: ValidatorNames.Max, args: 99999 }]
-              }
-            ]
-          }]
+          children: [
+            {
+              name: '0',
+              type: FormNodeTypes.GROUP,
+              children: [
+                {
+                  name: 'value',
+                  label: 'Axle to axle (mm)',
+                  value: '',
+                  type: FormNodeTypes.CONTROL,
+                  validators: [{ name: ValidatorNames.Max, args: 99999 }]
+                }
+              ]
+            }
+          ]
         }
       ]
     },

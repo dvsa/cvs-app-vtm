@@ -33,8 +33,7 @@ describe('SwitchableInputComponent', () => {
         TextInputComponent
       ],
       imports: [FormsModule, ReactiveFormsModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -42,7 +41,7 @@ describe('SwitchableInputComponent', () => {
     component = fixture.componentInstance;
     component.type = FormNodeEditTypes.TEXT;
     component.form = new FormGroup({ foo: new CustomFormControl({ name: 'foo', type: FormNodeTypes.CONTROL }, '') });
-    component.name = "foo";
+    component.name = 'foo';
     fixture.detectChanges();
   });
 
