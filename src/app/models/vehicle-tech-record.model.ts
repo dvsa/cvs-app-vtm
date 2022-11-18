@@ -151,10 +151,6 @@ export interface Tyres {
   tyreCode: number | null;
   tyreSize: string | null;
   plyRating: string | null;
-  loadIndexSingleLoad?: string | null;
-  loadIndexDoubleLoad?: string | null;
-  axleLoadSingle?: number | null;
-  axleLoadDouble?: number | null;
   fitmentCode: FitmentCode | null;
   speedCategorySymbol: SpeedCategorySymbol | null;
   dataTrAxles: number | null;

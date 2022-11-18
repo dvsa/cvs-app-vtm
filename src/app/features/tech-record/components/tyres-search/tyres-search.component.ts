@@ -141,6 +141,12 @@ export class TyresSearchComponent implements OnInit {
       this.viewableTechRecord!.axles[axleIndex].tyres!.tyreCode = Number(tyre.code);
       this.viewableTechRecord!.axles[axleIndex].tyres!.tyreSize = tyre.tyreSize;
       this.viewableTechRecord!.axles[axleIndex].tyres!.plyRating = tyre.plyRating;
+      if (this.viewableTechRecord!.axles[axleIndex].tyres!.fitmentCode) {
+        this.viewableTechRecord!.axles[axleIndex].tyres!.dataTrAxles =
+          this.viewableTechRecord!.axles[axleIndex].tyres!.fitmentCode === 'single'
+            ? parseInt(tyre.loadIndexSingleLoad)
+            : parseInt(tyre.loadIndexTwinLoad);
+      }
 
       this.store.dispatch(updateEditingTechRecord({ techRecord: this.viewableTechRecord! }));
       this.router.navigate(['../..'], { relativeTo: this.route });
