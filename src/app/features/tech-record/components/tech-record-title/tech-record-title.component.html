@@ -50,7 +50,7 @@
       <a class="govuk-link" routerLink="archive">Archive</a>
     </dd>
     <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
-      <a class="govuk-link" routerLink="promote">Promote</a>
+      <a class="govuk-link" style="cursor: pointer" (click)="navigateToPromotion()">Promote</a>
     </dd>
   </div>
 </dl>

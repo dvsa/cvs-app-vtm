@@ -4,9 +4,7 @@
       <div class="govuk-grid-column-full">
         <app-tech-record-title
           [vehicleTechRecord]="vehicleTechRecord"
-          [recordActions]="
-            (currentTechRecord$ | async)?.statusCode === statusCodes.PROVISIONAL ? TechRecordActions.PROVISIONAL : TechRecordActions.CURRENT
-          "
+          [recordActions]="getActions((currentTechRecord$ | async) || undefined)"
         ></app-tech-record-title>
 
         <app-edit-tech-record-button

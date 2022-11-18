@@ -76,10 +76,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return StatusCodes;
   }
 
-  get TechRecordActions(): typeof TechRecordActions {
-    return TechRecordActions;
-  }
-
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
 
@@ -92,6 +88,18 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
 
     return customSections;
+  }
+
+  getActions(techRecord?: TechRecordModel): TechRecordActions {
+    switch (techRecord?.statusCode) {
+      case StatusCodes.CURRENT:
+        return TechRecordActions.CURRENT;
+      case StatusCodes.PROVISIONAL:
+        return TechRecordActions.PROVISIONAL;
+      case StatusCodes.ARCHIVED:
+      default:
+        return TechRecordActions.NONE;
+    }
   }
 
   isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>) {

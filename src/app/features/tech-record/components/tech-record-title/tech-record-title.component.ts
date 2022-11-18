@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable } from 'rxjs';
-import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 
 @Component({
   selector: 'app-tech-record-title',
@@ -15,11 +16,11 @@ export class TechRecordTitleComponent implements OnInit {
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
 
-  constructor(private technicalRecordService: TechnicalRecordService) { }
+  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
     this.queryableRecordActions = this.recordActions.split(',');
-    console.log(this.queryableRecordActions)
+
     this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
   }
 
@@ -33,5 +34,9 @@ export class TechRecordTitleComponent implements OnInit {
 
   get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
+  }
+
+  navigateToPromotion(): void {
+    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/provisional/promote`);
   }
 }

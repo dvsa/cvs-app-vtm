@@ -2,7 +2,7 @@
   <div class="govuk-grid-column-full">
     <app-tech-record-title [vehicleTechRecord]="(vehicleTechRecord$ | async) || undefined"></app-tech-record-title>
 
-    <form [formGroup]="form" (submit)="handleSubmit()">
+    <form [formGroup]="form" (submit)="handleSubmit(form.value)">
       <app-text-area name="reason" [label]="label" formControlName="reason"></app-text-area>
 
       <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">

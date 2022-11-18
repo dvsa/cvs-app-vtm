@@ -73,7 +73,7 @@ export class TechnicalRecordService {
     const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
     const newTechRecord = cloneDeep(techRecord);
 
-    newTechRecord.statusCode = recordToArchiveStatus ?? newTechRecord.statusCode;
+    newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
 
     this.removeUpdateType(techRecord, newTechRecord);
 
@@ -160,9 +160,9 @@ export class TechnicalRecordService {
     return this.store.pipe(
       select(selectRouteNestedParams),
       map(params => {
-        const routeSuffix = this.router.url.split('/').pop();
+        const lastTwoUrlParts = this.router.url.split('/').slice(-2);
 
-        if (routeSuffix === 'provisional' || routeSuffix === 'promote') {
+        if (lastTwoUrlParts.includes('provisional')) {
           return vehicleRecord.techRecord.find(record => record.statusCode === StatusCodes.PROVISIONAL);
         }
 
