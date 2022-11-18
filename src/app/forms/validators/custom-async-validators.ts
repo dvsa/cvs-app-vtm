@@ -15,7 +15,7 @@ import { catchError, map, Observable, of, take, tap } from 'rxjs';
 
 export class CustomAsyncValidators {
   static resultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
-    return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, [resultOfTestEnum.pass,resultOfTestEnum.fail,resultOfTestEnum.prs]);
+    return CustomAsyncValidators.checkResultDependantOnCustomDefects(store, [resultOfTestEnum.pass, resultOfTestEnum.fail, resultOfTestEnum.prs]);
   }
 
   static passResultDependantOnCustomDefects(store: Store<State>): AsyncValidatorFn {
@@ -30,11 +30,23 @@ export class CustomAsyncValidators {
         map(testResult => {
           const hasCustomDefects = testResult?.testTypes?.some(testType => testType?.customDefects && testType.customDefects.length > 0);
 
-          if (control.value === 'pass' && hasCustomDefects && (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)) {
+          if (
+            control.value === 'pass' &&
+            hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.pass) : limitToResult === resultOfTestEnum.pass)
+          ) {
             return { invalidTestResult: { message: 'Cannot pass test when defects are present' } };
-          } else if (control.value === 'fail' && !hasCustomDefects && (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)) {
+          } else if (
+            control.value === 'fail' &&
+            !hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.fail) : limitToResult === resultOfTestEnum.fail)
+          ) {
             return { invalidTestResult: { message: 'Cannot fail test when no defects are present' } };
-          } else if (control.value === 'prs' && !hasCustomDefects && (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)) {
+          } else if (
+            control.value === 'prs' &&
+            !hasCustomDefects &&
+            (!limitToResult || Array.isArray(limitToResult) ? limitToResult.includes(resultOfTestEnum.prs) : limitToResult === resultOfTestEnum.prs)
+          ) {
             return { invalidTestResult: { message: 'Cannot mark test as PRS when no defects are present' } };
           } else {
             return null;
@@ -107,7 +119,7 @@ export class CustomAsyncValidators {
   static requiredIfNotAbandoned(store: Store<State>): AsyncValidatorFn {
     return this.requiredIfNotResult(store, resultOfTestEnum.abandoned);
   }
-  
+
   static requiredIfNotResultAndSiblingEquals(
     store: Store<State>,
     result: resultOfTestEnum | resultOfTestEnum[],
@@ -137,7 +149,7 @@ export class CustomAsyncValidators {
 
           return null;
         })
-        );
+      );
   }
 
   static hideIfEqualsWithCondition(store: Store<State>, sibling: string, value: string, conditions: Condition | Condition[]): AsyncValidatorFn {

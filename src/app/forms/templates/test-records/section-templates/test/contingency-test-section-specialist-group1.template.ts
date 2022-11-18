@@ -63,7 +63,7 @@ export const ContingencyTestSectionSpecialistGroup1: FormNode = {
               ],
               type: FormNodeTypes.CONTROL
             },
-            { 
+            {
               name: 'testTypeName',
               label: 'Description',
               value: '',

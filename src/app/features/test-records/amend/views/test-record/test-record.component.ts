@@ -6,6 +6,7 @@ import { GlobalErrorService } from '@core/components/global-error/global-error.s
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { Roles } from '@models/roles.enum';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { Actions, ofType } from '@ngrx/effects';
 import { RouterService } from '@services/router/router.service';
@@ -26,7 +27,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
   sectionTemplates$: Observable<FormNode[] | undefined> = of(undefined);
-  isCanceled: boolean = false;
+  testMode = TestModeEnum.Edit;
 
   constructor(
     private actions$: Actions,
@@ -81,6 +82,24 @@ export class TestRecordComponent implements OnInit, OnDestroy {
    * @returns void
    */
   async handleSave(): Promise<void> {
+    if (await this.hasErrors()) {
+      return;
+    }
+
+    const testResult = await firstValueFrom(this.testResult$);
+
+    this.testRecordsService.updateTestResult(cloneDeep(testResult));
+  }
+
+  async handleReview(): Promise<void> {
+    if (await this.hasErrors()) {
+      return;
+    }
+
+    this.testMode = TestModeEnum.View;
+  }
+
+  async hasErrors(): Promise<boolean> {
     const errors: GlobalError[] = [];
     const forms = [];
 
@@ -99,7 +118,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
 
     // if all forms are not marked as dirty, return
     if (!this.isAnyFormDirty(forms) && (await firstValueFrom(this.testRecordsService.isSameTestTypeId$))) {
-      return;
+      return true;
     }
 
     forms.forEach(form => {
@@ -111,16 +130,16 @@ export class TestRecordComponent implements OnInit, OnDestroy {
     }
 
     if (this.isAnyFormInvalid(forms)) {
-      return;
+      return true;
     }
 
-    const testResult = await firstValueFrom(this.testResult$);
-
-    this.testRecordsService.updateTestResult(cloneDeep(testResult));
+    return false;
   }
 
   handleCancel() {
-    this.isCanceled = !this.isCanceled;
+    this.testMode = this.testMode === TestModeEnum.Cancel || this.testMode === TestModeEnum.View
+      ? TestModeEnum.Edit
+      : TestModeEnum.Cancel;
   }
 
   handleConfirmCancel() {
@@ -148,8 +167,11 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   isAnyFormInvalid(forms: Array<FormGroup>) {
     return forms.some(form => form.invalid);
   }
-
   get testNumber$(): Observable<string | undefined> {
     return this.routerService.routeNestedParams$.pipe(map(params => params['testNumber']));
+  }
+
+  public get TestModeEnum(): typeof TestModeEnum {
+    return TestModeEnum;
   }
 }

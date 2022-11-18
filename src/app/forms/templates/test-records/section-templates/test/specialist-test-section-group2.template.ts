@@ -140,7 +140,7 @@ export const SpecialistTestSectionGroup2: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [ { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }],
+              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }],
               asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotFail }]
             },
             {

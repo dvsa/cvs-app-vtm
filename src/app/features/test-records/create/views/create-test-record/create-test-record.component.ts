@@ -4,6 +4,7 @@ import { GlobalError } from '@core/components/global-error/global-error.interfac
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/abandon-dialog.component';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Actions, ofType } from '@ngrx/effects';
@@ -25,7 +26,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
   private destroy$ = new Subject<void>();
 
-  isAbandon = false;
+  testMode = TestModeEnum.Edit;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
 
   constructor(
@@ -87,6 +88,17 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     this.testRecordsService.createTestResult(cloneDeep(testResult));
   }
 
+  handleReview() {
+    if (this.isAnyFormInvalid()) {
+      return;
+    }
+    this.testMode = TestModeEnum.View;
+  }
+
+  handleCancel() {
+    this.testMode = TestModeEnum.Edit;
+  }
+
   watchForCreateSuccess() {
     this.actions$.pipe(ofType(createTestResultSuccess), takeUntil(this.destroy$)).subscribe(() => {
       this.backToTechRecord();
@@ -109,7 +121,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       forms.push(this.baseTestRecordComponent.defects.form);
     }
 
-    if (this.isAbandon && this.abandonDialog?.dynamicFormGroup) {
+    if (this.testMode === TestModeEnum.Abandon && this.abandonDialog?.dynamicFormGroup) {
       forms.push(this.abandonDialog.dynamicFormGroup.form);
     }
 
@@ -131,7 +143,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       return;
     }
 
-    this.isAbandon = true;
+    this.testMode = TestModeEnum.Abandon;
   }
 
   handleAbandonAction(event: string) {
@@ -142,10 +154,14 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       case 'no':
         this.abandonDialog?.dynamicFormGroup?.form.reset();
         this.resultOfTestService.toggleAbandoned(resultOfTestEnum.pass);
-        this.isAbandon = false;
+        this.testMode = TestModeEnum.Edit;
         break;
       default:
         console.error('Invalid action');
     }
+  }
+
+  public get TestModeEnum(): typeof TestModeEnum {
+    return TestModeEnum;
   }
 }
