@@ -62,15 +62,14 @@
     </svg>
   </button>
 </div>
-<ng-container *ngIf="searchResults && searchResults.length">
-  <ng-container *ngIf="searchResults && !searchResults.length">
-    <h3 class="govuk-heading-m">0 search results</h3>
-    <p class="govuk-body govuk-!-font-size-19">No results found.</p>
-  </ng-container>
 
-  <ng-container *ngIf="searchResults && searchResults.length >= 1">
-    <h3 class="govuk-heading-m">{{ searchResults.length }} search result{{ searchResults.length > 1 ? 's' : '' }}</h3>
-  </ng-container>
+<ng-container *ngIf="searchResults && !searchResults.length">
+  <h3 class="govuk-heading-m">0 search results</h3>
+  <p class="govuk-body govuk-!-font-size-19">No results found.</p>
+</ng-container>
+
+<ng-container *ngIf="searchResults && searchResults.length >= 1">
+  <h3 class="govuk-heading-m">{{ searchResults.length }} search result{{ searchResults.length > 1 ? 's' : '' }}</h3>
 
   <table class="govuk-table">
     <thead class="govuk-table__head">
