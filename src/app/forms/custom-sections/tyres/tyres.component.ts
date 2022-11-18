@@ -8,7 +8,16 @@ import { PsvTyresTemplate } from '@forms/templates/psv/psv-tyres.template';
 import { tyresTemplateTrl } from '@forms/templates/trl/trl-tyres.template';
 import { getOptionsFromEnum, getOptionsFromEnumOneChar } from '@forms/utils/enum-map';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
-import { Axle, FitmentCode, TechRecordModel, Tyres, Tyre, VehicleTypes, SpeedCategorySymbol } from '@models/vehicle-tech-record.model';
+import {
+  Axle,
+  FitmentCode,
+  TechRecordModel,
+  Tyres,
+  Tyre,
+  VehicleTypes,
+  SpeedCategorySymbol,
+  ReasonForEditing
+} from '@models/vehicle-tech-record.model';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { cloneDeep } from 'lodash';
 import { Subscription, debounceTime, take } from 'rxjs';
@@ -27,6 +36,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   public isError: boolean = false;
   public errorMessage?: string;
   public form!: CustomFormGroup;
+  private editingReason?: ReasonForEditing;
   private _formSubscription = new Subscription();
 
   constructor(
@@ -34,7 +44,9 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     private referenceDataService: ReferenceDataService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.editingReason = this.route.snapshot.data['reason'];
+  }
 
   ngOnInit(): void {
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
@@ -142,7 +154,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getTyreSearchPage(axleNumber: number) {
-    this.router.navigate([`../correcting-an-error/tyre-search/${axleNumber}`], { relativeTo: this.route, state: this.vehicleTechRecord });
+    this.router.navigate([`../${this.editingReason}/tyre-search/${axleNumber}`], { relativeTo: this.route, state: this.vehicleTechRecord });
   }
 
   addTyreToTechRecord(tyre: Tyres, axleNumber: number): void {

@@ -128,6 +128,7 @@ export class TyresSearchComponent implements OnInit {
         take(1)
       )
       .subscribe((data: any) => {
+        this.router.navigate(['.'], { relativeTo: this.route, queryParams: { 'search-results-page': 1 } });
         this.searchResults = data;
       });
   }
