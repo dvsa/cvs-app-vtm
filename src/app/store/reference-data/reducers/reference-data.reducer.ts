@@ -27,7 +27,7 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
 
 export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
-  searchReturn: any[];
+  searchReturn: any[] | null;
 }
 
 export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
