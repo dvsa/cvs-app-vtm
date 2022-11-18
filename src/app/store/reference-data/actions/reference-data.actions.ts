@@ -30,4 +30,38 @@ export const fetchReferenceDataByKeySuccess = createAction(
 );
 export const fetchReferenceDataByKeyFailed = createAction('[API/reference-data] Fetch ResourceType by Key Failed', props<featureError>());
 
+export const fetchReferenceDataByKeySearch = createAction(
+  '[API/reference-data] Fetch ResourceType by Key and Search',
+  props<{ resourceType: ReferenceDataResourceType; resourceKey: string | number }>()
+);
+export const fetchReferenceDataByKeySearchSuccess = createAction(
+  '[API/reference-data] Fetch ResourceType by Key and search Success',
+  props<{
+    resourceType: ReferenceDataResourceType;
+    resourceKey: string | number;
+    payload: Array<ReferenceDataModelBase>;
+  }>()
+);
+export const fetchReferenceDataByKeySearchFailed = createAction(
+  '[API/reference-data] Fetch ResourceType by Key and search Failed',
+  props<featureError>()
+);
+
+export const fetchTyreReferenceDataByKeySearch = createAction(
+  '[API/reference-data] Fetch tyre by filter and term',
+  props<{ searchFilter: string; searchTerm: string }>()
+);
+export const fetchTyreReferenceDataByKeySearchSuccess = createAction(
+  '[API/reference-data] Fetch tyre by filter and term Success',
+  props<{
+    resourceType: ReferenceDataResourceType;
+    payload: Array<ReferenceDataModelBase>;
+  }>()
+);
+export const fetchTyreReferenceDataByKeySearchFailed = createAction(
+  '[API/reference-data] Fetch tyre by filter and term Failed',
+  props<featureError>()
+);
+export const removeTyreSearch = createAction('[API/reference-data] Remove search return from state');
+
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');

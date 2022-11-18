@@ -57,6 +57,62 @@ describe('ReferenceDataService', () => {
     });
   });
 
+  describe('fetchReferenceDataByKeySearch', () => {
+    it('should call the correct end point', () => {
+      const value = {
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
+      };
+      const apiResponse: ReferenceDataApiResponse = { data: value.payload };
+      service.fetchReferenceDataByKeySearch(ReferenceDataResourceType.Tyres, '101').subscribe(data => {
+        expect(data).toEqual(apiResponse);
+      });
+
+      const req = controller.expectOne('https://url/api/v1/reference/lookup/TYRES/101');
+      req.flush(apiResponse);
+    });
+  });
+
+  describe('fetchTyreReferenceDataByKeySearch', () => {
+    it('should call the correct end point', () => {
+      const value = {
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
+      };
+      const apiResponse: ReferenceDataApiResponse = { data: value.payload };
+      service.fetchTyreReferenceDataByKeySearch('plyrating', '10').subscribe(data => {
+        expect(data).toEqual(apiResponse);
+      });
+
+      const req = controller.expectOne('https://url/api/v1/reference/lookup/tyres/plyrating/10');
+      req.flush(apiResponse);
+    });
+  });
+
   describe('resourceKeys', () => {
     it.each(testCases)('should return one result for a given resourceType and resourceKey', value => {
       const getOneFromResourceSpy = jest.spyOn(service, 'referenceResourceTypeResourceKeyGet');

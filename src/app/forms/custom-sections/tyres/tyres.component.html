@@ -35,14 +35,17 @@
     <tbody class="govuk-table__body">
       <tr *ngFor="let axle of axles.controls; let i = index" class="govuk-table__row" formArrayName="axles">
         <ng-container [formGroupName]="i">
-          <th scope="row" class="govuk-table__header">Axle {{ axle.value.axleNumber }}</th>
+          <th scope="row" class="govuk-table__header">T {{ axle.value.axleNumber }}</th>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'tyreCode', type: types.NUMBER, width: widths.XS }"
+            [ngTemplateOutletContext]="{ name: 'tyreCode', type: types.NUMBER, width: widths.S }"
           ></ng-template>
 
-          <ng-template [ngTemplateOutlet]="axleTdInput" [ngTemplateOutletContext]="{ name: 'tyreSize', type: types.TEXT }"></ng-template>
+          <ng-template
+            [ngTemplateOutlet]="axleTdInput"
+            [ngTemplateOutletContext]="{ name: 'tyreSize', type: types.TEXT, width: widths.XXL }"
+          ></ng-template>
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
@@ -62,11 +65,11 @@
 
           <ng-template
             [ngTemplateOutlet]="axleTdInput"
-            [ngTemplateOutletContext]="{ name: 'fitmentCode', type: types.DROPDOWN, width: widths.XS, options: fitmentCode }"
+            [ngTemplateOutletContext]="{ name: 'fitmentCode', type: types.DROPDOWN, width: widths.XXS, options: fitmentCode }"
           ></ng-template>
 
           <td *ngIf="isEditing" class="govuk-table__cell">
-            <a class="axleButton" (click)="getTyresRefData(axle.value.tyres, axle.value.axleNumber)">Search</a>
+            <a class="axleButton" (click)="getTyreSearchPage(axle.value.axleNumber)">Search</a>
           </td>
 
           <td *ngIf="isEditing" class="govuk-table__cell">
@@ -82,6 +85,7 @@
                 [isEditing]="isEditing"
                 [width]="width"
                 [options]="options"
+                (focusout)="searchTyres(name, i + 1)"
               ></app-switchable-input>
             </td>
           </ng-template>

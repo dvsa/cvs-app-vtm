@@ -1,0 +1,110 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <dl class="govuk-summary-list">
+      <h1 class="govuk-heading-l">Tyre search</h1>
+      <h1 class="govuk-heading-m">Vehicle details</h1>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
+        <dd id="current-vrm" class="govuk-summary-list__value">
+          <app-number-plate *ngIf="vehicleTechRecord?.vrms" [vrm]="currentVrm"></app-number-plate>
+        </dd>
+        <dd class="govuk-summary-list__value"></dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+        <dd id="vin" class="govuk-summary-list__value">
+          {{ vehicleTechRecord?.vin | defaultNullOrEmpty }}
+        </dd>
+        <dd class="govuk-summary-list__value"></dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<div [formGroup]="form" class="govuk-form-group">
+  <app-select
+    #searchFilter
+    label="Search filter"
+    [formControlName]="form.meta.children![1].name"
+    [name]="form.meta.children![1].name"
+    [options]="options!"
+  ></app-select>
+  <br />
+  <input
+    #searchTerm
+    [formControlName]="form.meta.children![0].name"
+    [name]="form.meta.children![0].name"
+    aria-describedby="term"
+    type="text"
+    class="govuk-input govuk-!-width-two-thirds"
+    (keyup.enter)="handleSearch(searchTerm.value, searchFilter.value)"
+  />
+  <button
+    class="govuk-button margin-right search-btn"
+    type="submit"
+    data-module="govuk-button"
+    enterkeyhint="search"
+    data-gem-track-click-module-started="true"
+    (click)="handleSearch(searchTerm.value, searchFilter.value)"
+  >
+    <svg
+      class="gem-c-search__icon"
+      width="25"
+      height="25"
+      viewBox="0 0 25 25"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12.0161" cy="11.0161" r="8.51613" stroke="currentColor" stroke-width="3"></circle>
+      <line x1="17.8668" y1="17.3587" x2="26.4475" y2="25.9393" stroke="currentColor" stroke-width="3"></line>
+    </svg>
+  </button>
+</div>
+
+<ng-container *ngIf="searchResults && !searchResults.length">
+  <h3 class="govuk-heading-m">0 search results</h3>
+  <p class="govuk-body govuk-!-font-size-19">No results found.</p>
+</ng-container>
+
+<ng-container *ngIf="searchResults && searchResults.length >= 1">
+  <h3 class="govuk-heading-m">{{ searchResults.length }} search result{{ searchResults.length > 1 ? 's' : '' }}</h3>
+
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-rable__row">
+        <th scope="col" class="govuk-table__header">Code</th>
+        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Size</th>
+        <th scope="col" class="govuk-table__header">Ply</th>
+        <th scope="col" class="govuk-table__header">Single load index</th>
+        <th scope="col" class="govuk-table__header">Double load index</th>
+        <th scope="col" class="govuk-table__header">Axle load single fitting</th>
+        <th scope="col" class="govuk-table__header">Axle load double fitting</th>
+        <th scope="col" class="govuk-table__header"></th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row" *ngFor="let tyre of paginatedFields!; trackBy: trackByFn">
+        <td class="govuk-table__cell">{{ tyre.code }}</td>
+        <td class="govuk-table__cell">{{ tyre.tyreSize }}</td>
+        <td class="govuk-table__cell">{{ tyre.plyRating }}</td>
+        <td class="govuk-table__cell">{{ tyre.loadIndexSingleLoad }}</td>
+        <td class="govuk-table__cell">{{ tyre.loadIndexTwinLoad }}</td>
+        <td class="govuk-table__cell">{{ tyre.axleLoadSingle || '-' }}</td>
+        <td class="govuk-table__cell">{{ tyre.axleLoadDouble || '-' }}</td>
+        <td class="govuk-table__cell">
+          <a id="add" class="govuk-link add-link" (click)="handleAddTyreToRecord(tyre)">Add</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <app-pagination
+    tableName="search-results"
+    [numberOfItems]="numberOfResults"
+    [itemsPerPage]="itemsPerPage"
+    (paginationOptions)="handlePaginationChange($event)"
+  ></app-pagination>
+</ng-container>
+
+<button id="cancel" class="govuk-button govuk-button--secondary margin-right" data-module="govuk-button" (click)="cancel()">Cancel</button>

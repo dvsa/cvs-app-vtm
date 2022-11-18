@@ -6,6 +6,7 @@ import { Roles } from '@models/roles.enum';
 import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
+import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechPromoteComponent } from './components/tech-promote/tech-promote.component';
 import { TechRecordComponent } from './tech-record.component';
 
@@ -34,6 +35,20 @@ const routes: Routes = [
     path: 'notifiable-alteration-needed',
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
+  },
+  {
+    path: 'correcting-an-error/tyre-search/:axleNumber',
+    component: TyresSearchComponent,
+    data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
+  },
+  {
+    path: 'notifiable-alteration-needed/tyre-search/:axleNumber',
+    component: TyresSearchComponent,
+    data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },

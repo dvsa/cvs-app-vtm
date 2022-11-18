@@ -41,11 +41,13 @@ import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { ReferenceDataResourceType, PsvMake } from '@models/reference-data.model';
 import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
+import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -73,20 +75,22 @@ export class TechRecordSummaryComponent implements OnInit {
   @Output() formChange = new EventEmitter();
 
   private _isEditing: boolean = false;
-
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
   dtpNumbersFromRefData: FormNodeOption<string>[] = [];
   middleIndex = 0;
 
   constructor(
+    private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
     private optionsService: MultiOptionsService,
-    private referenceDataStore: Store<ReferenceDataState>
+    private referenceDataStore: Store<ReferenceDataState>,
+    private referenceDataService: ReferenceDataService
   ) {}
 
   ngOnInit(): void {
     this.sectionTemplates = this.vehicleTemplates;
+    this.referenceDataService.removeTyreSearch();
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
@@ -128,7 +132,17 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   calculateVehicleModel(): void {
-    this.vehicleTechRecordCalculated = this.isEditing ? { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' } : this.vehicleTechRecord;
+    this.isEditing
+      ? this.technicalRecordService.editableTechRecord$
+          .pipe(
+            //Need to check that the editing tech record has more than just reason for creation on and is the full object.
+            map(data => (data && Object.keys(data).length > 1 ? cloneDeep(data) : { ...cloneDeep(this.vehicleTechRecord), reasonForCreation: '' })),
+            take(1)
+          )
+          .subscribe(data => {
+            this.vehicleTechRecordCalculated = data;
+          })
+      : (this.vehicleTechRecordCalculated = this.vehicleTechRecord);
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 

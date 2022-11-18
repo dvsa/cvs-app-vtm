@@ -14,7 +14,7 @@ export class TechRecordTitleComponent implements OnInit {
 
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
 
-  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) { }
+  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
     if (this.vehicleTechRecord) {
