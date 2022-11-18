@@ -230,7 +230,6 @@ describe('Reference Data Reducer', () => {
     describe('fetchTyreReferenceDataByKeySearchSuccess', () => {
       it('should set the the resource data item based on the type and key', () => {
         const resourceType = ReferenceDataResourceType.Tyres;
-        const resourceKey = '123';
         const value = {
           payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
         };
