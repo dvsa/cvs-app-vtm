@@ -10,7 +10,10 @@ import {
   fetchReferenceDataByKeySearchSuccess,
   fetchReferenceDataByKeySuccess,
   fetchReferenceDataFailed,
-  fetchReferenceDataSuccess
+  fetchReferenceDataSuccess,
+  fetchTyreReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearchFailed,
+  fetchTyreReferenceDataByKeySearchSuccess
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
 import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
@@ -186,6 +189,75 @@ describe('Reference Data Reducer', () => {
           }
         };
         const action = fetchReferenceDataByKeySearchFailed({
+          error: 'unit testing error message by key',
+          resourceType: ReferenceDataResourceType.Tyres
+        });
+        const inputState = {
+          ...initialReferenceDataState,
+          [ReferenceDataResourceType.Tyres]: {
+            ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+            loading: true
+          }
+        };
+        const state = referenceDataReducer(inputState, action);
+
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
+    });
+  });
+
+  describe('fetchTyreReferenceDataByKeySearch actions', () => {
+    it('should set loading to true', () => {
+      const newState: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          searchReturn: null,
+          loading: true
+        }
+      };
+      const action = fetchTyreReferenceDataByKeySearch({
+        searchTerm: 'plyrating',
+        searchFilter: '101'
+      });
+      const state = referenceDataReducer(initialReferenceDataState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+
+    describe('fetchTyreReferenceDataByKeySearchSuccess', () => {
+      it('should set the the resource data item based on the type and key', () => {
+        const resourceType = ReferenceDataResourceType.Tyres;
+        const resourceKey = '123';
+        const value = {
+          payload: [{ tyreCode: '123', resourceType: ReferenceDataResourceType.Tyres, resourceKey: '123' }]
+        };
+        const newState: ReferenceDataState = {
+          ...initialReferenceDataState,
+          [resourceType]: { ...initialReferenceDataState[resourceType], searchReturn: value.payload as ReferenceDataModelBase[], loading: false }
+        };
+
+        const action = fetchTyreReferenceDataByKeySearchSuccess({ resourceType, payload: value.payload });
+        const state = referenceDataReducer(initialReferenceDataState, action);
+
+        expect(state).toEqual(newState);
+        expect(state).not.toBe(newState);
+      });
+    });
+
+    describe('fetchTyreReferenceDataByKeySearchFailed', () => {
+      it('should set error state', () => {
+        const newState = {
+          ...initialReferenceDataState,
+          [ReferenceDataResourceType.Tyres]: {
+            ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+            searchReturn: null,
+            loading: false
+          }
+        };
+        const action = fetchTyreReferenceDataByKeySearchFailed({
           error: 'unit testing error message by key',
           resourceType: ReferenceDataResourceType.Tyres
         });
