@@ -43,7 +43,7 @@ export class TyresSearchComponent implements OnInit {
     private store: Store<TechnicalRecordServiceState>,
     private actions$: Actions
   ) {
-    this.technicalRecordService.selectedVehicleTechRecord$.subscribe(data => (this.vehicleTechRecord = data));
+    this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
   }
 
   public form!: CustomFormGroup;
@@ -76,7 +76,7 @@ export class TyresSearchComponent implements OnInit {
   ngOnInit() {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     this.globalErrorService.clearErrors();
-    this.route.params.subscribe(p => (this.params = p));
+    this.route.params.pipe(take(1)).subscribe(p => (this.params = p));
     this.technicalRecordService.editableTechRecord$.subscribe(data => (this.viewableTechRecord = data));
     this.referenceDataService
       .getTyreSearchReturn$()
@@ -124,7 +124,7 @@ export class TyresSearchComponent implements OnInit {
     this.actions$
       .pipe(
         ofType(fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess),
-        mergeMap(_action => this.store.select(selectTyreSearchReturn())),
+        mergeMap(() => this.store.select(selectTyreSearchReturn())),
         take(1)
       )
       .subscribe(data => {
@@ -134,8 +134,9 @@ export class TyresSearchComponent implements OnInit {
   }
 
   handleAddTyreToRecord(tyre: ReferenceDataTyre): void {
-    if (this.viewableTechRecord) {
-      const axleIndex = Number(this.params.axleNumber!) - 1;
+    const axleIndex = Number(this.params.axleNumber!) - 1;
+
+    if (this.viewableTechRecord?.axles[axleIndex].tyres) {
       this.viewableTechRecord = cloneDeep(this.viewableTechRecord);
 
       this.viewableTechRecord!.axles[axleIndex].tyres!.tyreCode = Number(tyre.code);

@@ -63,26 +63,13 @@
   </button>
 </div>
 
-<ng-template #error let-name>
-  <ng-container *ngIf="globalErrorService.errors$ | async as errorMessages">
-    <span id="term-error" class="govuk-error-message" *ngIf="getErrorByName(errorMessages, name) as errorMessage">
-      <span class="govuk-visually-hidden">Error:</span>
-      <p class="white-space--normal">{{ errorMessage.error }}</p>
-    </span>
-  </ng-container>
-</ng-template>
-
-<ng-container *ngIf="searchResults && searchResults.length === 0">
+<ng-container *ngIf="searchResults && !searchResults.length">
   <h3 class="govuk-heading-m">0 search results</h3>
   <p class="govuk-body govuk-!-font-size-19">No results found.</p>
 </ng-container>
 
-<ng-container *ngIf="searchResults && searchResults.length === 1">
-  <h3 class="govuk-heading-m">{{ searchResults.length }} search result</h3>
-</ng-container>
-
-<ng-container *ngIf="searchResults && searchResults.length >= 2">
-  <h3 class="govuk-heading-m">{{ searchResults.length }} search results</h3>
+<ng-container *ngIf="searchResults && searchResults.length >= 1">
+  <h3 class="govuk-heading-m">{{ searchResults.length }} search result{{ searchResults.length > 1 ? 's' : '' }}</h3>
 </ng-container>
 
 <ng-container *ngIf="searchResults && searchResults.length">
