@@ -17,13 +17,14 @@ import {
   updateTechRecordsSuccess
 } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
 
 @Component({
-  selector: 'app-tech-promote',
-  templateUrl: './tech-promote.component.html'
+  selector: 'app-tech-record-change-status',
+  templateUrl: './tech-record-change-status.component.html'
 })
-export class TechPromoteComponent implements OnInit {
+export class TechRecordChangeStatusComponent implements OnInit {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
 
   techRecord?: TechRecordModel;
@@ -68,23 +69,26 @@ export class TechPromoteComponent implements OnInit {
   }
 
   handleSubmit(form: { reason: string }): void {
+    let newTechRecord: TechRecordModel = cloneDeep(this.techRecord!);
     if (!this.techRecord) {
       return;
     }
 
     if (this.isPromotion) {
-      this.techRecord.reasonForCreation = form.reason;
+      newTechRecord.reasonForCreation = form.reason;
     }
 
     this.form.valid
       ? this.errorService.clearErrors()
-      : this.errorService.setErrors([{ error: 'Reason for amending is required', anchorLink: 'reasonForAmend' }]);
+      : this.errorService.setErrors([
+          { error: `Reason for ${this.isPromotion ? 'promotion' : 'archiving'} is required`, anchorLink: 'reasonForAmend' }
+        ]);
 
     if (!this.form.valid || !form.reason) {
       return;
     }
 
-    this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: this.techRecord }));
+    this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: newTechRecord }));
 
     this.routerStore.pipe(select(selectRouteNestedParams), take(1)).subscribe(({ systemNumber }) => {
       const action = this.isPromotion

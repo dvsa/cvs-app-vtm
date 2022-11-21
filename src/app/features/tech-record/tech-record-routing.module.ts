@@ -7,7 +7,7 @@ import { ReasonForEditing } from '@models/vehicle-tech-record.model';
 import { TechRecordViewResolver } from 'src/app/resolvers/tech-record-view/tech-record-view.resolver';
 import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-amend-reason.component';
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
-import { TechPromoteComponent } from './components/tech-promote/tech-promote.component';
+import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordComponent } from './tech-record.component';
 
 const routes: Routes = [
@@ -40,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: 'archive',
-    component: TechPromoteComponent,
+    component: TechRecordChangeStatusComponent,
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },
@@ -74,7 +74,7 @@ const routes: Routes = [
   },
   {
     path: 'provisional/promote',
-    component: TechPromoteComponent,
+    component: TechRecordChangeStatusComponent,
     canActivate: [MsalGuard],
     resolve: { load: TechRecordViewResolver }
   },
