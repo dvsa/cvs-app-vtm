@@ -28,6 +28,7 @@ import { CustomDefectsHiddenSection } from './section-templates/required/custom-
 import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13.template';
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/test/contingency-test-section-specialist-group3And4.template';
+import { DeskBasedTestSectionGroup1 } from './section-templates/test/desk-based-test-section-group1.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -132,6 +133,17 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
+    },
+    testTypesDeskBasedGroup1: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: DeskBasedTestSectionGroup1,
+      seatbelts: SeatbeltSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
     }
   },
   hgv: {
