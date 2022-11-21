@@ -60,6 +60,15 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         type: FormNodeTypes.GROUP
       },
       {
+        name: 'noOfAxles',
+        label: 'Number of axles',
+        value: '',
+        width: FormNodeWidth.XXS,
+        type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.Required }],
+        disabled: true
+      },
+      {
         name: 'speedLimiterMrk',
         label: 'Speed limiter exempt',
         value: '',

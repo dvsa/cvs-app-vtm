@@ -68,6 +68,15 @@ export const TrlTechRecordTemplate: FormNode = {
       viewType: FormNodeViewTypes.STRING
     },
     {
+      name: 'noOfAxles',
+      label: 'Number of axles',
+      value: '',
+      width: FormNodeWidth.XXS,
+      type: FormNodeTypes.CONTROL,
+      validators: [{ name: ValidatorNames.Required }],
+      disabled: true
+    },
+    {
       name: 'roadFriendly',
       label: 'Road friendly suspension',
       value: '',
