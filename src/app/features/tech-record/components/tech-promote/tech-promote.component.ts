@@ -18,10 +18,12 @@ import {
 } from '@store/technical-records';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, take } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-tech-promote',
-  templateUrl: './tech-promote.component.html'
+  templateUrl: './tech-promote.component.html',
+  styleUrls: ['./tech-promote.component.scss']
 })
 export class TechPromoteComponent implements OnInit {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
@@ -39,7 +41,8 @@ export class TechPromoteComponent implements OnInit {
     private router: Router,
     private routerStore: Store<RouterReducerState>,
     private techRecordsStore: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private location: Location
   ) {
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
@@ -65,6 +68,10 @@ export class TechPromoteComponent implements OnInit {
 
   get label(): string {
     return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   handleSubmit(form: { reason: string }): void {
