@@ -41,7 +41,8 @@ const routes: Routes = [
   {
     path: 'archive',
     component: TechPromoteComponent,
-    canActivate: [MsalGuard],
+    data: { title: 'Archive Tech Record', roles: Roles.TechRecordArchive },
+    canActivate: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
   },
   {
