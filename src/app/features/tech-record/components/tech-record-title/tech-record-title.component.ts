@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -34,6 +35,10 @@ export class TechRecordTitleComponent implements OnInit {
 
   get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
+  }
+
+  get roles(): typeof Roles {
+    return Roles;
   }
 
   navigateToPromotion(): void {

@@ -5,10 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DynamicFormsModule } from '@forms/dynamic-forms.module';
+import { Roles } from '@models/roles.enum';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState } from '@store/index';
+import { of } from 'rxjs';
 
 import { TechRecordTitleComponent } from './tech-record-title.component';
 
@@ -22,7 +25,16 @@ describe('TechRecordTitleComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TechRecordTitleComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule, StoreModule.forRoot({})],
-      providers: [provideMockStore({ initialState: initialAppState }), { provide: APP_BASE_HREF, useValue: '/' }]
+      providers: [
+        provideMockStore({ initialState: initialAppState }),
+        { provide: APP_BASE_HREF, useValue: '/' },
+        {
+          provide: UserService,
+          useValue: {
+            roles$: of([Roles.TechRecordArchive])
+          }
+        }
+      ]
     }).compileComponents();
 
     route = TestBed.inject(ActivatedRoute);
