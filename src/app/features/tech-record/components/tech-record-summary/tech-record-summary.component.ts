@@ -142,7 +142,7 @@ export class TechRecordSummaryComponent implements OnInit {
           .subscribe(data => {
             this.vehicleTechRecordCalculated = data;
           })
-      : (this.vehicleTechRecordCalculated = this.vehicleTechRecord);
+      : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord, reasonForCreation: '' });
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
