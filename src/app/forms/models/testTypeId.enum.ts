@@ -188,6 +188,8 @@ export const SPECIALIST_TEST_TYPE_IDS: string[] = [
   '185'
 ];
 
+export const TEST_TYPES_GROUP5_SPEC_TES = ['423'];
+
 export const TEST_TYPES = {
   testTypesGroup1: TEST_TYPES_GROUP1,
   testTypesGroup2: TEST_TYPES_GROUP2,
@@ -202,5 +204,6 @@ export const TEST_TYPES = {
   testTypesSpecialistGroup2: TEST_TYPES_GROUP2_SPEC_TEST,
   testTypesSpecialistGroup3: TEST_TYPES_GROUP3_SPEC_TEST,
   testTypesSpecialistGroup4: TEST_TYPES_GROUP4_SPEC_TEST,
-  testTypesSpecialistGroup5: TEST_TYPES_GROUP5_SPEC_TEST
+  testTypesSpecialistGroup5: TEST_TYPES_GROUP5_SPEC_TEST,
+  testTypesDeskBasedGroup1: TEST_TYPES_GROUP5_SPEC_TEST
 };

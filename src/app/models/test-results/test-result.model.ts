@@ -34,6 +34,7 @@ export interface TestResultModel {
   testStationType: TestStationType;
   testerName: string;
   testerEmailAddress: string;
+  testerStaffId: string;
 
   reasonForCreation?: string;
   vehicleType: VehicleTypes;

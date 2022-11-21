@@ -7,6 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
@@ -524,7 +525,7 @@ describe('TestResultsEffects', () => {
               testerEmailAddress: '',
               testerName: '',
               testerStaffId: undefined,
-              typeOfTest: undefined,
+              typeOfTest: TypeOfTest.CONTINGENCY,
               vehicleClass: null,
               vehicleConfiguration: undefined,
               vehicleSize: undefined,

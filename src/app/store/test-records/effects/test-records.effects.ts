@@ -35,6 +35,7 @@ import {
 } from '../actions/test-records.actions';
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 
 @Injectable()
 export class TestResultsEffects {
@@ -167,9 +168,12 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(contingencyTestTypeSelected),
       mergeMap(action =>
-        of(action).pipe(withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType))), take(1))
+        of(action).pipe(
+          withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType)), this.userService.user$),
+          take(1)
+        )
       ),
-      concatMap(([action, editingTestResult, testTypeTaxonomy]) => {
+      concatMap(([action, editingTestResult, testTypeTaxonomy, user]) => {
         const id = action.testType;
 
         const { vehicleType } = editingTestResult!;
@@ -191,6 +195,13 @@ export class TestResultsEffects {
         mergedForms.testTypes[0].testTypeId = id;
         mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
         mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
+        mergedForms.typeOfTest = (testTypeTaxonomy?.typeOfTest as TypeOfTest) ?? TypeOfTest.CONTINGENCY;
+
+        if (mergedForms.typeOfTest !== TypeOfTest.CONTINGENCY) {
+          mergedForms.testerName = user.name;
+          mergedForms.testerEmailAddress = user.username;
+          mergedForms.testerStaffId = user.oid;
+        }
 
         return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms }));
       })

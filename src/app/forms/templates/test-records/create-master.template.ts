@@ -132,7 +132,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       defects: defectsHiddenSection,
       reasonForCreation: reasonForCreationSection,
       required: CreateRequiredSection
-    }
+    },
+    testTypesDeskBasedGroup1: groups1and2Template
   },
   hgv: {
     default: {

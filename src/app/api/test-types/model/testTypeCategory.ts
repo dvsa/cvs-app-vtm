@@ -36,9 +36,9 @@ export interface TestTypeCategory {
      */
     forVehicleType: Array<TestTypeCategory.ForVehicleTypeEnum>;
     /**
-     * true for test specific to VTM else false.
+     * Used to filter in test types with a specific typeOfTest, send as a query param in the request
      */
-    forVtmOnly?: boolean;
+    typeOfTest?: string;
     /**
      * This category is applying only to these vehicle sizes.
      */
