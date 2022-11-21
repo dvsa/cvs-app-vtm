@@ -46,9 +46,11 @@
       <strong class="govuk-tag govuk-phase-banner__content__tag">{{ (currentTechRecord$ | async)?.statusCode | defaultNullOrEmpty }}</strong>
     </dd>
     <dd class="govuk-summary-list__value"></dd>
-    <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-      <a class="govuk-link" routerLink="archive">Archive</a>
-    </dd>
+    <div *appRoleRequired="roles.TechRecordArchive">
+      <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
+        <a class="govuk-link" routerLink="archive">Archive</a>
+      </dd>
+    </div>
     <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
       <a class="govuk-link" style="cursor: pointer" (click)="navigateToPromotion()">Promote</a>
     </dd>

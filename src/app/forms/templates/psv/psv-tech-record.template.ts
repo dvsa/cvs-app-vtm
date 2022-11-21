@@ -7,7 +7,7 @@ import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.mode
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 
-export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]): FormNode {
+export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[], _isEditing: boolean): FormNode {
   const PsvTechRecord: FormNode = {
     name: 'techRecordSummary',
     type: FormNodeTypes.GROUP,
@@ -58,6 +58,15 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
           }
         ],
         type: FormNodeTypes.GROUP
+      },
+      {
+        name: 'noOfAxles',
+        label: 'Number of axles',
+        value: '',
+        width: FormNodeWidth.XXS,
+        type: FormNodeTypes.CONTROL,
+        validators: [{ name: ValidatorNames.Required }],
+        disabled: true
       },
       {
         name: 'speedLimiterMrk',
@@ -149,12 +158,12 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         editType: FormNodeEditTypes.NUMBER,
         validators: [{ name: ValidatorNames.Max, args: 99 }]
       },
-      { name: 'seatsTitle', label: 'Seats:', type: FormNodeTypes.TITLE },
+      { name: 'seatsTitle', label: `${_isEditing ? 'Seats:' : ''}`, type: FormNodeTypes.TITLE },
       {
         name: 'seatsUpperDeck',
-        label: `Upper deck`,
+        label: `${_isEditing ? 'Upper deck' : 'Seats upper deck'}`,
         value: '',
-        width: FormNodeWidth.XS,
+        width: FormNodeWidth.M,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMBER,
         validators: [{ name: ValidatorNames.Max, args: 99 }, { name: ValidatorNames.Required }],
@@ -162,9 +171,9 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
       },
       {
         name: 'seatsLowerDeck',
-        label: 'Lower deck',
+        label: `${_isEditing ? 'Lower Deck' : 'Seats lower deck'}`,
         value: '',
-        width: FormNodeWidth.XS,
+        width: FormNodeWidth.M,
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMBER,
         validators: [{ name: ValidatorNames.Max, args: 999 }, { name: ValidatorNames.Required }],

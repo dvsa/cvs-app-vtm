@@ -18,14 +18,14 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  column-gap: 1rem;
+  column-gap: 2rem;
 
   & > * {
-    min-width: 250px;
+    min-width: 150px;
     flex-basis: 100%;
   }
 
   &--half {
-    flex-basis: calc(50% - 1rem) !important;
+    flex-basis: content !important;
   }
 }
