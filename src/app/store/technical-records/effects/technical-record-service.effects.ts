@@ -28,7 +28,10 @@ import {
   updateTechRecordsFailure,
   createProvisionalTechRecord,
   createProvisionalTechRecordSuccess,
-  createProvisionalTechRecordFailure
+  createProvisionalTechRecordFailure,
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  archiveTechRecordFailure
 } from '../actions/technical-record-service.actions';
 import { Router } from '@angular/router';
 
@@ -103,10 +106,12 @@ export class TechnicalRecordServiceEffects {
       ofType(updateTechRecords),
       withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
-        this.technicalRecordService.putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.recordToArchiveStatus, action.newStatus).pipe(
-          map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
-          catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
-        )
+        this.technicalRecordService
+          .putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.recordToArchiveStatus, action.newStatus)
+          .pipe(
+            map(vehicleTechRecord => updateTechRecordsSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
+            catchError(error => of(updateTechRecordsFailure({ error: this.getTechRecordErrorMessage(error, 'updateTechnicalRecord') })))
+          )
       )
     )
   );
@@ -119,6 +124,19 @@ export class TechnicalRecordServiceEffects {
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
           map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
           catchError(error => of(createProvisionalTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'createProvisionalTechRecord') })))
+        )
+      )
+    )
+  );
+
+  archiveTechRecord = createEffect(() =>
+    this.actions$.pipe(
+      ofType(archiveTechRecord),
+      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
+      switchMap(([action, record, username, id]) =>
+        this.technicalRecordService.archiveTechnicalRecord(action.systemNumber, record!, action.reasonForArchiving, { username, id }).pipe(
+          map(vehicleTechRecord => archiveTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
+          catchError(error => of(archiveTechRecordFailure({ error: this.getTechRecordErrorMessage(error, 'archiveTechRecord') })))
         )
       )
     )

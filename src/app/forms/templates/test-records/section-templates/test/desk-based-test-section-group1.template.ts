@@ -1,27 +1,18 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const ContingencyTestSectionGroup6And11: FormNode = {
+export const DeskBasedTestSectionGroup1: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
   viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
-      name: 'contingencyTestNumber',
-      label: 'Contingency Test Number',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.NUMERICSTRING,
-      validators: [{ name: ValidatorNames.MaxLength, args: 8 }, { name: ValidatorNames.MinLength, args: 6 }, { name: ValidatorNames.Required }],
-      width: FormNodeWidth.L
-    },
-    {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.PastDate }]
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testEndTimestamp',
@@ -45,14 +36,6 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
               label: 'Result',
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              value: null,
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'testTypeName',
-              label: 'Description',
-              value: '',
-              disabled: true,
               type: FormNodeTypes.CONTROL
             },
             {
@@ -74,10 +57,25 @@ export const ContingencyTestSectionGroup6And11: FormNode = {
             {
               name: 'certificateNumber',
               label: 'Certificate number',
+              type: FormNodeTypes.CONTROL,
+              validators: [
+                { name: ValidatorNames.Alphanumeric },
+                {
+                  name: ValidatorNames.RequiredIfEquals,
+                  args: { sibling: 'testResult', value: 'pass' }
+                }
+              ],
+              required: true,
+              value: null
+            },
+            {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
               value: '',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE,
+              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
             },
             {
               name: 'testTypeStartTimestamp',

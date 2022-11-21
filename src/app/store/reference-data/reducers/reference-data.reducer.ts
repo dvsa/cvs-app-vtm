@@ -1,13 +1,20 @@
-import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
+  fetchReferenceDataByKeySearch,
+  fetchReferenceDataByKeySearchFailed,
+  fetchReferenceDataByKeySearchSuccess,
   fetchReferenceDataByKeySuccess,
   fetchReferenceDataFailed,
-  fetchReferenceDataSuccess
+  fetchReferenceDataSuccess,
+  fetchTyreReferenceDataByKeySearch,
+  fetchTyreReferenceDataByKeySearchFailed,
+  fetchTyreReferenceDataByKeySearchSuccess,
+  removeTyreSearch
 } from '../actions/reference-data.actions';
 import { isResourceType } from '../selectors/reference-data.selectors';
 export const STORE_FEATURE_REFERENCE_DATA_KEY = 'referenceData';
@@ -19,7 +26,12 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
 }
 
-export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState>;
+export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
+  loading: boolean;
+  searchReturn: ReferenceDataTyre[] | null;
+}
+
+export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
 
 function createAdapter() {
   return createEntityAdapter<ReferenceDataModelBase>({ selectId: selectResourceKey as any });
@@ -71,6 +83,7 @@ export const referenceDataReducer = createReducer(
       [resourceType]: { ...resourceTypeAdapters[resourceType].upsertMany(payload, state[resourceType]), loading: paginated }
     };
   }),
+
   on(fetchReferenceDataFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
 
   on(fetchReferenceDataByKey, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: true } })),
@@ -81,7 +94,43 @@ export const referenceDataReducer = createReducer(
       [resourceType]: { ...resourceTypeAdapters[resourceType].upsertOne(payload, state[resourceType]), loading: false }
     };
   }),
-  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } }))
+  on(fetchReferenceDataByKeyFailed, (state, action) => ({ ...state, [action.resourceType]: { ...state[action.resourceType], loading: false } })),
+
+  on(fetchReferenceDataByKeySearch, (state, action) => ({
+    ...state,
+    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: true }
+  })),
+  on(fetchReferenceDataByKeySearchSuccess, (state, action) => {
+    const { resourceType, payload } = action;
+    return {
+      ...state,
+      [resourceType]: { ...state[action.resourceType], searchReturn: payload, loading: false }
+    };
+  }),
+  on(fetchReferenceDataByKeySearchFailed, (state, action) => ({
+    ...state,
+    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false }
+  })),
+
+  on(fetchTyreReferenceDataByKeySearch, (state, action) => ({
+    ...state,
+    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, loading: true }
+  })),
+  on(fetchTyreReferenceDataByKeySearchSuccess, (state, action) => {
+    const { resourceType, payload } = action;
+    return {
+      ...state,
+      [resourceType]: { ...state[resourceType], searchReturn: payload, loading: false }
+    };
+  }),
+  on(fetchTyreReferenceDataByKeySearchFailed, (state, action) => ({
+    ...state,
+    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false }
+  })),
+  on(removeTyreSearch, state => ({
+    ...state,
+    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null }
+  }))
 );
 
 export const referenceDataFeatureState = createFeatureSelector<ReferenceDataState>(STORE_FEATURE_REFERENCE_DATA_KEY);

@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
 export const SeatbeltSection: FormNode = {
   name: 'seatbeltSection',
@@ -34,7 +34,8 @@ export const SeatbeltSection: FormNode = {
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.NUMBER,
               value: null,
-              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }]
+              validators: [{ name: ValidatorNames.RequiredIfEquals, args: { sibling: 'seatbeltInstallationCheckDate', value: true } }],
+              width: FormNodeWidth.M
             },
             {
               name: 'lastSeatbeltInstallationCheckDate',

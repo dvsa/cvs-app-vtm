@@ -11,11 +11,11 @@ import { map, ReplaySubject, Subject, takeUntil } from 'rxjs';
 export class PaginationComponent implements OnInit, OnDestroy {
   @Input() tableName!: string;
   @Input() numberOfItems: number = 0;
+  @Input() itemsPerPage: number = 5;
   @Output() paginationOptions = new EventEmitter<{ currentPage: number; itemsPerPage: number; start: number; end: number }>();
 
   currentPage = 1;
   currentPageSubject = new ReplaySubject<number>(this.currentPage);
-  itemsPerPage: number = 5; // this can be extended later to be set via a dom control
   numberOfVisiblePages = 5;
 
   private destroy$ = new Subject<void>();

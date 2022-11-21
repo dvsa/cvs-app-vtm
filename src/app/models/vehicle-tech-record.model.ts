@@ -148,12 +148,12 @@ export enum FitmentCode {
 }
 
 export interface Tyres {
-  tyreSize: string | null;
-  speedCategorySymbol: SpeedCategorySymbol | null;
-  fitmentCode: FitmentCode | null;
-  dataTrAxles: number | null;
-  plyRating: string | null;
   tyreCode: number | null;
+  tyreSize: string | null;
+  plyRating: string | null;
+  fitmentCode: FitmentCode | null;
+  speedCategorySymbol: SpeedCategorySymbol | null;
+  dataTrAxles: number | null;
 }
 
 export class Tyre implements Tyres {
@@ -257,6 +257,7 @@ export interface TechRecordModel {
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;
   authIntoService?: AuthIntoService;
+  notes?: string;
 
   // Gross vehicle weights
   grossKerbWeight?: number;

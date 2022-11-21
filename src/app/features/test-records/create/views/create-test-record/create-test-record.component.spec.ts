@@ -9,6 +9,7 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -163,9 +164,9 @@ describe('CreateTestRecordComponent', () => {
   });
 
   describe(CreateTestRecordComponent.prototype.abandon.name, () => {
-    it('should set isAbandon to true', () => {
+    it('should set testMode to be abandon', () => {
       component.abandon();
-      expect(component.isAbandon).toBeTruthy();
+      expect(component.testMode).toEqual(TestModeEnum.Abandon);
     });
   });
 
@@ -178,12 +179,12 @@ describe('CreateTestRecordComponent', () => {
       expect(handleSaveSpy).toBeCalledTimes(1);
     });
 
-    it('should set isAbandon to false', () => {
-      component.isAbandon = true;
+    it('should set testMode to be edit', () => {
+      component.testMode = TestModeEnum.Abandon;
 
       component.handleAbandonAction('no');
 
-      expect(component.isAbandon).toBeFalsy();
+      expect(component.testMode).toEqual(TestModeEnum.Edit);
     });
   });
 
@@ -207,4 +208,19 @@ describe('CreateTestRecordComponent', () => {
     expect(createTestResultSpy).toHaveBeenCalledTimes(1);
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
   }));
+
+  it('should set testMode to be view', () => {
+    component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+    component.handleReview();
+
+    expect(component.testMode).toEqual(TestModeEnum.View);
+  });
+
+  it('should set testMode back to edit', () => {
+    component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+    component.handleReview();
+    component.handleCancel();
+
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
+  });
 });

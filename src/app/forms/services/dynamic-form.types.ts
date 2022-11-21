@@ -122,6 +122,13 @@ export interface CustomControl extends FormControl {
   meta: FormNode;
 }
 
+export interface Params {
+  systemNumber?: string;
+  vin?: string;
+  reason?: string;
+  axleNumber?: number;
+}
+
 export class CustomFormControl extends FormControl implements CustomControl {
   meta: FormNode;
 

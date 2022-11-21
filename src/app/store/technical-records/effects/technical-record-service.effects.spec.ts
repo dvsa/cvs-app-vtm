@@ -583,4 +583,43 @@ describe('TechnicalRecordServiceEffects', () => {
       });
     });
   });
+
+  describe('archiveTechRecord', () => {
+    it('should return an archived technical record on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+
+        // expect effect to return success action
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it.each([
+      [500, 'Internal server error'],
+      [400, 'You are not allowed to update an archived tech-record']
+    ])('should return an error message if not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordFailure({
+            error: 'Unable to create a new provisional record null'
+          })
+        });
+      });
+    });
+  });
 });

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Observable } from 'rxjs';
@@ -10,16 +11,17 @@ import { Observable } from 'rxjs';
 })
 export class TechRecordTitleComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
-  @Input() includeButtons: boolean = false;
+  @Input() recordActions: TechRecordActions = TechRecordActions.NONE;
 
+  queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
 
-  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) { }
+  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) {}
 
   ngOnInit(): void {
-    if (this.vehicleTechRecord) {
-      this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord);
-    }
+    this.queryableRecordActions = this.recordActions.split(',');
+
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!);
   }
 
   get currentVrm(): string | undefined {

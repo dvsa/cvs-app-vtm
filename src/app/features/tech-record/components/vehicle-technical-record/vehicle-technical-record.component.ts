@@ -14,6 +14,7 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { ActivatedRoute } from '@angular/router';
+import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 
 @Component({
   selector: 'app-vehicle-technical-record',
@@ -87,6 +88,18 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
 
     return customSections;
+  }
+
+  getActions(techRecord?: TechRecordModel): TechRecordActions {
+    switch (techRecord?.statusCode) {
+      case StatusCodes.CURRENT:
+        return TechRecordActions.CURRENT;
+      case StatusCodes.PROVISIONAL:
+        return TechRecordActions.PROVISIONAL;
+      case StatusCodes.ARCHIVED:
+      default:
+        return TechRecordActions.NONE;
+    }
   }
 
   isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>) {

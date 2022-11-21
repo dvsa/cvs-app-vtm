@@ -1,5 +1,5 @@
-<app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async">
-  <app-button-group>
+<app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async" [isReview]="isReview">
+  <app-button-group *ngIf="!isReview">
     <ng-container *appRoleRequired="roles.TestResultAmend">
       <app-button
         *ngIf="isTestTypeGroupEditable$ | async; else notSupported"

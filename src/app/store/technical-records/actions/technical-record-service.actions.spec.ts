@@ -16,7 +16,10 @@ import {
   createProvisionalTechRecordSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess
+  updateTechRecordsSuccess,
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  archiveTechRecordFailure
 } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';
@@ -47,6 +50,10 @@ describe('Technical record actions', () => {
     expect(createProvisionalTechRecord.type).toBe(getMessage('createProvisionalTechRecord'));
     expect(createProvisionalTechRecordSuccess.type).toBe(getMessage('createProvisionalTechRecord', SUCCESS));
     expect(createProvisionalTechRecordFailure.type).toBe(getMessage('createProvisionalTechRecord', FAILURE));
+
+    expect(archiveTechRecord.type).toBe(getMessage('archiveTechRecord'));
+    expect(archiveTechRecordSuccess.type).toBe(getMessage('archiveTechRecord', SUCCESS));
+    expect(archiveTechRecordFailure.type).toBe(getMessage('archiveTechRecord', FAILURE));
   });
 });
 

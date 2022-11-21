@@ -84,35 +84,35 @@
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">VIN</dt>
-        <dd id="test-testTypeId" class="govuk-summary-list__value">
+        <dd id="test-vin" class="govuk-summary-list__value">
           {{ testResult?.vin | defaultNullOrEmpty }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Vehicle type</dt>
-        <dd id="test-testTypeId" class="govuk-summary-list__value">
+        <dd id="test-vehicleType" class="govuk-summary-list__value">
           {{ (techRecord$ | async)?.vehicleType | defaultNullOrEmpty | uppercase }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Country of registration</dt>
-        <dd id="test-testTypeId" class="govuk-summary-list__value">
+        <dd id="test-cor" class="govuk-summary-list__value">
           {{ testResult?.countryOfRegistration | refDataDecode$: referenceDataType.CountryOfRegistration | async | defaultNullOrEmpty | uppercase }}
         </dd>
       </div>
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">EU vehicle category</dt>
-        <dd id="test-testTypeId" class="govuk-summary-list__value">
+        <dd id="test-euCategory" class="govuk-summary-list__value">
           {{ testResult?.euVehicleCategory | defaultNullOrEmpty }}
         </dd>
       </div>
       <div *ngIf="testResult?.vehicleType !== vehicleTypes.TRL" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Odometer reading</dt>
-        <dd id="test-testTypeId" class="govuk-summary-list__value">
+        <dd id="test-odomReading" class="govuk-summary-list__value">
           {{ combinedOdometerReading(testResult?.odometerReading | digitGroupSeparator, testResult?.odometerReadingUnits) | defaultNullOrEmpty }}
         </dd>
       </div>
-      <div class="govuk-summary-list__row">
+      <div *ngIf="!isReview" class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">Certificate:</dt>
         <dd id="test-certificate" class="govuk-summary-list__value">
           <app-test-certificate [testNumber]="testNumber || ''" [vin]="testResult?.vin || ''">

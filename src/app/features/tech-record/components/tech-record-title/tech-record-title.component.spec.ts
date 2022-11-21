@@ -20,14 +20,10 @@ describe('TechRecordTitleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TechRecordTitleComponent ],
+      declarations: [TechRecordTitleComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule, StoreModule.forRoot({})],
-      providers: [
-        provideMockStore({ initialState: initialAppState }),
-        { provide: APP_BASE_HREF, useValue: '/' }
-      ],
-    })
-    .compileComponents();
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: APP_BASE_HREF, useValue: '/' }]
+    }).compileComponents();
 
     route = TestBed.inject(ActivatedRoute);
     router = TestBed.inject(Router);
