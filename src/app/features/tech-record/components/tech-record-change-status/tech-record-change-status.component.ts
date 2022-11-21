@@ -24,7 +24,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-tech-record-change-status',
   templateUrl: './tech-record-change-status.component.html',
-  styleUrls: ['./tech-record-change-status-component.scss']
+  styleUrls: ['./tech-record-change-status.component.scss']
 })
 export class TechRecordChangeStatusComponent implements OnInit {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
