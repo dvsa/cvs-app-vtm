@@ -15,12 +15,12 @@ import { initialAppState } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
 import { TechRecordTitleComponent } from '../tech-record-title/tech-record-title.component';
 
-import { TechPromoteComponent } from './tech-promote.component';
+import { TechRecordChangeStatusComponent } from './tech-record-change-status.component';
 
-describe('TechPromoteComponent', () => {
+describe('TechRecordChangeStatusComponent', () => {
   let actions$: ReplaySubject<Action>;
-  let component: TechPromoteComponent;
-  let fixture: ComponentFixture<TechPromoteComponent>;
+  let component: TechRecordChangeStatusComponent;
+  let fixture: ComponentFixture<TechRecordChangeStatusComponent>;
   let route: ActivatedRoute;
   let router: Router;
 
@@ -28,7 +28,7 @@ describe('TechPromoteComponent', () => {
     actions$ = new ReplaySubject<Action>();
 
     await TestBed.configureTestingModule({
-      declarations: [TechPromoteComponent, TechRecordTitleComponent],
+      declarations: [TechRecordChangeStatusComponent, TechRecordTitleComponent],
       imports: [DynamicFormsModule, HttpClientTestingModule, ReactiveFormsModule, RouterTestingModule, SharedModule, StoreModule.forRoot({})],
       providers: [
         provideMockActions(() => actions$),
@@ -48,7 +48,7 @@ describe('TechPromoteComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TechPromoteComponent);
+    fixture = TestBed.createComponent(TechRecordChangeStatusComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
