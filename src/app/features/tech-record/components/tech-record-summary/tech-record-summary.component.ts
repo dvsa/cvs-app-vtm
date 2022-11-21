@@ -236,7 +236,7 @@ export class TechRecordSummaryComponent implements OnInit {
     return [
       /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ PsvNotes,
-      /*  3 */ getPsvTechRecord(this.dtpNumbersFromRefData),
+      /*  3 */ getPsvTechRecord(this.dtpNumbersFromRefData, this._isEditing),
       /*  4 */ PsvTypeApprovalTemplate,
       /*  5 */ PsvBrakesTemplate,
       /*  6 */ PsvDdaTemplate,
