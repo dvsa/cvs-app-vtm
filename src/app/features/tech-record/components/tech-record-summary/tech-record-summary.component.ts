@@ -163,6 +163,7 @@ export class TechRecordSummaryComponent implements OnInit {
       this.setBrakesForces();
     }
 
+    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
