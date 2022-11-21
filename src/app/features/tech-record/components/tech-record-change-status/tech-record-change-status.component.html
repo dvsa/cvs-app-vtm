@@ -5,9 +5,16 @@
     <form [formGroup]="form" (submit)="handleSubmit(form.value)">
       <app-text-area name="reason" [label]="label" formControlName="reason"></app-text-area>
 
-      <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
-        {{ buttonLabel }} record
-      </button>
+      <dl class="govuk-summary-list">
+        <dd class="govuk-summary-list__value">
+          <button class="govuk-button govuk-button--primary" id="submit" type="submit" data-module="govuk-button" data-prevent-double-click="true">
+            {{ buttonLabel }} record
+          </button>
+        </dd>
+        <dd class="govuk-summary-list__value">
+          <a class="govuk-link" (click)="goBack()">Back</a>
+        </dd>
+      </dl>
     </form>
   </div>
 </div>

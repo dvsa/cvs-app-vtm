@@ -19,10 +19,12 @@ import {
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { cloneDeep } from 'lodash';
 import { Observable, take } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-tech-record-change-status',
-  templateUrl: './tech-record-change-status.component.html'
+  templateUrl: './tech-record-change-status.component.html',
+  styleUrls: ['./tech-record-change-status-component.scss']
 })
 export class TechRecordChangeStatusComponent implements OnInit {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
@@ -40,7 +42,8 @@ export class TechRecordChangeStatusComponent implements OnInit {
     private router: Router,
     private routerStore: Store<RouterReducerState>,
     private techRecordsStore: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService
+    private technicalRecordService: TechnicalRecordService,
+    private location: Location
   ) {
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
@@ -66,6 +69,10 @@ export class TechRecordChangeStatusComponent implements OnInit {
 
   get label(): string {
     return `Reason for ${this.isPromotion ? 'promotion' : 'archiving'}`;
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   handleSubmit(form: { reason: string }): void {
