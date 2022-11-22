@@ -110,7 +110,10 @@ describe('TestResultsEffects', () => {
             }
           ]
         }),
-        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } },
+        {
+          provide: UserService,
+          useValue: { user$: of({ name: 'testername', username: 'username', oid: '123zxc' }), userName$: of('username'), id$: of('iod') }
+        },
         RouterService,
         DynamicFormService
       ]
@@ -524,7 +527,7 @@ describe('TestResultsEffects', () => {
               ],
               testerEmailAddress: '',
               testerName: '',
-              testerStaffId: undefined,
+              testerStaffId: '',
               typeOfTest: TypeOfTest.CONTINGENCY,
               vehicleClass: null,
               vehicleConfiguration: undefined,

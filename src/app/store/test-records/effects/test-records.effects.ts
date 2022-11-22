@@ -36,6 +36,7 @@ import {
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
 import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
+import { TestStationType } from '@models/test-stations/test-station-type.enum';
 
 @Injectable()
 export class TestResultsEffects {
@@ -197,10 +198,19 @@ export class TestResultsEffects {
         mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
         mergedForms.typeOfTest = (testTypeTaxonomy?.typeOfTest as TypeOfTest) ?? TypeOfTest.CONTINGENCY;
 
+        const now = new Date().toISOString();
+
         if (mergedForms.typeOfTest !== TypeOfTest.CONTINGENCY) {
           mergedForms.testerName = user.name;
           mergedForms.testerEmailAddress = user.username;
           mergedForms.testerStaffId = user.oid;
+          mergedForms.testStartTimestamp = now;
+          mergedForms.testEndTimestamp = now;
+          mergedForms.testTypes[0].testTypeStartTimestamp = now;
+          mergedForms.testTypes[0].testTypeEndTimestamp = now;
+          mergedForms.testStationName = 'SWANSEA';
+          mergedForms.testStationPNumber = 'SWANSEA';
+          mergedForms.testStationType = TestStationType.ATF;
         }
 
         return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms }));
@@ -246,7 +256,6 @@ export class TestResultsEffects {
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private dfs: DynamicFormService,
-    private testTypeService: TestTypesService
+    private dfs: DynamicFormService
   ) {}
 }

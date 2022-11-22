@@ -18,6 +18,7 @@ export interface TestResultModel {
 
   createdAt?: string;
   testStartTimestamp: string | Date;
+  testEndTimestamp: string | Date;
 
   testTypes: TestType[];
 

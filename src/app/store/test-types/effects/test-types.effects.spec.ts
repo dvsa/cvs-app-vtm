@@ -1,19 +1,19 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TestTypesTaxonomy } from '@api/test-types';
-import { TestTypesService } from '@services/test-types/test-types.service';
-import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
-import { TestTypeEffects } from './test-types.effects';
 import { ApiModule as TestTypesApiModule } from '@api/test-types/api.module';
 import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAppState } from '@store/.';
 import { RouterService } from '@services/router/router.service';
-import { TestTypes } from '@api/test-results';
+import { TestTypesService } from '@services/test-types/test-types.service';
+import { UserService } from '@services/user-service/user-service';
+import { initialAppState } from '@store/.';
+import { Observable, of } from 'rxjs';
+import { TestScheduler } from 'rxjs/testing';
 import { fetchTestTypes, fetchTestTypesFailed, fetchTestTypesSuccess } from '../actions/test-types.actions';
-import { HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { TestTypeEffects } from './test-types.effects';
 
 describe('TestResultsEffects', () => {
   let effects: TestTypeEffects;
@@ -31,7 +31,11 @@ describe('TestResultsEffects', () => {
         provideMockStore({
           initialState: initialAppState
         }),
-        RouterService
+        RouterService,
+        {
+          provide: UserService,
+          useValue: { roles$: of(['TestResult.CreateDeskBased']) }
+        }
       ]
     });
 
