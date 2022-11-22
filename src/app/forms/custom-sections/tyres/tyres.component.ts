@@ -80,6 +80,10 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     return this.vehicleTechRecord.vehicleType === VehicleTypes.PSV;
   }
 
+  get isTrl(): boolean {
+    return this.vehicleTechRecord.vehicleType === VehicleTypes.TRL;
+  }
+
   get types(): typeof FormNodeEditTypes {
     return FormNodeEditTypes;
   }
@@ -178,22 +182,25 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
       tyres: tyres
     };
 
-    if (this.vehicleTechRecord.axles.length < 5) {
+    const maxLength = this.isTrl ? 10 : 5;
+    if (this.vehicleTechRecord.axles.length < maxLength) {
       this.isError = false;
       this.axles.addControl(newAxle);
     } else {
       this.isError = true;
-      this.errorMessage = 'Cannot have more than 5 axles';
+      this.errorMessage = `Cannot have more than ${maxLength} axles`;
     }
   }
 
   removeAxle(index: number): void {
-    if (this.vehicleTechRecord.axles.length > 2) {
+    const minLength = this.isTrl ? 1 : 2;
+
+    if (this.vehicleTechRecord.axles.length > minLength) {
       this.isError = false;
       this.axles.removeAt(index);
     } else {
       this.isError = true;
-      this.errorMessage = 'Cannot have fewer than 2 axles';
+      this.errorMessage = `Cannot have less than ${minLength} axles`;
     }
   }
 }
