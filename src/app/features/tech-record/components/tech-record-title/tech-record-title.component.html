@@ -48,7 +48,7 @@
     <dd class="govuk-summary-list__value"></dd>
     <div *appRoleRequired="roles.TechRecordArchive">
       <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-        <a class="govuk-link" routerLink="archive">Archive</a>
+        <a class="govuk-link" style="cursor: pointer" (click)="navigateToArchive()">Archive</a>
       </dd>
     </div>
     <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
