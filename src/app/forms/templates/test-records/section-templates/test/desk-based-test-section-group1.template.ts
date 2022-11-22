@@ -11,6 +11,8 @@ export const DeskBasedTestSectionGroup1: FormNode = {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
       disabled: true
     },
     {
@@ -103,7 +105,8 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               validators: [
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ]
+              ],
+              required: true
             },
             {
               name: 'prohibitionIssued',
