@@ -11,8 +11,7 @@ export const DeskBasedTestSectionGroup1: FormNode = {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
-      viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN
+      disabled: true
     },
     {
       name: 'testEndTimestamp',
@@ -20,7 +19,7 @@ export const DeskBasedTestSectionGroup1: FormNode = {
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
+      disabled: true
     },
     {
       name: 'testTypes',
@@ -36,7 +35,8 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               label: 'Result',
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              value: 'pass'
             },
             {
               name: 'reasonForAbandoning',
@@ -71,7 +71,7 @@ export const DeskBasedTestSectionGroup1: FormNode = {
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
-              value: '',
+              value: null,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
@@ -82,25 +82,27 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test start date and time',
-              viewType: FormNodeViewTypes.TIME,
-              editType: FormNodeEditTypes.DATETIME,
-              validators: [
-                { name: ValidatorNames.Required },
-                { name: ValidatorNames.PastDate },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testStartTimestamp' }
-              ]
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: '',
               label: 'Test end date and time',
-              viewType: FormNodeViewTypes.TIME,
-              editType: FormNodeEditTypes.DATETIME,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'testAnniversaryDate',
+              label: 'Anniversary date',
+              value: '',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE,
               validators: [
-                { name: ValidatorNames.Required },
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.CopyValueToRootControl, args: 'testEndTimestamp' }
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
               ]
             },
             {
