@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
+import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { updateResultOfTest } from '@store/test-records';
+import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
-import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
-import { updateResultOfTest } from '@store/test-records';
-
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -34,9 +35,6 @@ import {
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
-import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
-import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
-import { TestStationType } from '@models/test-stations/test-station-type.enum';
 
 @Injectable()
 export class TestResultsEffects {
@@ -185,7 +183,11 @@ export class TestResultsEffects {
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
         const vehicleTpl = contingencyTestTemplates[vehicleType];
 
-        const tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup] : vehicleTpl['default'];
+        const tpl = !!testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) && vehicleTpl[testTypeGroup];
+
+        if (!tpl) {
+          return of(templateSectionsChanged({ sectionTemplates: [], sectionsValue: undefined }));
+        }
 
         const mergedForms = {} as TestResultModel;
         Object.values(tpl).forEach(node => {
