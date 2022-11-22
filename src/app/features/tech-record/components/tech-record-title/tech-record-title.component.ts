@@ -44,4 +44,8 @@ export class TechRecordTitleComponent implements OnInit {
   navigateToPromotion(): void {
     this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/provisional/promote`);
   }
+
+  navigateToArchive(): void {
+    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/archive`);
+  }
 }
