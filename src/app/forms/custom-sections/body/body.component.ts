@@ -7,7 +7,7 @@ import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
+import { BodyTypeCode, BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
 import { BodyModel, ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
@@ -19,7 +19,7 @@ import { Subject, debounceTime, takeUntil, Observable, map } from 'rxjs';
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss']
 })
-export class BodyComponent implements OnInit, OnChanges, OnDestroy {
+export class BodyComponent implements OnInit, OnDestroy {
   @Input() vehicleTechRecord!: TechRecordModel;
   @Input() isEditing = false;
 
@@ -27,6 +27,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   form!: CustomFormGroup;
   template!: FormNode;
+  bodyTypeOptions: MultiOptions = getOptionsFromEnum(BodyTypeDescription);
 
   private destroy$ = new Subject<void>();
 
@@ -44,20 +45,11 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       if (bodyType?.description) {
         event.bodyType['code'] = bodyTypeMap.get(bodyType.description);
       }
-
       this.formChange.emit(event);
     });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyModel);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const { vehicleTechRecord } = changes;
-
-    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
-      this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
-    }
   }
 
   ngOnDestroy(): void {
@@ -71,14 +63,6 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   get widths(): typeof FormNodeWidth {
     return FormNodeWidth;
-  }
-
-  get numberOptions(): MultiOptions {
-    return Array.from(Array(10).keys()).map(i => ({ value: i, label: `${i}` }));
-  }
-
-  get bodyTypes(): MultiOptions {
-    return getOptionsFromEnum(BodyTypeDescription);
   }
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {
