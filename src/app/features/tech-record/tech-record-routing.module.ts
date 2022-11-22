@@ -46,6 +46,13 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
+    path: 'provisional/archive',
+    component: TechRecordChangeStatusComponent,
+    data: { title: 'Archive Provisional Tech Record', roles: Roles.TechRecordArchive },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { load: TechRecordViewResolver }
+  },
+  {
     path: 'correcting-an-error/tyre-search/:axleNumber',
     component: TyresSearchComponent,
     data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.CORRECTING_AN_ERROR },

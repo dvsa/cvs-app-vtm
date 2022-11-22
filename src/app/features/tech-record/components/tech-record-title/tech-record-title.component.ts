@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
-import { TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-title',
@@ -46,6 +46,10 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   navigateToArchive(): void {
-    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/archive`);
+    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
+      return data?.statusCode === StatusCodes.PROVISIONAL
+        ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/provisional/archive`)
+        : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/archive`);
+    });
   }
 }
