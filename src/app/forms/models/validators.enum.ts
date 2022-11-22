@@ -3,6 +3,7 @@ export enum ValidatorNames {
   DisableIfEquals = 'disableIfEquals',
   EnableIfEquals = 'enableIfEquals',
   HideIfEmpty = 'hideIfEmpty',
+  HideIfEquals = 'hideIfEquals',
   HideIfNotEqual = 'hideIfNotEqual',
   HideIfParentSiblingEqual = 'hideIfParentSiblingEqual',
   HideIfParentSiblingNotEqual = 'hideIfParentSiblingNotEqual',

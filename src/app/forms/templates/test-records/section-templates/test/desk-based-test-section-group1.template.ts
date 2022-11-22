@@ -104,6 +104,7 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               editType: FormNodeEditTypes.DATE,
               validators: [
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.HideIfEmpty, args: { sibling: 'testExpiryDate' } },
                 { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
               ],
               required: true
