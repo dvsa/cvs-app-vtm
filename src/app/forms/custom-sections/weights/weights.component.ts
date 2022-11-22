@@ -92,13 +92,12 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
       weights: weights
     };
 
-    const maxLength = this.isTrl ? 10 : 5;
-    if (this.vehicleTechRecord.axles.length < maxLength) {
+    if (this.vehicleTechRecord.axles.length < 10) {
       this.isError = false;
       this.axles.addControl(newAxle);
     } else {
       this.isError = true;
-      this.errorMessage = `Cannot have more than ${maxLength} axles`;
+      this.errorMessage = `Cannot have more than ${10} axles`;
     }
   }
 
