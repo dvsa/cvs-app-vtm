@@ -74,6 +74,13 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
+    path: 'provisional/notifiable-alteration-needed/tyre-search/:axleNumber',
+    component: TyresSearchComponent,
+    data: { title: 'Tyre search', roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
+  },
+  {
     path: 'provisional/promote',
     component: TechRecordChangeStatusComponent,
     canActivate: [MsalGuard],
