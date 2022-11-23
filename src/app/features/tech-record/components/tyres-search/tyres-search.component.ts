@@ -5,7 +5,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { MultiOptions } from '@forms/models/options.model';
-import { mergeMap, pipe, take } from 'rxjs';
+import { mergeMap, take } from 'rxjs';
 import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-data.model';
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
@@ -85,13 +85,13 @@ export class TyresSearchComponent implements OnInit {
         this.searchResults = data;
       });
     this.referenceDataService
-      .getTyreSearchFilter$()
+      .getTyreSearchCriteria$()
       .pipe(take(1))
-      .subscribe(v => this.form.controls['filter'].patchValue(v));
-    this.referenceDataService
-      .getTyreSearchTerm$()
-      .pipe(take(1))
-      .subscribe(v => this.form.controls['term'].patchValue(v));
+      .subscribe(v => {
+        this.form.controls['filter'].patchValue(v.filter);
+        this.form.controls['term'].patchValue(v.term);
+      });
+
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }

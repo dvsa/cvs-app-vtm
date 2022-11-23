@@ -33,10 +33,8 @@ export const selectReasonsForAbandoning = (vehicleType: VehicleTypes) => {
 
 export const selectTyreSearchReturn = () =>
   createSelector(referenceDataFeatureState, state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).searchReturn);
-export const selectTyreSearchFilter = () =>
-  createSelector(referenceDataFeatureState, state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).filter);
-export const selectTyreSearchTerm = () =>
-  createSelector(referenceDataFeatureState, state => (state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres).term);
+export const selectTyreSearchCriteria = () =>
+  createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Tyres] as ReferenceDataEntityStateTyres);
 
 export const selectUserByResourceKey = (resourceKey: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.User].entities[resourceKey]);
