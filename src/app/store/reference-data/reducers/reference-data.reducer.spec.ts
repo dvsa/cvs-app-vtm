@@ -198,7 +198,9 @@ describe('Reference Data Reducer', () => {
           [ReferenceDataResourceType.Tyres]: {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
             searchReturn: null,
-            loading: false
+            loading: false,
+            filter: null,
+            term: null
           }
         };
         const action = fetchReferenceDataByKeySearchFailed({
@@ -279,7 +281,9 @@ describe('Reference Data Reducer', () => {
           [ReferenceDataResourceType.Tyres]: {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
             searchReturn: null,
-            loading: false
+            loading: false,
+            filter: null,
+            term: null
           }
         };
         const action = fetchTyreReferenceDataByKeySearchFailed({

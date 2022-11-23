@@ -110,11 +110,11 @@ export class TyresSearchComponent implements OnInit {
     return this.searchResults?.length!;
   }
 
-  handleSearch(term: string, filter: string): void {
+  handleSearch(filter: string, term: string): void {
     term = term.trim();
     this.globalErrorService.clearErrors();
     this.searchResults = [];
-    this.referenceDataService.addSearchInformation(term, filter);
+    this.referenceDataService.addSearchInformation(filter, term);
 
     if (!term) {
       this.globalErrorService.addError({ error: 'You must provide search criteria', anchorLink: 'term' });

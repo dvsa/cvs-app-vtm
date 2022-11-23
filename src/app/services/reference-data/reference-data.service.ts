@@ -71,7 +71,7 @@ export class ReferenceDataService extends ReferenceDataApiService {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
 
-  addSearchInformation(term: string, filter: string): void {
+  addSearchInformation(filter: string, term: string): void {
     this.store.dispatch(addSearchInformation({ filter, term }));
   }
 

@@ -37,7 +37,7 @@
     aria-describedby="term"
     type="text"
     class="govuk-input govuk-!-width-two-thirds"
-    (keyup.enter)="handleSearch(searchTerm.value, searchFilter.value)"
+    (keyup.enter)="handleSearch(searchFilter.value, searchTerm.value)"
   />
   <button
     class="govuk-button margin-right search-btn"
@@ -45,7 +45,7 @@
     data-module="govuk-button"
     enterkeyhint="search"
     data-gem-track-click-module-started="true"
-    (click)="handleSearch(searchTerm.value, searchFilter.value)"
+    (click)="handleSearch(searchFilter.value, searchTerm.value)"
   >
     <svg
       class="gem-c-search__icon"
