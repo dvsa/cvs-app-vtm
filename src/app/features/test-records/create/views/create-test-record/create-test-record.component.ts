@@ -13,7 +13,7 @@ import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { createTestResultSuccess } from '@store/test-records';
 import cloneDeep from 'lodash.clonedeep';
-import { filter, firstValueFrom, Observable, of, Subject, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, Observable, of, ReplaySubject, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -26,6 +26,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
 
   private destroy$ = new Subject<void>();
 
+  canCreate$ = new BehaviorSubject(false);
   testMode = TestModeEnum.Edit;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
 
@@ -57,6 +58,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       });
 
     this.watchForCreateSuccess();
+
+    this.testRecordsService.canCreate$.pipe(take(1)).subscribe(val => this.canCreate$.next(val));
   }
 
   ngOnDestroy(): void {

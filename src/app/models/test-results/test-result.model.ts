@@ -18,6 +18,7 @@ export interface TestResultModel {
 
   createdAt?: string;
   testStartTimestamp: string | Date;
+  testEndTimestamp: string | Date;
 
   testTypes: TestType[];
 
@@ -34,6 +35,7 @@ export interface TestResultModel {
   testStationType: TestStationType;
   testerName: string;
   testerEmailAddress: string;
+  testerStaffId: string;
 
   reasonForCreation?: string;
   vehicleType: VehicleTypes;

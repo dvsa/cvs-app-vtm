@@ -4,11 +4,11 @@ import { select, Store } from '@ngrx/store';
 import { State } from '@store/.';
 import {
   routeEditable,
+  routerState,
   selectQueryParam,
   selectQueryParams,
   selectRouteNestedParams,
-  selectRouteParam,
-  routerState
+  selectRouteParam
 } from '@store/router/selectors/router.selectors';
 import { Observable } from 'rxjs';
 

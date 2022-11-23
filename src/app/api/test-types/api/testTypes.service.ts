@@ -58,20 +58,20 @@ export class TestTypesService {
 
     /**
      * Return test types
-     * This endpoint will return all the data for test types based on filters provided. By default it will return all testTypes where forVtmOnly is false.
-     * @param applicableTo NOTE: NOT CURRENTLY IMPLEMENTED
+     * This endpoint will return all the data for test types based on filters provided. By default it will return all testTypes which don&#x27;t have a typeOfTest field.
+     * @param typeOfTest It is used to filter test types based on the given typeOfTest. Note that sending the query parameter will also return the test types without a tag.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTestTypes(applicableTo?: string, observe?: 'body', reportProgress?: boolean): Observable<TestTypesTaxonomy>;
-    public getTestTypes(applicableTo?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestTypesTaxonomy>>;
-    public getTestTypes(applicableTo?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestTypesTaxonomy>>;
-    public getTestTypes(applicableTo?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getTestTypes(typeOfTest?: string, observe?: 'body', reportProgress?: boolean): Observable<TestTypesTaxonomy>;
+    public getTestTypes(typeOfTest?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TestTypesTaxonomy>>;
+    public getTestTypes(typeOfTest?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TestTypesTaxonomy>>;
+    public getTestTypes(typeOfTest?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (applicableTo !== undefined && applicableTo !== null) {
-            queryParameters = queryParameters.set('applicableTo', <any>applicableTo);
+        if (typeOfTest !== undefined && typeOfTest !== null) {
+            queryParameters = queryParameters.set('typeOfTest', <any>typeOfTest);
         }
 
         let headers = this.defaultHeaders;

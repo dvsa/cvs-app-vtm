@@ -137,9 +137,7 @@ export class TestRecordComponent implements OnInit, OnDestroy {
   }
 
   handleCancel() {
-    this.testMode = this.testMode === TestModeEnum.Cancel || this.testMode === TestModeEnum.View
-      ? TestModeEnum.Edit
-      : TestModeEnum.Cancel;
+    this.testMode = this.testMode === TestModeEnum.Cancel || this.testMode === TestModeEnum.View ? TestModeEnum.Edit : TestModeEnum.Cancel;
   }
 
   handleConfirmCancel() {
