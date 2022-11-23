@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { CompleteTestResults, DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
+import { FormNode } from '@forms/services/dynamic-form.types';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
   cancelEditingTestResult,
@@ -154,8 +157,16 @@ export class TestRecordsService {
   }
 
   get isTestTypeGroupEditable$() {
-    return this.store.pipe(select(toEditOrNotToEdit)).pipe(
-      map(testResult => {
+    return this.store.pipe(select(toEditOrNotToEdit), this.canHandleTestType(masterTpl));
+  }
+
+  get canCreate$() {
+    return this.store.pipe(select(toEditOrNotToEdit), this.canHandleTestType(contingencyTestTemplates));
+  }
+
+  private canHandleTestType(templateMap: Record<VehicleTypes, Record<string, Record<string, FormNode>>>) {
+    return function <T>(source: Observable<T>): Observable<boolean> {
+      const handle = (testResult: TestResultModel | undefined): boolean => {
         if (!testResult) {
           return false;
         }
@@ -163,11 +174,21 @@ export class TestRecordsService {
         const vehicleType = testResult.vehicleType;
         const testTypeId = testResult.testTypes && testResult.testTypes[0].testTypeId;
         const testTypeGroup = TestRecordsService.getTestTypeGroup(testTypeId);
-        const vehicleTpl = vehicleType && masterTpl[vehicleType];
+        const vehicleTpl = vehicleType && templateMap[vehicleType];
 
         return !!testTypeGroup && !!vehicleTpl && vehicleTpl.hasOwnProperty(testTypeGroup);
-      })
-    );
+      };
+
+      return new Observable(subscriber => {
+        source.subscribe({
+          next: val => {
+            subscriber.next(handle(val as unknown as TestResultModel));
+          },
+          error: e => subscriber.error(e),
+          complete: () => subscriber.complete()
+        });
+      });
+    };
   }
 
   contingencyTestTypeSelected(testType: string) {
