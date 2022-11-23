@@ -25,15 +25,15 @@
   <app-select
     #searchFilter
     label="Search filter"
-    [formControlName]="form.meta.children![1].name"
-    [name]="form.meta.children![1].name"
+    [formControlName]="form.meta.children![0].name"
+    [name]="form.meta.children![0].name"
     [options]="options!"
   ></app-select>
   <br />
   <input
     #searchTerm
-    [formControlName]="form.meta.children![0].name"
-    [name]="form.meta.children![0].name"
+    [formControlName]="form.meta.children![1].name"
+    [name]="form.meta.children![1].name"
     aria-describedby="term"
     type="text"
     class="govuk-input govuk-!-width-two-thirds"

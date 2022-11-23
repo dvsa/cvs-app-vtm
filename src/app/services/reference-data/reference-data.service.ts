@@ -12,6 +12,7 @@ import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } 
 import { VehicleTypes } from '@models/vehicle-tech-record.model';
 import { select, Store } from '@ngrx/store';
 import {
+  addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
@@ -20,7 +21,9 @@ import {
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
   selectReferenceDataByResourceKey,
-  selectTyreSearchReturn
+  selectTyreSearchFilter,
+  selectTyreSearchReturn,
+  selectTyreSearchTerm
 } from '@store/reference-data';
 import { map, Observable, of, throwError } from 'rxjs';
 
@@ -67,11 +70,24 @@ export class ReferenceDataService extends ReferenceDataApiService {
   loadReferenceData(resourceType: ReferenceDataResourceType): void {
     this.store.dispatch(fetchReferenceData({ resourceType }));
   }
+
+  addSearchInformation(term: string, filter: string): void {
+    this.store.dispatch(addSearchInformation({ filter, term }));
+  }
+
   removeTyreSearch() {
     return this.store.dispatch(removeTyreSearch());
   }
+
   getTyreSearchReturn$ = () => {
     return this.store.pipe(select(selectTyreSearchReturn()));
+  };
+
+  getTyreSearchFilter$ = () => {
+    return this.store.pipe(select(selectTyreSearchFilter()));
+  };
+  getTyreSearchTerm$ = () => {
+    return this.store.pipe(select(selectTyreSearchTerm()));
   };
 
   getAll$ = (resourceType: ReferenceDataResourceType): Observable<ReferenceDataModelBase[] | undefined> => {
