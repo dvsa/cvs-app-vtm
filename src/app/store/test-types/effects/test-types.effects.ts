@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Roles } from '@models/roles.enum';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
@@ -13,7 +14,7 @@ export class TestTypeEffects {
       ofType(fetchTestTypes),
       switchMap(() => this.userService.roles$),
       switchMap(roles => {
-        const typeOfTest = roles?.includes(Roles.TestResultCreateDeskAssesment) ? 'desk-based' : undefined;
+        const typeOfTest = roles?.includes(Roles.TestResultCreateDeskAssesment) ? TypeOfTest.DESK_BASED : undefined;
 
         return this.testTypeService.getTestTypes(typeOfTest).pipe(
           map(testTypes => fetchTestTypesSuccess({ payload: testTypes })),
