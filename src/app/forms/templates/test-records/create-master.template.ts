@@ -28,9 +28,9 @@ import { CustomDefectsHiddenSection } from './section-templates/required/custom-
 import { ContingencyTestSectionGroup5And13 } from './section-templates/test/contingency-test-section-group5And13.template';
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/test/contingency-test-section-specialist-group3And4.template';
-import { DeskBasedTestSectionGroup1 } from './section-templates/test/desk-based-test-section-group1.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
-import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based-test-section-group3.template';
+import { DeskBasedTestSectionGroup1PSV } from './section-templates/test/desk-based-test-section-group1-PSV.template';
+import { DeskBasedTestSectionGroup3PSV } from './section-templates/test/desk-based-test-section-group3-PSV.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -139,7 +139,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup1: {
       required: CreateRequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
-      test: DeskBasedTestSectionGroup1,
+      test: DeskBasedTestSectionGroup1PSV,
       seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -150,7 +150,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup3: {
       required: CreateRequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
-      test: DeskBasedTestSectionGroup3,
+      test: DeskBasedTestSectionGroup3PSV,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
