@@ -167,12 +167,9 @@ export class CustomValidators {
 
   static aheadOfDate = (sibling: string): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control?.parent) {
-        const siblingControl = control.parent.get(sibling) as CustomFormControl;
-
-        if (new Date(control.value) < new Date(siblingControl.value)) {
-          return { aheadOfDate: { sibling: siblingControl.meta.label } };
-        }
+      const siblingControl = control?.parent?.get(sibling);
+      if (siblingControl?.value && control.value && new Date(control.value) < new Date(siblingControl.value)) {
+        return { aheadOfDate: { sibling: (siblingControl as CustomFormControl).meta.label } };
       }
 
       return null;
@@ -181,13 +178,13 @@ export class CustomValidators {
 
   static dateNotExceed = (sibling: string, months: number): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      if (control?.parent) {
-        const siblingControl = control.parent.get(sibling) as CustomFormControl;
+      const siblingControl = control?.parent?.get(sibling);
+      if (siblingControl?.value && control.value) {
         const maxDate = new Date(siblingControl.value);
         maxDate.setMonth(maxDate.getMonth() + months);
 
         if (new Date(control.value) > maxDate) {
-          return { dateNotExceed: { sibling: siblingControl.meta.label, months: months } };
+          return { dateNotExceed: { sibling: (siblingControl as CustomFormControl).meta.label, months: months } };
         }
       }
 
