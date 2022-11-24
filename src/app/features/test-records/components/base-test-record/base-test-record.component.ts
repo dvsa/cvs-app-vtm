@@ -17,7 +17,8 @@ import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/cu
 
 @Component({
   selector: 'app-base-test-record[testResult]',
-  templateUrl: './base-test-record.component.html'
+  templateUrl: './base-test-record.component.html',
+  styleUrls: ['./base-test-record.component.scss']
 })
 export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
