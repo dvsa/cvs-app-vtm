@@ -13,7 +13,6 @@ export const DeskBasedTestSectionGroup1: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
     },
     {
       name: 'testEndTimestamp',
@@ -21,7 +20,6 @@ export const DeskBasedTestSectionGroup1: FormNode = {
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
     },
     {
       name: 'testTypes',

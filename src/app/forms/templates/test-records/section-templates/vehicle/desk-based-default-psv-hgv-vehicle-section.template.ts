@@ -12,7 +12,6 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
-      disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
@@ -21,7 +20,6 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
       name: 'vrm',
       label: 'VRM',
       value: '',
-      disabled: true,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
@@ -72,7 +70,6 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
     },
     {
       name: 'preparerId',
@@ -81,7 +78,6 @@ export const DeskBasedVehicleSectionDefaultPsvHgv: FormNode = {
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN,
-      disabled: true
     }
   ]
 };
