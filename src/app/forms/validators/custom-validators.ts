@@ -179,7 +179,7 @@ export class CustomValidators {
   static dateNotExceed = (sibling: string, months: number): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const siblingControl = control?.parent?.get(sibling);
-      if (siblingControl?.value) {
+      if (siblingControl?.value && control.value) {
         const maxDate = new Date(siblingControl.value);
         maxDate.setMonth(maxDate.getMonth() + months);
 
