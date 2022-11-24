@@ -81,13 +81,6 @@ export const DeskBasedTestSectionGroup3: FormNode = {
               editType: FormNodeEditTypes.HIDDEN
             },
             {
-              name: 'testAnniversaryDate',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
-            },
-            {
               name: 'prohibitionIssued',
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
