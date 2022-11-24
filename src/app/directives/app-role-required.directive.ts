@@ -2,6 +2,7 @@ import { Directive, OnInit, Input, TemplateRef, ViewContainerRef } from '@angula
 import { UserService } from '@services/user-service/user-service';
 import { take } from 'rxjs';
 import { Roles } from '@models/roles.enum';
+import { uniq } from 'lodash';
 
 @Directive({ selector: '[appRoleRequired]' })
 export class RoleRequiredDirective implements OnInit {
@@ -10,8 +11,8 @@ export class RoleRequiredDirective implements OnInit {
   userRolesRequired: string[] | undefined;
 
   @Input()
-  set appRoleRequired(roles: Roles) {
-    this.userRolesRequired = roles?.split(',');
+  set appRoleRequired(roles: Roles | Roles[]) {
+    Array.isArray(roles) ? (this.userRolesRequired = uniq(roles.flatMap(role => role.split(',')))) : (this.userRolesRequired = roles?.split(','));
   }
 
   ngOnInit() {
