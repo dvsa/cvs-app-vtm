@@ -72,6 +72,41 @@ describe('Reference Data Selectors', () => {
       expect(expectedState).toBe(value.payload);
     });
   });
+  describe('selectTyreSearchCriteria', () => {
+    it('should return the filter and term state to the user', () => {
+      const value = {
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
+      };
+
+      const state: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          loading: false,
+          searchReturn: value.payload,
+          filter: 'cake',
+          term: 'lies'
+        }
+      };
+
+      const expectedState = referenceDataSelectors.selectTyreSearchCriteria().projector(state);
+      expect(expectedState.filter).toBe('cake');
+      expect(expectedState.term).toBe('lies');
+    });
+  });
 
   it('should return true if any feature is loading state', () => {
     const state: ReferenceDataState = { ...initialReferenceDataState };

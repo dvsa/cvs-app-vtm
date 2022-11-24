@@ -25,19 +25,19 @@
   <app-select
     #searchFilter
     label="Search filter"
-    [formControlName]="form.meta.children![1].name"
-    [name]="form.meta.children![1].name"
+    [formControlName]="form.meta.children![0].name"
+    [name]="form.meta.children![0].name"
     [options]="options!"
   ></app-select>
   <br />
   <input
     #searchTerm
-    [formControlName]="form.meta.children![0].name"
-    [name]="form.meta.children![0].name"
+    [formControlName]="form.meta.children![1].name"
+    [name]="form.meta.children![1].name"
     aria-describedby="term"
     type="text"
     class="govuk-input govuk-!-width-two-thirds"
-    (keyup.enter)="handleSearch(searchTerm.value, searchFilter.value)"
+    (keyup.enter)="handleSearch(searchFilter.value, searchTerm.value)"
   />
   <button
     class="govuk-button margin-right search-btn"
@@ -45,7 +45,7 @@
     data-module="govuk-button"
     enterkeyhint="search"
     data-gem-track-click-module-started="true"
-    (click)="handleSearch(searchTerm.value, searchFilter.value)"
+    (click)="handleSearch(searchFilter.value, searchTerm.value)"
   >
     <svg
       class="gem-c-search__icon"

@@ -27,6 +27,7 @@ const mockTechRecordService = {
   viewableTechRecord$: jest.fn()
 };
 const mockReferenceDataService = {
+  addSearchInformation: jest.fn(),
   getTyreSearchReturn$: jest.fn(),
   loadReferenceDataByKeySearch: jest.fn(),
   loadTyreReferenceDataByKeySearch: jest.fn(),
@@ -90,27 +91,27 @@ describe('TyresSearchComponent', () => {
       expect(mockGlobalErrorService.addError).toBeCalled();
     });
     it('should call correct endpoint if filter === code', () => {
-      const term = '103';
       const filter = 'code';
-      component.handleSearch(term, filter);
+      const term = '103';
+      component.handleSearch(filter, term);
       expect(mockReferenceDataService.loadReferenceDataByKeySearch).toBeCalledWith(ReferenceDataResourceType.Tyres, term);
     });
     it('should call correct endpoint if filter === plyrating', () => {
-      const term = '103';
       const filter = 'plyrating';
-      component.handleSearch(term, filter);
+      const term = '103';
+      component.handleSearch(filter, term);
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
     });
     it('should call correct endpoint if filter === singleload', () => {
-      const term = '103';
       const filter = 'singleload';
-      component.handleSearch(term, filter);
+      const term = '103';
+      component.handleSearch(filter, term);
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
     });
     it('should call correct endpoint if filter === doubleload', () => {
-      const term = '103';
       const filter = 'doubleload';
-      component.handleSearch(term, filter);
+      const term = '103';
+      component.handleSearch(filter, term);
       expect(mockReferenceDataService.loadTyreReferenceDataByKeySearch).toBeCalledWith(filter, term);
     });
   });

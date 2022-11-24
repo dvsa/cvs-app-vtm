@@ -11,7 +11,8 @@ import {
   fetchReferenceDataByKeySearchSuccess,
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
-  fetchTyreReferenceDataByKeySearchSuccess
+  fetchTyreReferenceDataByKeySearchSuccess,
+  addSearchInformation
 } from './reference-data.actions';
 describe('Test Result Actions', () => {
   it('should return correct types', () => {
@@ -31,5 +32,7 @@ describe('Test Result Actions', () => {
     expect(fetchTyreReferenceDataByKeySearch.type).toBe('[API/reference-data] Fetch tyre by filter and term');
     expect(fetchTyreReferenceDataByKeySearchSuccess.type).toBe('[API/reference-data] Fetch tyre by filter and term Success');
     expect(fetchTyreReferenceDataByKeySearchFailed.type).toBe('[API/reference-data] Fetch tyre by filter and term Failed');
+
+    expect(addSearchInformation.type).toBe('[API/reference-data] Add Search Information to state');
   });
 });

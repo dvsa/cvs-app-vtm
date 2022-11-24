@@ -10,7 +10,7 @@ import { ReferenceDataResourceType, ReferenceDataTyre } from '@models/reference-
 import { Roles } from '@models/roles.enum';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess, ReferenceDataState } from '@store/reference-data';
+import { fetchReferenceDataByKeySearchSuccess, fetchTyreReferenceDataByKeySearchSuccess } from '@store/reference-data';
 import { Store } from '@ngrx/store';
 import { selectTyreSearchReturn } from '@store/reference-data/selectors/reference-data.selectors';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
@@ -84,6 +84,14 @@ export class TyresSearchComponent implements OnInit {
       .subscribe(data => {
         this.searchResults = data;
       });
+    this.referenceDataService
+      .getTyreSearchCriteria$()
+      .pipe(take(1))
+      .subscribe(v => {
+        this.form.controls['filter'].patchValue(v.filter);
+        this.form.controls['term'].patchValue(v.term);
+      });
+
     if (!this.viewableTechRecord) {
       this.router.navigate(['../..'], { relativeTo: this.route });
     }
@@ -102,10 +110,11 @@ export class TyresSearchComponent implements OnInit {
     return this.searchResults?.length!;
   }
 
-  handleSearch(term: string, filter: string): void {
+  handleSearch(filter: string, term: string): void {
+    term = term.trim();
     this.globalErrorService.clearErrors();
     this.searchResults = [];
-    term = term.trim();
+    this.referenceDataService.addSearchInformation(filter, term);
 
     if (!term) {
       this.globalErrorService.addError({ error: 'You must provide search criteria', anchorLink: 'term' });

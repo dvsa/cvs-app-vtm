@@ -62,6 +62,15 @@ export const fetchTyreReferenceDataByKeySearchFailed = createAction(
   '[API/reference-data] Fetch tyre by filter and term Failed',
   props<featureError>()
 );
+
+export const addSearchInformation = createAction(
+  '[API/reference-data] Add Search Information to state',
+  props<{
+    filter: string;
+    term: string;
+  }>()
+);
+
 export const removeTyreSearch = createAction('[API/reference-data] Remove search return from state');
 
 export const fetchReasonsForAbandoning = createAction('[API/reference-data] Fetch reasons for abandoning');
