@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLinkWithHref } from '@angular/router';
 
 @Component({
   selector: 'app-button',
@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ButtonComponent extends RouterLink {
+export class ButtonComponent extends RouterLinkWithHref {
   @Input() id?: string;
   @Input() disabled = false;
   @Input() type: 'link' | 'button' = 'button';

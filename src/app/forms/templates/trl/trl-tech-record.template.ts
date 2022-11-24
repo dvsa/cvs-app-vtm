@@ -93,10 +93,16 @@ export const TrlTechRecordTemplate: FormNode = {
       label: 'Suspension type (optional)',
       value: '',
       width: FormNodeWidth.L,
-      editType: FormNodeEditTypes.TEXT,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.STRING,
-      validators: [{ name: ValidatorNames.MaxLength, args: 1 }],
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { value: 'S', label: 'Steel' },
+        { value: 'R', label: 'Rubber' },
+        { value: 'A', label: 'Air' },
+        { value: 'H', label: 'Hydraulic' },
+        { value: 'O', label: 'Other' }
+      ],
       class: 'flex--half'
     },
     {

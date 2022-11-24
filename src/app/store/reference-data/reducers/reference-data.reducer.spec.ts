@@ -2,6 +2,7 @@ import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countrie
 import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { Dictionary } from '@ngrx/entity';
 import {
+  addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
@@ -13,10 +14,11 @@ import {
   fetchReferenceDataSuccess,
   fetchTyreReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearchFailed,
-  fetchTyreReferenceDataByKeySearchSuccess
+  fetchTyreReferenceDataByKeySearchSuccess,
+  removeTyreSearch
 } from '../actions/reference-data.actions';
 import { testCases } from '../reference-data.test-cases';
-import { initialReferenceDataState, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
+import { initialReferenceDataState, ReferenceDataEntityStateTyres, referenceDataReducer, ReferenceDataState } from './reference-data.reducer';
 
 describe('Reference Data Reducer', () => {
   describe('unknown action', () => {
@@ -198,7 +200,9 @@ describe('Reference Data Reducer', () => {
           [ReferenceDataResourceType.Tyres]: {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
             searchReturn: null,
-            loading: false
+            loading: false,
+            filter: null,
+            term: null
           }
         };
         const action = fetchReferenceDataByKeySearchFailed({
@@ -272,6 +276,43 @@ describe('Reference Data Reducer', () => {
       });
     });
 
+    describe('addSearchInformation', () => {
+      it('should update state term and filter', () => {
+        const newState = {
+          ...initialReferenceDataState,
+          [ReferenceDataResourceType.Tyres]: {
+            ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+            loading: false,
+            filter: 'code',
+            term: '103'
+          }
+        };
+
+        const filter = 'code';
+        const term = '103';
+        const action = addSearchInformation({ filter, term });
+        const state = referenceDataReducer(initialReferenceDataState, action);
+
+        expect(state.TYRES).toStrictEqual(newState.TYRES);
+      });
+    });
+
+    describe('removeTyreSearch', () => {
+      it('should null search return', () => {
+        const action = removeTyreSearch();
+        const state = referenceDataReducer(initialReferenceDataState, action);
+
+        expect(state.TYRES).toStrictEqual({
+          ids: [],
+          entities: {},
+          loading: false,
+          searchReturn: null,
+          filter: null,
+          term: null
+        });
+      });
+    });
+
     describe('fetchTyreReferenceDataByKeySearchFailed', () => {
       it('should set error state', () => {
         const newState = {
@@ -279,7 +320,9 @@ describe('Reference Data Reducer', () => {
           [ReferenceDataResourceType.Tyres]: {
             ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
             searchReturn: null,
-            loading: false
+            loading: false,
+            filter: null,
+            term: null
           }
         };
         const action = fetchTyreReferenceDataByKeySearchFailed({

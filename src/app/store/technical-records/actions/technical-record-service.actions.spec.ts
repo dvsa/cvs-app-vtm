@@ -16,7 +16,10 @@ import {
   createProvisionalTechRecordSuccess,
   updateTechRecords,
   updateTechRecordsFailure,
-  updateTechRecordsSuccess, archiveTechRecord, archiveTechRecordSuccess, archiveTechRecordFailure
+  updateTechRecordsSuccess,
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  archiveTechRecordFailure
 } from './technical-record-service.actions';
 
 const SUCCESS = ' Success';

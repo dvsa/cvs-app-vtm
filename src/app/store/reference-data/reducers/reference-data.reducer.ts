@@ -2,6 +2,7 @@ import { ReferenceDataModelBase, ReferenceDataResourceType, ReferenceDataTyre } 
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import {
+  addSearchInformation,
   fetchReferenceData,
   fetchReferenceDataByKey,
   fetchReferenceDataByKeyFailed,
@@ -29,6 +30,8 @@ interface ReferenceDataEntityState extends EntityState<ReferenceDataModelBase> {
 export interface ReferenceDataEntityStateTyres extends EntityState<ReferenceDataModelBase> {
   loading: boolean;
   searchReturn: ReferenceDataTyre[] | null;
+  term: string | null;
+  filter: string | null;
 }
 
 export type ReferenceDataState = Record<ReferenceDataResourceType, ReferenceDataEntityState | ReferenceDataEntityStateTyres>;
@@ -109,7 +112,7 @@ export const referenceDataReducer = createReducer(
   }),
   on(fetchReferenceDataByKeySearchFailed, (state, action) => ({
     ...state,
-    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false }
+    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false, filter: null, term: null }
   })),
 
   on(fetchTyreReferenceDataByKeySearch, (state, action) => ({
@@ -125,11 +128,15 @@ export const referenceDataReducer = createReducer(
   }),
   on(fetchTyreReferenceDataByKeySearchFailed, (state, action) => ({
     ...state,
-    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false }
+    [action.resourceType]: { ...state[action.resourceType], searchReturn: null, loading: false, filter: null, term: null }
   })),
   on(removeTyreSearch, state => ({
     ...state,
-    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null }
+    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], searchReturn: null, filter: null, term: null }
+  })),
+  on(addSearchInformation, (state, action) => ({
+    ...state,
+    [ReferenceDataResourceType.Tyres]: { ...state[ReferenceDataResourceType.Tyres], filter: action.filter, term: action.term }
   }))
 );
 

@@ -26,14 +26,13 @@
       [width]="widths.L"
     ></app-switchable-input>
   </div>
-
   <app-switchable-input
     [form]="bodyTypeForm"
     [type]="editTypes.TEXT"
     name="description"
     label="Body type"
     [isEditing]="isEditing"
-    [options]="bodyTypes"
+    [options]="bodyTypeOptions"
     [width]="widths.L"
   ></app-switchable-input>
 </ng-container>
@@ -67,7 +66,7 @@
     name="description"
     label="Body type"
     [isEditing]="isEditing"
-    [options]="bodyTypes"
+    [options]="bodyTypeOptions"
     [width]="widths.L"
   ></app-switchable-input>
 </ng-container>
@@ -78,8 +77,11 @@
   name="functionCode"
   label="Function code"
   [isEditing]="isEditing"
-  [options]="numberOptions"
-  [width]="widths.XXS"
+  [options]="[
+    { value: 'R', label: 'R' },
+    { value: 'A', label: 'A' }
+  ]"
+  [width]="widths.XS"
 ></app-switchable-input>
 
 <app-switchable-input

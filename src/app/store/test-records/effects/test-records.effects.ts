@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
+import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
+import { TestStationType } from '@models/test-stations/test-station-type.enum';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { TestRecordsService } from '@services/test-records/test-records.service';
-import { TestTypesService } from '@services/test-types/test-types.service';
 import { UserService } from '@services/user-service/user-service';
 import { State } from '@store/.';
 import { selectQueryParam, selectRouteNestedParams } from '@store/router/selectors/router.selectors';
+import { updateResultOfTest } from '@store/test-records';
+import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 import merge from 'lodash.merge';
 import { catchError, concatMap, map, mergeMap, of, switchMap, take, withLatestFrom } from 'rxjs';
-import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
-import { updateResultOfTest } from '@store/test-records';
-
 import {
   contingencyTestTypeSelected,
   createTestResult,
@@ -34,7 +35,6 @@ import {
   updateTestResultSuccess
 } from '../actions/test-records.actions';
 import { selectedTestResultState, testResultInEdit } from '../selectors/test-records.selectors';
-import { selectTestType } from '@store/test-types/selectors/test-types.selectors';
 
 @Injectable()
 export class TestResultsEffects {
@@ -167,9 +167,12 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(contingencyTestTypeSelected),
       mergeMap(action =>
-        of(action).pipe(withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType))), take(1))
+        of(action).pipe(
+          withLatestFrom(this.store.select(testResultInEdit), this.store.select(selectTestType(action.testType)), this.userService.user$),
+          take(1)
+        )
       ),
-      concatMap(([action, editingTestResult, testTypeTaxonomy]) => {
+      concatMap(([action, editingTestResult, testTypeTaxonomy, user]) => {
         const id = action.testType;
 
         const { vehicleType } = editingTestResult!;
@@ -191,6 +194,22 @@ export class TestResultsEffects {
         mergedForms.testTypes[0].testTypeId = id;
         mergedForms.testTypes[0].name = testTypeTaxonomy?.name ?? '';
         mergedForms.testTypes[0].testTypeName = testTypeTaxonomy?.testTypeName ?? '';
+        mergedForms.typeOfTest = (testTypeTaxonomy?.typeOfTest as TypeOfTest) ?? TypeOfTest.CONTINGENCY;
+
+        const now = new Date().toISOString();
+
+        if (mergedForms.typeOfTest !== TypeOfTest.CONTINGENCY) {
+          mergedForms.testerName = user.name;
+          mergedForms.testerEmailAddress = user.username;
+          mergedForms.testerStaffId = user.oid;
+          mergedForms.testStartTimestamp = now;
+          mergedForms.testEndTimestamp = now;
+          mergedForms.testTypes[0].testTypeStartTimestamp = now;
+          mergedForms.testTypes[0].testTypeEndTimestamp = now;
+          mergedForms.testStationName = 'SWANSEA';
+          mergedForms.testStationPNumber = 'SWANSEA';
+          mergedForms.testStationType = TestStationType.ATF;
+        }
 
         return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms }));
       })
@@ -235,7 +254,6 @@ export class TestResultsEffects {
     private testRecordsService: TestRecordsService,
     private store: Store<State>,
     private userService: UserService,
-    private dfs: DynamicFormService,
-    private testTypeService: TestTypesService
+    private dfs: DynamicFormService
   ) {}
 }

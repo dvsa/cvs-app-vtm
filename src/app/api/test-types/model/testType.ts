@@ -43,13 +43,13 @@ export interface TestType {
      */
     suggestedTestTypeDisplayOrder?: string;
     /**
+     * Used to filter in test types with a specific typeOfTest, send as a query param in the request
+     */
+    typeOfTest?: string;
+    /**
      * This category is applying only to these vehicle types. The vehicle types should descend from its parent, but should not be necessarily the same
      */
     forVehicleType: Array<TestType.ForVehicleTypeEnum>;
-    /**
-     * True for test specific to VTM false for tests specific to VTA. null if it is a parent for test types where both VTA and VTM child test type exists.
-     */
-    forVtmOnly?: boolean;
     /**
      * This category is applying only to these vehicle sizes. The vehicle sizes should descend from its parent, but should not be necessarily the same
      */
