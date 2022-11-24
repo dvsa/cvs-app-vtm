@@ -12,14 +12,14 @@ export const DeskBasedTestSectionGroup1: FormNode = {
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testTypes',
@@ -58,6 +58,7 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.L,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
                 {
@@ -68,15 +69,7 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               required: true,
               value: null
             },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              value: null,
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
-            },
+
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
@@ -94,17 +87,22 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               editType: FormNodeEditTypes.HIDDEN
             },
             {
+              name: 'testExpiryDate',
+              label: 'Expiry Date',
+              value: null,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE,
+              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }]
+            },
+            {
               name: 'testAnniversaryDate',
               label: 'Anniversary date',
               value: '',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE,
-              validators: [
-                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
-                { name: ValidatorNames.HideIfEmpty, args: { sibling: 'testExpiryDate' } },
-                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
-              ],
+              validators: [{ name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }],
               required: true
             },
             {
