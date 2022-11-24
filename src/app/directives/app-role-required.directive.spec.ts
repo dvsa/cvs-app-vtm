@@ -48,11 +48,6 @@ describe('RoleRequiredDirective', () => {
     expect(seenBox.length).toEqual(1);
   });
 
-  it.each([[['TechRecord.Amend']], [['TestResult.View']]])('should display the element for either role', user => {
-    const seenBox = fixture.debugElement.queryAll(By.css('#displayEitherRoleBox'));
-    expect(seenBox.length).toEqual(1);
-  });
-
   it('should hide the element', () => {
     const hiddenBox = fixture.debugElement.queryAll(By.css('#hiddenBox'));
     expect(hiddenBox.length).toEqual(0);
