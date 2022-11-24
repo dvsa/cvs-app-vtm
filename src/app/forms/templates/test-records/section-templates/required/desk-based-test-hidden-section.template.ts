@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup1HgvTrl: FormNode = {
+export const DeskBasedTestHiddenSection: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
