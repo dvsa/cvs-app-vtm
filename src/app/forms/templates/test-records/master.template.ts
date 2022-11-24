@@ -22,12 +22,12 @@ import { TestSection } from './section-templates/test/test-section.template';
 import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist-test-section-group1.template';
+import { SpecialistTestSectionGroup1 } from './section-templates/test/specialist/specialist-test-section-group1.template';
 import { RequiredSpecialistSection } from './section-templates/required/specialist-required-hidden-section.template';
-import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist-test-section-group5.template';
-import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
+import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist/specialist-test-section-group5.template';
+import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist/specialist-test-section-group2.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
-import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist-test-section-group3And4.template';
+import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist/specialist-test-section-group3And4.template';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
