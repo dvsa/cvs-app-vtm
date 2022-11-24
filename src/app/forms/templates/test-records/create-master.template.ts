@@ -29,6 +29,7 @@ import { ContingencyTestSectionGroup5And13 } from './section-templates/test/cont
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/test/contingency-test-section-specialist-group3And4.template';
 import { DeskBasedTestSectionGroup1 } from './section-templates/test/desk-based-test-section-group1.template';
+import { DeskBasedTestSectionGroup4 } from './section-templates/test/desk-based-test-section-group4.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 
 const groups1and2Template: Record<string, FormNode> = {
@@ -148,7 +149,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     },
     testTypesDeskBasedGroup4: {
       required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: DeskBasedTestSectionGroup4,
       seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
