@@ -188,7 +188,9 @@ export const SPECIALIST_TEST_TYPE_IDS: string[] = [
   '185'
 ];
 
-export const TEST_TYPES_GROUP1_DESK_BASED_TEST: string[] = ['418'];
+
+export const TEST_TYPES_GROUP1_DESK_BASED_TEST: string[] = ['417', '418'];
+
 
 export const TEST_TYPES_GROUP4_DESK_BASED_TEST: string[] = ['409', '411', '412']; //Do I need 410 here too?
 

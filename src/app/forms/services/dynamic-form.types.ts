@@ -233,6 +233,7 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
   }
 }
 
+//TODO: clean this
 const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
   const cleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
   Object.keys(form.controls).forEach(key => {
