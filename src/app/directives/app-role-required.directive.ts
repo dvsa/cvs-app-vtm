@@ -12,7 +12,9 @@ export class RoleRequiredDirective implements OnInit {
 
   @Input()
   set appRoleRequired(roles: Roles | Roles[]) {
-    Array.isArray(roles) ? (this.userRolesRequired = uniq(roles.flatMap(role => role.split(',')))) : (this.userRolesRequired = roles?.split(','));
+    this.userRolesRequired = Array.isArray(roles)
+      ? [...new Set(roles.flatMap(role => role.split(',')))]
+      : (this.userRolesRequired = roles?.split(','));
   }
 
   ngOnInit() {
