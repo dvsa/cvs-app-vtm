@@ -63,6 +63,8 @@ export const DeskBasedTestSectionGroup4: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
               value: null
@@ -98,18 +100,7 @@ export const DeskBasedTestSectionGroup4: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }]
-            },
-            {
-              name: 'testAnniversaryDate',
-              label: 'Anniversary date',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }],
-              required: true
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'prohibitionIssued',
