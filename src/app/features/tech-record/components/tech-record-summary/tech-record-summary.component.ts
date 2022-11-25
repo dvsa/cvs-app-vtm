@@ -9,7 +9,7 @@ import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
 import { PsvBrakesTemplate } from '@forms/templates/psv/psv-brakes.template';
 import { TrlTechRecordTemplate } from '@forms/templates/trl/trl-tech-record.template';
-import { Axle, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { Axle, AxleSpacing, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { DocumentsTemplate } from '@forms/templates/general/documents.template';
 import { NotesTemplate } from '@forms/templates/general/notes.template';
 import { ManufacturerTemplate } from '@forms/templates/general/manufacturer.template';
@@ -151,6 +151,8 @@ export class TechRecordSummaryComponent implements OnInit {
 
     if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
       this.removeAxle(event);
+    } else if (event.axles) {
+      this.addAxle(event);
     } else {
       this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
     }
@@ -168,6 +170,29 @@ export class TechRecordSummaryComponent implements OnInit {
     this.formChange.emit();
   }
 
+  generateAxleSpacing(numberOfAxles: number, add: boolean = false, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
+    let axleSpacing: AxleSpacing[] = [];
+
+    let i = 1;
+    while (i < numberOfAxles) {
+      axleSpacing.push({ axles: `${i}-${i + 1}`, value: add && i < numberOfAxles - 1 ? axleSpacingOriginal![i - 1].value : null });
+      i++;
+    }
+
+    return axleSpacing;
+  }
+
+  addAxle(event: any): void {
+    this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
+    if (this.vehicleTechRecordCalculated.dimensions) {
+      this.vehicleTechRecordCalculated.dimensions.axleSpacing = this.generateAxleSpacing(
+        this.vehicleTechRecordCalculated.axles.length,
+        true,
+        this.vehicleTechRecordCalculated.dimensions.axleSpacing
+      );
+    }
+  }
+
   removeAxle(axleEvent: any): void {
     const axleToRemove = this.findAxleToRemove(axleEvent.axles);
 
@@ -180,6 +205,10 @@ export class TechRecordSummaryComponent implements OnInit {
       }
       return false;
     });
+
+    if (this.vehicleTechRecordCalculated.dimensions) {
+      this.vehicleTechRecordCalculated.dimensions.axleSpacing = this.generateAxleSpacing(this.vehicleTechRecordCalculated.axles.length);
+    }
   }
 
   findAxleToRemove(axles: Axle[]): number {

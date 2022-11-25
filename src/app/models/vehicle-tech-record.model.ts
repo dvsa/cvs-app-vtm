@@ -361,7 +361,7 @@ export interface Dimensions {
 
 export interface AxleSpacing {
   axles: string;
-  value: number;
+  value: number | null;
 }
 
 export interface Brakes {
