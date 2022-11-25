@@ -184,7 +184,7 @@ export class TechRecordSummaryComponent implements OnInit {
 
   addAxle(event: any): void {
     this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
-    if (this.vehicleTechRecordCalculated.dimensions) {
+    if (this.vehicleTechRecord.vehicleType !== VehicleTypes.PSV && this.vehicleTechRecordCalculated.dimensions) {
       this.vehicleTechRecordCalculated.dimensions.axleSpacing = this.generateAxleSpacing(
         this.vehicleTechRecordCalculated.axles.length,
         true,
