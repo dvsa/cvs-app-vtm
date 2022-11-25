@@ -7,6 +7,23 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
   type: FormNodeTypes.GROUP,
   children: [
     {
+      name: 'testStartTimestamp',
+      label: 'Test start date',
+      type: FormNodeTypes.CONTROL,
+      value: new Date().toISOString(),
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'testEndTimestamp',
+      type: FormNodeTypes.CONTROL,
+      label: 'Test end date',
+      value: new Date().toISOString(),
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
+    },
+    {
       name: 'testTypes',
       type: FormNodeTypes.ARRAY,
       children: [
@@ -15,29 +32,37 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
+              name: 'testDate',
+              type: FormNodeTypes.CONTROL,
+              label: 'Test Date',
+              value: '',
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
+            },
+            {
               name: 'testType',
+              type: FormNodeTypes.CONTROL,
               label: 'Test Type',
               value: '403/404',
-              type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.M
+              editType: FormNodeEditTypes.TEXT,
+              width: FormNodeWidth.L
             },
             {
               name: 'testCode',
+              type: FormNodeTypes.CONTROL,
               label: 'Test Code',
               value: '',
-              type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L
             },
             {
               name: 'testResult',
-              label: 'Result',
-              value: '',
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.L,
+              label: 'Result',
+              viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.RADIO,
               options: [
-                { label: 'Pass', value: 'pass' },
-                { label: 'Fail', value: 'fail' }
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' }
               ],
               required: true
             },
@@ -45,21 +70,22 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               value: null,
+              viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              required: true
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               value: null,
+              viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              required: true
             },
             {
               name: 'certificateNumber',
-              label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.L,
+              label: 'Certificate number',
               value: '' || null,
               validators: [
                 { name: ValidatorNames.Alphanumeric },
@@ -68,64 +94,53 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
                   args: { sibling: 'testResult', value: 'pass' }
                 }
               ],
+              width: FormNodeWidth.L,
               required: true
             },
             {
               name: 'testNumber',
-              label: 'Test Number',
               type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.L,
-              value: ''
+              label: 'Test Number',
+              value: '',
+              width: FormNodeWidth.L
             },
             {
               name: 'testExpiryDate',
+              type: FormNodeTypes.CONTROL,
               label: 'Expiry Date',
               value: '',
-              type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              label: 'Test start date and time',
+              value: new Date().toISOString(),
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
-
             {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
-              value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              label: 'Test end date and time',
+              value: new Date().toISOString(),
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'prohibitionIssued',
               type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
       ]
-    },
-    {
-      name: 'testStartTimestamp',
-      label: 'Test Date',
-      value: '',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.DATE,
-      viewType: FormNodeViewTypes.DATE,
-      isoDate: false
-    },
-    {
-      name: 'testEndTimestamp',
-      type: FormNodeTypes.CONTROL,
-      value: '',
-      editType: FormNodeEditTypes.HIDDEN,
-      viewType: FormNodeViewTypes.HIDDEN
     }
   ]
 };
+
+console.log(DeskBasedTestSectionGroup2PSV);
+console.log(new Date().toISOString());

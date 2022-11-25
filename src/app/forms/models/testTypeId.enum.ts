@@ -188,7 +188,7 @@ export const SPECIALIST_TEST_TYPE_IDS: string[] = [
   '185'
 ];
 
-export const TEST_TYPES_GROUP1_DESK_BASED_TEST: string[] = ['418'];
+export const TEST_TYPES_GROUP1_DESK_BASED_TEST: string[] = ['417', '418'];
 export const TEST_TYPES_GROUP2_DESK_BASED_TEST: string[] = ['403', '404'];
 
 export const TEST_TYPES = {
