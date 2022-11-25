@@ -17,22 +17,11 @@ export const DeskBasedTestSectionGroup2: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
-              name: 'testTypeId',
-              label: 'Test Type ID',
-              width: FormNodeWidth.XS,
-              type: FormNodeTypes.CONTROL
-            },
-            {
-              name: 'testCode',
-              label: 'Test Code',
-              value: '',
-              width: FormNodeWidth.XS,
-              type: FormNodeTypes.CONTROL
-            },
-            {
               name: 'testResult',
               label: 'Result',
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'certificateNumber',
