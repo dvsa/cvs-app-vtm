@@ -208,6 +208,6 @@ export const TEST_TYPES = {
   testTypesSpecialistGroup4: TEST_TYPES_GROUP4_SPEC_TEST,
   testTypesSpecialistGroup5: TEST_TYPES_GROUP5_SPEC_TEST,
   testTypesDeskBasedGroup1: TEST_TYPES_GROUP1_DESK_BASED_TEST,
-  testTypesDeskBasedGroup4: TEST_TYPES_GROUP4_DESK_BASED_TEST,
-  testTypesDeskBasedGroup2: TEST_TYPES_GROUP2_DESK_BASED_TEST
+  testTypesDeskBasedGroup2: TEST_TYPES_GROUP2_DESK_BASED_TEST,
+  testTypesDeskBasedGroup4: TEST_TYPES_GROUP4_DESK_BASED_TEST
 };

@@ -31,21 +31,6 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
-              name: 'testDate',
-              type: FormNodeTypes.CONTROL,
-              label: 'Test Date',
-              value: '',
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
-            },
-            {
-              name: 'testCode',
-              type: FormNodeTypes.CONTROL,
-              label: 'Test Code',
-              value: '',
-              width: FormNodeWidth.L
-            },
-            {
               name: 'testResult',
               type: FormNodeTypes.CONTROL,
               label: 'Result',
@@ -77,7 +62,7 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               name: 'certificateNumber',
               type: FormNodeTypes.CONTROL,
               label: 'Certificate number',
-              value: '' || null,
+              value: '',
               validators: [
                 { name: ValidatorNames.Alphanumeric },
                 {
@@ -87,13 +72,6 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               ],
               width: FormNodeWidth.L,
               required: true
-            },
-            {
-              name: 'testNumber',
-              type: FormNodeTypes.CONTROL,
-              label: 'Test Number',
-              value: '',
-              width: FormNodeWidth.L
             },
             {
               name: 'testExpiryDate',
