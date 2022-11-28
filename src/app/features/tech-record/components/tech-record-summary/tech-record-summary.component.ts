@@ -173,10 +173,13 @@ export class TechRecordSummaryComponent implements OnInit {
   generateAxleSpacing(numberOfAxles: number, add: boolean = false, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
     let axleSpacing: AxleSpacing[] = [];
 
-    let i = 1;
-    while (i < numberOfAxles) {
-      axleSpacing.push({ axles: `${i}-${i + 1}`, value: add && i < numberOfAxles - 1 ? axleSpacingOriginal![i - 1].value : null });
-      i++;
+    let axleNumber = 1;
+    while (axleNumber < numberOfAxles) {
+      axleSpacing.push({
+        axles: `${axleNumber}-${axleNumber + 1}`,
+        value: add && axleNumber < numberOfAxles - 1 ? axleSpacingOriginal![axleNumber - 1].value : null
+      });
+      axleNumber++;
     }
 
     return axleSpacing;
