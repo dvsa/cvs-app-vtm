@@ -5,7 +5,6 @@ export const DeskBasedTestSectionGroup4HgvTrl: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testStartTimestamp',
