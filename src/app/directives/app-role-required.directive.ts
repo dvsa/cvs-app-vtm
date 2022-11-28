@@ -2,7 +2,6 @@ import { Directive, OnInit, Input, TemplateRef, ViewContainerRef } from '@angula
 import { UserService } from '@services/user-service/user-service';
 import { take } from 'rxjs';
 import { Roles } from '@models/roles.enum';
-import { uniq } from 'lodash';
 
 @Directive({ selector: '[appRoleRequired]' })
 export class RoleRequiredDirective implements OnInit {
