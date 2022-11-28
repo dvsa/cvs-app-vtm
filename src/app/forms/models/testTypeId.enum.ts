@@ -190,6 +190,7 @@ export const SPECIALIST_TEST_TYPE_IDS: string[] = [
 
 export const TEST_TYPES_GROUP1_DESK_BASED_TEST: string[] = ['417', '418'];
 export const TEST_TYPES_GROUP2_DESK_BASED_TEST: string[] = ['403', '404'];
+export const TEST_TYPES_GROUP4_DESK_BASED_TEST: string[] = ['409', '411', '412'];
 
 export const TEST_TYPES = {
   testTypesGroup1: TEST_TYPES_GROUP1,
@@ -207,5 +208,6 @@ export const TEST_TYPES = {
   testTypesSpecialistGroup4: TEST_TYPES_GROUP4_SPEC_TEST,
   testTypesSpecialistGroup5: TEST_TYPES_GROUP5_SPEC_TEST,
   testTypesDeskBasedGroup1: TEST_TYPES_GROUP1_DESK_BASED_TEST,
+  testTypesDeskBasedGroup4: TEST_TYPES_GROUP4_DESK_BASED_TEST,
   testTypesDeskBasedGroup2: TEST_TYPES_GROUP2_DESK_BASED_TEST
 };
