@@ -8,7 +8,6 @@ export const ContingencyVisitSection: FormNode = {
   name: 'visitSection',
   label: 'Visit',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testStationName',
