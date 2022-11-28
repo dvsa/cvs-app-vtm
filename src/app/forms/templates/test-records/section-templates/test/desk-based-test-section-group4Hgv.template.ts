@@ -31,13 +31,6 @@ export const DeskBasedTestSectionGroup4HgvTrl: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
-              name: 'testCode',
-              label: 'Test Code',
-              type: FormNodeTypes.CONTROL,
-              width: FormNodeWidth.XS,
-              value: ''
-            },
-            {
               name: 'testResult',
               label: 'Result',
               viewType: FormNodeViewTypes.HIDDEN,

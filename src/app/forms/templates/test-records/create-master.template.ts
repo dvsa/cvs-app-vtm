@@ -261,7 +261,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
-      required: CreateRequiredSection,
+      required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: DeskBasedTestSectionGroup4HgvTrl,
       visit: ContingencyVisitSection,
