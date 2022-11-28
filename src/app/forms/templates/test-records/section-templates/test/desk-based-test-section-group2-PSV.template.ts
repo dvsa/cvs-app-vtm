@@ -10,7 +10,7 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
-      value: new Date().toISOString(),
+      value: '',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
@@ -18,10 +18,9 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
-      value: new Date().toISOString(),
+      value: '',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
-      validators: [{ name: ValidatorNames.AheadOfDate, args: 'testStartTimestamp' }]
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testTypes',
@@ -38,14 +37,6 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               value: '',
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
-            },
-            {
-              name: 'testType',
-              type: FormNodeTypes.CONTROL,
-              label: 'Test Type',
-              value: '403/404',
-              editType: FormNodeEditTypes.TEXT,
-              width: FormNodeWidth.L
             },
             {
               name: 'testCode',
@@ -116,7 +107,7 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               label: 'Test start date and time',
-              value: new Date().toISOString(),
+              value: '',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
@@ -124,7 +115,7 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               label: 'Test end date and time',
-              value: new Date().toISOString(),
+              value: '',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
@@ -141,6 +132,3 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
     }
   ]
 };
-
-console.log(DeskBasedTestSectionGroup2PSV);
-console.log(new Date().toISOString());
