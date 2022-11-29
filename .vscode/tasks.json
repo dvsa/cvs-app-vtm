@@ -1,24 +1,38 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "start",
+      "label": "start server",
+      "type": "shell",
       "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
+      "command": "npm run start",
+      "problemMatcher": [
+        {
+          "pattern": "$tsc",
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": {
+              "regexp": "."
+            },
+            "endsPattern": {
+              "regexp": "."
+            }
           }
         }
-      }
+      ]
+    },
+    {
+      "label": "stop server",
+      "command": "echo ${input:terminate}",
+      "type": "shell"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminate",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "terminateAll"
     }
   ]
 }
