@@ -141,11 +141,11 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     },
     testTypesDeskBasedGroup2: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
-      required: CreateRequiredSection,
+      required: RequiredSection,
       test: DeskBasedTestSectionGroup2PSV,
       seatbelts: SeatbeltHiddenSection,
       emissions: EmissionsSection,
-      visit: ContingencyVisitSection,
+      visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection
