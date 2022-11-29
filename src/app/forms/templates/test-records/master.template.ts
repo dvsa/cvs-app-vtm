@@ -28,6 +28,12 @@ import { SpecialistTestSectionGroup5 } from './section-templates/test/specialist
 import { SpecialistTestSectionGroup2 } from './section-templates/test/specialist-test-section-group2.template';
 import { CustomDefectsHiddenSection } from './section-templates/required/custom-defects-hidden-section.template';
 import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specialist-test-section-group3And4.template';
+import { CreateRequiredSection } from './section-templates/required/contingency-required-hidden-section.template';
+import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
+import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
+import { DeskBasedTestSectionGroup2PSV } from './section-templates/test/desk-based-test-section-group2-PSV.template';
+import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
+import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
@@ -132,6 +138,17 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection,
       reasonForCreation: reasonForCreationSection,
       required: RequiredSpecialistSection
+    },
+    testTypesDeskBasedGroup2: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      required: CreateRequiredSection,
+      test: DeskBasedTestSectionGroup2PSV,
+      seatbelts: SeatbeltHiddenSection,
+      emissions: EmissionsSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection
     }
   },
   hgv: {
