@@ -42,16 +42,14 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              value: null
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              value: null
             },
             {
               name: 'certificateNumber',
@@ -98,8 +96,8 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
