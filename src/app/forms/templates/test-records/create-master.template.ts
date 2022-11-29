@@ -287,10 +287,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup1: {
-      required: CreateRequiredSection,
+      required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultHgv,
       test: DeskBasedTestSectionGroup1HGVTRL,
-      seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -389,10 +388,9 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       required: CreateRequiredSectionHgvTrl
     },
     testTypesDeskBasedGroup1: {
-      required: CreateRequiredSection,
+      required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
       test: DeskBasedTestSectionGroup1HGVTRL,
-      seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
