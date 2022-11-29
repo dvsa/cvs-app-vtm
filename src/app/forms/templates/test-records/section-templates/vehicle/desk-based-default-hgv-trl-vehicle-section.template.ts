@@ -12,15 +12,17 @@ export const DeskBasedVehicleSectionDefaultHgvTrl: FormNode = {
       name: 'vin',
       label: 'VIN/chassis number',
       value: '',
-      disabled: true,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'vrm',
       label: 'VRM',
       value: '',
-      disabled: true,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'countryOfRegistration',
@@ -35,9 +37,10 @@ export const DeskBasedVehicleSectionDefaultHgvTrl: FormNode = {
       name: 'euVehicleCategory',
       label: 'EU Vehicle Category',
       value: '',
-      disabled: true,
       width: FormNodeWidth.XXS,
-      type: FormNodeTypes.CONTROL
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
     }
   ]
 };

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
@@ -77,8 +77,8 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     return !!this.vehicleTechRecord.dimensions?.axleSpacing?.length;
   }
 
-  get axleSpacings(): CustomFormGroup {
-    return this.form.get(['dimensions', 'axleSpacing']) as CustomFormGroup;
+  get axleSpacings(): CustomFormArray {
+    return this.form.get(['dimensions', 'axleSpacing']) as CustomFormArray;
   }
 
   getAxleSpacing(i: number): CustomFormGroup {

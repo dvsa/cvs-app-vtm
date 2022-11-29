@@ -32,6 +32,8 @@ import { DeskBasedTestSectionGroup1 } from './section-templates/test/desk-based/
 import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { DeskBasedVehicleSectionDefaultHgvTrl } from './section-templates/vehicle/desk-based-default-hgv-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
+import { DeskBasedTestSectionGroup2PSV } from '@forms/templates/test-records/section-templates/test/desk-based/desk-based-test-section-group2-PSV.template';
+import { DeskBasedTestSectionGroup4 } from '@forms/templates/test-records/section-templates/test/desk-based/desk-based-test-section-group4.template';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -141,6 +143,28 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       required: CreateRequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: DeskBasedTestSectionGroup1,
+      seatbelts: SeatbeltSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup2: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      required: CreateRequiredSection,
+      test: DeskBasedTestSectionGroup2PSV,
+      seatbelts: SeatbeltHiddenSection,
+      emissions: EmissionsSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection
+    },
+    testTypesDeskBasedGroup4: {
+      required: CreateRequiredSection,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      test: DeskBasedTestSectionGroup4,
       seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
