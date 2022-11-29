@@ -32,31 +32,24 @@ export const DeskBasedTestSectionGroup4: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' },
-                { value: 'abandoned', label: 'Abandoned' }
-              ],
-              required: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              value: 'pass'
             },
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              value: null
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              value: null
             },
             {
               name: 'certificateNumber',
@@ -72,11 +65,11 @@ export const DeskBasedTestSectionGroup4: FormNode = {
               name: 'secondaryCertificateNumber',
               label: 'Secondary Certificate number',
               type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }],
               value: null
             },
-
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
@@ -106,8 +99,8 @@ export const DeskBasedTestSectionGroup4: FormNode = {
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
