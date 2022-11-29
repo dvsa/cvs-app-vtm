@@ -1,4 +1,5 @@
 [![CI](https://github.com/dvsa/cvs-app-vtm/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/dvsa/cvs-app-vtm/actions/workflows/pr-checks.yml)
+
 # cvs-vtm-app
 
 This is the angular code for the VTM frontend application.
@@ -73,7 +74,7 @@ cvs-svc-technical-records
 2. npm run tools-setup
 3. build & start
 
-Service is running on listening on http://localhost:3005
+Service is running on http://localhost:3005
 
 For viewing the seed test data in the local dynamodb - `npm i -G dynamodb-admin`
 
@@ -85,6 +86,10 @@ which exposes a dynamo admin web front-end on http://localhost:8001
 cvs-svc-test-results
 
 ```
+
+# Debugging Locally
+
+There is a `Launch Chrome` vscode debug configuration that will run `ng serve` and launch an instance of chrome. Initially you will get `This site can’t be reached`, but this will automatically refresh once the backgraound processes have finished starting up. Break points set within vscode will be hit while using this instance of chrome.
 
 # Running storybook
 

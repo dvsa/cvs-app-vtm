@@ -34,13 +34,9 @@ export const DeskBasedTestSectionGroup2PSV: FormNode = {
               name: 'testResult',
               type: FormNodeTypes.CONTROL,
               label: 'Result',
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' }
-              ],
-              required: true
+              value: 'pass',
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'reasonForAbandoning',

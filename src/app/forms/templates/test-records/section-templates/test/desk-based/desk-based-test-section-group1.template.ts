@@ -5,7 +5,6 @@ export const DeskBasedTestSectionGroup1: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'testStartTimestamp',
@@ -43,16 +42,14 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              value: null
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
+              value: null
             },
             {
               name: 'certificateNumber',
@@ -92,26 +89,15 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               value: null,
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.HideIfEmpty, args: 'testAnniversaryDate' }]
-            },
-            {
-              name: 'testAnniversaryDate',
-              label: 'Anniversary date',
-              value: '',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE,
-              validators: [{ name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }],
-              required: true
+              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'prohibitionIssued',
               label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
               value: null,
-              editType: FormNodeEditTypes.HIDDEN,
-              required: true
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
