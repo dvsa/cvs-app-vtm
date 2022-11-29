@@ -168,6 +168,61 @@ describe('TechRecordSummaryComponent', () => {
     });
   });
 
+  describe('addAxle', () => {
+    it('should add an axle', () => {
+      component.isEditing = true;
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+
+      const axleEvent = {
+        axles: [
+          {
+            axleNumber: 1
+          },
+          {
+            axleNumber: 2
+          },
+          {
+            axleNumber: 3
+          }
+        ]
+      };
+
+      component.addAxle(axleEvent);
+
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(3);
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
+    });
+
+    it('should add an axle on a psv', () => {
+      component.isEditing = true;
+      component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
+
+      const axleEvent = {
+        axles: [
+          {
+            axleNumber: 1
+          },
+          {
+            axleNumber: 2
+          },
+          {
+            axleNumber: 3
+          },
+
+          {
+            axleNumber: 4
+          }
+        ]
+      };
+
+      component.addAxle(axleEvent);
+
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(4);
+    });
+  });
+
   describe('removeAxle', () => {
     it('should remove axle', () => {
       component.isEditing = true;
@@ -188,6 +243,40 @@ describe('TechRecordSummaryComponent', () => {
       component.removeAxle(axleEvent);
 
       expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(1);
+    });
+  });
+
+  describe('generateAxleSpacing', () => {
+    it('should generate 3 axle spacings', () => {
+      const res = component.generateAxleSpacing(4);
+
+      expect(res).toStrictEqual([
+        { axles: '1-2', value: null },
+        { axles: '2-3', value: null },
+        { axles: '3-4', value: null }
+      ]);
+    });
+
+    it('should generate no axle spacings', () => {
+      const res = component.generateAxleSpacing(1);
+
+      expect(res).toStrictEqual([]);
+    });
+
+    it('should generate 3 axle spacings when adding a axle', () => {
+      const originalAxleSpacing = [
+        { axles: '1-2', value: 100 },
+        { axles: '2-3', value: 200 }
+      ];
+
+      const res = component.generateAxleSpacing(4, true, originalAxleSpacing);
+
+      expect(res).toStrictEqual([
+        { axles: '1-2', value: 100 },
+        { axles: '2-3', value: 200 },
+        { axles: '3-4', value: null }
+      ]);
     });
   });
 });
