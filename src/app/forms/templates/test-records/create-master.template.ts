@@ -29,7 +29,10 @@ import { ContingencyTestSectionGroup5And13 } from './section-templates/test/cont
 import { ContingencyTestSectionGroup6And11 } from './section-templates/test/contingency-test-section-group6And11.template';
 import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/test/contingency-test-section-specialist-group3And4.template';
 import { DeskBasedTestSectionGroup1 } from './section-templates/test/desk-based-test-section-group1.template';
+import { DeskBasedTestSectionGroup2PSV } from './section-templates/test/desk-based-test-section-group2-PSV.template';
+import { DeskBasedTestSectionGroup4 } from './section-templates/test/desk-based-test-section-group4.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
+import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based-test-section-group3.template';
 import { DeskBasedVehicleSectionDefaultHgv } from './section-templates/vehicle/desk-based-default-hgv-vehicle-section.template';
 import { DeskBasedTestHiddenSection } from './section-templates/required/desk-based-test-hidden-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
@@ -142,6 +145,39 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       required: CreateRequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: DeskBasedTestSectionGroup1,
+      seatbelts: SeatbeltSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup2: {
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      required: CreateRequiredSection,
+      test: DeskBasedTestSectionGroup2PSV,
+      seatbelts: SeatbeltHiddenSection,
+      emissions: EmissionsSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection
+    },
+    testTypesDeskBasedGroup3: {
+      required: CreateRequiredSection,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      test: DeskBasedTestSectionGroup3,
+      seatbelts: SeatbeltHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesDeskBasedGroup4: {
+      required: CreateRequiredSection,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      test: DeskBasedTestSectionGroup4,
       seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,

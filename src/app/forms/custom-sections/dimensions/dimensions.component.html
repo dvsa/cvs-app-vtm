@@ -53,7 +53,7 @@
 
   <ng-container *ngIf="!isPsv && hasAxleSpacings">
     <app-switchable-input
-      *ngFor="let axle of axleSpacings?.meta?.children; let i = index"
+      *ngFor="let axle of axleSpacings?.controls; let i = index"
       [form]="getAxleSpacing(i)"
       [type]="types.NUMBER"
       name="value"

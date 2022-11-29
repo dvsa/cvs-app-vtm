@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup1: FormNode = {
+export const DeskBasedTestSectionGroup4: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -32,10 +32,15 @@ export const DeskBasedTestSectionGroup1: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              type: FormNodeTypes.CONTROL,
-              value: 'pass'
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' },
+                { value: 'abandoned', label: 'Abandoned' }
+              ],
+              required: true,
+              type: FormNodeTypes.CONTROL
             },
             {
               name: 'reasonForAbandoning',
@@ -57,15 +62,18 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
               width: FormNodeWidth.L,
-              validators: [
-                { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
-                }
-              ],
-              required: true,
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              value: null
+            },
+            {
+              name: 'secondaryCertificateNumber',
+              label: 'Secondary Certificate number',
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.L,
+              validators: [{ name: ValidatorNames.Alphanumeric }],
               value: null
             },
 
