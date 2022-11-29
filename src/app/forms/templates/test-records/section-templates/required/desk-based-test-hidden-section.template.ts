@@ -86,6 +86,24 @@ export const DeskBasedTestHiddenSection: FormNode = {
               value: null,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'odometerReading',
+              label: 'Odometer Reading',
+              value: null,
+              required: true,
+              editType: FormNodeEditTypes.HIDDEN,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
+              name: 'odometerReadingUnits',
+              label: 'Odometer Reading Units',
+              value: null,
+              required: true,
+              editType: FormNodeEditTypes.HIDDEN,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN
             }
           ]
         }
