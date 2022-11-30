@@ -32,15 +32,10 @@ export const DeskBasedTestSectionGroup4HgvTrl: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
+              editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.RADIO,
-              options: [
-                { value: 'pass', label: 'Pass' },
-                { value: 'fail', label: 'Fail' },
-                { value: 'abandoned', label: 'Abandoned' }
-              ],
-              required: true,
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              value: 'pass'
             },
             {
               name: 'reasonForAbandoning',
