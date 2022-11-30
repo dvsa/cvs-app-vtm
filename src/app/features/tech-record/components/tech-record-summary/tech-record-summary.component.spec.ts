@@ -224,7 +224,7 @@ describe('TechRecordSummaryComponent', () => {
   });
 
   describe('removeAxle', () => {
-    it('should remove axle', () => {
+    it('should remove axle on psv', () => {
       component.isEditing = true;
       component.vehicleTechRecord = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
       component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.PSV).techRecord[0];
@@ -243,7 +243,6 @@ describe('TechRecordSummaryComponent', () => {
       component.removeAxle(axleEvent);
 
       expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
-      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(1);
     });
   });
 
