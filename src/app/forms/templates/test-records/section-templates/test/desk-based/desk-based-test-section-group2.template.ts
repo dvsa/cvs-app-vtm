@@ -1,14 +1,16 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup1HGVTRL: FormNode = {
-  name: 'requiredSection',
+export const DeskBasedTestSectionGroup2: FormNode = {
+  name: 'testSection',
+  label: 'Test',
   type: FormNodeTypes.GROUP,
   children: [
     {
       name: 'testStartTimestamp',
       label: 'Test start date',
       type: FormNodeTypes.CONTROL,
+      value: '',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
@@ -16,72 +18,77 @@ export const DeskBasedTestSectionGroup1HGVTRL: FormNode = {
       name: 'testEndTimestamp',
       type: FormNodeTypes.CONTROL,
       label: 'Test end date',
+      value: '',
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'testTypes',
-      label: 'Test Types',
       type: FormNodeTypes.ARRAY,
       children: [
         {
-          name: '0', // it is important here that the name of the node for an ARRAY type should be an index value
+          name: '0',
           type: FormNodeTypes.GROUP,
           children: [
             {
               name: 'testResult',
-              label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
               type: FormNodeTypes.CONTROL,
-              value: 'pass'
+              label: 'Result',
+              value: 'pass',
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.HIDDEN
             },
             {
               name: 'reasonForAbandoning',
               type: FormNodeTypes.CONTROL,
+              value: null,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
               required: true
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
+              value: null,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null,
               required: true
             },
             {
               name: 'certificateNumber',
-              label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
+              label: 'Certificate number',
+              value: '',
+              validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }],
               width: FormNodeWidth.L,
-              required: true,
-              value: null
+              required: true
             },
-
+            {
+              name: 'testExpiryDate',
+              type: FormNodeTypes.CONTROL,
+              label: 'Expiry Date',
+              value: '',
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE
+            },
             {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
-              value: '',
               label: 'Test start date and time',
+              value: '',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
-              value: '',
               label: 'Test end date and time',
+              value: '',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'prohibitionIssued',
-              label: 'Prohibition issued',
               type: FormNodeTypes.CONTROL,
               value: null,
               viewType: FormNodeViewTypes.HIDDEN,

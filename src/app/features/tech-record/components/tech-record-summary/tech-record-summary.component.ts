@@ -19,7 +19,6 @@ import { PsvDdaTemplate } from '@forms/templates/psv/psv-dda.template';
 import { PsvNotes } from '@forms/templates/psv/psv-notes.template';
 import { PsvWeightsTemplate } from '@forms/templates/psv/psv-weight.template';
 import { getPsvTechRecord } from '@forms/templates/psv/psv-tech-record.template';
-import { reasonForCreationSection } from '@forms/templates/general/resonForCreation.template';
 import { Store } from '@ngrx/store';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import cloneDeep from 'lodash.clonedeep';
@@ -48,6 +47,7 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.template';
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/reasonForCreation.template';
 
 @Component({
   selector: 'app-tech-record-summary',
