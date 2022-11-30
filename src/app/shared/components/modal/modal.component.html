@@ -1,0 +1,7 @@
+<div [id]="id" class="modal-popup" [ngClass]="{ 'modal-popup--open': open }">
+  <div class="modal-popup-body">
+    <div class="close_button_container"><button id="close-modal" (click)="closeModal.emit(true)">Close</button></div>
+    <ng-content></ng-content>
+  </div>
+</div>
+<div *ngIf="open" class="modal-popup-background"></div>

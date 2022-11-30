@@ -1,0 +1,66 @@
+.modal-popup {
+  /* modal container fixed across whole screen */
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: 80vw;
+  min-width: 300px;
+  //   width: 50%;
+  margin: auto;
+  min-height: 300px;
+
+  /* z-index must be higher than .modal-popup-background */
+  z-index: 1000;
+
+  /* enables scrolling for tall modals */
+  overflow: auto;
+
+  &--open {
+    // display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-popup-body {
+    background: #fff;
+
+    /* margin exposes part of the modal background */
+    margin: 40px;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+  }
+}
+
+.modal-popup-background {
+  /* modal background fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* semi-transparent black  */
+  background-color: #000;
+  opacity: 0.75;
+  z-index: 900;
+}
+
+.close_button_container {
+  display: flex;
+  justify-content: flex-end;
+
+  > #close-modal {
+    background-color: transparent;
+    border: none;
+    // color: white;
+    font-weight: bolder;
+    font-size: 1rem;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

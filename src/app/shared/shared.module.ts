@@ -19,6 +19,8 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
 import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
 import { DocumentRetrievalService } from '@api/document-retrieval';
 import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -38,9 +40,10 @@ import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe'
     PreventDoubleClickDirective,
     BaseDialogComponent,
     DigitGroupSeparatorPipe,
-    RefDataDecodePipe
+    RefDataDecodePipe,
+    ModalComponent
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PdfViewerModule],
   exports: [
     DefaultNullOrEmpty,
     ButtonGroupComponent,
@@ -57,7 +60,8 @@ import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe'
     TestCertificateComponent,
     BaseDialogComponent,
     DigitGroupSeparatorPipe,
-    RefDataDecodePipe
+    RefDataDecodePipe,
+    ModalComponent
   ],
   providers: [DocumentRetrievalService]
 })

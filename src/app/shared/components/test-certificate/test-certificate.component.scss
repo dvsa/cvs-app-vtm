@@ -17,5 +17,17 @@
     text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
     background-color: transparent;
     color: govuk-colour('dark-blue', $legacy: 'light-blue');
+    cursor: pointer;
   }
+}
+
+#test-certificate-view {
+  span > & {
+    margin-left: 0.5rem;
+  }
+  filter: invert(30%) sepia(92%) saturate(855%) hue-rotate(177deg) brightness(102%) contrast(87%);
+}
+
+pdf-viewer {
+  height: calc(85vh - 1rem);
 }

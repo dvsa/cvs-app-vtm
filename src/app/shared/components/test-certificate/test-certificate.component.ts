@@ -1,7 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
-import { takeWhile } from 'rxjs';
+import { take, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-test-certificate[testNumber][vin]',
@@ -14,7 +14,9 @@ export class TestCertificateComponent {
   @Input() vin!: string;
   @Output() isSuccess = new EventEmitter<boolean>();
 
-  constructor(private documentRetrievalService: DocumentRetrievalService) {}
+  pdfSrc: any = null;
+
+  constructor(private documentRetrievalService: DocumentRetrievalService, private cdr: ChangeDetectorRef) {}
 
   download() {
     return this.documentRetrievalService
@@ -51,5 +53,30 @@ export class TestCertificateComponent {
           this.isSuccess.emit(false);
         }
       });
+  }
+
+  viewPdf() {
+    this.documentRetrievalService
+      .testCertificateGet(this.testNumber, this.vin)
+      .pipe(take(1))
+      .subscribe(body => {
+        const byteArray = new Uint8Array(
+          window
+            .atob(body)
+            .split('')
+            .map(char => char.charCodeAt(0))
+        );
+
+        const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
+
+        const url = window.URL.createObjectURL(file);
+        this.pdfSrc = url;
+
+        this.cdr.detectChanges();
+      });
+  }
+
+  onLoadError(error: any) {
+    console.log(error);
   }
 }

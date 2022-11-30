@@ -1,3 +1,25 @@
 <button id="test-certificate-link" class="link" (click)="download()">
   <ng-content></ng-content>
 </button>
+<span
+  ><button id="test-certificate-view" class="link" (click)="viewPdf()" aria-label="view pdf">
+    <app-icon icon="popup"></app-icon></button
+></span>
+
+<app-modal id="pdf-preview" [open]="!!pdfSrc" (closeModal)="pdfSrc = null">
+  <pdf-viewer
+    [src]="pdfSrc"
+    [rotation]="0"
+    [original-size]="true"
+    [show-all]="true"
+    [fit-to-page]="true"
+    [zoom]="1"
+    [zoom-scale]="'page-height'"
+    [stick-to-page]="false"
+    [render-text]="true"
+    [external-link-target]="'blank'"
+    [autoresize]="false"
+    [show-borders]="false"
+    style="height: 85vh"
+  ></pdf-viewer>
+</app-modal>
