@@ -57,9 +57,9 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, test
   return sortTestTypes(testTypes);
 });
 
-export const selectTestType = (id: string) =>
+export const selectTestType = (id: string | undefined) =>
   createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
-    function findUsingId(id: string, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
+    function findUsingId(id: string | undefined, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
       if (!testTypes) {
         return undefined;
       }
@@ -81,6 +81,8 @@ export const selectTestType = (id: string) =>
 
     return findUsingId(id, testTypes);
   });
+
+export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), testTypes => testTypes?.typeOfTest);
 
 function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
   const { vehicleType, euVehicleCategory, vehicleSize, vehicleConfiguration, noOfAxles, vehicleClass, vehicleSubclass, numberOfWheelsDriven } =
