@@ -223,6 +223,17 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
           { value: true, label: 'Yes' },
           { value: false, label: 'No' }
         ]
+      },
+      {
+        name: 'alterationMarker',
+        label: 'Alteration marker',
+        value: '',
+        type: FormNodeTypes.CONTROL,
+        editType: FormNodeEditTypes.RADIO,
+        options: [
+          { value: true, label: 'Yes' },
+          { value: false, label: 'No' }
+        ]
       }
     ]
   };
