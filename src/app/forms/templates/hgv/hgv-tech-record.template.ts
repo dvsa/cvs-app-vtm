@@ -200,6 +200,7 @@ export const HgvTechRecord: FormNode = {
       label: 'Alteration marker',
       value: '',
       type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.RADIO,
       options: [
         { value: true, label: 'Yes' },
