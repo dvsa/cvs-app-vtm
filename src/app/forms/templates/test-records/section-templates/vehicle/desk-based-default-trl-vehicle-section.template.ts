@@ -15,9 +15,11 @@ export const DeskBasedVehicleSectionDefaultTrl: FormNode = {
       editType: FormNodeEditTypes.HIDDEN
     },
     {
-      name: 'vrm',
-      label: 'VRM',
+      name: 'trailerId',
+      label: 'Trailer ID',
       value: '',
+      disabled: true,
+      width: FormNodeWidth.L,
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.HIDDEN
