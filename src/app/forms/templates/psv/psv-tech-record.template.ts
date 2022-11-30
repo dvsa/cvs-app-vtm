@@ -229,6 +229,7 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         label: 'Alteration marker',
         value: '',
         type: FormNodeTypes.CONTROL,
+        viewType: FormNodeViewTypes.HIDDEN,
         editType: FormNodeEditTypes.RADIO,
         options: [
           { value: true, label: 'Yes' },
