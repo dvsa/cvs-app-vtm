@@ -149,9 +149,12 @@ export class TechRecordSummaryComponent implements OnInit {
   handleFormState(event: any): void {
     this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
+    // console.log(this.vehicleTechRecordCalculated.axles.length);
+    // console.log(event.axles.length);
+
     if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
       this.removeAxle(event);
-    } else if (event.axles) {
+    } else if (event.axles && this.vehicleTechRecordCalculated.axles.length < event.axles.length) {
       this.addAxle(event);
     } else {
       this.vehicleTechRecordCalculated = merge(this.vehicleTechRecordCalculated, event);
@@ -209,7 +212,7 @@ export class TechRecordSummaryComponent implements OnInit {
       return false;
     });
 
-    if (this.vehicleTechRecordCalculated.dimensions) {
+    if (this.vehicleTechRecord.vehicleType !== VehicleTypes.PSV && this.vehicleTechRecordCalculated.dimensions) {
       this.vehicleTechRecordCalculated.dimensions.axleSpacing = this.generateAxleSpacing(this.vehicleTechRecordCalculated.axles.length);
     }
   }
