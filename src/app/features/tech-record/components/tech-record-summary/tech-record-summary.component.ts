@@ -149,9 +149,6 @@ export class TechRecordSummaryComponent implements OnInit {
   handleFormState(event: any): void {
     this.vehicleTechRecordCalculated = cloneDeep(this.vehicleTechRecordCalculated);
 
-    // console.log(this.vehicleTechRecordCalculated.axles.length);
-    // console.log(event.axles.length);
-
     if (event.axles && event.axles.length < this.vehicleTechRecordCalculated.axles.length) {
       this.removeAxle(event);
     } else if (event.axles && this.vehicleTechRecordCalculated.axles.length < event.axles.length) {
