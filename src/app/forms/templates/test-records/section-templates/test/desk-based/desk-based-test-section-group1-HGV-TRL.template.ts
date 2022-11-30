@@ -1,9 +1,7 @@
-import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup1: FormNode = {
-  name: 'testSection',
-  label: 'Test',
+export const DeskBasedTestSectionGroup1HgvTrl: FormNode = {
+  name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
     {
@@ -42,27 +40,24 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
+              value: null,
+              required: true
             },
             {
               name: 'additionalCommentsForAbandon',
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN,
-              value: null
+              value: null,
+              required: true
             },
             {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
               width: FormNodeWidth.L,
-              validators: [
-                { name: ValidatorNames.Alphanumeric },
-                {
-                  name: ValidatorNames.RequiredIfEquals,
-                  args: { sibling: 'testResult', value: 'pass' }
-                }
-              ],
               required: true,
               value: null
             },
@@ -82,14 +77,6 @@ export const DeskBasedTestSectionGroup1: FormNode = {
               label: 'Test end date and time',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
-            },
-            {
-              name: 'testExpiryDate',
-              label: 'Expiry Date',
-              value: null,
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'prohibitionIssued',

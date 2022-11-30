@@ -1,7 +1,7 @@
 import { FormNode, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
-export const EmissionsSection: FormNode = {
+export const DeskBasedEmissionsSection: FormNode = {
   name: 'emissionsSection',
   label: 'Emissions',
   type: FormNodeTypes.GROUP,
@@ -29,7 +29,6 @@ export const EmissionsSection: FormNode = {
                 { value: 'Euro VI', label: 'Euro VI' },
                 { value: 'Full Electric', label: 'Full Electric' }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }],
               required: true,
               value: null
             },
@@ -38,7 +37,6 @@ export const EmissionsSection: FormNode = {
               label: 'Smoke test K limit applied',
               type: FormNodeTypes.CONTROL,
               validators: [{ name: ValidatorNames.MaxLength, args: 100 }],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }],
               required: true,
               value: null
             },
@@ -56,7 +54,6 @@ export const EmissionsSection: FormNode = {
                 { value: 'petrol', label: 'Petrol' },
                 { value: 'full electric', label: 'Full electric' }
               ],
-              asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }],
               required: true,
               value: null
             },
@@ -79,8 +76,7 @@ export const EmissionsSection: FormNode = {
                     { name: ValidatorNames.HideIfParentSiblingEqual, args: { sibling: 'modificationTypeUsed', value: 'p' } },
                     { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapFitted', value: 'p' } },
                     { name: ValidatorNames.HideIfParentSiblingNotEqual, args: { sibling: 'particulateTrapSerialNumber', value: 'p' } }
-                  ],
-                  asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotResult, args: { testResult: ['fail', 'abandoned'] } }]
+                  ]
                 },
                 {
                   name: 'description',
