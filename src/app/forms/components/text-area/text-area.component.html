@@ -1,20 +1,24 @@
-<div class="govuk-form-group">
-  <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
+<div class="govuk-character-count">
+  <div class="govuk-form-group">
+    <label *ngIf="label" class="govuk-label govuk-label--m" for="{{ name }}">{{ label }}</label>
 
-  <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
+    <app-field-error-message [error]="error" [name]="name"></app-field-error-message>
 
-  <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
+    <div *ngIf="hint" id="{{ name }}-hint" class="govuk-hint">{{ hint }}</div>
 
-  <textarea
-    class="govuk-textarea"
-    rows="5"
-    id="{{ name }}"
-    name="{{ name }}"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    (ngModelChange)="onChange($event)"
-    (blur)="onTouched(); handleEvent($event)"
-    (focus)="handleEvent($event)"
-    attr.aria-describedby="{{ name }}"
-  ></textarea>
+    <textarea
+      appCharacterCount
+      [metaData]="meta"
+      class="govuk-textarea"
+      rows="5"
+      id="{{ name }}"
+      name="{{ name }}"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouched(); handleEvent($event)"
+      (focus)="handleEvent($event)"
+      attr.aria-describedby="{{ name + '-character-count' + ' ' + name + '-hint' }}"
+    ></textarea>
+  </div>
 </div>

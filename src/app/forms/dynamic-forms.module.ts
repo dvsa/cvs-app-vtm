@@ -36,6 +36,7 @@ import { BodyComponent } from './custom-sections/body/body.component';
 import { TyresComponent } from './custom-sections/tyres/tyres.component';
 import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
 import { PrefixDirective } from './directives/prefix.directive';
+import { CharacterCountDirective } from './directives/character-count/character-count.directive';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { PrefixDirective } from './directives/prefix.directive';
     BodyComponent,
     TyresComponent,
     PsvBrakesComponent,
-    PrefixDirective
+    PrefixDirective,
+    CharacterCountDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
