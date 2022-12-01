@@ -54,7 +54,7 @@ export const DeskBasedTestSectionGroup3Psv: FormNode = {
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
-              validators: [{ name: ValidatorNames.Alphanumeric }],
+              validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }],
               required: true,
               value: null
             },
