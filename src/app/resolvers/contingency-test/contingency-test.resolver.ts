@@ -39,7 +39,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               systemNumber,
               vehicleType: viewableTechRecord?.vehicleType,
               testResultId: uuidv4(),
-              euVehicleCategory: viewableTechRecord?.euVehicleCategory,
+              euVehicleCategory: viewableTechRecord?.euVehicleCategory ?? null,
               vehicleSize: viewableTechRecord?.vehicleSize,
               vehicleConfiguration: viewableTechRecord?.vehicleConfiguration,
               vehicleClass: viewableTechRecord?.vehicleClass ?? null,
