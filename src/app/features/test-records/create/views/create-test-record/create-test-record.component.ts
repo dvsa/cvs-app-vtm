@@ -6,14 +6,18 @@ import { AbandonDialogComponent } from '@forms/custom-sections/abandon-dialog/ab
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { Actions, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import { ResultOfTestService } from '@services/result-of-test/result-of-test.service';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
+import { State } from '@store/index';
 import { createTestResultSuccess } from '@store/test-records';
+import { getTypeOfTest } from '@store/test-types/selectors/test-types.selectors';
 import cloneDeep from 'lodash.clonedeep';
-import { BehaviorSubject, filter, firstValueFrom, Observable, of, ReplaySubject, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, map, Observable, of, ReplaySubject, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 
 @Component({
@@ -29,6 +33,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
   canCreate$ = new BehaviorSubject(false);
   testMode = TestModeEnum.Edit;
   testResult$: Observable<TestResultModel | undefined> = of(undefined);
+  testTypeId?: string;
 
   constructor(
     private actions$: Actions,
@@ -38,7 +43,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     private routerService: RouterService,
     private testRecordsService: TestRecordsService,
     private cdr: ChangeDetectorRef,
-    private resultOfTestService: ResultOfTestService
+    private resultOfTestService: ResultOfTestService,
+    private store: Store<State>
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
@@ -55,6 +61,7 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       )
       .subscribe(testTypeId => {
         this.testRecordsService.contingencyTestTypeSelected(testTypeId!);
+        this.testTypeId = testTypeId;
       });
 
     this.watchForCreateSuccess();
@@ -162,6 +169,13 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
       default:
         console.error('Invalid action');
     }
+  }
+
+  get isDeskBased() {
+    return this.store.pipe(
+      select(getTypeOfTest(this.testTypeId)),
+      map(typeOfTest => typeOfTest === TypeOfTest.DESK_BASED)
+    );
   }
 
   public get TestModeEnum(): typeof TestModeEnum {

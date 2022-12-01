@@ -67,7 +67,7 @@ export const DeskBasedTestSectionGroup2: FormNode = {
               name: 'testExpiryDate',
               type: FormNodeTypes.CONTROL,
               label: 'Expiry Date',
-              value: '',
+              value: null,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
             },
@@ -75,7 +75,7 @@ export const DeskBasedTestSectionGroup2: FormNode = {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               label: 'Test start date and time',
-              value: '',
+              value: null,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
@@ -83,7 +83,7 @@ export const DeskBasedTestSectionGroup2: FormNode = {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               label: 'Test end date and time',
-              value: '',
+              value: null,
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
