@@ -1,7 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentRetrievalService } from '@api/document-retrieval';
-import { take, takeWhile } from 'rxjs';
+import { Observable, take, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-test-certificate[testNumber][vin]',
@@ -18,36 +18,14 @@ export class TestCertificateComponent {
 
   constructor(private documentRetrievalService: DocumentRetrievalService, private cdr: ChangeDetectorRef) {}
 
-  download() {
+  handleDownload() {
     return this.documentRetrievalService
-      .testCertificateGet(this.testNumber, this.vin, 'events', true)
-      .pipe(takeWhile(event => event.type !== HttpEventType.Response, true))
+      .testCertificateGet(this.testNumber, this.vin)
+      .pipe(take(1), this.base64ToObjectUrl())
       .subscribe({
-        next: res => {
-          switch (res.type) {
-            case HttpEventType.DownloadProgress:
-              console.log(res);
-              break;
-            case HttpEventType.Response:
-              const byteArray = new Uint8Array(
-                window
-                  .atob(res.body)
-                  .split('')
-                  .map(char => char.charCodeAt(0))
-              );
-
-              const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
-              const url = window.URL.createObjectURL(file);
-              const link: HTMLAnchorElement | undefined = document.createElement('a');
-              link.href = url;
-              link.target = '_blank';
-              link.download = `${this.testNumber}_${this.vin}.pdf`;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-
-              this.isSuccess.emit(true);
-          }
+        next: url => {
+          this.download(url);
+          this.isSuccess.emit(true);
         },
         error: () => {
           this.isSuccess.emit(false);
@@ -55,28 +33,52 @@ export class TestCertificateComponent {
       });
   }
 
+  private download(url: string): void {
+    const link: HTMLAnchorElement | undefined = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.download = `${this.testNumber}_${this.vin}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   viewPdf() {
     this.documentRetrievalService
       .testCertificateGet(this.testNumber, this.vin)
-      .pipe(take(1))
-      .subscribe(body => {
-        const byteArray = new Uint8Array(
-          window
-            .atob(body)
-            .split('')
-            .map(char => char.charCodeAt(0))
-        );
-
-        const file = new Blob([byteArray], { type: 'application/pdf; charset=utf-8' });
-
-        const url = window.URL.createObjectURL(file);
-        this.pdfSrc = url;
-
+      .pipe(take(1), this.base64ToObjectUrl())
+      .subscribe(objectUrl => {
+        this.pdfSrc = objectUrl;
         this.cdr.detectChanges();
       });
   }
 
-  onLoadError(error: any) {
-    console.log(error);
+  private toByteArray(b64String: string) {
+    return new Uint8Array(
+      window
+        .atob(b64String)
+        .split('')
+        .map(c => c.charCodeAt(0))
+    );
+  }
+
+  private createCertificateUrl(byteArray: Uint8Array) {
+    return window.URL.createObjectURL(new Blob([byteArray], { type: 'application/pdf; charset=utf-8' }));
+  }
+
+  /**
+   * Decodes the source base64 string into a [Uint8Array] and creates an Blob object URL.
+   * @returns {string} Blob object URL
+   */
+  private base64ToObjectUrl() {
+    return (source: Observable<string>): Observable<string> => {
+      return new Observable(subscriber => {
+        source.subscribe({
+          next: val => subscriber.next(this.createCertificateUrl(this.toByteArray(val))),
+          error: e => subscriber.error(e),
+          complete: () => subscriber.complete()
+        });
+      });
+    };
   }
 }
