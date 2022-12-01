@@ -6,7 +6,6 @@ export const ContingencyTestSectionGroup15and16: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
-  viewType: FormNodeViewTypes.SUBHEADING,
   children: [
     {
       name: 'contingencyTestNumber',
