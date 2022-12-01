@@ -146,7 +146,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
       required: CreateRequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: DeskBasedTestSectionGroup1Psv,
-      seatbelts: SeatbeltSection,
+      seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
