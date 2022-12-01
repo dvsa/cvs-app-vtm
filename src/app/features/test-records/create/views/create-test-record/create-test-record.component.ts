@@ -102,6 +102,8 @@ export class CreateTestRecordComponent implements OnInit, OnDestroy, AfterViewIn
     if (this.isAnyFormInvalid()) {
       return;
     }
+
+    this.errorService.clearErrors();
     this.testMode = TestModeEnum.View;
   }
 
