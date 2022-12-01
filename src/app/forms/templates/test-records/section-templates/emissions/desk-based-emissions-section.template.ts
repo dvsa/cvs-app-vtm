@@ -2,7 +2,7 @@ import { FormNode, FormNodeTypes, FormNodeEditTypes } from '@forms/services/dyna
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 export const DeskBasedEmissionsSection: FormNode = {
-  name: 'emissionsSection',
+  name: 'deskBasedEmissionsSection',
   label: 'Emissions',
   type: FormNodeTypes.GROUP,
   children: [
