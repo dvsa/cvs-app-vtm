@@ -24,7 +24,7 @@ export interface TestResultModel {
 
   trailerId: string;
   countryOfRegistration: string;
-  euVehicleCategory: EuVehicleCategory;
+  euVehicleCategory: EuVehicleCategory | null;
   odometerReading: number;
   odometerReadingUnits: OdometerReadingUnits;
   preparerName: string;
