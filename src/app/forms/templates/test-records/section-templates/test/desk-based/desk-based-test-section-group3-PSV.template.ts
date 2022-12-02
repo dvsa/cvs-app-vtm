@@ -19,6 +19,12 @@ export const DeskBasedTestSectionGroup3Psv: FormNode = {
       editType: FormNodeEditTypes.HIDDEN
     },
     {
+      name: 'createdAt',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
       name: 'testTypes',
       label: 'Test Types',
       type: FormNodeTypes.ARRAY,
