@@ -252,7 +252,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection
     },
     testTypesDeskBasedGroup1: {
-      required: VehicleSectionDefaultPsvHgv,
+      required: RequiredSection,
       vehicle: DeskBasedVehicleSectionHgvGroup123,
       test: DeskBasedTestSectionGroup1And3HgvTrl,
       visit: VisitSection,
@@ -262,7 +262,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup3: {
-      required: VehicleSectionDefaultPsvHgv,
+      required: RequiredSection,
       vehicle: DeskBasedVehicleSectionHgvGroup123,
       test: DeskBasedTestSectionGroup1And3HgvTrl,
       visit: VisitSection,
@@ -358,7 +358,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       customDefects: CustomDefectsSection
     },
     testTypesDeskBasedGroup1: {
-      required: VehicleSectionDefaultTrl,
+      required: RequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
       test: DeskBasedTestSectionGroup1And3HgvTrl,
       visit: VisitSection,
@@ -368,7 +368,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup3: {
-      required: VehicleSectionDefaultTrl,
+      required: RequiredSection,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
       test: DeskBasedTestSectionGroup1And3HgvTrl,
       visit: VisitSection,
