@@ -31,7 +31,7 @@ import { SpecialistTestSectionGroup3And4 } from './section-templates/test/specia
 import { defectsHiddenSection } from './section-templates/required/defect-hidden-section.template';
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
-import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
+import { DeskBasedTestSectionGroup2PSV } from './section-templates/test/desk-based/desk-based-test-section-group2-PSV.template';
 import { amendDeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 //Keys of root object must a a valid vehicle type.
@@ -48,6 +48,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSection
     },
@@ -142,13 +143,14 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
     testTypesDeskBasedGroup2: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
       required: RequiredSection,
-      test: DeskBasedTestSectionGroup2,
+      test: DeskBasedTestSectionGroup2PSV,
       seatbelts: SeatbeltHiddenSection,
       emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
-      customDefects: CustomDefectsHiddenSection
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
       required: RequiredSection,
@@ -167,6 +169,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
+      reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
@@ -262,6 +265,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       test: TestSection,
       visit: VisitSection,
       notes: NotesSection,
+      reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
