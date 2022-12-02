@@ -30,14 +30,16 @@ import { ContingencyTestSectionSpecialistGroup3And4 } from './section-templates/
 import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test/contingency/contingency-test-section-specialist-group5.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
-import { DeskBasedTestSectionGroup4HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group4-HGV-TRL.template';
+import { DeskBasedTestSectionGroup3HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group3-HGV-TRL.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
 import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
 import { DeskBasedTestSectionGroup3Psv } from './section-templates/test/desk-based/desk-based-test-section-group3-PSV.template';
 import { DeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
-import { DeskBasedTestSectionGroup1And3HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And3-HGV-TRL.template';
-import { DeskBasedVehicleSectionHgvGroup123 } from './section-templates/vehicle/desk-based-test-psv-hgv-vehicle-section-group2.template';
+import { DeskBasedTestSectionGroup1And4HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
+import { DeskBasedVehicleSectionHgvGroup124 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
+import { TEST_TYPES } from '@forms/models/testTypeId.enum';
+import { type } from 'os';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -50,6 +52,8 @@ const groups1and2Template: Record<string, FormNode> = {
   customDefects: CustomDefectsHiddenSection,
   reasonForCreation: reasonForCreationSection
 };
+
+type testTypeKeys = keyof typeof TEST_TYPES | 'default';
 
 export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
   psv: {
@@ -291,8 +295,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     },
     testTypesDeskBasedGroup1: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionHgvGroup123,
-      test: DeskBasedTestSectionGroup1And3HgvTrl,
+      vehicle: DeskBasedVehicleSectionHgvGroup124,
+      test: DeskBasedTestSectionGroup1And4HgvTrl,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -301,7 +305,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     },
     testTypesDeskBasedGroup2: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionHgvGroup123,
+      vehicle: DeskBasedVehicleSectionHgvGroup124,
       test: DeskBasedTestSectionGroup2,
       emissions: DeskBasedEmissionsSection,
       visit: ContingencyVisitSection,
@@ -312,8 +316,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     },
     testTypesDeskBasedGroup3: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionHgvGroup123,
-      test: DeskBasedTestSectionGroup1And3HgvTrl,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      test: DeskBasedTestSectionGroup3HgvTrl,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -322,8 +326,8 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     },
     testTypesDeskBasedGroup4: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
-      test: DeskBasedTestSectionGroup4HgvTrl,
+      vehicle: DeskBasedVehicleSectionHgvGroup124,
+      test: DeskBasedTestSectionGroup1And4HgvTrl,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -424,7 +428,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup1: {
       required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
-      test: DeskBasedTestSectionGroup1And3HgvTrl,
+      test: DeskBasedTestSectionGroup1And4HgvTrl,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -445,7 +449,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup3: {
       required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
-      test: DeskBasedTestSectionGroup1And3HgvTrl,
+      test: DeskBasedTestSectionGroup3HgvTrl,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
@@ -455,7 +459,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup4: {
       required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
-      test: DeskBasedTestSectionGroup4HgvTrl,
+      test: DeskBasedTestSectionGroup1And4HgvTrl,
       visit: ContingencyVisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,

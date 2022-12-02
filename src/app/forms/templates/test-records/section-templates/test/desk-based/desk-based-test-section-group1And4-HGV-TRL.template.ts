@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup1And3HgvTrl: FormNode = {
+export const DeskBasedTestSectionGroup1And4HgvTrl: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
