@@ -316,7 +316,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']),
+            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']!),
             sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel
           }),
           c: updateResultOfTest()
@@ -438,7 +438,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            sectionTemplates: Object.values(masterTpl.psv['default']),
+            sectionTemplates: Object.values(masterTpl.psv['default']!),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
           }),
           c: updateResultOfTest()
@@ -470,7 +470,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
           b: templateSectionsChanged({
-            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']),
+            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']!),
             sectionsValue: {
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
