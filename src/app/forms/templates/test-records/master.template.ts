@@ -4,7 +4,7 @@ import { DefectsTpl } from '../general/defect.template';
 import { CustomDefectsSection } from './section-templates/customDefects/custom-defects-section.template';
 import { EmissionsSection } from './section-templates/emissions/emissions-section.template';
 import { NotesSection } from './section-templates/notes/notes-section.template';
-import { reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
+import { readOnlyReasonForCreationSection, reasonForCreationSection } from './section-templates/reasonForCreation/reasonForCreation.template';
 import { RequiredSection } from './section-templates/required/required-hidden-section.template';
 import { RequiredSectionHGVTRL } from './section-templates/required/required-hidden-section-hgv-trl.template';
 import { SpecialistRequiredSectionHGVTRL } from './section-templates/required/specialist-required-hidden-section-hgv-trl.template';
@@ -150,7 +150,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
-      reasonForCreation: reasonForCreationSection
+      reasonForCreation: readOnlyReasonForCreationSection
     },
     testTypesDeskBasedGroup4: {
       required: RequiredSection,
@@ -159,7 +159,8 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
-      customDefects: CustomDefectsHiddenSection
+      customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: readOnlyReasonForCreationSection
     }
   },
   hgv: {
