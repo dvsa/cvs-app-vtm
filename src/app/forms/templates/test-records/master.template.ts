@@ -46,6 +46,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       visit: VisitSection,
       notes: NotesSection,
       defects: DefectsTpl,
+      reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSection
     },
@@ -157,6 +158,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       emissions: EmissionsSection,
       visit: VisitSection,
       notes: NotesSection,
+      reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
@@ -252,6 +254,7 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       test: TestSection,
       visit: VisitSection,
       notes: NotesSection,
+      reasonForCreation: reasonForCreationSection,
       customDefects: CustomDefectsSection,
       required: RequiredSectionHGVTRL
     },
