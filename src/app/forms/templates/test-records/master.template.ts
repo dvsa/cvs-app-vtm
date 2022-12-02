@@ -34,11 +34,12 @@ import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehi
 import { DeskBasedTestSectionGroup2PSV } from './section-templates/test/desk-based/desk-based-test-section-group2-PSV.template';
 import { amendDeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
+import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
 
-export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
+export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TYPES | 'default', Record<string, FormNode>>>> = {
   psv: {
     default: {
       vehicle: VehicleSectionDefaultPsvHgv,
