@@ -146,10 +146,13 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
             {
               name: 'testResult',
               label: 'Result',
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN,
               type: FormNodeTypes.CONTROL,
-              value: 'pass'
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' }
+              ]
             },
             {
               name: 'reasonForAbandoning',

@@ -31,17 +31,3 @@ export const reasonForCreationHiddenSection: FormNode = {
     }
   ]
 };
-
-export const readOnlyReasonForCreationSection: FormNode = {
-  name: 'reasonForCreationSection',
-  label: 'Reason for creation',
-  type: FormNodeTypes.GROUP,
-  children: [
-    {
-      name: 'reasonForCreation',
-      label: 'Reason for creation',
-      type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.HIDDEN
-    }
-  ]
-};
