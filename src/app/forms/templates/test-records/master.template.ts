@@ -32,6 +32,8 @@ import { defectsHiddenSection } from './section-templates/required/defect-hidden
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
 import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
+import { amendDeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
+import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
@@ -143,6 +145,15 @@ export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormN
       test: DeskBasedTestSectionGroup2,
       seatbelts: SeatbeltHiddenSection,
       emissions: EmissionsSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      defects: defectsHiddenSection,
+      customDefects: CustomDefectsHiddenSection
+    },
+    testTypesDeskBasedGroup4: {
+      required: RequiredSection,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      test: amendDeskBasedTestSectionGroup4Psv,
       visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,
