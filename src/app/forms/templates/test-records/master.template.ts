@@ -32,11 +32,12 @@ import { defectsHiddenSection } from './section-templates/required/defect-hidden
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
 import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
 import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/desk-based-test-section-group2.template';
+import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 //Keys of root object must a a valid vehicle type.
 //Keys of child object must be a valid test type id.
 //Child object must ALWAYS have a 'default' key.
 
-export const masterTpl: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
+export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TYPES | 'default', Record<string, FormNode>>>> = {
   psv: {
     default: {
       vehicle: VehicleSectionDefaultPsvHgv,

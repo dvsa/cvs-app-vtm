@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalError } from '@core/components/global-error/global-error.interface';
+import { TEST_TYPES } from '@forms/models/testTypeId.enum';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { masterTpl } from '@forms/templates/test-records/master.template';
@@ -132,7 +133,7 @@ export class TestResultsEffects {
 
         let tpl;
         if (testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup)) {
-          tpl = vehicleTpl[testTypeGroup];
+          tpl = vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES];
         } else {
           if (isEditing === 'true') {
             tpl = undefined;
@@ -183,10 +184,11 @@ export class TestResultsEffects {
         const testTypeGroup = TestRecordsService.getTestTypeGroup(id);
         const vehicleTpl = contingencyTestTemplates[vehicleType];
 
-        const tpl = testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup] : vehicleTpl['default'];
+        const tpl =
+          testTypeGroup && vehicleTpl.hasOwnProperty(testTypeGroup) ? vehicleTpl[testTypeGroup as keyof typeof TEST_TYPES] : vehicleTpl['default'];
 
         const mergedForms = {} as TestResultModel;
-        Object.values(tpl).forEach(node => {
+        Object.values(tpl!).forEach(node => {
           const form = this.dfs.createForm(node, editingTestResult);
           merge(mergedForms, form.getCleanValue(form));
         });
@@ -211,7 +213,7 @@ export class TestResultsEffects {
           mergedForms.testStationType = TestStationType.ATF;
         }
 
-        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl), sectionsValue: mergedForms }));
+        return of(templateSectionsChanged({ sectionTemplates: Object.values(tpl!), sectionsValue: mergedForms }));
       })
     )
   );

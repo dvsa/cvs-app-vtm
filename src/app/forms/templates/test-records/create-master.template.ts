@@ -39,7 +39,6 @@ import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-ba
 import { DeskBasedTestSectionGroup1And4HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';
 import { DeskBasedVehicleSectionHgvGroup124 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { TEST_TYPES } from '@forms/models/testTypeId.enum';
-import { type } from 'os';
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
@@ -53,9 +52,7 @@ const groups1and2Template: Record<string, FormNode> = {
   reasonForCreation: reasonForCreationSection
 };
 
-type testTypeKeys = keyof typeof TEST_TYPES | 'default';
-
-export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Record<string, FormNode>>> = {
+export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TYPES | 'default', Record<string, FormNode>>>> = {
   psv: {
     default: {
       vehicle: ContingencyVehicleSectionDefaultPsvHgv,
