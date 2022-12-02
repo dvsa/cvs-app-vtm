@@ -32,7 +32,7 @@ import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicl
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import { DeskBasedTestSectionGroup4HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group4-HGV-TRL.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
-import { DeskBasedTestSectionGroup2PSV } from './section-templates/test/desk-based/desk-based-test-section-group2-PSV.template';
+import { DeskBasedTestSectionGroup2PsvHgv } from './section-templates/test/desk-based/desk-based-test-section-group2-PSV-HGV.template';
 import { DeskBasedTestSectionGroup3Psv } from './section-templates/test/desk-based/desk-based-test-section-group3-PSV.template';
 import { DeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
@@ -157,7 +157,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup2: {
       vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       required: CreateRequiredSection,
-      test: DeskBasedTestSectionGroup2PSV,
+      test: DeskBasedTestSectionGroup2PsvHgv,
       seatbelts: SeatbeltHiddenSection,
       emissions: DeskBasedEmissionsSection,
       visit: ContingencyVisitSection,
@@ -302,7 +302,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup2: {
       required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionHgvGroup123,
-      test: DeskBasedTestSectionGroup2PSV,
+      test: DeskBasedTestSectionGroup2PsvHgv,
       emissions: DeskBasedEmissionsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -434,7 +434,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Record<string, Recor
     testTypesDeskBasedGroup2: {
       required: CreateRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
-      test: DeskBasedTestSectionGroup2PSV,
+      test: DeskBasedTestSectionGroup2PsvHgv,
       emissions: DeskBasedEmissionsSection,
       visit: ContingencyVisitSection,
       notes: NotesSection,
