@@ -16,9 +16,10 @@
         <h2 class="govuk-heading-m">Vehicle details</h2>
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">VRM</dt>
-            <dd class="govuk-summary-list__value">
-              <app-number-plate [vrm]="testResult?.vrm"></app-number-plate>
+            <dt class="govuk-summary-list__key">{{ testResult?.vehicleType === vehicleTypes.TRL ? 'Trailer ID' : 'VRM' }}</dt>
+            <dd id="test-testTypeId" class="govuk-summary-list__value">
+              <app-number-plate *ngIf="testResult?.vehicleType !== vehicleTypes.TRL; else trailerId" [vrm]="testResult?.vrm"></app-number-plate>
+              <ng-template #trailerId>{{ testResult?.trailerId | defaultNullOrEmpty }}</ng-template>
             </dd>
           </div>
           <div class="govuk-summary-list__row">
