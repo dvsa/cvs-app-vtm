@@ -144,6 +144,16 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
           type: FormNodeTypes.GROUP,
           children: [
             {
+              name: 'testCode',
+              label: 'Test Code',
+              value: '',
+              disabled: true,
+              editType: FormNodeEditTypes.HIDDEN,
+              viewType: FormNodeViewTypes.STRING,
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
+            },
+            {
               name: 'testResult',
               label: 'Result',
               type: FormNodeTypes.CONTROL,
