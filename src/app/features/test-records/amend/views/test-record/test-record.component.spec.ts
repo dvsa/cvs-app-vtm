@@ -162,7 +162,7 @@ describe('TestRecordComponent', () => {
       const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
       store.overrideSelector(isTestTypeKeySame('testTypeId'), false);
       store.overrideSelector(testResultInEdit, testRecord);
-      store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']));
+      store.overrideSelector(sectionTemplates, Object.values(masterTpl.psv['testTypesGroup1']!));
 
       tick();
       fixture.detectChanges();

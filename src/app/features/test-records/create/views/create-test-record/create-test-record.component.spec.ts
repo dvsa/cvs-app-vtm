@@ -97,7 +97,7 @@ describe('CreateTestRecordComponent', () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
-    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']));
+    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
     tick();
     fixture.detectChanges();
@@ -116,7 +116,7 @@ describe('CreateTestRecordComponent', () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
-    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']));
+    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
     tick();
     fixture.detectChanges();
@@ -203,7 +203,7 @@ describe('CreateTestRecordComponent', () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
-    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']));
+    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
     tick();
     fixture.detectChanges();

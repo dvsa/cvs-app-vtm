@@ -1,7 +1,7 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
-export const DeskBasedVehicleSectionHgvGroup123: FormNode = {
+export const DeskBasedVehicleSectionHgvGroup124: FormNode = {
   name: 'vehicleSection',
   label: 'Vehicle Details',
   type: FormNodeTypes.GROUP,
