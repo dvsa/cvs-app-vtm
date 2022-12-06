@@ -49,7 +49,6 @@ export class BodyComponent implements OnInit, OnDestroy {
     });
 
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
-    this.optionsService.loadOptions(ReferenceDataResourceType.BodyModel);
   }
 
   ngOnDestroy(): void {
@@ -67,18 +66,6 @@ export class BodyComponent implements OnInit, OnDestroy {
 
   get bodyMakes$(): Observable<MultiOptions | undefined> {
     return this.optionsService.getOptions(ReferenceDataResourceType.BodyMake);
-  }
-
-  get bodyModels$(): Observable<MultiOptions | undefined> {
-    return this.referenceDataStore
-      .select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.BodyModel))
-      .pipe(
-        map(bodyModels =>
-          bodyModels
-            ?.filter(bodyModel => (bodyModel as BodyModel).bodyMake === this.vehicleTechRecord.make)
-            .map(bodyModel => ({ value: bodyModel.description ?? '', label: bodyModel.description ?? '' }))
-        )
-      );
   }
 
   get bodyTypeForm(): FormGroup {

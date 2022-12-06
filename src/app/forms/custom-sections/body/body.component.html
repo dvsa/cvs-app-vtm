@@ -51,11 +51,10 @@
 
     <app-switchable-input
       [form]="form"
-      [type]="editTypes.DROPDOWN"
+      [type]="editTypes.TEXT"
       name="model"
       label="Body model"
       [isEditing]="isEditing"
-      [options]="(bodyModels$ | async) || []"
       [width]="widths.M"
     ></app-switchable-input>
   </div>
