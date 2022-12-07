@@ -213,7 +213,6 @@ export const RequiredSection: FormNode = {
             },
             {
               name: 'certificateLink',
-
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
@@ -222,13 +221,21 @@ export const RequiredSection: FormNode = {
               name: 'testTypeClassification',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
+              value: ''
             },
             {
               name: 'deletionFlag',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
               viewType: FormNodeViewTypes.HIDDEN
+            },
+            {
+              name: 'testNumber',
+              label: 'Test Number',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
