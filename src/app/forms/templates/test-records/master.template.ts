@@ -143,12 +143,22 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection,
       required: RequiredSpecialistSection
     },
-    testTypesDeskBasedGroup2: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+    // testTypesDeskBasedGroup2: {
+    //   vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+    //   required: RequiredSection,
+    //   test: DeskBasedTestSectionGroup2PSV,
+    //   seatbelts: SeatbeltHiddenSection,
+    //   emissions: EmissionsSection,
+    //   visit: VisitSection,
+    //   notes: NotesSection,
+    //   defects: defectsHiddenSection,
+    //   customDefects: CustomDefectsHiddenSection,
+    //   reasonForCreation: reasonForCreationSection
+    // },
+    testTypesDeskBasedGroup4: {
       required: RequiredSection,
-      test: DeskBasedTestSectionGroup2PSV,
-      seatbelts: SeatbeltHiddenSection,
-      emissions: EmissionsSection,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
+      test: amendDeskBasedTestSectionGroup4Psv,
       visit: VisitSection,
       notes: NotesSection,
       defects: defectsHiddenSection,

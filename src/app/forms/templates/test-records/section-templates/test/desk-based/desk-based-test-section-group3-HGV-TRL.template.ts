@@ -66,7 +66,7 @@ export const DeskBasedTestSectionGroup3HgvTrl: FormNode = {
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.TEXT,
               width: FormNodeWidth.L,
-              validators: [{ name: ValidatorNames.Alphanumeric }],
+              validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }],
               value: null
             },
             {
