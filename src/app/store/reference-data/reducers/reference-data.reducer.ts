@@ -46,7 +46,6 @@ function getInitialState(resourceType: ReferenceDataResourceType) {
 
 export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapter<ReferenceDataModelBase>> = {
   [ReferenceDataResourceType.BodyMake]: createAdapter(),
-  [ReferenceDataResourceType.BodyModel]: createAdapter(),
   [ReferenceDataResourceType.Brake]: createAdapter(),
   [ReferenceDataResourceType.CountryOfRegistration]: createAdapter(),
   [ReferenceDataResourceType.PsvMake]: createAdapter(),
@@ -63,7 +62,6 @@ export const resourceTypeAdapters: Record<ReferenceDataResourceType, EntityAdapt
 
 export const initialReferenceDataState: ReferenceDataState = {
   [ReferenceDataResourceType.BodyMake]: getInitialState(ReferenceDataResourceType.BodyMake),
-  [ReferenceDataResourceType.BodyModel]: getInitialState(ReferenceDataResourceType.BodyModel),
   [ReferenceDataResourceType.Brake]: getInitialState(ReferenceDataResourceType.Brake),
   [ReferenceDataResourceType.CountryOfRegistration]: getInitialState(ReferenceDataResourceType.CountryOfRegistration),
   [ReferenceDataResourceType.PsvMake]: getInitialState(ReferenceDataResourceType.PsvMake),
