@@ -85,7 +85,7 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               name: 'testTypeEndTimestamp',
               type: FormNodeTypes.CONTROL,
               value: null,
-              label: 'Test End Date',
+              label: 'Test end date',
               viewType: FormNodeViewTypes.HIDDEN,
               editType: FormNodeEditTypes.HIDDEN
             },
