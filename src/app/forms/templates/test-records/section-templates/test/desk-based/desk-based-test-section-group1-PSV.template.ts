@@ -44,6 +44,20 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               value: 'pass'
             },
             {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null
+            },
+            {
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null
+            },
+            {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
@@ -82,6 +96,14 @@ export const DeskBasedTestSectionGroup1Psv: FormNode = {
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
               editType: FormNodeEditTypes.DATE
+            },
+            {
+              name: 'prohibitionIssued',
+              label: 'Prohibition issued',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
