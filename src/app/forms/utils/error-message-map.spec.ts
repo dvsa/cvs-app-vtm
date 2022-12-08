@@ -30,7 +30,7 @@ describe('ErrorMessageMap', () => {
     ['Date must be in the future', ValidatorNames.FutureDate, [true, 'Date']],
     ['This date must be in the future', ValidatorNames.FutureDate, [true, undefined]],
     ['This date must be ahead of the previous date', ValidatorNames.AheadOfDate, [true, undefined]],
-    ['bar must be ahead of foo', ValidatorNames.AheadOfDate, [{ sibling: 'foo' }, 'bar']],
+    ['bar must be ahead of foo (20/01/2021)', ValidatorNames.AheadOfDate, [{ sibling: 'foo', date: new Date('2021-01-20T00:00:00.000Z') }, 'bar']],
     ['This field is required', AsyncValidatorNames.RequiredIfNotFail, [{ sibling: 'foo' }, '']],
     ['Name is required', AsyncValidatorNames.RequiredIfNotFail, [{ sibling: 'foo' }, 'Name']],
     ['Prohibition notice has not been issued.', ValidatorNames.ValidateProhibitionIssued, undefined],
