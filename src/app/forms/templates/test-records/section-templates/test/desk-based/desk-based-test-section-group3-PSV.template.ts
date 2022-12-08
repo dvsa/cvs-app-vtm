@@ -99,3 +99,105 @@ export const DeskBasedTestSectionGroup3Psv: FormNode = {
     }
   ]
 };
+
+export const AmendDeskBasedTestSectionGroup3Psv: FormNode = {
+  name: 'testSection',
+  label: 'Test',
+  type: FormNodeTypes.GROUP,
+  children: [
+    {
+      name: 'testStartTimestamp',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'testEndTimestamp',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    },
+    {
+      name: 'createdAt',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      viewType: FormNodeViewTypes.HIDDEN
+    },
+    {
+      name: 'testTypes',
+      label: 'Test Types',
+      type: FormNodeTypes.ARRAY,
+      children: [
+        {
+          name: '0', // it is important here that the name of the node for an ARRAY type should be an index value
+          type: FormNodeTypes.GROUP,
+          children: [
+            {
+              name: 'testResult',
+              label: 'Result',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' }
+              ]
+            },
+            {
+              name: 'reasonForAbandoning',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null
+            },
+            {
+              name: 'additionalCommentsForAbandon',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              value: null
+            },
+            {
+              name: 'certificateNumber',
+              label: 'Certificate number',
+              type: FormNodeTypes.CONTROL,
+              editType: FormNodeEditTypes.TEXT,
+              width: FormNodeWidth.L,
+              validators: [{ name: ValidatorNames.Alphanumeric }],
+              value: null
+            },
+            {
+              name: 'testTypeStartTimestamp',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'testTypeEndTimestamp',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'testExpiryDate',
+              value: null,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
+              name: 'prohibitionIssued',
+              label: 'Prohibition issued',
+              type: FormNodeTypes.CONTROL,
+              value: null,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
