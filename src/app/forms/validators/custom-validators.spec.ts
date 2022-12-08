@@ -378,7 +378,7 @@ describe('aheadOfDate', () => {
       form.controls['sibling'].patchValue(new Date('2021-01-01T00:00:00.000Z').toISOString());
 
       const result = CustomValidators.aheadOfDate('sibling')(form.controls['foo'] as AbstractControl);
-      expect(result).toEqual({ aheadOfDate: { sibling: 'sibling' } });
+      expect(result).toEqual({ aheadOfDate: { sibling: 'sibling', date: new Date('2021-01-01T00:00:00.000Z') } });
     });
 
     it('should return null if sibling date is not ahead of foo', () => {
