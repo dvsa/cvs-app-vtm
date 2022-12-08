@@ -152,22 +152,6 @@ export const amendDeskBasedTestSectionGroup1And4HgvTrl: FormNode = {
               value: 'pass'
             },
             {
-              name: 'reasonForAbandoning',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
-            },
-            {
-              name: 'additionalCommentsForAbandon',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null,
-              required: true
-            },
-            {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
@@ -195,12 +179,11 @@ export const amendDeskBasedTestSectionGroup1And4HgvTrl: FormNode = {
               editType: FormNodeEditTypes.HIDDEN
             },
             {
-              name: 'prohibitionIssued',
-              label: 'Prohibition issued',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
+              name: 'testNumber',
+              label: 'Test Number',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL
             }
           ]
         }
