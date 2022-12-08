@@ -1,5 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
+import { formatDate } from '@angular/common';
 
 const DEFAULT_LABEL = 'This field';
 export const ErrorMessageMap: Record<string, (...args: any) => string> = {
@@ -19,8 +20,8 @@ export const ErrorMessageMap: Record<string, (...args: any) => string> = {
   [ValidatorNames.Min]: (err: { min: number }, label?: string) => `${label || DEFAULT_LABEL} must be greater than or equal to ${err.min}`,
   [ValidatorNames.PastDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the past`,
   [ValidatorNames.FutureDate]: (err: boolean, label?: string) => `${label || 'This date'} must be in the future`,
-  [ValidatorNames.AheadOfDate]: (err: { sibling: string }, label?: string) =>
-    `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}`,
+  [ValidatorNames.AheadOfDate]: (err: { sibling: string; date: Date }, label?: string) =>
+    `${label || 'This date'} must be ahead of ${err.sibling || 'the previous date'}${err.date ? formatDate(err.date, ' (dd/MM/yyyy)', 'en') : ''}`,
   [ValidatorNames.DateNotExceed]: (err: { sibling: string; months: number }, label?: string) =>
     `${label || 'This date'} must be less than ${err.months || 'X'} months after ${err.sibling || 'the previous date'}`,
   [AsyncValidatorNames.RequiredIfNotFail]: (err: boolean, label?: string) => `${label || DEFAULT_LABEL} is required`,
