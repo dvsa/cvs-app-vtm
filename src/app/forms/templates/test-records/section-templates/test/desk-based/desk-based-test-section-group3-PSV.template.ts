@@ -167,6 +167,14 @@ export const AmendDeskBasedTestSectionGroup3Psv: FormNode = {
               value: null
             },
             {
+              name: 'testNumber',
+              value: '',
+              disabled: true,
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
+            },
+            {
               name: 'testTypeStartTimestamp',
               type: FormNodeTypes.CONTROL,
               value: null,
