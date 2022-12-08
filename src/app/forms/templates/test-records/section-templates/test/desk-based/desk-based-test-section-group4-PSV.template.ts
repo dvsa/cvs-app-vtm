@@ -155,20 +155,6 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
               ]
             },
             {
-              name: 'reasonForAbandoning',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null
-            },
-            {
-              name: 'additionalCommentsForAbandon',
-              type: FormNodeTypes.CONTROL,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN,
-              value: null
-            },
-            {
               name: 'certificateNumber',
               label: 'Certificate number',
               type: FormNodeTypes.CONTROL,
@@ -222,14 +208,6 @@ export const amendDeskBasedTestSectionGroup4Psv: FormNode = {
                 { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
                 { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
               ]
-            },
-            {
-              name: 'prohibitionIssued',
-              label: 'Prohibition issued',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              viewType: FormNodeViewTypes.HIDDEN,
-              editType: FormNodeEditTypes.HIDDEN
             }
           ]
         }
