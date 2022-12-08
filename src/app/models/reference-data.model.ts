@@ -1,6 +1,5 @@
 export enum ReferenceDataResourceType {
   BodyMake = 'BODY_MAKE',
-  BodyModel = 'BODY_MODEL',
   Brake = 'BRAKES',
   CountryOfRegistration = 'COUNTRY_OF_REGISTRATION',
   PsvMake = 'PSV_MAKE',
