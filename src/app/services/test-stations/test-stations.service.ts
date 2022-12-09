@@ -24,10 +24,12 @@ export class TestStationsService {
   getTestStationsOptions(): Observable<MultiOptions> {
     return this.store.select(testStations).pipe(
       map(testStations =>
-        testStations.map(testStation => {
-          const label = testStation.testStationName + ' - ' + testStation.testStationPNumber;
-          return { value: testStation.testStationPNumber, label };
-        })
+        testStations
+          .sort((a, b) => a.testStationName.localeCompare(b.testStationName))
+          .map(testStation => {
+            const label = testStation.testStationName + ' - ' + testStation.testStationPNumber;
+            return { value: testStation.testStationPNumber, label };
+          })
       )
     );
   }
