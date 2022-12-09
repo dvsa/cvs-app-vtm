@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const HgvDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
@@ -37,6 +37,7 @@ export const HgvDimensionsTemplate: FormNode = {
                   name: 'value',
                   label: 'Axle to axle (mm)',
                   value: '',
+                  editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: [{ name: ValidatorNames.Max, args: 99999 }]
                 }

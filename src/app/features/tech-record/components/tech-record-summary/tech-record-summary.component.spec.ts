@@ -278,4 +278,88 @@ describe('TechRecordSummaryComponent', () => {
       ]);
     });
   });
+
+  describe('normaliseVehicleTechRecordAxles', () => {
+    it('should not change anything if the tech record is correct', () => {
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.normaliseVehicleTechRecordAxles();
+
+      const axleSpacingMock = jest.spyOn(component, 'generateAxleSpacing');
+      const axleMock = jest.spyOn(component, 'generateAxlesFromAxleSpacings');
+
+      expect(axleSpacingMock).toHaveBeenCalledTimes(0);
+      expect(axleMock).toHaveBeenCalledTimes(0);
+    });
+
+    it('should call generate spacings if there are more axles', () => {
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.vehicleTechRecordCalculated.axles.push({ axleNumber: 3 });
+
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(1);
+
+      component.normaliseVehicleTechRecordAxles();
+
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.length).toBe(2);
+    });
+
+    it('should call generate axles if there are more spacings', () => {
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.vehicleTechRecordCalculated.dimensions?.axleSpacing?.push({ axles: '2-3', value: 1 });
+
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+
+      component.normaliseVehicleTechRecordAxles();
+
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(3);
+    });
+
+    it('should call generate spacings if there are none but there is axles', () => {
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.vehicleTechRecordCalculated.dimensions!.axleSpacing = undefined;
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing).toBe(undefined);
+
+      component.normaliseVehicleTechRecordAxles();
+
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
+    });
+
+    it('should call generate spacings if there are none but there is axles and there is an object to start with', () => {
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.vehicleTechRecordCalculated.dimensions!.axleSpacing = [];
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+
+      component.normaliseVehicleTechRecordAxles();
+
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
+    });
+
+    it('should call generate axles if there are none but there is spacings', () => {
+      component.vehicleTechRecordCalculated = mockVehicleTechnicalRecord(VehicleTypes.HGV).techRecord[0];
+      component.vehicleTechRecordCalculated.axles = [];
+      expect(component.vehicleTechRecordCalculated.dimensions?.axleSpacing!.length).toBe(1);
+
+      component.normaliseVehicleTechRecordAxles();
+
+      expect(component.vehicleTechRecordCalculated.axles.length).toBe(2);
+    });
+  });
+
+  describe('generateAxles', () => {
+    it('should generate 3 axles from no previous data', () => {
+      const res = component.generateAxlesFromAxleSpacings(VehicleTypes.HGV, 2);
+
+      expect(res.length).toBe(3);
+      expect(res[0].axleNumber).toBe(1);
+      expect(res[2].axleNumber).toBe(3);
+    });
+
+    it('should generate 3 axles from 1 previous axle', () => {
+      const previousAxles = [{ axleNumber: 1 }];
+      const res = component.generateAxlesFromAxleSpacings(VehicleTypes.HGV, 2, previousAxles);
+
+      expect(res.length).toBe(3);
+      expect(res[0].axleNumber).toBe(1);
+      expect(res[2].axleNumber).toBe(3);
+    });
+  });
 });
