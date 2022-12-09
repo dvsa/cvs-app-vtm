@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 export const TrlDimensionsTemplate: FormNode = {
   name: 'dimensionsSection',
@@ -28,6 +28,7 @@ export const TrlDimensionsTemplate: FormNode = {
         {
           name: 'axleSpacing',
           type: FormNodeTypes.ARRAY,
+          value: '',
           children: [
             {
               name: '0',
@@ -37,6 +38,7 @@ export const TrlDimensionsTemplate: FormNode = {
                   name: 'value',
                   label: 'Axle to axle (mm)',
                   value: '',
+                  editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: [{ name: ValidatorNames.Max, args: 99999 }]
                 }

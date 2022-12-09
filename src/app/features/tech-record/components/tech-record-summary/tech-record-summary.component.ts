@@ -141,6 +141,7 @@ export class TechRecordSummaryComponent implements OnInit {
           )
           .subscribe(data => {
             this.vehicleTechRecordCalculated = data;
+            this.normaliseVehicleTechRecordAxles();
           })
       : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord, reasonForCreation: '' });
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
@@ -170,14 +171,14 @@ export class TechRecordSummaryComponent implements OnInit {
     this.formChange.emit();
   }
 
-  generateAxleSpacing(numberOfAxles: number, add: boolean = false, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
+  generateAxleSpacing(numberOfAxles: number, setOriginalValues: boolean = false, axleSpacingOriginal?: AxleSpacing[]): AxleSpacing[] {
     let axleSpacing: AxleSpacing[] = [];
 
     let axleNumber = 1;
     while (axleNumber < numberOfAxles) {
       axleSpacing.push({
         axles: `${axleNumber}-${axleNumber + 1}`,
-        value: add && axleNumber < numberOfAxles - 1 ? axleSpacingOriginal![axleNumber - 1].value : null
+        value: setOriginalValues && axleSpacingOriginal![axleNumber - 1] ? axleSpacingOriginal![axleNumber - 1].value : null
       });
       axleNumber++;
     }
@@ -225,6 +226,70 @@ export class TechRecordSummaryComponent implements OnInit {
       }
     }
     return axles.length + 1;
+  }
+
+  normaliseVehicleTechRecordAxles() {
+    if (this.vehicleTechRecordCalculated.vehicleType !== VehicleTypes.PSV) {
+      const vehicleAxles = this.vehicleTechRecordCalculated.axles;
+      const vehicleAxleSpacings = this.vehicleTechRecordCalculated.dimensions?.axleSpacing;
+
+      //axles = axlespacings + 1
+      if (vehicleAxles && vehicleAxleSpacings) {
+        if (vehicleAxles.length > vehicleAxleSpacings.length + 1) {
+          this.vehicleTechRecordCalculated.dimensions!.axleSpacing = this.generateAxleSpacing(vehicleAxles.length, true, vehicleAxleSpacings);
+        } else if (vehicleAxles.length < vehicleAxleSpacings.length + 1) {
+          this.vehicleTechRecordCalculated.axles = this.generateAxlesFromAxleSpacings(
+            this.vehicleTechRecordCalculated.vehicleType,
+            vehicleAxleSpacings.length,
+            vehicleAxles
+          );
+        }
+      } else if (vehicleAxles && !vehicleAxleSpacings) {
+        this.vehicleTechRecordCalculated.dimensions!.axleSpacing = this.generateAxleSpacing(vehicleAxles.length);
+      } else if (!vehicleAxles && vehicleAxleSpacings) {
+        this.vehicleTechRecordCalculated.axles = this.generateAxlesFromAxleSpacings(
+          this.vehicleTechRecordCalculated.vehicleType,
+          vehicleAxleSpacings.length
+        );
+      }
+    }
+  }
+
+  generateAxlesFromAxleSpacings(vehicleType: VehicleTypes, vehicleAxleSpacingsLength: number, previousAxles?: Axle[]): Axle[] {
+    const axles = previousAxles ?? [];
+
+    let i = previousAxles ? previousAxles.length : 0;
+
+    for (i; i < vehicleAxleSpacingsLength + 1; i++) {
+      const axleNumber = previousAxles ? i + 1 : i;
+      axles.push(this.generateAxleObject(vehicleType, i + 1));
+    }
+
+    return axles;
+  }
+
+  generateAxleObject(vehicleType: VehicleTypes, axleNumber: number): Axle {
+    const weights =
+      vehicleType === VehicleTypes.PSV
+        ? {
+            kerbWeight: null,
+            ladenWeight: null,
+            gbWeight: null,
+            designWeight: null
+          }
+        : {
+            gbWeight: null,
+            eecWeight: null,
+            designWeight: null
+          };
+
+    const tyres = { tyreSize: null, speedCategorySymbol: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
+
+    return {
+      axleNumber,
+      weights,
+      tyres
+    };
   }
 
   setBodyFields(): void {

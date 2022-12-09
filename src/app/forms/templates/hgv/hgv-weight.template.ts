@@ -1,5 +1,5 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
 
 const requiredValidation = [
   { name: ValidatorNames.Numeric, args: 99999 },
@@ -38,6 +38,7 @@ export const HgvWeight: FormNode = {
       label: 'EEC (optional)',
       customValidatorErrorName: 'Gross EEC Weight',
       value: '',
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -68,6 +69,7 @@ export const HgvWeight: FormNode = {
       label: 'EEC (optional)',
       customValidatorErrorName: 'Train EEC Weight',
       value: '',
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -98,6 +100,7 @@ export const HgvWeight: FormNode = {
       label: 'EEC (optional)',
       customValidatorErrorName: 'Max Train EEC Weight',
       value: '',
+      editType: FormNodeEditTypes.NUMBER,
       type: FormNodeTypes.CONTROL,
       validators: optionalValidation
     },
@@ -150,6 +153,7 @@ export const HgvWeight: FormNode = {
                   label: 'EEC (optional)',
                   customValidatorErrorName: 'Axle EEC Weight',
                   value: '',
+                  editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: optionalValidation
                 },
