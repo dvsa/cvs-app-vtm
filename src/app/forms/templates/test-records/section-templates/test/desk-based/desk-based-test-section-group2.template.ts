@@ -144,11 +144,14 @@ export const AmendDeskBasedTestSectionGroup2: FormNode = {
           children: [
             {
               name: 'testResult',
-              type: FormNodeTypes.CONTROL,
               label: 'Result',
-              value: 'pass',
-              editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.RADIO,
+              options: [
+                { value: 'pass', label: 'Pass' },
+                { value: 'fail', label: 'Fail' }
+              ]
             },
             {
               name: 'certificateNumber',
