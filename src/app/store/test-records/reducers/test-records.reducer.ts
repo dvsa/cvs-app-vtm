@@ -1,6 +1,7 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
@@ -130,7 +131,14 @@ function calculateTestResult(testResultState: TestResultModel | undefined): Test
   if (!testResultState) {
     return;
   }
+
+  // don't update test result for DBA
+  if (TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
+    return;
+  }
+
   const testResult = cloneDeep(testResultState);
+
   const newTestTypes = testResult.testTypes.map(testType => {
     if (testType.testResult === resultOfTestEnum.abandoned || !testType.defects) {
       return testType;

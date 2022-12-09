@@ -14,6 +14,7 @@ import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
 import { map, Observable } from 'rxjs';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
+import { resultOfTestEnum } from '@models/test-types/test-type.model';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
@@ -74,8 +75,8 @@ export class BaseTestRecordComponent implements AfterViewInit {
     return this.testRecordsService.sectionTemplates$;
   }
 
-  get resultOfTest$(): Observable<string | undefined> {
-    return this.testRecordsService.editingTestResult$.pipe(map(testResult => testResult?.testTypes[0].testResult));
+  get resultOfTest(): resultOfTestEnum {
+    return this.testResult?.testTypes[0].testResult;
   }
 
   get testNumber$(): Observable<string | undefined> {
