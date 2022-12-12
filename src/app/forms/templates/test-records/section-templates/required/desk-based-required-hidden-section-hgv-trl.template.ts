@@ -204,7 +204,8 @@ export const DeskBasedRequiredSectionHgvTrl: FormNode = {
               name: 'testTypeClassification',
               type: FormNodeTypes.CONTROL,
               editType: FormNodeEditTypes.HIDDEN,
-              viewType: FormNodeViewTypes.HIDDEN
+              viewType: FormNodeViewTypes.HIDDEN,
+              value: null
             },
             {
               name: 'deletionFlag',

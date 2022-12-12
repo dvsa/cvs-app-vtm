@@ -310,8 +310,8 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup3: {
-      required: RequiredSection,
-      vehicle: DeskBasedVehicleSectionDefaultTrl,
+      required: DeskBasedRequiredSectionHgvTrl,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: AmendDeskBasedTestSectionGroup3,
       visit: VisitSection,
       notes: NotesSection,
@@ -436,7 +436,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     },
     testTypesDeskBasedGroup3: {
-      required: RequiredSection,
+      required: DeskBasedRequiredSectionHgvTrl,
       vehicle: DeskBasedVehicleSectionDefaultTrl,
       test: AmendDeskBasedTestSectionGroup3,
       visit: VisitSection,
