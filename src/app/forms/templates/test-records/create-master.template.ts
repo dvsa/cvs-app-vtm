@@ -31,7 +31,7 @@ import { ContingencyTestSectionSpecialistGroup5 } from './section-templates/test
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import { DeskBasedTestSectionGroup1Psv } from './section-templates/test/desk-based/desk-based-test-section-group1-PSV.template';
-import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3-PSV.template';
+import { DeskBasedTestSectionGroup3 } from './section-templates/test/desk-based/desk-based-test-section-group3.template';
 import { DeskBasedTestSectionGroup4Psv } from './section-templates/test/desk-based/desk-based-test-section-group4-PSV.template';
 import { DeskBasedEmissionsSection } from './section-templates/emissions/desk-based-emissions-section.template';
 import { DeskBasedTestSectionGroup1And4HgvTrl } from './section-templates/test/desk-based/desk-based-test-section-group1And4-HGV-TRL.template';

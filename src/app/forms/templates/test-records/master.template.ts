@@ -41,7 +41,7 @@ import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicl
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionHgvGroup1And2And4 } from './section-templates/vehicle/desk-based-test-hgv-vehicle-section-group1And2And4.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
-import { AmendDeskBasedTestSectionGroup3 } from '@forms/templates/test-records/section-templates/test/desk-based/desk-based-test-section-group3-PSV.template';
+import { AmendDeskBasedTestSectionGroup3 } from '@forms/templates/test-records/section-templates/test/desk-based/desk-based-test-section-group3.template';
 
 /**
  * Keys of root object must a a valid vehicle type.
