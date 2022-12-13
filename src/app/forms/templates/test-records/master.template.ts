@@ -152,7 +152,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
     },
     testTypesDeskBasedGroup2: {
       required: DeskBasedRequiredSectionPsv,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: DeskBasedVehicleSectionDefaultPsvHgv,
       test: AmendDeskBasedTestSectionGroup2,
       emissions: EmissionsSection,
       visit: VisitSection,
