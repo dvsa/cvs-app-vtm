@@ -21,12 +21,7 @@
           [vehicleTechRecord]="vehicleTechRecord"
         ></app-tech-record-history>
 
-        <app-test-record-summary
-          *appRoleRequired="roles.TestResultView"
-          [testRecords]="(records$ | async) || []"
-          [currentTechRecord]="(currentTechRecord$ | async) || undefined"
-        >
-        </app-test-record-summary>
+        <app-test-record-summary *appRoleRequired="roles.TestResultView" [testRecords]="(records$ | async) || []"> </app-test-record-summary>
 
         <ng-container *ngIf="!isArchived && !isEditing">
           <app-test-record-create-button *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssesment]">
