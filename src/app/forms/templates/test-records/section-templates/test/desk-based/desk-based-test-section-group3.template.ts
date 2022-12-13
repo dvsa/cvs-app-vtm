@@ -1,7 +1,7 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 
-export const DeskBasedTestSectionGroup3Psv: FormNode = {
+export const DeskBasedTestSectionGroup3: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
@@ -61,7 +61,6 @@ export const DeskBasedTestSectionGroup3Psv: FormNode = {
               type: FormNodeTypes.CONTROL,
               width: FormNodeWidth.L,
               validators: [{ name: ValidatorNames.Alphanumeric }, { name: ValidatorNames.Required }],
-              required: true,
               value: null
             },
             {
@@ -100,7 +99,7 @@ export const DeskBasedTestSectionGroup3Psv: FormNode = {
   ]
 };
 
-export const AmendDeskBasedTestSectionGroup3Psv: FormNode = {
+export const AmendDeskBasedTestSectionGroup3: FormNode = {
   name: 'testSection',
   label: 'Test',
   type: FormNodeTypes.GROUP,
