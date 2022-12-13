@@ -39,7 +39,7 @@
         <h1 class="govuk-heading-l govuk-!-margin-bottom-2">{{ test?.testTypeId || '' | testTypeName: (selectAllTestTypes$ | async) }}</h1>
         <div class="date_and_result">
           <span class="govuk-caption-l">{{ testResult?.createdAt | date: 'dd MMM yyyy' }}</span>
-          <app-result-of-test></app-result-of-test>
+          <app-result-of-test [resultOfTest]="resultOfTest"></app-result-of-test>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { TestResultDefect } from '@models/test-results/test-result-defect.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { resultOfTestEnum } from '@models/test-types/test-type.model';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector, createReducer, on } from '@ngrx/store';
@@ -22,16 +23,15 @@ import {
   fetchTestResultsSuccess,
   initialContingencyTest,
   removeDefect,
-  updateDefect,
+  setResultOfTest,
   templateSectionsChanged,
+  updateDefect,
   updateEditingTestResult,
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess,
-  setResultOfTest
+  updateTestResultSuccess
 } from '../actions/test-records.actions';
-import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
 
@@ -128,13 +128,13 @@ function removeDefectAtIndex(testResultState: TestResultModel | undefined, index
 }
 
 function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
-  if (TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
+  // don't update test result for DBA
+  if (!testResultState || TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
     return;
   }
-  if (!testResultState) {
-    return;
-  }
+
   const testResult = cloneDeep(testResultState);
+
   const newTestTypes = testResult.testTypes.map(testType => {
     if (testType.testResult === resultOfTestEnum.abandoned || !testType.defects) {
       return testType;
