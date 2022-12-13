@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { DynamicFormsModule } from '../../forms/dynamic-forms.module';
 import { TestRecordSummaryComponent } from './components/test-record-summary/test-record-summary.component';
+import { TestRecordCreateButtonComponent } from './components/test-record-create-button/test-record-create-button.component';
 import { TechRecordsRoutingModule } from './tech-record-routing.module';
 import { TechRecordComponent } from './tech-record.component';
 import { TechRecordHistoryComponent } from './components/tech-record-history/tech-record-history.component';
@@ -22,6 +23,7 @@ import { TechRecordTitleComponent } from './components/tech-record-title/tech-re
     TechRecordHistoryComponent,
     TechRecordSummaryComponent,
     TestRecordSummaryComponent,
+    TestRecordCreateButtonComponent,
     VehicleTechnicalRecordComponent,
     TechAmendReasonComponent,
     TyresSearchComponent,

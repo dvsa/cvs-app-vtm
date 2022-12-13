@@ -57,7 +57,7 @@ describe('VehicleTechnicalRecordComponent', () => {
         {
           provide: UserService,
           useValue: {
-            roles$: of(['TestResult.View'])
+            roles$: of(['TestResult.View', 'TestResult.CreateContingency'])
           }
         },
         {

@@ -27,6 +27,11 @@
           [currentTechRecord]="(currentTechRecord$ | async) || undefined"
         >
         </app-test-record-summary>
+
+        <ng-container *ngIf="!isArchived && !isEditing">
+          <app-test-record-create-button *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssesment]">
+          </app-test-record-create-button>
+        </ng-container>
       </div>
     </div>
   </div>
