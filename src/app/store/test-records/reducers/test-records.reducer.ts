@@ -23,16 +23,15 @@ import {
   fetchTestResultsSuccess,
   initialContingencyTest,
   removeDefect,
-  updateDefect,
+  setResultOfTest,
   templateSectionsChanged,
+  updateDefect,
   updateEditingTestResult,
   updateResultOfTest,
   updateTestResult,
   updateTestResultFailed,
-  updateTestResultSuccess,
-  setResultOfTest
+  updateTestResultSuccess
 } from '../actions/test-records.actions';
-import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 
 export const STORE_FEATURE_TEST_RESULTS_KEY = 'testRecords';
 
@@ -129,15 +128,8 @@ function removeDefectAtIndex(testResultState: TestResultModel | undefined, index
 }
 
 function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
-  if (TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
-    return;
-  }
-  if (!testResultState) {
-    return;
-  }
-
   // don't update test result for DBA
-  if (TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
+  if (!testResultState || TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
     return;
   }
 
