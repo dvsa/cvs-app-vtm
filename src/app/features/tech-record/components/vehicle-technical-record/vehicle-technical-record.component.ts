@@ -30,6 +30,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   isDirty = false;
   isCurrent = false;
+  isArchived = false;
   isInvalid = false;
   isEditing = false;
   editingReason?: ReasonForEditing;
@@ -47,9 +48,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService
-      .viewableTechRecord$(this.vehicleTechRecord!)
-      .pipe(tap(viewableTechRecord => (this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT)));
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!).pipe(
+      tap(viewableTechRecord => {
+        this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
+        this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+      })
+    );
   }
 
   ngAfterViewInit(): void {

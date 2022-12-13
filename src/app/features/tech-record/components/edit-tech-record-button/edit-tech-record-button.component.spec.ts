@@ -20,9 +20,6 @@ import {
 import { RouterTestingModule } from '@angular/router/testing';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { clearError } from '@store/global-error/actions/global-error.actions';
-import { selectedAmendedTestResultState } from '@store/test-records';
-import { mockTestResult } from '@mocks/mock-test-result';
-import { mockVehicleTechnicalRecord } from '@mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 
 let component: EditTechRecordButtonComponent;
