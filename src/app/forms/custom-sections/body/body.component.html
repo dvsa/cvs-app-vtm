@@ -1,4 +1,14 @@
 <ng-container *ngIf="vehicleTechRecord.vehicleType === 'psv'">
+  <app-switchable-input
+    [form]="brakesForm"
+    [type]="editTypes.AUTOCOMPLETE"
+    name="dtpNumber"
+    label="DTp Number"
+    [isEditing]="isEditing"
+    [propOptions$]="dtpNumbers$"
+    [width]="widths.L"
+  ></app-switchable-input>
+
   <div class="node-row">
     <app-switchable-input [form]="form" [type]="editTypes.TEXT" name="chassisMake" label="Chassis make" [isEditing]="isEditing" [width]="widths.L">
     </app-switchable-input>
@@ -38,6 +48,15 @@
 </ng-container>
 
 <ng-container *ngIf="vehicleTechRecord.vehicleType !== 'psv'">
+  <app-switchable-input
+    [form]="brakesForm"
+    [type]="editTypes.TEXT"
+    name="dtpNumber"
+    label="DTp Number"
+    [isEditing]="isEditing"
+    [width]="widths.L"
+  ></app-switchable-input>
+
   <div class="node-row">
     <app-switchable-input
       [form]="form"
