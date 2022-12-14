@@ -37,6 +37,7 @@ export const ContingencyVisitSection: FormNode = {
       name: 'testerStaffId',
       type: FormNodeTypes.CONTROL,
       label: 'Tester details',
+      width: FormNodeWidth.XXL,
       viewType: FormNodeViewTypes.HIDDEN,
       editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.User,
