@@ -40,7 +40,7 @@ export class SwitchableInputComponent implements OnInit {
   }
 
   get options$(): Observable<MultiOptions> {
-    return this.propOptions$ ? this.propOptions$ : of(this.options ?? []);
+    return this.propOptions$ ?? of(this.options ?? []);
   }
 
   get types(): typeof FormNodeEditTypes {

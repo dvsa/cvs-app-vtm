@@ -1,18 +1,18 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MultiOption, MultiOptions } from '@forms/models/options.model';
+import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeCode, BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
-import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
+import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Store } from '@ngrx/store';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Subject, debounceTime, takeUntil, Observable, map, take, of, takeWhile, lastValueFrom, takeLast, last, skipWhile } from 'rxjs';
+import { ReferenceDataState } from '@store/reference-data';
+import { Subject, debounceTime, takeUntil, Observable, map, skipWhile } from 'rxjs';
 
 @Component({
   selector: 'app-body',
@@ -76,7 +76,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
 
   get dtpNumbers$(): Observable<MultiOptions> {
     return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake).pipe(
-      skipWhile(data => data?.length! <= 2000), //// Write better predicate
+      skipWhile(data => data?.length! < 2001), // TODO: Write better predicate
       map(data => data?.map(option => ({ value: option.value, label: option.value })) as MultiOptions)
     );
   }
