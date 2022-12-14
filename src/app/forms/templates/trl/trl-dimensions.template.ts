@@ -37,7 +37,7 @@ export const TrlDimensionsTemplate: FormNode = {
                 {
                   name: 'value',
                   label: 'Axle to axle (mm)',
-                  value: '',
+                  value: null,
                   editType: FormNodeEditTypes.NUMBER,
                   type: FormNodeTypes.CONTROL,
                   validators: [{ name: ValidatorNames.Max, args: 99999 }]
