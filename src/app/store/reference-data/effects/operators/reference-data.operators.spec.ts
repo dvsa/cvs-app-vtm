@@ -46,8 +46,7 @@ describe('Reference data operators', () => {
               ]
             });
             done();
-          },
-          error: e => console.log('*** MCAD ***:', e)
+          }
         });
     });
   });
