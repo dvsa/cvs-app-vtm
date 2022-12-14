@@ -44,7 +44,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
       }
       this.formChange.emit(event);
     });
-    console.log(this.form);
+
     this.optionsService.loadOptions(ReferenceDataResourceType.BodyMake);
     this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
   }
