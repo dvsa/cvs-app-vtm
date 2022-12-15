@@ -13,7 +13,12 @@ import { AccordionComponent } from './components/accordion/accordion.component';
 import { AccordionControlComponent } from './components/accordion-control/accordion-control.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
+import { TestCertificateComponent } from './components/test-certificate/test-certificate.component';
+import { PreventDoubleClickDirective } from './directives/prevent-double-click/prevent-double-click.directive';
 import { BaseDialogComponent } from './components/base-dialog/base-dialog.component';
+import { DigitGroupSeparatorPipe } from './pipes/digit-group-separator/digit-group-separator.pipe';
+import { DocumentRetrievalService } from '@api/document-retrieval';
+import { RefDataDecodePipe } from './pipes/ref-data-decode/ref-data-decode.pipe';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,11 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
-    BaseDialogComponent
+    TestCertificateComponent,
+    PreventDoubleClickDirective,
+    BaseDialogComponent,
+    DigitGroupSeparatorPipe,
+    RefDataDecodePipe
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -45,7 +54,11 @@ import { BaseDialogComponent } from './components/base-dialog/base-dialog.compon
     AccordionComponent,
     AccordionControlComponent,
     PaginationComponent,
-    BaseDialogComponent
-  ]
+    TestCertificateComponent,
+    BaseDialogComponent,
+    DigitGroupSeparatorPipe,
+    RefDataDecodePipe
+  ],
+  providers: [DocumentRetrievalService]
 })
 export class SharedModule {}

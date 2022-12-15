@@ -1,0 +1,92 @@
+<app-switchable-input
+  *ngIf="isEditing; else view"
+  [form]="brakesForm"
+  [type]="editTypes.AUTOCOMPLETE"
+  name="brakeCodeOriginal"
+  label="Brake code"
+  [isEditing]="isEditing"
+  [width]="widths.L"
+  [prefix]="brakeCodePrefix"
+  [options]="(brakeCodeOptions$ | async) || []"
+></app-switchable-input>
+
+<ng-template #view [formGroup]="brakesForm">
+  <app-read-only formControlName="brakeCode" label="Brake code"></app-read-only>
+</ng-template>
+
+<app-switchable-input
+  [form]="brakesForm"
+  [type]="editTypes.TEXT"
+  name="dataTrBrakeOne"
+  label="Service *"
+  [isEditing]="isEditing"
+  [width]="widths.XL"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="brakesForm"
+  [type]="editTypes.TEXT"
+  name="dataTrBrakeTwo"
+  label="Secondary *"
+  [isEditing]="isEditing"
+  [width]="widths.XL"
+></app-switchable-input>
+
+<app-switchable-input
+  [form]="brakesForm"
+  [type]="editTypes.TEXT"
+  name="dataTrBrakeThree"
+  label="Parking *"
+  [isEditing]="isEditing"
+  [width]="widths.XL"
+></app-switchable-input>
+
+<div class="row">
+  <app-switchable-input
+    [form]="brakesForm"
+    [type]="editTypes.RADIO"
+    name="retarderBrakeOne"
+    label="Retarder 1"
+    [isEditing]="isEditing"
+    [options]="retarderOptions"
+  ></app-switchable-input>
+
+  <app-switchable-input
+    [form]="brakesForm"
+    [type]="editTypes.RADIO"
+    name="retarderBrakeTwo"
+    label="Retarder 2"
+    [isEditing]="isEditing"
+    [options]="retarderOptions"
+  ></app-switchable-input>
+</div>
+
+<table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header"></th>
+      <th scope="col" class="govuk-table__header">No wheels locked</th>
+      <th scope="col" class="govuk-table__header">Up to and including half wheels locked</th>
+    </tr>
+  </thead>
+
+  <tbody class="govuk-table__body">
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">Service</th>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 16) / 100) }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 16) / 100) }}</td>
+    </tr>
+
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">Secondary</th>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100) }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 25) / 100) }}</td>
+    </tr>
+
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header">Parking</th>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossLadenWeight || 0) * 45) / 100) }}</td>
+      <td class="govuk-table__cell">{{ round(((vehicleTechRecord.grossKerbWeight || 0) * 50) / 100) }}</td>
+    </tr>
+  </tbody>
+</table>

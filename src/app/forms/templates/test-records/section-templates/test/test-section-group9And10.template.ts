@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup9And10: FormNode = {
   name: 'testSection',
@@ -11,7 +11,6 @@ export const TestSectionGroup9And10: FormNode = {
       name: 'createdAt',
       label: 'Created',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -21,7 +20,6 @@ export const TestSectionGroup9And10: FormNode = {
       label: 'Test Date',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -40,8 +38,8 @@ export const TestSectionGroup9And10: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
             },
             {
               name: 'testResult',
@@ -59,7 +57,6 @@ export const TestSectionGroup9And10: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -67,26 +64,38 @@ export const TestSectionGroup9And10: FormNode = {
               label: 'Certificate number',
               value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN
             },
             {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'testExpiryDate',
               label: 'Expiry Date',
               value: '',
-              disabled: true,
-
               type: FormNodeTypes.CONTROL,
               viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
+              editType: FormNodeEditTypes.DATE,
+              validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' }]
+            },
+            {
+              name: 'testAnniversaryDate',
+              label: 'Anniversary date',
+              value: '',
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.DATE,
+              editType: FormNodeEditTypes.DATE,
+              validators: [
+                { name: ValidatorNames.Required },
+                { name: ValidatorNames.AheadOfDate, args: 'testTypeStartTimestamp' },
+                { name: ValidatorNames.DateNotExceed, args: { sibling: 'testExpiryDate', months: 14 } }
+              ]
             },
             {
               name: 'reasonForAbandoning',
@@ -101,7 +110,7 @@ export const TestSectionGroup9And10: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: SpecialRefData.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',
@@ -117,15 +126,6 @@ export const TestSectionGroup9And10: FormNode = {
                 },
                 { name: ValidatorNames.MaxLength, args: 500 }
               ]
-            },
-            {
-              name: 'testAnniversaryDate',
-              type: FormNodeTypes.CONTROL,
-              value: null,
-              disabled: true,
-              label: 'Anniversary date',
-              viewType: FormNodeViewTypes.DATE,
-              editType: FormNodeEditTypes.DATE
             },
             {
               name: 'testTypeStartTimestamp',

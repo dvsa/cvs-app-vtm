@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
-import { getDimensionsSection } from '@forms/templates/general/dimensions.template';
+import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
+import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
+import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
 import { TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 
@@ -17,37 +18,39 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   @Output() formChange = new EventEmitter();
 
   form!: CustomFormGroup;
-  template!: FormNode;
 
   private destroy$ = new Subject<void>();
 
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.template = getDimensionsSection(
-      this.vehicleTechRecord.vehicleType,
-      this.vehicleTechRecord.noOfAxles,
-      this.vehicleTechRecord.dimensions?.axleSpacing
-    );
-
     this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
 
-    this.form.cleanValueChanges
-      .pipe(debounceTime(400), takeUntil(this.destroy$))
-      .subscribe(e => this.formChange.emit(e));
+    this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { data } =  changes;
+    const { vehicleTechRecord } = changes;
 
-    if (data?.currentValue && data.currentValue !== data.previousValue) {
-      this.form.patchValue(data.currentValue, { emitEvent: false });
+    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
+      this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
     }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  get template() {
+    switch (this.vehicleTechRecord.vehicleType) {
+      case VehicleTypes.PSV:
+        return PsvDimensionsTemplate;
+      case VehicleTypes.HGV:
+        return HgvDimensionsTemplate;
+      case VehicleTypes.TRL:
+        return TrlDimensionsTemplate;
+    }
   }
 
   get isPsv(): boolean {
@@ -66,11 +69,19 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     return FormNodeEditTypes;
   }
 
-  get dimensions(): FormGroup {
-    return this.form.get(['dimensions']) as FormGroup;
+  get dimensions(): CustomFormGroup {
+    return this.form.get(['dimensions']) as CustomFormGroup;
   }
 
-  get bottomSection(): CustomFormGroup {
-    return this.form.get(['dimensionsBottomSection', 'dimensions']) as CustomFormGroup;
+  get hasAxleSpacings(): boolean {
+    return !!this.vehicleTechRecord.dimensions?.axleSpacing?.length;
+  }
+
+  get axleSpacings(): CustomFormArray {
+    return this.form.get(['dimensions', 'axleSpacing']) as CustomFormArray;
+  }
+
+  getAxleSpacing(i: number): CustomFormGroup {
+    return this.form.get(['dimensions', 'axleSpacing', i]) as CustomFormGroup;
   }
 }

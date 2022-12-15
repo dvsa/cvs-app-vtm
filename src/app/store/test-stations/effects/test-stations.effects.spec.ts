@@ -8,7 +8,14 @@ import { TestStationsService } from '@services/test-stations/test-stations.servi
 import { initialAppState } from '@store/.';
 import { Observable } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { fetchTestStation, fetchTestStationFailed, fetchTestStations, fetchTestStationsFailed, fetchTestStationsSuccess, fetchTestStationSuccess } from '../actions/test-stations.actions';
+import {
+  fetchTestStation,
+  fetchTestStationFailed,
+  fetchTestStations,
+  fetchTestStationsFailed,
+  fetchTestStationsSuccess,
+  fetchTestStationSuccess
+} from '../actions/test-stations.actions';
 import { TestStationsEffects } from './test-stations.effects';
 
 describe('TestStationsEffects', () => {
@@ -18,10 +25,12 @@ describe('TestStationsEffects', () => {
   let service: TestStationsService;
 
   const expectedResult = { testStationId: 'some ID' } as TestStation;
-  const testCases = [{
-    id: expectedResult.testStationId,
-    payload: [expectedResult]
-  }];
+  const testCases = [
+    {
+      id: expectedResult.testStationId,
+      payload: [expectedResult]
+    }
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -47,7 +56,7 @@ describe('TestStationsEffects', () => {
   });
 
   describe('fetchTestStations$', () => {
-    it.each(testCases)('should return fetchTestStationsSuccess action on successfull API call', (value) => {
+    it.each(testCases)('should return fetchTestStationsSuccess action on successfull API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { payload } = value;
 
@@ -72,13 +81,15 @@ describe('TestStationsEffects', () => {
 
         jest.spyOn(service, 'fetchTestStations').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.fetchTestStations$).toBe('---b', { b: fetchTestStationsFailed({ error: 'Reference data resourceType is required' }) });
+        expectObservable(effects.fetchTestStations$).toBe('---b', {
+          b: fetchTestStationsFailed({ error: 'Reference data resourceType is required' })
+        });
       });
     });
   });
 
   describe('fetchTestStation$', () => {
-    it.each(testCases)('should return fetchTestStationSuccess action on successfull API call', (value) => {
+    it.each(testCases)('should return fetchTestStationSuccess action on successfull API call', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id, payload } = value;
         const entity = payload.find(p => p.testStationId === id)!;
@@ -96,7 +107,7 @@ describe('TestStationsEffects', () => {
       });
     });
 
-    it.each(testCases)('should return fetchTestStationFailed action on API error', (value) => {
+    it.each(testCases)('should return fetchTestStationFailed action on API error', value => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const { id } = value;
         actions$ = hot('-a--', { a: fetchTestStation({ id }) });

@@ -3,5 +3,9 @@ export enum AsyncValidatorNames {
   UpdateTestStationDetails = 'updateTestStationDetails',
   UpdateTesterDetails = 'updateTesterDetails',
   RequiredIfNotFail = 'requiredIfNotfail',
-  RequiredIfNotAbandoned = 'requiredIfNotabandoned'
+  RequiredIfNotAbandoned = 'requiredIfNotabandoned',
+  RequiredIfNotResultAndSiblingEquals = 'requiredIfNotResultAndSiblingEquals',
+  RequiredIfNotResult = 'requiredIfNotResult',
+  HideIfEqualsWithCondition = 'hideIfEqualsWithCondition',
+  PassResultDependantOnCustomDefects = 'passResultDependantOnCustomDefects'
 }

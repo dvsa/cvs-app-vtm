@@ -6,10 +6,10 @@ import {
   VehicleConfigurations,
   EuVehicleCategories,
   approvalType,
-  PlateReasonForIssue,
-  BodyTypeDescription
+  PlateReasonForIssue
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
+import { BodyTypeDescription } from '@models/body-type-enum';
 
 export const createMockHgv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
@@ -38,10 +38,11 @@ const currentTechRecord = {
   noOfAxles: 2,
   axles: [
     {
-      axleNumber: 12,
+      axleNumber: 1,
       parkingBrakeMrk: false
     },
     {
+      axleNumber: 2,
       parkingBrakeMrk: true
     }
   ],
@@ -75,7 +76,7 @@ const currentTechRecord = {
     height: 6,
     axleSpacing: [
       {
-        axles: '1',
+        axles: '1-2',
         value: 4
       }
     ]

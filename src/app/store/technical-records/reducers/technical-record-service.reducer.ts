@@ -25,6 +25,9 @@ import {
   createProvisionalTechRecord,
   createProvisionalTechRecordSuccess,
   createProvisionalTechRecordFailure,
+  archiveTechRecord,
+  archiveTechRecordSuccess,
+  archiveTechRecordFailure,
   updateEditingTechRecord,
   updateEditingTechRecordCancel
 } from '../actions/technical-record-service.actions';
@@ -34,8 +37,8 @@ export const STORE_FEATURE_TECHNICAL_RECORDS_KEY = 'TechnicalRecords';
 export interface TechnicalRecordServiceState {
   vehicleTechRecords: Array<VehicleTechRecordModel>;
   loading: boolean;
-  editingTechRecord?: TechRecordModel
-  error?: unknown
+  editingTechRecord?: TechRecordModel;
+  error?: unknown;
 }
 
 export const initialState: TechnicalRecordServiceState = {
@@ -80,8 +83,15 @@ export const vehicleTechRecordReducer = createReducer(
   on(createProvisionalTechRecordSuccess, successArgs),
   on(createProvisionalTechRecordFailure, updateFailureArgs),
 
-  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: {techRecord: TechRecordModel}) => ({...state, editingTechRecord: data.techRecord})),
-  on(updateEditingTechRecordCancel,  (state: TechnicalRecordServiceState) => ({...state , editingTechRecord: undefined}))
+  on(archiveTechRecord, defaultArgs),
+  on(archiveTechRecordSuccess, successArgs),
+  on(archiveTechRecordFailure, updateFailureArgs),
+
+  on(updateEditingTechRecord, (state: TechnicalRecordServiceState, data: { techRecord: TechRecordModel }) => ({
+    ...state,
+    editingTechRecord: data.techRecord
+  })),
+  on(updateEditingTechRecordCancel, (state: TechnicalRecordServiceState) => ({ ...state, editingTechRecord: undefined }))
 );
 
 function defaultArgs(state: TechnicalRecordServiceState) {

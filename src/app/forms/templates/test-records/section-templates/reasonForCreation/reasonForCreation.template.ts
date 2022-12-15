@@ -16,3 +16,18 @@ export const reasonForCreationSection: FormNode = {
     }
   ]
 };
+
+export const reasonForCreationHiddenSection: FormNode = {
+  name: 'requiredSection',
+  label: 'Reason for creation',
+  type: FormNodeTypes.GROUP,
+  children: [
+    {
+      name: 'reasonForCreation',
+      label: 'Reason for creation',
+      type: FormNodeTypes.CONTROL,
+      viewType: FormNodeViewTypes.HIDDEN,
+      editType: FormNodeEditTypes.HIDDEN
+    }
+  ]
+};

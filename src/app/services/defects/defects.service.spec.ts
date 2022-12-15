@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { Defect } from '@models/defects/defect.model';
 import { environment } from '../../../environments/environment';
 
-
 import { DefectsService } from './defects.service';
 
 describe('DefectsService', () => {
@@ -77,15 +76,15 @@ describe('DefectsService', () => {
 
     it('should handle errors', done => {
       const expectedId = 1;
-        service.fetchDefect(expectedId).subscribe({
-          next: () => {},
-          error: e => {
-            expect(e.error).toEqual('Deliberate 500 error');
-            expect(e.status).toEqual(500);
-            expect(e.statusText).toEqual('Server Error');
-            done();
-          }
-        });
+      service.fetchDefect(expectedId).subscribe({
+        next: () => {},
+        error: e => {
+          expect(e.error).toEqual('Deliberate 500 error');
+          expect(e.status).toEqual(500);
+          expect(e.statusText).toEqual('Server Error');
+          done();
+        }
+      });
 
       // Check for correct requests: should have made one request to search from expected URL
       const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/defects/${expectedId}`);

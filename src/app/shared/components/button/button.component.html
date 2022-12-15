@@ -1,18 +1,26 @@
 <ng-container [ngSwitch]="type">
-  <a *ngSwitchCase="'link'" routerLink="[]" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+  <a
+    *ngSwitchCase="'link'"
+    role="button"
+    class="govuk-button"
+    data-module="govuk-button"
+    draggable="false"
+    [id]="id"
+    [ngClass]="design ? 'govuk-button--' + design : ''"
+  >
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </a>
 
   <button
     *ngSwitchDefault
-    [id]="id"
+    appPreventDoubleClick
     class="govuk-button"
-    [ngClass]="type !== 'link' ? 'govuk-button--' + type : ''"
+    data-module="govuk-button"
+    [id]="id"
+    [ngClass]="design ? 'govuk-button--' + design : ''"
     [disabled]="disabled"
     [attr.aria-disabled]="disabled"
-    data-module="govuk-button"
-    data-prevent-double-click="true"
-    (click)="clicked.emit()"
+    (clicked)="clicked.emit()"
   >
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>

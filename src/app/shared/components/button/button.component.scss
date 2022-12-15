@@ -1,20 +1,20 @@
 @import 'node_modules/govuk-frontend/govuk/all';
 
 .govuk-button {
-  &--underline {
-    border: none;
-    border-bottom: 1px solid $govuk-brand-colour;
-    color: $govuk-brand-colour;
-    background-color: transparent;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-  }
   &--link {
-    border: none;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, 0.0625rem);
+    text-underline-offset: 0.1em;
+    font-size: 19px;
+    color: $govuk-brand-colour;
+    font-weight: 400;
     background-color: transparent;
     box-shadow: none;
-    padding: 0;
-    margin: 0;
+  }
+  &--link:hover {
+    text-decoration: underline;
+    text-decoration-thickness: max(3px, 0.1875rem, 0.12em);
+    background-color: transparent;
+    color: govuk-colour('dark-blue', $legacy: 'light-blue');
   }
 }

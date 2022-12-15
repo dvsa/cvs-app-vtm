@@ -1,6 +1,6 @@
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 
 export const TestSectionGroup5And13: FormNode = {
@@ -13,7 +13,6 @@ export const TestSectionGroup5And13: FormNode = {
       label: 'Created',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -23,7 +22,6 @@ export const TestSectionGroup5And13: FormNode = {
       label: 'Test Date',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -42,8 +40,8 @@ export const TestSectionGroup5And13: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
             },
             {
               name: 'testResult',
@@ -69,23 +67,23 @@ export const TestSectionGroup5And13: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
               name: 'certificateNumber',
               label: 'Certificate number',
-              value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              viewType: FormNodeViewTypes.HIDDEN,
+              editType: FormNodeEditTypes.HIDDEN,
+              required: true,
+              value: null
             },
             {
               name: 'testNumber',
               label: 'Test Number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -101,7 +99,7 @@ export const TestSectionGroup5And13: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: ReferenceDataResourceType.TIRReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

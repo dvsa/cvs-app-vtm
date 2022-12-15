@@ -29,7 +29,7 @@ export default {
   ]
 } as Meta;
 
-const Template: Story = (args) => {
+const Template: Story = args => {
   const { label, options, name, hint, value = [], disabled = false, validators = [] } = args;
   const form = new FormGroup({ [name]: new FormControl({ value, disabled }, validators) });
   return {

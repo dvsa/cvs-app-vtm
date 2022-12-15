@@ -10,21 +10,19 @@ export class RoleRequiredDirective implements OnInit {
   userRolesRequired: string[] | undefined;
 
   @Input()
-  set appRoleRequired(roles: Roles) {
-    this.userRolesRequired = roles?.split(',');
+  set appRoleRequired(roles: Roles | Roles[]) {
+    this.userRolesRequired = Array.isArray(roles) ? [...new Set(roles.flatMap(role => role.split(',')))] : roles?.split(',');
   }
 
   ngOnInit() {
-    this.userService.roles$
-      .pipe(take(1))
-      .subscribe(storedRoles => {
-        const hasAccess = this.userRolesRequired?.some(role => storedRoles?.includes(role));
+    this.userService.roles$.pipe(take(1)).subscribe(storedRoles => {
+      const hasAccess = this.userRolesRequired?.some(role => storedRoles?.includes(role));
 
-        if (hasAccess) {
-          this.viewContainer.createEmbeddedView(this.templateRef);
-        } else {
-          this.viewContainer.clear();
-        }
-      });
+      if (hasAccess) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainer.clear();
+      }
+    });
   }
 }

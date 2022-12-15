@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { RouterLinkWithHref } from '@angular/router';
 
 @Component({
   selector: 'app-button',
@@ -6,10 +7,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ButtonComponent {
+export class ButtonComponent extends RouterLinkWithHref {
   @Input() id?: string;
   @Input() disabled = false;
-  @Input() type: '' | 'secondary' | 'warning' | 'link' | 'underline' = '';
+  @Input() type: 'link' | 'button' = 'button';
+  @Input() design: '' | 'secondary' | 'warning' | 'link' = '';
 
   @Output() clicked = new EventEmitter();
 }

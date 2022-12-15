@@ -57,29 +57,32 @@ export const sortedTestTypes = createSelector(selectTestTypesByVehicleType, test
   return sortTestTypes(testTypes);
 });
 
-export const selectTestType = (id: string) => createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
-  function findUsingId(id: string, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
-    if (!testTypes) {
+export const selectTestType = (id: string | undefined) =>
+  createSelector(selectTestTypesByVehicleType, (testTypes): TestType | undefined => {
+    function findUsingId(id: string | undefined, testTypes: TestTypesTaxonomy | undefined): TestType | undefined {
+      if (!testTypes) {
+        return undefined;
+      }
+
+      for (const testType of testTypes) {
+        if (testType.id === id) {
+          return testType;
+        }
+
+        const found = findUsingId(id, (testType as TestTypeCategory).nextTestTypesOrCategories);
+
+        if (found) {
+          return found;
+        }
+      }
+
       return undefined;
     }
 
-    for (const testType of testTypes) {
-      if (testType.id === id) {
-        return testType;
-      }
+    return findUsingId(id, testTypes);
+  });
 
-      const found = findUsingId(id, (testType as TestTypeCategory).nextTestTypesOrCategories)
-
-      if (found) {
-        return found;
-      }
-    }
-
-    return undefined;
-  }
-
-  return findUsingId(id, testTypes);
-});
+export const getTypeOfTest = (id: string | undefined) => createSelector(selectTestType(id), testTypes => testTypes?.typeOfTest);
 
 function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultModel): TestTypesTaxonomy {
   const { vehicleType, euVehicleCategory, vehicleSize, vehicleConfiguration, noOfAxles, vehicleClass, vehicleSubclass, numberOfWheelsDriven } =

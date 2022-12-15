@@ -16,6 +16,7 @@ export class SwitchableInputComponent implements OnInit {
   @Input() isEditing = true;
 
   @Input() label?: string;
+  @Input() prefix?: string;
   @Input() suffix?: string;
   @Input() width?: FormNodeWidth;
   @Input() options?: MultiOptions;
@@ -29,10 +30,12 @@ export class SwitchableInputComponent implements OnInit {
   }
 
   get requiresOptions(): boolean {
-    return this.type === this.types.AUTOCOMPLETE
-      || this.type === this.types.CHECKBOX
-      || this.type === this.types.DROPDOWN
-      || this.type === this.types.RADIO;
+    return (
+      this.type === this.types.AUTOCOMPLETE ||
+      this.type === this.types.CHECKBOX ||
+      this.type === this.types.DROPDOWN ||
+      this.type === this.types.RADIO
+    );
   }
 
   get options$(): Observable<MultiOptions> {

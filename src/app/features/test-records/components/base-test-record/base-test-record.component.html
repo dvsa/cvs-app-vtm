@@ -1,15 +1,16 @@
-<app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async">
-  <ng-container *appRoleRequired="roles.TestResultAmend">
-    <a
-      *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
-      [routerLink]="['amend-test']"
-      role="button"
-      draggable="false"
-      class="govuk-button govuk-button--secondary"
-      data-module="govuk-button"
-      >Amend this test
-    </a>
-  </ng-container>
+<app-vehicle-header [isEditing]="isEditing" [testResult]="testResult" [testNumber]="testNumber$ | async" [isReview]="isReview">
+  <app-button-group *ngIf="!isReview">
+    <ng-container *appRoleRequired="roles.TestResultAmend">
+      <app-button
+        *ngIf="isTestTypeGroupEditable$ | async; else notSupported"
+        id="amend-test"
+        type="link"
+        design="secondary"
+        [routerLink]="['amend-test']"
+        >Amend this test</app-button
+      >
+    </ng-container>
+  </app-button-group>
 </app-vehicle-header>
 
 <ng-container *ngIf="sectionTemplates$ | async as sectionTemplates">
@@ -72,7 +73,7 @@
       <!-- this section is not visible so omitting from accordion -->
       <app-dynamic-form-group
         *ngSwitchCase="'requiredSection'"
-        class="section"
+        class="hidden"
         [id]="template.name"
         [template]="template"
         [data]="testResult"

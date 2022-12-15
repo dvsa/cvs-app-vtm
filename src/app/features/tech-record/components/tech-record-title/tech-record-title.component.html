@@ -1,0 +1,58 @@
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
+    <dd id="vin" class="govuk-summary-list__value">
+      {{ vehicleTechRecord?.vin | defaultNullOrEmpty }}
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+  </div>
+
+  <ng-container *ngIf="(currentTechRecord$ | async)?.vehicleType !== vehicleTypes.TRL; else trailerHeader">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Vehicle registration mark (VRM)</dt>
+      <dd id="current-vrm" class="govuk-summary-list__value">
+        <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Previous VRM</dt>
+      <dd id="previous-vrm" class="govuk-summary-list__value">
+        <app-number-plate
+          *ngFor="let secondaryVrm of otherVrms"
+          class="govuk-body govuk-!-margin-bottom-0"
+          [vrm]="secondaryVrm.vrm"
+          [isSecondary]="true"
+        ></app-number-plate>
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </ng-container>
+
+  <ng-template #trailerHeader>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">Trailer ID</dt>
+      <dd id="trailer-id" class="govuk-summary-list__value">
+        {{ vehicleTechRecord?.trailerId | defaultNullOrEmpty }}
+      </dd>
+      <dd class="govuk-summary-list__value"></dd>
+    </div>
+  </ng-template>
+
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Record status</dt>
+    <dd id="status-code" class="govuk-summary-list__value">
+      <strong class="govuk-tag govuk-phase-banner__content__tag">{{ (currentTechRecord$ | async)?.statusCode | defaultNullOrEmpty }}</strong>
+    </dd>
+    <dd class="govuk-summary-list__value"></dd>
+    <div *appRoleRequired="roles.TechRecordArchive">
+      <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
+        <a class="govuk-link" style="cursor: pointer" (click)="navigateToArchive()">Archive</a>
+      </dd>
+    </div>
+    <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
+      <a class="govuk-link" style="cursor: pointer" (click)="navigateToPromotion()">Promote</a>
+    </dd>
+  </div>
+</dl>

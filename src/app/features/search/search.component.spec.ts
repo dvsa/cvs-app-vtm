@@ -121,7 +121,7 @@ describe('SearchComponent', () => {
         const roles = component.roles;
 
         expect(roles).toBe(Roles);
-      })
+      });
     });
   });
 });

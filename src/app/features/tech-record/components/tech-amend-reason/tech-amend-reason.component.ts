@@ -3,7 +3,8 @@ import { Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } from '@forms/services/dynamic-form.types';
-
+import { ReasonForEditing } from '@models/vehicle-tech-record.model';
+import { GlobalError } from '@core/components/global-error/global-error.interface';
 
 @Component({
   selector: 'app-tech-amend-reason',
@@ -12,8 +13,8 @@ import { CustomFormControl, CustomFormGroup, FormNodeOption, FormNodeTypes } fro
 })
 export class TechAmendReasonComponent {
   reasons: Array<FormNodeOption<string>> = [
-    { label: 'Correcting an error', value: 'correcting-an-error', hint: 'Amend the current technical record' },
-    { label: 'Notifiable alteration needed', value: 'notifiable-alteration-needed', hint: 'Create a new provisional technical record' }
+    { label: 'Correcting an error', value: ReasonForEditing.CORRECTING_AN_ERROR, hint: 'Amend the current technical record' },
+    { label: 'Notifiable alteration needed', value: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, hint: 'Create a new provisional technical record' }
   ];
 
   form: CustomFormGroup;
@@ -23,14 +24,21 @@ export class TechAmendReasonComponent {
 
     this.form = new CustomFormGroup(
       { name: 'reasonForAmend', type: FormNodeTypes.GROUP },
-      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, 2, [Validators.required]) }
+      { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
     );
   }
 
   handleSubmit(): void {
     const reason: string = this.form.get('reason')?.value;
+    const errors: GlobalError[] = [
+      {
+        error: 'Reason for amending is required',
+        anchorLink: 'reasonForAmend'
+      }
+    ];
 
-    // TODO: historic technical records may not be valid
+    this.form.valid ? this.errorService.clearErrors() : this.errorService.setErrors(errors);
+
     if (this.form.valid && reason) {
       this.router.navigate([`../${reason}`], { relativeTo: this.route });
     }

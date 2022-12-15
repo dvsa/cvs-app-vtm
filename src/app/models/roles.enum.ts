@@ -3,6 +3,9 @@ export enum Roles {
   TechRecordView = 'CVSFullAccess,TechRecord.View',
   TechRecordCreate = 'CVSFullAccess,TechRecord.Create',
   TechRecordAmend = 'CVSFullAccess,TechRecord.Amend',
+  TechRecordArchive = 'CVSFullAccess,TechRecord.Archive',
   TestResultView = 'CVSFullAccess,TestResult.View',
-  TestResultAmend = 'CVSFullAccess,TestResult.Amend'
+  TestResultAmend = 'CVSFullAccess,TestResult.Amend',
+  TestResultCreateContingency = 'CVSFullAccess,TestResult.CreateContingency',
+  TestResultCreateDeskAssesment = 'CVSFullAccess,TestResult.CreateDeskBased'
 }

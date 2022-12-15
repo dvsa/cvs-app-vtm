@@ -18,12 +18,13 @@ export interface TestResultModel {
 
   createdAt?: string;
   testStartTimestamp: string | Date;
+  testEndTimestamp: string | Date;
 
   testTypes: TestType[];
 
   trailerId: string;
   countryOfRegistration: string;
-  euVehicleCategory: EuVehicleCategory;
+  euVehicleCategory: EuVehicleCategory | null;
   odometerReading: number;
   odometerReadingUnits: OdometerReadingUnits;
   preparerName: string;
@@ -34,6 +35,7 @@ export interface TestResultModel {
   testStationType: TestStationType;
   testerName: string;
   testerEmailAddress: string;
+  testerStaffId: string;
 
   reasonForCreation?: string;
   vehicleType: VehicleTypes;

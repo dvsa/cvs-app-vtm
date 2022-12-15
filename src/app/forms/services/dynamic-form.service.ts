@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { AsyncValidatorNames } from '@forms/models/async-validators.enum';
 import { CustomAsyncValidators } from '@forms/validators/custom-async-validators';
 import { State } from '@store/.';
+import { Condition } from '@forms/models/condition.model';
 
 type CustomFormFields = CustomFormControl | CustomFormArray | CustomFormGroup;
 
@@ -44,15 +45,23 @@ export class DynamicFormService {
     [ValidatorNames.PastDate]: () => CustomValidators.pastDate,
     [ValidatorNames.FutureDate]: () => CustomValidators.futureDate,
     [ValidatorNames.AheadOfDate]: (arg: string) => CustomValidators.aheadOfDate(arg),
-    [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg)
+    [ValidatorNames.DateNotExceed]: (args: { sibling: string; months: number }) => CustomValidators.dateNotExceed(args.sibling, args.months),
+    [ValidatorNames.CopyValueToRootControl]: (arg: string) => CustomValidators.copyValueToRootControl(arg),
+    [ValidatorNames.ValidateProhibitionIssued]: () => DefectValidators.validateProhibitionIssued
   };
 
   asyncValidatorMap: Record<AsyncValidatorNames, (args: any) => AsyncValidatorFn> = {
     [AsyncValidatorNames.ResultDependantOnCustomDefects]: () => CustomAsyncValidators.resultDependantOnCustomDefects(this.store),
+    [AsyncValidatorNames.PassResultDependantOnCustomDefects]: () => CustomAsyncValidators.passResultDependantOnCustomDefects(this.store),
     [AsyncValidatorNames.UpdateTestStationDetails]: () => CustomAsyncValidators.updateTestStationDetails(this.store),
     [AsyncValidatorNames.UpdateTesterDetails]: () => CustomAsyncValidators.updateTesterDetails(this.store),
     [AsyncValidatorNames.RequiredIfNotFail]: () => CustomAsyncValidators.requiredIfNotFail(this.store),
-    [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store)
+    [AsyncValidatorNames.RequiredIfNotAbandoned]: () => CustomAsyncValidators.requiredIfNotAbandoned(this.store),
+    [AsyncValidatorNames.RequiredIfNotResult]: (args: { testResult: any }) => CustomAsyncValidators.requiredIfNotResult(this.store, args.testResult),
+    [AsyncValidatorNames.RequiredIfNotResultAndSiblingEquals]: (args: { testResult: any; sibling: string; value: any }) =>
+      CustomAsyncValidators.requiredIfNotResultAndSiblingEquals(this.store, args.testResult, args.sibling, args.value),
+    [AsyncValidatorNames.HideIfEqualsWithCondition]: (args: { sibling: string; value: string; conditions: Condition | Condition[] }) =>
+      CustomAsyncValidators.hideIfEqualsWithCondition(this.store, args.sibling, args.value, args.conditions)
   };
 
   createForm(formNode: FormNode, data?: any): CustomFormGroup | CustomFormArray {

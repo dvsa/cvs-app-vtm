@@ -1,3 +1,4 @@
+import { routerNavigatedAction, RouterNavigatedPayload, SerializedRouterStateSnapshot } from '@ngrx/router-store';
 import { globalErrorReducer, GlobalErrorState, initialGlobalErrorState } from '@store/global-error/reducers/global-error-service.reducer';
 import { getByAllFailure, getByPartialVinFailure, getByTrailerIdFailure, getByVin, getByVinFailure } from '@store/technical-records';
 import { fetchTestResults, fetchTestResultsBySystemNumber, fetchTestResultsBySystemNumberFailed, fetchTestResultsFailed } from '@store/test-records';
@@ -39,6 +40,16 @@ describe('Global Error Reducer', () => {
       const newState = { ...initialGlobalErrorState, errors: [] };
       //all props must be supplied here
       const action = actionMethod({ systemNumber: '', vin: '' });
+      const state = globalErrorReducer(initialGlobalErrorState, action);
+
+      expect(state).toEqual(newState);
+      expect(state).not.toBe(newState);
+    });
+
+    it.each([routerNavigatedAction])('should reset the error state', actionMethod => {
+      const newState = { ...initialGlobalErrorState, errors: [] };
+      //all props must be supplied here
+      const action = actionMethod({ payload: <RouterNavigatedPayload<SerializedRouterStateSnapshot>>{} });
       const state = globalErrorReducer(initialGlobalErrorState, action);
 
       expect(state).toEqual(newState);

@@ -1,11 +1,9 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StatusCodes, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAppState } from '@store/.';
-import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { mockVehicleTechnicalRecordList } from '../../../mocks/mock-vehicle-technical-record.mock';
 import { TechnicalRecordService } from './technical-record.service';
@@ -16,7 +14,7 @@ describe('TechnicalRecordService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [TechnicalRecordService, provideMockStore({ initialState: initialAppState })]
     });
 
@@ -209,6 +207,21 @@ describe('TechnicalRecordService', () => {
         // Check for correct requests: should have made one request to the PUT URL
         const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/add-provisional/${params.systemNumber}`);
         expect(req.request.method).toEqual('POST');
+
+        // Provide each request with a mock response
+        req.flush(mockData);
+      }));
+    });
+
+    describe('archiveTechRecord', () => {
+      it('should return a new tech record having added provisional', fakeAsync(() => {
+        const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { username: 'TEST', id: '1234' } };
+        const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
+        service.archiveTechnicalRecord(params.systemNumber, mockData[0].techRecord[0], params.reasonForArchiving, params.user).subscribe();
+
+        // Check for correct requests: should have made one request to the PUT URL
+        const req = httpTestingController.expectOne(`${environment.VTM_API_URI}/vehicles/archive/${params.systemNumber}`);
+        expect(req.request.method).toEqual('PUT');
 
         // Provide each request with a mock response
         req.flush(mockData);

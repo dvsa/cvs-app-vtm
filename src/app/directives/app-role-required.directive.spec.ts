@@ -13,6 +13,9 @@ import { RoleRequiredDirective } from './app-role-required.directive';
     <div id="displayBox" *appRoleRequired="Roles.TechRecordView">
       <h1>This can display</h1>
     </div>
+    <div id="displayEitherRoleBox" *appRoleRequired="[Roles.TechRecordAmend, Roles.TestResultView]">
+      <h1>This displays on either role</h1>
+    </div>
     <div id="hiddenBox" *appRoleRequired="Roles.TechRecordCreate">
       <h1>This cannot display</h1>
     </div>
@@ -56,14 +59,26 @@ describe('RoleRequiredDirective', () => {
   });
 });
 
+describe('RoleRequiredDirective with multiple optional roles', () => {
+  it.each([[['TestResult.View']], [['TechRecord.Amend']]])('should show the element when either role is present', user => {
+    const fixture: ComponentFixture<TestComponent> = TestBed.configureTestingModule({
+      declarations: [RoleRequiredDirective, TestComponent],
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(user) } }]
+    }).createComponent(TestComponent);
+
+    fixture.detectChanges(); // initial binding
+
+    const seenBox = fixture.debugElement.queryAll(By.css('#displayEitherRoleBox'));
+    expect(seenBox.length).toEqual(1);
+  });
+});
+
 describe('RoleRequiredDirective without roles', () => {
   it('should hide the element when no roles are available', () => {
-    const  fixture: ComponentFixture<TestComponent> = TestBed
-      .configureTestingModule({
-        declarations: [RoleRequiredDirective, TestComponent],
-        providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(null) } }]
-      })
-      .createComponent(TestComponent);
+    const fixture: ComponentFixture<TestComponent> = TestBed.configureTestingModule({
+      declarations: [RoleRequiredDirective, TestComponent],
+      providers: [provideMockStore({ initialState: initialAppState }), { provide: UserService, useValue: { roles$: of(null) } }]
+    }).createComponent(TestComponent);
 
     fixture.detectChanges(); // initial binding
 

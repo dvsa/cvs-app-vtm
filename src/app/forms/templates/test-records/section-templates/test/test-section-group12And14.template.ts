@@ -1,6 +1,6 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
-import { ReferenceDataResourceType } from '@models/reference-data.model';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 
 export const TestSectionGroup12And14: FormNode = {
   name: 'testSection',
@@ -12,7 +12,6 @@ export const TestSectionGroup12And14: FormNode = {
       label: 'Created',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -22,7 +21,6 @@ export const TestSectionGroup12And14: FormNode = {
       label: 'Test Date',
       value: '',
       disabled: true,
-
       type: FormNodeTypes.CONTROL,
       viewType: FormNodeViewTypes.DATE,
       editType: FormNodeEditTypes.DATE
@@ -41,8 +39,8 @@ export const TestSectionGroup12And14: FormNode = {
               label: 'Test Code',
               value: '',
               disabled: true,
-
-              type: FormNodeTypes.CONTROL
+              type: FormNodeTypes.CONTROL,
+              width: FormNodeWidth.XS
             },
             {
               name: 'testResult',
@@ -60,7 +58,6 @@ export const TestSectionGroup12And14: FormNode = {
               label: 'Description',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -68,7 +65,6 @@ export const TestSectionGroup12And14: FormNode = {
               label: 'Test Number',
               value: '',
               disabled: true,
-
               type: FormNodeTypes.CONTROL
             },
             {
@@ -84,7 +80,7 @@ export const TestSectionGroup12And14: FormNode = {
                   args: { sibling: 'testResult', value: 'abandoned' }
                 }
               ],
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning
+              referenceData: SpecialRefData.ReasonsForAbandoning
             },
             {
               name: 'additionalCommentsForAbandon',

@@ -116,7 +116,7 @@
             ></app-select>
           </ng-container>
         </ng-container>
-        <app-text-area *ngIf="includeNotes || isAdvisory" [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
+        <app-text-area [name]="'notes-' + index" label="Notes" formControlName="notes"></app-text-area>
       </ng-container>
 
       <app-radio-group
@@ -125,6 +125,8 @@
         label="Prohibition issued in mobile compliance"
         formControlName="prohibitionIssued"
         [options]="booleanOptions"
+        hint="{{ isDangerousAsterisk ? '' : 'You must issue a prohibition notice in search before adding this defect' }}"
+        (change)="toggleDefectField('prohibitionIssued')"
       ></app-radio-group>
 
       <div class="govuk-form-group" *ngIf="!isAdvisory">
@@ -135,21 +137,23 @@
               id="prs"
               [name]="'prs-' + index"
               type="checkbox"
-              [checked]="defect?.prs"
+              [checked]="defect.prs"
               (change)="toggleDefectField('prs')"
             />
-            <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test </label>
+            <label class="govuk-label govuk-checkboxes__label" for="prs"> Defect repaired during test</label>
           </div>
         </div>
       </div>
     </ng-container>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-button-group">
-          <button class="govuk-button" (click)="handleSubmit()">Confirm</button>
-          <a *ngIf="index || index === 0" class="govuk-button govuk-button--warning" role="button" (click)="handleRemove()">Remove defect</a>
-          <a class="govuk-link govuk-link--no-visited-state" (click)="navigateBack()">{{ index || index === 0 ? 'Cancel changes' : 'Cancel' }}</a>
-        </div>
+        <app-button-group>
+          <app-button id="confirm-defect" (clicked)="handleSubmit()">Confirm</app-button>
+          <app-button id="remove-defect" *ngIf="index || index === 0" design="warning" (clicked)="handleRemove()">Remove defect</app-button>
+          <app-button id="remove-nav-back" design="link" (clicked)="navigateBack()">{{
+            index || index === 0 ? 'Cancel changes' : 'Cancel'
+          }}</app-button>
+        </app-button-group>
       </div>
     </div>
   </ng-container>

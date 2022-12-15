@@ -14,10 +14,12 @@ import { TechnicalRecordServiceState } from '@store/technical-records/reducers/t
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
 import { ActivatedRoute } from '@angular/router';
+import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 
 @Component({
   selector: 'app-vehicle-technical-record',
-  templateUrl: './vehicle-technical-record.component.html'
+  templateUrl: './vehicle-technical-record.component.html',
+  styleUrls: ['./vehicle-technical-record.component.scss']
 })
 export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   @ViewChild(TechRecordSummaryComponent) summary!: TechRecordSummaryComponent;
@@ -28,6 +30,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   isDirty = false;
   isCurrent = false;
+  isArchived = false;
   isInvalid = false;
   isEditing = false;
   editingReason?: ReasonForEditing;
@@ -45,9 +48,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.currentTechRecord$ = this.technicalRecordService
-      .viewableTechRecord$(this.vehicleTechRecord!)
-      .pipe(tap(viewableTechRecord => (this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT)));
+    this.currentTechRecord$ = this.technicalRecordService.viewableTechRecord$(this.vehicleTechRecord!).pipe(
+      tap(viewableTechRecord => {
+        this.isCurrent = viewableTechRecord?.statusCode === StatusCodes.CURRENT;
+        this.isArchived = viewableTechRecord?.statusCode === StatusCodes.ARCHIVED;
+      })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -62,12 +68,42 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
 
-  get roles() {
+  get roles(): typeof Roles {
     return Roles;
   }
 
-  get vehicleTypes() {
+  get vehicleTypes(): typeof VehicleTypes {
     return VehicleTypes;
+  }
+
+  get statusCodes(): typeof StatusCodes {
+    return StatusCodes;
+  }
+
+  get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
+    const customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
+
+    const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
+
+    if (type === VehicleTypes.PSV) {
+      customSections.push(this.summary.psvBrakes!.form);
+    } else if (type === VehicleTypes.TRL) {
+      customSections.push(this.summary.trlBrakes!.form);
+    }
+
+    return customSections;
+  }
+
+  getActions(techRecord?: TechRecordModel): TechRecordActions {
+    switch (techRecord?.statusCode) {
+      case StatusCodes.CURRENT:
+        return TechRecordActions.CURRENT;
+      case StatusCodes.PROVISIONAL:
+        return TechRecordActions.PROVISIONAL;
+      case StatusCodes.ARCHIVED:
+      default:
+        return TechRecordActions.NONE;
+    }
   }
 
   isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>) {
@@ -81,10 +117,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   handleFormState() {
-    const form = this.summary.sections.map(section => section.form).concat(this.summary.dimensions.form, this.summary.weights.form);
+    if (this.isEditing) {
+      const form = this.summary.sections.map(section => section.form).concat(this.customSectionForms);
 
-    this.isDirty = form.some(form => form.dirty);
-    this.isInvalid = this.isAnyFormInvalid(form);
+      this.isDirty = form.some(form => form.dirty);
+      this.isInvalid = this.isAnyFormInvalid(form);
+    }
   }
 
   handleSubmit() {
@@ -98,9 +136,24 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         this.store.dispatch(updateTechRecords({ systemNumber }));
       } else if (this.editingReason == ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED) {
         hasProvisional
-          ? this.store.dispatch(updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL }))
+          ? this.store.dispatch(
+              updateTechRecords({ systemNumber, recordToArchiveStatus: StatusCodes.PROVISIONAL, newStatus: StatusCodes.PROVISIONAL })
+            )
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
+    }
+  }
+
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        return techRecord.vehicleConfiguration ?? '';
+      case VehicleTypes.PSV:
+        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+      case VehicleTypes.HGV:
+        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
+      default:
+        return 'Unknown Vehicle Type';
     }
   }
 }

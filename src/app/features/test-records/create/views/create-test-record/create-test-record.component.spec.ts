@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, flushMicrotasks, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DefaultService as CreateTestResultsService, GetTestResultsService, UpdateTestResultsService } from '@api/test-results';
@@ -9,9 +9,10 @@ import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { mockTestResult } from '@mocks/mock-test-result';
 import { Roles } from '@models/roles.enum';
+import { TestModeEnum } from '@models/test-results/test-result-view.enum';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
+import { Action, DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { RouterService } from '@services/router/router.service';
 import { TestRecordsService } from '@services/test-records/test-records.service';
@@ -24,7 +25,7 @@ import { DefaultNullOrEmpty } from '@shared/pipes/default-null-or-empty/default-
 import { TestTypeNamePipe } from '@shared/pipes/test-type-name/test-type-name.pipe';
 import { SharedModule } from '@shared/shared.module';
 import { initialAppState, State } from '@store/.';
-import { sectionTemplates, testResultInEdit } from '@store/test-records';
+import { sectionTemplates, testResultInEdit, toEditOrNotToEdit } from '@store/test-records';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { BaseTestRecordComponent } from '../../../components/base-test-record/base-test-record.component';
 import { ResultOfTestComponent } from '../../../components/result-of-test/result-of-test.component';
@@ -80,8 +81,6 @@ describe('CreateTestRecordComponent', () => {
     router = TestBed.inject(Router);
     testRecordsService = TestBed.inject(TestRecordsService);
     store = TestBed.inject(MockStore);
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -98,7 +97,7 @@ describe('CreateTestRecordComponent', () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
-    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']));
+    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
     tick();
     fixture.detectChanges();
@@ -117,7 +116,7 @@ describe('CreateTestRecordComponent', () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
-    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']));
+    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
     tick();
     fixture.detectChanges();
@@ -138,8 +137,11 @@ describe('CreateTestRecordComponent', () => {
   });
 
   describe(CreateTestRecordComponent.prototype.isAnyFormInvalid.name, () => {
+    let mockSestResultInEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
+    let mockToEditOrNotToEditSelector: MemoizedSelector<any, TestResultModel | undefined, DefaultProjectorFn<TestResultModel | undefined>>;
     beforeEach(() => {
-      store.overrideSelector(testResultInEdit, mockTestResult());
+      mockSestResultInEditSelector = store.overrideSelector(testResultInEdit, mockTestResult());
+      mockToEditOrNotToEditSelector = store.overrideSelector(toEditOrNotToEdit, undefined);
     });
 
     afterEach(() => {
@@ -149,23 +151,29 @@ describe('CreateTestRecordComponent', () => {
     it('should return true if some forms are invalid', fakeAsync(() => {
       const mockTest = mockTestResult();
       mockTest.countryOfRegistration = '';
-      store.overrideSelector(testResultInEdit, mockTest);
+      mockSestResultInEditSelector.setResult(mockTest);
+      mockToEditOrNotToEditSelector.setResult(mockTest);
+      store.refreshState();
+
       tick();
       fixture.detectChanges();
+
       expect(component.isAnyFormInvalid()).toBe(true);
+      discardPeriodicTasks();
     }));
 
     it('should return false if no forms are invalid', fakeAsync(() => {
       tick();
       fixture.detectChanges();
       expect(component.isAnyFormInvalid()).toBe(false);
+      flush();
     }));
   });
 
   describe(CreateTestRecordComponent.prototype.abandon.name, () => {
-    it('should set isAbandon to true', () => {
+    it('should set testMode to be abandon', () => {
       component.abandon();
-      expect(component.isAbandon).toBeTruthy();
+      expect(component.testMode).toEqual(TestModeEnum.Abandon);
     });
   });
 
@@ -178,12 +186,12 @@ describe('CreateTestRecordComponent', () => {
       expect(handleSaveSpy).toBeCalledTimes(1);
     });
 
-    it('should set isAbandon to false', () => {
-      component.isAbandon = true;
+    it('should set testMode to be edit', () => {
+      component.testMode = TestModeEnum.Abandon;
 
       component.handleAbandonAction('no');
 
-      expect(component.isAbandon).toBeFalsy();
+      expect(component.testMode).toEqual(TestModeEnum.Edit);
     });
   });
 
@@ -195,7 +203,7 @@ describe('CreateTestRecordComponent', () => {
     const createTestResultSpy = jest.spyOn(testRecordsService, 'createTestResult').mockImplementation(() => {});
     const testRecord = { testResultId: '1', testTypes: [{ testTypeId: '2' }] } as TestResultModel;
     store.overrideSelector(testResultInEdit, testRecord);
-    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']));
+    store.overrideSelector(sectionTemplates, Object.values(contingencyTestTemplates.psv['testTypesGroup1']!));
 
     tick();
     fixture.detectChanges();
@@ -207,4 +215,19 @@ describe('CreateTestRecordComponent', () => {
     expect(createTestResultSpy).toHaveBeenCalledTimes(1);
     expect(createTestResultSpy).toHaveBeenCalledWith(testRecord);
   }));
+
+  it('should set testMode to be view', () => {
+    component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+    component.handleReview();
+
+    expect(component.testMode).toEqual(TestModeEnum.View);
+  });
+
+  it('should set testMode back to edit', () => {
+    component.isAnyFormInvalid = jest.fn().mockReturnValue(false);
+    component.handleReview();
+    component.handleCancel();
+
+    expect(component.testMode).toEqual(TestModeEnum.Edit);
+  });
 });

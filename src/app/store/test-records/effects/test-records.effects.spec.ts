@@ -7,6 +7,7 @@ import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
 import { contingencyTestTemplates } from '@forms/templates/test-records/create-master.template';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TypeOfTest } from '@models/test-results/typeOfTest.enum';
 import { EuVehicleCategory } from '@models/test-types/eu-vehicle-category.enum';
 import { OdometerReadingUnits } from '@models/test-types/odometer-unit.enum';
 import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
@@ -109,7 +110,10 @@ describe('TestResultsEffects', () => {
             }
           ]
         }),
-        { provide: UserService, useValue: { userName$: of('username'), id$: of('iod') } },
+        {
+          provide: UserService,
+          useValue: { user$: of({ name: 'testername', username: 'username', oid: '123zxc' }), userName$: of('username'), id$: of('iod') }
+        },
         RouterService,
         DynamicFormService
       ]
@@ -312,7 +316,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']),
+            sectionTemplates: Object.values(masterTpl.psv['testTypesGroup1']!),
             sectionsValue: { testTypes: [{ testTypeId: '1' }] } as unknown as TestResultModel
           }),
           c: updateResultOfTest()
@@ -434,7 +438,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateSectionTemplatesAndtestResultToUpdate$).toBe('-(bc)', {
           b: templateSectionsChanged({
-            sectionTemplates: Object.values(masterTpl.psv['default']),
+            sectionTemplates: Object.values(masterTpl.psv['default']!),
             sectionsValue: { testTypes: [{ testTypeId: '39' }] } as unknown as TestResultModel
           }),
           c: updateResultOfTest()
@@ -466,7 +470,7 @@ describe('TestResultsEffects', () => {
 
         expectObservable(effects.generateContingencyTestTemplatesAndtestResultToUpdate$).toBe('-b', {
           b: templateSectionsChanged({
-            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']),
+            sectionTemplates: Object.values(contingencyTestTemplates.psv['testTypesGroup1']!),
             sectionsValue: {
               contingencyTestNumber: undefined,
               countryOfRegistration: '',
@@ -523,8 +527,8 @@ describe('TestResultsEffects', () => {
               ],
               testerEmailAddress: '',
               testerName: '',
-              testerStaffId: undefined,
-              typeOfTest: undefined,
+              testerStaffId: '',
+              typeOfTest: TypeOfTest.CONTINGENCY,
               vehicleClass: null,
               vehicleConfiguration: undefined,
               vehicleSize: undefined,

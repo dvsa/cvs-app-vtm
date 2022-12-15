@@ -28,10 +28,14 @@ import { ViewListItemComponent } from './components/view-list-item/view-list-ite
 import { NumberOnlyDirective } from './directives/app-number-only.directive';
 import { WeightsComponent } from './custom-sections/weights/weights.component';
 import { DimensionsComponent } from './custom-sections/dimensions/dimensions.component';
-import { BrakesComponent } from './custom-sections/brakes/brakes.component';
+import { TrlBrakesComponent } from './custom-sections/trl-brakes/trl-brakes.component';
 import { SwitchableInputComponent } from './components/switchable-input/switchable-input.component';
 import { SuffixDirective } from './directives/suffix.directive';
 import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon-dialog.component';
+import { BodyComponent } from './custom-sections/body/body.component';
+import { TyresComponent } from './custom-sections/tyres/tyres.component';
+import { PsvBrakesComponent } from './custom-sections/psv-brakes/psv-brakes.component';
+import { PrefixDirective } from './directives/prefix.directive';
 
 @NgModule({
   declarations: [
@@ -57,14 +61,18 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     TruncatePipe,
     WeightsComponent,
     DimensionsComponent,
-    BrakesComponent,
+    TrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
     ReadOnlyComponent,
     SuffixDirective,
-    AbandonDialogComponent
+    AbandonDialogComponent,
+    BodyComponent,
+    TyresComponent,
+    PsvBrakesComponent,
+    PrefixDirective
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedModule, RouterModule],
   exports: [
@@ -85,15 +93,19 @@ import { AbandonDialogComponent } from './custom-sections/abandon-dialog/abandon
     FieldErrorMessageComponent,
     DefectSelectComponent,
     WeightsComponent,
+    TyresComponent,
     DimensionsComponent,
-    BrakesComponent,
+    TrlBrakesComponent,
     ReadOnlyComponent,
     CustomDefectsComponent,
     CustomDefectComponent,
     SwitchableInputComponent,
     SuffixDirective,
     ReadOnlyComponent,
-    AbandonDialogComponent
+    AbandonDialogComponent,
+    BodyComponent,
+    PsvBrakesComponent,
+    PrefixDirective
   ]
 })
 export class DynamicFormsModule {}

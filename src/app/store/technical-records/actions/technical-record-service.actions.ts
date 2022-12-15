@@ -21,7 +21,7 @@ export const getByTrailerId = createAction(`${prefix} getByTrailerId`, props<{ t
 export const getByTrailerIdSuccess = createOutcomeAction('getByTrailerId', true);
 export const getByTrailerIdFailure = createOutcomeAction('getByTrailerId');
 
-export const getBySystemNumberAndVin = createAction(`${prefix} getBySystemNumberAndVin`, props<{ systemNumber: string, vin: string }>());
+export const getBySystemNumberAndVin = createAction(`${prefix} getBySystemNumberAndVin`, props<{ systemNumber: string; vin: string }>());
 export const getBySystemNumberAndVinSuccess = createOutcomeAction('getBySystemNumberAndVin', true);
 export const getBySystemNumberAndVinFailure = createOutcomeAction('getBySystemNumberAndVin');
 
@@ -29,13 +29,20 @@ export const getByAll = createAction(`${prefix} getByAll`, props<{ all: string }
 export const getByAllSuccess = createOutcomeAction('getByAll', true);
 export const getByAllFailure = createOutcomeAction('getByAll');
 
-export const updateTechRecords = createAction(`${prefix} updateTechRecords`, props<{ systemNumber: string, recordToArchiveStatus?: StatusCodes  }>());
+export const updateTechRecords = createAction(
+  `${prefix} updateTechRecords`,
+  props<{ systemNumber: string; recordToArchiveStatus?: StatusCodes; newStatus?: StatusCodes }>()
+);
 export const updateTechRecordsSuccess = createOutcomeAction('updateTechRecords', true);
 export const updateTechRecordsFailure = createOutcomeAction('updateTechRecords');
 
-export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string}>());
+export const createProvisionalTechRecord = createAction(`${prefix} createProvisionalTechRecord`, props<{ systemNumber: string }>());
 export const createProvisionalTechRecordSuccess = createOutcomeAction('createProvisionalTechRecord', true);
 export const createProvisionalTechRecordFailure = createOutcomeAction('createProvisionalTechRecord');
+
+export const archiveTechRecord = createAction(`${prefix} archiveTechRecord`, props<{ systemNumber: string; reasonForArchiving: string }>());
+export const archiveTechRecordSuccess = createOutcomeAction('archiveTechRecord', true);
+export const archiveTechRecordFailure = createOutcomeAction('archiveTechRecord');
 
 export const updateEditingTechRecord = createAction('[tech-record] Update editing', props<{ techRecord: TechRecordModel }>());
 export const updateEditingTechRecordCancel = createAction('[tech-record] Update editing cancelled');

@@ -12,12 +12,13 @@ import { TechnicalRecordService } from '@services/technical-record/technical-rec
 import { TestRecordsService } from '@services/test-records/test-records.service';
 import { DefectsState, filteredDefects } from '@store/defects';
 import merge from 'lodash.merge';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CustomDefectsComponent } from '@forms/custom-sections/custom-defects/custom-defects.component';
 
 @Component({
   selector: 'app-base-test-record[testResult]',
-  templateUrl: './base-test-record.component.html'
+  templateUrl: './base-test-record.component.html',
+  styleUrls: ['./base-test-record.component.scss']
 })
 export class BaseTestRecordComponent implements AfterViewInit {
   @ViewChildren(DynamicFormGroupComponent) sections?: QueryList<DynamicFormGroupComponent>;
@@ -27,6 +28,7 @@ export class BaseTestRecordComponent implements AfterViewInit {
   @Input() testResult!: TestResultModel;
   @Input() isEditing: boolean = false;
   @Input() expandSections = false;
+  @Input() isReview = false;
 
   @Output() newTestResult = new EventEmitter<TestResultModel>();
 

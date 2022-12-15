@@ -371,7 +371,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({systemNumber: 'PSV', vin: 'XMGDE02FS0H012345'}) });
+        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'PSV', vin: 'XMGDE02FS0H012345' }) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
@@ -431,7 +431,9 @@ describe('TechnicalRecordServiceEffects', () => {
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
-        expectObservable(effects.getTechnicalRecord$).toBe('---b', { b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' }) });
+        expectObservable(effects.getTechnicalRecord$).toBe('---b', {
+          b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' })
+        });
       });
     });
   });
@@ -565,6 +567,45 @@ describe('TechnicalRecordServiceEffects', () => {
     });
 
     it('should return an error message if not found', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        const expectedError = new HttpErrorResponse({ status: 500, statusText: 'Internal server error' });
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--#|', {}, expectedError));
+
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordFailure({
+            error: 'Unable to create a new provisional record null'
+          })
+        });
+      });
+    });
+  });
+
+  describe('archiveTechRecord', () => {
+    it('should return an archived technical record on successful API call', () => {
+      testScheduler.run(({ hot, cold, expectObservable }) => {
+        const technicalRecord = mockVehicleTechnicalRecordList();
+
+        // mock action to trigger effect
+        actions$ = hot('-a--', { a: createProvisionalTechRecord });
+
+        // mock service call
+        jest.spyOn(technicalRecordService, 'postProvisionalTechRecord').mockReturnValue(cold('--a|', { a: technicalRecord[0] }));
+
+        // expect effect to return success action
+        expectObservable(effects.postProvisionalTechRecord).toBe('---b', {
+          b: createProvisionalTechRecordSuccess({ vehicleTechRecords: technicalRecord })
+        });
+      });
+    });
+
+    it.each([
+      [500, 'Internal server error'],
+      [400, 'You are not allowed to update an archived tech-record']
+    ])('should return an error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
         actions$ = hot('-a--', { a: createProvisionalTechRecord });

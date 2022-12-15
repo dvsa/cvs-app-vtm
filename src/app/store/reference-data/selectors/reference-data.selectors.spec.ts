@@ -1,41 +1,127 @@
-import { referenceDataLoadingState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from './reference-data.selectors';
+import * as referenceDataSelectors from './reference-data.selectors';
 import { ReferenceDataState, initialReferenceDataState } from '../reducers/reference-data.reducer';
-import { ReferenceDataModelBase } from '@models/reference-data.model';
+import { ReferenceDataModelBase, ReferenceDataResourceType } from '@models/reference-data.model';
 import { mockCountriesOfRegistration } from '@mocks/reference-data/mock-countries-of-registration.reference-data';
 import { Dictionary } from '@ngrx/entity';
 import { testCases } from '../reference-data.test-cases';
+import { VehicleTypes } from '@models/vehicle-tech-record.model';
 
 describe('Reference Data Selectors', () => {
   describe('selectAllReferenceDataByResourceType', () => {
-    it.each(testCases)('should return all of the reference data for given resource type', (value) => {
+    it.each(testCases)('should return all of the reference data for given resource type', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map((v) => v.resourceKey);
-      const entities: Dictionary<ReferenceDataModelBase> = payload.reduce((acc, v) => ({ ...acc, [v.resourceKey]: v }), {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V });
+      const ids = payload.map(v => v.resourceKey);
+      const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
+        (acc, v) => ({ ...acc, [v.resourceKey]: v }),
+        {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
+      );
       const state: ReferenceDataState = { ...initialReferenceDataState, [resourceType]: { ids, entities } };
 
-      const expectedState = selectAllReferenceDataByResourceType(resourceType).projector(state[resourceType]);
+      const expectedState = referenceDataSelectors.selectAllReferenceDataByResourceType(resourceType).projector(state[resourceType]);
       expect(expectedState).toHaveLength(mockCountriesOfRegistration.length);
       expect(expectedState).toEqual(payload);
     });
   });
 
   describe('selectReferenceDataByResourceKey', () => {
-    it.each(testCases)('should return one specific reference data by type and key', (value) => {
+    it.each(testCases)('should return one specific reference data by type and key', value => {
       const { resourceType, payload } = value;
-      const ids: string[] = payload.map((v) => v.resourceKey);
-      const entities: Dictionary<ReferenceDataModelBase> = payload.reduce((acc, v) => ({ ...acc, [v.resourceKey]: v }), {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V });
-      const state: ReferenceDataState = { ...initialReferenceDataState, COUNTRY_OF_REGISTRATION: { ids, entities } };
+      const ids: string[] = payload.map(v => v.resourceKey as string);
+      const entities: Dictionary<ReferenceDataModelBase> = payload.reduce(
+        (acc, v) => ({ ...acc, [v.resourceKey]: v }),
+        {} as { [V in ReferenceDataModelBase as V['resourceKey']]: V }
+      );
+      const state: ReferenceDataState = { ...initialReferenceDataState, COUNTRY_OF_REGISTRATION: { ids, entities, loading: false } };
 
       const key = ids[Math.floor(Math.random() * ids.length)]; // select a random key
 
-      const expectedState = selectReferenceDataByResourceKey(resourceType, key).projector(state);
-      expect(expectedState).toBe(mockCountriesOfRegistration.find((r) => r.resourceKey === key));
+      const expectedState = referenceDataSelectors.selectReferenceDataByResourceKey(resourceType, key).projector(state);
+      expect(expectedState).toBe(mockCountriesOfRegistration.find(r => r.resourceKey === key));
     });
   });
 
-  it('should return loading state', () => {
-    const state: ReferenceDataState = { ...initialReferenceDataState, loading: true };
-    const selectedState = referenceDataLoadingState.projector(state);
-    expect(selectedState).toEqual(state.loading);
+  describe('selectTyreSearchReturn', () => {
+    it('should return the search return state to the user', () => {
+      const value = {
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
+      };
+
+      const state: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          loading: false,
+          searchReturn: value.payload
+        }
+      };
+
+      const expectedState = referenceDataSelectors.selectTyreSearchReturn().projector(state);
+      expect(expectedState).toBe(value.payload);
+    });
+  });
+  describe('selectTyreSearchCriteria', () => {
+    it('should return the filter and term state to the user', () => {
+      const value = {
+        payload: [
+          {
+            tyreCode: '123',
+            resourceType: ReferenceDataResourceType.Tyres,
+            resourceKey: '123',
+            code: '123',
+            loadIndexSingleLoad: '102',
+            tyreSize: 'size',
+            dateTimeStamp: 'time',
+            userId: '1234',
+            loadIndexTwinLoad: '101',
+            plyRating: '18'
+          }
+        ]
+      };
+
+      const state: ReferenceDataState = {
+        ...initialReferenceDataState,
+        [ReferenceDataResourceType.Tyres]: {
+          ...initialReferenceDataState[ReferenceDataResourceType.Tyres],
+          loading: false,
+          searchReturn: value.payload,
+          filter: 'cake',
+          term: 'lies'
+        }
+      };
+
+      const expectedState = referenceDataSelectors.selectTyreSearchCriteria().projector(state);
+      expect(expectedState.filter).toBe('cake');
+      expect(expectedState.term).toBe('lies');
+    });
+  });
+
+  it('should return true if any feature is loading state', () => {
+    const state: ReferenceDataState = { ...initialReferenceDataState };
+    state.BODY_MAKE.loading = true;
+    const selectedState = referenceDataSelectors.referenceDataLoadingState.projector(state);
+    expect(selectedState).toEqual(true);
+  });
+
+  it('should return the reasons for abandoning for the right vehicle type', () => {
+    const selectorSpy = jest.spyOn(referenceDataSelectors, 'selectAllReferenceDataByResourceType');
+    referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.PSV);
+    expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningPsv);
+    referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.HGV);
+    expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningHgv);
+    referenceDataSelectors.selectReasonsForAbandoning(VehicleTypes.TRL);
+    expect(selectorSpy).toHaveBeenLastCalledWith(ReferenceDataResourceType.ReasonsForAbandoningTrl);
   });
 });

@@ -1,3 +1,6 @@
+import { MultiOptions } from '@forms/models/options.model';
+import { BodyTypeCode, BodyTypeDescription } from './body-type-enum';
+
 export interface VehicleTechRecordModel {
   vrms: Vrm[];
   vin: string;
@@ -12,8 +15,8 @@ export interface Vrm {
 }
 
 export enum ReasonForEditing {
-  CORRECTING_AN_ERROR = 'correctingAnError',
-  NOTIFIABLE_ALTERATION_NEEDED = 'notifiableAlterationNeeded'
+  CORRECTING_AN_ERROR = 'correcting-an-error',
+  NOTIFIABLE_ALTERATION_NEEDED = 'notifiable-alteration-needed'
 }
 
 export enum StatusCodes {
@@ -113,21 +116,6 @@ export enum approvalType {
   ECSSTA = 'ECSSTA'
 }
 
-export enum BodyTypeDescription {
-  ARTICULATED = 'articulated',
-  BOX = 'box',
-  DOUBLEDECKER = 'double decker',
-  FLAT = 'flat',
-  OTHER = 'other',
-  PETROL = 'petrol/oil tanker',
-  REFRIGIRATED = 'refrigerated',
-  REFUSE = 'refuse',
-  SINGLEDECKER = 'single decker',
-  SKELETAL = 'skeletal',
-  SKIPLOADER = 'skip loader',
-  TIPPER = 'tipper'
-}
-
 export enum SpeedCategorySymbol {
   A7 = 'a7',
   A8 = 'a8',
@@ -155,26 +143,38 @@ export interface Axle {
 }
 
 export enum FitmentCode {
-  DOUBLE = 'double',
-  SINGLE = 'single'
+  SINGLE = 'single',
+  DOUBLE = 'double'
 }
 
 export interface Tyres {
-  tyreSize: string;
-  speedCategorySymbol: SpeedCategorySymbol;
-  fitmentCode: FitmentCode;
-  dataTrAxles: number;
-  plyRating: string;
-  tyreCode: number;
-  weights?: AxleWeights;
+  tyreCode: number | null;
+  tyreSize: string | null;
+  plyRating: string | null;
+  fitmentCode: FitmentCode | null;
+  speedCategorySymbol: SpeedCategorySymbol | null;
+  dataTrAxles: number | null;
+}
+
+export class Tyre implements Tyres {
+  tyreSize!: string | null;
+  speedCategorySymbol!: SpeedCategorySymbol | null;
+  fitmentCode!: FitmentCode | null;
+  dataTrAxles!: number | null;
+  plyRating!: string | null;
+  tyreCode!: number | null;
+
+  constructor(tyre: Tyres) {
+    Object.assign(this, tyre);
+  }
 }
 
 export interface AxleWeights {
-  kerbWeight: number;
-  ladenWeight: number;
-  gbWeight: number;
-  eecWeight: number;
-  designWeight: number;
+  kerbWeight?: number | null;
+  ladenWeight?: number | null;
+  gbWeight: number | null;
+  eecWeight?: number | null;
+  designWeight: number | null;
 }
 
 export interface Purchaser {
@@ -188,6 +188,11 @@ export interface Purchaser {
   emailAddress?: string | null;
   faxNumber?: string | null;
   purchaserNotes?: string | null;
+}
+
+export interface BodyType {
+  description?: BodyTypeDescription;
+  code?: BodyTypeCode;
 }
 
 export interface TechRecordModel {
@@ -241,17 +246,18 @@ export interface TechRecordModel {
   remarks?: string;
   reasonForCreation: string;
   modelLiteral?: string;
+  make?: string;
+  model?: string;
   chassisMake?: string;
   chassisModel?: string;
   bodyMake?: string;
   bodyModel?: string;
-  bodyType?: {
-    description: BodyTypeDescription;
-  };
+  bodyType?: BodyType;
   functionCode?: string;
   conversionRefNo?: string;
   purchaserDetails?: Purchaser;
   authIntoService?: AuthIntoService;
+  notes?: string;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
@@ -355,7 +361,7 @@ export interface Dimensions {
 
 export interface AxleSpacing {
   axles: string;
-  value: number;
+  value: number | null;
 }
 
 export interface Brakes {
@@ -365,11 +371,12 @@ export interface Brakes {
   axleNumber?: string;
   axleBrakeProperties?: AxleBrakeProperties; //Check to here and including object
   brakeCode?: string;
+  brakeCodeOriginal?: string;
   dataTrBrakeOne?: string;
   dataTrBrakeTwo?: string;
   dataTrBrakeThree?: string;
-  retarderBrakeOne?: RetarderBrake;
-  retarderBrakeTwo?: RetarderBrake;
+  retarderBrakeOne?: Retarders;
+  retarderBrakeTwo?: Retarders;
   brakeForceWheelsNotLocked?: BrakeForceWheelsNotLocked;
   brakeForceWheelsUpToHalfLocked?: BrakeForceWheelsUpToHalfLocked;
 }
@@ -385,7 +392,7 @@ export interface BrakeForceWheelsUpToHalfLocked {
   secondaryBrakeForceB: number;
   serviceBrakeForceB: number;
 }
-export enum RetarderBrake {
+export enum Retarders {
   ELECTRIC = 'electric',
   EXHAUST = 'exhaust',
   FRICTION = 'friction',

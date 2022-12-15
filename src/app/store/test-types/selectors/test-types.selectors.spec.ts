@@ -306,6 +306,6 @@ describe('selectors', () => {
 
       const selector = selectTestType('39').projector(exampleTestTypes);
       expect(selector).toEqual((exampleTestTypes[2] as TestTypeCategory).nextTestTypesOrCategories?.pop());
-    })
+    });
   });
 });

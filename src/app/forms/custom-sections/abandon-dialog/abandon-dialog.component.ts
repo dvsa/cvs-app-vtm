@@ -1,13 +1,16 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { TEST_TYPES_GROUP5_13 } from '@forms/models/testTypeId.enum';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { FormNode, FormNodeEditTypes, FormNodeTypes } from '@forms/services/dynamic-form.types';
+import { SpecialRefData } from '@forms/services/multi-options.service';
 import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { TestRecordsService } from '@services/test-records/test-records.service';
 import { BaseDialogComponent } from '@shared/components/base-dialog/base-dialog.component';
 import merge from 'lodash.merge';
 import { DynamicFormGroupComponent } from '../../components/dynamic-form-group/dynamic-form-group.component';
 
-const ABANDON_FORM: FormNode = {
+const ABANDON_FORM = (ReasonsForAbandoning: ReferenceDataResourceType | SpecialRefData): FormNode => ({
   name: 'abandonSection',
   type: FormNodeTypes.GROUP,
   children: [
@@ -28,7 +31,7 @@ const ABANDON_FORM: FormNode = {
               editType: FormNodeEditTypes.CHECKBOX,
               delimited: { regex: '\\. (?<!\\..\\. )', separator: '. ' }, // the space is important here
               required: true,
-              referenceData: ReferenceDataResourceType.ReasonsForAbandoning,
+              referenceData: ReasonsForAbandoning,
               validators: [{ name: ValidatorNames.Required }]
             },
             {
@@ -44,17 +47,31 @@ const ABANDON_FORM: FormNode = {
       ]
     }
   ]
-};
+});
 
 @Component({
   selector: 'app-abandon-dialog',
   templateUrl: './abandon-dialog.component.html'
 })
-export class AbandonDialogComponent extends BaseDialogComponent {
+export class AbandonDialogComponent extends BaseDialogComponent implements OnInit {
   @ViewChild(DynamicFormGroupComponent) dynamicFormGroup?: DynamicFormGroupComponent;
   @Input() testResult?: TestResultModel;
   @Output() newTestResult = new EventEmitter<TestResultModel>();
-  template = ABANDON_FORM;
+  template?: FormNode;
+  ngOnInit() {
+    this.template = this.getTemplate();
+  }
+
+  getTemplate(): FormNode {
+    const testTypeId = this.testResult?.testTypes[0].testTypeId ?? '';
+
+    if (TEST_TYPES_GROUP5_13.includes(testTypeId)) {
+      return ABANDON_FORM(ReferenceDataResourceType.TIRReasonsForAbandoning);
+    } else if (TestRecordsService.getTestTypeGroup(testTypeId)?.includes('Specialist')) {
+      return ABANDON_FORM(ReferenceDataResourceType.SpecialistReasonsForAbandoning);
+    }
+    return ABANDON_FORM(SpecialRefData.ReasonsForAbandoning);
+  }
 
   handleFormChange(event: any) {
     let latestTest: any;

@@ -6,6 +6,7 @@ import { TitleResolver } from './resolvers/title/title.resolver';
 import { Roles } from '@models/roles.enum';
 import { TechRecordViewResolver } from './resolvers/tech-record-view/tech-record-view.resolver';
 import { PageNotFoundComponent } from '@core/components/page-not-found/page-not-found.component';
+import { ServerErrorComponent } from '@core/components/server-error/server-error.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
         data: { title: 'Tech Record', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)
+      },
+      {
+        path: 'error',
+        pathMatch: 'full',
+        component: ServerErrorComponent
       }
     ]
   },

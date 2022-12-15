@@ -2,7 +2,7 @@ import {
   VehicleTechRecordModel,
   StatusCodes,
   VehicleTypes,
-  RetarderBrake,
+  Retarders,
   SpeedCategorySymbol,
   FitmentCode,
   FuelTypes,
@@ -10,10 +10,10 @@ import {
   EuVehicleCategories,
   VehicleSizes,
   approvalType,
-  MicrofilmDocumentType,
-  BodyTypeDescription
+  MicrofilmDocumentType
 } from '../app/models/vehicle-tech-record.model';
 import { createMock } from 'ts-auto-mock';
+import { BodyTypeDescription } from '@models/body-type-enum';
 
 export const createMockPsv = (systemNumber: number): VehicleTechRecordModel =>
   createMock<VehicleTechRecordModel>({
@@ -50,8 +50,8 @@ const provisionalTechRecord = {
     dataTrBrakeOne: '12',
     dataTrBrakeTwo: '34',
     dataTrBrakeThree: '56',
-    retarderBrakeOne: RetarderBrake.ELECTRIC,
-    retarderBrakeTwo: RetarderBrake.ELECTRIC,
+    retarderBrakeOne: Retarders.ELECTRIC,
+    retarderBrakeTwo: Retarders.ELECTRIC,
     brakeForceWheelsNotLocked: {
       parkingBrakeForceA: 1234,
       secondaryBrakeForceA: 1234,
@@ -85,6 +85,25 @@ const provisionalTechRecord = {
     },
     {
       axleNumber: 2,
+      parkingBrakeMrk: true,
+      tyres: {
+        tyreSize: '295/80-22.5',
+        speedCategorySymbol: SpeedCategorySymbol.P,
+        fitmentCode: FitmentCode.DOUBLE,
+        dataTrAxles: 0,
+        plyRating: 'A',
+        tyreCode: 456
+      },
+      weights: {
+        kerbWeight: 1,
+        ladenWeight: 2,
+        gbWeight: 3,
+        eecWeight: 4,
+        designWeight: 5
+      }
+    },
+    {
+      axleNumber: 3,
       parkingBrakeMrk: true,
       tyres: {
         tyreSize: '295/80-22.5',
@@ -160,7 +179,7 @@ const provisionalTechRecord = {
   bodyMake: 'Body make',
   bodyModel: 'Body model',
   bodyType: {
-    description: BodyTypeDescription.DOUBLEDECKER
+    description: BodyTypeDescription.DOUBLE_DECKER
   },
   functionCode: 'r',
   conversionRefNo: '345345',
@@ -206,8 +225,8 @@ const archivedTechRecord = {
     dataTrBrakeOne: '12',
     dataTrBrakeTwo: '34',
     dataTrBrakeThree: '56',
-    retarderBrakeOne: RetarderBrake.ELECTRIC,
-    retarderBrakeTwo: RetarderBrake.ELECTRIC,
+    retarderBrakeOne: Retarders.ELECTRIC,
+    retarderBrakeTwo: Retarders.ELECTRIC,
     brakeForceWheelsNotLocked: {
       parkingBrakeForceA: 1234,
       secondaryBrakeForceA: 1234,
@@ -299,7 +318,7 @@ const archivedTechRecord = {
   bodyMake: 'Body make',
   bodyModel: 'Body model',
   bodyType: {
-    description: BodyTypeDescription.DOUBLEDECKER
+    description: BodyTypeDescription.DOUBLE_DECKER
   },
   functionCode: 'r',
   conversionRefNo: '345345',
@@ -331,8 +350,8 @@ const currentTechRecord = {
     dataTrBrakeOne: '12',
     dataTrBrakeTwo: '34',
     dataTrBrakeThree: '56',
-    retarderBrakeOne: RetarderBrake.ELECTRIC,
-    retarderBrakeTwo: RetarderBrake.ELECTRIC,
+    retarderBrakeOne: Retarders.ELECTRIC,
+    retarderBrakeTwo: Retarders.ELECTRIC,
     brakeForceWheelsNotLocked: {
       parkingBrakeForceA: 1234,
       secondaryBrakeForceA: 1234,
@@ -397,7 +416,7 @@ const currentTechRecord = {
   ntaNumber: 'nta789',
   coifSerialNumber: 'coifSerial123456',
   coifCertifierName: 'coifName',
-  coifDate: new Date(),
+  coifDate: '1233-12-31',
   variantNumber: 'variant123456',
   variantVersionNumber: 'variantversion123456',
   applicantDetails: {
@@ -424,7 +443,7 @@ const currentTechRecord = {
   bodyMake: 'Body make',
   bodyModel: 'Body model',
   bodyType: {
-    description: BodyTypeDescription.DOUBLEDECKER
+    description: BodyTypeDescription.DOUBLE_DECKER
   },
   functionCode: 'r',
   conversionRefNo: '345345',

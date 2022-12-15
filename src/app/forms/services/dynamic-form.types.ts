@@ -87,7 +87,7 @@ export interface FormNode {
   value?: any;
   path?: string;
   options?: FormNodeOption<string | number | boolean | null>[] | FormNodeCombinationOptions;
-  validators?: { name: ValidatorNames; args?: any }[];
+  validators?: FormNodeValidator[];
   customValidatorErrorName?: string;
   asyncValidators?: { name: AsyncValidatorNames; args?: any }[];
   disabled?: boolean;
@@ -100,7 +100,11 @@ export interface FormNode {
   suffix?: string;
   isoDate?: boolean;
   class?: string;
+}
 
+export interface FormNodeValidator {
+  name: ValidatorNames;
+  args?: any;
 }
 
 export interface FormNodeCombinationOptions {
@@ -116,6 +120,13 @@ export interface SubHeadingLink {
 
 export interface CustomControl extends FormControl {
   meta: FormNode;
+}
+
+export interface Params {
+  systemNumber?: string;
+  vin?: string;
+  reason?: string;
+  axleNumber?: number;
 }
 
 export class CustomFormControl extends FormControl implements CustomControl {
@@ -201,8 +212,28 @@ export class CustomFormArray extends FormArray implements CustomArray, BaseForm 
       super.push(this.dynamicFormService.createForm(this.meta.children[0], data));
     }
   }
+
+  override patchValue(
+    value: any[] | undefined | null,
+    options?: {
+      onlySelf?: boolean;
+      emitEvent?: boolean;
+    }
+  ): void {
+    if (value) {
+      if (value.length !== this.controls.length && this.meta.children && this.meta.children[0].type === 'group') {
+        if (value.length > this.controls.length) {
+          super.push(this.dynamicFormService.createForm(this.meta.children[0], value));
+        } else {
+          this.controls.pop();
+        }
+      }
+      super.patchValue(value, options);
+    }
+  }
 }
 
+//TODO: clean this
 const cleanValue = (form: CustomFormGroup | CustomFormArray): Record<string, any> | Array<[]> => {
   const cleanValue = form instanceof CustomFormArray ? [] : ({} as Record<string, any>);
   Object.keys(form.controls).forEach(key => {
