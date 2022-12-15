@@ -88,8 +88,6 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
   const { vehicleType, euVehicleCategory, vehicleSize, vehicleConfiguration, noOfAxles, vehicleClass, vehicleSubclass, numberOfWheelsDriven } =
     testResult;
 
-  console.log(vehicleType);
-  console.log(testTypes);
   return (
     testTypes
       .filter(testTypes => !vehicleType || !testTypes.forVehicleType || testTypes.forVehicleType.includes(vehicleType))
@@ -118,9 +116,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
       .map(testType => {
         const newTestType = { ...testType } as TestTypeCategory;
 
-        console.log(newTestType);
         if (newTestType.hasOwnProperty('nextTestTypesOrCategories')) {
-          console.log(newTestType.name + ' has next test types');
           newTestType.nextTestTypesOrCategories = filterTestTypes(newTestType.nextTestTypesOrCategories!, testResult);
         }
 
