@@ -128,15 +128,14 @@ function removeDefectAtIndex(testResultState: TestResultModel | undefined, index
 }
 
 function calculateTestResult(testResultState: TestResultModel | undefined): TestResultModel | undefined {
-  // don't update test result for DBA
-  if (!testResultState || TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
+  if (!testResultState) {
     return;
   }
 
   const testResult = cloneDeep(testResultState);
 
   const newTestTypes = testResult.testTypes.map(testType => {
-    if (testType.testResult === resultOfTestEnum.abandoned || !testType.defects) {
+    if (testType.testResult === resultOfTestEnum.abandoned || !testType.defects || TypeOfTest.DESK_BASED === testResultState?.typeOfTest) {
       return testType;
     }
 
