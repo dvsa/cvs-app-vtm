@@ -1,18 +1,17 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MultiOption, MultiOptions } from '@forms/models/options.model';
+import { MultiOptions } from '@forms/models/options.model';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { PsvBodyTemplate } from '@forms/templates/psv/psv-body.template';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
-import { BodyTypeCode, BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
-import { PsvMake, ReferenceDataResourceType } from '@models/reference-data.model';
+import { BodyTypeDescription, bodyTypeMap } from '@models/body-type-enum';
+import { ReferenceDataResourceType } from '@models/reference-data.model';
 import { BodyType, TechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
-import { Store } from '@ngrx/store';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
-import { Subject, debounceTime, takeUntil, Observable, map, take, of, takeWhile, lastValueFrom, takeLast, last, skipWhile } from 'rxjs';
+import { ReferenceDataService } from '@services/reference-data/reference-data.service';
+import { Subject, debounceTime, takeUntil, Observable, map, take, skipWhile, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-body',
@@ -30,7 +29,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   private template!: FormNode;
   private destroy$ = new Subject<void>();
 
-  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataStore: Store<ReferenceDataState>) {}
+  constructor(private dfs: DynamicFormService, private optionsService: MultiOptionsService, private referenceDataService: ReferenceDataService) {}
 
   ngOnInit(): void {
     this.template = this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ? PsvBodyTemplate : HgvAndTrlBodyTemplate;
@@ -75,9 +74,15 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get dtpNumbers$(): Observable<MultiOptions> {
-    return this.optionsService.getOptions(ReferenceDataResourceType.PsvMake).pipe(
-      skipWhile(data => data?.length! <= 2000), //// Write better predicate
-      map(data => data?.map(option => ({ value: option.value, label: option.value })) as MultiOptions)
+    return combineLatest([
+      this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
+      this.referenceDataService.getReferenceDataLoading()
+    ]).pipe(
+      skipWhile(([data, loading]) => loading),
+      take(1),
+      map(([data, loading]) => {
+        return data?.map(option => ({ value: option.resourceKey, label: option.resourceKey })) as MultiOptions;
+      })
     );
   }
 
