@@ -261,7 +261,6 @@ export class TechRecordSummaryComponent implements OnInit {
     let i = previousAxles ? previousAxles.length : 0;
 
     for (i; i < vehicleAxleSpacingsLength + 1; i++) {
-      const axleNumber = previousAxles ? i + 1 : i;
       axles.push(this.generateAxleObject(vehicleType, i + 1));
     }
 

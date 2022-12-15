@@ -30,8 +30,8 @@ export const ContingencyVehicleSectionDefaultPsvHgv: FormNode = {
       name: 'countryOfRegistration',
       label: 'Country Of Registration',
       value: '',
-      editType: FormNodeEditTypes.AUTOCOMPLETE,
       options: [],
+      editType: FormNodeEditTypes.AUTOCOMPLETE,
       referenceData: ReferenceDataResourceType.CountryOfRegistration,
       type: FormNodeTypes.CONTROL,
       asyncValidators: [{ name: AsyncValidatorNames.RequiredIfNotAbandoned }]
