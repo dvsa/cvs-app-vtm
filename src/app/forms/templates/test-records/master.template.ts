@@ -435,5 +435,38 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
+  },
+  lgv: {
+    default: {
+      required: RequiredSection,
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  car: {
+    default: {
+      required: RequiredSection,
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  motorcycle: {
+    default: {
+      required: RequiredSection,
+      vehicle: VehicleSectionDefaultPsvHgv,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
   }
 };
