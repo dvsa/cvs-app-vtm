@@ -206,7 +206,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('getBySystemNumber', () => {
     it('should set all vehicle technical records', () => {
       const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
-      const action = getBySystemNumber({ systemNumber: '001', vin: '1' });
+      const action = getBySystemNumber({ systemNumber: '001' });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);

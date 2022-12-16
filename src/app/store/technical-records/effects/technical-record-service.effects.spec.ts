@@ -371,7 +371,7 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'PSV', vin: 'XMGDE02FS0H012345' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'PSV' }) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
@@ -386,7 +386,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return generic error message if not not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber', vin: 'vin' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -404,7 +404,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return not found error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber', vin: 'vin' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -425,7 +425,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return error message if error is a string', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber', vin: 'vin' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber' }) });
 
         // mock service call
         const expectedError = 'string';
