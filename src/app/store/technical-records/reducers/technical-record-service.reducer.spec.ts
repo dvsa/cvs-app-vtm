@@ -7,9 +7,9 @@ import {
   getByPartialVin,
   getByPartialVinFailure,
   getByPartialVinSuccess,
-  getBySystemNumberAndVin,
-  getBySystemNumberAndVinFailure,
-  getBySystemNumberAndVinSuccess,
+  getBySystemNumber,
+  getBySystemNumberFailure,
+  getBySystemNumberSuccess,
   getByTrailerId,
   getByTrailerIdFailure,
   getByTrailerIdSuccess,
@@ -206,7 +206,7 @@ describe('Vehicle Technical Record Reducer', () => {
   describe('getBySystemNumber', () => {
     it('should set all vehicle technical records', () => {
       const newState: TechnicalRecordServiceState = { ...initialState, loading: true };
-      const action = getBySystemNumberAndVin({ systemNumber: '001', vin: '1' });
+      const action = getBySystemNumber({ systemNumber: '001', vin: '1' });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);
@@ -221,7 +221,7 @@ describe('Vehicle Technical Record Reducer', () => {
         ...initialState,
         vehicleTechRecords: records
       };
-      const action = getBySystemNumberAndVinSuccess({ vehicleTechRecords: [...records] });
+      const action = getBySystemNumberSuccess({ vehicleTechRecords: [...records] });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);
@@ -233,7 +233,7 @@ describe('Vehicle Technical Record Reducer', () => {
     it('should set error state', () => {
       const error = 'fetching vehicle tech records failed';
       const newState = { ...initialState, error };
-      const action = getBySystemNumberAndVinFailure({ error });
+      const action = getBySystemNumberFailure({ error });
       const state = vehicleTechRecordReducer(initialState, action);
 
       expect(state).toEqual(newState);

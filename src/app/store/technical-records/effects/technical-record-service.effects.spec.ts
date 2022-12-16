@@ -22,9 +22,9 @@ import {
   getByPartialVin,
   getByPartialVinFailure,
   getByPartialVinSuccess,
-  getBySystemNumberAndVin,
-  getBySystemNumberAndVinFailure,
-  getBySystemNumberAndVinSuccess,
+  getBySystemNumber,
+  getBySystemNumberFailure,
+  getBySystemNumberSuccess,
   getByTrailerId,
   getByTrailerIdFailure,
   getByTrailerIdSuccess,
@@ -371,14 +371,14 @@ describe('TechnicalRecordServiceEffects', () => {
         const technicalRecord = mockVehicleTechnicalRecordList();
 
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'PSV', vin: 'XMGDE02FS0H012345' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'PSV', vin: 'XMGDE02FS0H012345' }) });
 
         // mock service call
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--a|', { a: technicalRecord }));
 
         // expect effect to return success action
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberAndVinSuccess({ vehicleTechRecords: technicalRecord })
+          b: getBySystemNumberSuccess({ vehicleTechRecords: technicalRecord })
         });
       });
     });
@@ -386,7 +386,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return generic error message if not not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'systemNumber', vin: 'vin' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber', vin: 'vin' }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -396,7 +396,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberAndVinFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
+          b: getBySystemNumberFailure({ error: 'There was a problem getting the Tech Record by systemNumber', anchorLink: 'search-term' })
         });
       });
     });
@@ -404,7 +404,7 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return not found error message if not found', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'systemNumber', vin: 'vin' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber', vin: 'vin' }) });
 
         // mock service call
         const expectedError = new HttpErrorResponse({
@@ -414,7 +414,7 @@ describe('TechnicalRecordServiceEffects', () => {
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberAndVinFailure({
+          b: getBySystemNumberFailure({
             error: 'Vehicle not found, check the vehicle registration mark, trailer ID or vehicle identification number',
             anchorLink: 'search-term'
           })
@@ -425,14 +425,14 @@ describe('TechnicalRecordServiceEffects', () => {
     it('should return error message if error is a string', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         // mock action to trigger effect
-        actions$ = hot('-a--', { a: getBySystemNumberAndVin({ systemNumber: 'systemNumber', vin: 'vin' }) });
+        actions$ = hot('-a--', { a: getBySystemNumber({ systemNumber: 'systemNumber', vin: 'vin' }) });
 
         // mock service call
         const expectedError = 'string';
         jest.spyOn(technicalRecordService, 'getBySystemNumber').mockReturnValue(cold('--#|', {}, expectedError));
 
         expectObservable(effects.getTechnicalRecord$).toBe('---b', {
-          b: getBySystemNumberAndVinFailure({ error: 'string', anchorLink: 'search-term' })
+          b: getBySystemNumberFailure({ error: 'string', anchorLink: 'search-term' })
         });
       });
     });
