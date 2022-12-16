@@ -76,7 +76,7 @@ export class BodyComponent implements OnInit, OnChanges, OnDestroy {
   get dtpNumbers$(): Observable<MultiOptions> {
     return combineLatest([
       this.referenceDataService.getAll$(ReferenceDataResourceType.PsvMake),
-      this.referenceDataService.getReferenceDataLoading()
+      this.referenceDataService.getReferencePsvMakeDataLoading()
     ]).pipe(
       skipWhile(([data, loading]) => loading),
       take(1),
