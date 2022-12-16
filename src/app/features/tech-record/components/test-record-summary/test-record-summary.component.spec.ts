@@ -1,35 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { RoleRequiredDirective } from '@directives/app-role-required.directive';
 import { TestResultModel } from '@models/test-results/test-result.model';
 import { resultOfTestEnum, TestType } from '@models/test-types/test-type.model';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Action } from '@ngrx/store';
-import { UserService } from '@services/user-service/user-service';
 import { SharedModule } from '@shared/shared.module';
-import { of, ReplaySubject } from 'rxjs';
 import { createMock, createMockList } from 'ts-auto-mock';
 import { TestRecordSummaryComponent } from './test-record-summary.component';
 
 describe('TestRecordSummaryComponent', () => {
   let component: TestRecordSummaryComponent;
   let fixture: ComponentFixture<TestRecordSummaryComponent>;
-  let actions$ = new ReplaySubject<Action>();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestRecordSummaryComponent, RoleRequiredDirective],
-      imports: [RouterTestingModule, SharedModule],
-      providers: [
-        provideMockActions(() => actions$),
-        {
-          provide: UserService,
-          useValue: {
-            roles$: of(['TestResult.CreateContingency'])
-          }
-        }
-      ]
+      declarations: [TestRecordSummaryComponent],
+      imports: [RouterTestingModule, SharedModule]
     }).compileComponents();
   });
 
