@@ -36,7 +36,7 @@ describe('User-Service', () => {
   });
 
   describe('User getters', () => {
-    const user = { name: 'name', username: 'name@mail.com', oid: '123', accessToken: '12345' };
+    const user = { name: 'name', userEmail: 'name@mail.com', oid: '123', accessToken: '12345' };
 
     beforeEach(() => {
       (jwtDecode as jest.Mock).mockImplementationOnce(() => ({ roles: ['12345'] }));
@@ -44,8 +44,8 @@ describe('User-Service', () => {
     });
 
     it('should get the username', done => {
-      service.userName$.pipe(take(1)).subscribe(data => {
-        expect(data).toEqual(user.username);
+      service.userEmail$.pipe(take(1)).subscribe(data => {
+        expect(data).toEqual(user.userEmail);
         done();
       });
     });
