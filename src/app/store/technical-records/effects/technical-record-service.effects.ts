@@ -104,7 +104,7 @@ export class TechnicalRecordServiceEffects {
   updateTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateTechRecords),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userEmail$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService
           .putUpdateTechRecords(action.systemNumber, record!, { username, id }, action.recordToArchiveStatus, action.newStatus)
@@ -119,7 +119,7 @@ export class TechnicalRecordServiceEffects {
   postProvisionalTechRecord = createEffect(() =>
     this.actions$.pipe(
       ofType(createProvisionalTechRecord),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userEmail$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.postProvisionalTechRecord(action.systemNumber, record!, { username, id }).pipe(
           map(vehicleTechRecord => createProvisionalTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
@@ -132,7 +132,7 @@ export class TechnicalRecordServiceEffects {
   archiveTechRecord = createEffect(() =>
     this.actions$.pipe(
       ofType(archiveTechRecord),
-      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userName$, this.userService.id$),
+      withLatestFrom(this.technicalRecordService.editableTechRecord$, this.userService.userEmail$, this.userService.id$),
       switchMap(([action, record, username, id]) =>
         this.technicalRecordService.archiveTechnicalRecord(action.systemNumber, record!, action.reasonForArchiving, { username, id }).pipe(
           map(vehicleTechRecord => archiveTechRecordSuccess({ vehicleTechRecords: [vehicleTechRecord] })),
