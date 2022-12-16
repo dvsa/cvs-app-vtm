@@ -196,6 +196,7 @@ export interface BodyType {
 }
 
 export interface TechRecordModel {
+  historicVin?: string;
   createdAt: Date;
   createdByName: string;
   statusCode: StatusCodes;
