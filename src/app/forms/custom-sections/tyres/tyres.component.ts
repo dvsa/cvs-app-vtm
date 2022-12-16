@@ -73,6 +73,9 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
         return tyresTemplateHgv;
       case VehicleTypes.TRL:
         return tyresTemplateTrl;
+      // TODO: Double check this
+      default:
+        return PsvTyresTemplate;
     }
   }
 

@@ -120,6 +120,9 @@ export class TechRecordSummaryComponent implements OnInit {
         return this.getHgvTemplates();
       case VehicleTypes.TRL:
         return this.getTrlTemplates();
+      // TODO: Double check this
+      default:
+        return this.getPsvTemplates();
     }
   }
 

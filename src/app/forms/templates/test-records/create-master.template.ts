@@ -8,7 +8,7 @@ import { CreateRequiredSection } from './section-templates/required/contingency-
 import { SeatbeltSection } from './section-templates/seatbelt/seatbelt-section.template';
 import { ContingencyTestSectionGroup1 } from './section-templates/test/contingency/contingency-test-section-group1.template';
 import { TestSection } from './section-templates/test/test-section.template';
-import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
+import { ContingencyVehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/contingency-default-psv-hgv-light-vehicle-section.template';
 import { ContingencyVisitSection } from './section-templates/visit/contingency-visit-section.template';
 import { VisitSection } from './section-templates/visit/visit-section.template';
 import { SeatbeltHiddenSection } from './section-templates/required/seatbelt-hidden-section.template';
@@ -41,7 +41,7 @@ import { DeskBasedTestSectionGroup2 } from './section-templates/test/desk-based/
 
 const groups1and2Template: Record<string, FormNode> = {
   required: CreateRequiredSection,
-  vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+  vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
   test: ContingencyTestSectionGroup1,
   seatbelts: SeatbeltSection,
   visit: ContingencyVisitSection,
@@ -54,7 +54,7 @@ const groups1and2Template: Record<string, FormNode> = {
 export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TYPES | 'default', Record<string, FormNode>>>> = {
   psv: {
     default: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       seatbelts: SeatbeltSection,
       emissions: EmissionsSection,
@@ -67,7 +67,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     testTypesGroup1: groups1and2Template,
     testTypesGroup2: groups1and2Template,
     testTypesGroup3And4And8: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup3And4And8,
       visit: ContingencyVisitSection,
       seatbelts: SeatbeltHiddenSection,
@@ -79,7 +79,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup15And16: {
       required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup15and16,
       emissions: EmissionsSection,
       seatbelts: SeatbeltHiddenSection,
@@ -89,7 +89,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesSpecialistGroup1: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup1,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
@@ -100,7 +100,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSection
     },
     testTypesSpecialistGroup2: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup2,
       seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
@@ -111,7 +111,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSection
     },
     testTypesSpecialistGroup3: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup3And4,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
@@ -122,7 +122,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSection
     },
     testTypesSpecialistGroup4: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup3And4,
       seatbelts: SeatbeltSection,
       visit: ContingencyVisitSection,
@@ -133,7 +133,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSection
     },
     testTypesSpecialistGroup5: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup5,
       seatbelts: SeatbeltHiddenSection,
       visit: ContingencyVisitSection,
@@ -191,7 +191,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
   },
   hgv: {
     default: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       visit: VisitSection,
       notes: NotesSection,
@@ -200,7 +200,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionHgvTrl
     },
     testTypesGroup3And4And8: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup3And4And8,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -211,7 +211,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup5And13: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup5And13,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -221,7 +221,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup6And11: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup6And11,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -231,7 +231,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup7: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup7,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -241,7 +241,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup9And10: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup9And10,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -251,7 +251,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup12And14: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup12and14,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -260,7 +260,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationSection
     },
     testTypesSpecialistGroup1: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup1,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -270,7 +270,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionHgvTrl
     },
     testTypesSpecialistGroup5: {
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup5,
       visit: ContingencyVisitSection,
       notes: NotesSection,
@@ -281,7 +281,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
     },
     testTypesGroup15And16: {
       required: CreateRequiredSectionHgvTrl,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionGroup15and16,
       emissions: EmissionsSection,
       visit: ContingencyVisitSection,
@@ -466,7 +466,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
   lgv: {
     default: {
       required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
@@ -477,7 +477,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
   car: {
     default: {
       required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
@@ -488,7 +488,7 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
   motorcycle: {
     default: {
       required: CreateRequiredSection,
-      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
       visit: ContingencyVisitSection,
