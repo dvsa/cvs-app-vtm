@@ -125,7 +125,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     if (isComplete) {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
-      confirm(
+      alert(
         'Incomplete vehicle record.\n\n' +
           'This vehicle does not have enough data to be tested. ' +
           'Call Technical Support to correct this record and use SAR to test this vehicle.'
