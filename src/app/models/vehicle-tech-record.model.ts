@@ -28,7 +28,10 @@ export enum StatusCodes {
 export enum VehicleTypes {
   PSV = 'psv',
   HGV = 'hgv',
-  TRL = 'trl'
+  TRL = 'trl',
+  LGV = 'lgv',
+  CAR = 'car',
+  MOTORCYCLE = 'motorcycle'
 }
 
 export enum FuelTypes {

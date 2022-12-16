@@ -463,5 +463,38 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationHiddenSection
     }
+  },
+  lgv: {
+    default: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  car: {
+    default: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  motorcycle: {
+    default: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgv,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
   }
 };
