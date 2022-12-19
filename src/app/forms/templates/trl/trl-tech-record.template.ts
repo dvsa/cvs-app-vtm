@@ -50,24 +50,6 @@ export const TrlTechRecordTemplate: FormNode = {
       isoDate: false
     },
     {
-      name: 'brakes',
-      label: 'DTP number',
-      value: '',
-      children: [
-        {
-          name: 'dtpNumber',
-          label: 'DTP number',
-          value: '',
-          width: FormNodeWidth.L,
-          type: FormNodeTypes.CONTROL,
-          viewType: FormNodeViewTypes.STRING,
-          validators: [{ name: ValidatorNames.MaxLength, args: 6 }, { name: ValidatorNames.Required }]
-        }
-      ],
-      type: FormNodeTypes.GROUP,
-      viewType: FormNodeViewTypes.STRING
-    },
-    {
       name: 'noOfAxles',
       label: 'Number of axles',
       value: '',

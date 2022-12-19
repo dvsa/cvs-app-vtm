@@ -17,6 +17,7 @@ import {
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
   ReferenceDataState,
+  referencePsvMakeLoadingState,
   removeTyreSearch,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
@@ -107,5 +108,9 @@ export class ReferenceDataService extends ReferenceDataApiService {
       return of([]);
     }
     return this.mapReferenceDataOptions(this.store.pipe(select(selectReasonsForAbandoning(vehicleType))));
+  }
+
+  getReferencePsvMakeDataLoading() {
+    return this.store.pipe(select(referencePsvMakeLoadingState));
   }
 }
