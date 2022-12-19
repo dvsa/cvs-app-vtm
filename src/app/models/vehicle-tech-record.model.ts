@@ -220,7 +220,7 @@ export interface TechRecordModel {
     description: string;
     code: string;
   };
-  vehicleSubclass: string[];
+  vehicleSubclass?: string[] | null;
   vehicleConfiguration: VehicleConfigurations;
   couplingType?: string;
   maxLoadOnCoupling?: number;
