@@ -99,16 +99,16 @@ export class TestRecordsService {
 
   saveTestResult(
     systemNumber: string,
-    user: { name: string; id?: string },
+    user: { name: string; id?: string; userEmail?: string },
     body: TestResultModel,
     observe?: 'body',
     reportProgress?: boolean
   ): Observable<TestResultModel> {
-    const { name, id } = user;
+    const { name, id, userEmail } = user;
     const tr = cloneDeep(body);
     delete tr.testHistory;
     return this.updateTestResultsService.testResultsSystemNumberPut(
-      { msUserDetails: { msOid: id, msUser: name }, testResult: tr as any } as CompleteTestResults,
+      { msUserDetails: { msOid: id, msUser: name, msEmailAddress: userEmail }, testResult: tr as any } as CompleteTestResults,
       systemNumber,
       observe,
       reportProgress

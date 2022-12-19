@@ -86,10 +86,13 @@ export class TestResultsEffects {
     this.actions$.pipe(
       ofType(updateTestResult),
       mergeMap(action =>
-        of(action.value).pipe(withLatestFrom(this.userService.name$, this.userService.id$, this.store.pipe(select(selectRouteNestedParams))), take(1))
+        of(action.value).pipe(
+          withLatestFrom(this.userService.name$, this.userService.id$, this.userService.userEmail$, this.store.pipe(select(selectRouteNestedParams))),
+          take(1)
+        )
       ),
-      mergeMap(([testResult, name, id, { systemNumber }]) => {
-        return this.testRecordsService.saveTestResult(systemNumber, { name, id }, testResult).pipe(
+      mergeMap(([testResult, name, id, userEmail, { systemNumber }]) => {
+        return this.testRecordsService.saveTestResult(systemNumber, { name, id, userEmail }, testResult).pipe(
           take(1),
           map(responseBody => updateTestResultSuccess({ payload: { id: responseBody.testResultId, changes: responseBody } })),
           catchError(e => {
@@ -199,7 +202,7 @@ export class TestResultsEffects {
 
         if (mergedForms.typeOfTest !== TypeOfTest.CONTINGENCY) {
           mergedForms.testerName = user.name;
-          mergedForms.testerEmailAddress = user.username;
+          mergedForms.testerEmailAddress = user.userEmail;
           mergedForms.testerStaffId = user.oid;
           mergedForms.testStartTimestamp = now;
           mergedForms.testEndTimestamp = now;

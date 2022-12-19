@@ -23,13 +23,13 @@ export class UserService implements OnDestroy {
           payload: {
             account: {
               name,
-              username,
-              idTokenClaims: { oid }
+              idTokenClaims: { oid, preferred_username, email }
             },
             accessToken
           }
         } = result;
-        this.logIn({ name, username, oid, accessToken });
+        const userEmail = email || preferred_username;
+        this.logIn({ name, userEmail, oid, accessToken });
       });
   }
 
@@ -38,18 +38,18 @@ export class UserService implements OnDestroy {
     this._destroying$.complete();
   }
 
-  logIn({ name, username, oid, accessToken }: { name: string; username: string; oid: string; accessToken: string }): void {
+  logIn({ name, userEmail, oid, accessToken }: { name: string; userEmail: string; oid: string; accessToken: string }): void {
     const decodedJWT = jwt_decode(accessToken);
     const roles: string[] = (decodedJWT as any).roles;
-    this.store.dispatch(UserServiceActions.Login({ name, username, oid, roles }));
+    this.store.dispatch(UserServiceActions.Login({ name, userEmail, oid, roles }));
   }
 
   get name$(): Observable<string> {
     return this.store.pipe(select(UserServiceState.name));
   }
 
-  get userName$(): Observable<string> {
-    return this.store.pipe(select(UserServiceState.username));
+  get userEmail$(): Observable<string> {
+    return this.store.pipe(select(UserServiceState.userEmail));
   }
 
   get id$(): Observable<string | undefined> {
