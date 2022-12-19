@@ -41,7 +41,7 @@ export class UserService implements OnDestroy {
   logIn({ name, username, oid, accessToken }: { name: string; username: string; oid: string; accessToken: string }): void {
     const decodedJWT = jwt_decode(accessToken);
     const roles: string[] = (decodedJWT as any).roles;
-    this.store.dispatch(UserServiceActions.Login({ name, oid, username, roles }));
+    this.store.dispatch(UserServiceActions.Login({ name, username, oid, roles }));
   }
 
   get name$(): Observable<string> {

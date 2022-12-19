@@ -65,20 +65,18 @@ export class TechnicalRecordService {
   putUpdateTechRecords(
     systemNumber: string,
     techRecord: TechRecordModel,
-    user: { username: string; id?: string },
+    user: { id?: string; name: string },
     recordToArchiveStatus?: StatusCodes,
     newStatus?: StatusCodes
   ) {
-    const { username, id } = user;
-    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
     const newTechRecord = cloneDeep(techRecord);
-
     newTechRecord.statusCode = newStatus ?? newTechRecord.statusCode;
-
     this.removeUpdateType(techRecord, newTechRecord);
 
+    const url = `${environment.VTM_API_URI}/vehicles/${systemNumber}` + `${recordToArchiveStatus ? '?oldStatusCode=' + recordToArchiveStatus : ''}`;
+
     const body = {
-      msUserDetails: { msOid: id, msUser: username },
+      msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: [newTechRecord]
     };
 
@@ -91,27 +89,27 @@ export class TechnicalRecordService {
     }
   }
 
-  postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { username: string; id?: string }) {
+  postProvisionalTechRecord(systemNumber: string, techRecord: TechRecordModel, user: { id?: string; name: string }) {
     // THIS ALLOWS US TO CREATE PROVISIONAL FROM THE CURRENT TECH RECORD
     const recordCopy = cloneDeep(techRecord);
     recordCopy.statusCode = StatusCodes.PROVISIONAL;
     this.removeUpdateType(techRecord, recordCopy);
 
-    const { username, id } = user;
     const url = `${environment.VTM_API_URI}/vehicles/add-provisional/${systemNumber}`;
+
     const body = {
-      msUserDetails: { msOid: id, msUser: username },
+      msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: [recordCopy]
     };
 
     return this.http.post<VehicleTechRecordModel>(url, body, { responseType: 'json' });
   }
 
-  archiveTechnicalRecord(systemNumber: string, techRecord: TechRecordModel, reason: string, user: { id?: string; username: string }) {
+  archiveTechnicalRecord(systemNumber: string, techRecord: TechRecordModel, reason: string, user: { id?: string; name: string }) {
     const url = `${environment.VTM_API_URI}/vehicles/archive/${systemNumber}`;
 
     const body = {
-      msUserDetails: { msOid: user.id, msUser: user.username },
+      msUserDetails: { msOid: user.id, msUser: user.name },
       techRecord: [techRecord],
       reasonForArchiving: reason
     };
