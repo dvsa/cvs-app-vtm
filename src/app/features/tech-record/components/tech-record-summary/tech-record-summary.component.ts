@@ -3,7 +3,7 @@ import { DynamicFormGroupComponent } from '@forms/components/dynamic-form-group/
 import { BodyComponent } from '@forms/custom-sections/body/body.component';
 import { DimensionsComponent } from '@forms/custom-sections/dimensions/dimensions.component';
 import { WeightsComponent } from '@forms/custom-sections/weights/weights.component';
-import { FormNode, FormNodeOption } from '@forms/services/dynamic-form.types';
+import { FormNode } from '@forms/services/dynamic-form.types';
 import { TrlBrakesTemplate } from '@forms/templates/trl/trl-brakes.template';
 import { HgvTechRecord } from '@forms/templates/hgv/hgv-tech-record.template';
 import { ApplicantDetails } from '@forms/templates/general/applicant-details.template';
@@ -37,9 +37,8 @@ import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.templ
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
 import { BodyTypeCode, bodyTypeCodeMap } from '@models/body-type-enum';
-import { MultiOptionsService } from '@forms/services/multi-options.service';
 import { ReferenceDataResourceType, PsvMake } from '@models/reference-data.model';
-import { ReferenceDataState, selectAllReferenceDataByResourceType, selectReferenceDataByResourceKey } from '@store/reference-data';
+import { ReferenceDataState, selectReferenceDataByResourceKey } from '@store/reference-data';
 import { map, Observable, take } from 'rxjs';
 import { HgvAndTrlBodyTemplate } from '@forms/templates/general/hgv-trl-body.template';
 import { HgvWeight } from '@forms/templates/hgv/hgv-weight.template';
@@ -77,13 +76,11 @@ export class TechRecordSummaryComponent implements OnInit {
   private _isEditing: boolean = false;
   vehicleTechRecordCalculated!: TechRecordModel;
   sectionTemplates: Array<FormNode> = [];
-  dtpNumbersFromRefData: FormNodeOption<string>[] = [];
   middleIndex = 0;
 
   constructor(
     private technicalRecordService: TechnicalRecordService,
     private store: Store<TechnicalRecordServiceState>,
-    private optionsService: MultiOptionsService,
     private referenceDataStore: Store<ReferenceDataState>,
     private referenceDataService: ReferenceDataService
   ) {}
@@ -93,8 +90,6 @@ export class TechRecordSummaryComponent implements OnInit {
     this.referenceDataService.removeTyreSearch();
     this.toggleReasonForCreation();
     this.calculateVehicleModel();
-    this.optionsService.loadOptions(ReferenceDataResourceType.PsvMake);
-    this.psvMakes$.subscribe(data => data.map(i => this.dtpNumbersFromRefData.push({ value: i.dtpNumber, label: i.dtpNumber })));
     this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
   }
 
@@ -102,14 +97,10 @@ export class TechRecordSummaryComponent implements OnInit {
     return this._isEditing;
   }
 
-  get psvMakes$(): Observable<PsvMake[]> {
-    return this.referenceDataStore.select(selectAllReferenceDataByResourceType(ReferenceDataResourceType.PsvMake)) as Observable<PsvMake[]>;
-  }
-
-  get psvFromDtp$(): Observable<PsvMake | undefined> {
+  get psvFromDtp$(): Observable<PsvMake> {
     return this.referenceDataStore.select(
       selectReferenceDataByResourceKey(ReferenceDataResourceType.PsvMake, this.vehicleTechRecordCalculated.brakes.dtpNumber as string)
-    ) as Observable<PsvMake | undefined>;
+    ) as Observable<PsvMake>;
   }
 
   get vehicleTemplates(): Array<FormNode> {
@@ -292,7 +283,7 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   setBodyFields(): void {
-    this.psvFromDtp$.subscribe(payload => {
+    this.psvFromDtp$.pipe(take(1)).subscribe(payload => {
       const code = payload?.psvBodyType.toLowerCase() as BodyTypeCode;
 
       this.vehicleTechRecordCalculated.bodyType = { code, description: bodyTypeCodeMap.get(code) };
@@ -333,7 +324,7 @@ export class TechRecordSummaryComponent implements OnInit {
     return [
       /*  1 */ // reasonForCreationSection added when editing
       /*  2 */ PsvNotes,
-      /*  3 */ getPsvTechRecord(this.dtpNumbersFromRefData, this._isEditing),
+      /*  3 */ getPsvTechRecord(this._isEditing),
       /*  4 */ PsvTypeApprovalTemplate,
       /*  5 */ PsvBrakesTemplate,
       /*  6 */ PsvDdaTemplate,

@@ -1,4 +1,4 @@
-import { FormNode, FormNodeEditTypes, FormNodeOption, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 import { ValidatorNames } from '@forms/models/validators.enum';
 import { EmissionStandard } from '@models/test-types/emissions.enum';
 import { VehicleClass } from '@models/vehicle-class.model';
@@ -7,7 +7,7 @@ import { EuVehicleCategories, FuelTypes } from '@models/vehicle-tech-record.mode
 import { VehicleSize } from '@models/vehicle-size.enum';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 
-export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[], _isEditing: boolean): FormNode {
+export function getPsvTechRecord(_isEditing: boolean): FormNode {
   const PsvTechRecord: FormNode = {
     name: 'techRecordSummary',
     type: FormNodeTypes.GROUP,
@@ -40,24 +40,6 @@ export function getPsvTechRecord(dtpNumbersFromRefData: FormNodeOption<string>[]
         type: FormNodeTypes.CONTROL,
         editType: FormNodeEditTypes.NUMBER,
         validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
-      },
-      {
-        name: 'brakes',
-        label: 'DTP number',
-        value: '',
-        children: [
-          {
-            name: 'dtpNumber',
-            label: 'DTP number',
-            value: '',
-            width: FormNodeWidth.S,
-            type: FormNodeTypes.CONTROL,
-            editType: FormNodeEditTypes.AUTOCOMPLETE,
-            options: dtpNumbersFromRefData,
-            validators: [{ name: ValidatorNames.Required }]
-          }
-        ],
-        type: FormNodeTypes.GROUP
       },
       {
         name: 'noOfAxles',

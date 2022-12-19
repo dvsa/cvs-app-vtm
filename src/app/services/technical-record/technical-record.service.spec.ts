@@ -170,7 +170,7 @@ describe('TechnicalRecordService', () => {
 
     describe('putUpdateTechRecords', () => {
       it('should return an array with a new tech record and updated status code', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { username: 'TEST', id: '1234' }, oldStatusCode: StatusCodes.PROVISIONAL };
+        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' }, oldStatusCode: StatusCodes.PROVISIONAL };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
         service.putUpdateTechRecords(params.systemNumber, mockData[0].techRecord[0], params.user, params.oldStatusCode).subscribe();
 
@@ -185,7 +185,7 @@ describe('TechnicalRecordService', () => {
       }));
 
       it('should return an array with a new tech record and updated status code using basic URL', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { username: 'TEST', id: '1234' } };
+        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
         service.putUpdateTechRecords(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
 
@@ -200,7 +200,7 @@ describe('TechnicalRecordService', () => {
 
     describe('postProvisionalTechRecord', () => {
       it('should return an array with a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', user: { username: 'TEST', id: '1234' } };
+        const params = { systemNumber: '12345', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
         service.postProvisionalTechRecord(params.systemNumber, mockData[0].techRecord[0], params.user).subscribe();
 
@@ -215,7 +215,7 @@ describe('TechnicalRecordService', () => {
 
     describe('archiveTechRecord', () => {
       it('should return a new tech record having added provisional', fakeAsync(() => {
-        const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { username: 'TEST', id: '1234' } };
+        const params = { systemNumber: '12345', reasonForArchiving: 'some reason', user: { name: 'TEST', id: '1234' } };
         const mockData = mockVehicleTechnicalRecordList(VehicleTypes.PSV, 1);
         service.archiveTechnicalRecord(params.systemNumber, mockData[0].techRecord[0], params.reasonForArchiving, params.user).subscribe();
 

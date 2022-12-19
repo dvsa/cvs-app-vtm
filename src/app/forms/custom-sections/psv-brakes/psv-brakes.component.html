@@ -7,7 +7,7 @@
   [isEditing]="isEditing"
   [width]="widths.L"
   [prefix]="brakeCodePrefix"
-  [options]="(brakeCodeOptions$ | async) || []"
+  [propOptions$]="brakeCodeOptions$"
 ></app-switchable-input>
 
 <ng-template #view [formGroup]="brakesForm">

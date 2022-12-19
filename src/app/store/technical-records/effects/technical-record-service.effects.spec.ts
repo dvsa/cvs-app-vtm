@@ -55,7 +55,7 @@ describe('TechnicalRecordServiceEffects', () => {
         provideMockActions(() => actions$),
         TechnicalRecordService,
         provideMockStore({ initialState: initialAppState }),
-        { provide: UserService, useValue: { userEmail$: of('userEmail'), id$: of('iod') } }
+        { provide: UserService, useValue: { name$: of('name'), id$: of('iod') } }
       ]
     });
 
