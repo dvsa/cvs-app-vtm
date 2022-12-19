@@ -43,6 +43,7 @@ export class ContingencyTestResolver implements Resolve<boolean> {
               vehicleSize: viewableTechRecord?.vehicleSize,
               vehicleConfiguration: viewableTechRecord?.vehicleConfiguration,
               vehicleClass: viewableTechRecord?.vehicleClass ?? null,
+              vehicleSubclass: viewableTechRecord?.vehicleSubclass ?? null,
               noOfAxles: viewableTechRecord?.noOfAxles ?? 0,
               numberOfWheelsDriven: viewableTechRecord?.numberOfWheelsDriven ?? null,
               testStatus: 'submitted',

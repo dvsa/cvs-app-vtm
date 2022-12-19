@@ -456,7 +456,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
   },
   lgv: {
     default: {
-      required: RequiredSection,
+      required: RequiredSpecialistSection,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
@@ -467,7 +467,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
   },
   car: {
     default: {
-      required: RequiredSection,
+      required: RequiredSpecialistSection,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
@@ -478,7 +478,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
   },
   motorcycle: {
     default: {
-      required: RequiredSection,
+      required: RequiredSpecialistSection,
       vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       defects: defectsHiddenSection,
