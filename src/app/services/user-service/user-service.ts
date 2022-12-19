@@ -28,7 +28,7 @@ export class UserService implements OnDestroy {
             accessToken
           }
         } = result;
-        let userEmail = email || preferred_username;
+        const userEmail = email || preferred_username;
         this.logIn({ name, userEmail, oid, accessToken });
       });
   }
