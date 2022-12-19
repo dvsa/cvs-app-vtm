@@ -15,7 +15,7 @@ export const selectReferenceDataByResourceKey = (resourceType: ReferenceDataReso
 
 export const referenceDataLoadingState = createSelector(referenceDataFeatureState, state => Object.values(state).some(feature => feature.loading));
 
-export const referencePSvMakeLoadingState = createSelector(referenceDataFeatureState, state => state.PSV_MAKE.loading);
+export const referencePsvMakeLoadingState = createSelector(referenceDataFeatureState, state => state.PSV_MAKE.loading);
 
 export const selectBrakeByCode = (code: string) =>
   createSelector(referenceDataFeatureState, state => state[ReferenceDataResourceType.Brake].entities[code] as Brake);
