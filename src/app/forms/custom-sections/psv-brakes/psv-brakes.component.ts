@@ -88,8 +88,8 @@ export class PsvBrakesComponent implements OnInit, OnChanges, OnDestroy {
     return getOptionsFromEnum(Retarders);
   }
 
-  get brakeCodeOptions$(): Observable<MultiOptions | undefined> {
-    return this.optionsService.getOptions(ReferenceDataResourceType.Brake);
+  get brakeCodeOptions$(): Observable<MultiOptions> {
+    return this.optionsService.getOptions(ReferenceDataResourceType.Brake) as Observable<MultiOptions>;
   }
 
   get editTypes(): typeof FormNodeEditTypes {

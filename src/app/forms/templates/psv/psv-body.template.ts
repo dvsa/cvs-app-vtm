@@ -1,11 +1,28 @@
 import { ValidatorNames } from '@forms/models/validators.enum';
-import { FormNode, FormNodeEditTypes, FormNodeTypes } from '../../services/dynamic-form.types';
+import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes, FormNodeWidth } from '../../services/dynamic-form.types';
 
 export const PsvBodyTemplate: FormNode = {
   name: 'bodySection',
   label: 'Body',
   type: FormNodeTypes.GROUP,
   children: [
+    {
+      name: 'brakes',
+      label: 'DTP number',
+      value: '',
+      children: [
+        {
+          name: 'dtpNumber',
+          label: 'DTP number',
+          value: '',
+          width: FormNodeWidth.S,
+          type: FormNodeTypes.CONTROL,
+          editType: FormNodeEditTypes.AUTOCOMPLETE,
+          validators: [{ name: ValidatorNames.Required }]
+        }
+      ],
+      type: FormNodeTypes.GROUP
+    },
     {
       name: 'modelLiteral',
       label: 'Model literal',
@@ -34,7 +51,6 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Body make',
       value: '',
       type: FormNodeTypes.CONTROL,
-      editType: FormNodeEditTypes.SELECT,
       validators: [{ name: ValidatorNames.MaxLength, args: 20 }],
       disabled: true
     },
@@ -65,6 +81,11 @@ export const PsvBodyTemplate: FormNode = {
       label: 'Function code',
       value: '',
       type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.SELECT,
+      options: [
+        { value: 'r', label: 'R' },
+        { value: 'a', label: 'A' }
+      ],
       validators: [{ name: ValidatorNames.MaxLength, args: 1 }]
     },
     {
@@ -73,6 +94,15 @@ export const PsvBodyTemplate: FormNode = {
       value: '',
       type: FormNodeTypes.CONTROL,
       validators: [{ name: ValidatorNames.MaxLength, args: 10 }]
+    },
+    {
+      name: 'modelLiteral',
+      label: 'Model literal',
+      value: '',
+      type: FormNodeTypes.CONTROL,
+      editType: FormNodeEditTypes.HIDDEN,
+      validators: [{ name: ValidatorNames.MaxLength, args: 30 }],
+      width: FormNodeWidth.L
     }
   ]
 };

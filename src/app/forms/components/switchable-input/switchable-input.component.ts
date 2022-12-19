@@ -19,12 +19,13 @@ export class SwitchableInputComponent implements OnInit {
   @Input() prefix?: string;
   @Input() suffix?: string;
   @Input() width?: FormNodeWidth;
-  @Input() options?: MultiOptions;
+  @Input() options?: MultiOptions = [];
+  @Input() propOptions$?: Observable<MultiOptions>;
 
-  delimitor = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
+  delimiter = { regex: '\\. (?<!\\..\\. )', separator: '. ' };
 
   ngOnInit(): void {
-    if (this.requiresOptions && !this.options) {
+    if (this.requiresOptions && !this.options && !this.propOptions$) {
       throw new Error('Cannot use autocomplete or radio control without providing an options array.');
     }
   }
@@ -39,7 +40,7 @@ export class SwitchableInputComponent implements OnInit {
   }
 
   get options$(): Observable<MultiOptions> {
-    return of(this.options ?? []);
+    return this.propOptions$ ?? of(this.options ?? []);
   }
 
   get types(): typeof FormNodeEditTypes {

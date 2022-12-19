@@ -40,22 +40,6 @@ export const HgvTechRecord: FormNode = {
       validators: [{ name: ValidatorNames.Max, args: 9999 }, { name: ValidatorNames.Min, args: 1000 }, { name: ValidatorNames.Required }]
     },
     {
-      name: 'brakes',
-      label: 'DTP number',
-      value: '',
-      type: FormNodeTypes.GROUP,
-      children: [
-        {
-          name: 'dtpNumber',
-          label: 'DTP number',
-          value: '',
-          width: FormNodeWidth.M,
-          type: FormNodeTypes.CONTROL,
-          validators: [{ name: ValidatorNames.Required }, { name: ValidatorNames.MaxLength, args: 6 }]
-        }
-      ]
-    },
-    {
       name: 'noOfAxles',
       label: 'Number of axles',
       value: '',
