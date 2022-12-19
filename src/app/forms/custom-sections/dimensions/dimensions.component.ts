@@ -50,7 +50,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
         return HgvDimensionsTemplate;
       case VehicleTypes.TRL:
         return TrlDimensionsTemplate;
-      // TODO: Double check this
+      // TODO: Create light vehicle specific functions for this
       default:
         return PsvDimensionsTemplate;
     }
