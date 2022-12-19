@@ -17,7 +17,7 @@ import {
   fetchReferenceDataByKeySearch,
   fetchTyreReferenceDataByKeySearch,
   ReferenceDataState,
-  referencePSvMakeLoadingState,
+  referencePsvMakeLoadingState,
   removeTyreSearch,
   selectAllReferenceDataByResourceType,
   selectReasonsForAbandoning,
@@ -111,6 +111,6 @@ export class ReferenceDataService extends ReferenceDataApiService {
   }
 
   getReferencePsvMakeDataLoading() {
-    return this.store.pipe(select(referencePSvMakeLoadingState));
+    return this.store.pipe(select(referencePsvMakeLoadingState));
   }
 }
