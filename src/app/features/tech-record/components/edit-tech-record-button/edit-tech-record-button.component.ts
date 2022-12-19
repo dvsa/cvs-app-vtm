@@ -48,7 +48,7 @@ export class EditTechRecordButtonComponent implements OnInit {
 
         const routeSuffix = techRecord.statusCode === StatusCodes.CURRENT ? '' : '/provisional';
 
-        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}/${vehicleTechRecord!.vin}${routeSuffix}`);
+        this.router.navigateByUrl(`/tech-records/${vehicleTechRecord!.systemNumber}${routeSuffix}`);
       });
   }
 
