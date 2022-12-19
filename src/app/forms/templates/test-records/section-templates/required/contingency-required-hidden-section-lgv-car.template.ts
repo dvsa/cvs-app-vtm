@@ -1,6 +1,6 @@
 import { FormNode, FormNodeEditTypes, FormNodeTypes, FormNodeViewTypes } from '@forms/services/dynamic-form.types';
 
-export const CreateRequiredSectionLight: FormNode = {
+export const CreateRequiredSectionLGVCar: FormNode = {
   name: 'requiredSection',
   type: FormNodeTypes.GROUP,
   children: [
@@ -149,6 +149,7 @@ export const CreateRequiredSectionLight: FormNode = {
     },
     {
       name: 'vehicleConfiguration',
+      value: null,
       type: FormNodeTypes.CONTROL,
       editType: FormNodeEditTypes.HIDDEN,
       viewType: FormNodeViewTypes.HIDDEN
