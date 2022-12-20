@@ -8,9 +8,9 @@ import {
   getByPartialVin,
   getByPartialVinFailure,
   getByPartialVinSuccess,
-  getBySystemNumberAndVin,
-  getBySystemNumberAndVinSuccess,
-  getBySystemNumberAndVinFailure,
+  getBySystemNumber,
+  getBySystemNumberSuccess,
+  getBySystemNumberFailure,
   getByTrailerId,
   getByTrailerIdFailure,
   getByTrailerIdSuccess,
@@ -46,7 +46,7 @@ export class TechnicalRecordServiceEffects {
 
   getTechnicalRecord$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getByVin, getByPartialVin, getByVrm, getByTrailerId, getBySystemNumberAndVin, getByAll),
+      ofType(getByVin, getByPartialVin, getByVrm, getByTrailerId, getBySystemNumber, getByAll),
       mergeMap(action => {
         const anchorLink = 'search-term';
 
@@ -75,16 +75,13 @@ export class TechnicalRecordServiceEffects {
                 of(getByTrailerIdFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'trailerId'), anchorLink }))
               )
             );
-          case getBySystemNumberAndVin.type:
+          case getBySystemNumber.type:
             return this.technicalRecordService.getBySystemNumber(action.systemNumber).pipe(
               map(vehicleTechRecords => {
-                const filteredByVinRecords = vehicleTechRecords.filter(record => record.vin === action.vin);
-                return getBySystemNumberAndVinSuccess({ vehicleTechRecords: filteredByVinRecords });
+                return getBySystemNumberSuccess({ vehicleTechRecords: vehicleTechRecords });
               }),
               catchError(error =>
-                of(
-                  getBySystemNumberAndVinFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink })
-                )
+                of(getBySystemNumberFailure({ error: this.getTechRecordErrorMessage(error, 'getTechnicalRecords', 'systemNumber'), anchorLink }))
               )
             );
           case getByAll.type:

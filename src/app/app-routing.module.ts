@@ -33,7 +33,7 @@ const routes: Routes = [
         loadChildren: () => import('./features/test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
       },
       {
-        path: 'tech-records/:systemNumber/:vin',
+        path: 'tech-records/:systemNumber',
         data: { title: 'Tech Record', roles: Roles.TechRecordView },
         canActivate: [MsalGuard, RoleGuard],
         loadChildren: () => import('./features/tech-record/tech-record.module').then(m => m.TechRecordsModule)

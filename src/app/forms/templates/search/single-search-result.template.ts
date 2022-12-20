@@ -9,7 +9,7 @@ export function createSingleSearchResult(systemNumber: string, vin: string): For
     viewType: FormNodeViewTypes.SUBHEADING,
     subHeadingLink: {
       label: 'Select technical record',
-      url: `/tech-records/${systemNumber}/${vin}`
+      url: `/tech-records/${systemNumber}`
     },
     children: [
       {

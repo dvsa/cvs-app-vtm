@@ -112,7 +112,12 @@ describe('TestResultsEffects', () => {
         }),
         {
           provide: UserService,
-          useValue: { user$: of({ name: 'testername', username: 'username', oid: '123zxc' }), name$: of('name'), id$: of('iod') }
+          useValue: {
+            user$: of({ name: 'testername', userEmail: 'test@test.com', oid: '123zxc' }),
+            name$: of('name'),
+            userEmail$: of('userEmail'),
+            id$: of('iod')
+          }
         },
         RouterService,
         DynamicFormService

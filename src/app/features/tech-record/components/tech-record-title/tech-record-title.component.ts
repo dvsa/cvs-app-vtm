@@ -42,14 +42,14 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   navigateToPromotion(): void {
-    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/provisional/promote`);
+    this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/promote`);
   }
 
   navigateToArchive(): void {
     this.currentTechRecord$.pipe(take(1)).subscribe(data => {
       return data?.statusCode === StatusCodes.PROVISIONAL
-        ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/provisional/archive`)
-        : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/${this.vehicleTechRecord?.vin}/archive`);
+        ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/archive`)
+        : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/archive`);
     });
   }
 }
