@@ -484,6 +484,16 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       visit: ContingencyVisitSection,
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup5: {
+      required: CreateRequiredSectionLgvCar,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: ContingencyTestSectionSpecialistGroup5,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
     }
   },
   car: {
@@ -500,6 +510,16 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       required: CreateRequiredSectionLgvCar,
       vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
       test: ContingencyTestSectionSpecialistGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup5: {
+      required: CreateRequiredSectionLgvCar,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: ContingencyTestSectionSpecialistGroup5,
       defects: DefectsTpl,
       customDefects: CustomDefectsHiddenSection,
       visit: ContingencyVisitSection,
