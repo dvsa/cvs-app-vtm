@@ -64,7 +64,7 @@
     "@angular-eslint/schematics": "^13.5.0",
     "@angular-eslint/template-parser": "^13.5.0",
     "@angular/cli": "^13.3.9",
-    "@angular/compiler-cli": "^13.3.11",
+    "@angular/compiler-cli": "^13.3.12",
     "@babel/core": "^7.19.3",
     "@commitlint/cli": "^16.3.0",
     "@commitlint/config-conventional": "^16.2.4",
