@@ -21,11 +21,7 @@ export const CreateRequiredSectionLgvCar: FormNode = {
       type: FormNodeTypes.CONTROL,
       label: 'Test status',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
-      options: [
-        { label: 'Submitted', value: 'submitted' },
-        { label: 'Cancelled', value: 'cancelled' }
-      ]
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'reasonForCancellation',
@@ -141,11 +137,7 @@ export const CreateRequiredSectionLgvCar: FormNode = {
       type: FormNodeTypes.CONTROL,
       label: 'Should email certificate?',
       viewType: FormNodeViewTypes.HIDDEN,
-      editType: FormNodeEditTypes.HIDDEN,
-      options: [
-        { label: 'Yes', value: 'yes' },
-        { label: 'No', value: 'no' }
-      ]
+      editType: FormNodeEditTypes.HIDDEN
     },
     {
       name: 'vehicleConfiguration',
