@@ -43,7 +43,7 @@ describe('User-Service', () => {
       service.logIn(user);
     });
 
-    it('should get the username', done => {
+    it('should get the userEmail', done => {
       service.userEmail$.pipe(take(1)).subscribe(data => {
         expect(data).toEqual(user.userEmail);
         done();
