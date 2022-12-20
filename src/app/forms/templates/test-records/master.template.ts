@@ -453,5 +453,11 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationSection
     }
-  }
+  },
+  //TODO: Fill these tests in?
+
+  car: {},
+  lgv: {},
+  motorcycle: {},
+  'small trailer': {}
 };

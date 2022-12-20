@@ -462,5 +462,10 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       customDefects: CustomDefectsHiddenSection,
       reasonForCreation: reasonForCreationHiddenSection
     }
-  }
+  },
+  //TODO: Fill these tests in?
+  car: {},
+  lgv: {},
+  motorcycle: {},
+  'small trailer': {}
 };

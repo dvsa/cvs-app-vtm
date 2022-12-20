@@ -26,7 +26,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   constructor(public dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.template ? (this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup) : ({} as CustomFormGroup);
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -38,7 +38,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription.unsubscribe();
   }
 
-  get template(): FormNode {
+  get template(): FormNode | undefined {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
         return PsvWeightsTemplate;
@@ -46,6 +46,8 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         return HgvWeight;
       case VehicleTypes.TRL:
         return TrlWeight;
+      default:
+        return;
     }
   }
 

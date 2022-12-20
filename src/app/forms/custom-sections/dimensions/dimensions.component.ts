@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
-import { CustomFormArray, CustomFormGroup, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
+import { CustomFormArray, CustomFormGroup, FormNode, FormNodeEditTypes, FormNodeWidth } from '@forms/services/dynamic-form.types';
 import { HgvDimensionsTemplate } from '@forms/templates/hgv/hgv-dimensions.template';
 import { PsvDimensionsTemplate } from '@forms/templates/psv/psv-dimensions.template';
 import { TrlDimensionsTemplate } from '@forms/templates/trl/trl-dimensions.template';
@@ -24,7 +24,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.template ? (this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup) : ({} as CustomFormGroup);
 
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
   }
@@ -42,7 +42,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  get template() {
+  get template(): FormNode | undefined {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
         return PsvDimensionsTemplate;
@@ -50,6 +50,8 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
         return HgvDimensionsTemplate;
       case VehicleTypes.TRL:
         return TrlDimensionsTemplate;
+      default:
+        return;
     }
   }
 

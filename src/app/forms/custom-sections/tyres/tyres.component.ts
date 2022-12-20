@@ -49,7 +49,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup;
+    this.form = this.template ? (this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup) : ({} as CustomFormGroup);
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 
@@ -65,7 +65,7 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
     this._formSubscription.unsubscribe();
   }
 
-  get template(): FormNode {
+  get template(): FormNode | undefined {
     switch (this.vehicleTechRecord.vehicleType) {
       case VehicleTypes.PSV:
         return PsvTyresTemplate;
@@ -73,6 +73,8 @@ export class TyresComponent implements OnInit, OnDestroy, OnChanges {
         return tyresTemplateHgv;
       case VehicleTypes.TRL:
         return tyresTemplateTrl;
+      default:
+        return;
     }
   }
 

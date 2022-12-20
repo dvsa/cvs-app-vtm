@@ -47,6 +47,11 @@ import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/reasonForCreation.template';
+import { LgvTechRecord } from '@forms/templates/lgv/lgv-tech-record.template';
+import { Audit } from '@forms/templates/general/audit.template';
+import { CarTechRecord } from '@forms/templates/car/car-tech-record.template';
+import { MotorcycleTechRecord } from '@forms/templates/motorcycle/motorcycle-tech-record.template';
+import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-trailer-tech-record.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -111,6 +116,14 @@ export class TechRecordSummaryComponent implements OnInit {
         return this.getHgvTemplates();
       case VehicleTypes.TRL:
         return this.getTrlTemplates();
+      case VehicleTypes.LGV:
+        return this.getLgvTemplates();
+      case VehicleTypes.CAR:
+        return this.getCarTemplates();
+      case VehicleTypes.MOTORCYCLE:
+        return this.getMotorcycleTemplates();
+      case VehicleTypes.SMALL_TRAILER:
+        return this.getSmallTrailerTemplates();
     }
   }
 
@@ -370,5 +383,18 @@ export class TechRecordSummaryComponent implements OnInit {
       /* 14 */ TrlAuthIntoServiceTemplate,
       /* 15 */ ManufacturerTemplate
     ];
+  }
+
+  getLgvTemplates(): Array<FormNode> {
+    return [LgvTechRecord, ApplicantDetails, NotesTemplate, Audit];
+  }
+  getCarTemplates(): Array<FormNode> {
+    return [CarTechRecord, ApplicantDetails, NotesTemplate, Audit];
+  }
+  getMotorcycleTemplates(): Array<FormNode> {
+    return [MotorcycleTechRecord, ApplicantDetails, NotesTemplate, Audit];
+  }
+  getSmallTrailerTemplates(): Array<FormNode> {
+    return [SmallTrailerTechRecord, ApplicantDetails, NotesTemplate, Audit];
   }
 }

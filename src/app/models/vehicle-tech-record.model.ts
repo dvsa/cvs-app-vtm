@@ -28,7 +28,11 @@ export enum StatusCodes {
 export enum VehicleTypes {
   PSV = 'psv',
   HGV = 'hgv',
-  TRL = 'trl'
+  TRL = 'trl',
+  LGV = 'lgv',
+  CAR = 'car',
+  MOTORCYCLE = 'motorcycle',
+  SMALL_TRAILER = 'small trailer'
 }
 
 export enum FuelTypes {
@@ -106,6 +110,20 @@ export enum EuVehicleCategories {
 export enum VehicleSizes {
   SMALL = 'small',
   LARGE = 'large'
+}
+
+export enum VehicleSubclass {
+  N = 'n',
+  P = 'p',
+  A = 'a',
+  S = 's',
+  C = 'c',
+  L = 'l',
+  T = 't',
+  E = 'e',
+  M = 'm',
+  R = 'r',
+  W = 'w'
 }
 
 export enum approvalType {
@@ -259,6 +277,7 @@ export interface TechRecordModel {
   purchaserDetails?: Purchaser;
   authIntoService?: AuthIntoService;
   notes?: string;
+  vehicleSubclass?: VehicleSubclass;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
