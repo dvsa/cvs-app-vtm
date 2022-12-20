@@ -465,9 +465,69 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       reasonForCreation: reasonForCreationHiddenSection
     }
   },
-  //TODO: Fill these tests in?
-  car: {},
-  lgv: {},
-  motorcycle: {},
+  lgv: {
+    default: {
+      required: CreateRequiredSectionLgvCar,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      required: CreateRequiredSectionLgvCar,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: ContingencyTestSectionSpecialistGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  car: {
+    default: {
+      required: CreateRequiredSectionLgvCar,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      required: CreateRequiredSectionLgvCar,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: ContingencyTestSectionSpecialistGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  motorcycle: {
+    default: {
+      required: CreateRequiredSection,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    },
+    testTypesSpecialistGroup1: {
+      required: CreateRequiredSectionMotorcycle,
+      vehicle: ContingencyVehicleSectionDefaultPsvHgvLight,
+      test: ContingencyTestSectionSpecialistGroup1,
+      defects: DefectsTpl,
+      customDefects: CustomDefectsHiddenSection,
+      visit: ContingencyVisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  //TODO: Fill these tests in
   'small trailer': {}
 };

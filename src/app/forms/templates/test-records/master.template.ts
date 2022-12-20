@@ -454,10 +454,39 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       reasonForCreation: reasonForCreationSection
     }
   },
-  //TODO: Fill these tests in?
-
-  car: {},
-  lgv: {},
-  motorcycle: {},
+  lgv: {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  car: {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  motorcycle: {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  //TODO: Fill in trailer tests
   'small trailer': {}
 };
