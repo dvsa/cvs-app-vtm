@@ -236,7 +236,7 @@ export interface TechRecordModel {
     description: string;
     code: string;
   };
-  vehicleConfiguration: VehicleConfigurations;
+  vehicleConfiguration?: VehicleConfigurations | null;
   couplingType?: string;
   maxLoadOnCoupling?: number;
   frameDescription?: FrameDescriptions;

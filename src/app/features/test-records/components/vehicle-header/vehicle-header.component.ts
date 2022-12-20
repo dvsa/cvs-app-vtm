@@ -57,6 +57,10 @@ export class VehicleHeaderComponent {
       case VehicleTypes.PSV:
         return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
       case VehicleTypes.HGV:
+      case VehicleTypes.LGV:
+      case VehicleTypes.CAR:
+      case VehicleTypes.MOTORCYCLE:
+      case VehicleTypes.SMALL_TRAILER:
         return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
       default:
         return 'Unknown Vehicle Type';
