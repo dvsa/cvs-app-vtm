@@ -28,7 +28,10 @@ export enum StatusCodes {
 export enum VehicleTypes {
   PSV = 'psv',
   HGV = 'hgv',
-  TRL = 'trl'
+  TRL = 'trl',
+  LGV = 'lgv',
+  CAR = 'car',
+  MOTORCYCLE = 'motorcycle'
 }
 
 export enum FuelTypes {
@@ -218,7 +221,8 @@ export interface TechRecordModel {
     description: string;
     code: string;
   };
-  vehicleConfiguration: VehicleConfigurations;
+  vehicleSubclass?: string[] | null;
+  vehicleConfiguration?: VehicleConfigurations | null;
   couplingType?: string;
   maxLoadOnCoupling?: number;
   frameDescription?: FrameDescriptions;

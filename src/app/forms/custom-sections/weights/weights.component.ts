@@ -46,6 +46,9 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
         return HgvWeight;
       case VehicleTypes.TRL:
         return TrlWeight;
+      // TODO: Create light vehicle specific functions for this
+      default:
+        return PsvWeightsTemplate;
     }
   }
 

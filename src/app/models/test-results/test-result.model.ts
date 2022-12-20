@@ -56,7 +56,7 @@ export interface TestResultModel {
   testCode?: TestCodes;
 
   vehicleSize?: VehicleSize;
-  vehicleConfiguration?: VehicleConfiguration;
+  vehicleConfiguration?: VehicleConfiguration | null;
   noOfAxles?: number;
   vehicleClass?: VehicleClass;
   vehicleSubclass?: Array<string>;

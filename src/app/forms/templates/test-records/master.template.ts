@@ -34,8 +34,8 @@ import { TestSectionGroup6And11 } from './section-templates/test/test-section-gr
 import { TestSectionGroup7 } from './section-templates/test/test-section-group7.template';
 import { TestSectionGroup9And10 } from './section-templates/test/test-section-group9And10.template';
 import { TestSection } from './section-templates/test/test-section.template';
-import { ContingencyVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/contingency-default-psv-hgv-vehicle-section.template';
-import { VehicleSectionDefaultPsvHgv } from './section-templates/vehicle/default-psv-hgv-vehicle-section.template';
+import { ContingencyVehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/contingency-default-psv-hgv-light-vehicle-section.template';
+import { VehicleSectionDefaultPsvHgvLight } from './section-templates/vehicle/default-psv-hgv-light-vehicle-section.template';
 import { VehicleSectionDefaultTrl } from './section-templates/vehicle/default-trl-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultPsvHgv } from './section-templates/vehicle/desk-based-default-psv-hgv-vehicle-section.template';
 import { DeskBasedVehicleSectionDefaultTrl } from './section-templates/vehicle/desk-based-default-trl-vehicle-section.template';
@@ -51,7 +51,7 @@ import { AmendDeskBasedTestSectionGroup3 } from '@forms/templates/test-records/s
 export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TYPES | 'default', Record<string, FormNode>>>> = {
   psv: {
     default: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       seatbelts: SeatbeltSection,
       emissions: EmissionsSection,
@@ -63,7 +63,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection
     },
     testTypesGroup1: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup1,
       seatbelts: SeatbeltSection,
       visit: VisitSection,
@@ -74,7 +74,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection
     },
     testTypesGroup2: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup2,
       seatbelts: SeatbeltSection,
       visit: VisitSection,
@@ -85,7 +85,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection
     },
     testTypesGroup3And4And8: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup3And4And8,
       visit: VisitSection,
       notes: NotesSection,
@@ -94,7 +94,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection
     },
     testTypesGroup15And16: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup15And16,
       emissions: EmissionsSection,
       visit: VisitSection,
@@ -104,7 +104,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection
     },
     testTypesSpecialistGroup1: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup1,
       visit: VisitSection,
       notes: NotesSection,
@@ -113,7 +113,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSpecialistSection
     },
     testTypesSpecialistGroup2: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup2,
       seatbelts: SeatbeltSection,
       visit: VisitSection,
@@ -123,7 +123,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSpecialistSection
     },
     testTypesSpecialistGroup3: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup3And4,
       visit: VisitSection,
       notes: NotesSection,
@@ -132,7 +132,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSpecialistSection
     },
     testTypesSpecialistGroup4: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup3And4,
       seatbelts: SeatbeltSection,
       visit: VisitSection,
@@ -142,7 +142,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSpecialistSection
     },
     testTypesSpecialistGroup5: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
@@ -194,7 +194,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
   },
   hgv: {
     default: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSection,
       emissions: EmissionsSection,
       visit: VisitSection,
@@ -204,7 +204,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup3And4And8: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup3And4And8,
       visit: VisitSection,
       notes: NotesSection,
@@ -213,7 +213,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup5And13: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup5And13,
       visit: VisitSection,
       notes: NotesSection,
@@ -222,7 +222,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup6And11: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup6And11,
       visit: VisitSection,
       notes: NotesSection,
@@ -232,7 +232,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup7: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup7,
       visit: VisitSection,
       notes: NotesSection,
@@ -241,7 +241,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup9And10: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup9And10,
       visit: VisitSection,
       notes: NotesSection,
@@ -251,7 +251,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup12And14: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup12And14,
       visit: VisitSection,
       notes: NotesSection,
@@ -261,7 +261,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSectionHGVTRL
     },
     testTypesGroup15And16: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: TestSectionGroup15And16,
       emissions: EmissionsSection,
       visit: VisitSection,
@@ -271,7 +271,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: RequiredSection
     },
     testTypesSpecialistGroup1: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup1,
       visit: VisitSection,
       notes: NotesSection,
@@ -280,7 +280,7 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       required: SpecialistRequiredSectionHGVTRL
     },
     testTypesSpecialistGroup5: {
-      vehicle: VehicleSectionDefaultPsvHgv,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
       test: SpecialistTestSectionGroup5,
       visit: VisitSection,
       notes: NotesSection,
@@ -451,6 +451,39 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       defects: defectsHiddenSection,
       customDefects: CustomDefectsHiddenSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  lgv: {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  car: {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
+      reasonForCreation: reasonForCreationSection
+    }
+  },
+  motorcycle: {
+    default: {
+      required: RequiredSpecialistSection,
+      vehicle: VehicleSectionDefaultPsvHgvLight,
+      test: TestSection,
+      defects: defectsHiddenSection,
+      visit: VisitSection,
+      notes: NotesSection,
       reasonForCreation: reasonForCreationSection
     }
   }
