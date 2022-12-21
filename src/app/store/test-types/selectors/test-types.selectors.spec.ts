@@ -1,5 +1,6 @@
 import { TestTypeCategory, TestTypesTaxonomy } from '@api/test-types';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { selectTestType, selectTestTypesByVehicleType, sortedTestTypes } from './test-types.selectors';
 
 describe('selectors', () => {
@@ -181,12 +182,12 @@ describe('selectors', () => {
         { forVehicleType: ['psv', 'hgv'], nextTestTypesOrCategories: [{ forVehicleType: ['psv', 'hgv'] }, { forVehicleType: ['hgv'] }] }
       ] as TestTypesTaxonomy;
 
-      const selector = selectTestTypesByVehicleType.projector(testTypes, { vehicleSubclass: ['other'] } as TestResultModel);
+      const selector = selectTestTypesByVehicleType.projector(testTypes, { vehicleSubclass: [VehicleSubclass.A] } as TestResultModel);
       expect(selector).toHaveLength(4);
       expect(selector).toEqual(expectedTestTypes);
 
-      const selectorAdditional = selectTestTypesByVehicleType.projector(testTypes, { vehicleSubclass: ['test'] } as TestResultModel);
-      expect(selectorAdditional).toHaveLength(5);
+      const selectorAdditional = selectTestTypesByVehicleType.projector(testTypes, { vehicleSubclass: [VehicleSubclass.A] } as TestResultModel);
+      expect(selectorAdditional).toHaveLength(4);
     });
 
     it('test with vehicle number of wheels', () => {

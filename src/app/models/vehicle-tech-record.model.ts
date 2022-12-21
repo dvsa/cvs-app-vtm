@@ -276,7 +276,7 @@ export interface TechRecordModel {
   purchaserDetails?: Purchaser;
   authIntoService?: AuthIntoService;
   notes?: string;
-  vehicleSubclass?: VehicleSubclass;
+  vehicleSubclass?: Array<VehicleSubclass>;
 
   // Gross vehicle weights
   grossKerbWeight?: number;
