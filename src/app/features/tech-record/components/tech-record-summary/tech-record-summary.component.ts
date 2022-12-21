@@ -51,7 +51,6 @@ import { LgvTechRecord } from '@forms/templates/lgv/lgv-tech-record.template';
 import { Audit } from '@forms/templates/general/audit.template';
 import { CarTechRecord } from '@forms/templates/car/car-tech-record.template';
 import { MotorcycleTechRecord } from '@forms/templates/motorcycle/motorcycle-tech-record.template';
-import { SmallTrailerTechRecord } from '@forms/templates/small-trailer/small-trailer-tech-record.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -122,8 +121,6 @@ export class TechRecordSummaryComponent implements OnInit {
         return this.getCarTemplates();
       case VehicleTypes.MOTORCYCLE:
         return this.getMotorcycleTemplates();
-      case VehicleTypes.SMALL_TRAILER:
-        return this.getSmallTrailerTemplates();
     }
   }
 
@@ -393,8 +390,5 @@ export class TechRecordSummaryComponent implements OnInit {
   }
   getMotorcycleTemplates(): Array<FormNode> {
     return [MotorcycleTechRecord, ApplicantDetails, NotesTemplate, Audit];
-  }
-  getSmallTrailerTemplates(): Array<FormNode> {
-    return [SmallTrailerTechRecord, ApplicantDetails, NotesTemplate, Audit];
   }
 }

@@ -527,7 +527,5 @@ export const contingencyTestTemplates: Record<VehicleTypes, Partial<Record<keyof
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
     }
-  },
-  //TODO: Fill these tests in
-  'small trailer': {}
+  }
 };

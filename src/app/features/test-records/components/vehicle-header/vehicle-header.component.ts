@@ -60,7 +60,6 @@ export class VehicleHeaderComponent {
       case VehicleTypes.LGV:
       case VehicleTypes.CAR:
       case VehicleTypes.MOTORCYCLE:
-      case VehicleTypes.SMALL_TRAILER:
         return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
       default:
         return 'Unknown Vehicle Type';

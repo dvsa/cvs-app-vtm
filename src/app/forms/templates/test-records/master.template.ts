@@ -486,7 +486,5 @@ export const masterTpl: Record<VehicleTypes, Partial<Record<keyof typeof TEST_TY
       notes: NotesSection,
       reasonForCreation: reasonForCreationSection
     }
-  },
-  //TODO: Fill in trailer tests
-  'small trailer': {}
+  }
 };

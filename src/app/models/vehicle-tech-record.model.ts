@@ -31,8 +31,7 @@ export enum VehicleTypes {
   TRL = 'trl',
   LGV = 'lgv',
   CAR = 'car',
-  MOTORCYCLE = 'motorcycle',
-  SMALL_TRAILER = 'small trailer'
+  MOTORCYCLE = 'motorcycle'
 }
 
 export enum FuelTypes {

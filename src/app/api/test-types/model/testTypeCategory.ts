@@ -73,7 +73,7 @@ export interface TestTypeCategory {
     nextTestTypesOrCategories?: Array<TestType | TestTypeCategory>;
 }
 export namespace TestTypeCategory {
-    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle' | 'small trailer';
+    export type ForVehicleTypeEnum = 'psv' | 'hgv' | 'trl' | 'car' | 'lgv' | 'motorcycle';
     export const ForVehicleTypeEnum = {
         Psv: 'psv' as ForVehicleTypeEnum,
         Hgv: 'hgv' as ForVehicleTypeEnum,
@@ -81,7 +81,6 @@ export namespace TestTypeCategory {
         Car: 'car' as ForVehicleTypeEnum,
         Lgv: 'lgv' as ForVehicleTypeEnum,
         Motorcycle: 'motorcycle' as ForVehicleTypeEnum,
-        Small_trailer: 'small trailer' as ForVehicleTypeEnum
     };
     export type ForVehicleSizeEnum = 'small' | 'large';
     export const ForVehicleSizeEnum = {
