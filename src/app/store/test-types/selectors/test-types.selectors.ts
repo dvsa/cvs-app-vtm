@@ -2,6 +2,7 @@ import { TestType } from '@api/test-types';
 import { TestTypeCategory } from '@api/test-types/model/testTypeCategory';
 import { TestTypesTaxonomy } from '@api/test-types/model/testTypesTaxonomy';
 import { TestResultModel } from '@models/test-results/test-result.model';
+import { VehicleSubclass } from '@models/vehicle-tech-record.model';
 import { createSelector } from '@ngrx/store';
 import { toEditOrNotToEdit } from '@store/test-records';
 import { testTypesAdapter, testTypesFeatureState } from '../reducers/test-types.reducer';
@@ -110,7 +111,7 @@ function filterTestTypes(testTypes: TestTypesTaxonomy, testResult: TestResultMod
         testTypes =>
           !vehicleSubclass ||
           !testTypes.forVehicleSubclass ||
-          testTypes.forVehicleSubclass.some(forVehicleSubclass => vehicleSubclass.includes(forVehicleSubclass))
+          testTypes.forVehicleSubclass.some(forVehicleSubclass => vehicleSubclass.includes(forVehicleSubclass as VehicleSubclass))
       )
       .filter(testTypes => !numberOfWheelsDriven || !testTypes.forVehicleWheels || testTypes.forVehicleWheels.includes(numberOfWheelsDriven))
       .map(testType => {

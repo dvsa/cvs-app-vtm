@@ -87,7 +87,7 @@ export namespace TestType {
         Trl: 'trl' as ForVehicleTypeEnum,
         Car: 'car' as ForVehicleTypeEnum,
         Lgv: 'lgv' as ForVehicleTypeEnum,
-        Motorcycle: 'motorcycle' as ForVehicleTypeEnum
+        Motorcycle: 'motorcycle' as ForVehicleTypeEnum,
     };
     export type ForVehicleSizeEnum = 'small' | 'large';
     export const ForVehicleSizeEnum = {

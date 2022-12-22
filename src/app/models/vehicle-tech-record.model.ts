@@ -111,6 +111,20 @@ export enum VehicleSizes {
   LARGE = 'large'
 }
 
+export enum VehicleSubclass {
+  N = 'n',
+  P = 'p',
+  A = 'a',
+  S = 's',
+  C = 'c',
+  L = 'l',
+  T = 't',
+  E = 'e',
+  M = 'm',
+  R = 'r',
+  W = 'w'
+}
+
 export enum approvalType {
   NTA = 'NTA',
   ECTA = 'ECTA',
@@ -221,7 +235,6 @@ export interface TechRecordModel {
     description: string;
     code: string;
   };
-  vehicleSubclass?: string[] | null;
   vehicleConfiguration?: VehicleConfigurations | null;
   couplingType?: string;
   maxLoadOnCoupling?: number;
@@ -263,6 +276,7 @@ export interface TechRecordModel {
   purchaserDetails?: Purchaser;
   authIntoService?: AuthIntoService;
   notes?: string;
+  vehicleSubclass?: Array<VehicleSubclass>;
 
   // Gross vehicle weights
   grossKerbWeight?: number;

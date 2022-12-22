@@ -47,6 +47,10 @@ import { PsvTypeApprovalTemplate } from '@forms/templates/psv/psv-approval-type.
 import { HgvAndTrlTypeApprovalTemplate } from '@forms/templates/general/approval-type.template';
 import { ReferenceDataService } from '@services/reference-data/reference-data.service';
 import { reasonForCreationSection } from '@forms/templates/test-records/section-templates/reasonForCreation/reasonForCreation.template';
+import { LgvTechRecord } from '@forms/templates/lgv/lgv-tech-record.template';
+import { Audit } from '@forms/templates/general/audit.template';
+import { CarTechRecord } from '@forms/templates/car/car-tech-record.template';
+import { MotorcycleTechRecord } from '@forms/templates/motorcycle/motorcycle-tech-record.template';
 
 @Component({
   selector: 'app-tech-record-summary',
@@ -104,17 +108,7 @@ export class TechRecordSummaryComponent implements OnInit {
   }
 
   get vehicleTemplates(): Array<FormNode> {
-    switch (this.vehicleTechRecord.vehicleType) {
-      case VehicleTypes.PSV:
-        return this.getPsvTemplates();
-      case VehicleTypes.HGV:
-        return this.getHgvTemplates();
-      case VehicleTypes.TRL:
-        return this.getTrlTemplates();
-      // TODO: Create light vehicle specific functions for this
-      default:
-        return this.getPsvTemplates();
-    }
+    return this.vehicleTemplateMap.get(this.vehicleTechRecord.vehicleType) ?? ([] as Array<FormNode>);
   }
 
   toggleReasonForCreation(): void {
@@ -319,59 +313,92 @@ export class TechRecordSummaryComponent implements OnInit {
     };
   }
 
-  // The 3 methods below initialize the array of sections that the *ngFor in the component's template will iterate over.
+  // The map below initialize the array of sections that the *ngFor in the component's template will iterate over.
   // The order in which each section is introduced in the array will determine its order on the page when rendered.
   // Sections which use custom components require a FormNode object with 'name' and 'label' properties.
 
-  getPsvTemplates(): Array<FormNode> {
-    return [
-      /*  1 */ // reasonForCreationSection added when editing
-      /*  2 */ PsvNotes,
-      /*  3 */ getPsvTechRecord(this._isEditing),
-      /*  4 */ PsvTypeApprovalTemplate,
-      /*  5 */ PsvBrakesTemplate,
-      /*  6 */ PsvDdaTemplate,
-      /*  7 */ DocumentsTemplate,
-      /*  8 */ PsvBodyTemplate,
-      /*  9 */ PsvWeightsTemplate,
-      /* 10 */ PsvTyresTemplate,
-      /* 11 */ PsvDimensionsTemplate
-    ];
-  }
-
-  getHgvTemplates(): Array<FormNode> {
-    return [
-      /*  1 */ // reasonForCreationSection added when editing
-      /*  2 */ NotesTemplate,
-      /*  3 */ HgvTechRecord,
-      /*  4 */ HgvAndTrlTypeApprovalTemplate,
-      /*  5 */ ApplicantDetails,
-      /*  6 */ DocumentsTemplate,
-      /*  7 */ HgvAndTrlBodyTemplate,
-      /*  8 */ HgvWeight,
-      /*  9 */ tyresTemplateHgv,
-      /* 10 */ HgvDimensionsTemplate,
-      /* 11 */ PlatesTemplate
-    ];
-  }
-
-  getTrlTemplates(): Array<FormNode> {
-    return [
-      /*  1 */ // reasonForCreationSection added when editing
-      /*  2 */ NotesTemplate,
-      /*  3 */ TrlTechRecordTemplate,
-      /*  4 */ HgvAndTrlTypeApprovalTemplate,
-      /*  5 */ ApplicantDetails,
-      /*  6 */ DocumentsTemplate,
-      /*  7 */ HgvAndTrlBodyTemplate,
-      /*  8 */ TrlWeight,
-      /*  9 */ tyresTemplateTrl,
-      /* 10 */ TrlBrakesTemplate,
-      /* 11 */ TrlPurchasers,
-      /* 12 */ TrlDimensionsTemplate,
-      /* 13 */ PlatesTemplate,
-      /* 14 */ TrlAuthIntoServiceTemplate,
-      /* 15 */ ManufacturerTemplate
-    ];
-  }
+  vehicleTemplateMap = new Map<VehicleTypes, Array<FormNode>>([
+    [
+      VehicleTypes.PSV,
+      [
+        /*  1 */ // reasonForCreationSection added when editing
+        /*  2 */ PsvNotes,
+        /*  3 */ getPsvTechRecord(this._isEditing),
+        /*  4 */ PsvTypeApprovalTemplate,
+        /*  5 */ PsvBrakesTemplate,
+        /*  6 */ PsvDdaTemplate,
+        /*  7 */ DocumentsTemplate,
+        /*  8 */ PsvBodyTemplate,
+        /*  9 */ PsvWeightsTemplate,
+        /* 10 */ PsvTyresTemplate,
+        /* 11 */ PsvDimensionsTemplate
+      ]
+    ],
+    [
+      VehicleTypes.HGV,
+      [
+        /*  1 */ // reasonForCreationSection added when editing
+        /*  2 */ NotesTemplate,
+        /*  3 */ HgvTechRecord,
+        /*  4 */ HgvAndTrlTypeApprovalTemplate,
+        /*  5 */ ApplicantDetails,
+        /*  6 */ DocumentsTemplate,
+        /*  7 */ HgvAndTrlBodyTemplate,
+        /*  8 */ HgvWeight,
+        /*  9 */ tyresTemplateHgv,
+        /* 10 */ HgvDimensionsTemplate,
+        /* 11 */ PlatesTemplate
+      ]
+    ],
+    [
+      VehicleTypes.TRL,
+      [
+        /*  1 */ // reasonForCreationSection added when editing
+        /*  2 */ NotesTemplate,
+        /*  3 */ TrlTechRecordTemplate,
+        /*  4 */ HgvAndTrlTypeApprovalTemplate,
+        /*  5 */ ApplicantDetails,
+        /*  6 */ DocumentsTemplate,
+        /*  7 */ HgvAndTrlBodyTemplate,
+        /*  8 */ TrlWeight,
+        /*  9 */ tyresTemplateTrl,
+        /* 10 */ TrlBrakesTemplate,
+        /* 11 */ TrlPurchasers,
+        /* 12 */ TrlDimensionsTemplate,
+        /* 13 */ PlatesTemplate,
+        /* 14 */ TrlAuthIntoServiceTemplate,
+        /* 15 */ ManufacturerTemplate
+      ]
+    ],
+    [
+      VehicleTypes.LGV,
+      [
+        /*  1 */ // reasonForCreationSection added when editing
+        /*  2*/ LgvTechRecord,
+        /*  3 */ ApplicantDetails,
+        /*  4 */ NotesTemplate,
+        /*  5 */ Audit
+      ]
+    ],
+    [
+      VehicleTypes.CAR,
+      [
+        /*  1 */ // reasonForCreationSection added when editing
+        /*  2 */ CarTechRecord,
+        /*  3 */ ApplicantDetails,
+        /*  4 */ NotesTemplate,
+        /*  5 */ Audit
+      ]
+    ],
+    [
+      VehicleTypes.MOTORCYCLE,
+      [
+        /*  1 */ // reasonForCreationSection added when editing
+        /*  2 */ MotorcycleTechRecord,
+        /*  3 */ ApplicantDetails,
+        /*  4 */ NotesTemplate,
+        /*  5 */ Audit
+      ]
+    ]
+  ]);
 }
