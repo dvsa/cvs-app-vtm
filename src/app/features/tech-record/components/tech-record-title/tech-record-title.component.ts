@@ -8,7 +8,8 @@ import { Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-tech-record-title',
-  templateUrl: './tech-record-title.component.html'
+  templateUrl: './tech-record-title.component.html',
+  styleUrls: ['./tech-record-title.component.scss']
 })
 export class TechRecordTitleComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
@@ -39,6 +40,14 @@ export class TechRecordTitleComponent implements OnInit {
 
   get roles(): typeof Roles {
     return Roles;
+  }
+
+  getCompletenessColor(completeness?: string): 'green' | 'red' {
+    return completeness === 'complete' ? 'green' : 'red';
+  }
+
+  getCompletenessText(completeness?: string): string {
+    return `${completeness === 'complete' ? '' : 'NOT '}READY FOR TEST`;
   }
 
   navigateToPromotion(): void {

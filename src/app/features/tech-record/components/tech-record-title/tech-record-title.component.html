@@ -55,4 +55,11 @@
       <a class="govuk-link" style="cursor: pointer" (click)="navigateToPromotion()">Promote</a>
     </dd>
   </div>
+
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Testable record</dt>
+    <dd id="record-completeness" class="govuk-summary-list__value" *ngIf="currentTechRecord$ | async as record">
+      <app-tag [type]="getCompletenessColor(record?.recordCompleteness)">{{ getCompletenessText(record?.recordCompleteness) }}</app-tag>
+    </dd>
+  </div>
 </dl>

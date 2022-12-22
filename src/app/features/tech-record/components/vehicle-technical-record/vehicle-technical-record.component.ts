@@ -13,7 +13,7 @@ import { createProvisionalTechRecord, updateTechRecords } from '@store/technical
 import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
 import { Observable, tap } from 'rxjs';
 import { TechRecordSummaryComponent } from '../tech-record-summary/tech-record-summary.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 
 @Component({
@@ -37,10 +37,12 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   constructor(
     testRecordService: TestRecordsService,
+    private activatedRoute: ActivatedRoute,
     private errorService: GlobalErrorService,
+    private route: ActivatedRoute,
+    private router: Router,
     private store: Store<TechnicalRecordServiceState>,
-    private technicalRecordService: TechnicalRecordService,
-    private activatedRoute: ActivatedRoute
+    private technicalRecordService: TechnicalRecordService
   ) {
     this.records$ = testRecordService.testRecords$;
     this.isEditing = this.activatedRoute.snapshot.data['isEditing'] ?? false;
@@ -106,7 +108,32 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
   }
 
-  isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>) {
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined): string {
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        return techRecord.vehicleConfiguration ?? '';
+      case VehicleTypes.PSV:
+        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+      case VehicleTypes.HGV:
+        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
+      default:
+        return 'Unknown Vehicle Type';
+    }
+  }
+
+  createTest(isComplete?: string): void {
+    if (isComplete) {
+      this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
+    } else {
+      alert(
+        'Incomplete vehicle record.\n\n' +
+          'This vehicle does not have enough data to be tested. ' +
+          'Call Technical Support to correct this record and use SAR to test this vehicle.'
+      );
+    }
+  }
+
+  isAnyFormInvalid(forms: Array<CustomFormGroup | CustomFormArray>): boolean {
     const errors: GlobalError[] = [];
 
     forms.forEach(form => DynamicFormService.updateValidity(form, errors));
@@ -116,7 +143,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     return forms.some(form => form.invalid);
   }
 
-  handleFormState() {
+  handleFormState(): void {
     if (this.isEditing) {
       const form = this.summary.sections.map(section => section.form).concat(this.customSectionForms);
 
@@ -125,7 +152,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
   }
 
-  handleSubmit() {
+  handleSubmit(): void {
     this.handleFormState();
 
     if (!this.isInvalid) {
@@ -141,19 +168,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
             )
           : this.store.dispatch(createProvisionalTechRecord({ systemNumber }));
       }
-    }
-  }
-
-  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined) {
-    switch (vehicleType) {
-      case VehicleTypes.TRL:
-        return techRecord.vehicleConfiguration ?? '';
-      case VehicleTypes.PSV:
-        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
-      case VehicleTypes.HGV:
-        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
-      default:
-        return 'Unknown Vehicle Type';
     }
   }
 }

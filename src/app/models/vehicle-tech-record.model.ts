@@ -305,6 +305,8 @@ export interface TechRecordModel {
   plates?: Plates[];
   dda?: DDA;
   updateType?: string;
+
+  recordCompleteness?: string;
 }
 
 export interface AuthIntoService {
