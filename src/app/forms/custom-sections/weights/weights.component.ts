@@ -26,7 +26,7 @@ export class WeightsComponent implements OnInit, OnDestroy, OnChanges {
   constructor(public dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.template ? (this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup) : ({} as CustomFormGroup);
+    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
     this._formSubscription = this.form.cleanValueChanges.pipe(debounceTime(400)).subscribe(event => this.formChange.emit(event));
   }
 

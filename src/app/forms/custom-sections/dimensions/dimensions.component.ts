@@ -24,7 +24,7 @@ export class DimensionsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private dfs: DynamicFormService) {}
 
   ngOnInit(): void {
-    this.form = this.template ? (this.dfs.createForm(this.template, this.vehicleTechRecord) as CustomFormGroup) : ({} as CustomFormGroup);
+    this.form = this.dfs.createForm(this.template!, this.vehicleTechRecord) as CustomFormGroup;
 
     this.form.cleanValueChanges.pipe(debounceTime(400), takeUntil(this.destroy$)).subscribe(e => this.formChange.emit(e));
   }
