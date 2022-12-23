@@ -42,6 +42,10 @@ export class TechRecordTitleComponent implements OnInit {
     return Roles;
   }
 
+  get statuses(): typeof StatusCodes {
+    return StatusCodes;
+  }
+
   getCompletenessColor(completeness?: string): 'green' | 'red' {
     return completeness === 'complete' ? 'green' : 'red';
   }
