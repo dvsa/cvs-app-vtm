@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormNode } from '@forms/services/dynamic-form.types';
 import { createSingleSearchResult } from '@forms/templates/search/single-search-result.template';
-import { VehicleTechRecordModel } from '@models/vehicle-tech-record.model';
+import { TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Roles } from '@models/roles.enum';
@@ -29,8 +29,8 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
             vin: this.vehicleTechRecord.vin,
             vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
             trailerId: this.vehicleTechRecord.trailerId,
-            make: (record?.vehicleType == 'hgv' ? record?.make : record?.chassisMake) ?? 'Make Not Found',
-            model: (record?.vehicleType == 'hgv' ? record?.model : record?.chassisModel) ?? 'Model Not Found',
+            make: this.getVehicleMake(record),
+            model: this.getVehicleModel(record),
             manufactureYear: record?.manufactureYear,
             vehicleType: record?.vehicleType.toUpperCase()
           })
@@ -46,6 +46,24 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
 
   public get roles() {
     return Roles;
+  }
+
+  getVehicleMake(record: TechRecordModel | undefined) {
+    switch (record?.vehicleType) {
+      case VehicleTypes.PSV:
+        return record.chassisMake ?? '-';
+      default:
+        return record?.make ?? '-';
+    }
+  }
+
+  getVehicleModel(record: TechRecordModel | undefined) {
+    switch (record?.vehicleType) {
+      case VehicleTypes.PSV:
+        return record.chassisModel ?? '-';
+      default:
+        return record?.model ?? '-';
+    }
   }
 }
 
