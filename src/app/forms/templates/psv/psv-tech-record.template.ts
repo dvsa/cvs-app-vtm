@@ -184,6 +184,7 @@ export function getPsvTechRecord(_isEditing: boolean): FormNode {
         label: 'Seatbelt installation approval date / type approved',
         value: '',
         type: FormNodeTypes.CONTROL,
+        viewType: FormNodeViewTypes.DATE,
         editType: FormNodeEditTypes.DATE,
         isoDate: false
       },
