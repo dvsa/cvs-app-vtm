@@ -108,6 +108,13 @@ const routes: Routes = [
     loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
   },
   {
+    path: 'provisional/test-records/test-result/:testResultId/:testNumber',
+    data: { title: 'Test record', roles: Roles.TestResultView },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver },
+    loadChildren: () => import('../test-records/amend/amend-test-records.module').then(m => m.AmendTestRecordsModule)
+  },
+  {
     path: 'test-records/create-test',
     data: { roles: Roles.TestResultCreateContingency },
     canActivate: [MsalGuard, RoleGuard],
