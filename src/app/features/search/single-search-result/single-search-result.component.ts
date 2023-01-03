@@ -29,8 +29,8 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
             vin: this.vehicleTechRecord.vin,
             vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
             trailerId: this.vehicleTechRecord.trailerId,
-            make: record?.chassisMake,
-            model: record?.chassisModel,
+            make: (record?.vehicleType == 'hgv' ? record?.make : record?.chassisMake) ?? 'Make Not Found',
+            model: (record?.vehicleType == 'hgv' ? record?.model : record?.chassisModel) ?? 'Model Not Found',
             manufactureYear: record?.manufactureYear,
             vehicleType: record?.vehicleType.toUpperCase()
           })
