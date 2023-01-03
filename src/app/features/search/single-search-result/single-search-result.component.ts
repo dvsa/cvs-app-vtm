@@ -29,8 +29,8 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
             vin: this.vehicleTechRecord.vin,
             vrm: this.vehicleTechRecord.vrms.find(vrm => vrm.isPrimary)?.vrm,
             trailerId: this.vehicleTechRecord.trailerId,
-            make: this.getVehicleMake(record),
-            model: this.getVehicleModel(record),
+            make: record?.vehicleType == 'psv' ? record?.chassisMake : record?.make,
+            model: record?.vehicleType == 'psv' ? record?.chassisModel : record?.model,
             manufactureYear: record?.manufactureYear,
             vehicleType: record?.vehicleType.toUpperCase()
           })
@@ -46,24 +46,6 @@ export class SingleSearchResultComponent implements OnInit, OnDestroy {
 
   public get roles() {
     return Roles;
-  }
-
-  getVehicleMake(record: TechRecordModel | undefined) {
-    switch (record?.vehicleType) {
-      case VehicleTypes.PSV:
-        return record.chassisMake ?? '-';
-      default:
-        return record?.make ?? '-';
-    }
-  }
-
-  getVehicleModel(record: TechRecordModel | undefined) {
-    switch (record?.vehicleType) {
-      case VehicleTypes.PSV:
-        return record.chassisModel ?? '-';
-      default:
-        return record?.model ?? '-';
-    }
   }
 }
 
