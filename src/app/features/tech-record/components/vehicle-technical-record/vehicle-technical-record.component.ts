@@ -83,17 +83,31 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
   }
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
-    const customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
-
     const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
+    let customSections: Array<CustomFormGroup | CustomFormArray>;
 
-    if (type === VehicleTypes.PSV) {
-      customSections.push(this.summary.psvBrakes!.form);
-    } else if (type === VehicleTypes.TRL) {
-      customSections.push(this.summary.trlBrakes!.form);
+    switch (type) {
+      case VehicleTypes.PSV:
+        return (customSections = [
+          this.summary.body.form,
+          this.summary.dimensions.form,
+          this.summary.tyres.form,
+          this.summary.weights.form,
+          this.summary.psvBrakes!.form
+        ]);
+      case VehicleTypes.HGV:
+        return (customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form]);
+      case VehicleTypes.TRL:
+        return (customSections = [
+          this.summary.body.form,
+          this.summary.dimensions.form,
+          this.summary.tyres.form,
+          this.summary.weights.form,
+          this.summary.trlBrakes!.form
+        ]);
+      default:
+        return (customSections = []);
     }
-
-    return customSections;
   }
 
   getActions(techRecord?: TechRecordModel): TechRecordActions {
@@ -107,19 +121,20 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         return TechRecordActions.NONE;
     }
   }
+  // This function is never called? Check in PR if ok to remove
 
-  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined): string {
-    switch (vehicleType) {
-      case VehicleTypes.TRL:
-        return techRecord.vehicleConfiguration ?? '';
-      case VehicleTypes.PSV:
-        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
-      case VehicleTypes.HGV:
-        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
-      default:
-        return 'Unknown Vehicle Type';
-    }
-  }
+  // getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined): string {
+  //   switch (vehicleType) {
+  //     case VehicleTypes.TRL:
+  //       return techRecord.vehicleConfiguration ?? '';
+  //     case VehicleTypes.PSV:
+  //       return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+  //     case VehicleTypes.HGV:
+  //       return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
+  //     default:
+  //       return 'Unknown Vehicle Type';
+  //   }
+  // }
 
   createTest(isComplete?: string): void {
     if (isComplete) {

@@ -131,7 +131,7 @@ export class TechRecordSummaryComponent implements OnInit {
             this.vehicleTechRecordCalculated = data;
             this.normaliseVehicleTechRecordAxles();
           })
-      : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord, reasonForCreation: '' });
+      : (this.vehicleTechRecordCalculated = { ...this.vehicleTechRecord });
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
@@ -154,7 +154,10 @@ export class TechRecordSummaryComponent implements OnInit {
       this.setBrakesForces();
     }
 
-    this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
+    if (this.vehicleTechRecord.vehicleType === (VehicleTypes.PSV || VehicleTypes.HGV || VehicleTypes.TRL)) {
+      this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
+    }
+
     this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
     this.formChange.emit();
   }
