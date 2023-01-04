@@ -121,20 +121,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         return TechRecordActions.NONE;
     }
   }
-  // This function is never called? Check in PR if ok to remove
-
-  // getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined): string {
-  //   switch (vehicleType) {
-  //     case VehicleTypes.TRL:
-  //       return techRecord.vehicleConfiguration ?? '';
-  //     case VehicleTypes.PSV:
-  //       return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
-  //     case VehicleTypes.HGV:
-  //       return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
-  //     default:
-  //       return 'Unknown Vehicle Type';
-  //   }
-  // }
 
   createTest(isComplete?: string): void {
     if (isComplete) {
