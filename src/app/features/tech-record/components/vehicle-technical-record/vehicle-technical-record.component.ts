@@ -84,29 +84,28 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
 
   get customSectionForms(): Array<CustomFormGroup | CustomFormArray> {
     const type = this.vehicleTechRecord?.techRecord.find(record => record.statusCode === StatusCodes.CURRENT)?.vehicleType;
-    let customSections: Array<CustomFormGroup | CustomFormArray>;
 
     switch (type) {
       case VehicleTypes.PSV:
-        return (customSections = [
+        return [
           this.summary.body.form,
           this.summary.dimensions.form,
           this.summary.tyres.form,
           this.summary.weights.form,
           this.summary.psvBrakes!.form
-        ]);
+        ];
       case VehicleTypes.HGV:
-        return (customSections = [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form]);
+        return [this.summary.body.form, this.summary.dimensions.form, this.summary.tyres.form, this.summary.weights.form];
       case VehicleTypes.TRL:
-        return (customSections = [
+        return [
           this.summary.body.form,
           this.summary.dimensions.form,
           this.summary.tyres.form,
           this.summary.weights.form,
           this.summary.trlBrakes!.form
-        ]);
+        ];
       default:
-        return (customSections = []);
+        return [];
     }
   }
 
