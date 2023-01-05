@@ -16,6 +16,7 @@ import { initialAppState } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
 
 import { TyresSearchComponent } from './tyres-search.component';
+import { DynamicFormsModule } from '@forms/dynamic-forms.module';
 
 const mockGlobalErrorService = {
   addError: jest.fn(),
@@ -45,7 +46,7 @@ describe('TyresSearchComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TyresSearchComponent],
-      imports: [RouterTestingModule, SharedModule, HttpClientTestingModule],
+      imports: [DynamicFormsModule, RouterTestingModule, SharedModule, HttpClientTestingModule],
       providers: [
         provideMockActions(() => actions$),
         provideMockStore({ initialState: initialAppState }),

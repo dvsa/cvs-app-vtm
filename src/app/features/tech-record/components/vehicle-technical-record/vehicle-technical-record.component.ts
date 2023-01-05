@@ -121,8 +121,10 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
   }
 
-  createTest(isComplete?: string): void {
-    if (isComplete) {
+  createTest(techRecord?: TechRecordModel): void {
+    if (techRecord?.hiddenInVta) {
+      alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
+    } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
       this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
     } else {
       alert(
