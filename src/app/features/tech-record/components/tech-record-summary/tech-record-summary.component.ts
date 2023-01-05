@@ -154,7 +154,11 @@ export class TechRecordSummaryComponent implements OnInit {
       this.setBrakesForces();
     }
 
-    if (this.vehicleTechRecord.vehicleType === (VehicleTypes.PSV || VehicleTypes.HGV || VehicleTypes.TRL)) {
+    if (
+      this.vehicleTechRecord.vehicleType === VehicleTypes.PSV ||
+      this.vehicleTechRecord.vehicleType === VehicleTypes.HGV ||
+      this.vehicleTechRecord.vehicleType === VehicleTypes.TRL
+    ) {
       this.vehicleTechRecordCalculated.noOfAxles = this.vehicleTechRecordCalculated.axles.length ?? 0;
     }
 
