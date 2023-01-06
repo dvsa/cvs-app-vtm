@@ -26,10 +26,16 @@ export class ChangeVehicleTypeComponent implements OnInit {
   public form!: CustomFormGroup;
 
   public template: FormNode = {
-    name: 'selectVehicleType',
-    label: 'Choose vehicle type',
-    value: '',
-    type: FormNodeTypes.CONTROL
+    name: 'criteria',
+    type: FormNodeTypes.GROUP,
+    children: [
+      {
+        name: 'selectVehicleType',
+        label: 'Choose vehicle type',
+        value: '',
+        type: FormNodeTypes.CONTROL
+      }
+    ]
   };
 
   get currentVrm(): string | undefined {
@@ -37,8 +43,11 @@ export class ChangeVehicleTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('hi');
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
+  }
+
+  handleSubmitNewVehicleType(selectedVehicleType: string): void {
+    console.log(selectedVehicleType);
   }
 
   navigateBack() {

@@ -21,25 +21,35 @@
   </div>
 </dl>
 
-<app-select
-  label="Select Vehicle Type"
-  name="selectVehicleType"
-  [options]="[{ value: 'psv', label: 'PSV' }]"
-  formControlName="selectVehicleType"
-></app-select>
+<form [formGroup]="form">
+  <app-select
+    #selectVehicleType
+    label="Select Vehicle Type"
+    [formControlName]="form.meta.children![0].name"
+    [options]="[{ value: 'psv', label: 'PSV' }]"
+  ></app-select>
 
-<div>
-  <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
+  <div>
+    <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
 
-  <span class="govuk-body"
-    >You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() }} to a PSV provisional technical record.</span
-  >
-</div>
+    <span class="govuk-body"
+      >You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() }} to a PSV provisional technical record.</span
+    >
 
-<br />
-<br />
+    <br />
+    <br />
+  </div>
 
-<div style="display: flex; justify-content: space-between; align-items: center">
-  <button class="govuk-button">Confirm and continue</button>
-  <a class="govuk-link margin-right" style="cursor: pointer" data-module="govuk-button" (click)="navigateBack()">Back</a>
-</div>
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <button
+      class="govuk-button"
+      data-module="govuk-button"
+      type="submit"
+      enterkeyhint="change vehicle type"
+      (click)="handleSubmitNewVehicleType(selectVehicleType.value)"
+    >
+      Confirm and continue
+    </button>
+    <a class="govuk-link margin-right" style="cursor: pointer" data-module="govuk-button" (click)="navigateBack()">Back</a>
+  </div>
+</form>
