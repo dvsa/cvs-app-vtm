@@ -321,6 +321,7 @@ export interface TechRecordModel {
   updateType?: string;
 
   recordCompleteness?: string;
+  hiddenInVta?: boolean;
 }
 
 export interface AuthIntoService {

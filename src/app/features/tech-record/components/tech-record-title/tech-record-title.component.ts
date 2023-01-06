@@ -14,6 +14,7 @@ import { Observable, take } from 'rxjs';
 export class TechRecordTitleComponent implements OnInit {
   @Input() vehicleTechRecord?: VehicleTechRecordModel;
   @Input() recordActions: TechRecordActions = TechRecordActions.NONE;
+  @Input() hideActions: boolean = false;
 
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
@@ -46,12 +47,12 @@ export class TechRecordTitleComponent implements OnInit {
     return Roles;
   }
 
-  getCompletenessColor(completeness?: string): 'green' | 'red' {
-    return completeness === 'complete' ? 'green' : 'red';
+  get statuses(): typeof StatusCodes {
+    return StatusCodes;
   }
 
-  getCompletenessText(completeness?: string): string {
-    return `${completeness === 'complete' ? '' : 'NOT '}READY FOR TEST`;
+  getCompletenessColor(completeness?: string): 'green' | 'red' {
+    return completeness === 'complete' ? 'green' : 'red';
   }
 
   navigateToPromotion(): void {
@@ -59,11 +60,23 @@ export class TechRecordTitleComponent implements OnInit {
   }
 
   navigateToArchive(): void {
-    this.currentTechRecord$.pipe(take(1)).subscribe(data => {
-      return data?.statusCode === StatusCodes.PROVISIONAL
-        ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/archive`)
-        : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/archive`);
-    });
+    this.currentTechRecord$
+      .pipe(take(1))
+      .subscribe(techRecord =>
+        techRecord?.statusCode === StatusCodes.PROVISIONAL
+          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/archive`)
+          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/archive`)
+      );
+  }
+
+  navigateToChangeVisibility(): void {
+    this.currentTechRecord$
+      .pipe(take(1))
+      .subscribe(techRecord =>
+        techRecord?.statusCode === StatusCodes.PROVISIONAL
+          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/change-vta-visibility`)
+          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vta-visibility`)
+      );
   }
   navigateToChange() {
     return this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/changeVehicleType`);
