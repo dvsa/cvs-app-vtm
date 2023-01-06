@@ -70,10 +70,22 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   handleSubmitNewVehicleType(selectedVehicleType: string): void {
     console.log(this.vehicleTechRecord);
     console.log(selectedVehicleType);
+    this.globalErrorService.clearErrors();
+
+    if (!selectedVehicleType || selectedVehicleType === this.vehicleTechRecord?.techRecord[0].vehicleType) {
+      this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
+      return;
+    }
+
     // big brain boi logic go here
 
+    // create new types
+    // filter this.vehicleTechRecord through new types to remove unwanted fields
+    // dispatch new data model/'third entity' to editingTechRecord
+    // navigate to amend to be prompted to fill in new fields
+    // update dynamo tech record with new structure on submit
+
     console.log(this.location);
-    // got to /notifiable-alteration-needed
   }
 
   navigateBack() {
