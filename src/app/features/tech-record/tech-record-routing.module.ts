@@ -40,14 +40,14 @@ const routes: Routes = [
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'hide-in-vta',
+    path: 'change-vta-visibility',
     component: TechRecordChangeVisibilityComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
-    path: 'show-in-vta',
+    path: 'provisional/change-vta-visibility',
     component: TechRecordChangeVisibilityComponent,
     data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],

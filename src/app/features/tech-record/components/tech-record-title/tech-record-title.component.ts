@@ -69,9 +69,9 @@ export class TechRecordTitleComponent implements OnInit {
     this.currentTechRecord$
       .pipe(take(1))
       .subscribe(techRecord =>
-        techRecord?.hiddenInVta
-          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/show-in-vta`)
-          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/hide-in-vta`)
+        techRecord?.statusCode === StatusCodes.PROVISIONAL
+          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/change-vta-visibility`)
+          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vta-visibility`)
       );
   }
 }

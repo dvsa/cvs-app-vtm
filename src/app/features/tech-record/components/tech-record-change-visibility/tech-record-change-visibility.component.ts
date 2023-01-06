@@ -22,13 +22,13 @@ import { filter, mergeMap, Observable, take } from 'rxjs';
 })
 export class TechRecordChangeVisibilityComponent implements OnInit {
   vehicleTechRecord$: Observable<VehicleTechRecordModel | undefined>;
+  techRecord?: TechRecordModel;
 
   form: CustomFormGroup;
 
   constructor(
     private actions$: Actions,
     private errorService: GlobalErrorService,
-    private location: Location,
     private route: ActivatedRoute,
     private router: Router,
     private routerStore: Store<RouterReducerState>,
@@ -37,6 +37,8 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
   ) {
     this.vehicleTechRecord$ = this.technicalRecordService.selectedVehicleTechRecord$;
 
+    this.technicalRecordService.techRecord$.subscribe(techRecord => (this.techRecord = techRecord));
+
     this.form = new CustomFormGroup(
       { name: 'reasonForChagingVisibility', type: FormNodeTypes.GROUP },
       { reason: new CustomFormControl({ name: 'reason', type: FormNodeTypes.CONTROL }, undefined, [Validators.required]) }
@@ -44,52 +46,47 @@ export class TechRecordChangeVisibilityComponent implements OnInit {
   }
 
   get title(): string {
-    return `${this.routeSuffix === 'hide-in-vta' ? 'Hide' : 'Show'} record in VTA`;
+    return `${this.isHidden ? 'Show' : 'Hide'} record in VTA`;
   }
 
   get buttonLabel(): string {
-    return `${this.routeSuffix === 'hide-in-vta' ? 'Hide' : 'Show'} record`;
+    return `${this.isHidden ? 'Show' : 'Hide'} record`;
   }
 
-  get routeSuffix(): string {
-    return this.router.url.split('/').pop() || '';
+  get isHidden(): boolean {
+    return this.techRecord?.hiddenInVta || false;
   }
 
   ngOnInit(): void {
-    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.router.navigate(['..'], { relativeTo: this.route }));
+    this.actions$.pipe(ofType(updateTechRecordsSuccess), take(1)).subscribe(() => this.goBack());
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   handleSubmit(form: { reason: string }): void {
     this.form.valid
       ? this.errorService.clearErrors()
       : this.errorService.setErrors([
-          { error: `Reason for ${this.routeSuffix === 'hide-in-vta' ? 'hiding' : 'showing'} is required`, anchorLink: 'reasonForChagingVisibility' }
+          { error: `Reason for ${this.isHidden ? 'showing' : 'hiding'} is required`, anchorLink: 'reasonForChagingVisibility' }
         ]);
 
     if (!this.form.valid || !form.reason) {
       return;
     }
 
-    this.technicalRecordService.techRecord$
-      .pipe(
-        filter(techRecord => !!techRecord),
-        mergeMap(techRecord => {
-          const updatedTechRecord: TechRecordModel = {
-            ...cloneDeep(techRecord!),
-            reasonForCreation: form.reason,
-            hiddenInVta: this.routeSuffix === 'hide-in-vta'
-          };
+    const updatedTechRecord: TechRecordModel = {
+      ...cloneDeep(this.techRecord!),
+      reasonForCreation: form.reason,
+      hiddenInVta: !this.isHidden
+    };
 
-          this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: updatedTechRecord }));
+    this.techRecordsStore.dispatch(updateEditingTechRecord({ techRecord: updatedTechRecord }));
 
-          return this.routerStore.select(selectRouteNestedParams);
-        }),
-        take(1)
-      )
+    this.routerStore
+      .select(selectRouteNestedParams)
+      .pipe(take(1))
       .subscribe(({ systemNumber }) => this.techRecordsStore.dispatch(updateTechRecords({ systemNumber })));
   }
 }
