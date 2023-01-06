@@ -30,6 +30,10 @@ export class TechRecordTitleComponent implements OnInit {
     return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
+  get vehicleType(): string {
+    return this.vehicleTechRecord?.techRecord[0].vehicleType!;
+  }
+
   get otherVrms(): Vrm[] | undefined {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
@@ -60,5 +64,8 @@ export class TechRecordTitleComponent implements OnInit {
         ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/archive`)
         : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/archive`);
     });
+  }
+  navigateToChange() {
+    return this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/changeVehicleType`);
   }
 }

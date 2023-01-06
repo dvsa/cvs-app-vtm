@@ -1,5 +1,13 @@
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Vehicle type</dt>
+    <dd id="vehicleType" class="govuk-summary-list__value">
+      {{ (currentTechRecord$ | async)?.vehicleType ?? vehicleType.toUpperCase() | defaultNullOrEmpty }}
+    </dd>
+    <a class="govuk-link" style="cursor: pointer" (click)="navigateToChange()">Change</a>
+  </div>
+
+  <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Vehicle identification number (VIN)</dt>
     <dd id="vin" class="govuk-summary-list__value">
       {{ (currentTechRecord$ | async)?.historicVin ?? vehicleTechRecord?.vin | defaultNullOrEmpty }}

@@ -9,6 +9,7 @@ import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-am
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordComponent } from './tech-record.component';
+import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/change-vehicle-type.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,18 @@ const routes: Routes = [
     data: { roles: Roles.TechRecordView, isCustomLayout: true },
     canActivateChild: [MsalGuard, RoleGuard],
     resolve: { load: TechRecordViewResolver }
+  },
+  {
+    path: 'changeVehicleType',
+    component: ChangeVehicleTypeComponent,
+    data: { roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
+  },
+  {
+    path: 'provisional/changeVehicleType',
+    component: ChangeVehicleTypeComponent,
+    data: { roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'amend-reason',

@@ -1,0 +1,45 @@
+<div *ngIf="vehicleTechRecord!.techRecord[0].vehicleType !== 'psv'">
+  <h2 class="govuk-heading-xl">
+    {{ vehicleTechRecord!.techRecord[0].make | defaultNullOrEmpty }} {{ vehicleTechRecord!.techRecord[0].model | defaultNullOrEmpty }}
+  </h2>
+</div>
+
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">Vehicle type</dt>
+    <dd id="vehicleType" class="govuk-summary-list__value">
+      {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() | defaultNullOrEmpty }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">VRM</dt>
+    <app-number-plate *ngIf="currentVrm" [vrm]="currentVrm"></app-number-plate>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">VIN/chassis number</dt>
+    <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicleTechRecord?.vin | defaultNullOrEmpty }}</dd>
+  </div>
+</dl>
+
+<app-select
+  label="Select Vehicle Type"
+  name="selectVehicleType"
+  [options]="[{ value: 'psv', label: 'PSV' }]"
+  formControlName="selectVehicleType"
+></app-select>
+
+<div>
+  <h1 class="govuk-heading-xl">Are you sure you want to change this Vehicle type?</h1>
+
+  <span class="govuk-body"
+    >You are about to change a {{ vehicleTechRecord!.techRecord[0].vehicleType.toUpperCase() }} to a PSV provisional technical record.</span
+  >
+</div>
+
+<br />
+<br />
+
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <button class="govuk-button">Confirm and continue</button>
+  <a class="govuk-link margin-right" style="cursor: pointer" data-module="govuk-button">Back</a>
+</div>
