@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
@@ -41,8 +41,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.log(this.form);
+    this.globalErrorService.clearErrors();
 
     const { vehicleTechRecord } = changes;
 
@@ -63,24 +62,21 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     if (this.vehicleTechRecord === undefined) {
       this.navigateBack();
-      // fetch and pop state on page refresh?
     }
   }
 
   handleSubmitNewVehicleType(selectedVehicleType: string): void {
     console.log(this.vehicleTechRecord);
     console.log(selectedVehicleType);
-    this.globalErrorService.clearErrors();
 
     if (!selectedVehicleType || selectedVehicleType === this.vehicleTechRecord?.techRecord[0].vehicleType) {
       this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
       return;
     }
 
-    // big brain boi logic go here
+    // TODO:
 
-    // create new types
-    // filter this.vehicleTechRecord through new types to remove unwanted fields
+    // filter this.vehicleTechRecord by selectedVehicleType to remove unwanted fields
     // dispatch new data model/'third entity' to editingTechRecord
     // navigate to amend to be prompted to fill in new fields
     // update dynamo tech record with new structure on submit
