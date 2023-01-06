@@ -78,7 +78,13 @@ export class TechRecordTitleComponent implements OnInit {
           : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vta-visibility`)
       );
   }
-  navigateToChange() {
-    return this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/changeVehicleType`);
+  navigateToChangeVehicleType() {
+    this.currentTechRecord$
+      .pipe(take(1))
+      .subscribe(techRecord =>
+        techRecord?.statusCode === StatusCodes.PROVISIONAL
+          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/changeVehicleType`)
+          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/changeVehicleType`)
+      );
   }
 }

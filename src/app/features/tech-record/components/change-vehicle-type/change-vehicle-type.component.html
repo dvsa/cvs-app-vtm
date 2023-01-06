@@ -1,4 +1,4 @@
-<div *ngIf="vehicleTechRecord && vehicleTechRecord!.techRecord[0].vehicleType !== 'psv'">
+<div *ngIf="vehicleTechRecord">
   <h2 class="govuk-heading-xl">
     {{ vehicleTechRecord!.techRecord[0].make | defaultNullOrEmpty }} {{ vehicleTechRecord!.techRecord[0].model | defaultNullOrEmpty }}
   </h2>
