@@ -19,7 +19,6 @@ import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/cha
 
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 
-
 @NgModule({
   declarations: [
     EditTechRecordButtonComponent,
@@ -32,11 +31,8 @@ import { TechRecordChangeVisibilityComponent } from './components/tech-record-ch
     TyresSearchComponent,
     TechRecordChangeStatusComponent,
     TechRecordTitleComponent,
-
-    ChangeVehicleTypeComponent
-
+    ChangeVehicleTypeComponent,
     TechRecordChangeVisibilityComponent
-
   ],
   imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule],
   exports: [EditTechRecordButtonComponent]
