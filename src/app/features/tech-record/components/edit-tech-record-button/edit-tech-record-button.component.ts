@@ -80,9 +80,8 @@ export class EditTechRecordButtonComponent implements OnInit {
         take(1)
       )
       .subscribe(data => {
-        this.vehicleTechRecordCalculated = { ...data, reasonForCreation: '' } as TechRecordModel;
+        this.store.dispatch(updateEditingTechRecord({ techRecord: { ...data, reasonForCreation: '' } as TechRecordModel }));
       });
-    this.store.dispatch(updateEditingTechRecord({ techRecord: this.vehicleTechRecordCalculated }));
   }
 
   toggleEditMode() {
