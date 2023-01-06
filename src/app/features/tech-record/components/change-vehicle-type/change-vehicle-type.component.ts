@@ -63,13 +63,15 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     if (this.vehicleTechRecord === undefined) {
       this.navigateBack();
-      // fetch and pop state when page refreshes?
+      // fetch and pop state on page refresh?
     }
   }
 
   handleSubmitNewVehicleType(selectedVehicleType: string): void {
+    console.log(this.vehicleTechRecord);
     console.log(selectedVehicleType);
     // big brain boi logic go here
+
     console.log(this.location);
     // got to /notifiable-alteration-needed
   }
