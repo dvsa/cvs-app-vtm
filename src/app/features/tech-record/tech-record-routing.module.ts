@@ -22,13 +22,13 @@ const routes: Routes = [
   {
     path: 'changeVehicleType',
     component: ChangeVehicleTypeComponent,
-    data: { roles: Roles.TechRecordAmend },
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
     path: 'provisional/changeVehicleType',
     component: ChangeVehicleTypeComponent,
-    data: { roles: Roles.TechRecordAmend },
+    data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
