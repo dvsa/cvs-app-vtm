@@ -9,6 +9,7 @@ import { TechAmendReasonComponent } from './components/tech-amend-reason/tech-am
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordComponent } from './tech-record.component';
+import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,20 @@ const routes: Routes = [
     path: 'notifiable-alteration-needed',
     component: TechRecordComponent,
     data: { roles: Roles.TechRecordAmend, isEditing: true, reason: ReasonForEditing.NOTIFIABLE_ALTERATION_NEEDED, isCustomLayout: true },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
+  },
+  {
+    path: 'change-vta-visibility',
+    component: TechRecordChangeVisibilityComponent,
+    data: { roles: Roles.TechRecordAmend },
+    canActivate: [MsalGuard, RoleGuard],
+    resolve: { techRecord: TechRecordViewResolver }
+  },
+  {
+    path: 'provisional/change-vta-visibility',
+    component: TechRecordChangeVisibilityComponent,
+    data: { roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },

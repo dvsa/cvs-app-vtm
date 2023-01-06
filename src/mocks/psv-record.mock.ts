@@ -337,6 +337,7 @@ const archivedTechRecord = {
 };
 
 const currentTechRecord = {
+  recordCompleteness: 'complete',
   createdAt: new Date(2019, 11),
   createdByName: 'Nathan',
   statusCode: StatusCodes.CURRENT,
