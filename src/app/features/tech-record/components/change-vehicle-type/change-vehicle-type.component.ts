@@ -35,7 +35,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     children: [
       {
         name: 'selectVehicleType',
-        label: 'Choose vehicle type',
+        label: 'Select a new vehicle type',
         value: '',
         type: FormNodeTypes.CONTROL
       }
@@ -68,10 +68,10 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   handleSubmitNewVehicleType(selectedVehicleType: string): void {
-    console.log(this.vehicleTechRecord);
+    console.log(this.currentTechRecord);
     console.log(selectedVehicleType);
 
-    if (!selectedVehicleType || selectedVehicleType === this.vehicleTechRecord?.techRecord[0].vehicleType) {
+    if (!selectedVehicleType || selectedVehicleType === this.currentTechRecord?.vehicleType) {
       this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
       return;
     }

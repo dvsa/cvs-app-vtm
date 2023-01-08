@@ -7,7 +7,7 @@
     <dd class="govuk-summary-list__actions"></dd>
     <dd class="govuk-summary-list__actions">
       <a
-        *ngIf="(currentTechRecord$ | async)?.statusCode === 'current'"
+        *ngIf="(currentTechRecord$ | async)?.statusCode === 'current' || (currentTechRecord$ | async)?.statusCode === 'provisional'"
         class="govuk-link"
         style="cursor: pointer"
         (click)="navigateToChangeVehicleType()"

@@ -1,10 +1,12 @@
 <div *ngIf="vehicleTechRecord">
-  <h2 *ngIf="currentTechRecord?.vehicleType !== 'psv'" class="govuk-heading-xl">
-    {{ currentTechRecord?.make | defaultNullOrEmpty }}
+  <br />
+  <br />
+  <h2 *ngIf="currentTechRecord?.vehicleType !== 'psv'" class="govuk-heading-l">
+    {{ currentTechRecord?.make | defaultNullOrEmpty }} -
     {{ currentTechRecord?.model | defaultNullOrEmpty }}
   </h2>
-  <h2 *ngIf="currentTechRecord?.vehicleType === 'psv'" class="govuk-heading-xl">
-    {{ currentTechRecord?.chassisMake | defaultNullOrEmpty }}
+  <h2 *ngIf="currentTechRecord?.vehicleType === 'psv'" class="govuk-heading-l">
+    {{ currentTechRecord?.chassisMake | defaultNullOrEmpty }} -
     {{ currentTechRecord?.chassisModel | defaultNullOrEmpty }}
   </h2>
 
@@ -21,14 +23,14 @@
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">VIN/chassis number</dt>
-      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicleTechRecord?.vin | defaultNullOrEmpty }}</dd>
+      <dd id="vehicleType" class="govuk-summary-list__value">{{ vehicleTechRecord.vin | defaultNullOrEmpty }}</dd>
     </div>
   </dl>
 
   <form [formGroup]="form">
     <app-select
       #selectVehicleType
-      label="Select Vehicle Type"
+      [label]="form.meta.children![0].label"
       [formControlName]="form.meta.children![0].name"
       [options]="vehicleTypeOptions"
       (ngModelChange)="ngOnChanges($event)"
