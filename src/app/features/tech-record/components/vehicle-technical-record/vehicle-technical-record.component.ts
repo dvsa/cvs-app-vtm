@@ -111,7 +111,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined): string {
     switch (vehicleType) {
       case VehicleTypes.TRL:
@@ -129,17 +128,6 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
     if (techRecord?.hiddenInVta) {
       alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
     } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
-
-
-  createTest(isComplete?: string): void {
-    if (isComplete) {
-      this.router.navigate(['test-records/create-test/type'], { relativeTo: this.route });
-    } else {
-      alert(
-        'Incomplete vehicle record.\n\n' +
-          'This vehicle does not have enough data to be tested. ' +
-          'Call Technical Support to correct this record and use SAR to test this vehicle.'
-      );
     }
   }
 
