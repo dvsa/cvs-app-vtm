@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TyresSearchComponent } from './components/tyres-search/tyres-search.component';
 import { TechRecordChangeStatusComponent } from './components/tech-record-change-status/tech-record-change-status.component';
 import { TechRecordTitleComponent } from './components/tech-record-title/tech-record-title.component';
+import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { TechRecordTitleComponent } from './components/tech-record-title/tech-re
     TechAmendReasonComponent,
     TyresSearchComponent,
     TechRecordChangeStatusComponent,
-    TechRecordTitleComponent
+    TechRecordTitleComponent,
+    TechRecordChangeVisibilityComponent
   ],
   imports: [CommonModule, DynamicFormsModule, ReactiveFormsModule, SharedModule, TechRecordsRoutingModule],
   exports: [EditTechRecordButtonComponent]

@@ -19,7 +19,7 @@
 
         <ng-container *ngIf="!isArchived && !isEditing">
           <div class="govuk-button-group" *appRoleRequired="[roles.TestResultCreateContingency, roles.TestResultCreateDeskAssesment]">
-            <a id="create-test" class="govuk-button" (click)="createTest(currentTechRecord?.recordCompleteness)">Create a test for this vehicle</a>
+            <a id="create-test" class="govuk-button" (click)="createTest(currentTechRecord)">Create a test for this vehicle</a>
           </div>
         </ng-container>
       </div>

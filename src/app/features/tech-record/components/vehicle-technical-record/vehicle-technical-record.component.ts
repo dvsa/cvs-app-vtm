@@ -91,7 +91,7 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
       case VehicleTypes.PSV:
         return [...commonCustomSections, this.summary.psvBrakes!.form];
       case VehicleTypes.HGV:
-        return [...commonCustomSections];
+        return commonCustomSections;
       case VehicleTypes.TRL:
         return [...commonCustomSections, this.summary.trlBrakes!.form];
       default:
@@ -110,6 +110,26 @@ export class VehicleTechnicalRecordComponent implements OnInit, AfterViewInit {
         return TechRecordActions.NONE;
     }
   }
+
+
+  getVehicleDescription(techRecord: TechRecordModel, vehicleType: VehicleTypes | undefined): string {
+    switch (vehicleType) {
+      case VehicleTypes.TRL:
+        return techRecord.vehicleConfiguration ?? '';
+      case VehicleTypes.PSV:
+        return techRecord.bodyMake && techRecord.bodyModel ? `${techRecord.bodyMake}-${techRecord.bodyModel}` : '';
+      case VehicleTypes.HGV:
+        return techRecord.make && techRecord.model ? `${techRecord.make}-${techRecord.model}` : '';
+      default:
+        return 'Unknown Vehicle Type';
+    }
+  }
+
+  createTest(techRecord?: TechRecordModel): void {
+    if (techRecord?.hiddenInVta) {
+      alert('Vehicle record is hidden in VTA.\n\nShow the vehicle record in VTA to start recording tests against it.');
+    } else if (techRecord?.recordCompleteness === 'complete' || techRecord?.recordCompleteness === 'testable') {
+
 
   createTest(isComplete?: string): void {
     if (isComplete) {
