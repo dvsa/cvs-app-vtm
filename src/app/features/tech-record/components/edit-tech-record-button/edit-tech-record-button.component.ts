@@ -40,8 +40,6 @@ export class EditTechRecordButtonComponent implements OnInit {
     private viewportScroller: ViewportScroller
   ) {}
 
-  vehicleTechRecordCalculated!: TechRecordModel;
-
   ngOnInit() {
     this.actions$
       .pipe(
