@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
@@ -29,8 +29,10 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     private location: Location
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
+    this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.currentTechRecord = data));
   }
 
+  public currentTechRecord?: TechRecordModel;
   public vehicleTechRecord?: VehicleTechRecordModel;
   public form!: CustomFormGroup;
 
@@ -40,7 +42,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     children: [
       {
         name: 'selectVehicleType',
-        label: 'Choose vehicle type',
+        label: 'Select a new vehicle type',
         value: '',
         type: FormNodeTypes.CONTROL
       }
@@ -62,7 +64,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnum(VehicleTypes);
+    return getOptionsFromEnum(VehicleTypes).filter(type => type.value != this.currentTechRecord?.vehicleType);
   }
 
   ngOnInit(): void {
@@ -76,9 +78,15 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     if (!selectedVehicleType || selectedVehicleType === this.vehicleTechRecord?.techRecord[0].vehicleType) {
       this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
       return;
+    } else if (selectedVehicleType !== VehicleTypes.PSV) {
+      this.globalErrorService.addError({ error: 'That technical feature will be implemented soon', anchorLink: 'selectedVehicleType' });
+      return;
     }
     this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
-    this.router.navigate(['../notifiable-alteration-needed'], { relativeTo: this.route });
+
+    this.currentTechRecord?.statusCode !== StatusCodes.PROVISIONAL
+      ? this.router.navigate(['../amend-reason'], { relativeTo: this.route })
+      : this.router.navigate(['../notifiable-alteration-needed'], { relativeTo: this.route });
   }
 
   navigateBack() {
