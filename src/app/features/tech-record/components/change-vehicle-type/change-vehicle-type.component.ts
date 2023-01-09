@@ -74,6 +74,14 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     if (!selectedVehicleType || selectedVehicleType === this.currentTechRecord?.vehicleType) {
       this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
       return;
+    } else if (
+      selectedVehicleType === VehicleTypes.CAR ||
+      selectedVehicleType === VehicleTypes.MOTORCYCLE ||
+      selectedVehicleType === VehicleTypes.LGV ||
+      selectedVehicleType === VehicleTypes.HGV ||
+      selectedVehicleType === VehicleTypes.TRL
+    ) {
+      this.globalErrorService.addError({ error: 'That technical feature will be implemented soon', anchorLink: 'selectedVehicleType' });
     }
 
     // TODO:
