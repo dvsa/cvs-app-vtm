@@ -3,11 +3,15 @@ import { Location } from '@angular/common';
 import { GlobalErrorService } from '@core/components/global-error/global-error.service';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynamic-form.types';
-import { VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
+import { StatusCodes, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
 import { getOptionsFromEnum } from '@forms/utils/enum-map';
 import { MultiOptions } from '@forms/models/options.model';
+import { changeVehicleType } from '@store/technical-records';
+import { Store } from '@ngrx/store';
+import { TechnicalRecordServiceState } from '@store/technical-records/reducers/technical-record-service.reducer';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-vehicle-type',
@@ -18,6 +22,9 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   constructor(
     private technicalRecordService: TechnicalRecordService,
     public globalErrorService: GlobalErrorService,
+    private store: Store<TechnicalRecordServiceState>,
+    private router: Router,
+    private route: ActivatedRoute,
     public dfs: DynamicFormService,
     private location: Location
   ) {
@@ -65,23 +72,13 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     }
   }
 
-  handleSubmitNewVehicleType(selectedVehicleType: string): void {
-    console.log(this.vehicleTechRecord);
-    console.log(selectedVehicleType);
-
+  handleSubmitNewVehicleType(selectedVehicleType: VehicleTypes): void {
     if (!selectedVehicleType || selectedVehicleType === this.vehicleTechRecord?.techRecord[0].vehicleType) {
       this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
       return;
     }
-
-    // TODO:
-
-    // filter this.vehicleTechRecord by selectedVehicleType to remove unwanted fields
-    // dispatch new data model/'third entity' to editingTechRecord
-    // navigate to amend to be prompted to fill in new fields
-    // update dynamo tech record with new structure on submit
-
-    console.log(this.location);
+    this.store.dispatch(changeVehicleType({ vehicleType: selectedVehicleType }));
+    this.router.navigate(['../notifiable-alteration-needed'], { relativeTo: this.route });
   }
 
   navigateBack() {
