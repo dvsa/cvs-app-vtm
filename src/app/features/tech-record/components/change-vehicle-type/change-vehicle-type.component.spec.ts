@@ -3,13 +3,15 @@ import { TechRecord } from '@api/vehicle';
 import { DynamicFormService } from '@forms/services/dynamic-form.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { initialAppState } from '@store/index';
 import { of, ReplaySubject } from 'rxjs';
 import { TechRecordsModule } from '../../tech-record.module';
 
 import { ChangeVehicleTypeComponent } from './change-vehicle-type.component';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const mockTechRecordService = {
   editableTechRecord$: of({}),
@@ -20,6 +22,9 @@ const mockTechRecordService = {
 const mockDynamicFormService = {
   createForm: jest.fn()
 };
+
+let router: Router;
+let store: MockStore;
 
 describe('ChangeVehicleTypeComponent', () => {
   let component: ChangeVehicleTypeComponent;
@@ -35,12 +40,15 @@ describe('ChangeVehicleTypeComponent', () => {
 
         { provide: TechnicalRecordService, useValue: mockTechRecordService },
         { provide: DynamicFormService, useValue: mockDynamicFormService }
-      ]
+      ],
+      imports: [RouterTestingModule]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeVehicleTypeComponent);
+    router = TestBed.inject(Router);
+    store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
   });
 

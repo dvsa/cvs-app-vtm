@@ -42,8 +42,8 @@ export class TechRecordSummaryComponent implements OnInit {
   @Input()
   set isEditing(value: boolean) {
     this._isEditing = value;
-    this.toggleReasonForCreation();
     this.calculateVehicleModel();
+    this.toggleReasonForCreation();
   }
   @Output() formChange = new EventEmitter();
 
@@ -61,9 +61,9 @@ export class TechRecordSummaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.referenceDataService.removeTyreSearch();
-    this.toggleReasonForCreation();
     this.calculateVehicleModel();
     this.sectionTemplates = this.vehicleTemplates;
+    this.toggleReasonForCreation();
     this.middleIndex = Math.floor(this.sectionTemplates.length / 2);
   }
 
