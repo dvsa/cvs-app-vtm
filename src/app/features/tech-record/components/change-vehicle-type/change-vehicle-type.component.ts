@@ -6,7 +6,7 @@ import { CustomFormGroup, FormNode, FormNodeTypes } from '@forms/services/dynami
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes } from '@models/vehicle-tech-record.model';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
 import { take } from 'rxjs';
-import { getOptionsFromEnum } from '@forms/utils/enum-map';
+import { getOptionsFromEnum, getOptionsFromEnumAcronym } from '@forms/utils/enum-map';
 import { MultiOptions } from '@forms/models/options.model';
 import { changeVehicleType } from '@store/technical-records';
 import { Store } from '@ngrx/store';
@@ -15,8 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-vehicle-type',
-  templateUrl: './change-vehicle-type.component.html',
-  styleUrls: ['./change-vehicle-type.component.scss']
+  templateUrl: './change-vehicle-type.component.html'
 })
 export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   constructor(
@@ -64,7 +63,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnum(VehicleTypes).filter(type => type.value != this.currentTechRecord?.vehicleType);
+    return getOptionsFromEnumAcronym(VehicleTypes).filter(type => type.value != this.currentTechRecord?.vehicleType);
   }
 
   ngOnInit(): void {

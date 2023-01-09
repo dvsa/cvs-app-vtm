@@ -83,8 +83,8 @@ export class TechRecordTitleComponent implements OnInit {
       .pipe(take(1))
       .subscribe(techRecord =>
         techRecord?.statusCode === StatusCodes.PROVISIONAL
-          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/changeVehicleType`)
-          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/changeVehicleType`)
+          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/change-vehicle-type`)
+          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vehicle-type`)
       );
   }
 }

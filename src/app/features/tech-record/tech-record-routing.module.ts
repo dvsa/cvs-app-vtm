@@ -14,7 +14,6 @@ import { ChangeVehicleTypeComponent } from './components/change-vehicle-type/cha
 
 import { TechRecordChangeVisibilityComponent } from './components/tech-record-change-visibility/tech-record-change-visibility.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -24,13 +23,13 @@ const routes: Routes = [
     resolve: { load: TechRecordViewResolver }
   },
   {
-    path: 'changeVehicleType',
+    path: 'change-vehicle-type',
     component: ChangeVehicleTypeComponent,
     data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
   },
   {
-    path: 'provisional/changeVehicleType',
+    path: 'provisional/change-vehicle-type',
     component: ChangeVehicleTypeComponent,
     data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
