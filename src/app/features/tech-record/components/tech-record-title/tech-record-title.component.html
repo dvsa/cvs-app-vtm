@@ -49,11 +49,11 @@
       <dd class="govuk-summary-list__value"></dd>
       <div *appRoleRequired="roles.TechRecordArchive">
         <dd *ngIf="queryableRecordActions.includes('archive')" class="govuk-summary-list__actions">
-          <a class="govuk-link" (click)="navigateToArchive()">Archive</a>
+          <a class="govuk-link" (click)="navigateTo('change-status', { to: 'archived' })">Archive</a>
         </dd>
       </div>
       <dd *ngIf="queryableRecordActions.includes('promote')" class="govuk-summary-list__actions">
-        <a class="govuk-link" (click)="navigateToPromotion()">Promote</a>
+        <a class="govuk-link" (click)="navigateTo('change-status', { to: 'current' })">Promote</a>
       </dd>
     </ng-container>
   </div>
@@ -78,7 +78,7 @@
       <ng-container *ngIf="!hideActions">
         <dd class="govuk-summary-list__value"></dd>
         <dd class="govuk-summary-list__actions">
-          <a class="govuk-link" (click)="navigateToChangeVisibility()">Change</a>
+          <a class="govuk-link" (click)="navigateTo('change-vta-visibility')">Change</a>
         </dd>
       </ng-container>
     </div>

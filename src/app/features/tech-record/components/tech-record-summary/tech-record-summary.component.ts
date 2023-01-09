@@ -258,25 +258,12 @@ export class TechRecordSummaryComponent implements OnInit {
   generateAxleObject(vehicleType: VehicleTypes, axleNumber: number): Axle {
     const weights =
       vehicleType === VehicleTypes.PSV
-        ? {
-            kerbWeight: null,
-            ladenWeight: null,
-            gbWeight: null,
-            designWeight: null
-          }
-        : {
-            gbWeight: null,
-            eecWeight: null,
-            designWeight: null
-          };
+        ? { kerbWeight: null, ladenWeight: null, gbWeight: null, designWeight: null }
+        : { gbWeight: null, eecWeight: null, designWeight: null };
 
     const tyres = { tyreSize: null, speedCategorySymbol: null, fitmentCode: null, dataTrAxles: null, plyRating: null, tyreCode: null };
 
-    return {
-      axleNumber,
-      weights,
-      tyres
-    };
+    return { axleNumber, weights, tyres };
   }
 
   setBodyFields(): void {
@@ -313,7 +300,7 @@ export class TechRecordSummaryComponent implements OnInit {
     };
   }
 
-  // The map below initialize the array of sections that the *ngFor in the component's template will iterate over.
+  // The map below initializes the array of sections that the *ngFor in the component's template will iterate over.
   // The order in which each section is introduced in the array will determine its order on the page when rendered.
   // Sections which use custom components require a FormNode object with 'name' and 'label' properties.
 
@@ -374,7 +361,7 @@ export class TechRecordSummaryComponent implements OnInit {
       VehicleTypes.LGV,
       [
         /*  1 */ // reasonForCreationSection added when editing
-        /*  2*/ LgvTechRecord,
+        /*  2 */ LgvTechRecord,
         /*  3 */ ApplicantDetails,
         /*  4 */ NotesTemplate,
         /*  5 */ Audit
