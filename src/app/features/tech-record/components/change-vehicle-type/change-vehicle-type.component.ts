@@ -60,8 +60,16 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     return getOptionsFromEnumAcronym(VehicleTypes).filter(vehicleType => vehicleType.value != this.currentTechRecord?.vehicleType);
   }
 
+  get vehicleMakeAndModel(): string | undefined {
+    if (!this.currentTechRecord) return '';
+
+    return this.currentTechRecord.vehicleType !== 'psv'
+      ? `${this.currentTechRecord.make} - ${this.currentTechRecord.model}`
+      : `${this.currentTechRecord.chassisMake} - ${this.currentTechRecord.chassisModel}`;
+  }
+
   ngOnInit(): void {
-    if (this.vehicleTechRecord === undefined) {
+    if (this.currentTechRecord === undefined) {
       this.navigateBack();
     }
   }

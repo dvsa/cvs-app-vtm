@@ -1,13 +1,8 @@
 <div *ngIf="vehicleTechRecord">
   <br />
   <br />
-  <h2 *ngIf="currentTechRecord?.vehicleType !== 'psv'" class="govuk-heading-l">
-    {{ currentTechRecord?.make | defaultNullOrEmpty }} -
-    {{ currentTechRecord?.model | defaultNullOrEmpty }}
-  </h2>
-  <h2 *ngIf="currentTechRecord?.vehicleType === 'psv'" class="govuk-heading-l">
-    {{ currentTechRecord?.chassisMake | defaultNullOrEmpty }} -
-    {{ currentTechRecord?.chassisModel | defaultNullOrEmpty }}
+  <h2 class="govuk-heading-l">
+    {{ vehicleMakeAndModel }}
   </h2>
 
   <dl class="govuk-summary-list">
