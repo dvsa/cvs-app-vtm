@@ -24,11 +24,11 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     private store: Store<TechnicalRecordServiceState>,
     private router: Router,
     private route: ActivatedRoute,
-    public dfs: DynamicFormService,
-    private location: Location
+    public dfs: DynamicFormService
   ) {
     this.technicalRecordService.selectedVehicleTechRecord$.pipe(take(1)).subscribe(data => (this.vehicleTechRecord = data));
     this.technicalRecordService.editableTechRecord$.pipe(take(1)).subscribe(data => (this.currentTechRecord = data));
+    this.form = this.dfs.createForm(this.template) as CustomFormGroup;
   }
 
   public currentTechRecord?: TechRecordModel;
@@ -48,14 +48,8 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
     ]
   };
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.globalErrorService.clearErrors();
-
-    const { vehicleTechRecord } = changes;
-
-    if (this.form && vehicleTechRecord?.currentValue && vehicleTechRecord.currentValue !== vehicleTechRecord.previousValue) {
-      this.form.patchValue(vehicleTechRecord.currentValue, { emitEvent: false });
-    }
   }
 
   get currentVrm(): string | undefined {
@@ -67,7 +61,6 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.form = this.dfs.createForm(this.template) as CustomFormGroup;
     if (this.vehicleTechRecord === undefined) {
       this.navigateBack();
     }
@@ -90,6 +83,6 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
 
   navigateBack() {
     this.globalErrorService.clearErrors();
-    this.location.back();
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }
