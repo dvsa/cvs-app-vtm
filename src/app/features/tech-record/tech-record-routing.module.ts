@@ -123,6 +123,7 @@ const routes: Routes = [
     component: ChangeVehicleTypeComponent,
     data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
     canActivate: [MsalGuard, RoleGuard]
+    resolve: { techRecord: TechRecordViewResolver }
   },
   {
     path: 'change-vta-visibility',
