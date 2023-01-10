@@ -174,7 +174,7 @@ export class TechnicalRecordServiceEffects {
   generateTechRecordBasedOnSectionTemplates = createEffect(() =>
     this.actions$.pipe(
       ofType(changeVehicleType),
-      mergeMap(action => of(action).pipe(withLatestFrom(this.store.pipe(select(editableTechRecord))), take(1))),
+      mergeMap(action => of(action).pipe(withLatestFrom(this.store.pipe(select(editableTechRecord))))),
       concatMap(([action, editableTechRecord]) => {
         const { vehicleType } = action;
 
