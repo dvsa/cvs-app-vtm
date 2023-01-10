@@ -2,7 +2,7 @@
   <div class="govuk-summary-list__row">
     <dt class="govuk-summary-list__key">Vehicle type</dt>
     <dd id="vehicleType" class="govuk-summary-list__value">
-      {{ (currentTechRecord$ | async)?.vehicleType ?? vehicleType | defaultNullOrEmpty }}
+      {{ (editableTechRecord$ | async)?.vehicleType ?? vehicleTypes | defaultNullOrEmpty }}
     </dd>
     <dd class="govuk-summary-list__actions"></dd>
     <dd class="govuk-summary-list__actions">

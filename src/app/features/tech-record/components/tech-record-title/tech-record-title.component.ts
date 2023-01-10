@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TechRecord } from '@api/vehicle';
 import { Roles } from '@models/roles.enum';
 import { TechRecordActions } from '@models/tech-record/tech-record-actions.enum';
 import { StatusCodes, TechRecordModel, VehicleTechRecordModel, VehicleTypes, Vrm } from '@models/vehicle-tech-record.model';
+import { select, Store } from '@ngrx/store';
 import { TechnicalRecordService } from '@services/technical-record/technical-record.service';
+import { editableTechRecord } from '@store/technical-records/selectors/technical-record-service.selectors';
 import { Observable, take } from 'rxjs';
 
 @Component({
@@ -19,7 +22,7 @@ export class TechRecordTitleComponent implements OnInit {
   queryableRecordActions: string[] = [];
   currentTechRecord$!: Observable<TechRecordModel | undefined>;
 
-  constructor(private router: Router, private technicalRecordService: TechnicalRecordService) {}
+  constructor(private router: Router, private technicalRecordService: TechnicalRecordService, private store: Store) {}
 
   ngOnInit(): void {
     this.queryableRecordActions = this.recordActions.split(',');
@@ -31,10 +34,9 @@ export class TechRecordTitleComponent implements OnInit {
     return this.vehicleTechRecord?.vrms.find(vrm => vrm.isPrimary === true)?.vrm;
   }
 
-  get vehicleType(): string {
-    return this.vehicleTechRecord?.techRecord[0].vehicleType!;
+  get editableTechRecord$() {
+    return this.store.pipe(select(editableTechRecord));
   }
-
   get otherVrms(): Vrm[] | undefined {
     return this.vehicleTechRecord?.vrms.filter(vrm => vrm.isPrimary === false);
   }
@@ -83,8 +85,8 @@ export class TechRecordTitleComponent implements OnInit {
       .pipe(take(1))
       .subscribe(techRecord =>
         techRecord?.statusCode === StatusCodes.PROVISIONAL
-          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/changeVehicleType`)
-          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/changeVehicleType`)
+          ? this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/provisional/change-vehicle-type`)
+          : this.router.navigateByUrl(`/tech-records/${this.vehicleTechRecord?.systemNumber}/change-vehicle-type`)
       );
   }
 }
