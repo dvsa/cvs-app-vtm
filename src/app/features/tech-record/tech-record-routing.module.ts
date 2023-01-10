@@ -122,7 +122,7 @@ const routes: Routes = [
     path: 'change-vehicle-type',
     component: ChangeVehicleTypeComponent,
     data: { title: 'Change vehicle type', roles: Roles.TechRecordAmend },
-    canActivate: [MsalGuard, RoleGuard]
+    canActivate: [MsalGuard, RoleGuard],
     resolve: { techRecord: TechRecordViewResolver }
   },
   {
