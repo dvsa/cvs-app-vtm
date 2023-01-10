@@ -120,7 +120,7 @@ export class TechRecordSummaryComponent implements OnInit {
       this.setBodyFields();
     }
 
-    if (this.vehicleTechRecord.vehicleType === VehicleTypes.PSV && (event.grossKerbWeight || event.grossLadenWeight || event.brakes)) {
+    if (this.vehicleTechRecordCalculated.vehicleType === VehicleTypes.PSV && (event.grossKerbWeight || event.grossLadenWeight || event.brakes)) {
       this.setBrakesForces();
     }
 
@@ -271,15 +271,16 @@ export class TechRecordSummaryComponent implements OnInit {
       ...this.vehicleTechRecordCalculated.brakes,
       brakeCode: this.brakeCodePrefix + this.vehicleTechRecordCalculated.brakes.brakeCodeOriginal,
       brakeForceWheelsNotLocked: {
-        serviceBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 16) / 100),
-        secondaryBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 22.5) / 100),
-        parkingBrakeForceA: Math.round(((this.vehicleTechRecord.grossLadenWeight || 0) * 45) / 100)
+        serviceBrakeForceA: Math.round(((this.vehicleTechRecordCalculated.grossLadenWeight || 0) * 16) / 100),
+        secondaryBrakeForceA: Math.round(((this.vehicleTechRecordCalculated.grossLadenWeight || 0) * 22.5) / 100),
+        parkingBrakeForceA: Math.round(((this.vehicleTechRecordCalculated.grossLadenWeight || 0) * 45) / 100)
       },
       brakeForceWheelsUpToHalfLocked: {
-        serviceBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 16) / 100),
-        secondaryBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 25) / 100),
-        parkingBrakeForceB: Math.round(((this.vehicleTechRecord.grossKerbWeight || 0) * 50) / 100)
+        serviceBrakeForceB: Math.round(((this.vehicleTechRecordCalculated.grossKerbWeight || 0) * 16) / 100),
+        secondaryBrakeForceB: Math.round(((this.vehicleTechRecordCalculated.grossKerbWeight || 0) * 25) / 100),
+        parkingBrakeForceB: Math.round(((this.vehicleTechRecordCalculated.grossKerbWeight || 0) * 50) / 100)
       }
     };
+    console.log(this.vehicleTechRecordCalculated.brakes);
   }
 }

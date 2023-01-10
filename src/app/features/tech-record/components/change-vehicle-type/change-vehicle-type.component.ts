@@ -64,7 +64,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   get vehicleTypeOptions(): MultiOptions {
-    return getOptionsFromEnum(VehicleTypes).filter(type => type.value != this.currentTechRecord?.vehicleType);
+    return getOptionsFromEnum(VehicleTypes).filter(vehicleType => vehicleType.value != this.currentTechRecord?.vehicleType);
   }
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class ChangeVehicleTypeComponent implements OnInit, OnChanges {
   }
 
   handleSubmitNewVehicleType(selectedVehicleType: VehicleTypes): void {
-    if (!selectedVehicleType || selectedVehicleType === this.vehicleTechRecord?.techRecord[0].vehicleType) {
+    if (!selectedVehicleType) {
       this.globalErrorService.addError({ error: 'You must provide a new vehicle type', anchorLink: 'selectedVehicleType' });
       return;
     } else if (selectedVehicleType !== VehicleTypes.PSV) {
